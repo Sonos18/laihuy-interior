@@ -31,10 +31,10 @@ const submitForm = async () => {
 <template>
   <div>
     <!-- Hero Section -->
-    <section class="section-spacing bg-gradient-to-br from-slate-900 to-slate-800 text-white">
+    <section class="section-spacing bg-gradient-to-br from-brand-blue-900 to-brand-blue-700 text-white">
       <div class="max-w-4xl mx-auto">
         <h1 class="text-5xl md:text-6xl font-bold mb-6">Liên Hệ Với Chúng Tôi</h1>
-        <p class="text-xl md:text-2xl text-gray-300">
+        <p class="text-xl md:text-2xl text-brand-blue-200">
           Chúng tôi sẵn sàng lắng nghe ý tưởng của bạn
         </p>
       </div>

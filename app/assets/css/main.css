@@ -4,6 +4,18 @@
 @theme {
   --font-sans: 'Inter', 'Segoe UI', sans-serif;
 
+  --color-brand-blue-50: #f5f7fb;
+  --color-brand-blue-100: #e8ecf6;
+  --color-brand-blue-200: #d1d9ed;
+  --color-brand-blue-300: #bac5e3;
+  --color-brand-blue-400: #8fa4d4;
+  --color-brand-blue-500: #6b85c5;
+  --color-brand-blue-600: #566db1;
+  --color-brand-blue-700: #4f6080;
+  --color-brand-blue-800: #3d4860;
+  --color-brand-blue-900: #2b3140;
+  --color-brand-blue-950: #1a1d28;
+
   --color-slate-50: #f8fafc;
   --color-slate-100: #f1f5f9;
   --color-slate-200: #e2e8f0;
@@ -61,11 +73,11 @@
   }
 
   .btn-primary {
-    @apply bg-slate-900 text-white hover:bg-orange-500 transition-colors px-8 py-4 rounded-lg font-semibold;
+    @apply bg-brand-blue-700 text-white hover:bg-orange-500 transition-colors px-8 py-4 rounded-lg font-semibold;
   }
 
   .btn-secondary {
-    @apply border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white transition-all px-8 py-4 rounded-lg font-semibold;
+    @apply border-2 border-brand-blue-600 text-brand-blue-600 hover:bg-brand-blue-700 hover:text-white transition-all px-8 py-4 rounded-lg font-semibold;
   }
 
   .section-spacing {

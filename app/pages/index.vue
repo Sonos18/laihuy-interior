@@ -182,12 +182,12 @@ const projects = [
     </section>
 
     <!-- CTA Section -->
-    <section class="section-spacing bg-slate-900 text-white">
+    <section class="section-spacing bg-brand-blue-900 text-white">
       <div class="max-w-4xl mx-auto text-center">
         <h2 class="text-4xl md:text-5xl font-bold mb-6">
           Sẵn sàng để bắt đầu dự án của bạn?
         </h2>
-        <p class="text-xl text-gray-300 mb-8">
+        <p class="text-xl text-brand-blue-200 mb-8">
           Hãy liên hệ với chúng tôi ngay để nhận tư vấn thiết kế miễn phí
         </p>
         <NuxtLink to="/lien-he" class="btn-primary bg-orange-500 hover:bg-orange-600">
