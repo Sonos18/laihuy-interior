@@ -35,8 +35,7 @@ onMounted(() => {
   <div class="min-h-screen flex flex-col bg-white">
     <!-- Header -->
     <header
-      class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-      :class="isHeaderSolid ? 'bg-brand-blue-800 shadow-md' : 'bg-brand-blue-700'"
+      class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white shadow-sm"
     >
       <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <!-- Logo -->
@@ -52,31 +51,31 @@ onMounted(() => {
         <div class="hidden md:flex items-center gap-8">
           <NuxtLink
             to="/"
-            class="text-white/80 hover:text-orange-400 transition-colors font-medium relative group"
+            class="text-brand-blue-700 hover:text-orange-500 transition-colors font-medium relative group"
           >
             Trang chủ
-            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-400 group-hover:w-full transition-all duration-300" />
+            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300" />
           </NuxtLink>
           <NuxtLink
             to="/gioi-thieu"
-            class="text-white/80 hover:text-orange-400 transition-colors font-medium relative group"
+            class="text-brand-blue-700 hover:text-orange-500 transition-colors font-medium relative group"
           >
             Giới thiệu
-            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-400 group-hover:w-full transition-all duration-300" />
+            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300" />
           </NuxtLink>
           <NuxtLink
             to="/du-an"
-            class="text-white/80 hover:text-orange-400 transition-colors font-medium relative group"
+            class="text-brand-blue-700 hover:text-orange-500 transition-colors font-medium relative group"
           >
             Dự án
-            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-400 group-hover:w-full transition-all duration-300" />
+            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300" />
           </NuxtLink>
           <NuxtLink
             to="/lien-he"
-            class="text-white/80 hover:text-orange-400 transition-colors font-medium relative group"
+            class="text-brand-blue-700 hover:text-orange-500 transition-colors font-medium relative group"
           >
             Liên hệ
-            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-400 group-hover:w-full transition-all duration-300" />
+            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300" />
           </NuxtLink>
         </div>
 
