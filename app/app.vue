@@ -40,8 +40,12 @@ onMounted(() => {
     >
       <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <!-- Logo -->
-        <NuxtLink to="/" class="flex-shrink-0">
-          <div class="text-2xl font-bold text-white">Lai Huy</div>
+        <NuxtLink to="/" class="flex-shrink-0 h-14 flex items-center">
+          <img
+            src="/images/laihuy-logo.jpg"
+            alt="Lai Huy Interior"
+            class="h-full w-auto object-contain"
+          />
         </NuxtLink>
 
         <!-- Desktop Navigation -->
@@ -93,7 +97,11 @@ onMounted(() => {
       <div class="max-w-7xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div>
-            <h3 class="text-2xl font-bold mb-2">Lai Huy</h3>
+            <img
+              src="/images/laihuy-logo.jpg"
+              alt="Lai Huy Interior"
+              class="h-20 w-auto object-contain mb-4 rounded-full"
+            />
             <p class="text-brand-blue-200 text-sm">Thiết kế nội thất hiện đại & đẳng cấp</p>
           </div>
           <div>
