@@ -1,31 +1,31 @@
 <script setup>
 useHead({
-  meta: [{ name: "viewport", content: "width=device-width, initial-scale=1" }],
-  link: [{ rel: "icon", href: "/favicon.ico" }],
+  meta: [{ name: 'viewport', content: 'width=device-width, initial-scale=1' }],
+  link: [{ rel: 'icon', href: '/favicon.ico' }],
   htmlAttrs: {
-    lang: "vi",
-  },
-});
+    lang: 'vi'
+  }
+})
 
-const title = "Lai Huy Interior - Thiết kế nội thất hiện đại & đẳng cấp";
-const description =
-  "Thiết kế nội thất hiện đại, sang trọng và đẳng cấp cho không gian sống của bạn. Chúng tôi mang lại giải pháp nội thất toàn diện từ tư vấn đến thi công.";
+const title = 'Lai Huy Interior - Thiết kế nội thất hiện đại & đẳng cấp'
+const description
+  = 'Thiết kế nội thất hiện đại, sang trọng và đẳng cấp cho không gian sống của bạn. Chúng tôi mang lại giải pháp nội thất toàn diện từ tư vấn đến thi công.'
 
 useSeoMeta({
   title,
   description,
   ogTitle: title,
   ogDescription: description,
-  twitterCard: "summary_large_image",
-});
+  twitterCard: 'summary_large_image'
+})
 
-const isHeaderSolid = ref(false);
+const isHeaderSolid = ref(false)
 
 onMounted(() => {
-  window.addEventListener("scroll", () => {
-    isHeaderSolid.value = window.scrollY > 10;
-  });
-});
+  window.addEventListener('scroll', () => {
+    isHeaderSolid.value = window.scrollY > 10
+  })
+})
 </script>
 
 <template>
@@ -39,7 +39,10 @@ onMounted(() => {
         class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"
       >
         <!-- Logo -->
-        <NuxtLink to="/" class="shrink-0">
+        <NuxtLink
+          to="/"
+          class="shrink-0"
+        >
           <div class="text-2xl font-bold text-slate-900">Lai Huy</div>
         </NuxtLink>
 
@@ -52,7 +55,7 @@ onMounted(() => {
             Trang chủ
             <span
               class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300"
-            ></span>
+            />
           </NuxtLink>
           <NuxtLink
             to="/gioi-thieu"
@@ -61,7 +64,7 @@ onMounted(() => {
             Giới thiệu
             <span
               class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300"
-            ></span>
+            />
           </NuxtLink>
           <NuxtLink
             to="/du-an"
@@ -70,7 +73,7 @@ onMounted(() => {
             Dự án
             <span
               class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300"
-            ></span>
+            />
           </NuxtLink>
           <NuxtLink
             to="/lien-he"
@@ -79,7 +82,7 @@ onMounted(() => {
             Liên hệ
             <span
               class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300"
-            ></span>
+            />
           </NuxtLink>
         </div>
 
@@ -105,37 +108,42 @@ onMounted(() => {
       <div class="max-w-7xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div>
-            <h3 class="text-2xl font-bold mb-2">Lai Huy</h3>
+            <h3 class="text-2xl font-bold mb-2">
+              Lai Huy
+            </h3>
             <p class="text-gray-300 text-sm">
               Thiết kế nội thất hiện đại & đẳng cấp
             </p>
           </div>
           <div>
-            <h4 class="font-semibold mb-4">Công ty</h4>
+            <h4 class="font-semibold mb-4">
+              Công ty
+            </h4>
             <ul class="space-y-2 text-gray-300 text-sm">
               <li>
-                <NuxtLink to="/" class="hover:text-orange-500 transition-colors"
-                  >Trang chủ</NuxtLink
-                >
+                <NuxtLink
+                  to="/"
+                  class="hover:text-orange-500 transition-colors"
+                >Trang chủ</NuxtLink>
               </li>
               <li>
                 <NuxtLink
                   to="/gioi-thieu"
                   class="hover:text-orange-500 transition-colors"
-                  >Về chúng tôi</NuxtLink
-                >
+                >Về chúng tôi</NuxtLink>
               </li>
               <li>
                 <NuxtLink
                   to="/du-an"
                   class="hover:text-orange-500 transition-colors"
-                  >Dự án</NuxtLink
-                >
+                >Dự án</NuxtLink>
               </li>
             </ul>
           </div>
           <div>
-            <h4 class="font-semibold mb-4">Liên hệ</h4>
+            <h4 class="font-semibold mb-4">
+              Liên hệ
+            </h4>
             <ul class="space-y-2 text-gray-300 text-sm">
               <li>+84 (0) 123 456 789</li>
               <li>info@laihuy.vn</li>
@@ -143,19 +151,27 @@ onMounted(() => {
             </ul>
           </div>
           <div>
-            <h4 class="font-semibold mb-4">Theo dõi</h4>
+            <h4 class="font-semibold mb-4">
+              Theo dõi
+            </h4>
             <div class="flex gap-4">
               <a
                 href="#"
                 class="text-gray-300 hover:text-orange-500 transition-colors"
               >
-                <Icon name="i-simple-icons-facebook" class="w-5 h-5" />
+                <Icon
+                  name="i-simple-icons-facebook"
+                  class="w-5 h-5"
+                />
               </a>
               <a
                 href="#"
                 class="text-gray-300 hover:text-orange-500 transition-colors"
               >
-                <Icon name="i-simple-icons-instagram" class="w-5 h-5" />
+                <Icon
+                  name="i-simple-icons-instagram"
+                  class="w-5 h-5"
+                />
               </a>
             </div>
           </div>

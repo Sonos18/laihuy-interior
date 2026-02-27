@@ -1,193 +1,193 @@
 <script setup>
-const route = useRoute();
-const slug = route.params.slug;
+const route = useRoute()
+const slug = route.params.slug
 
 useSeoMeta({
   title: `Chi Tiết Dự Án - Lai Huy Interior`,
-  description: "Xem chi tiết dự án thiết kế nội thất của Lai Huy Interior",
-});
+  description: 'Xem chi tiết dự án thiết kế nội thất của Lai Huy Interior'
+})
 
 // Sample project data
 const projectsData = {
-  "apartment-modern": {
-    title: "Căn Hộ Phong Cách Hiện Đại",
-    category: "Căn Hộ",
-    location: "Quận 1, TP. Hồ Chí Minh",
-    area: "120m²",
-    duration: "3 tháng",
-    budget: "Tương ứng",
+  'apartment-modern': {
+    title: 'Căn Hộ Phong Cách Hiện Đại',
+    category: 'Căn Hộ',
+    location: 'Quận 1, TP. Hồ Chí Minh',
+    area: '120m²',
+    duration: '3 tháng',
+    budget: 'Tương ứng',
     description:
-      "Thiết kế căn hộ cao cấp với phong cách hiện đại tối giản. Tập trung vào công năng và thẩm mỹ, tạo nên một không gian sống thoáng đãng, sang trọng.",
+      'Thiết kế căn hộ cao cấp với phong cách hiện đại tối giản. Tập trung vào công năng và thẩm mỹ, tạo nên một không gian sống thoáng đãng, sang trọng.',
     images: [
-      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1200&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=600&fit=crop",
+      'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1200&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=600&fit=crop'
     ],
     highlights: [
-      "Phòng khách rộng rãi với cách bố trí công năng tối ưu",
-      "Phòng bếp hiện đại với các tủ bếp cao cấp",
-      "Phòng ngủ chính với hệ thống lưu trữ thông minh",
-      "Phòng tắm sang trọng với thiết bị cao cấp",
+      'Phòng khách rộng rãi với cách bố trí công năng tối ưu',
+      'Phòng bếp hiện đại với các tủ bếp cao cấp',
+      'Phòng ngủ chính với hệ thống lưu trữ thông minh',
+      'Phòng tắm sang trọng với thiết bị cao cấp'
     ],
     materials: [
-      "Sàn gỗ nhân tạo cao cấp",
-      "Tường sơn trắng sữa",
-      "Đèn LED thông minh",
-      "Nội thất gỗ tự nhiên",
-    ],
+      'Sàn gỗ nhân tạo cao cấp',
+      'Tường sơn trắng sữa',
+      'Đèn LED thông minh',
+      'Nội thất gỗ tự nhiên'
+    ]
   },
-  "villa-luxury": {
-    title: "Biệt Thự Hạng Sang",
-    category: "Biệt Thự",
-    location: "Thủ Đức, TP. Hồ Chí Minh",
-    area: "500m²",
-    duration: "8 tháng",
-    budget: "Tương ứng",
+  'villa-luxury': {
+    title: 'Biệt Thự Hạng Sang',
+    category: 'Biệt Thự',
+    location: 'Thủ Đức, TP. Hồ Chí Minh',
+    area: '500m²',
+    duration: '8 tháng',
+    budget: 'Tương ứng',
     description:
-      "Biệt thự sang trọng với thiết kế đẳng cấp quốc tế. Kết hợp hài hòa giữa kiến trúc hiện đại và nội thất sang trọng, tạo nên một không gian sống đẳng cấp.",
+      'Biệt thự sang trọng với thiết kế đẳng cấp quốc tế. Kết hợp hài hòa giữa kiến trúc hiện đại và nội thất sang trọng, tạo nên một không gian sống đẳng cấp.',
     images: [
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1200&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=600&fit=crop",
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1200&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=600&fit=crop'
     ],
     highlights: [
-      "Sảnh chính rộng lớn với thiết kế hiện đại",
-      "Phòng khách hạng sang với tầng cao",
-      "Phòng ăn cho 12-15 người",
-      "Sân vườn cảnh quan chuyên nghiệp",
+      'Sảnh chính rộng lớn với thiết kế hiện đại',
+      'Phòng khách hạng sang với tầng cao',
+      'Phòng ăn cho 12-15 người',
+      'Sân vườn cảnh quan chuyên nghiệp'
     ],
     materials: [
-      "Đá tự nhiên cao cấp",
-      "Gỗ veneer nhập khẩu",
-      "Hệ thống chiếu sáng thông minh",
-      "Nội thất cao cấp nhập khẩu",
-    ],
+      'Đá tự nhiên cao cấp',
+      'Gỗ veneer nhập khẩu',
+      'Hệ thống chiếu sáng thông minh',
+      'Nội thất cao cấp nhập khẩu'
+    ]
   },
-  "office-modern": {
-    title: "Không Gian Làm Việc Hiện Đại",
-    category: "Văn Phòng",
-    location: "Quận 3, TP. Hồ Chí Minh",
-    area: "300m²",
-    duration: "4 tháng",
-    budget: "Tương ứng",
+  'office-modern': {
+    title: 'Không Gian Làm Việc Hiện Đại',
+    category: 'Văn Phòng',
+    location: 'Quận 3, TP. Hồ Chí Minh',
+    area: '300m²',
+    duration: '4 tháng',
+    budget: 'Tương ứng',
     description:
-      "Thiết kế văn phòng tối ưu hiệu suất làm việc. Không gian mở, linh hoạt, với các khu vực chức năng rõ ràng và thoáng đãng.",
+      'Thiết kế văn phòng tối ưu hiệu suất làm việc. Không gian mở, linh hoạt, với các khu vực chức năng rõ ràng và thoáng đãng.',
     images: [
-      "https://images.unsplash.com/photo-1565183938294-e75ce55eb4ca?w=1200&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1200&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=600&fit=crop",
+      'https://images.unsplash.com/photo-1565183938294-e75ce55eb4ca?w=1200&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1200&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=600&fit=crop'
     ],
     highlights: [
-      "Khu vực làm việc mở với ghế cao cấp",
-      "Phòng họp với trang thiết bị hiện đại",
-      "Phòng giải lao thoáng đãng",
-      "Hệ thống chiếu sáng tối ưu sức khỏe",
+      'Khu vực làm việc mở với ghế cao cấp',
+      'Phòng họp với trang thiết bị hiện đại',
+      'Phòng giải lao thoáng đãng',
+      'Hệ thống chiếu sáng tối ưu sức khỏe'
     ],
     materials: [
-      "Sàn bê tông polished",
-      "Vách kính laminat",
-      "Nội thất văn phòng ergonomic",
-      "Hệ thống HVAC hiện đại",
-    ],
+      'Sàn bê tông polished',
+      'Vách kính laminat',
+      'Nội thất văn phòng ergonomic',
+      'Hệ thống HVAC hiện đại'
+    ]
   },
-  "restaurant-elegant": {
-    title: "Nhà Hàng Sang Trọng",
-    category: "Nhà Hàng",
-    location: "Quận 1, TP. Hồ Chí Minh",
-    area: "200m²",
-    duration: "5 tháng",
-    budget: "Tương ứng",
+  'restaurant-elegant': {
+    title: 'Nhà Hàng Sang Trọng',
+    category: 'Nhà Hàng',
+    location: 'Quận 1, TP. Hồ Chí Minh',
+    area: '200m²',
+    duration: '5 tháng',
+    budget: 'Tương ứng',
     description:
-      "Không gian ăn uống với phong cách ẩm thực cao cấp. Tạo ra một trải nghiệm ẩm thực tuyệt vời kết hợp với thiết kế sang trọng.",
+      'Không gian ăn uống với phong cách ẩm thực cao cấp. Tạo ra một trải nghiệm ẩm thực tuyệt vời kết hợp với thiết kế sang trọng.',
     images: [
-      "https://images.unsplash.com/photo-1554118811-1e0d58224e24?w=1200&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1517457373614-b7152f800fd1?w=1200&h=600&fit=crop",
+      'https://images.unsplash.com/photo-1554118811-1e0d58224e24?w=1200&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1517457373614-b7152f800fd1?w=1200&h=600&fit=crop'
     ],
     highlights: [
-      "Khu vực ăn uống chính với ánh sáng ấm",
-      "Quầy bar sang trọng với ghế cao",
-      "Phòng riêng cho các buổi tiệc",
-      "Bếp mở với thiết kế hiện đại",
+      'Khu vực ăn uống chính với ánh sáng ấm',
+      'Quầy bar sang trọng với ghế cao',
+      'Phòng riêng cho các buổi tiệc',
+      'Bếp mở với thiết kế hiện đại'
     ],
     materials: [
-      "Gỗ veneer cao cấp",
-      "Đèn chân đế thiết kế",
-      "Bàn ghế nhập khẩu",
-      "Mặt bàn đá tự nhiên",
-    ],
+      'Gỗ veneer cao cấp',
+      'Đèn chân đế thiết kế',
+      'Bàn ghế nhập khẩu',
+      'Mặt bàn đá tự nhiên'
+    ]
   },
-  "boutique-retail": {
-    title: "Showroom Thời Trang",
-    category: "Bán Lẻ",
-    location: "Quận 1, TP. Hồ Chí Minh",
-    area: "150m²",
-    duration: "3 tháng",
-    budget: "Tương ứng",
+  'boutique-retail': {
+    title: 'Showroom Thời Trang',
+    category: 'Bán Lẻ',
+    location: 'Quận 1, TP. Hồ Chí Minh',
+    area: '150m²',
+    duration: '3 tháng',
+    budget: 'Tương ứng',
     description:
-      "Thiết kế showroom thời trang tạo trải nghiệm mua sắm tuyệt vời. Không gian thoáng đãng với hệ thống chiếu sáng tối ưu để tôn lên các sản phẩm.",
+      'Thiết kế showroom thời trang tạo trải nghiệm mua sắm tuyệt vời. Không gian thoáng đãng với hệ thống chiếu sáng tối ưu để tôn lên các sản phẩm.',
     images: [
-      "https://images.unsplash.com/photo-1576183404207-991ff501b5fb?w=1200&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1441984904556-0ab63e351378?w=1200&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=600&fit=crop",
+      'https://images.unsplash.com/photo-1576183404207-991ff501b5fb?w=1200&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1441984904556-0ab63e351378?w=1200&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=600&fit=crop'
     ],
     highlights: [
-      "Khu trưng bày sản phẩm sang trọng",
-      "Phòng thử đồ hiện đại",
-      "Quầy thanh toán cao cấp",
-      "Hệ thống chiếu sáng spotlight",
+      'Khu trưng bày sản phẩm sang trọng',
+      'Phòng thử đồ hiện đại',
+      'Quầy thanh toán cao cấp',
+      'Hệ thống chiếu sáng spotlight'
     ],
     materials: [
-      "Tường gỗ veneer",
-      "Sàn polished concrete",
-      "Tủ trưng bày thép kính",
-      "Đèn LED spotlight",
-    ],
+      'Tường gỗ veneer',
+      'Sàn polished concrete',
+      'Tủ trưng bày thép kính',
+      'Đèn LED spotlight'
+    ]
   },
-  "spa-wellness": {
-    title: "Spa & Wellness Center",
-    category: "Spa",
-    location: "Quận 2, TP. Hồ Chí Minh",
-    area: "250m²",
-    duration: "6 tháng",
-    budget: "Tương ứng",
+  'spa-wellness': {
+    title: 'Spa & Wellness Center',
+    category: 'Spa',
+    location: 'Quận 2, TP. Hồ Chí Minh',
+    area: '250m²',
+    duration: '6 tháng',
+    budget: 'Tương ứng',
     description:
-      "Không gian thư giãn và chăm sóc sức khỏe đẳng cấp. Tạo môi trường yên tĩnh, thư giãn với thiết kế spa hiện đại.",
+      'Không gian thư giãn và chăm sóc sức khỏe đẳng cấp. Tạo môi trường yên tĩnh, thư giãn với thiết kế spa hiện đại.',
     images: [
-      "https://images.unsplash.com/photo-1541123603104-852fc1296e27?w=1200&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1200&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=600&fit=crop",
+      'https://images.unsplash.com/photo-1541123603104-852fc1296e27?w=1200&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1200&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=600&fit=crop'
     ],
     highlights: [
-      "Phòng chờ sang trọng",
-      "Phòng massage thư giãn",
-      "Phòng tắm hơi sauna",
-      "Khu vực thư giãn với ghế nằm",
+      'Phòng chờ sang trọng',
+      'Phòng massage thư giãn',
+      'Phòng tắm hơi sauna',
+      'Khu vực thư giãn với ghế nằm'
     ],
     materials: [
-      "Đá tự nhiên sáng",
-      "Gỗ thơm tự nhiên",
-      "Tường sơn màu nhẹ",
-      "Hệ thống âm thanh xung quanh",
-    ],
-  },
-};
+      'Đá tự nhiên sáng',
+      'Gỗ thơm tự nhiên',
+      'Tường sơn màu nhẹ',
+      'Hệ thống âm thanh xung quanh'
+    ]
+  }
+}
 
 const project = computed(
-  () => projectsData[slug] || projectsData["apartment-modern"],
-);
-const currentImageIndex = ref(0);
+  () => projectsData[slug] || projectsData['apartment-modern']
+)
+const currentImageIndex = ref(0)
 
 const nextImage = () => {
-  currentImageIndex.value =
-    (currentImageIndex.value + 1) % project.value.images.length;
-};
+  currentImageIndex.value
+    = (currentImageIndex.value + 1) % project.value.images.length
+}
 
 const prevImage = () => {
-  currentImageIndex.value =
-    (currentImageIndex.value - 1 + project.value.images.length) %
-    project.value.images.length;
-};
+  currentImageIndex.value
+    = (currentImageIndex.value - 1 + project.value.images.length)
+      % project.value.images.length
+}
 </script>
 
 <template>
@@ -198,21 +198,27 @@ const prevImage = () => {
         :src="project.images[currentImageIndex]"
         :alt="project.title"
         class="w-full h-full object-cover"
-      />
+      >
 
       <!-- Navigation Buttons -->
       <button
-        @click="prevImage"
         class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 text-white p-3 rounded-full transition-all opacity-0 group-hover:opacity-100"
+        @click="prevImage"
       >
-        <Icon name="i-lucide-chevron-left" class="w-6 h-6" />
+        <Icon
+          name="i-lucide-chevron-left"
+          class="w-6 h-6"
+        />
       </button>
 
       <button
-        @click="nextImage"
         class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 text-white p-3 rounded-full transition-all opacity-0 group-hover:opacity-100"
+        @click="nextImage"
       >
-        <Icon name="i-lucide-chevron-right" class="w-6 h-6" />
+        <Icon
+          name="i-lucide-chevron-right"
+          class="w-6 h-6"
+        />
       </button>
 
       <!-- Image Counter -->
@@ -227,19 +233,19 @@ const prevImage = () => {
         <button
           v-for="(image, index) in project.images"
           :key="index"
-          @click="currentImageIndex = index"
           :class="[
             'w-16 h-16 rounded-lg overflow-hidden border-2 transition-all',
             currentImageIndex === index
               ? 'border-white scale-105'
-              : 'border-white/30 opacity-60 hover:opacity-100',
+              : 'border-white/30 opacity-60 hover:opacity-100'
           ]"
+          @click="currentImageIndex = index"
         >
           <img
             :src="image"
             :alt="`Image ${index + 1}`"
             class="w-full h-full object-cover"
-          />
+          >
         </button>
       </div>
     </section>
@@ -292,7 +298,9 @@ const prevImage = () => {
                     name="i-lucide-package"
                     class="w-5 h-5 text-orange-500 mb-2"
                   />
-                  <p class="text-gray-700 font-semibold">{{ material }}</p>
+                  <p class="text-gray-700 font-semibold">
+                    {{ material }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -316,7 +324,9 @@ const prevImage = () => {
                 </div>
 
                 <div class="pb-6 border-b border-gray-200">
-                  <p class="text-gray-600 text-sm font-semibold mb-1">Vị Trí</p>
+                  <p class="text-gray-600 text-sm font-semibold mb-1">
+                    Vị Trí
+                  </p>
                   <p class="text-lg font-semibold text-slate-900">
                     {{ project.location }}
                   </p>
@@ -365,7 +375,9 @@ const prevImage = () => {
     <!-- Related Projects -->
     <section class="section-spacing bg-gray-50">
       <div class="max-w-7xl mx-auto">
-        <h2 class="text-4xl font-bold mb-8 text-slate-900">Các Dự Án Khác</h2>
+        <h2 class="text-4xl font-bold mb-8 text-slate-900">
+          Các Dự Án Khác
+        </h2>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <NuxtLink
@@ -377,7 +389,7 @@ const prevImage = () => {
                 src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop"
                 alt="Căn Hộ Phong Cách Hiện Đại"
                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-              />
+              >
             </div>
 
             <div class="p-6 bg-white">
@@ -397,7 +409,7 @@ const prevImage = () => {
                 src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=400&fit=crop"
                 alt="Biệt Thự Hạng Sang"
                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-              />
+              >
             </div>
 
             <div class="p-6 bg-white">
@@ -417,7 +429,7 @@ const prevImage = () => {
                 src="https://images.unsplash.com/photo-1565183938294-e75ce55eb4ca?w=600&h=400&fit=crop"
                 alt="Không Gian Làm Việc Hiện Đại"
                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-              />
+              >
             </div>
 
             <div class="p-6 bg-white">

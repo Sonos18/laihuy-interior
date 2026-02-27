@@ -1,39 +1,39 @@
 <script setup>
 useSeoMeta({
-  title: "Trang chủ - Lai Huy Interior | Thiết kế nội thất hiện đại & đẳng cấp",
+  title: 'Trang chủ - Lai Huy Interior | Thiết kế nội thất hiện đại & đẳng cấp',
   description:
-    "Thiết kế nội thất hiện đại, sang trọng cho không gian sống của bạn. Chúng tôi cung cấp giải pháp nội thất toàn diện.",
-});
+    'Thiết kế nội thất hiện đại, sang trọng cho không gian sống của bạn. Chúng tôi cung cấp giải pháp nội thất toàn diện.'
+})
 
 const projects = [
   {
     id: 1,
-    slug: "apartment-modern",
-    title: "Căn Hộ Phong Cách Hiện Đại",
-    category: "Căn Hộ",
+    slug: 'apartment-modern',
+    title: 'Căn Hộ Phong Cách Hiện Đại',
+    category: 'Căn Hộ',
     image:
-      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop",
-    description: "Thiết kế căn hộ cao cấp với phong cách hiện đại tối giản",
+      'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop',
+    description: 'Thiết kế căn hộ cao cấp với phong cách hiện đại tối giản'
   },
   {
     id: 2,
-    slug: "villa-luxury",
-    title: "Biệt Thự Hạng Sang",
-    category: "Biệt Thự",
+    slug: 'villa-luxury',
+    title: 'Biệt Thự Hạng Sang',
+    category: 'Biệt Thự',
     image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=400&fit=crop",
-    description: "Biệt thự sang trọng với thiết kế đẳng cấp quốc tế",
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=400&fit=crop',
+    description: 'Biệt thự sang trọng với thiết kế đẳng cấp quốc tế'
   },
   {
     id: 3,
-    slug: "office-modern",
-    title: "Không Gian Làm Việc Hiện Đại",
-    category: "Văn Phòng",
+    slug: 'office-modern',
+    title: 'Không Gian Làm Việc Hiện Đại',
+    category: 'Văn Phòng',
     image:
-      "https://images.unsplash.com/photo-1565183938294-e75ce55eb4ca?w=600&h=400&fit=crop",
-    description: "Thiết kế văn phòng tối ưu hiệu suất làm việc",
-  },
-];
+      'https://images.unsplash.com/photo-1565183938294-e75ce55eb4ca?w=600&h=400&fit=crop',
+    description: 'Thiết kế văn phòng tối ưu hiệu suất làm việc'
+  }
+]
 </script>
 
 <template>
@@ -60,7 +60,10 @@ const projects = [
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <NuxtLink to="/du-an" class="btn-primary"> Khám phá dự án </NuxtLink>
+          <NuxtLink
+            to="/du-an"
+            class="btn-primary"
+          > Khám phá dự án </NuxtLink>
           <NuxtLink
             to="/lien-he"
             class="btn-secondary bg-white text-slate-900 hover:bg-gray-100"
@@ -90,7 +93,10 @@ const projects = [
               việc tạo ra những không gian nơi mọi người yêu thích để sống và
               làm việc.
             </p>
-            <NuxtLink to="/gioi-thieu" class="btn-primary inline-block">
+            <NuxtLink
+              to="/gioi-thieu"
+              class="btn-primary inline-block"
+            >
               Tìm hiểu thêm
             </NuxtLink>
           </div>
@@ -101,7 +107,7 @@ const projects = [
               src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&h=600&fit=crop"
               alt="Không gian hiện đại"
               class="w-full h-full object-cover"
-            />
+            >
           </div>
         </div>
       </div>
@@ -131,7 +137,7 @@ const projects = [
                 :src="project.image"
                 :alt="project.title"
                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-              />
+              >
               <div
                 class="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors"
               />
@@ -152,7 +158,10 @@ const projects = [
         </div>
 
         <div class="text-center mt-12">
-          <NuxtLink to="/du-an" class="btn-secondary">
+          <NuxtLink
+            to="/du-an"
+            class="btn-secondary"
+          >
             Xem tất cả dự án
           </NuxtLink>
         </div>
@@ -206,7 +215,10 @@ const projects = [
           <div
             class="p-8 rounded-2xl bg-gray-50 hover:shadow-lg transition-shadow"
           >
-            <Icon name="i-lucide-home" class="w-12 h-12 text-orange-500 mb-4" />
+            <Icon
+              name="i-lucide-home"
+              class="w-12 h-12 text-orange-500 mb-4"
+            />
             <h3 class="text-2xl font-bold mb-3 text-slate-900">
               Quản lý Dự Án
             </h3>

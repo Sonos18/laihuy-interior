@@ -1,10 +1,10 @@
 <script setup>
 useSeoMeta({
   title:
-    "Giới thiệu - Lai Huy Interior | Thiết kế nội thất hiện đại & đẳng cấp",
+    'Giới thiệu - Lai Huy Interior | Thiết kế nội thất hiện đại & đẳng cấp',
   description:
-    "Tìm hiểu về Lai Huy Interior - công ty thiết kế nội thất hàng đầu với 15 năm kinh nghiệm",
-});
+    'Tìm hiểu về Lai Huy Interior - công ty thiết kế nội thất hàng đầu với 15 năm kinh nghiệm'
+})
 </script>
 
 <template>
@@ -14,7 +14,9 @@ useSeoMeta({
       class="section-spacing bg-gradient-to-br from-slate-900 to-slate-800 text-white"
     >
       <div class="max-w-4xl mx-auto">
-        <h1 class="text-5xl md:text-6xl font-bold mb-6">Giới Thiệu Lai Huy</h1>
+        <h1 class="text-5xl md:text-6xl font-bold mb-6">
+          Giới Thiệu Lai Huy
+        </h1>
         <p class="text-xl md:text-2xl text-gray-300">
           Hơn 15 năm tạo nên những không gian sống tinh tế, đẳng cấp
         </p>
@@ -29,7 +31,7 @@ useSeoMeta({
             src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&h=500&fit=crop"
             alt="Lai Huy Interior"
             class="rounded-2xl shadow-lg"
-          />
+          >
           <div>
             <h2 class="text-4xl font-bold mb-6 text-slate-900">
               Câu Chuyện Của Chúng Tôi
@@ -66,7 +68,10 @@ useSeoMeta({
             <div
               class="w-14 h-14 bg-orange-500 rounded-full flex items-center justify-center mb-4"
             >
-              <Icon name="i-lucide-heart" class="w-8 h-8 text-white" />
+              <Icon
+                name="i-lucide-heart"
+                class="w-8 h-8 text-white"
+              />
             </div>
             <h3 class="text-2xl font-bold mb-3 text-slate-900">
               Tình Yêu Với Thiết Kế
@@ -81,7 +86,10 @@ useSeoMeta({
             <div
               class="w-14 h-14 bg-orange-500 rounded-full flex items-center justify-center mb-4"
             >
-              <Icon name="i-lucide-users" class="w-8 h-8 text-white" />
+              <Icon
+                name="i-lucide-users"
+                class="w-8 h-8 text-white"
+              />
             </div>
             <h3 class="text-2xl font-bold mb-3 text-slate-900">
               Phục Vụ Khách Hàng
@@ -95,7 +103,10 @@ useSeoMeta({
             <div
               class="w-14 h-14 bg-orange-500 rounded-full flex items-center justify-center mb-4"
             >
-              <Icon name="i-lucide-zap" class="w-8 h-8 text-white" />
+              <Icon
+                name="i-lucide-zap"
+                class="w-8 h-8 text-white"
+              />
             </div>
             <h3 class="text-2xl font-bold mb-3 text-slate-900">
               Đổi Mới Sáng Tạo
@@ -117,20 +128,36 @@ useSeoMeta({
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div class="text-center">
-            <div class="text-5xl font-bold text-orange-500 mb-2">15+</div>
-            <p class="text-gray-600">Năm kinh nghiệm</p>
+            <div class="text-5xl font-bold text-orange-500 mb-2">
+              15+
+            </div>
+            <p class="text-gray-600">
+              Năm kinh nghiệm
+            </p>
           </div>
           <div class="text-center">
-            <div class="text-5xl font-bold text-orange-500 mb-2">1000+</div>
-            <p class="text-gray-600">Dự án hoàn thành</p>
+            <div class="text-5xl font-bold text-orange-500 mb-2">
+              1000+
+            </div>
+            <p class="text-gray-600">
+              Dự án hoàn thành
+            </p>
           </div>
           <div class="text-center">
-            <div class="text-5xl font-bold text-orange-500 mb-2">500+</div>
-            <p class="text-gray-600">Khách hàng hài lòng</p>
+            <div class="text-5xl font-bold text-orange-500 mb-2">
+              500+
+            </div>
+            <p class="text-gray-600">
+              Khách hàng hài lòng
+            </p>
           </div>
           <div class="text-center">
-            <div class="text-5xl font-bold text-orange-500 mb-2">50+</div>
-            <p class="text-gray-600">Giải thưởng</p>
+            <div class="text-5xl font-bold text-orange-500 mb-2">
+              50+
+            </div>
+            <p class="text-gray-600">
+              Giải thưởng
+            </p>
           </div>
         </div>
       </div>

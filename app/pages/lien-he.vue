@@ -1,31 +1,31 @@
 <script setup>
 useSeoMeta({
-  title: "Liên Hệ - Lai Huy Interior | Thiết kế nội thất",
-  description: "Liên hệ với Lai Huy Interior để nhận tư vấn thiết kế miễn phí",
-});
+  title: 'Liên Hệ - Lai Huy Interior | Thiết kế nội thất',
+  description: 'Liên hệ với Lai Huy Interior để nhận tư vấn thiết kế miễn phí'
+})
 
 const form = reactive({
-  name: "",
-  email: "",
-  phone: "",
-  subject: "",
-  message: "",
-});
+  name: '',
+  email: '',
+  phone: '',
+  subject: '',
+  message: ''
+})
 
-const isSubmitting = ref(false);
+const isSubmitting = ref(false)
 
 const submitForm = async () => {
-  isSubmitting.value = true;
+  isSubmitting.value = true
   // Simulate form submission
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  console.log("Form submitted:", form);
-  form.name = "";
-  form.email = "";
-  form.phone = "";
-  form.subject = "";
-  form.message = "";
-  isSubmitting.value = false;
-};
+  await new Promise(resolve => setTimeout(resolve, 1000))
+  console.log('Form submitted:', form)
+  form.name = ''
+  form.email = ''
+  form.phone = ''
+  form.subject = ''
+  form.message = ''
+  isSubmitting.value = false
+}
 </script>
 
 <template>
@@ -50,107 +50,119 @@ const submitForm = async () => {
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           <!-- Contact Info -->
           <div>
-            <h3 class="text-xl font-bold mb-4 text-slate-900">Địa Chỉ</h3>
+            <h3 class="text-xl font-bold mb-4 text-slate-900">
+              Địa Chỉ
+            </h3>
             <p class="text-gray-600">
-              Tầng 5, Tòa nhà Central Plaza<br />
-              123 Nguyễn Hữu Cảnh<br />
+              Tầng 5, Tòa nhà Central Plaza<br>
+              123 Nguyễn Hữu Cảnh<br>
               Quận 1, TP. Hồ Chí Minh
             </p>
           </div>
 
           <div>
-            <h3 class="text-xl font-bold mb-4 text-slate-900">Liên Hệ</h3>
+            <h3 class="text-xl font-bold mb-4 text-slate-900">
+              Liên Hệ
+            </h3>
             <p class="text-gray-600 mb-2">
               <strong>Điện thoại:</strong> +84 (0) 123 456 789
             </p>
-            <p class="text-gray-600"><strong>Email:</strong> info@laihuy.vn</p>
+            <p class="text-gray-600">
+              <strong>Email:</strong> info@laihuy.vn
+            </p>
           </div>
 
           <div>
-            <h3 class="text-xl font-bold mb-4 text-slate-900">Giờ Làm Việc</h3>
-            <p class="text-gray-600 mb-2">Thứ 2 - Thứ 6: 8:00 - 18:00</p>
-            <p class="text-gray-600">Thứ 7 - Chủ nhật: 9:00 - 17:00</p>
+            <h3 class="text-xl font-bold mb-4 text-slate-900">
+              Giờ Làm Việc
+            </h3>
+            <p class="text-gray-600 mb-2">
+              Thứ 2 - Thứ 6: 8:00 - 18:00
+            </p>
+            <p class="text-gray-600">
+              Thứ 7 - Chủ nhật: 9:00 - 17:00
+            </p>
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
           <!-- Contact Form -->
           <div>
-            <h2 class="text-3xl font-bold mb-6 text-slate-900">Gửi Tin Nhắn</h2>
-            <form @submit.prevent="submitForm" class="space-y-6">
+            <h2 class="text-3xl font-bold mb-6 text-slate-900">
+              Gửi Tin Nhắn
+            </h2>
+            <form
+              class="space-y-6"
+              @submit.prevent="submitForm"
+            >
               <div>
                 <label
                   for="name"
                   class="block text-sm font-semibold text-slate-900 mb-2"
-                  >Tên của bạn</label
-                >
+                >Tên của bạn</label>
                 <input
+                  id="name"
                   v-model="form.name"
                   type="text"
-                  id="name"
                   placeholder="Nhập tên của bạn"
                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   required
-                />
+                >
               </div>
 
               <div>
                 <label
                   for="email"
                   class="block text-sm font-semibold text-slate-900 mb-2"
-                  >Email</label
-                >
+                >Email</label>
                 <input
+                  id="email"
                   v-model="form.email"
                   type="email"
-                  id="email"
                   placeholder="email@example.com"
                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   required
-                />
+                >
               </div>
 
               <div>
                 <label
                   for="phone"
                   class="block text-sm font-semibold text-slate-900 mb-2"
-                  >Số Điện Thoại</label
-                >
+                >Số Điện Thoại</label>
                 <input
+                  id="phone"
                   v-model="form.phone"
                   type="tel"
-                  id="phone"
                   placeholder="+84 (0) 123 456 789"
                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   required
-                />
+                >
               </div>
 
               <div>
                 <label
                   for="subject"
                   class="block text-sm font-semibold text-slate-900 mb-2"
-                  >Chủ Đề</label
-                >
+                >Chủ Đề</label>
                 <input
+                  id="subject"
                   v-model="form.subject"
                   type="text"
-                  id="subject"
                   placeholder="Tư vấn thiết kế"
                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   required
-                />
+                >
               </div>
 
               <div>
                 <label
                   for="message"
                   class="block text-sm font-semibold text-slate-900 mb-2"
-                  >Tin Nhắn</label
-                >
+                >Tin Nhắn</label>
                 <textarea
-                  v-model="form.message"
                   id="message"
+                  v-model="form.message"
                   rows="5"
                   placeholder="Nội dung tin nhắn của bạn..."
                   class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"
@@ -181,7 +193,9 @@ const submitForm = async () => {
                   name="i-lucide-map-pin"
                   class="w-16 h-16 text-gray-400 mx-auto mb-4"
                 />
-                <p class="text-gray-600">Bản đồ sẽ được hiển thị ở đây</p>
+                <p class="text-gray-600">
+                  Bản đồ sẽ được hiển thị ở đây
+                </p>
                 <p class="text-sm text-gray-500 mt-2">
                   TP. Hồ Chí Minh, Việt Nam
                 </p>
