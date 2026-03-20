@@ -78,7 +78,7 @@ const filteredProjects = computed(() => {
   <div>
     <!-- Hero Section -->
     <section
-      class="section-spacing bg-gradient-to-br from-slate-900 to-slate-800 text-white"
+      class="section-spacing bg-gradient-to-br from-brand-blue-900 to-brand-blue-700 text-white"
     >
       <div class="max-w-4xl mx-auto">
         <h1 class="text-5xl md:text-6xl font-bold mb-6">
@@ -147,7 +147,7 @@ const filteredProjects = computed(() => {
     </section>
 
     <!-- CTA Section -->
-    <section class="section-spacing bg-slate-900 text-white">
+    <section class="section-spacing bg-brand-blue-900 text-white">
       <div class="max-w-4xl mx-auto text-center">
         <h2 class="text-4xl md:text-5xl font-bold mb-6">
           Các Dự Án Của Bạn Sắp Tới

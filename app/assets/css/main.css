@@ -16,6 +16,18 @@
   --color-slate-900: #0f172a;
   --color-slate-950: #020617;
 
+  --color-brand-blue-50: #f0f3f7;
+  --color-brand-blue-100: #e1e6ef;
+  --color-brand-blue-200: #c2cede;
+  --color-brand-blue-300: #98b0c8;
+  --color-brand-blue-400: #6e8fae;
+  --color-brand-blue-500: #4f6080;
+  --color-brand-blue-600: #3d4e68;
+  --color-brand-blue-700: #2f3c52;
+  --color-brand-blue-800: #1f293a;
+  --color-brand-blue-900: #121824;
+  --color-brand-blue-950: #0c1119;
+
   --color-orange-50: #fff7ed;
   --color-orange-100: #ffedd5;
   --color-orange-200: #fed7aa;
@@ -66,11 +78,11 @@
   }
 
   .btn-primary {
-    @apply bg-slate-900 text-white hover:bg-orange-500 transition-colors px-8 py-4 rounded-lg font-semibold;
+    @apply bg-brand-blue-700 text-white hover:bg-orange-500 transition-colors px-8 py-4 rounded-lg font-semibold;
   }
 
   .btn-secondary {
-    @apply border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white transition-all px-8 py-4 rounded-lg font-semibold;
+    @apply border-2 border-brand-blue-600 text-brand-blue-600 hover:bg-brand-blue-700 hover:text-white transition-all px-8 py-4 rounded-lg font-semibold;
   }
 
   .section-spacing {

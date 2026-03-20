@@ -231,7 +231,7 @@ const projects = [
     </section>
 
     <!-- CTA Section -->
-    <section class="section-spacing bg-slate-900 text-white">
+    <section class="section-spacing bg-brand-blue-900 text-white">
       <div class="max-w-4xl mx-auto text-center">
         <h2 class="text-4xl md:text-5xl font-bold mb-6">
           Sẵn sàng để bắt đầu dự án của bạn?
