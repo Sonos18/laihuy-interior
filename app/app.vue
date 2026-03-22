@@ -274,18 +274,20 @@ const navLinks = [
             <ul class="space-y-3 text-gray-400 text-sm">
               <li class="flex items-center gap-2">
                 <Icon name="i-lucide-phone" class="w-4 h-4 text-orange-500" />
-                +84 (0) 123 456 789
+                +84 (0) 903 102 012
               </li>
               <li class="flex items-center gap-2">
                 <Icon name="i-lucide-mail" class="w-4 h-4 text-orange-500" />
-                info@laihuy.vn
+                noithatlaihuy@gmail.com
               </li>
               <li class="flex items-start gap-2">
                 <Icon
                   name="i-lucide-map-pin"
                   class="w-4 h-4 text-orange-500 mt-0.5"
                 />
-                TP. Hồ Chí Minh, Việt Nam
+
+                557E1 - KP2 - Phường Phú Khương - TP. Bến Tre - Bến Tre, Tỉnh
+                Bến Tre, Vietnam, 930000
               </li>
             </ul>
           </div>
