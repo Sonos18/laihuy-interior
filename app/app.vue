@@ -1,192 +1,308 @@
 <script setup>
 useHead({
-  meta: [{ name: 'viewport', content: 'width=device-width, initial-scale=1' }],
-  link: [{ rel: 'icon', href: '/favicon.ico' }],
+  meta: [{ name: "viewport", content: "width=device-width, initial-scale=1" }],
+  link: [{ rel: "icon", href: "/favicon.ico" }],
   htmlAttrs: {
-    lang: 'vi'
-  }
-})
+    lang: "vi",
+  },
+});
 
-const title = 'Lai Huy Interior - Thiết kế nội thất hiện đại & đẳng cấp'
-const description
-  = 'Thiết kế nội thất hiện đại, sang trọng và đẳng cấp cho không gian sống của bạn. Chúng tôi mang lại giải pháp nội thất toàn diện từ tư vấn đến thi công.'
+const title = "Lai Huy Interior - Thiết kế nội thất hiện đại & đẳng cấp";
+const description =
+  "Thiết kế nội thất hiện đại, sang trọng và đẳng cấp cho không gian sống của bạn. Chúng tôi mang lại giải pháp nội thất toàn diện từ tư vấn đến thi công.";
 
 useSeoMeta({
   title,
   description,
   ogTitle: title,
   ogDescription: description,
-  twitterCard: 'summary_large_image'
-})
+  twitterCard: "summary_large_image",
+});
 
-const isHeaderSolid = ref(false)
+const route = useRoute();
+const isScrolled = ref(false);
+const isMobileMenuOpen = ref(false);
+const isHome = computed(() => route.path === "/");
+
+function onScroll() {
+  isScrolled.value = window.scrollY > 50;
+}
 
 onMounted(() => {
-  window.addEventListener('scroll', () => {
-    isHeaderSolid.value = window.scrollY > 10
-  })
-})
+  window.addEventListener("scroll", onScroll, { passive: true });
+});
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", onScroll);
+});
+
+watch(
+  () => route.path,
+  () => {
+    isMobileMenuOpen.value = false;
+  },
+);
+
+watch(isMobileMenuOpen, (val) => {
+  if (import.meta.client) {
+    document.body.style.overflow = val ? "hidden" : "";
+  }
+});
+
+const navLinks = [
+  { label: "Trang chủ", to: "/" },
+  { label: "Giới thiệu", to: "/gioi-thieu" },
+  { label: "Dự án", to: "/du-an" },
+  { label: "Liên hệ", to: "/lien-he" },
+];
 </script>
 
 <template>
   <div class="min-h-screen flex flex-col bg-white">
     <!-- Header -->
     <header
-      class="fixed top-0 left-0 right-0 z-50 bg-white transition-all duration-300"
-      :class="isHeaderSolid ? 'shadow-md' : 'shadow-sm'"
+      class="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+      :class="[
+        isScrolled
+          ? 'bg-white/95 backdrop-blur-md shadow-sm'
+          : isHome
+            ? 'bg-transparent'
+            : 'bg-white shadow-sm',
+      ]"
     >
       <nav
         class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"
       >
         <!-- Logo -->
-        <NuxtLink
-          to="/"
-          class="shrink-0"
-        >
+        <NuxtLink to="/" class="shrink-0">
           <img
             src="/images/logo.png"
             alt="Lai Huy Interior"
-            class="h-12 w-auto"
-          >
+            class="h-10 w-auto transition-all duration-300"
+            :class="{ 'brightness-0 invert': isHome && !isScrolled }"
+          />
         </NuxtLink>
 
         <!-- Desktop Navigation -->
-        <div class="hidden md:flex items-center gap-8">
+        <div class="hidden md:flex items-center gap-1">
           <NuxtLink
-            to="/"
-            class="text-brand-blue-700 hover:text-orange-500 transition-colors font-medium relative group"
+            v-for="link in navLinks"
+            :key="link.to"
+            :to="link.to"
+            class="relative px-4 py-2 text-sm font-medium transition-colors duration-300 rounded-full"
+            :class="[
+              isScrolled || !isHome
+                ? 'text-gray-700 hover:text-orange-500 hover:bg-orange-50'
+                : 'text-white/80 hover:text-white hover:bg-white/10',
+              route.path === link.to
+                ? isScrolled || !isHome
+                  ? 'text-orange-500 bg-orange-50'
+                  : 'text-white bg-white/15'
+                : '',
+            ]"
           >
-            Trang chủ
-            <span
-              class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300"
-            />
+            {{ link.label }}
           </NuxtLink>
-          <NuxtLink
-            to="/gioi-thieu"
-            class="text-brand-blue-700 hover:text-orange-500 transition-colors font-medium relative group"
-          >
-            Giới thiệu
-            <span
-              class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300"
-            />
-          </NuxtLink>
-          <NuxtLink
-            to="/du-an"
-            class="text-brand-blue-700 hover:text-orange-500 transition-colors font-medium relative group"
-          >
-            Dự án
-            <span
-              class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300"
-            />
-          </NuxtLink>
+
           <NuxtLink
             to="/lien-he"
-            class="text-brand-blue-700 hover:text-orange-500 transition-colors font-medium relative group"
+            class="ml-4 px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300"
+            :class="[
+              isScrolled || !isHome
+                ? 'bg-orange-500 text-white hover:bg-orange-600'
+                : 'bg-white/15 text-white backdrop-blur-sm hover:bg-white/25 border border-white/20',
+            ]"
           >
-            Liên hệ
-            <span
-              class="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 group-hover:w-full transition-all duration-300"
-            />
+            Tư vấn miễn phí
           </NuxtLink>
         </div>
 
         <!-- Mobile Menu Button -->
-        <div class="md:hidden">
-          <UButton
-            icon="i-lucide-menu"
-            color="slate"
-            variant="ghost"
-            size="lg"
-          />
-        </div>
+        <button
+          class="md:hidden p-2 rounded-lg transition-colors"
+          :class="[
+            isScrolled || !isHome
+              ? 'text-gray-700 hover:bg-gray-100'
+              : 'text-white hover:bg-white/10',
+          ]"
+          @click="isMobileMenuOpen = true"
+        >
+          <Icon name="i-lucide-menu" class="w-6 h-6" />
+        </button>
       </nav>
     </header>
 
+    <!-- Mobile Menu Backdrop -->
+    <Transition name="fade">
+      <div
+        v-if="isMobileMenuOpen"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 md:hidden"
+        @click="isMobileMenuOpen = false"
+      />
+    </Transition>
+
+    <!-- Mobile Menu Panel -->
+    <Transition name="slide-right">
+      <nav
+        v-if="isMobileMenuOpen"
+        class="fixed top-0 right-0 bottom-0 w-80 max-w-[85vw] bg-white z-50 md:hidden flex flex-col shadow-2xl"
+      >
+        <!-- Close -->
+        <div
+          class="flex items-center justify-between p-6 border-b border-gray-100"
+        >
+          <img
+            src="/images/logo.png"
+            alt="Lai Huy Interior"
+            class="h-8 w-auto"
+          />
+          <button
+            class="p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
+            @click="isMobileMenuOpen = false"
+          >
+            <Icon name="i-lucide-x" class="w-5 h-5" />
+          </button>
+        </div>
+
+        <!-- Links -->
+        <div class="flex-1 py-6 px-6 space-y-1">
+          <NuxtLink
+            v-for="link in navLinks"
+            :key="link.to"
+            :to="link.to"
+            class="block px-4 py-3 rounded-xl text-base font-medium transition-colors"
+            :class="[
+              route.path === link.to
+                ? 'text-orange-500 bg-orange-50'
+                : 'text-gray-700 hover:text-orange-500 hover:bg-orange-50',
+            ]"
+          >
+            {{ link.label }}
+          </NuxtLink>
+        </div>
+
+        <!-- CTA -->
+        <div class="p-6 border-t border-gray-100">
+          <NuxtLink
+            to="/lien-he"
+            class="block w-full text-center bg-orange-500 text-white py-3 rounded-full font-semibold hover:bg-orange-600 transition-colors"
+          >
+            Tư vấn miễn phí
+          </NuxtLink>
+        </div>
+      </nav>
+    </Transition>
+
     <!-- Main Content -->
-    <main class="grow pt-20">
+    <main class="grow">
       <NuxtPage />
     </main>
 
     <!-- Footer -->
-    <footer class="bg-brand-blue-900 text-white py-16 px-6">
-      <div class="max-w-7xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          <div>
-            <h3 class="text-2xl font-bold mb-2">
-              Lai Huy
+    <footer class="bg-gray-950 text-white">
+      <!-- Main Footer -->
+      <div class="max-w-7xl mx-auto px-6 pt-20 pb-12">
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16"
+        >
+          <!-- Brand -->
+          <div class="lg:col-span-1">
+            <h3 class="text-2xl font-bold mb-3">
+              Lai <span class="text-orange-500">Huy</span>
             </h3>
-            <p class="text-brand-blue-200 text-sm">
-              Thiết kế nội thất hiện đại & đẳng cấp
+            <p class="text-gray-400 text-sm leading-relaxed mb-6">
+              Thiết kế nội thất hiện đại & đẳng cấp. Biến không gian sống thành
+              tác phẩm nghệ thuật.
             </p>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-4">
-              Công ty
-            </h4>
-            <ul class="space-y-2 text-brand-blue-200 text-sm">
-              <li>
-                <NuxtLink
-                  to="/"
-                  class="hover:text-orange-400 transition-colors"
-                >Trang chủ</NuxtLink>
-              </li>
-              <li>
-                <NuxtLink
-                  to="/gioi-thieu"
-                  class="hover:text-orange-400 transition-colors"
-                >Về chúng tôi</NuxtLink>
-              </li>
-              <li>
-                <NuxtLink
-                  to="/du-an"
-                  class="hover:text-orange-400 transition-colors"
-                >Dự án</NuxtLink>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-4">
-              Liên hệ
-            </h4>
-            <ul class="space-y-2 text-brand-blue-200 text-sm">
-              <li>+84 (0) 123 456 789</li>
-              <li>info@laihuy.vn</li>
-              <li>TP. Hồ Chí Minh, Việt Nam</li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="font-semibold mb-4">
-              Theo dõi
-            </h4>
-            <div class="flex gap-4">
+            <div class="flex gap-3">
               <a
                 href="#"
-                class="text-brand-blue-200 hover:text-orange-400 transition-colors"
+                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-orange-500 transition-colors"
               >
-                <Icon
-                  name="i-simple-icons-facebook"
-                  class="w-5 h-5"
-                />
+                <Icon name="i-simple-icons-facebook" class="w-4 h-4" />
               </a>
               <a
                 href="#"
-                class="text-brand-blue-200 hover:text-orange-400 transition-colors"
+                class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-orange-500 transition-colors"
               >
-                <Icon
-                  name="i-simple-icons-instagram"
-                  class="w-5 h-5"
-                />
+                <Icon name="i-simple-icons-instagram" class="w-4 h-4" />
               </a>
             </div>
           </div>
+
+          <!-- Quick Links -->
+          <div>
+            <h4
+              class="font-semibold mb-5 text-sm uppercase tracking-wider text-gray-300"
+            >
+              Điều hướng
+            </h4>
+            <ul class="space-y-3">
+              <li v-for="link in navLinks" :key="link.to">
+                <NuxtLink
+                  :to="link.to"
+                  class="text-gray-400 hover:text-orange-400 transition-colors text-sm"
+                >
+                  {{ link.label }}
+                </NuxtLink>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Services -->
+          <div>
+            <h4
+              class="font-semibold mb-5 text-sm uppercase tracking-wider text-gray-300"
+            >
+              Dịch vụ
+            </h4>
+            <ul class="space-y-3 text-gray-400 text-sm">
+              <li>Tư vấn thiết kế</li>
+              <li>Thi công cải tạo</li>
+              <li>Quản lý dự án</li>
+              <li>Nội thất trọn gói</li>
+            </ul>
+          </div>
+
+          <!-- Contact -->
+          <div>
+            <h4
+              class="font-semibold mb-5 text-sm uppercase tracking-wider text-gray-300"
+            >
+              Liên hệ
+            </h4>
+            <ul class="space-y-3 text-gray-400 text-sm">
+              <li class="flex items-center gap-2">
+                <Icon name="i-lucide-phone" class="w-4 h-4 text-orange-500" />
+                +84 (0) 123 456 789
+              </li>
+              <li class="flex items-center gap-2">
+                <Icon name="i-lucide-mail" class="w-4 h-4 text-orange-500" />
+                info@laihuy.vn
+              </li>
+              <li class="flex items-start gap-2">
+                <Icon
+                  name="i-lucide-map-pin"
+                  class="w-4 h-4 text-orange-500 mt-0.5"
+                />
+                TP. Hồ Chí Minh, Việt Nam
+              </li>
+            </ul>
+          </div>
         </div>
 
+        <!-- Bottom Bar -->
         <div
-          class="border-t border-brand-blue-700 pt-8 text-center text-brand-blue-300 text-sm"
+          class="border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-gray-500 text-sm"
         >
           <p>
             &copy; {{ new Date().getFullYear() }} Lai Huy Interior. Tất cả quyền
             được bảo lưu.
+          </p>
+          <p class="text-gray-600">
+            Thiết kế với
+            <span class="text-orange-500">&hearts;</span>
+            tại Việt Nam
           </p>
         </div>
       </div>

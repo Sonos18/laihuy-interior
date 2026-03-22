@@ -1,310 +1,384 @@
 <script setup>
 useSeoMeta({
-  title: 'Liên Hệ - Lai Huy Interior | Thiết kế nội thất',
-  description: 'Liên hệ với Lai Huy Interior để nhận tư vấn thiết kế miễn phí'
-})
+  title: "Liên Hệ - Lai Huy Interior | Thiết kế nội thất",
+  description: "Liên hệ với Lai Huy Interior để nhận tư vấn thiết kế miễn phí",
+});
 
 const form = reactive({
-  name: '',
-  email: '',
-  phone: '',
-  subject: '',
-  message: ''
-})
+  name: "",
+  email: "",
+  phone: "",
+  subject: "",
+  message: "",
+});
 
-const isSubmitting = ref(false)
+const isSubmitting = ref(false);
 
 const submitForm = async () => {
-  isSubmitting.value = true
+  isSubmitting.value = true;
   // Simulate form submission
-  await new Promise(resolve => setTimeout(resolve, 1000))
-  console.log('Form submitted:', form)
-  form.name = ''
-  form.email = ''
-  form.phone = ''
-  form.subject = ''
-  form.message = ''
-  isSubmitting.value = false
-}
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  console.log("Form submitted:", form);
+  form.name = "";
+  form.email = "";
+  form.phone = "";
+  form.subject = "";
+  form.message = "";
+  isSubmitting.value = false;
+};
+
+const contactInfo = [
+  {
+    icon: "i-lucide-map-pin",
+    title: "Địa Chỉ",
+    lines: [
+      "Tầng 5, Tòa nhà Central Plaza",
+      "123 Nguyễn Hữu Cảnh",
+      "Quận 1, TP. Hồ Chí Minh",
+    ],
+  },
+  {
+    icon: "i-lucide-phone",
+    title: "Liên Hệ",
+    lines: ["+84 (0) 123 456 789", "info@laihuy.vn"],
+  },
+  {
+    icon: "i-lucide-clock",
+    title: "Giờ Làm Việc",
+    lines: ["Thứ 2 - Thứ 6: 8:00 - 18:00", "Thứ 7 - Chủ nhật: 9:00 - 17:00"],
+  },
+];
+
+const services = [
+  "Tư vấn thiết kế miễn phí",
+  "Lên bản vẽ 3D chi tiết",
+  "Thi công chuyên nghiệp",
+  "Hỗ trợ sau bán hàng",
+];
+
+const faqs = [
+  {
+    question: "Tư vấn thiết kế có mất phí không?",
+    answer:
+      "Không, chúng tôi cung cấp tư vấn thiết kế miễn phí cho tất cả khách hàng. Bạn chỉ cần liên hệ với chúng tôi để đặt lịch.",
+  },
+  {
+    question: "Thời gian hoàn thành dự án như thế nào?",
+    answer:
+      "Thời gian hoàn thành phụ thuộc vào quy mô và độ phức tạp của dự án. Chúng tôi sẽ cung cấp lịch trình chi tiết sau khi tư vấn với bạn.",
+  },
+  {
+    question: "Bạn có bảo hành cho công trình không?",
+    answer:
+      "Có, chúng tôi cung cấp bảo hành 2 năm cho tất cả các công trình thi công. Ngoài ra, chúng tôi cũng hỗ trợ bảo trì và sửa chữa.",
+  },
+];
 </script>
 
 <template>
   <div>
-    <!-- Hero Section -->
-    <section
-      class="section-spacing bg-gradient-to-br from-brand-blue-900 to-brand-blue-700 text-white"
-    >
-      <div class="max-w-4xl mx-auto">
-        <h1 class="text-5xl md:text-6xl font-bold mb-6">
-          Liên Hệ Với Chúng Tôi
+    <!-- ==================== HERO ==================== -->
+    <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+      <!-- Background Image -->
+      <img
+        src="https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=1920&h=800&fit=crop"
+        alt=""
+        class="absolute inset-0 w-full h-full object-cover"
+      />
+      <div class="hero-overlay" />
+
+      <!-- Decorative Elements -->
+      <div
+        class="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"
+      />
+      <div
+        class="absolute bottom-0 left-1/4 w-64 h-64 bg-orange-500/5 rounded-full blur-3xl"
+      />
+
+      <div class="relative z-10 max-w-7xl mx-auto px-6">
+        <span
+          class="text-orange-400 uppercase tracking-[0.2em] text-xs font-semibold mb-4 block animate-fade-in-up"
+        >
+          Liên hệ
+        </span>
+        <h1
+          class="text-5xl md:text-6xl font-bold text-white mb-6 animate-fade-in-up"
+          style="animation-delay: 150ms"
+        >
+          Liên Hệ <span class="text-orange-500">Với Chúng Tôi</span>
         </h1>
-        <p class="text-xl md:text-2xl text-gray-300">
+        <p
+          class="text-xl text-gray-400 max-w-2xl animate-fade-in-up"
+          style="animation-delay: 300ms"
+        >
           Chúng tôi sẵn sàng lắng nghe ý tưởng của bạn
         </p>
       </div>
     </section>
 
-    <!-- Contact Section -->
+    <!-- ==================== CONTACT INFO ==================== -->
     <section class="section-spacing bg-white">
-      <div class="max-w-6xl mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          <!-- Contact Info -->
-          <div>
-            <h3 class="text-xl font-bold mb-4 text-slate-900">
-              Địa Chỉ
-            </h3>
-            <p class="text-gray-600">
-              Tầng 5, Tòa nhà Central Plaza<br>
-              123 Nguyễn Hữu Cảnh<br>
-              Quận 1, TP. Hồ Chí Minh
-            </p>
-          </div>
-
-          <div>
-            <h3 class="text-xl font-bold mb-4 text-slate-900">
-              Liên Hệ
-            </h3>
-            <p class="text-gray-600 mb-2">
-              <strong>Điện thoại:</strong> +84 (0) 123 456 789
-            </p>
-            <p class="text-gray-600">
-              <strong>Email:</strong> info@laihuy.vn
-            </p>
-          </div>
-
-          <div>
-            <h3 class="text-xl font-bold mb-4 text-slate-900">
-              Giờ Làm Việc
-            </h3>
-            <p class="text-gray-600 mb-2">
-              Thứ 2 - Thứ 6: 8:00 - 18:00
-            </p>
-            <p class="text-gray-600">
-              Thứ 7 - Chủ nhật: 9:00 - 17:00
-            </p>
-          </div>
+      <div class="max-w-7xl mx-auto">
+        <!-- Info Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+          <ScrollReveal
+            v-for="(info, index) in contactInfo"
+            :key="info.title"
+            :delay="index * 150"
+          >
+            <div
+              class="group relative bg-white border border-gray-100 rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 overflow-hidden"
+            >
+              <div
+                class="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-orange-400 to-orange-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"
+              />
+              <div
+                class="w-14 h-14 rounded-2xl bg-orange-50 flex items-center justify-center mb-6 group-hover:bg-orange-500 group-hover:scale-110 transition-all duration-300"
+              >
+                <Icon
+                  :name="info.icon"
+                  class="w-7 h-7 text-orange-500 group-hover:text-white transition-colors"
+                />
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-3">
+                {{ info.title }}
+              </h3>
+              <p
+                v-for="line in info.lines"
+                :key="line"
+                class="text-gray-500 leading-relaxed"
+              >
+                {{ line }}
+              </p>
+            </div>
+          </ScrollReveal>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <!-- Form + Map Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           <!-- Contact Form -->
-          <div>
-            <h2 class="text-3xl font-bold mb-6 text-slate-900">
-              Gửi Tin Nhắn
-            </h2>
-            <form
-              class="space-y-6"
-              @submit.prevent="submitForm"
-            >
-              <div>
-                <label
-                  for="name"
-                  class="block text-sm font-semibold text-slate-900 mb-2"
-                >Tên của bạn</label>
-                <input
-                  id="name"
-                  v-model="form.name"
-                  type="text"
-                  placeholder="Nhập tên của bạn"
-                  class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  required
-                >
-              </div>
-
-              <div>
-                <label
-                  for="email"
-                  class="block text-sm font-semibold text-slate-900 mb-2"
-                >Email</label>
-                <input
-                  id="email"
-                  v-model="form.email"
-                  type="email"
-                  placeholder="email@example.com"
-                  class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  required
-                >
-              </div>
-
-              <div>
-                <label
-                  for="phone"
-                  class="block text-sm font-semibold text-slate-900 mb-2"
-                >Số Điện Thoại</label>
-                <input
-                  id="phone"
-                  v-model="form.phone"
-                  type="tel"
-                  placeholder="+84 (0) 123 456 789"
-                  class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  required
-                >
-              </div>
-
-              <div>
-                <label
-                  for="subject"
-                  class="block text-sm font-semibold text-slate-900 mb-2"
-                >Chủ Đề</label>
-                <input
-                  id="subject"
-                  v-model="form.subject"
-                  type="text"
-                  placeholder="Tư vấn thiết kế"
-                  class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  required
-                >
-              </div>
-
-              <div>
-                <label
-                  for="message"
-                  class="block text-sm font-semibold text-slate-900 mb-2"
-                >Tin Nhắn</label>
-                <textarea
-                  id="message"
-                  v-model="form.message"
-                  rows="5"
-                  placeholder="Nội dung tin nhắn của bạn..."
-                  class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                :disabled="isSubmitting"
-                class="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+          <ScrollReveal direction="left">
+            <div>
+              <span
+                class="text-orange-500 uppercase tracking-[0.2em] text-xs font-semibold"
               >
-                {{ isSubmitting ? "Đang gửi..." : "Gửi Tin Nhắn" }}
-              </button>
-            </form>
-          </div>
+                Gửi tin nhắn
+              </span>
+              <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mt-3 mb-8">
+                Liên Hệ <span class="text-orange-500">Ngay</span>
+              </h2>
 
-          <!-- Map or Info -->
-          <div>
-            <h2 class="text-3xl font-bold mb-6 text-slate-900">
-              Vị Trí Của Chúng Tôi
-            </h2>
-            <div
-              class="rounded-2xl overflow-hidden shadow-lg h-96 bg-gray-200 flex items-center justify-center"
-            >
-              <div class="text-center">
-                <Icon
-                  name="i-lucide-map-pin"
-                  class="w-16 h-16 text-gray-400 mx-auto mb-4"
-                />
-                <p class="text-gray-600">
-                  Bản đồ sẽ được hiển thị ở đây
-                </p>
-                <p class="text-sm text-gray-500 mt-2">
-                  TP. Hồ Chí Minh, Việt Nam
-                </p>
+              <form class="space-y-6" @submit.prevent="submitForm">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div>
+                    <label
+                      for="name"
+                      class="block text-sm font-semibold text-gray-700 mb-2"
+                    >
+                      Tên của bạn
+                    </label>
+                    <input
+                      id="name"
+                      v-model="form.name"
+                      type="text"
+                      placeholder="Nhập tên của bạn"
+                      class="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="email"
+                      class="block text-sm font-semibold text-gray-700 mb-2"
+                    >
+                      Email
+                    </label>
+                    <input
+                      id="email"
+                      v-model="form.email"
+                      type="email"
+                      placeholder="email@example.com"
+                      class="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div>
+                    <label
+                      for="phone"
+                      class="block text-sm font-semibold text-gray-700 mb-2"
+                    >
+                      Số Điện Thoại
+                    </label>
+                    <input
+                      id="phone"
+                      v-model="form.phone"
+                      type="tel"
+                      placeholder="+84 (0) 123 456 789"
+                      class="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="subject"
+                      class="block text-sm font-semibold text-gray-700 mb-2"
+                    >
+                      Chủ Đề
+                    </label>
+                    <input
+                      id="subject"
+                      v-model="form.subject"
+                      type="text"
+                      placeholder="Tư vấn thiết kế"
+                      class="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    for="message"
+                    class="block text-sm font-semibold text-gray-700 mb-2"
+                  >
+                    Tin Nhắn
+                  </label>
+                  <textarea
+                    id="message"
+                    v-model="form.message"
+                    rows="5"
+                    placeholder="Nội dung tin nhắn của bạn..."
+                    class="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all resize-none"
+                    required
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  :disabled="isSubmitting"
+                  class="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  <Icon
+                    v-if="isSubmitting"
+                    name="i-lucide-loader-2"
+                    class="w-5 h-5 animate-spin"
+                  />
+                  {{ isSubmitting ? "Đang gửi..." : "Gửi Tin Nhắn" }}
+                </button>
+              </form>
+            </div>
+          </ScrollReveal>
+
+          <!-- Right Column: Map + Services -->
+          <ScrollReveal direction="right">
+            <div>
+              <span
+                class="text-orange-500 uppercase tracking-[0.2em] text-xs font-semibold"
+              >
+                Vị trí
+              </span>
+              <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mt-3 mb-8">
+                Tìm <span class="text-orange-500">Chúng Tôi</span>
+              </h2>
+
+              <!-- Map Placeholder -->
+              <div
+                class="rounded-2xl overflow-hidden h-80 bg-gray-100 border border-gray-200 flex items-center justify-center"
+              >
+                <div class="text-center">
+                  <div
+                    class="w-16 h-16 rounded-full bg-orange-50 flex items-center justify-center mx-auto mb-4"
+                  >
+                    <Icon
+                      name="i-lucide-map-pin"
+                      class="w-8 h-8 text-orange-500"
+                    />
+                  </div>
+                  <p class="text-gray-500 font-medium">
+                    Bản đồ sẽ hiển thị ở đây
+                  </p>
+                  <p class="text-sm text-gray-400 mt-1">
+                    TP. Hồ Chí Minh, Việt Nam
+                  </p>
+                </div>
+              </div>
+
+              <!-- Services Checklist -->
+              <div class="mt-10">
+                <h3 class="text-xl font-bold text-gray-900 mb-6">
+                  Dịch Vụ <span class="text-orange-500">Tư Vấn</span>
+                </h3>
+                <ul class="space-y-4">
+                  <li
+                    v-for="service in services"
+                    :key="service"
+                    class="flex items-center gap-4 p-4 rounded-xl hover:bg-orange-50 transition-colors"
+                  >
+                    <div
+                      class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center shrink-0"
+                    >
+                      <Icon
+                        name="i-lucide-check"
+                        class="w-4 h-4 text-orange-500"
+                      />
+                    </div>
+                    <span class="text-gray-600 font-medium">{{ service }}</span>
+                  </li>
+                </ul>
               </div>
             </div>
-
-            <!-- Services -->
-            <div class="mt-8">
-              <h3 class="text-xl font-bold mb-4 text-slate-900">
-                Dịch Vụ Tư Vấn
-              </h3>
-              <ul class="space-y-3">
-                <li class="flex items-start gap-3">
-                  <Icon
-                    name="i-lucide-check-circle"
-                    class="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5"
-                  />
-                  <span class="text-gray-600">Tư vấn thiết kế miễn phí</span>
-                </li>
-                <li class="flex items-start gap-3">
-                  <Icon
-                    name="i-lucide-check-circle"
-                    class="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5"
-                  />
-                  <span class="text-gray-600">Lên bản vẽ 3D chi tiết</span>
-                </li>
-                <li class="flex items-start gap-3">
-                  <Icon
-                    name="i-lucide-check-circle"
-                    class="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5"
-                  />
-                  <span class="text-gray-600">Thi công chuyên nghiệp</span>
-                </li>
-                <li class="flex items-start gap-3">
-                  <Icon
-                    name="i-lucide-check-circle"
-                    class="w-5 h-5 text-orange-500 flex-shrink-0 mt-0.5"
-                  />
-                  <span class="text-gray-600">Hỗ trợ sau bán hàng</span>
-                </li>
-              </ul>
-            </div>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>
 
-    <!-- FAQ Section -->
+    <!-- ==================== FAQ ==================== -->
     <section class="section-spacing bg-gray-50">
       <div class="max-w-4xl mx-auto">
-        <h2 class="text-4xl font-bold mb-12 text-center text-slate-900">
-          Câu Hỏi Thường Gặp
-        </h2>
+        <ScrollReveal>
+          <div class="text-center mb-16">
+            <span
+              class="text-orange-500 uppercase tracking-[0.2em] text-xs font-semibold"
+            >
+              FAQ
+            </span>
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mt-3">
+              Câu Hỏi
+              <span class="text-orange-500">Thường Gặp</span>
+            </h2>
+          </div>
+        </ScrollReveal>
 
         <div class="space-y-4">
-          <details
-            class="group border border-gray-200 rounded-lg p-6 cursor-pointer"
+          <ScrollReveal
+            v-for="(faq, index) in faqs"
+            :key="index"
+            :delay="index * 100"
           >
-            <summary
-              class="font-semibold text-slate-900 flex items-center justify-between"
+            <details
+              class="group bg-white border border-gray-100 rounded-2xl p-6 cursor-pointer hover:shadow-lg transition-all duration-300 overflow-hidden"
             >
-              Tư vấn thiết kế có mất phí không?
-              <Icon
-                name="i-lucide-chevron-down"
-                class="w-5 h-5 group-open:rotate-180 transition-transform"
-              />
-            </summary>
-            <p class="text-gray-600 mt-4">
-              Không, chúng tôi cung cấp tư vấn thiết kế miễn phí cho tất cả
-              khách hàng. Bạn chỉ cần liên hệ với chúng tôi để đặt lịch.
-            </p>
-          </details>
-
-          <details
-            class="group border border-gray-200 rounded-lg p-6 cursor-pointer"
-          >
-            <summary
-              class="font-semibold text-slate-900 flex items-center justify-between"
-            >
-              Thời gian hoàn thành dự án như thế nào?
-              <Icon
-                name="i-lucide-chevron-down"
-                class="w-5 h-5 group-open:rotate-180 transition-transform"
-              />
-            </summary>
-            <p class="text-gray-600 mt-4">
-              Thời gian hoàn thành phụ thuộc vào quy mô và độ phức tạp của dự
-              án. Chúng tôi sẽ cung cấp lịch trình chi tiết sau khi tư vấn với
-              bạn.
-            </p>
-          </details>
-
-          <details
-            class="group border border-gray-200 rounded-lg p-6 cursor-pointer"
-          >
-            <summary
-              class="font-semibold text-slate-900 flex items-center justify-between"
-            >
-              Bạn có bảo hành cho công trình không?
-              <Icon
-                name="i-lucide-chevron-down"
-                class="w-5 h-5 group-open:rotate-180 transition-transform"
-              />
-            </summary>
-            <p class="text-gray-600 mt-4">
-              Có, chúng tôi cung cấp bảo hành 2 năm cho tất cả các công trình
-              thi công. Ngoài ra, chúng tôi cũng hỗ trợ bảo trì và sửa chữa.
-            </p>
-          </details>
+              <summary
+                class="font-bold text-gray-900 flex items-center justify-between gap-4"
+              >
+                {{ faq.question }}
+                <div
+                  class="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center shrink-0 group-open:bg-orange-500 transition-colors"
+                >
+                  <Icon
+                    name="i-lucide-chevron-down"
+                    class="w-4 h-4 text-orange-500 group-open:text-white group-open:rotate-180 transition-all"
+                  />
+                </div>
+              </summary>
+              <p class="text-gray-500 mt-4 leading-relaxed">
+                {{ faq.answer }}
+              </p>
+            </details>
+          </ScrollReveal>
         </div>
       </div>
     </section>
