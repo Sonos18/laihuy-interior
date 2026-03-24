@@ -285,7 +285,6 @@ const navLinks = [
                   name="i-lucide-map-pin"
                   class="w-4 h-4 text-orange-500 mt-0.5"
                 />
-
                 557E1 - KP2 - Phường Phú Khương - TP. Bến Tre - Bến Tre, Tỉnh
                 Bến Tre, Vietnam, 930000
               </li>

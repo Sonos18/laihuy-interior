@@ -8,20 +8,18 @@ useSeoMeta({
 const projects = [
   {
     id: 1,
-    slug: "apartment-modern",
-    title: "Căn Hộ Phong Cách Hiện Đại",
-    category: "Căn Hộ",
-    image:
-      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=900&fit=crop",
-    description: "Thiết kế căn hộ cao cấp với phong cách hiện đại tối giản",
+    slug: "hotel-modern",
+    title: "Khách Sạn Phong Cách Hiện Đại",
+    category: "Khách sạn",
+    image: "/images/projects/hotel/reception_desk.jpg",
+    description: "Thiết kế khách sạn cao cấp với phong cách hiện đại tối giản",
   },
   {
     id: 2,
     slug: "villa-luxury",
-    title: "Biệt Thự Hạng Sang",
+    title: "Biệt Thự Sang Trọng",
     category: "Biệt Thự",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=400&fit=crop",
+    image: "/images/projects/villa/bed.png",
     description: "Biệt thự sang trọng với thiết kế đẳng cấp quốc tế",
   },
   {
@@ -29,8 +27,7 @@ const projects = [
     slug: "office-modern",
     title: "Không Gian Làm Việc Hiện Đại",
     category: "Văn Phòng",
-    image:
-      "https://images.unsplash.com/photo-1565183938294-e75ce55eb4ca?w=600&h=400&fit=crop",
+    image: "/images/projects/office/long_desk.jpg",
     description: "Thiết kế văn phòng tối ưu hiệu suất làm việc",
   },
 ];
@@ -94,7 +91,7 @@ const reasons = [
     <section class="relative min-h-screen flex items-center overflow-hidden">
       <!-- Background Image -->
       <img
-        src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1920&h=1080&fit=crop"
+        src="/images/banner_home.jpg"
         alt=""
         class="absolute inset-0 w-full h-full object-cover"
       />
@@ -400,7 +397,7 @@ const reasons = [
           <ScrollReveal direction="left">
             <div class="relative">
               <BaseImage
-                src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&h=750&fit=crop"
+                src="/images/about_workspace.jpg"
                 alt="Lai Huy Interior workspace"
                 class="rounded-2xl aspect-4/5 w-full"
               />
