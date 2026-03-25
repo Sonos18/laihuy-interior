@@ -73,6 +73,31 @@ const faqs = [
       "Có, chúng tôi cung cấp bảo hành 2 năm cho tất cả các công trình thi công. Ngoài ra, chúng tôi cũng hỗ trợ bảo trì và sửa chữa.",
   },
 ];
+
+// Scroll reveal refs
+const contactCardRefs = ref([]);
+const formRef = ref(null);
+const mapRef = ref(null);
+const faqHeaderRef = ref(null);
+const faqCardRefs = ref([]);
+
+useScrollReveal(formRef, { direction: "left" });
+useScrollReveal(mapRef, { direction: "right" });
+useScrollReveal(faqHeaderRef);
+
+contactInfo.forEach((_, index) => {
+  useScrollReveal(
+    computed(() => contactCardRefs.value[index]),
+    { delay: index * 150 },
+  );
+});
+
+faqs.forEach((_, index) => {
+  useScrollReveal(
+    computed(() => faqCardRefs.value[index]),
+    { delay: index * 100 },
+  );
+});
 </script>
 
 <template>
@@ -121,10 +146,14 @@ const faqs = [
       <div class="max-w-7xl mx-auto">
         <!-- Info Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-          <ScrollReveal
+          <div
             v-for="(info, index) in contactInfo"
             :key="info.title"
-            :delay="index * 150"
+            :ref="
+              (el) => {
+                if (el) contactCardRefs[index] = el;
+              }
+            "
           >
             <div
               class="group relative bg-white border border-gray-100 rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 overflow-hidden"
@@ -151,20 +180,22 @@ const faqs = [
                 {{ line }}
               </p>
             </div>
-          </ScrollReveal>
+          </div>
         </div>
 
         <!-- Form + Map Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           <!-- Contact Form -->
-          <ScrollReveal direction="left">
+          <div ref="formRef">
             <div>
               <span
                 class="text-orange-500 uppercase tracking-[0.2em] text-xs font-semibold"
               >
                 Gửi tin nhắn
               </span>
-              <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mt-3 mb-8">
+              <h2
+                class="text-4xl md:text-5xl font-bold text-gray-900 mt-3 mb-8"
+              >
                 Liên Hệ <span class="text-orange-500">Ngay</span>
               </h2>
 
@@ -270,17 +301,19 @@ const faqs = [
                 </button>
               </form>
             </div>
-          </ScrollReveal>
+          </div>
 
           <!-- Right Column: Map + Services -->
-          <ScrollReveal direction="right">
+          <div ref="mapRef">
             <div>
               <span
                 class="text-orange-500 uppercase tracking-[0.2em] text-xs font-semibold"
               >
                 Vị trí
               </span>
-              <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mt-3 mb-8">
+              <h2
+                class="text-4xl md:text-5xl font-bold text-gray-900 mt-3 mb-8"
+              >
                 Tìm <span class="text-orange-500">Chúng Tôi</span>
               </h2>
 
@@ -330,7 +363,7 @@ const faqs = [
                 </ul>
               </div>
             </div>
-          </ScrollReveal>
+          </div>
         </div>
       </div>
     </section>
@@ -338,7 +371,7 @@ const faqs = [
     <!-- ==================== FAQ ==================== -->
     <section class="section-spacing bg-gray-50">
       <div class="max-w-4xl mx-auto">
-        <ScrollReveal>
+        <div ref="faqHeaderRef">
           <div class="text-center mb-16">
             <span
               class="text-orange-500 uppercase tracking-[0.2em] text-xs font-semibold"
@@ -350,13 +383,17 @@ const faqs = [
               <span class="text-orange-500">Thường Gặp</span>
             </h2>
           </div>
-        </ScrollReveal>
+        </div>
 
         <div class="space-y-4">
-          <ScrollReveal
+          <div
             v-for="(faq, index) in faqs"
             :key="index"
-            :delay="index * 100"
+            :ref="
+              (el) => {
+                if (el) faqCardRefs[index] = el;
+              }
+            "
           >
             <details
               class="group bg-white border border-gray-100 rounded-2xl p-6 cursor-pointer hover:shadow-lg transition-all duration-300 overflow-hidden"
@@ -378,7 +415,7 @@ const faqs = [
                 {{ faq.answer }}
               </p>
             </details>
-          </ScrollReveal>
+          </div>
         </div>
       </div>
     </section>

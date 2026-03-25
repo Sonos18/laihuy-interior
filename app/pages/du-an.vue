@@ -72,6 +72,21 @@ const filteredProjects = computed(() => {
   }
   return projects.filter((p) => p.category === selectedCategory.value);
 });
+
+// Scroll reveal refs
+const filterRef = ref(null);
+const projectCardRefs = ref([]);
+const ctaRef = ref(null);
+
+useScrollReveal(filterRef);
+useScrollReveal(ctaRef);
+
+projects.forEach((_, index) => {
+  useScrollReveal(
+    computed(() => projectCardRefs.value[index]),
+    { delay: index * 100 },
+  );
+});
 </script>
 
 <template>
@@ -119,7 +134,7 @@ const filteredProjects = computed(() => {
     <section class="section-spacing bg-white">
       <div class="max-w-7xl mx-auto">
         <!-- Filter -->
-        <ScrollReveal>
+        <div ref="filterRef">
           <div class="flex flex-wrap gap-3 mb-16 justify-center">
             <button
               v-for="category in categories"
@@ -135,14 +150,18 @@ const filteredProjects = computed(() => {
               {{ category }}
             </button>
           </div>
-        </ScrollReveal>
+        </div>
 
         <!-- Projects Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <ScrollReveal
+          <div
             v-for="(project, index) in filteredProjects"
             :key="project.id"
-            :delay="index * 100"
+            :ref="
+              (el) => {
+                if (el) projectCardRefs[index] = el;
+              }
+            "
           >
             <NuxtLink
               :to="`/du-an/${project.slug}`"
@@ -190,7 +209,7 @@ const filteredProjects = computed(() => {
                 </p>
               </div>
             </NuxtLink>
-          </ScrollReveal>
+          </div>
         </div>
       </div>
     </section>
@@ -207,7 +226,7 @@ const filteredProjects = computed(() => {
         class="absolute bottom-0 left-0 w-100 h-100 bg-orange-400/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"
       />
 
-      <ScrollReveal>
+      <div ref="ctaRef">
         <div class="relative z-10 max-w-4xl mx-auto text-center px-6">
           <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
             Các Dự Án Của Bạn
@@ -224,7 +243,7 @@ const filteredProjects = computed(() => {
             Bắt đầu dự án
           </NuxtLink>
         </div>
-      </ScrollReveal>
+      </div>
     </section>
   </div>
 </template>

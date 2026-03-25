@@ -83,6 +83,48 @@ const reasons = [
       "Đồng hành cùng khách hàng từ ý tưởng ban đầu đến khi hoàn thiện.",
   },
 ];
+
+// Scroll reveal refs
+const featuredHeaderRef = ref(null);
+const featuredLargeRef = ref(null);
+const featuredSmallRefs = ref([]);
+const servicesHeaderRef = ref(null);
+const serviceCardRefs = ref([]);
+const aboutImageRef = ref(null);
+const aboutTextRef = ref(null);
+const whyHeaderRef = ref(null);
+const reasonCardRefs = ref([]);
+const ctaRef = ref(null);
+
+useScrollReveal(featuredHeaderRef);
+useScrollReveal(featuredLargeRef);
+useScrollReveal(servicesHeaderRef);
+useScrollReveal(aboutImageRef, { direction: "left" });
+useScrollReveal(aboutTextRef, { direction: "right" });
+useScrollReveal(whyHeaderRef);
+useScrollReveal(ctaRef);
+
+// v-for items with staggered delays
+projects.slice(1).forEach((_, index) => {
+  useScrollReveal(
+    computed(() => featuredSmallRefs.value[index]),
+    { delay: (index + 1) * 150 },
+  );
+});
+
+services.forEach((_, index) => {
+  useScrollReveal(
+    computed(() => serviceCardRefs.value[index]),
+    { delay: index * 150 },
+  );
+});
+
+reasons.forEach((_, index) => {
+  useScrollReveal(
+    computed(() => reasonCardRefs.value[index]),
+    { delay: index * 100 },
+  );
+});
 </script>
 
 <template>
@@ -211,7 +253,7 @@ const reasons = [
     <section class="section-spacing bg-white">
       <div class="max-w-7xl mx-auto">
         <!-- Section Header -->
-        <ScrollReveal>
+        <div ref="featuredHeaderRef">
           <div
             class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16"
           >
@@ -237,12 +279,12 @@ const reasons = [
               />
             </NuxtLink>
           </div>
-        </ScrollReveal>
+        </div>
 
         <!-- Bento Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-6">
           <!-- Large Project Card -->
-          <ScrollReveal class="md:col-span-2 md:row-span-2">
+          <div ref="featuredLargeRef" class="md:col-span-2 md:row-span-2">
             <NuxtLink
               :to="`/du-an/${projects[0].slug}`"
               class="group relative block h-80 md:h-full min-h-100 rounded-2xl overflow-hidden"
@@ -289,13 +331,17 @@ const reasons = [
                 </p>
               </div>
             </NuxtLink>
-          </ScrollReveal>
+          </div>
 
           <!-- Small Project Cards -->
-          <ScrollReveal
+          <div
             v-for="(project, index) in projects.slice(1)"
             :key="project.id"
-            :delay="(index + 1) * 150"
+            :ref="
+              (el) => {
+                if (el) featuredSmallRefs[index] = el;
+              }
+            "
           >
             <NuxtLink
               :to="`/du-an/${project.slug}`"
@@ -323,7 +369,7 @@ const reasons = [
                 </h3>
               </div>
             </NuxtLink>
-          </ScrollReveal>
+          </div>
         </div>
       </div>
     </section>
@@ -332,7 +378,7 @@ const reasons = [
     <section class="section-spacing bg-gray-50">
       <div class="max-w-7xl mx-auto">
         <!-- Section Header -->
-        <ScrollReveal>
+        <div ref="servicesHeaderRef">
           <div class="text-center mb-16">
             <span
               class="text-orange-500 uppercase tracking-[0.2em] text-xs font-semibold"
@@ -348,14 +394,18 @@ const reasons = [
               bạn trong từng bước
             </p>
           </div>
-        </ScrollReveal>
+        </div>
 
         <!-- Service Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <ScrollReveal
+          <div
             v-for="(service, index) in services"
             :key="service.title"
-            :delay="index * 150"
+            :ref="
+              (el) => {
+                if (el) serviceCardRefs[index] = el;
+              }
+            "
           >
             <div
               class="group relative bg-white border border-gray-100 rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 overflow-hidden"
@@ -382,7 +432,7 @@ const reasons = [
                 {{ service.description }}
               </p>
             </div>
-          </ScrollReveal>
+          </div>
         </div>
       </div>
     </section>
@@ -394,7 +444,7 @@ const reasons = [
           class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center"
         >
           <!-- Image with decorative accent -->
-          <ScrollReveal direction="left">
+          <div ref="aboutImageRef">
             <div class="relative">
               <BaseImage
                 src="/images/about_workspace.jpg"
@@ -420,10 +470,10 @@ const reasons = [
                 </div>
               </div>
             </div>
-          </ScrollReveal>
+          </div>
 
           <!-- Text Content -->
-          <ScrollReveal direction="right">
+          <div ref="aboutTextRef">
             <div>
               <span
                 class="text-orange-500 uppercase tracking-[0.2em] text-xs font-semibold"
@@ -467,7 +517,7 @@ const reasons = [
                 <Icon name="i-lucide-arrow-right" class="w-4 h-4" />
               </NuxtLink>
             </div>
-          </ScrollReveal>
+          </div>
         </div>
       </div>
     </section>
@@ -475,7 +525,7 @@ const reasons = [
     <!-- ==================== WHY CHOOSE US ==================== -->
     <section class="section-spacing bg-gray-50">
       <div class="max-w-7xl mx-auto">
-        <ScrollReveal>
+        <div ref="whyHeaderRef">
           <div class="text-center mb-16">
             <span
               class="text-orange-500 uppercase tracking-[0.2em] text-xs font-semibold"
@@ -487,13 +537,17 @@ const reasons = [
               <span class="text-orange-500">Lai Huy</span>
             </h2>
           </div>
-        </ScrollReveal>
+        </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          <ScrollReveal
+          <div
             v-for="(reason, index) in reasons"
             :key="reason.num"
-            :delay="index * 100"
+            :ref="
+              (el) => {
+                if (el) reasonCardRefs[index] = el;
+              }
+            "
           >
             <div
               class="group text-center p-8 rounded-2xl hover:bg-white hover:shadow-xl transition-all duration-500"
@@ -522,7 +576,7 @@ const reasons = [
                 {{ reason.description }}
               </p>
             </div>
-          </ScrollReveal>
+          </div>
         </div>
       </div>
     </section>
@@ -543,7 +597,7 @@ const reasons = [
       />
 
       <!-- Content -->
-      <ScrollReveal>
+      <div ref="ctaRef">
         <div class="relative z-10 max-w-4xl mx-auto text-center px-6">
           <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
             Sẵn sàng biến đổi
@@ -569,7 +623,7 @@ const reasons = [
             </NuxtLink>
           </div>
         </div>
-      </ScrollReveal>
+      </div>
     </section>
   </div>
 </template>

@@ -166,6 +166,33 @@ const projectsData = {
       "Hệ thống âm thanh xung quanh",
     ],
   },
+  "hotel-modern": {
+    title: "Khách Sạn Phong Cách Hiện Đại",
+    category: "Khách sạn",
+    location: "Quận 1, TP. Hồ Chí Minh",
+    area: "2000m²",
+    duration: "12 tháng",
+    budget: "Tương ứng",
+    description:
+      "Thiết kế khách sạn cao cấp với phong cách hiện đại tối giản. Không gian sang trọng, tiện nghi cho du khách.",
+    images: [
+      "/images/projects/hotel/reception_desk.jpg",
+      "/images/projects/hotel/reception_desk.jpg",
+      "/images/projects/hotel/reception_desk.jpg",
+    ],
+    highlights: [
+      "Sảnh tiếp tân sang trọng",
+      "Phòng nghỉ cao cấp",
+      "Khu vực nhà hàng hiện đại",
+      "Spa & wellness center",
+    ],
+    materials: [
+      "Đá marble nhập khẩu",
+      "Gỗ veneer cao cấp",
+      "Hệ thống chiếu sáng thông minh",
+      "Nội thất cao cấp nhập khẩu",
+    ],
+  },
 };
 
 const relatedProjects = [
@@ -241,6 +268,29 @@ const infoItems = computed(() => [
     value: project.value.budget,
   },
 ]);
+
+// Scroll reveal refs
+const detailsRef = ref(null);
+const highlightsRef = ref(null);
+const materialsRef = ref(null);
+const infoCardRef = ref(null);
+const relatedHeaderRef = ref(null);
+const relatedCardRefs = ref([]);
+const ctaRef = ref(null);
+
+useScrollReveal(detailsRef);
+useScrollReveal(highlightsRef, { delay: 150 });
+useScrollReveal(materialsRef, { delay: 300 });
+useScrollReveal(infoCardRef, { direction: "right" });
+useScrollReveal(relatedHeaderRef);
+useScrollReveal(ctaRef);
+
+relatedProjects.forEach((_, index) => {
+  useScrollReveal(
+    computed(() => relatedCardRefs.value[index]),
+    { delay: index * 150 },
+  );
+});
 </script>
 
 <template>
@@ -308,7 +358,7 @@ const infoItems = computed(() => [
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
           <!-- Main Content -->
           <div class="lg:col-span-2">
-            <ScrollReveal>
+            <div ref="detailsRef">
               <span
                 class="text-orange-500 uppercase tracking-[0.2em] text-xs font-semibold"
               >
@@ -322,10 +372,10 @@ const infoItems = computed(() => [
               <p class="text-gray-500 text-lg leading-relaxed mb-12">
                 {{ project.description }}
               </p>
-            </ScrollReveal>
+            </div>
 
             <!-- Project Highlights -->
-            <ScrollReveal :delay="150">
+            <div ref="highlightsRef">
               <div class="mb-12">
                 <h3 class="text-2xl font-bold text-gray-900 mb-6">
                   Điểm <span class="text-orange-500">Nổi Bật</span>
@@ -348,10 +398,10 @@ const infoItems = computed(() => [
                   </li>
                 </ul>
               </div>
-            </ScrollReveal>
+            </div>
 
             <!-- Materials -->
-            <ScrollReveal :delay="300">
+            <div ref="materialsRef">
               <div>
                 <h3 class="text-2xl font-bold text-gray-900 mb-6">
                   Vật Liệu <span class="text-orange-500">Sử Dụng</span>
@@ -374,12 +424,12 @@ const infoItems = computed(() => [
                   </div>
                 </div>
               </div>
-            </ScrollReveal>
+            </div>
           </div>
 
           <!-- Project Info Card -->
           <div>
-            <ScrollReveal direction="right">
+            <div ref="infoCardRef">
               <div
                 class="bg-gray-50 rounded-2xl p-8 sticky top-24 border border-gray-100"
               >
@@ -423,7 +473,7 @@ const infoItems = computed(() => [
                   Liên Hệ Tư Vấn
                 </NuxtLink>
               </div>
-            </ScrollReveal>
+            </div>
           </div>
         </div>
       </div>
@@ -432,7 +482,7 @@ const infoItems = computed(() => [
     <!-- ==================== RELATED PROJECTS ==================== -->
     <section class="section-spacing bg-gray-50">
       <div class="max-w-7xl mx-auto">
-        <ScrollReveal>
+        <div ref="relatedHeaderRef">
           <div
             class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16"
           >
@@ -457,13 +507,17 @@ const infoItems = computed(() => [
               />
             </NuxtLink>
           </div>
-        </ScrollReveal>
+        </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <ScrollReveal
+          <div
             v-for="(rp, index) in relatedProjects"
             :key="rp.slug"
-            :delay="index * 150"
+            :ref="
+              (el) => {
+                if (el) relatedCardRefs[index] = el;
+              }
+            "
           >
             <NuxtLink
               :to="`/du-an/${rp.slug}`"
@@ -491,7 +545,7 @@ const infoItems = computed(() => [
                 </h3>
               </div>
             </NuxtLink>
-          </ScrollReveal>
+          </div>
         </div>
       </div>
     </section>
@@ -508,7 +562,7 @@ const infoItems = computed(() => [
         class="absolute bottom-0 left-0 w-100 h-100 bg-orange-400/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"
       />
 
-      <ScrollReveal>
+      <div ref="ctaRef">
         <div class="relative z-10 max-w-4xl mx-auto text-center px-6">
           <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
             Sẵn Sàng Cho
@@ -526,7 +580,7 @@ const infoItems = computed(() => [
             Bắt Đầu Dự Án
           </NuxtLink>
         </div>
-      </ScrollReveal>
+      </div>
     </section>
   </div>
 </template>

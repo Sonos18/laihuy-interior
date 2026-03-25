@@ -31,6 +31,35 @@ const stats = [
   { value: "500+", label: "Khách hàng hài lòng" },
   { value: "50+", label: "Giải thưởng" },
 ];
+
+// Scroll reveal refs
+const storyImageRef = ref(null);
+const storyTextRef = ref(null);
+const valuesHeaderRef = ref(null);
+const valueCardRefs = ref([]);
+const statsHeaderRef = ref(null);
+const statCardRefs = ref([]);
+const ctaRef = ref(null);
+
+useScrollReveal(storyImageRef, { direction: "left" });
+useScrollReveal(storyTextRef, { direction: "right" });
+useScrollReveal(valuesHeaderRef);
+useScrollReveal(statsHeaderRef);
+useScrollReveal(ctaRef);
+
+values.forEach((_, index) => {
+  useScrollReveal(
+    computed(() => valueCardRefs.value[index]),
+    { delay: index * 150 },
+  );
+});
+
+stats.forEach((_, index) => {
+  useScrollReveal(
+    computed(() => statCardRefs.value[index]),
+    { delay: index * 100 },
+  );
+});
 </script>
 
 <template>
@@ -81,7 +110,7 @@ const stats = [
           class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center"
         >
           <!-- Image with decorative accent -->
-          <ScrollReveal direction="left">
+          <div ref="storyImageRef">
             <div class="relative">
               <BaseImage
                 src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&h=750&fit=crop"
@@ -105,10 +134,10 @@ const stats = [
                 </div>
               </div>
             </div>
-          </ScrollReveal>
+          </div>
 
           <!-- Text Content -->
-          <ScrollReveal direction="right">
+          <div ref="storyTextRef">
             <div>
               <span
                 class="text-orange-500 uppercase tracking-[0.2em] text-xs font-semibold"
@@ -137,7 +166,7 @@ const stats = [
                 sống và làm việc tuyệt vời.
               </p>
             </div>
-          </ScrollReveal>
+          </div>
         </div>
       </div>
     </section>
@@ -145,7 +174,7 @@ const stats = [
     <!-- ==================== VALUES ==================== -->
     <section class="section-spacing bg-gray-50">
       <div class="max-w-7xl mx-auto">
-        <ScrollReveal>
+        <div ref="valuesHeaderRef">
           <div class="text-center mb-16">
             <span
               class="text-orange-500 uppercase tracking-[0.2em] text-xs font-semibold"
@@ -157,13 +186,17 @@ const stats = [
               <span class="text-orange-500">Tin Tưởng</span>
             </h2>
           </div>
-        </ScrollReveal>
+        </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <ScrollReveal
+          <div
             v-for="(value, index) in values"
             :key="value.title"
-            :delay="index * 150"
+            :ref="
+              (el) => {
+                if (el) valueCardRefs[index] = el;
+              }
+            "
           >
             <div
               class="group relative bg-white border border-gray-100 rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 overflow-hidden"
@@ -186,7 +219,7 @@ const stats = [
                 {{ value.description }}
               </p>
             </div>
-          </ScrollReveal>
+          </div>
         </div>
       </div>
     </section>
@@ -194,7 +227,7 @@ const stats = [
     <!-- ==================== STATS ==================== -->
     <section class="section-spacing bg-white">
       <div class="max-w-7xl mx-auto">
-        <ScrollReveal>
+        <div ref="statsHeaderRef">
           <div class="text-center mb-16">
             <span
               class="text-orange-500 uppercase tracking-[0.2em] text-xs font-semibold"
@@ -206,13 +239,17 @@ const stats = [
               <span class="text-orange-500">Nói Lên</span>
             </h2>
           </div>
-        </ScrollReveal>
+        </div>
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <ScrollReveal
+          <div
             v-for="(stat, index) in stats"
             :key="stat.label"
-            :delay="index * 100"
+            :ref="
+              (el) => {
+                if (el) statCardRefs[index] = el;
+              }
+            "
           >
             <div
               class="group text-center p-8 rounded-2xl hover:bg-gray-50 hover:shadow-xl transition-all duration-500"
@@ -224,7 +261,7 @@ const stats = [
               </div>
               <p class="text-gray-500 font-medium">{{ stat.label }}</p>
             </div>
-          </ScrollReveal>
+          </div>
         </div>
       </div>
     </section>
@@ -241,7 +278,7 @@ const stats = [
         class="absolute bottom-0 left-0 w-100 h-100 bg-orange-400/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"
       />
 
-      <ScrollReveal>
+      <div ref="ctaRef">
         <div class="relative z-10 max-w-4xl mx-auto text-center px-6">
           <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
             Hãy Liên Hệ
@@ -258,7 +295,7 @@ const stats = [
             Liên hệ ngay
           </NuxtLink>
         </div>
-      </ScrollReveal>
+      </div>
     </section>
   </div>
 </template>
