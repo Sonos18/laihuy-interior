@@ -1,36 +1,13 @@
 <script setup>
+import { projects } from "~/data/projects";
+
 useSeoMeta({
   title: "Trang chủ - Lai Huy Interior | Thiết kế nội thất hiện đại & đẳng cấp",
   description:
     "Thiết kế nội thất hiện đại, sang trọng cho không gian sống của bạn. Chúng tôi cung cấp giải pháp nội thất toàn diện.",
 });
 
-const projects = [
-  {
-    id: 1,
-    slug: "hotel-modern",
-    title: "Khách Sạn Phong Cách Hiện Đại",
-    category: "Khách sạn",
-    image: "/images/projects/hotel/reception_desk.jpg",
-    description: "Thiết kế khách sạn cao cấp với phong cách hiện đại tối giản",
-  },
-  {
-    id: 2,
-    slug: "villa-luxury",
-    title: "Biệt Thự Sang Trọng",
-    category: "Biệt Thự",
-    image: "/images/projects/villa/bed.png",
-    description: "Biệt thự sang trọng với thiết kế đẳng cấp quốc tế",
-  },
-  {
-    id: 3,
-    slug: "office-modern",
-    title: "Không Gian Làm Việc Hiện Đại",
-    category: "Văn Phòng",
-    image: "/images/projects/office/long_desk.jpg",
-    description: "Thiết kế văn phòng tối ưu hiệu suất làm việc",
-  },
-];
+const featuredProjects = projects.slice(0, 3);
 
 const services = [
   {
@@ -105,7 +82,7 @@ useScrollReveal(whyHeaderRef);
 useScrollReveal(ctaRef);
 
 // v-for items with staggered delays
-projects.slice(1).forEach((_, index) => {
+featuredProjects.slice(1).forEach((_, index) => {
   useScrollReveal(
     computed(() => featuredSmallRefs.value[index]),
     { delay: (index + 1) * 150 },
@@ -286,12 +263,12 @@ reasons.forEach((_, index) => {
           <!-- Large Project Card -->
           <div ref="featuredLargeRef" class="md:col-span-2 md:row-span-2">
             <NuxtLink
-              :to="`/du-an/${projects[0].slug}`"
+              :to="`/du-an/${featuredProjects[0].slug}`"
               class="group relative block h-80 md:h-full min-h-100 rounded-2xl overflow-hidden"
             >
               <BaseImage
-                :src="projects[0].image"
-                :alt="projects[0].title"
+                :src="featuredProjects[0].image[0]"
+                :alt="featuredProjects[0].name"
                 class="absolute inset-0"
                 img-class="group-hover:scale-110 transition-transform duration-700"
               />
@@ -319,15 +296,15 @@ reasons.forEach((_, index) => {
               <!-- Content -->
               <div class="absolute bottom-0 left-0 right-0 p-8">
                 <span class="text-orange-300 text-sm font-semibold">
-                  {{ projects[0].category }}
+                  {{ featuredProjects[0].categoryName }}
                 </span>
                 <h3 class="text-white text-2xl md:text-3xl font-bold mt-2">
-                  {{ projects[0].title }}
+                  {{ featuredProjects[0].name }}
                 </h3>
                 <p
                   class="text-white/70 mt-2 max-w-md opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500"
                 >
-                  {{ projects[0].description }}
+                  {{ featuredProjects[0].shortDescription }}
                 </p>
               </div>
             </NuxtLink>
@@ -335,7 +312,7 @@ reasons.forEach((_, index) => {
 
           <!-- Small Project Cards -->
           <div
-            v-for="(project, index) in projects.slice(1)"
+            v-for="(project, index) in featuredProjects.slice(1)"
             :key="project.id"
             :ref="
               (el) => {
@@ -348,8 +325,8 @@ reasons.forEach((_, index) => {
               class="group relative block h-80 rounded-2xl overflow-hidden"
             >
               <BaseImage
-                :src="project.image"
-                :alt="project.title"
+                :src="project.image[0]"
+                :alt="project.name"
                 class="absolute inset-0"
                 img-class="group-hover:scale-110 transition-transform duration-700"
               />
@@ -362,10 +339,10 @@ reasons.forEach((_, index) => {
 
               <div class="absolute bottom-0 left-0 right-0 p-6">
                 <span class="text-orange-300 text-sm font-semibold">
-                  {{ project.category }}
+                  {{ project.categoryName }}
                 </span>
                 <h3 class="text-white text-xl font-bold mt-1">
-                  {{ project.title }}
+                  {{ project.name }}
                 </h3>
               </div>
             </NuxtLink>

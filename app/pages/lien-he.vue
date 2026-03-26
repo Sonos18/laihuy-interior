@@ -26,15 +26,13 @@ const submitForm = async () => {
   form.message = "";
   isSubmitting.value = false;
 };
-
 const contactInfo = [
   {
     icon: "i-lucide-map-pin",
     title: "Địa Chỉ",
     lines: [
-      "Tầng 5, Tòa nhà Central Plaza",
-      "123 Nguyễn Hữu Cảnh",
-      "Quận 1, TP. Hồ Chí Minh",
+      "557E1 - KP2 - Phường Phú Khương",
+      "TP. Bến Tre - Bến Tre, Tỉnh Bến Tre, Vietnam",
     ],
   },
   {
@@ -102,44 +100,13 @@ faqs.forEach((_, index) => {
 
 <template>
   <div>
-    <!-- ==================== HERO ==================== -->
-    <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
-      <!-- Background Image -->
-      <img
-        src="https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?w=1920&h=800&fit=crop"
-        alt=""
-        class="absolute inset-0 w-full h-full object-cover"
-      />
-      <div class="hero-overlay" />
-
-      <!-- Decorative Elements -->
-      <div
-        class="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"
-      />
-      <div
-        class="absolute bottom-0 left-1/4 w-64 h-64 bg-orange-500/5 rounded-full blur-3xl"
-      />
-
-      <div class="relative z-10 max-w-7xl mx-auto px-6">
-        <span
-          class="text-orange-400 uppercase tracking-[0.2em] text-xs font-semibold mb-4 block animate-fade-in-up"
-        >
-          Liên hệ
-        </span>
-        <h1
-          class="text-5xl md:text-6xl font-bold text-white mb-6 animate-fade-in-up"
-          style="animation-delay: 150ms"
-        >
-          Liên Hệ <span class="text-orange-500">Với Chúng Tôi</span>
-        </h1>
-        <p
-          class="text-xl text-gray-400 max-w-2xl animate-fade-in-up"
-          style="animation-delay: 300ms"
-        >
-          Chúng tôi sẵn sàng lắng nghe ý tưởng của bạn
-        </p>
-      </div>
-    </section>
+    <AppHero
+      topic="Contact"
+      title="Liên Hệ Với"
+      special-title="Chúng Tôi"
+      subtitle="Chúng tôi sẵn sàng lắng nghe ý tưởng của bạn"
+      bg-image="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&h=800&fit=crop"
+    />
 
     <!-- ==================== CONTACT INFO ==================== -->
     <section class="section-spacing bg-white">

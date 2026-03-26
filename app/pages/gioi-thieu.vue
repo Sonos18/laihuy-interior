@@ -65,43 +65,13 @@ stats.forEach((_, index) => {
 <template>
   <div>
     <!-- ==================== HERO ==================== -->
-    <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
-      <!-- Background Image -->
-      <img
-        src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&h=800&fit=crop"
-        alt=""
-        class="absolute inset-0 w-full h-full object-cover"
-      />
-      <div class="hero-overlay" />
-
-      <!-- Decorative Elements -->
-      <div
-        class="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"
-      />
-      <div
-        class="absolute bottom-0 left-1/4 w-64 h-64 bg-orange-500/5 rounded-full blur-3xl"
-      />
-
-      <div class="relative z-10 max-w-7xl mx-auto px-6">
-        <span
-          class="text-orange-400 uppercase tracking-[0.2em] text-xs font-semibold mb-4 block animate-fade-in-up"
-        >
-          Về chúng tôi
-        </span>
-        <h1
-          class="text-5xl md:text-6xl font-bold text-white mb-6 animate-fade-in-up"
-          style="animation-delay: 150ms"
-        >
-          Giới Thiệu <span class="text-orange-500">Lai Huy</span>
-        </h1>
-        <p
-          class="text-xl text-gray-400 max-w-2xl animate-fade-in-up"
-          style="animation-delay: 300ms"
-        >
-          Hơn 15 năm tạo nên những không gian sống tinh tế, đẳng cấp
-        </p>
-      </div>
-    </section>
+    <AppHero
+      topic="Introduction"
+      title="Giới Thiệu"
+      special-title="Lai Huy"
+      subtitle="Hơn 15 năm tạo nên những không gian sống tinh tế, đẳng cấp"
+      bg-image="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&h=800&fit=crop"
+    />
 
     <!-- ==================== COMPANY STORY ==================== -->
     <section class="section-spacing bg-white">

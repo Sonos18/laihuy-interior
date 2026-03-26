@@ -1,76 +1,20 @@
 <script setup>
+import { projects } from "~/data/projects";
+
 useSeoMeta({
   title: "Dự Án - Lai Huy Interior | Xem các dự án thiết kế nội thất",
   description:
     "Khám phá những dự án thiết kế nội thất nổi bật của Lai Huy Interior",
 });
 
-const projects = [
-  {
-    id: 1,
-    slug: "apartment-modern",
-    title: "Căn Hộ Phong Cách Hiện Đại",
-    category: "Căn Hộ",
-    image:
-      "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&h=400&fit=crop",
-    description: "Thiết kế căn hộ cao cấp với phong cách hiện đại tối giản",
-  },
-  {
-    id: 2,
-    slug: "villa-luxury",
-    title: "Biệt Thự Hạng Sang",
-    category: "Biệt Thự",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=400&fit=crop",
-    description: "Biệt thự sang trọng với thiết kế đẳng cấp quốc tế",
-  },
-  {
-    id: 3,
-    slug: "office-modern",
-    title: "Không Gian Làm Việc Hiện Đại",
-    category: "Văn Phòng",
-    image:
-      "https://images.unsplash.com/photo-1565183938294-e75ce55eb4ca?w=600&h=400&fit=crop",
-    description: "Thiết kế văn phòng tối ưu hiệu suất làm việc",
-  },
-  {
-    id: 4,
-    slug: "restaurant-elegant",
-    title: "Nhà Hàng Sang Trọng",
-    category: "Nhà Hàng",
-    image:
-      "https://images.unsplash.com/photo-1554118811-1e0d58224e24?w=600&h=400&fit=crop",
-    description: "Không gian ăn uống với phong cách ẩm thực cao cấp",
-  },
-  {
-    id: 5,
-    slug: "boutique-retail",
-    title: "Showroom Thời Trang",
-    category: "Bán Lẻ",
-    image:
-      "https://images.unsplash.com/photo-1576183404207-991ff501b5fb?w=600&h=400&fit=crop",
-    description:
-      "Thiết kế showroom thời trang tạo trải nghiệm mua sắm tuyệt vời",
-  },
-  {
-    id: 6,
-    slug: "spa-wellness",
-    title: "Spa & Wellness Center",
-    category: "Spa",
-    image:
-      "https://images.unsplash.com/photo-1541123603104-852fc1296e27?w=600&h=400&fit=crop",
-    description: "Không gian thư giãn và chăm sóc sức khỏe đẳng cấp",
-  },
-];
-
 const selectedCategory = ref("Tất cả");
-const categories = ["Tất cả", ...new Set(projects.map((p) => p.category))];
+const categories = ["Tất cả", ...new Set(projects.map((p) => p.categoryName))];
 
 const filteredProjects = computed(() => {
   if (selectedCategory.value === "Tất cả") {
     return projects;
   }
-  return projects.filter((p) => p.category === selectedCategory.value);
+  return projects.filter((p) => p.categoryName === selectedCategory.value);
 });
 
 // Scroll reveal refs
@@ -92,43 +36,13 @@ projects.forEach((_, index) => {
 <template>
   <div>
     <!-- ==================== HERO ==================== -->
-    <section class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
-      <!-- Background Image -->
-      <img
-        src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=800&fit=crop"
-        alt=""
-        class="absolute inset-0 w-full h-full object-cover"
-      />
-      <div class="hero-overlay" />
-
-      <!-- Decorative Elements -->
-      <div
-        class="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"
-      />
-      <div
-        class="absolute bottom-0 left-1/4 w-64 h-64 bg-orange-500/5 rounded-full blur-3xl"
-      />
-
-      <div class="relative z-10 max-w-7xl mx-auto px-6">
-        <span
-          class="text-orange-400 uppercase tracking-[0.2em] text-xs font-semibold mb-4 block animate-fade-in-up"
-        >
-          Portfolio
-        </span>
-        <h1
-          class="text-5xl md:text-6xl font-bold text-white mb-6 animate-fade-in-up"
-          style="animation-delay: 150ms"
-        >
-          Danh Sách <span class="text-orange-500">Dự Án</span>
-        </h1>
-        <p
-          class="text-xl text-gray-400 max-w-2xl animate-fade-in-up"
-          style="animation-delay: 300ms"
-        >
-          Khám phá những dự án thiết kế nội thất nổi bật của chúng tôi
-        </p>
-      </div>
-    </section>
+    <AppHero
+      topic="Projects"
+      title="Dự Án"
+      special-title="Nổi Bật"
+      subtitle="Khám phá những dự án thiết kế nội thất nổi bật của chúng tôi"
+      bg-image="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=800&fit=crop"
+    />
 
     <!-- ==================== PROJECTS ==================== -->
     <section class="section-spacing bg-white">
@@ -168,8 +82,8 @@ projects.forEach((_, index) => {
               class="group relative block h-80 rounded-2xl overflow-hidden"
             >
               <BaseImage
-                :src="project.image"
-                :alt="project.title"
+                :src="project.image[0]"
+                :alt="project.name"
                 class="absolute inset-0"
                 img-class="group-hover:scale-110 transition-transform duration-700"
               />
@@ -197,15 +111,15 @@ projects.forEach((_, index) => {
               <!-- Content -->
               <div class="absolute bottom-0 left-0 right-0 p-6">
                 <span class="text-orange-300 text-sm font-semibold">
-                  {{ project.category }}
+                  {{ project.categoryName }}
                 </span>
                 <h3 class="text-white text-xl font-bold mt-1">
-                  {{ project.title }}
+                  {{ project.name }}
                 </h3>
                 <p
                   class="text-white/70 text-sm mt-2 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500"
                 >
-                  {{ project.description }}
+                  {{ project.shortDescription }}
                 </p>
               </div>
             </NuxtLink>

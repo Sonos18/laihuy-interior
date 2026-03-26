@@ -22,7 +22,6 @@ useSeoMeta({
 const route = useRoute();
 const isScrolled = ref(false);
 const isMobileMenuOpen = ref(false);
-const isHome = computed(() => route.path === "/");
 
 function onScroll() {
   isScrolled.value = window.scrollY > 50;
@@ -65,9 +64,7 @@ const navLinks = [
       :class="[
         isScrolled
           ? 'bg-white/95 backdrop-blur-md shadow-sm'
-          : isHome
-            ? 'bg-transparent'
-            : 'bg-white shadow-sm',
+          : 'bg-transparent',
       ]"
     >
       <nav
@@ -79,7 +76,7 @@ const navLinks = [
             src="/images/logo.png"
             alt="Lai Huy Interior"
             class="h-10 w-auto transition-all duration-300"
-            :class="{ 'brightness-0 invert': isHome && !isScrolled }"
+            :class="{ 'brightness-0 invert': !isScrolled }"
           />
         </NuxtLink>
 
@@ -91,11 +88,11 @@ const navLinks = [
             :to="link.to"
             class="relative px-4 py-2 text-sm font-medium transition-colors duration-300 rounded-full"
             :class="[
-              isScrolled || !isHome
+              isScrolled
                 ? 'text-gray-700 hover:text-orange-500 hover:bg-orange-50'
                 : 'text-white/80 hover:text-white hover:bg-white/10',
               route.path === link.to
-                ? isScrolled || !isHome
+                ? isScrolled
                   ? 'text-orange-500 bg-orange-50'
                   : 'text-white bg-white/15'
                 : '',
@@ -108,7 +105,7 @@ const navLinks = [
             to="/lien-he"
             class="ml-4 px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300"
             :class="[
-              isScrolled || !isHome
+              isScrolled
                 ? 'bg-orange-500 text-white hover:bg-orange-600'
                 : 'bg-white/15 text-white backdrop-blur-sm hover:bg-white/25 border border-white/20',
             ]"
@@ -121,7 +118,7 @@ const navLinks = [
         <button
           class="md:hidden p-2 rounded-lg transition-colors"
           :class="[
-            isScrolled || !isHome
+            isScrolled
               ? 'text-gray-700 hover:bg-gray-100'
               : 'text-white hover:bg-white/10',
           ]"
@@ -215,18 +212,18 @@ const navLinks = [
               tác phẩm nghệ thuật.
             </p>
             <div class="flex gap-3">
-              <a
-                href="#"
+              <button
+                type="button"
                 class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-orange-500 transition-colors"
               >
                 <Icon name="i-simple-icons-facebook" class="w-4 h-4" />
-              </a>
-              <a
-                href="#"
+              </button>
+              <button
+                type="button"
                 class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-orange-500 transition-colors"
               >
                 <Icon name="i-simple-icons-instagram" class="w-4 h-4" />
-              </a>
+              </button>
             </div>
           </div>
 
