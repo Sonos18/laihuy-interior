@@ -17,8 +17,8 @@ export const projects: Project[] = [
     categoryName: "Khách sạn",
     location: "Bến Tre, Vietnam",
     gallery: [
-      "/images/projects/hotel/eo_gio/image_1.jpg",
-      "/images/projects/hotel/eo_gio/image_2.jpg",
+      "/images/projects/hotel/eo_gio/image_1.png",
+      "/images/projects/hotel/eo_gio/image_2.png",
     ],
   },
   {
