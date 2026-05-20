@@ -1,7 +1,7 @@
 <script setup>
 useHead({
   meta: [{ name: "viewport", content: "width=device-width, initial-scale=1" }],
-  link: [{ rel: "icon", href: "/favicon.ico" }],
+  link: [{ rel: "icon", href: "/logo_favicon.png" }],
   htmlAttrs: {
     lang: "vi",
   },
@@ -68,20 +68,20 @@ const navLinks = [
       ]"
     >
       <nav
-        class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"
+        class="max-w-7xl mx-auto px-6 flex items-center justify-between overflow-hidden"
       >
         <!-- Logo -->
         <NuxtLink to="/" class="shrink-0">
           <img
-            src="/images/logo.png"
+            src="/images/logo_white_bg-removebg-preview.png"
             alt="Lai Huy Interior"
-            class="h-10 w-auto transition-all duration-300"
-            :class="{ 'brightness-0 invert': !isScrolled }"
+            class="w-auto transition-all duration-300 scale-140"
+            :class="isScrolled ? 'h-16' : 'h-20'"
           />
         </NuxtLink>
 
         <!-- Desktop Navigation -->
-        <div class="hidden md:flex items-center gap-1">
+        <div class="hidden md:flex items-center gap-1 py-4">
           <NuxtLink
             v-for="link in navLinks"
             :key="link.to"
@@ -198,15 +198,15 @@ const navLinks = [
     <!-- Footer -->
     <footer class="bg-gray-950 text-white">
       <!-- Main Footer -->
-      <div class="max-w-7xl mx-auto px-6 pt-20 pb-12">
-        <div
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16"
-        >
+      <div class="max-w-7xl mx-auto px-6 pt-12 pb-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-8">
           <!-- Brand -->
-          <div class="lg:col-span-1">
-            <h3 class="text-2xl font-bold mb-3">
-              Lai <span class="text-orange-500">Huy</span>
-            </h3>
+          <div class="lg:col-span-1 overflow-hidden">
+            <img
+              src="/images/logo_white_bg-removebg-preview.png"
+              alt="Lai Huy Interior"
+              class="h-20 scale-160 w-auto mb-4 overflow-hidden ml-4"
+            />
             <p class="text-gray-400 text-sm leading-relaxed mb-6">
               Thiết kế nội thất hiện đại & đẳng cấp. Biến không gian sống thành
               tác phẩm nghệ thuật.
@@ -215,6 +215,12 @@ const navLinks = [
               <button
                 type="button"
                 class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-orange-500 transition-colors"
+                onclick="
+                  window.open(
+                    'https://www.facebook.com/noithatlaihuy',
+                    '_blank',
+                  )
+                "
               >
                 <Icon name="i-simple-icons-facebook" class="w-4 h-4" />
               </button>
@@ -271,7 +277,7 @@ const navLinks = [
             <ul class="space-y-3 text-gray-400 text-sm">
               <li class="flex items-center gap-2">
                 <Icon name="i-lucide-phone" class="w-4 h-4 text-orange-500" />
-                +84 (0) 903 102 012
+                +84 90 310 20 12
               </li>
               <li class="flex items-center gap-2">
                 <Icon name="i-lucide-mail" class="w-4 h-4 text-orange-500" />
@@ -280,10 +286,9 @@ const navLinks = [
               <li class="flex items-start gap-2">
                 <Icon
                   name="i-lucide-map-pin"
-                  class="w-4 h-4 text-orange-500 mt-0.5"
+                  class="w-4 h-4 text-orange-500 mt-0.5 shrink-0"
                 />
-                557E1 - KP2 - Phường Phú Khương - TP. Bến Tre - Bến Tre, Tỉnh
-                Bến Tre, Vietnam, 930000
+                557E1 khu phố 2, Phú Khương, Vĩnh Long, Vietnam
               </li>
             </ul>
           </div>
@@ -291,7 +296,7 @@ const navLinks = [
 
         <!-- Bottom Bar -->
         <div
-          class="border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-gray-500 text-sm"
+          class="border-t border-gray-800 pt-4 flex flex-col md:flex-row items-center justify-between gap-4 text-gray-500 text-sm"
         >
           <p>
             &copy; {{ new Date().getFullYear() }} Lai Huy Interior. Tất cả quyền

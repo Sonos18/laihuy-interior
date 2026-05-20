@@ -1,85 +1,151 @@
-<script setup>
-import { projects } from "~/data/projects";
+<script setup lang="ts">
+import { projects } from '~/data/projects'
+import type { Project } from '~/shared/types/project'
 
-const route = useRoute();
-const slug = route.params.slug;
+type MetaItem = {
+  icon: string
+  label: string
+  value: string
+}
 
-const project = projects.find((p) => p.slug === slug);
+const route = useRoute()
+const slug = Array.isArray(route.params.slug)
+  ? route.params.slug[0]
+  : route.params.slug
+
+const project = projects.find(item => item.slug === slug)
+
+const getProjectImage = (item?: Project) =>
+  item?.image[0] ?? item?.gallery[0] ?? '/images/banner_home.jpg'
+
+const allImages = project
+  ? [...new Set([...project.image, ...project.gallery])]
+  : []
+
+const currentImageIndex = ref(0)
+const heroImage = computed(() => allImages[currentImageIndex.value] ?? getProjectImage(project))
+
+const nextImage = () => {
+  if (allImages.length <= 1) {
+    return
+  }
+
+  currentImageIndex.value = (currentImageIndex.value + 1) % allImages.length
+}
+
+const prevImage = () => {
+  if (allImages.length <= 1) {
+    return
+  }
+
+  currentImageIndex.value
+    = (currentImageIndex.value - 1 + allImages.length) % allImages.length
+}
+
+const metaItems: MetaItem[] = project
+  ? [
+      {
+        icon: 'i-lucide-tag',
+        label: 'Hạng mục',
+        value: project.categoryName
+      },
+      project.location
+        ? {
+            icon: 'i-lucide-map-pin',
+            label: 'Vị trí',
+            value: project.location
+          }
+        : null,
+      project.area
+        ? {
+            icon: 'i-lucide-ruler',
+            label: 'Quy mô',
+            value: project.area
+          }
+        : null,
+      project.year
+        ? {
+            icon: 'i-lucide-calendar',
+            label: 'Năm hoàn thiện',
+            value: project.year
+          }
+        : null,
+      project.style
+        ? {
+            icon: 'i-lucide-palette',
+            label: 'Phong cách',
+            value: project.style
+          }
+        : null,
+      project.client
+        ? {
+            icon: 'i-lucide-building-2',
+            label: 'Chủ đầu tư',
+            value: project.client
+          }
+        : null
+    ].filter((item): item is MetaItem => Boolean(item))
+  : []
+
+const fallbackOverview = project?.description.join(' ')
+
+const relatedProjects = project
+  ? projects
+      .filter(item => item.slug !== project.slug)
+      .sort((first, second) => {
+        const firstScore = first.category === project.category ? 0 : 1
+        const secondScore = second.category === project.category ? 0 : 1
+
+        return firstScore - secondScore
+      })
+      .slice(0, 3)
+  : []
 
 if (project) {
   useSeoMeta({
-    title: `${project.name} - Lai Huy Interior`,
-    description: project.shortDescription,
-  });
+    title: `${project.name} | Lai Huy Interior`,
+    description: project.content?.overview ?? project.shortDescription,
+    ogTitle: `${project.name} | Lai Huy Interior`,
+    ogDescription: project.shortDescription,
+    ogImage: getProjectImage(project)
+  })
 }
 
-const allImages = project ? [...project.image, ...project.gallery] : [];
-const currentImageIndex = ref(0);
+const heroRef = ref(null)
+const overviewRef = ref(null)
+const conceptRef = ref(null)
+const solutionRef = ref(null)
+const galleryRef = ref(null)
+const relatedRef = ref(null)
+const ctaRef = ref(null)
 
-const nextImage = () => {
-  currentImageIndex.value = (currentImageIndex.value + 1) % allImages.length;
-};
-
-const prevImage = () => {
-  currentImageIndex.value =
-    (currentImageIndex.value - 1 + allImages.length) % allImages.length;
-};
-
-const relatedProjects = projects.filter((p) => p.slug !== slug).slice(0, 3);
-
-const infoItems = project
-  ? [
-      {
-        icon: "i-lucide-tag",
-        label: "Danh Mục",
-        value: project.categoryName,
-        highlight: true,
-      },
-      {
-        icon: "i-lucide-map-pin",
-        label: "Vị Trí",
-        value: project.location,
-        highlight: false,
-      },
-    ]
-  : [];
-
-// Scroll reveal refs
-const detailsRef = ref(null);
-const infoCardRef = ref(null);
-const galleryRef = ref(null);
-const relatedHeaderRef = ref(null);
-const relatedCardRefs = ref([]);
-const ctaRef = ref(null);
-
-useScrollReveal(detailsRef);
-useScrollReveal(infoCardRef, { direction: "right" });
-useScrollReveal(galleryRef, { delay: 150 });
-useScrollReveal(relatedHeaderRef);
-useScrollReveal(ctaRef);
-
-relatedProjects.forEach((_, index) => {
-  useScrollReveal(
-    computed(() => relatedCardRefs.value[index]),
-    { delay: index * 150 },
-  );
-});
+useScrollReveal(heroRef)
+useScrollReveal(overviewRef)
+useScrollReveal(conceptRef, { delay: 100 })
+useScrollReveal(solutionRef, { delay: 100 })
+useScrollReveal(galleryRef)
+useScrollReveal(relatedRef)
+useScrollReveal(ctaRef)
 </script>
 
 <template>
-  <div>
-    <!-- ==================== 404 ==================== -->
+  <div class="bg-stone-50">
     <template v-if="!project">
-      <section class="section-spacing bg-white">
-        <div class="max-w-7xl mx-auto text-center">
-          <p class="text-8xl font-bold text-orange-500 mb-6">404</p>
-          <h1 class="text-3xl font-bold text-gray-900 mb-4">
+      <section class="min-h-screen bg-white px-6 py-32">
+        <div class="mx-auto max-w-3xl text-center">
+          <p class="mb-6 text-8xl font-bold text-orange-500">
+            404
+          </p>
+          <h1 class="mb-4 text-3xl font-bold text-gray-950 md:text-4xl">
             Không tìm thấy dự án
           </h1>
-          <p class="text-gray-500 text-lg mb-10">
-            Dự án bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.
+          <p class="mx-auto mb-10 max-w-xl text-lg leading-relaxed text-gray-500">
+            Dự án bạn đang tìm kiếm không tồn tại hoặc đã được cập nhật sang một đường dẫn khác.
           </p>
-          <NuxtLink to="/du-an" class="btn-primary inline-block">
+          <NuxtLink
+            to="/du-an"
+            class="btn-primary inline-flex"
+          >
             Quay lại danh sách dự án
           </NuxtLink>
         </div>
@@ -87,293 +153,357 @@ relatedProjects.forEach((_, index) => {
     </template>
 
     <template v-else>
-      <!-- ==================== HERO IMAGE GALLERY ==================== -->
-      <section class="relative h-[50vh] md:h-screen overflow-hidden group">
+      <section class="relative min-h-screen overflow-hidden bg-gray-950 text-white">
         <img
-          :src="allImages[currentImageIndex]"
+          :src="heroImage"
           :alt="project.name"
-          class="w-full h-full object-cover transition-transform duration-700"
-        />
+          class="absolute inset-0 h-full w-full object-cover"
+        >
+        <div class="absolute inset-0 bg-gray-950/55" />
+        <div class="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-gray-950 via-gray-950/70 to-transparent" />
 
-        <!-- Gradient Overlay -->
         <div
-          class="absolute inset-0 bg-linear-to-t from-gray-950/60 via-transparent to-gray-950/30"
-        />
+          ref="heroRef"
+          class="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col justify-end px-6 pb-10 pt-32 md:pb-16"
+        >
+          <NuxtLink
+            to="/du-an"
+            class="mb-8 inline-flex w-fit items-center gap-2 text-sm font-semibold text-white/75 transition-colors hover:text-white"
+          >
+            <Icon
+              name="i-lucide-arrow-left"
+              class="h-4 w-4"
+            />
+            Dự án
+          </NuxtLink>
 
-        <!-- Navigation Buttons -->
+          <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-end">
+            <div class="max-w-4xl">
+              <span class="mb-5 inline-block text-xs font-semibold uppercase tracking-[0.28em] text-orange-300">
+                {{ project.categoryName }}
+              </span>
+              <h1 class="text-4xl font-bold leading-tight md:text-6xl lg:text-7xl">
+                {{ project.name }}
+              </h1>
+              <p class="mt-6 max-w-2xl text-lg leading-8 text-white/80 md:text-xl">
+                {{ project.shortDescription }}
+              </p>
+            </div>
+
+            <div
+              v-if="allImages.length > 1"
+              class="rounded-2xl border border-white/15 bg-white/10 p-3 backdrop-blur-md"
+            >
+              <div class="mb-3 flex items-center justify-between text-sm text-white/80">
+                <span>Hình ảnh dự án</span>
+                <span>{{ currentImageIndex + 1 }} / {{ allImages.length }}</span>
+              </div>
+              <div class="grid grid-cols-4 gap-2">
+                <button
+                  v-for="(image, index) in allImages.slice(0, 8)"
+                  :key="image"
+                  :class="[
+                    'aspect-square overflow-hidden rounded-lg border transition-all',
+                    currentImageIndex === index
+                      ? 'border-orange-300 opacity-100'
+                      : 'border-white/20 opacity-65 hover:opacity-100'
+                  ]"
+                  type="button"
+                  @click="currentImageIndex = index"
+                >
+                  <img
+                    :src="image"
+                    :alt="`${project.name} - hình ${index + 1}`"
+                    class="h-full w-full object-cover"
+                  >
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <button
           v-if="allImages.length > 1"
-          class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white p-3 rounded-full transition-all opacity-0 group-hover:opacity-100 border border-white/20"
+          class="absolute left-4 top-1/2 z-20 hidden -translate-y-1/2 rounded-full border border-white/20 bg-white/10 p-3 text-white backdrop-blur-md transition-colors hover:bg-white/20 md:block"
+          type="button"
+          aria-label="Xem hình trước"
           @click="prevImage"
         >
-          <Icon name="i-lucide-chevron-left" class="w-6 h-6" />
+          <Icon
+            name="i-lucide-chevron-left"
+            class="h-6 w-6"
+          />
         </button>
-
         <button
           v-if="allImages.length > 1"
-          class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white p-3 rounded-full transition-all opacity-0 group-hover:opacity-100 border border-white/20"
+          class="absolute right-4 top-1/2 z-20 hidden -translate-y-1/2 rounded-full border border-white/20 bg-white/10 p-3 text-white backdrop-blur-md transition-colors hover:bg-white/20 md:block"
+          type="button"
+          aria-label="Xem hình tiếp theo"
           @click="nextImage"
         >
-          <Icon name="i-lucide-chevron-right" class="w-6 h-6" />
+          <Icon
+            name="i-lucide-chevron-right"
+            class="h-6 w-6"
+          />
         </button>
+      </section>
 
-        <!-- Image Counter -->
-        <div
-          v-if="allImages.length > 1"
-          class="absolute bottom-6 right-6 bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm border border-white/20"
-        >
-          {{ currentImageIndex + 1 }} / {{ allImages.length }}
-        </div>
-
-        <!-- Image Thumbnails -->
-        <div
-          v-if="allImages.length > 1"
-          class="absolute bottom-6 left-6 flex gap-2"
-        >
-          <button
-            v-for="(image, index) in allImages"
-            :key="index"
-            :class="[
-              'w-16 h-16 rounded-xl overflow-hidden border-2 transition-all',
-              currentImageIndex === index
-                ? 'border-orange-500 scale-105 shadow-lg shadow-orange-500/30'
-                : 'border-white/30 opacity-60 hover:opacity-100',
-            ]"
-            @click="currentImageIndex = index"
+      <section class="border-b border-stone-200 bg-white px-6 py-8">
+        <div class="mx-auto grid max-w-7xl gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          <div
+            v-for="item in metaItems"
+            :key="item.label"
+            class="border-l border-stone-200 py-3 pl-5"
           >
-            <img
-              :src="image"
-              :alt="`Image ${index + 1}`"
-              class="w-full h-full object-cover"
-            />
-          </button>
+            <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-orange-50 text-orange-500">
+              <Icon
+                :name="item.icon"
+                class="h-5 w-5"
+              />
+            </div>
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">
+              {{ item.label }}
+            </p>
+            <p class="mt-2 font-semibold leading-6 text-gray-950">
+              {{ item.value }}
+            </p>
+          </div>
         </div>
       </section>
 
-      <!-- ==================== PROJECT DETAILS ==================== -->
-      <section class="section-spacing bg-white">
-        <div class="max-w-7xl mx-auto">
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            <!-- Main Content -->
-            <div class="lg:col-span-2">
-              <div ref="detailsRef">
-                <span
-                  class="text-orange-500 uppercase tracking-[0.2em] text-xs font-semibold"
-                >
-                  {{ project.categoryName }}
-                </span>
-                <h1
-                  class="text-4xl md:text-5xl font-bold text-gray-900 mt-3 mb-6"
-                >
-                  {{ project.name }}
-                </h1>
-                <div class="space-y-5">
-                  <p
-                    v-for="(paragraph, index) in project.description"
-                    :key="index"
-                    class="text-gray-500 text-lg leading-relaxed"
-                  >
-                    {{ paragraph }}
-                  </p>
-                </div>
-              </div>
-            </div>
+      <section class="px-6 py-20 md:py-28">
+        <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+          <div ref="overviewRef">
+            <span class="text-xs font-semibold uppercase tracking-[0.24em] text-orange-500">
+              Tổng quan dự án
+            </span>
+            <h2 class="mt-4 max-w-md text-3xl font-bold leading-tight text-gray-950 md:text-5xl">
+              Một không gian được kể bằng công năng, vật liệu và cảm xúc.
+            </h2>
+          </div>
+          <div class="max-w-3xl">
+            <p class="text-xl leading-9 text-gray-600">
+              {{ project.content?.overview ?? fallbackOverview }}
+            </p>
+          </div>
+        </div>
+      </section>
 
-            <!-- Project Info Card -->
-            <div>
-              <div ref="infoCardRef">
-                <div
-                  class="bg-gray-50 rounded-2xl p-8 sticky top-24 border border-gray-100"
-                >
-                  <h3 class="text-xl font-bold text-gray-900 mb-6">
-                    Thông Tin <span class="text-orange-500">Dự Án</span>
-                  </h3>
+      <section class="bg-white px-6 py-20 md:py-28">
+        <div
+          ref="conceptRef"
+          class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-center"
+        >
+          <div class="overflow-hidden rounded-[2rem]">
+            <img
+              :src="allImages[1] ?? getProjectImage(project)"
+              :alt="`${project.name} - ý tưởng thiết kế`"
+              class="aspect-[4/3] h-full w-full object-cover"
+            >
+          </div>
+          <div class="max-w-xl lg:pl-8">
+            <span class="text-xs font-semibold uppercase tracking-[0.24em] text-orange-500">
+              Ý tưởng thiết kế
+            </span>
+            <h2 class="mt-4 text-3xl font-bold leading-tight text-gray-950 md:text-5xl">
+              Tinh thần thẩm mỹ được tiết chế để không gian bền vững hơn.
+            </h2>
+            <p class="mt-6 text-lg leading-8 text-gray-600">
+              {{ project.content?.concept }}
+            </p>
+          </div>
+        </div>
+      </section>
 
-                  <div class="space-y-5 mb-8">
-                    <div
-                      v-for="item in infoItems"
-                      :key="item.label"
-                      class="flex items-center gap-4 pb-5 border-b border-gray-200 last:border-0 last:pb-0"
-                    >
-                      <div
-                        class="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center shrink-0"
-                      >
-                        <Icon
-                          :name="item.icon"
-                          class="w-5 h-5 text-orange-500"
-                        />
-                      </div>
-                      <div>
-                        <p
-                          class="text-gray-500 text-xs font-semibold uppercase tracking-wider"
-                        >
-                          {{ item.label }}
-                        </p>
-                        <p
-                          :class="[
-                            'font-semibold mt-0.5',
-                            item.highlight
-                              ? 'text-orange-500'
-                              : 'text-gray-900',
-                          ]"
-                        >
-                          {{ item.value }}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+      <section class="px-6 py-20 md:py-28">
+        <div
+          ref="solutionRef"
+          class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_1fr]"
+        >
+          <div class="max-w-xl">
+            <span class="text-xs font-semibold uppercase tracking-[0.24em] text-orange-500">
+              Giải pháp không gian
+            </span>
+            <h2 class="mt-4 text-3xl font-bold leading-tight text-gray-950 md:text-5xl">
+              Tối ưu từng lớp trải nghiệm trong quá trình sử dụng.
+            </h2>
+            <p class="mt-6 text-lg leading-8 text-gray-600">
+              {{ project.content?.solution }}
+            </p>
+          </div>
 
-                  <NuxtLink
-                    to="/lien-he"
-                    class="btn-primary w-full text-center block"
-                  >
-                    Liên Hệ Tư Vấn
-                  </NuxtLink>
-                </div>
-              </div>
+          <div
+            v-if="project.content?.highlights?.length"
+            class="space-y-4"
+          >
+            <div
+              v-for="(highlight, index) in project.content.highlights"
+              :key="highlight"
+              class="group flex gap-5 border-b border-stone-200 pb-5 last:border-b-0"
+            >
+              <span class="mt-1 text-sm font-bold text-orange-500">
+                {{ String(index + 1).padStart(2, '0') }}
+              </span>
+              <p class="text-lg leading-8 text-gray-700">
+                {{ highlight }}
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ==================== GALLERY ==================== -->
       <section
-        v-if="project.gallery.length > 0"
-        class="section-spacing bg-gray-50"
+        v-if="project.content?.materials?.length"
+        class="bg-stone-900 px-6 py-20 text-white md:py-28"
       >
-        <div class="max-w-7xl mx-auto">
-          <div ref="galleryRef">
-            <div class="text-center mb-16">
-              <span
-                class="text-orange-500 uppercase tracking-[0.2em] text-xs font-semibold"
-              >
-                Hình ảnh thực tế
+        <div class="mx-auto max-w-7xl">
+          <div class="mb-12 max-w-2xl">
+            <span class="text-xs font-semibold uppercase tracking-[0.24em] text-orange-300">
+              Vật liệu & cảm hứng
+            </span>
+            <h2 class="mt-4 text-3xl font-bold leading-tight md:text-5xl">
+              Chất liệu được chọn để tạo chiều sâu, sự ấm áp và độ bền sử dụng.
+            </h2>
+          </div>
+          <div class="grid gap-4 md:grid-cols-2">
+            <div
+              v-for="material in project.content.materials"
+              :key="material"
+              class="border border-white/10 bg-white/[0.03] p-6"
+            >
+              <div class="mb-5 h-px w-12 bg-orange-300" />
+              <p class="text-lg leading-8 text-white/80">
+                {{ material }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        v-if="allImages.length > 0"
+        class="bg-white px-6 py-20 md:py-28"
+      >
+        <div
+          ref="galleryRef"
+          class="mx-auto max-w-7xl"
+        >
+          <div class="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <span class="text-xs font-semibold uppercase tracking-[0.24em] text-orange-500">
+                Hình ảnh dự án
               </span>
-              <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mt-3">
-                Bộ Sưu Tập <span class="text-orange-500">Ảnh</span>
+              <h2 class="mt-4 text-3xl font-bold text-gray-950 md:text-5xl">
+                Góc nhìn hoàn thiện
               </h2>
             </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div
-                v-for="(img, index) in project.gallery"
-                :key="index"
-                class="group relative rounded-2xl overflow-hidden aspect-video"
-              >
-                <BaseImage
-                  :src="img"
-                  :alt="`${project.name} - ${index + 1}`"
-                  class="absolute inset-0"
-                  img-class="group-hover:scale-110 transition-transform duration-700"
-                />
-                <div
-                  class="absolute inset-0 bg-gray-950/0 group-hover:bg-gray-950/20 transition-colors duration-500"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==================== RELATED PROJECTS ==================== -->
-      <section class="section-spacing bg-white">
-        <div class="max-w-7xl mx-auto">
-          <div ref="relatedHeaderRef">
-            <div
-              class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16"
-            >
-              <div>
-                <span
-                  class="text-orange-500 uppercase tracking-[0.2em] text-xs font-semibold"
-                >
-                  Khám phá thêm
-                </span>
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mt-3">
-                  Các Dự Án <span class="text-orange-500">Khác</span>
-                </h2>
-              </div>
-              <NuxtLink
-                to="/du-an"
-                class="group flex items-center gap-2 text-orange-500 font-semibold hover:gap-3 transition-all"
-              >
-                Xem tất cả
-                <Icon
-                  name="i-lucide-arrow-right"
-                  class="w-4 h-4 transition-transform group-hover:translate-x-1"
-                />
-              </NuxtLink>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div
-              v-for="(rp, index) in relatedProjects"
-              :key="rp.slug"
-              :ref="
-                (el) => {
-                  if (el) relatedCardRefs[index] = el;
-                }
-              "
-            >
-              <NuxtLink
-                :to="`/du-an/${rp.slug}`"
-                class="group relative block h-80 rounded-2xl overflow-hidden"
-              >
-                <BaseImage
-                  :src="rp.image[0]"
-                  :alt="rp.name"
-                  class="absolute inset-0"
-                  img-class="group-hover:scale-110 transition-transform duration-700"
-                />
-                <div
-                  class="absolute inset-0 bg-linear-to-t from-gray-950/80 via-gray-950/20 to-transparent"
-                />
-                <div
-                  class="absolute inset-0 bg-orange-500/0 group-hover:bg-orange-500/20 transition-colors duration-500"
-                />
-
-                <div class="absolute bottom-0 left-0 right-0 p-6">
-                  <span class="text-orange-300 text-sm font-semibold">
-                    {{ rp.categoryName }}
-                  </span>
-                  <h3 class="text-white text-xl font-bold mt-1">
-                    {{ rp.name }}
-                  </h3>
-                </div>
-              </NuxtLink>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==================== CTA ==================== -->
-      <section class="relative py-24 md:py-32 overflow-hidden">
-        <div
-          class="absolute inset-0 bg-linear-to-br from-orange-500 via-orange-500 to-orange-600"
-        />
-        <div
-          class="absolute top-0 right-0 w-125 h-125 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"
-        />
-        <div
-          class="absolute bottom-0 left-0 w-100 h-100 bg-orange-400/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"
-        />
-
-        <div ref="ctaRef">
-          <div class="relative z-10 max-w-4xl mx-auto text-center px-6">
-            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
-              Sẵn Sàng Cho
-              <br class="hidden md:block" />
-              Dự Án Của Bạn?
-            </h2>
-            <p class="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-              Hãy liên hệ với chúng tôi để tạo nên không gian sống hoặc làm việc
-              tuyệt vời
+            <p class="max-w-md text-base leading-7 text-gray-500">
+              Bộ hình ghi lại các lớp không gian, vật liệu và ánh sáng đã được hoàn thiện trong dự án.
             </p>
-            <NuxtLink
-              to="/lien-he"
-              class="inline-block bg-white text-orange-600 hover:bg-gray-50 px-10 py-4 rounded-full font-bold text-lg transition-colors shadow-lg"
+          </div>
+
+          <div class="grid gap-5 md:grid-cols-2">
+            <button
+              v-for="(image, index) in allImages"
+              :key="image"
+              :class="[
+                'group relative overflow-hidden bg-stone-100 text-left',
+                index === 0 ? 'md:col-span-2' : ''
+              ]"
+              type="button"
+              @click="currentImageIndex = index"
             >
-              Bắt Đầu Dự Án
+              <img
+                :src="image"
+                :alt="`${project.name} - hình ảnh ${index + 1}`"
+                :class="[
+                  'w-full object-cover transition-transform duration-700 group-hover:scale-105',
+                  index === 0 ? 'aspect-[16/9]' : 'aspect-[4/3]'
+                ]"
+              >
+              <div class="absolute inset-0 bg-gray-950/0 transition-colors group-hover:bg-gray-950/15" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="px-6 py-20 md:py-28">
+        <div
+          ref="ctaRef"
+          class="mx-auto grid max-w-7xl gap-10 bg-white p-8 md:p-12 lg:grid-cols-[1fr_auto] lg:items-center"
+        >
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-[0.24em] text-orange-500">
+              Tư vấn thiết kế
+            </span>
+            <h2 class="mt-4 max-w-2xl text-3xl font-bold leading-tight text-gray-950 md:text-5xl">
+              Bạn muốn sở hữu một không gian có tinh thần tương tự?
+            </h2>
+            <p class="mt-5 max-w-2xl text-lg leading-8 text-gray-600">
+              Lai Huy Interior đồng hành từ định hướng phong cách, bố trí công năng đến hoàn thiện vật liệu, giúp không gian của bạn vừa đẹp, vừa phù hợp với nhịp sống thực tế.
+            </p>
+          </div>
+          <NuxtLink
+            to="/lien-he"
+            class="btn-primary inline-flex justify-center"
+          >
+            Liên hệ tư vấn
+          </NuxtLink>
+        </div>
+      </section>
+
+      <section
+        v-if="relatedProjects.length > 0"
+        class="bg-white px-6 py-20 md:py-28"
+      >
+        <div
+          ref="relatedRef"
+          class="mx-auto max-w-7xl"
+        >
+          <div class="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <span class="text-xs font-semibold uppercase tracking-[0.24em] text-orange-500">
+                Khám phá thêm
+              </span>
+              <h2 class="mt-4 text-3xl font-bold text-gray-950 md:text-5xl">
+                Dự án liên quan
+              </h2>
+            </div>
+            <NuxtLink
+              to="/du-an"
+              class="group inline-flex items-center gap-2 font-semibold text-orange-500 transition-all hover:gap-3"
+            >
+              Xem tất cả
+              <Icon
+                name="i-lucide-arrow-right"
+                class="h-4 w-4"
+              />
+            </NuxtLink>
+          </div>
+
+          <div class="grid gap-6 md:grid-cols-3">
+            <NuxtLink
+              v-for="item in relatedProjects"
+              :key="item.slug"
+              :to="`/du-an/${item.slug}`"
+              class="group block"
+            >
+              <div class="relative mb-5 overflow-hidden">
+                <img
+                  :src="getProjectImage(item)"
+                  :alt="item.name"
+                  class="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                >
+              </div>
+              <span class="text-sm font-semibold text-orange-500">
+                {{ item.categoryName }}
+              </span>
+              <h3 class="mt-2 text-xl font-bold text-gray-950">
+                {{ item.name }}
+              </h3>
+              <p class="mt-3 line-clamp-2 text-sm leading-6 text-gray-500">
+                {{ item.shortDescription }}
+              </p>
             </NuxtLink>
           </div>
         </div>

@@ -38,7 +38,7 @@ const contactInfo = [
   {
     icon: "i-lucide-phone",
     title: "Liên Hệ",
-    lines: ["+84 (0) 123 456 789", "info@laihuy.vn"],
+    lines: ["+84 90 310 20 12", "noithatlaihuy@gmail.com"],
   },
   {
     icon: "i-lucide-clock",
@@ -285,26 +285,18 @@ faqs.forEach((_, index) => {
               </h2>
 
               <!-- Map Placeholder -->
-              <div
-                class="rounded-2xl overflow-hidden h-80 bg-gray-100 border border-gray-200 flex items-center justify-center"
+              <NuxtLink
+                to="https://www.google.com/maps/place/C%C3%B4ng+Ty+Tnhh+N%E1%BB%99i+Th%E1%BA%A5t+Lai+Huy/@10.2573589,106.3735172,15z/data=!4m10!1m2!2m1!1zNTU3RTEgLSBLUDIgLSBQaMaw4budbmcgUGjDuiBLaMawxqFuZyAtIFRQLiBC4bq_biBUcmUgLSBC4bq_biBUcmUsIFThu4luaCBC4bq_biBUcmUsIFZpZXRuYW0sIDkzMDAwMA!3m6!1s0x310aa8f002a52747:0x14fb04195ee9f08c!8m2!3d10.2573589!4d106.3857002!15sCmQ1NTdFMSAtIEtQMiAtIFBoxrDhu51uZyBQaMO6IEtoxrDGoW5nIC0gVFAuIELhur9uIFRyZSAtIELhur9uIFRyZSwgVOG7iW5oIELhur9uIFRyZSwgVmlldG5hbSwgOTMwMDAwWloiWDU1N2UxIGtwMiBwaMaw4budbmcgcGjDuiBraMawxqFuZyB0cCBi4bq_biB0cmUgYuG6v24gdHJlIHThu4luaCBi4bq_biB0cmUgdmlldG5hbSA5MzAwMDCSAQxob21lX2J1aWxkZXLgAQA!16s%2Fg%2F11rgh73_jy?entry=ttu&g_ep=EgoyMDI2MDUxMy4wIKXMDSoASAFQAw%3D%3D"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="rounded-2xl overflow-hidden h-80 border flex items-center justify-center cursor-pointer"
               >
-                <div class="text-center">
-                  <div
-                    class="w-16 h-16 rounded-full bg-orange-50 flex items-center justify-center mx-auto mb-4"
-                  >
-                    <Icon
-                      name="i-lucide-map-pin"
-                      class="w-8 h-8 text-orange-500"
-                    />
-                  </div>
-                  <p class="text-gray-500 font-medium">
-                    Bản đồ sẽ hiển thị ở đây
-                  </p>
-                  <p class="text-sm text-gray-400 mt-1">
-                    TP. Hồ Chí Minh, Việt Nam
-                  </p>
-                </div>
-              </div>
+                <img
+                  src="/images/map_address.png"
+                  alt="Map to Lai Huy Interior"
+                  class="w-full h-full object-cover"
+                />
+              </NuxtLink>
 
               <!-- Services Checklist -->
               <div class="mt-10">
