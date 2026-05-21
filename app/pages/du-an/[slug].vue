@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { company } from '~/data/company'
 import { projects } from '~/data/projects'
+import { uiText } from '~/data/ui'
 import type { Project } from '~/shared/types/project'
 
 type Fact = {
@@ -9,6 +10,7 @@ type Fact = {
   icon: string
 }
 
+const { t, ta } = useLanguage()
 const route = useRoute()
 const slug = Array.isArray(route.params.slug)
   ? route.params.slug[0]
@@ -23,64 +25,68 @@ const allImages = project
   ? [...new Set([...project.image, ...project.gallery])]
   : []
 
-const facts: Fact[] = project
-  ? [
-      {
-        label: 'Hạng mục',
-        value: project.categoryName,
-        icon: 'i-lucide-tag'
-      },
-      project.location
-        ? {
-            label: 'Vị trí',
-            value: project.location,
-            icon: 'i-lucide-map-pin'
-          }
-        : null,
-      project.area
-        ? {
-            label: 'Quy mô',
-            value: project.area,
-            icon: 'i-lucide-ruler'
-          }
-        : null,
-      project.rooms
-        ? {
-            label: 'Số phòng',
-            value: project.rooms,
-            icon: 'i-lucide-bed-double'
-          }
-        : null,
-      project.duration
-        ? {
-            label: 'Thời gian',
-            value: project.duration,
-            icon: 'i-lucide-calendar-clock'
-          }
-        : null,
-      project.year
-        ? {
-            label: 'Năm',
-            value: project.year,
-            icon: 'i-lucide-calendar'
-          }
-        : null,
-      project.scope?.length
-        ? {
-            label: 'Phạm vi',
-            value: project.scope.join(', '),
-            icon: 'i-lucide-list-checks'
-          }
-        : null,
-      project.materials?.length
-        ? {
-            label: 'Vật liệu chính',
-            value: project.materials.join(', '),
-            icon: 'i-lucide-layers-3'
-          }
-        : null
-    ].filter((item): item is Fact => Boolean(item))
-  : []
+const facts = computed<Fact[]>(() => {
+  if (!project) {
+    return []
+  }
+
+  return [
+    {
+      label: t(uiText.projectFacts.category),
+      value: t(project.categoryName),
+      icon: 'i-lucide-tag'
+    },
+    project.location
+      ? {
+          label: t(uiText.projectFacts.location),
+          value: t(project.location),
+          icon: 'i-lucide-map-pin'
+        }
+      : null,
+    project.area
+      ? {
+          label: t(uiText.projectFacts.scale),
+          value: t(project.area),
+          icon: 'i-lucide-ruler'
+        }
+      : null,
+    project.rooms
+      ? {
+          label: t(uiText.projectFacts.rooms),
+          value: t(project.rooms),
+          icon: 'i-lucide-bed-double'
+        }
+      : null,
+    project.duration
+      ? {
+          label: t(uiText.projectFacts.duration),
+          value: t(project.duration),
+          icon: 'i-lucide-calendar-clock'
+        }
+      : null,
+    project.year
+      ? {
+          label: t(uiText.projectFacts.year),
+          value: t(project.year),
+          icon: 'i-lucide-calendar'
+        }
+      : null,
+    ta(project.scope).length
+      ? {
+          label: t(uiText.projectFacts.scope),
+          value: ta(project.scope).join(', '),
+          icon: 'i-lucide-list-checks'
+        }
+      : null,
+    ta(project.materials).length
+      ? {
+          label: t(uiText.projectFacts.materials),
+          value: ta(project.materials).join(', '),
+          icon: 'i-lucide-layers-3'
+        }
+      : null
+  ].filter((item): item is Fact => Boolean(item))
+})
 
 const relatedProjects = project
   ? projects
@@ -94,15 +100,24 @@ const relatedProjects = project
       .slice(0, 3)
   : []
 
-if (project) {
-  useSeoMeta({
-    title: `${project.name} | Case study nội thất dự án | Lai Huy Interior`,
-    description: project.content?.overview ?? project.shortDescription,
-    ogTitle: `${project.name} | Lai Huy Interior`,
-    ogDescription: project.shortDescription,
-    ogImage: getProjectImage(project)
-  })
-}
+const seoTitle = computed(() =>
+  project
+    ? `${t(project.name)} | ${t({ vi: 'Case study nội thất dự án', en: 'Interior project case study' })} | Lai Huy Interior`
+    : t(company.seo.projects.title)
+)
+const seoDescription = computed(() =>
+  project
+    ? t(project.content?.overview) || t(project.shortDescription)
+    : t(company.seo.projects.description)
+)
+
+useSeoMeta({
+  title: seoTitle,
+  description: seoDescription,
+  ogTitle: computed(() => project ? `${t(project.name)} | Lai Huy Interior` : t(company.seo.projects.title)),
+  ogDescription: seoDescription,
+  ogImage: computed(() => getProjectImage(project))
+})
 </script>
 
 <template>
@@ -114,16 +129,16 @@ if (project) {
             404
           </p>
           <h1 class="mt-6 text-3xl font-black text-ink-950 md:text-5xl">
-            Không tìm thấy dự án
+            {{ t({ vi: 'Không tìm thấy dự án', en: 'Project not found' }) }}
           </h1>
           <p class="mx-auto mt-4 max-w-xl text-lg leading-8 text-ink-600">
-            Dự án bạn đang tìm kiếm không tồn tại hoặc đã được cập nhật sang một đường dẫn khác.
+            {{ t({ vi: 'Dự án bạn đang tìm kiếm không tồn tại hoặc đã được cập nhật sang một đường dẫn khác.', en: 'The project you are looking for does not exist or has moved to another URL.' }) }}
           </p>
           <NuxtLink
             to="/du-an"
             class="btn-dark mt-9"
           >
-            Quay lại danh sách dự án
+            {{ t(uiText.cta.backToProjects) }}
           </NuxtLink>
         </div>
       </section>
@@ -133,7 +148,7 @@ if (project) {
       <section class="relative min-h-screen overflow-hidden bg-ink-950 text-white">
         <img
           :src="getProjectImage(project)"
-          :alt="project.name"
+          :alt="t(project.name)"
           class="absolute inset-0 h-full w-full object-cover"
         >
         <div class="absolute inset-0 bg-ink-950/72" />
@@ -148,24 +163,24 @@ if (project) {
               name="i-lucide-arrow-left"
               class="h-4 w-4"
             />
-            Dự án
+            {{ t({ vi: 'Dự án', en: 'Projects' }) }}
           </NuxtLink>
 
           <p class="eyebrow mb-5 text-wood-300">
-            {{ project.categoryName }} case study
+            {{ t(project.categoryName) }} case study
           </p>
           <h1 class="max-w-5xl text-4xl font-black uppercase leading-tight md:text-6xl lg:text-7xl">
-            {{ project.name }}
+            {{ t(project.name) }}
           </h1>
           <p class="mt-6 max-w-3xl text-lg leading-8 text-white/76 md:text-xl">
-            {{ project.shortDescription }}
+            {{ t(project.shortDescription) }}
           </p>
 
           <div class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <div
               v-for="fact in facts.slice(0, 4)"
               :key="fact.label"
-              class="border border-white/12 bg-white/[0.04] p-5 backdrop-blur-sm"
+              class="rounded-2xl border border-white/12 bg-white/[0.04] p-5 backdrop-blur-sm"
             >
               <p class="text-xs uppercase tracking-[0.18em] text-white/45">
                 {{ fact.label }}
@@ -203,22 +218,22 @@ if (project) {
         <div class="section-shell grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
           <div>
             <p class="eyebrow">
-              Tổng quan
+              {{ t(uiText.labels.overview) }}
             </p>
             <h2 class="mt-4 text-3xl font-black uppercase leading-tight text-ink-950 md:text-5xl">
-              Dự án được nhìn như một bài toán vận hành, tiến độ và chất lượng
+              {{ t({ vi: 'Dự án được nhìn như một bài toán vận hành, tiến độ và chất lượng', en: 'A project viewed through operations, schedule, and quality control' }) }}
             </h2>
           </div>
           <div class="space-y-6 text-lg leading-9 text-ink-600">
             <p>
-              {{ project.content?.overview ?? project.description.join(' ') }}
+              {{ t(project.content?.overview) || ta(project.description).join(' ') }}
             </p>
             <p
               v-if="project.content?.challenge"
               class="border-l-4 border-wood-500 pl-6 text-ink-800"
             >
-              <strong>Thách thức:</strong>
-              {{ project.content.challenge }}
+              <strong>{{ t(uiText.labels.challenge) }}:</strong>
+              {{ t(project.content.challenge) }}
             </p>
           </div>
         </div>
@@ -228,22 +243,22 @@ if (project) {
         <div class="section-shell grid gap-10 lg:grid-cols-2">
           <div>
             <p class="eyebrow">
-              Phạm vi công việc
+              {{ t(uiText.labels.scope) }}
             </p>
             <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
-              Từ thiết kế đến sản xuất và lắp đặt
+              {{ t({ vi: 'Từ thiết kế đến sản xuất và lắp đặt', en: 'From design to production and installation' }) }}
             </h2>
             <div
-              v-if="project.scope?.length"
+              v-if="ta(project.scope).length"
               class="mt-8 grid gap-3"
             >
               <div
-                v-for="(scope, index) in project.scope"
+                v-for="(scope, index) in ta(project.scope)"
                 :key="scope"
-                class="flex gap-4 border border-ink-200 bg-white p-5"
+                class="flex gap-4 rounded-2xl border border-ink-200 bg-white p-5"
               >
                 <span class="font-black text-wood-600">
-                  {{ String(index + 1).padStart(2, '0') }}
+                  {{ String(Number(index) + 1).padStart(2, '0') }}
                 </span>
                 <span class="font-bold text-ink-800">
                   {{ scope }}
@@ -254,20 +269,23 @@ if (project) {
 
           <div>
             <p class="eyebrow">
-              Giải pháp triển khai
+              {{ t(uiText.labels.solution) }}
             </p>
             <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
-              Kiểm soát đồng bộ giữa xưởng và công trình
+              {{ t({ vi: 'Kiểm soát đồng bộ giữa xưởng và công trình', en: 'Keeping factory and site execution aligned' }) }}
             </h2>
-            <p class="mt-6 text-lg leading-8 text-ink-600">
-              {{ project.content?.solution }}
+            <p
+              v-if="project.content?.solution"
+              class="mt-6 text-lg leading-8 text-ink-600"
+            >
+              {{ t(project.content.solution) }}
             </p>
             <div
-              v-if="project.content?.highlights?.length"
+              v-if="ta(project.content?.highlights).length"
               class="mt-8 space-y-4"
             >
               <div
-                v-for="highlight in project.content.highlights"
+                v-for="highlight in ta(project.content?.highlights)"
                 :key="highlight"
                 class="border-b border-ink-200 pb-4 text-base font-semibold leading-7 text-ink-800"
               >
@@ -279,23 +297,23 @@ if (project) {
       </section>
 
       <section
-        v-if="project.content?.materials?.length"
+        v-if="ta(project.content?.materials).length"
         class="section-spacing bg-ink-950 text-white"
       >
         <div class="section-shell">
           <div class="mb-10 max-w-3xl">
             <p class="eyebrow text-wood-300">
-              Vật liệu & tiêu chuẩn
+              {{ t({ vi: 'Vật liệu & tiêu chuẩn', en: 'Materials and standards' }) }}
             </p>
             <h2 class="mt-4 text-3xl font-black uppercase leading-tight md:text-5xl">
-              Chọn vật liệu theo độ bền, khả năng bảo trì và hình ảnh thương hiệu
+              {{ t({ vi: 'Chọn vật liệu theo độ bền, khả năng bảo trì và hình ảnh thương hiệu', en: 'Materials selected for durability, maintenance, and brand experience' }) }}
             </h2>
           </div>
           <div class="grid gap-4 md:grid-cols-2">
             <div
-              v-for="material in project.content.materials"
+              v-for="material in ta(project.content?.materials)"
               :key="material"
-              class="border border-white/12 p-6"
+              class="rounded-2xl border border-white/12 p-6"
             >
               <div class="mb-5 h-px w-12 bg-wood-300" />
               <p class="text-lg leading-8 text-white/72">
@@ -311,14 +329,14 @@ if (project) {
           <div class="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <p class="eyebrow">
-                Hình hoàn thiện
+                {{ t(uiText.labels.completedImages) }}
               </p>
               <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
-                Gallery dự án
+                {{ t(uiText.labels.gallery) }}
               </h2>
             </div>
             <p class="max-w-md text-sm leading-6 text-ink-500">
-              Bộ hình ghi lại các khu vực đã hoàn thiện, giúp chủ đầu tư đánh giá vật liệu, tỷ lệ và chất lượng lắp đặt.
+              {{ t({ vi: 'Bộ hình ghi lại các khu vực đã hoàn thiện, giúp chủ đầu tư đánh giá vật liệu, tỷ lệ và chất lượng lắp đặt.', en: 'The gallery records completed areas so owners can review materials, proportions, and installation quality.' }) }}
             </p>
           </div>
 
@@ -327,9 +345,9 @@ if (project) {
               v-for="(image, index) in allImages"
               :key="image"
               :src="image"
-              :alt="`${project.name} - hình hoàn thiện ${index + 1}`"
+              :alt="`${t(project.name)} - ${t(uiText.labels.completedImages)} ${Number(index) + 1}`"
               :class="[
-                'w-full object-cover',
+                'w-full rounded-2xl object-cover',
                 index === 0 ? 'aspect-[16/9] md:col-span-2' : 'aspect-[4/3]'
               ]"
             >
@@ -341,10 +359,10 @@ if (project) {
         <div class="section-shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
           <div>
             <p class="eyebrow text-wood-300">
-              Thi công nội thất khách sạn
+              {{ t(uiText.cta.hotelConsult) }}
             </p>
             <h2 class="mt-4 max-w-3xl text-3xl font-black uppercase md:text-5xl">
-              Bạn cần tư vấn giải pháp thi công nội thất khách sạn?
+              {{ t({ vi: 'Bạn cần tư vấn giải pháp thi công nội thất khách sạn?', en: 'Need consultation for a hotel interior project?' }) }}
             </h2>
           </div>
           <div class="flex flex-col gap-3 sm:flex-row md:flex-col">
@@ -352,13 +370,13 @@ if (project) {
               to="/lien-he"
               class="btn-primary"
             >
-              Nhận báo giá
+              {{ t(uiText.cta.quote24h) }}
             </NuxtLink>
             <a
               :href="`tel:${company.phone.replaceAll(' ', '')}`"
               class="btn-secondary"
             >
-              Liên hệ tư vấn
+              {{ t(uiText.cta.contact) }}
             </a>
           </div>
         </div>
@@ -372,17 +390,17 @@ if (project) {
           <div class="mb-10 flex items-end justify-between gap-6">
             <div>
               <p class="eyebrow">
-                Khám phá thêm
+                {{ t(uiText.labels.exploreMore) }}
               </p>
               <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
-                Dự án liên quan
+                {{ t(uiText.labels.relatedProjects) }}
               </h2>
             </div>
             <NuxtLink
               to="/du-an"
               class="btn-outline hidden md:inline-flex"
             >
-              Xem tất cả
+              {{ t(uiText.cta.allProjects) }}
             </NuxtLink>
           </div>
 
@@ -391,19 +409,19 @@ if (project) {
               v-for="item in relatedProjects"
               :key="item.slug"
               :to="`/du-an/${item.slug}`"
-              class="group block bg-white"
+              class="group block overflow-hidden rounded-2xl bg-white"
             >
               <img
                 :src="getProjectImage(item)"
-                :alt="item.name"
+                :alt="t(item.name)"
                 class="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
               >
               <div class="border border-t-0 border-ink-200 p-5">
                 <span class="text-xs font-bold uppercase tracking-[0.16em] text-wood-600">
-                  {{ item.categoryName }}
+                  {{ t(item.categoryName) }}
                 </span>
                 <h3 class="mt-3 text-xl font-black text-ink-950">
-                  {{ item.name }}
+                  {{ t(item.name) }}
                 </h3>
               </div>
             </NuxtLink>

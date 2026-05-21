@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { company } from '~/data/company'
+import { uiText } from '~/data/ui'
+
+const { t, ta } = useLanguage()
 
 const form = reactive({
   name: '',
@@ -12,62 +15,68 @@ const form = reactive({
 const contactCards = computed(() => [
   ...company.addresses.map(address => ({
     icon: 'i-lucide-map-pin',
-    title: address.label,
-    lines: [address.address],
+    title: t(address.label),
+    lines: [t(address.address)],
     href: address.mapUrl,
-    action: 'Mở Google Maps'
+    action: t(uiText.labels.openMaps)
   })),
   {
     icon: 'i-lucide-phone',
-    title: 'Điện thoại',
+    title: t(uiText.labels.phone),
     lines: [company.phone],
     href: `tel:${company.phone.replaceAll(' ', '')}`,
-    action: 'Gọi ngay'
+    action: t(uiText.labels.callNow)
   },
   {
     icon: 'i-lucide-mail',
-    title: 'Email',
+    title: t(uiText.labels.email),
     lines: [company.email],
     href: `mailto:${company.email}`,
-    action: 'Gửi email'
+    action: t(uiText.labels.sendEmail)
   },
   {
     icon: 'i-lucide-clock',
-    title: 'Giờ làm việc',
-    lines: company.workingHours,
+    title: t(uiText.labels.workingHours),
+    lines: ta(company.workingHours),
     href: '',
     action: ''
   }
 ])
 
-const projectTypes = [
-  'Thi công nội thất khách sạn',
-  'Sản xuất nội thất tại xưởng',
-  'Villa / căn hộ / nhà phố',
-  'Thương mại / văn phòng',
-  'Gia công theo bản vẽ / xuất khẩu'
-]
+const projectTypes = computed(() => [
+  t({ vi: 'Thi công nội thất khách sạn', en: 'Hotel interior contracting' }),
+  t({ vi: 'Sản xuất nội thất tại xưởng', en: 'Factory furniture production' }),
+  t({ vi: 'Villa / căn hộ / nhà phố', en: 'Villa / apartment / townhouse' }),
+  t({ vi: 'Thương mại / văn phòng', en: 'Commercial / office' }),
+  t({ vi: 'Gia công theo bản vẽ / xuất khẩu', en: 'Production from drawings / export' })
+])
 
 const submitForm = () => {
-  const subject = `Yêu cầu tư vấn dự án - ${form.projectType || 'Lai Huy Interior'}`
+  const subject = t({
+    vi: `Yêu cầu tư vấn dự án - ${form.projectType || 'Lai Huy Interior'}`,
+    en: `Project consultation request - ${form.projectType || 'Lai Huy Interior'}`
+  })
   const body = [
-    `Họ tên: ${form.name}`,
+    `${t({ vi: 'Họ tên', en: 'Name' })}: ${form.name}`,
     `Email: ${form.email}`,
-    `Điện thoại: ${form.phone}`,
-    `Loại dự án: ${form.projectType}`,
+    `${t({ vi: 'Điện thoại', en: 'Phone' })}: ${form.phone}`,
+    `${t({ vi: 'Loại dự án', en: 'Project type' })}: ${form.projectType}`,
     '',
-    'Nội dung:',
+    `${t({ vi: 'Nội dung', en: 'Message' })}:`,
     form.message
   ].join('\n')
 
   window.location.href = `mailto:${company.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 }
 
+const seoTitle = computed(() => t(company.seo.contact.title))
+const seoDescription = computed(() => t(company.seo.contact.description))
+
 useSeoMeta({
-  title: company.seo.contact.title,
-  description: company.seo.contact.description,
-  ogTitle: company.seo.contact.title,
-  ogDescription: company.seo.contact.description,
+  title: seoTitle,
+  description: seoDescription,
+  ogTitle: seoTitle,
+  ogDescription: seoDescription,
   ogImage: company.seo.contact.ogImage
 })
 </script>
@@ -75,10 +84,10 @@ useSeoMeta({
 <template>
   <div>
     <AppHero
-      topic="Contact"
-      title="Liên hệ tư vấn"
-      special-title="dự án"
-      subtitle="Gửi bản vẽ, BOQ hoặc thông tin công trình để Lai Huy Interior tư vấn phương án sản xuất và thi công phù hợp."
+      :topic="t({ vi: 'Liên hệ', en: 'Contact' })"
+      :title="t({ vi: 'Liên hệ tư vấn', en: 'Contact' })"
+      :special-title="t({ vi: 'dự án', en: 'our team' })"
+      :subtitle="t({ vi: 'Gửi bản vẽ, BOQ hoặc thông tin công trình để Lai Huy Interior tư vấn phương án sản xuất và thi công phù hợp.', en: 'Send drawings, BOQ, or project information so Lai Huy Interior can advise on production and installation solutions.' })"
       bg-image="/images/projects/house/anhduy_house/gieng_troi.jpg"
     />
 
@@ -120,15 +129,15 @@ useSeoMeta({
 
     <section class="section-spacing bg-ink-50">
       <div class="section-shell grid gap-12 lg:grid-cols-[1fr_0.9fr]">
-        <div class="border border-ink-200 bg-white p-6 md:p-8">
+        <div class="rounded-2xl border border-ink-200 bg-white p-6 md:p-8">
           <p class="eyebrow">
-            Nhận báo giá trong 24h
+            {{ t(uiText.cta.quote24h) }}
           </p>
           <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
-            Gửi yêu cầu tư vấn dự án
+            {{ t({ vi: 'Gửi yêu cầu tư vấn dự án', en: 'Send a project consultation request' }) }}
           </h2>
           <p class="mt-4 text-sm leading-6 text-ink-600">
-            Biểu mẫu sẽ mở email trên thiết bị của bạn với nội dung đã điền sẵn. Website hiện chưa kết nối backend gửi form tự động.
+            {{ t({ vi: 'Biểu mẫu sẽ mở email trên thiết bị của bạn với nội dung đã điền sẵn. Website hiện chưa kết nối backend gửi form tự động.', en: 'This form opens your email app with a prepared message. The website does not use a fake backend submission.' }) }}
           </p>
 
           <form
@@ -137,22 +146,22 @@ useSeoMeta({
           >
             <div class="grid gap-5 md:grid-cols-2">
               <label class="block">
-                <span class="text-sm font-bold text-ink-800">Họ tên</span>
+                <span class="text-sm font-bold text-ink-800">{{ t({ vi: 'Họ tên', en: 'Name' }) }}</span>
                 <input
                   v-model="form.name"
                   type="text"
                   required
-                  class="mt-2 w-full border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
-                  placeholder="Tên của bạn"
+                  class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
+                  :placeholder="t({ vi: 'Tên của bạn', en: 'Your name' })"
                 >
               </label>
               <label class="block">
-                <span class="text-sm font-bold text-ink-800">Điện thoại</span>
+                <span class="text-sm font-bold text-ink-800">{{ t(uiText.labels.phone) }}</span>
                 <input
                   v-model="form.phone"
                   type="tel"
                   required
-                  class="mt-2 w-full border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
+                  class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
                   placeholder="+84..."
                 >
               </label>
@@ -160,24 +169,24 @@ useSeoMeta({
 
             <div class="grid gap-5 md:grid-cols-2">
               <label class="block">
-                <span class="text-sm font-bold text-ink-800">Email</span>
+                <span class="text-sm font-bold text-ink-800">{{ t(uiText.labels.email) }}</span>
                 <input
                   v-model="form.email"
                   type="email"
                   required
-                  class="mt-2 w-full border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
+                  class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
                   placeholder="email@example.com"
                 >
               </label>
               <label class="block">
-                <span class="text-sm font-bold text-ink-800">Loại dự án</span>
+                <span class="text-sm font-bold text-ink-800">{{ t({ vi: 'Loại dự án', en: 'Project type' }) }}</span>
                 <select
                   v-model="form.projectType"
                   required
-                  class="mt-2 w-full border border-ink-200 bg-white px-4 py-3 outline-none focus:border-wood-500"
+                  class="mt-2 w-full rounded-2xl border border-ink-200 bg-white px-4 py-3 outline-none focus:border-wood-500"
                 >
                   <option value="">
-                    Chọn loại dự án
+                    {{ t({ vi: 'Chọn loại dự án', en: 'Select project type' }) }}
                   </option>
                   <option
                     v-for="type in projectTypes"
@@ -191,13 +200,13 @@ useSeoMeta({
             </div>
 
             <label class="block">
-              <span class="text-sm font-bold text-ink-800">Thông tin công trình</span>
+              <span class="text-sm font-bold text-ink-800">{{ t({ vi: 'Thông tin công trình', en: 'Project information' }) }}</span>
               <textarea
                 v-model="form.message"
                 rows="6"
                 required
-                class="mt-2 w-full resize-none border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
-                placeholder="Quy mô, số phòng, vật liệu mong muốn, tiến độ dự kiến..."
+                class="mt-2 w-full resize-none rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
+                :placeholder="t({ vi: 'Quy mô, số phòng, vật liệu mong muốn, tiến độ dự kiến...', en: 'Scale, room count, preferred materials, target schedule...' })"
               />
             </label>
 
@@ -205,42 +214,42 @@ useSeoMeta({
               type="submit"
               class="btn-dark w-full"
             >
-              Gửi yêu cầu qua email
+              {{ t({ vi: 'Gửi yêu cầu qua email', en: 'Send request by email' }) }}
             </button>
           </form>
         </div>
 
         <div>
           <p class="eyebrow">
-            Bản đồ
+            {{ t({ vi: 'Bản đồ', en: 'Map' }) }}
           </p>
           <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
-            Văn phòng và nhà xưởng
+            {{ t({ vi: 'Văn phòng và nhà xưởng', en: 'Office and factory' }) }}
           </h2>
           <a
             :href="company.addresses[1]?.mapUrl"
             target="_blank"
             rel="noopener noreferrer"
-            class="mt-8 block overflow-hidden border border-ink-200 bg-white"
+            class="mt-8 block overflow-hidden rounded-2xl border border-ink-200 bg-white"
           >
             <img
               src="/images/map_address.png"
-              alt="Bản đồ Lai Huy Interior"
+              alt="Lai Huy Interior map"
               class="h-80 w-full object-cover"
             >
           </a>
           <div class="mt-6 space-y-4">
             <a
               v-for="address in company.addresses"
-              :key="address.label"
+              :key="t(address.label)"
               :href="address.mapUrl"
               target="_blank"
               rel="noopener noreferrer"
-              class="block border border-ink-200 bg-white p-5"
+              class="block rounded-2xl border border-ink-200 bg-white p-5"
             >
-              <strong class="text-ink-950">{{ address.label }}</strong>
+              <strong class="text-ink-950">{{ t(address.label) }}</strong>
               <span class="mt-2 block text-sm leading-6 text-ink-600">
-                {{ address.address }}
+                {{ t(address.address) }}
               </span>
             </a>
           </div>

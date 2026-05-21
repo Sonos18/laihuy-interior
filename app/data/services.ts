@@ -1,9 +1,11 @@
+import type { LocalizedArray, LocalizedText } from '~/shared/types/localization'
+
 export type Service = {
   id: string
   icon: string
-  title: string
-  description: string
-  details: string[]
+  title: LocalizedText
+  description: LocalizedText
+  details: LocalizedArray
 }
 
 export const services: Service[] = [

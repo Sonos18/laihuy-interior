@@ -1,17 +1,19 @@
+import type { LocalizedText } from '~/shared/types/localization'
+
 export type Capability = {
-  label: string
+  label: LocalizedText
   value: string
-  description: string
+  description: LocalizedText
 }
 
 export type Machinery = {
-  name: string
-  description: string
+  name: LocalizedText
+  description: LocalizedText
 }
 
 export type FactoryImage = {
-  title: string
-  description?: string
+  title: LocalizedText
+  description?: LocalizedText
   image: string
 }
 

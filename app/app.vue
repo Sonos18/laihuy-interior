@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import { company, navLinks } from '~/data/company'
+import { company } from '~/data/company'
+import { navLinks, uiText } from '~/data/ui'
+
+const { locale, setLocale, t, ta } = useLanguage()
 
 useHead({
   meta: [{ name: 'viewport', content: 'width=device-width, initial-scale=1' }],
   link: [{ rel: 'icon', href: '/logo_favicon.png' }],
   htmlAttrs: {
-    lang: 'vi'
+    lang: locale
   }
 })
 
-const title = company.seo.home.title
-const description = company.seo.home.description
+const title = computed(() => t(company.seo.home.title))
+const description = computed(() => t(company.seo.home.description))
 
 useSeoMeta({
   title,
@@ -24,6 +27,11 @@ useSeoMeta({
 const route = useRoute()
 const isScrolled = ref(false)
 const isMobileMenuOpen = ref(false)
+
+const localeOptions = [
+  { label: 'VI', value: 'vi' as const },
+  { label: 'EN', value: 'en' as const }
+]
 
 const onScroll = () => {
   isScrolled.value = window.scrollY > 40
@@ -90,11 +98,29 @@ watch(isMobileMenuOpen, (value) => {
                 : isScrolled ? 'text-ink-600 hover:text-wood-600' : 'text-white/72 hover:text-white'
             ]"
           >
-            {{ link.label }}
+            {{ t(link.label) }}
           </NuxtLink>
         </div>
 
         <div class="hidden items-center gap-3 lg:flex">
+          <div
+            class="inline-flex rounded-full border p-1"
+            :class="isScrolled ? 'border-ink-200 bg-white' : 'border-white/20 bg-white/8'"
+            :aria-label="t(uiText.language)"
+          >
+            <button
+              v-for="option in localeOptions"
+              :key="option.value"
+              type="button"
+              class="rounded-full px-3 py-1.5 text-xs font-black transition-colors"
+              :class="locale === option.value
+                ? isScrolled ? 'bg-ink-950 text-white' : 'bg-white text-ink-950'
+                : isScrolled ? 'text-ink-500 hover:text-ink-950' : 'text-white/62 hover:text-white'"
+              @click="setLocale(option.value)"
+            >
+              {{ option.label }}
+            </button>
+          </div>
           <a
             :href="`tel:${company.phone.replaceAll(' ', '')}`"
             class="text-sm font-bold"
@@ -106,7 +132,7 @@ watch(isMobileMenuOpen, (value) => {
             to="/lien-he"
             class="btn-primary py-3"
           >
-            Nhận báo giá
+            {{ t(uiText.cta.quote24h) }}
           </NuxtLink>
         </div>
 
@@ -114,7 +140,7 @@ watch(isMobileMenuOpen, (value) => {
           type="button"
           class="p-2 lg:hidden"
           :class="isScrolled ? 'text-ink-950' : 'text-white'"
-          aria-label="Mở menu"
+          :aria-label="locale === 'vi' ? 'Mở menu' : 'Open menu'"
           @click="isMobileMenuOpen = true"
         >
           <Icon
@@ -130,7 +156,7 @@ watch(isMobileMenuOpen, (value) => {
         v-if="isMobileMenuOpen"
         type="button"
         class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm lg:hidden"
-        aria-label="Đóng menu"
+        :aria-label="locale === 'vi' ? 'Đóng menu' : 'Close menu'"
         @click="isMobileMenuOpen = false"
       />
     </Transition>
@@ -149,7 +175,7 @@ watch(isMobileMenuOpen, (value) => {
           <button
             type="button"
             class="p-2 text-ink-500"
-            aria-label="Đóng menu"
+            :aria-label="locale === 'vi' ? 'Đóng menu' : 'Close menu'"
             @click="isMobileMenuOpen = false"
           >
             <Icon
@@ -167,16 +193,31 @@ watch(isMobileMenuOpen, (value) => {
             class="block border-b border-ink-100 py-4 text-base font-bold"
             :class="isActive(link.to) ? 'text-wood-600' : 'text-ink-800'"
           >
-            {{ link.label }}
+            {{ t(link.label) }}
           </NuxtLink>
         </div>
 
         <div class="border-t border-ink-100 p-6">
+          <div
+            class="mb-4 inline-flex rounded-full border border-ink-200 bg-ink-50 p-1"
+            :aria-label="t(uiText.language)"
+          >
+            <button
+              v-for="option in localeOptions"
+              :key="option.value"
+              type="button"
+              class="rounded-full px-4 py-2 text-xs font-black transition-colors"
+              :class="locale === option.value ? 'bg-ink-950 text-white' : 'text-ink-500'"
+              @click="setLocale(option.value)"
+            >
+              {{ option.label }}
+            </button>
+          </div>
           <NuxtLink
             to="/lien-he"
             class="btn-dark w-full"
           >
-            Nhận báo giá trong 24h
+            {{ t(uiText.cta.quote24h) }}
           </NuxtLink>
         </div>
       </nav>
@@ -196,27 +237,27 @@ watch(isMobileMenuOpen, (value) => {
               class="mb-6 h-20 w-auto"
             >
             <p class="max-w-sm text-sm leading-7 text-white/68">
-              {{ company.positioning }}
+              {{ t(company.positioning) }}
             </p>
             <div class="mt-7 flex flex-wrap gap-3">
               <NuxtLink
                 to="/lien-he"
                 class="btn-primary"
               >
-                Liên hệ tư vấn dự án
+                {{ t(uiText.cta.contact) }}
               </NuxtLink>
               <NuxtLink
                 to="/nha-xuong"
                 class="btn-secondary"
               >
-                Xem nhà xưởng
+                {{ t(uiText.cta.factory) }}
               </NuxtLink>
             </div>
           </div>
 
           <div>
             <h4 class="mb-5 text-sm font-bold uppercase tracking-[0.2em] text-white/55">
-              Điều hướng
+              {{ t(uiText.labels.navigation) }}
             </h4>
             <ul class="space-y-3">
               <li
@@ -227,7 +268,7 @@ watch(isMobileMenuOpen, (value) => {
                   :to="link.to"
                   class="text-sm text-white/62 transition-colors hover:text-white"
                 >
-                  {{ link.label }}
+                  {{ t(link.label) }}
                 </NuxtLink>
               </li>
             </ul>
@@ -235,11 +276,11 @@ watch(isMobileMenuOpen, (value) => {
 
           <div>
             <h4 class="mb-5 text-sm font-bold uppercase tracking-[0.2em] text-white/55">
-              Dịch vụ
+              {{ t(uiText.labels.services) }}
             </h4>
             <ul class="space-y-3 text-sm text-white/62">
               <li
-                v-for="service in company.footerServices"
+                v-for="service in ta(company.footerServices)"
                 :key="service"
               >
                 {{ service }}
@@ -249,7 +290,7 @@ watch(isMobileMenuOpen, (value) => {
 
           <div>
             <h4 class="mb-5 text-sm font-bold uppercase tracking-[0.2em] text-white/55">
-              Liên hệ
+              {{ t(uiText.labels.contact) }}
             </h4>
             <ul class="space-y-4 text-sm text-white/68">
               <li class="flex gap-3">
@@ -272,7 +313,7 @@ watch(isMobileMenuOpen, (value) => {
               </li>
               <li
                 v-for="address in company.addresses"
-                :key="address.label"
+                :key="t(address.label)"
                 class="flex gap-3"
               >
                 <Icon
@@ -285,8 +326,8 @@ watch(isMobileMenuOpen, (value) => {
                   rel="noopener noreferrer"
                   class="leading-6 hover:text-white"
                 >
-                  <strong class="block text-white/86">{{ address.label }}</strong>
-                  {{ address.address }}
+                  <strong class="block text-white/86">{{ t(address.label) }}</strong>
+                  {{ t(address.address) }}
                 </a>
               </li>
               <li class="flex gap-3">
@@ -296,7 +337,7 @@ watch(isMobileMenuOpen, (value) => {
                 />
                 <span>
                   <span
-                    v-for="line in company.workingHours"
+                    v-for="line in ta(company.workingHours)"
                     :key="line"
                     class="block"
                   >

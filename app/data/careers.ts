@@ -1,10 +1,12 @@
+import type { LocalizedArray, LocalizedText } from '~/shared/types/localization'
+
 export type Job = {
   id: string
-  title: string
-  location: string
-  type: string
-  description: string
-  requirements: string[]
+  title: LocalizedText
+  location: LocalizedText
+  type: LocalizedText
+  description: LocalizedText
+  requirements: LocalizedArray
 }
 
 export const jobs: Job[] = [

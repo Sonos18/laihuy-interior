@@ -2,6 +2,8 @@
 import { company } from '~/data/company'
 import { factoryCapabilities, qualityControl } from '~/data/factory'
 
+const { t } = useLanguage()
+
 const values = [
   {
     icon: 'i-lucide-factory',
@@ -23,11 +25,14 @@ const values = [
   }
 ]
 
+const seoTitle = computed(() => t(company.seo.about.title))
+const seoDescription = computed(() => t(company.seo.about.description))
+
 useSeoMeta({
-  title: company.seo.about.title,
-  description: company.seo.about.description,
-  ogTitle: company.seo.about.title,
-  ogDescription: company.seo.about.description,
+  title: seoTitle,
+  description: seoDescription,
+  ogTitle: seoTitle,
+  ogDescription: seoDescription,
   ogImage: company.seo.about.ogImage
 })
 </script>
@@ -60,7 +65,7 @@ useSeoMeta({
           </h2>
           <div class="mt-6 space-y-5 text-lg leading-8 text-ink-600">
             <p>
-              {{ company.positioning }}
+              {{ t(company.positioning) }}
             </p>
             <p>
               Trong ngành nội thất dự án, khách hàng không chỉ mua hình ảnh đẹp. Chủ đầu tư cần năng lực quản lý, tiến độ, chất lượng, sản xuất ổn định và đội ngũ có thể xử lý thực tế tại công trình.
@@ -78,17 +83,17 @@ useSeoMeta({
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <article
             v-for="capability in factoryCapabilities"
-            :key="capability.label"
+            :key="t(capability.label)"
             class="metric-card"
           >
             <p class="text-sm font-bold text-wood-600">
-              {{ capability.label }}
+              {{ t(capability.label) }}
             </p>
             <p class="mt-3 text-3xl font-black text-ink-950">
               {{ capability.value }}
             </p>
             <p class="mt-4 text-sm leading-6 text-ink-600">
-              {{ capability.description }}
+              {{ t(capability.description) }}
             </p>
           </article>
         </div>
