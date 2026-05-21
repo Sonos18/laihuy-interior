@@ -1,162 +1,130 @@
-<script setup>
-import { projects } from "~/data/projects";
+<script setup lang="ts">
+import { company } from '~/data/company'
+import { projectCategories, projects } from '~/data/projects'
+import type { Project } from '~/shared/types/project'
 
-useSeoMeta({
-  title: "Dự Án - Lai Huy Interior | Xem các dự án thiết kế nội thất",
-  description:
-    "Khám phá những dự án thiết kế nội thất nổi bật của Lai Huy Interior",
-});
+const selectedCategory = ref('Tất cả')
 
-const selectedCategory = ref("Tất cả");
-const categories = ["Tất cả", ...new Set(projects.map((p) => p.categoryName))];
+const categories = computed(() =>
+  projectCategories.filter(category =>
+    category === 'Tất cả' || projects.some(project => project.categoryName === category)
+  )
+)
 
 const filteredProjects = computed(() => {
-  if (selectedCategory.value === "Tất cả") {
-    return projects;
+  if (selectedCategory.value === 'Tất cả') {
+    return projects
   }
-  return projects.filter((p) => p.categoryName === selectedCategory.value);
-});
 
-// Scroll reveal refs
-const filterRef = ref(null);
-const projectCardRefs = ref([]);
-const ctaRef = ref(null);
+  return projects.filter(project => project.categoryName === selectedCategory.value)
+})
 
-useScrollReveal(filterRef);
-useScrollReveal(ctaRef);
+const getProjectMetric = (project: Project) =>
+  project.rooms
+  || project.duration
+  || project.area
+  || project.scope?.[0]
+  || 'Dự án nội thất'
 
-projects.forEach((_, index) => {
-  useScrollReveal(
-    computed(() => projectCardRefs.value[index]),
-    { delay: index * 100 },
-  );
-});
+useSeoMeta({
+  title: company.seo.projects.title,
+  description: company.seo.projects.description,
+  ogTitle: company.seo.projects.title,
+  ogDescription: company.seo.projects.description,
+  ogImage: company.seo.projects.ogImage
+})
 </script>
 
 <template>
   <div>
-    <!-- ==================== HERO ==================== -->
     <AppHero
-      topic="Projects"
-      title="Dự Án"
-      special-title="Nổi Bật"
-      subtitle="Khám phá những dự án thiết kế nội thất nổi bật của chúng tôi"
+      topic="Case studies"
+      title="Dự án nội thất"
+      special-title="khách sạn & công trình lớn"
+      subtitle="Các dự án được trình bày theo hướng năng lực triển khai: phạm vi công việc, vật liệu, tiến độ và chất lượng bàn giao."
       bg-image="/images/projects/hotel/eo_gio/bed.png"
     />
 
-    <!-- ==================== PROJECTS ==================== -->
     <section class="section-spacing bg-white">
-      <div class="max-w-7xl mx-auto">
-        <!-- Filter -->
-        <div ref="filterRef">
-          <div class="flex flex-wrap gap-3 mb-16 justify-center">
-            <button
-              v-for="category in categories"
-              :key="category"
-              :class="[
-                'px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-300',
-                selectedCategory === category
-                  ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/25'
-                  : 'bg-gray-100 text-gray-600 hover:bg-orange-50 hover:text-orange-500',
-              ]"
-              @click="selectedCategory = category"
-            >
-              {{ category }}
-            </button>
-          </div>
+      <div class="section-shell">
+        <div class="mb-10 flex flex-wrap gap-3">
+          <button
+            v-for="category in categories"
+            :key="category"
+            type="button"
+            :class="[
+              'border px-5 py-3 text-sm font-bold transition-colors',
+              selectedCategory === category
+                ? 'border-ink-950 bg-ink-950 text-white'
+                : 'border-ink-200 bg-white text-ink-600 hover:border-wood-500 hover:text-wood-600'
+            ]"
+            @click="selectedCategory = category"
+          >
+            {{ category }}
+          </button>
         </div>
 
-        <!-- Projects Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div
-            v-for="(project, index) in filteredProjects"
+        <div class="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+          <NuxtLink
+            v-for="project in filteredProjects"
             :key="project.id"
-            :ref="
-              (el) => {
-                if (el) projectCardRefs[index] = el;
-              }
-            "
+            :to="`/du-an/${project.slug}`"
+            class="group block bg-white"
           >
-            <NuxtLink
-              :to="`/du-an/${project.slug}`"
-              class="group relative block h-80 rounded-2xl overflow-hidden"
-            >
-              <BaseImage
+            <div class="relative aspect-[4/3] overflow-hidden bg-ink-100">
+              <img
                 :src="project.image[0]"
                 :alt="project.name"
-                class="absolute inset-0"
-                img-class="group-hover:scale-110 transition-transform duration-700"
-              />
-              <div
-                class="absolute inset-0 bg-linear-to-t from-gray-950/80 via-gray-950/20 to-transparent"
-              />
-              <div
-                class="absolute inset-0 bg-orange-500/0 group-hover:bg-orange-500/20 transition-colors duration-500"
-              />
-
-              <!-- Center Icon -->
-              <div
-                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-100 transition-all duration-500"
+                class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               >
-                <div
-                  class="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center"
-                >
-                  <Icon
-                    name="i-lucide-arrow-up-right"
-                    class="w-6 h-6 text-white"
-                  />
-                </div>
+              <div class="absolute left-4 top-4 bg-ink-950 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-white">
+                {{ project.categoryName }}
               </div>
-
-              <!-- Content -->
-              <div class="absolute bottom-0 left-0 right-0 p-6">
-                <span class="text-orange-300 text-sm font-semibold">
-                  {{ project.categoryName }}
+            </div>
+            <div class="border border-t-0 border-ink-200 p-6">
+              <div class="mb-4 inline-flex border border-ink-200 px-3 py-2 text-xs font-bold text-wood-700">
+                {{ getProjectMetric(project) }}
+              </div>
+              <h2 class="text-2xl font-black leading-tight text-ink-950">
+                {{ project.name }}
+              </h2>
+              <p class="mt-3 text-sm leading-6 text-ink-600">
+                {{ project.shortDescription }}
+              </p>
+              <div
+                v-if="project.scope?.length"
+                class="mt-5 flex flex-wrap gap-2"
+              >
+                <span
+                  v-for="scope in project.scope.slice(0, 3)"
+                  :key="scope"
+                  class="bg-ink-50 px-3 py-2 text-xs font-semibold text-ink-600"
+                >
+                  {{ scope }}
                 </span>
-                <h3 class="text-white text-xl font-bold mt-1">
-                  {{ project.name }}
-                </h3>
-                <p
-                  class="text-white/70 text-sm mt-2 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500"
-                >
-                  {{ project.shortDescription }}
-                </p>
               </div>
-            </NuxtLink>
-          </div>
+            </div>
+          </NuxtLink>
         </div>
       </div>
     </section>
 
-    <!-- ==================== CTA ==================== -->
-    <section class="relative py-24 md:py-32 overflow-hidden">
-      <div
-        class="absolute inset-0 bg-linear-to-br from-orange-500 via-orange-500 to-orange-600"
-      />
-      <div
-        class="absolute top-0 right-0 w-125 h-125 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"
-      />
-      <div
-        class="absolute bottom-0 left-0 w-100 h-100 bg-orange-400/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"
-      />
-
-      <div ref="ctaRef">
-        <div class="relative z-10 max-w-4xl mx-auto text-center px-6">
-          <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
-            Các Dự Án Của Bạn
-            <br class="hidden md:block" />
-            Sắp Tới
-          </h2>
-          <p class="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-            Hãy liên hệ với chúng tôi để bắt đầu dự án thiết kế nội thất của bạn
+    <section class="bg-ink-950 px-6 py-16 text-white">
+      <div class="section-shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+        <div>
+          <p class="eyebrow text-wood-300">
+            Tư vấn thi công khách sạn
           </p>
-          <NuxtLink
-            to="/lien-he"
-            class="inline-block bg-white text-orange-600 hover:bg-gray-50 px-10 py-4 rounded-full font-bold text-lg transition-colors shadow-lg"
-          >
-            Bắt đầu dự án
-          </NuxtLink>
+          <h2 class="mt-4 max-w-3xl text-3xl font-black uppercase md:text-5xl">
+            Bạn cần đội ngũ sản xuất và lắp đặt cho dự án tiếp theo?
+          </h2>
         </div>
+        <NuxtLink
+          to="/lien-he"
+          class="btn-primary"
+        >
+          Gửi bản vẽ để nhận BOQ sơ bộ
+        </NuxtLink>
       </div>
     </section>
   </div>

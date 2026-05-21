@@ -1,270 +1,170 @@
-<script setup>
-useSeoMeta({
-  title:
-    "Giới thiệu - Lai Huy Interior | Thiết kế nội thất hiện đại & đẳng cấp",
-  description:
-    "Tìm hiểu về Lai Huy Interior - công ty thiết kế nội thất hàng đầu với 15 năm kinh nghiệm",
-});
+<script setup lang="ts">
+import { company } from '~/data/company'
+import { factoryCapabilities, qualityControl } from '~/data/factory'
 
 const values = [
   {
-    icon: "i-lucide-heart",
-    title: "Tình Yêu Với Thiết Kế",
+    icon: 'i-lucide-factory',
+    title: 'Sản xuất trực tiếp',
     description:
-      "Chúng tôi yêu thích từng chi tiết, từ đó tạo nên những không gian hoàn hảo",
+      'Chủ động xưởng giúp kiểm soát vật liệu, tiến độ và chất lượng hoàn thiện cho từng hạng mục nội thất.'
   },
   {
-    icon: "i-lucide-users",
-    title: "Phục Vụ Khách Hàng",
-    description: "Sự hài lòng của khách hàng là ưu tiên hàng đầu của chúng tôi",
+    icon: 'i-lucide-list-checks',
+    title: 'Quản lý dự án rõ ràng',
+    description:
+      'Quy trình phối hợp giữa thiết kế, kỹ thuật, sản xuất, QC và lắp đặt giúp giảm sai lệch khi triển khai.'
   },
   {
-    icon: "i-lucide-zap",
-    title: "Đổi Mới Sáng Tạo",
-    description: "Luôn tìm kiếm cách mới, công nghệ mới để nâng cao chất lượng",
-  },
-];
+    icon: 'i-lucide-hard-hat',
+    title: 'Thi công thực chiến',
+    description:
+      'Đội ngũ lắp dựng làm việc tại công trình, phối hợp hiện trường và nghiệm thu theo từng giai đoạn.'
+  }
+]
 
-const stats = [
-  { value: "10+", label: "Năm kinh nghiệm" },
-  { value: "200+", label: "Dự án hoàn thành" },
-  { value: "100+", label: "Khách hàng hài lòng" },
-  { value: "20+", label: "Giải thưởng" },
-];
-
-// Scroll reveal refs
-const storyImageRef = ref(null);
-const storyTextRef = ref(null);
-const valuesHeaderRef = ref(null);
-const valueCardRefs = ref([]);
-const statsHeaderRef = ref(null);
-const statCardRefs = ref([]);
-const ctaRef = ref(null);
-
-useScrollReveal(storyImageRef, { direction: "left" });
-useScrollReveal(storyTextRef, { direction: "right" });
-useScrollReveal(valuesHeaderRef);
-useScrollReveal(statsHeaderRef);
-useScrollReveal(ctaRef);
-
-values.forEach((_, index) => {
-  useScrollReveal(
-    computed(() => valueCardRefs.value[index]),
-    { delay: index * 150 },
-  );
-});
-
-stats.forEach((_, index) => {
-  useScrollReveal(
-    computed(() => statCardRefs.value[index]),
-    { delay: index * 100 },
-  );
-});
+useSeoMeta({
+  title: company.seo.about.title,
+  description: company.seo.about.description,
+  ogTitle: company.seo.about.title,
+  ogDescription: company.seo.about.description,
+  ogImage: company.seo.about.ogImage
+})
 </script>
 
 <template>
   <div>
-    <!-- ==================== HERO ==================== -->
     <AppHero
-      topic="Introduction"
-      title="Giới Thiệu"
-      special-title="Lai Huy"
-      subtitle="Hơn 15 năm tạo nên những không gian sống tinh tế, đẳng cấp"
+      topic="About Lai Huy"
+      title="Đơn vị sản xuất & thi công"
+      special-title="nội thất dự án"
+      subtitle="Lai Huy Interior phát triển theo mô hình xưởng trực tiếp, kết hợp thiết kế, sản xuất và lắp đặt cho khách sạn, villa, căn hộ và công trình thương mại."
       bg-image="/images/projects/hotel/eo_gio/table.png"
     />
 
-    <!-- ==================== COMPANY STORY ==================== -->
     <section class="section-spacing bg-white">
-      <div class="max-w-7xl mx-auto">
-        <div
-          class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center"
-        >
-          <!-- Image with decorative accent -->
-          <div ref="storyImageRef">
-            <div class="relative">
-              <BaseImage
-                src="/images/projects/house/chily_house/phong_bep.jpg"
-                alt="Lai Huy Interior"
-                class="rounded-2xl aspect-4/5 w-full"
-              />
-              <div
-                class="absolute -bottom-6 -right-6 w-40 h-40 bg-linear-to-br from-orange-400 to-orange-500 rounded-2xl -z-10"
-              />
-              <div
-                class="absolute -bottom-4 left-6 bg-white rounded-xl shadow-xl p-4 flex items-center gap-3"
-              >
-                <div
-                  class="w-12 h-12 rounded-full bg-orange-500 flex items-center justify-center"
-                >
-                  <Icon name="i-lucide-award" class="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <div class="text-2xl font-bold text-gray-900">2010</div>
-                  <div class="text-xs text-gray-500">Năm thành lập</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Text Content -->
-          <div ref="storyTextRef">
-            <div>
-              <span
-                class="text-orange-500 uppercase tracking-[0.2em] text-xs font-semibold"
-              >
-                Câu chuyện của chúng tôi
-              </span>
-              <h2
-                class="text-4xl md:text-5xl font-bold text-gray-900 mt-3 mb-6"
-              >
-                Hành Trình
-                <span class="text-orange-500">Sáng Tạo</span>
-              </h2>
-              <p class="text-gray-500 text-lg leading-relaxed mb-4">
-                Lai Huy Interior được thành lập vào năm 2010 bởi những người đam
-                mê thiết kế nội thất và kiến trúc. Chúng tôi bắt đầu từ một nhóm
-                nhỏ với những ý tưởng lớn và tầm nhìn rõ ràng.
-              </p>
-              <p class="text-gray-500 text-lg leading-relaxed mb-4">
-                Qua những năm, chúng tôi đã phát triển thành một công ty hàng
-                đầu với đội ngũ thiết kế chuyên nghiệp, kiến trúc sư tài năng và
-                thợ thủ công lành nghề.
-              </p>
-              <p class="text-gray-500 text-lg leading-relaxed">
-                Hôm nay, Lai Huy tự hào là người bạn đáng tin cậy của hàng nghìn
-                gia đình và doanh nghiệp trong việc tạo nên những không gian
-                sống và làm việc tuyệt vời.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== VALUES ==================== -->
-    <section class="section-spacing bg-gray-50">
-      <div class="max-w-7xl mx-auto">
-        <div ref="valuesHeaderRef">
-          <div class="text-center mb-16">
-            <span
-              class="text-orange-500 uppercase tracking-[0.2em] text-xs font-semibold"
-            >
-              Giá trị cốt lõi
-            </span>
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mt-3">
-              Điều Chúng Tôi
-              <span class="text-orange-500">Tin Tưởng</span>
-            </h2>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div
-            v-for="(value, index) in values"
-            :key="value.title"
-            :ref="
-              (el) => {
-                if (el) valueCardRefs[index] = el;
-              }
-            "
+      <div class="section-shell grid gap-12 lg:grid-cols-2 lg:items-center">
+        <div>
+          <img
+            src="/images/company-story.jpg"
+            alt="Lai Huy Interior"
+            class="aspect-[4/3] w-full object-cover"
           >
-            <div
-              class="group relative bg-white border border-gray-100 rounded-2xl p-8 hover:shadow-2xl transition-all duration-500 overflow-hidden"
-            >
-              <div
-                class="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-orange-400 to-orange-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"
-              />
-              <div
-                class="w-14 h-14 rounded-2xl bg-orange-50 flex items-center justify-center mb-6 group-hover:bg-orange-500 group-hover:scale-110 transition-all duration-300"
-              >
-                <Icon
-                  :name="value.icon"
-                  class="w-7 h-7 text-orange-500 group-hover:text-white transition-colors"
-                />
-              </div>
-              <h3 class="text-xl font-bold text-gray-900 mb-3">
-                {{ value.title }}
-              </h3>
-              <p class="text-gray-500 leading-relaxed">
-                {{ value.description }}
-              </p>
-            </div>
-          </div>
         </div>
-      </div>
-    </section>
-
-    <!-- ==================== STATS ==================== -->
-    <section class="section-spacing bg-white">
-      <div class="max-w-7xl mx-auto">
-        <div ref="statsHeaderRef">
-          <div class="text-center mb-16">
-            <span
-              class="text-orange-500 uppercase tracking-[0.2em] text-xs font-semibold"
-            >
-              Thành tựu
-            </span>
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mt-3">
-              Những Con Số
-              <span class="text-orange-500">Nói Lên</span>
-            </h2>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <div
-            v-for="(stat, index) in stats"
-            :key="stat.label"
-            :ref="
-              (el) => {
-                if (el) statCardRefs[index] = el;
-              }
-            "
-          >
-            <div
-              class="group text-center p-8 rounded-2xl hover:bg-gray-50 hover:shadow-xl transition-all duration-500"
-            >
-              <div
-                class="text-5xl md:text-6xl font-bold text-orange-500 mb-3 group-hover:scale-110 transition-transform"
-              >
-                {{ stat.value }}
-              </div>
-              <p class="text-gray-500 font-medium">{{ stat.label }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== CTA ==================== -->
-    <section class="relative py-24 md:py-32 overflow-hidden">
-      <div
-        class="absolute inset-0 bg-linear-to-br from-orange-500 via-orange-500 to-orange-600"
-      />
-      <div
-        class="absolute top-0 right-0 w-125 h-125 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"
-      />
-      <div
-        class="absolute bottom-0 left-0 w-100 h-100 bg-orange-400/30 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"
-      />
-
-      <div ref="ctaRef">
-        <div class="relative z-10 max-w-4xl mx-auto text-center px-6">
-          <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
-            Hãy Liên Hệ
-            <br class="hidden md:block" />
-            Với Chúng Tôi
-          </h2>
-          <p class="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-            Để tìm hiểu thêm hoặc đặt lịch tư vấn thiết kế miễn phí
+        <div>
+          <p class="eyebrow">
+            Định vị doanh nghiệp
           </p>
-          <NuxtLink
-            to="/lien-he"
-            class="inline-block bg-white text-orange-600 hover:bg-gray-50 px-10 py-4 rounded-full font-bold text-lg transition-colors shadow-lg"
-          >
-            Liên hệ ngay
-          </NuxtLink>
+          <h2 class="mt-4 text-3xl font-black uppercase leading-tight text-ink-950 md:text-5xl">
+            Không chỉ làm đẹp không gian, Lai Huy giải quyết bài toán triển khai
+          </h2>
+          <div class="mt-6 space-y-5 text-lg leading-8 text-ink-600">
+            <p>
+              {{ company.positioning }}
+            </p>
+            <p>
+              Trong ngành nội thất dự án, khách hàng không chỉ mua hình ảnh đẹp. Chủ đầu tư cần năng lực quản lý, tiến độ, chất lượng, sản xuất ổn định và đội ngũ có thể xử lý thực tế tại công trình.
+            </p>
+            <p>
+              Lai Huy Interior xây dựng năng lực quanh mô hình factory + project capability: bản vẽ được bóc tách kỹ thuật, sản phẩm được gia công tại xưởng, chất lượng được kiểm tra trước khi giao hàng và đội lắp đặt triển khai theo kế hoạch bàn giao.
+            </p>
+          </div>
         </div>
+      </div>
+    </section>
+
+    <section class="section-spacing bg-ink-50">
+      <div class="section-shell">
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <article
+            v-for="capability in factoryCapabilities"
+            :key="capability.label"
+            class="metric-card"
+          >
+            <p class="text-sm font-bold text-wood-600">
+              {{ capability.label }}
+            </p>
+            <p class="mt-3 text-3xl font-black text-ink-950">
+              {{ capability.value }}
+            </p>
+            <p class="mt-4 text-sm leading-6 text-ink-600">
+              {{ capability.description }}
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-spacing bg-white">
+      <div class="section-shell">
+        <div class="mb-12 max-w-3xl">
+          <p class="eyebrow">
+            Giá trị vận hành
+          </p>
+          <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
+            Điều Lai Huy tập trung trong từng dự án
+          </h2>
+        </div>
+
+        <div class="grid gap-5 md:grid-cols-3">
+          <article
+            v-for="value in values"
+            :key="value.title"
+            class="industrial-card"
+          >
+            <Icon
+              :name="value.icon"
+              class="h-8 w-8 text-wood-500"
+            />
+            <h3 class="mt-6 text-2xl font-black text-ink-950">
+              {{ value.title }}
+            </h3>
+            <p class="mt-4 text-sm leading-6 text-ink-600">
+              {{ value.description }}
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-spacing bg-ink-950 text-white">
+      <div class="section-shell grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+        <div>
+          <p class="eyebrow text-wood-300">
+            Kiểm soát chất lượng
+          </p>
+          <h2 class="mt-4 text-3xl font-black uppercase leading-tight md:text-5xl">
+            Quy trình giúp dự án không phụ thuộc vào may rủi
+          </h2>
+        </div>
+        <div class="space-y-4">
+          <div
+            v-for="item in qualityControl"
+            :key="item"
+            class="border-b border-white/12 pb-4 text-base font-semibold leading-7 text-white/72"
+          >
+            {{ item }}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white px-6 py-16">
+      <div class="section-shell grid gap-8 border border-ink-200 p-8 md:grid-cols-[1fr_auto] md:items-center">
+        <div>
+          <p class="eyebrow">
+            Hợp tác dự án
+          </p>
+          <h2 class="mt-4 max-w-3xl text-3xl font-black uppercase text-ink-950 md:text-5xl">
+            Cần một đối tác sản xuất và thi công nội thất đáng tin cậy?
+          </h2>
+        </div>
+        <NuxtLink
+          to="/lien-he"
+          class="btn-dark"
+        >
+          Liên hệ tư vấn dự án
+        </NuxtLink>
       </div>
     </section>
   </div>

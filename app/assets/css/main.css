@@ -3,44 +3,34 @@
 
 :root {
   --font-sans: "Inter", "Segoe UI", sans-serif;
+  --color-wood: #6f4f37;
+  --color-warm: #b8875a;
 }
 
 @theme {
-  --color-slate-50: #f8fafc;
-  --color-slate-100: #f1f5f9;
-  --color-slate-200: #e2e8f0;
-  --color-slate-300: #cbd5e1;
-  --color-slate-400: #94a3b8;
-  --color-slate-500: #64748b;
-  --color-slate-600: #475569;
-  --color-slate-700: #334155;
-  --color-slate-800: #1e293b;
-  --color-slate-900: #0f172a;
-  --color-slate-950: #020617;
+  --color-ink-50: #f7f7f5;
+  --color-ink-100: #ece9e4;
+  --color-ink-200: #d8d2ca;
+  --color-ink-300: #bcb3a7;
+  --color-ink-400: #958777;
+  --color-ink-500: #74685d;
+  --color-ink-600: #5d5349;
+  --color-ink-700: #463e37;
+  --color-ink-800: #2d2925;
+  --color-ink-900: #181614;
+  --color-ink-950: #0b0a09;
 
-  --color-brand-blue-50: #f0f3f7;
-  --color-brand-blue-100: #e1e6ef;
-  --color-brand-blue-200: #c2cede;
-  --color-brand-blue-300: #98b0c8;
-  --color-brand-blue-400: #6e8fae;
-  --color-brand-blue-500: #4f6080;
-  --color-brand-blue-600: #3d4e68;
-  --color-brand-blue-700: #2f3c52;
-  --color-brand-blue-800: #1f293a;
-  --color-brand-blue-900: #121824;
-  --color-brand-blue-950: #0c1119;
-
-  --color-orange-50: #fff7ed;
-  --color-orange-100: #ffedd5;
-  --color-orange-200: #fed7aa;
-  --color-orange-300: #fdba74;
-  --color-orange-400: #fb923c;
-  --color-orange-500: #f97316;
-  --color-orange-600: #ea580c;
-  --color-orange-700: #c2410c;
-  --color-orange-800: #9a3412;
-  --color-orange-900: #7c2d12;
-  --color-orange-950: #431407;
+  --color-wood-50: #faf6f0;
+  --color-wood-100: #f0e3d4;
+  --color-wood-200: #ddc4aa;
+  --color-wood-300: #c59b75;
+  --color-wood-400: #b8875a;
+  --color-wood-500: #9b6a43;
+  --color-wood-600: #7c5032;
+  --color-wood-700: #603e29;
+  --color-wood-800: #442b1e;
+  --color-wood-900: #2b1a13;
+  --color-wood-950: #170d09;
 
   --animate-fade-in-up: fade-in-up 0.8s ease-out both;
   --animate-fade-in: fade-in 0.6s ease-out both;
@@ -49,8 +39,9 @@
 @keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(28px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -61,6 +52,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -68,7 +60,7 @@
 
 @layer base {
   body {
-    @apply bg-white text-slate-900;
+    @apply bg-white font-sans text-ink-900 antialiased;
   }
 
   h1,
@@ -77,80 +69,63 @@
   h4,
   h5,
   h6 {
-    @apply font-sans font-bold tracking-tight;
+    @apply font-sans font-bold tracking-normal;
   }
 
   h1 {
-    @apply text-5xl md:text-6xl;
+    @apply text-4xl md:text-6xl;
   }
 
   h2 {
-    @apply text-4xl md:text-5xl;
+    @apply text-3xl md:text-5xl;
   }
 
   h3 {
-    @apply text-3xl md:text-4xl;
+    @apply text-2xl md:text-3xl;
   }
 }
 
 @layer components {
-  .hero-overlay {
-    @apply absolute inset-0 bg-linear-to-r from-gray-950/90 via-gray-950/50 to-gray-950/30;
-  }
-
-  .card-luxury {
-    @apply rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300;
-  }
-
   .section-spacing {
-    @apply py-20 md:py-32 px-6 md:px-8;
+    @apply px-6 py-20 md:px-8 md:py-28;
   }
 
-  /* Transitions for mobile menu */
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 0.3s ease;
+  .section-shell {
+    @apply mx-auto max-w-7xl;
   }
 
-  .fade-enter-from,
-  .fade-leave-to {
-    opacity: 0;
+  .hero-overlay {
+    @apply absolute inset-0 bg-linear-to-r from-ink-950/95 via-ink-950/70 to-ink-950/30;
   }
 
-  .slide-right-enter-active,
-  .slide-right-leave-active {
-    transition: transform 0.3s ease;
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.22em] text-wood-500;
   }
 
-  .slide-right-enter-from,
-  .slide-right-leave-to {
-    transform: translateX(100%);
-  }
-}
-
-/* Button styles in @layer utilities to guarantee priority over base/component
-   layers (including Nuxt UI's `a { color: inherit }`) across all route changes. */
-@layer utilities {
   .btn-primary {
-    @apply bg-orange-500 text-white hover:bg-orange-600 transition-all px-8 py-4 rounded-full font-semibold;
+    @apply inline-flex items-center justify-center gap-2 bg-wood-500 px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-wood-600;
   }
 
   .btn-secondary {
-    @apply border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white transition-all px-8 py-4 rounded-full font-semibold;
-  }
-  .hero-overlay {
-    @apply absolute inset-0 bg-linear-to-r from-gray-950/90 via-gray-950/50 to-gray-950/30;
+    @apply inline-flex items-center justify-center gap-2 border border-white/35 px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-white hover:text-ink-950;
   }
 
-  .card-luxury {
-    @apply rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300;
+  .btn-dark {
+    @apply inline-flex items-center justify-center gap-2 bg-ink-950 px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-ink-800;
   }
 
-  .section-spacing {
-    @apply py-20 md:py-32 px-6 md:px-8;
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 border border-ink-300 px-7 py-3.5 text-sm font-bold text-ink-900 transition-colors hover:border-ink-950 hover:bg-ink-950 hover:text-white;
   }
 
-  /* Transitions for mobile menu */
+  .metric-card {
+    @apply border border-ink-200 bg-white p-6;
+  }
+
+  .industrial-card {
+    @apply border border-ink-200 bg-white p-6 transition-colors hover:border-wood-400;
+  }
+
   .fade-enter-active,
   .fade-leave-active {
     transition: opacity 0.3s ease;
