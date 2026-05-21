@@ -105,9 +105,8 @@ faqs.forEach((_, index) => {
       title="Liên Hệ Với"
       special-title="Chúng Tôi"
       subtitle="Chúng tôi sẵn sàng lắng nghe ý tưởng của bạn"
-      bg-image="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&h=800&fit=crop"
+      bg-image="/images/projects/house/anhduy_house/gieng_troi.jpg"
     />
-
     <!-- ==================== CONTACT INFO ==================== -->
     <section class="section-spacing bg-white">
       <div class="max-w-7xl mx-auto">

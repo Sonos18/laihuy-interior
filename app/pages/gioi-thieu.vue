@@ -26,10 +26,10 @@ const values = [
 ];
 
 const stats = [
-  { value: "15+", label: "Năm kinh nghiệm" },
-  { value: "1000+", label: "Dự án hoàn thành" },
-  { value: "500+", label: "Khách hàng hài lòng" },
-  { value: "50+", label: "Giải thưởng" },
+  { value: "10+", label: "Năm kinh nghiệm" },
+  { value: "200+", label: "Dự án hoàn thành" },
+  { value: "100+", label: "Khách hàng hài lòng" },
+  { value: "20+", label: "Giải thưởng" },
 ];
 
 // Scroll reveal refs
@@ -70,7 +70,7 @@ stats.forEach((_, index) => {
       title="Giới Thiệu"
       special-title="Lai Huy"
       subtitle="Hơn 15 năm tạo nên những không gian sống tinh tế, đẳng cấp"
-      bg-image="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&h=800&fit=crop"
+      bg-image="/images/projects/hotel/eo_gio/table.png"
     />
 
     <!-- ==================== COMPANY STORY ==================== -->
@@ -83,7 +83,7 @@ stats.forEach((_, index) => {
           <div ref="storyImageRef">
             <div class="relative">
               <BaseImage
-                src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&h=750&fit=crop"
+                src="/images/projects/house/chily_house/phong_bep.jpg"
                 alt="Lai Huy Interior"
                 class="rounded-2xl aspect-4/5 w-full"
               />
@@ -99,7 +99,7 @@ stats.forEach((_, index) => {
                   <Icon name="i-lucide-award" class="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <div class="text-2xl font-bold text-gray-900">2009</div>
+                  <div class="text-2xl font-bold text-gray-900">2010</div>
                   <div class="text-xs text-gray-500">Năm thành lập</div>
                 </div>
               </div>
@@ -121,7 +121,7 @@ stats.forEach((_, index) => {
                 <span class="text-orange-500">Sáng Tạo</span>
               </h2>
               <p class="text-gray-500 text-lg leading-relaxed mb-4">
-                Lai Huy Interior được thành lập vào năm 2009 bởi những người đam
+                Lai Huy Interior được thành lập vào năm 2010 bởi những người đam
                 mê thiết kế nội thất và kiến trúc. Chúng tôi bắt đầu từ một nhóm
                 nhỏ với những ý tưởng lớn và tầm nhìn rõ ràng.
               </p>

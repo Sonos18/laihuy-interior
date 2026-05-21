@@ -187,7 +187,7 @@ reasons.forEach((_, index) => {
             style="animation-delay: 600ms"
           >
             <div class="text-3xl md:text-4xl font-bold text-orange-400">
-              15+
+              10+
             </div>
             <div class="text-xs md:text-sm text-gray-400 mt-1">
               Năm kinh nghiệm
@@ -198,7 +198,7 @@ reasons.forEach((_, index) => {
             style="animation-delay: 750ms"
           >
             <div class="text-3xl md:text-4xl font-bold text-orange-400">
-              500+
+              200+
             </div>
             <div class="text-xs md:text-sm text-gray-400 mt-1">
               Dự án hoàn thành

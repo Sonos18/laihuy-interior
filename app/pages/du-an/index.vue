@@ -41,7 +41,7 @@ projects.forEach((_, index) => {
       title="Dự Án"
       special-title="Nổi Bật"
       subtitle="Khám phá những dự án thiết kế nội thất nổi bật của chúng tôi"
-      bg-image="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=800&fit=crop"
+      bg-image="/images/projects/hotel/eo_gio/bed.png"
     />
 
     <!-- ==================== PROJECTS ==================== -->
