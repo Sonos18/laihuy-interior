@@ -102,6 +102,12 @@
     @apply text-xs font-semibold uppercase tracking-[0.22em] text-wood-500;
   }
 
+  /* Display serif used by the cinematic homepage titles. The font is loaded
+     page-side via useHead on index.vue, so other pages stay on Inter. */
+  .font-display {
+    font-family: "Cormorant Garamond", "Times New Roman", Georgia, serif;
+  }
+
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 rounded-full bg-wood-500 px-7 py-3.5 text-sm font-bold text-white shadow-sm shadow-wood-950/10 transition-all duration-300 hover:bg-wood-600 hover:shadow-md hover:shadow-wood-950/15;
   }
