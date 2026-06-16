@@ -87,11 +87,11 @@
 
 @layer base {
   .section-spacing {
-    @apply px-6 py-20 md:px-8 md:py-28;
+    @apply px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-28;
   }
 
   .section-shell {
-    @apply mx-auto max-w-7xl;
+    @apply mx-auto max-w-7xl px-0;
   }
 
   .hero-overlay {
@@ -119,11 +119,11 @@
   }
 
   .metric-card {
-    @apply rounded-2xl border border-ink-200 bg-white p-6;
+    @apply rounded-2xl border border-ink-200/80 bg-white p-6 shadow-sm shadow-ink-950/5 transition-all duration-500 ease-out hover:-translate-y-1 hover:border-wood-300 hover:shadow-xl hover:shadow-ink-950/10;
   }
 
   .industrial-card {
-    @apply rounded-2xl border border-ink-200 bg-white p-6 transition-colors hover:border-wood-400;
+    @apply rounded-2xl border border-ink-200/80 bg-white p-6 shadow-sm shadow-ink-950/5 transition-all duration-500 ease-out hover:-translate-y-1 hover:border-wood-300 hover:shadow-xl hover:shadow-ink-950/10;
   }
 
   .fade-enter-active,
