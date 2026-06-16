@@ -12,8 +12,14 @@ defineOptions({
  * display title, subtitle and CTA — and exposes a `visual` slot so special
  * screens (the blueprint, the detail montage) can swap the background while
  * keeping identical typography and spacing. Animation hooks are plain data
- * attributes consumed by useCinematicScroll.
+ * attributes consumed by useCinematicJourney.
  */
+type StateBCopy = {
+  chapter: LocalizedText
+  title: LocalizedText
+  subtitle: LocalizedText
+}
+
 type Props = {
   index: number
   chapter: LocalizedText
@@ -24,15 +30,19 @@ type Props = {
   align?: 'left' | 'center'
   /** Anchor id so the chapter rail can deep-link to this scene. */
   anchor?: string
-  /** Marks this scene as the pinned blueprint -> render transform. */
-  transform?: boolean
+  /**
+   * When present (Screen 2), the stage carries a second story step. The primary
+   * copy becomes State A and this copy crossfades in as State B during the
+   * Structure Reveal. useCinematicJourney drives [data-state-a]/[data-state-b].
+   */
+  stateB?: StateBCopy
 }
 
 const props = withDefaults(defineProps<Props>(), {
   image: undefined,
   align: 'left',
   anchor: undefined,
-  transform: false
+  stateB: undefined
 })
 
 const { t } = useLanguage()
@@ -45,7 +55,6 @@ const chapterNumber = computed(() => String(props.index + 1).padStart(2, '0'))
     :id="anchor"
     class="cinematic-stage"
     data-scene
-    :data-transform="transform ? '' : undefined"
   >
     <div class="stage-visual">
       <slot name="visual">
@@ -67,6 +76,7 @@ const chapterNumber = computed(() => String(props.index + 1).padStart(2, '0'))
     <div
       class="stage-content"
       :class="align === 'center' ? 'is-center' : 'is-left'"
+      :data-state-a="stateB ? '' : undefined"
     >
       <p
         class="stage-eyebrow"
@@ -105,6 +115,32 @@ const chapterNumber = computed(() => String(props.index + 1).padStart(2, '0'))
       </div>
 
       <slot name="extra" />
+    </div>
+
+    <!-- State B (Screen 2 Structure Reveal): overlaid copy that crossfades in. -->
+    <div
+      v-if="stateB"
+      class="stage-overlay"
+      data-state-b
+    >
+      <div
+        class="stage-content"
+        :class="align === 'center' ? 'is-center' : 'is-left'"
+      >
+        <p class="stage-eyebrow">
+          <span class="stage-chapter">{{ chapterNumber }}</span>
+          <span class="stage-rule" />
+          {{ t(stateB.chapter) }}
+        </p>
+
+        <h2 class="stage-title font-display">
+          {{ t(stateB.title) }}
+        </h2>
+
+        <p class="stage-subtitle">
+          {{ t(stateB.subtitle) }}
+        </p>
+      </div>
     </div>
   </section>
 </template>
@@ -156,6 +192,20 @@ const chapterNumber = computed(() => String(props.index + 1).padStart(2, '0'))
   .stage-content {
     padding-inline: 2rem;
   }
+}
+
+/* State B copy overlays State A and is crossfaded in by the journey timeline. */
+.stage-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.stage-overlay .stage-content {
+  pointer-events: auto;
 }
 
 .stage-content.is-center {

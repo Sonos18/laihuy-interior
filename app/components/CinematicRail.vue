@@ -7,21 +7,30 @@ defineOptions({
 
 /**
  * The page's signature element: a fixed chapter rail that tracks the
- * idea -> experience journey. Numbering is meaningful here because the screens
- * are a true ordered sequence. The gold track fills with overall scroll
- * progress; the active chapter expands to reveal its label.
+ * idea -> experience journey. It mirrors the journey's discrete steps — primary
+ * chapters show a number, while Screen 2's Structure Reveal sub-step shows a
+ * smaller nested dot, so the rail stays in sync with the sub-step navigation.
+ * The gold track fills with overall step progress; clicking a tick jumps to it.
  */
+export type RailStep = {
+  /** Padded chapter number for primary steps; null for a sub-step (dot). */
+  number: string | null
+  chapter: LocalizedText
+  isSub: boolean
+  /** Anchor id used as the reduced-motion / no-JS scroll fallback. */
+  anchorId: string
+}
+
 type Props = {
-  scenes: { id: string, chapter: LocalizedText }[]
-  activeIndex: number
+  steps: RailStep[]
+  activeStep: number
   progress: number
 }
 
 const props = defineProps<Props>()
+const emit = defineEmits<{ select: [step: number] }>()
 
 const { t } = useLanguage()
-
-const pad = (value: number) => String(value + 1).padStart(2, '0')
 </script>
 
 <template>
@@ -38,17 +47,26 @@ const pad = (value: number) => String(value + 1).padStart(2, '0')
 
     <ol class="rail-list">
       <li
-        v-for="(scene, i) in props.scenes"
-        :key="scene.id"
+        v-for="(step, i) in props.steps"
+        :key="i"
+        :class="{ 'is-sub': step.isSub }"
       >
         <a
-          :href="`#${scene.id}`"
+          :href="`#${step.anchorId}`"
           class="rail-item"
-          :class="{ 'is-active': i === props.activeIndex }"
-          :aria-current="i === props.activeIndex ? 'true' : undefined"
-          :aria-label="`${pad(i)} — ${t(scene.chapter)}`"
+          :class="{ 'is-active': i === props.activeStep }"
+          :aria-current="i === props.activeStep ? 'true' : undefined"
+          :aria-label="`${step.number ?? '—'} — ${t(step.chapter)}`"
+          @click.prevent="emit('select', i)"
         >
-          <span class="rail-num">{{ pad(i) }}</span>
+          <span
+            v-if="step.number"
+            class="rail-num"
+          >{{ step.number }}</span>
+          <span
+            v-else
+            class="rail-dot"
+          />
         </a>
       </li>
     </ol>
@@ -87,6 +105,7 @@ const pad = (value: number) => String(value + 1).padStart(2, '0')
   background: var(--color-wood-400, #b8875a);
   transform-origin: top;
   transform: scaleY(0);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .rail-list {
@@ -97,6 +116,12 @@ const pad = (value: number) => String(value + 1).padStart(2, '0')
   margin: 0;
   padding: 0.4rem 0;
   list-style: none;
+}
+
+/* The Screen 2 sub-step sits tighter under its parent chapter. */
+.rail-list li.is-sub {
+  margin-top: -0.7rem;
+  margin-left: 0.1rem;
 }
 
 .rail-item {
@@ -118,6 +143,25 @@ const pad = (value: number) => String(value + 1).padStart(2, '0')
   /* Sit the number on the track with a small dark gap so the line reads through. */
   background: var(--color-ink-950, #0b0a09);
   padding: 0.15rem 0;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* Sub-step marker: a small dot centered on the track. */
+.rail-dot {
+  position: relative;
+  width: 1.1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.rail-dot::before {
+  content: '';
+  width: 0.34rem;
+  height: 0.34rem;
+  border-radius: 50%;
+  background: var(--color-ink-950, #0b0a09);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4);
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .rail-item:hover,
@@ -126,19 +170,26 @@ const pad = (value: number) => String(value + 1).padStart(2, '0')
   outline: none;
 }
 
-/* The active number grows a touch and turns gold — the only moving part. */
+/* The active number grows a touch and turns gold. */
 .rail-item.is-active .rail-num {
   color: var(--color-wood-300, #c59b75);
   transform: scale(1.25);
 }
 
-.rail-num {
-  transition: color 0.3s ease, transform 0.3s ease;
+.rail-item.is-active .rail-dot::before {
+  background: var(--color-wood-300, #c59b75);
+  box-shadow: 0 0 0 1px var(--color-wood-300, #c59b75);
+  transform: scale(1.2);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rail-item.is-active .rail-num {
+  .rail-item.is-active .rail-num,
+  .rail-item.is-active .rail-dot::before {
     transform: none;
+  }
+
+  .rail-fill {
+    transition: none;
   }
 }
 </style>

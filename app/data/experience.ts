@@ -6,6 +6,17 @@ export type ExperienceCta = {
 }
 
 /**
+ * Copy for a scene's secondary story state. Screen 2 is the only scene that
+ * carries two steps (Blueprint -> Structure Reveal); `stateB` holds the copy that
+ * crossfades in once the structural transformation begins.
+ */
+export type ExperienceStateB = {
+  chapter: LocalizedText
+  title: LocalizedText
+  subtitle: LocalizedText
+}
+
+/**
  * One full-viewport screen in the cinematic homepage journey.
  * The journey is an ordered sequence (IDEA -> EXPERIENCE), so each scene
  * carries a chapter number that the side rail uses for navigation.
@@ -19,6 +30,8 @@ export type ExperienceScene = {
   /** Local background image. Screens 1-2 layer a drawn blueprint/wireframe instead. */
   image?: string
   align?: 'left' | 'center'
+  /** Present only on Screen 2: the Structure Reveal sub-step adds a second story step. */
+  stateB?: ExperienceStateB
 }
 
 export const experienceScenes: ExperienceScene[] = [
@@ -50,7 +63,19 @@ export const experienceScenes: ExperienceScene[] = [
     },
     cta: { label: { vi: 'Xem năng lực thiết kế', en: 'View design expertise' }, to: '/dich-vu' },
     image: '/images/projects/hotel/eo_gio/reception.png',
-    align: 'left'
+    align: 'left',
+    // Screen 2's second step — the idea now leaves the page and becomes structure.
+    stateB: {
+      chapter: { vi: 'Kiến tạo', en: 'Structure' },
+      title: {
+        vi: 'Từ bản vẽ đến kết cấu thật',
+        en: 'From blueprint to real structure'
+      },
+      subtitle: {
+        vi: 'Lai Huy biến ý tưởng thành khung kết cấu và công trình hoàn thiện — không chỉ là thiết kế đẹp.',
+        en: 'Lai Huy turns the idea into a structural framework and a finished build — not just a beautiful design.'
+      }
+    }
   },
   {
     id: 'visualization',
