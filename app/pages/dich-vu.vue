@@ -23,7 +23,7 @@ useSeoMeta({
       :topic="t({ vi: 'Dịch vụ nội thất B2B', en: 'B2B interior services' })"
       :title="t({ vi: 'Dịch vụ', en: 'Services' })"
       :special-title="t({ vi: 'nội thất dự án', en: 'for project interiors' })"
-      :subtitle="t({ vi: 'Thiết kế, sản xuất tại xưởng và lắp đặt nội thất cho khách sạn 3-5 sao, villa, căn hộ, thương mại và đơn hàng gia công.', en: 'Design, factory production, and installation for 3-5 star hotels, villas, apartments, commercial spaces, and production-from-drawings orders.' })"
+      :subtitle="t({ vi: 'Thiết kế, sản xuất tại xưởng và thi công nội thất cho khách sạn 3-5 sao, villa, căn hộ, thương mại và đơn hàng gia công.', en: 'Design, factory production, and contracting for 3-5 star hotels, villas, apartments, commercial spaces, and production-from-drawings orders.' })"
       bg-image="/images/projects/hotel/codi/reception_desk.jpg"
     />
 
@@ -34,7 +34,7 @@ useSeoMeta({
             {{ t({ vi: 'Dịch vụ tích hợp', en: 'Integrated service' }) }}
           </p>
           <h2 class="mt-4 text-3xl font-black uppercase leading-tight text-ink-950 md:text-5xl">
-            {{ t({ vi: 'Một đầu mối cho thiết kế, sản xuất và thi công', en: 'One accountable partner for design, production, and installation' }) }}
+            {{ t({ vi: 'Một đầu mối cho thiết kế, sản xuất và thi công', en: 'One accountable partner for design, production, and contracting' }) }}
           </h2>
           <p class="mt-5 text-lg leading-8 text-ink-600">
             {{ t({ vi: 'Lai Huy Interior làm việc với chủ đầu tư, tổng thầu, kiến trúc sư và đơn vị vận hành để đưa bản vẽ thành sản phẩm thực tế, đúng vật liệu, đúng tiến độ và phù hợp ngân sách dự án.', en: 'Lai Huy Interior works with owners, contractors, architects, and operators to turn drawings into real products with controlled materials, schedule, and project budget.' }) }}

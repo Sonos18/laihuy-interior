@@ -82,7 +82,7 @@ watch(isMobileMenuOpen, (value) => {
           <img
             src="/images/logo_white_bg-removebg-preview.png"
             alt="Lai Huy Interior"
-            class="h-14 w-auto"
+            class="h-16 w-auto md:h-[4.5rem]"
           >
         </NuxtLink>
 

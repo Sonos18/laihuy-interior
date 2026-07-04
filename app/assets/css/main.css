@@ -58,6 +58,16 @@
   }
 }
 
+@keyframes hero-zoom {
+  from {
+    transform: scale(1.08);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
 @layer components {
   body {
     @apply bg-white font-sans text-ink-900 antialiased;
@@ -144,5 +154,74 @@
   .slide-right-enter-from,
   .slide-right-leave-to {
     transform: translateX(100%);
+  }
+}
+
+@layer base {
+  /* Responsive typography — fluid scale so headings stay premium on desktop
+     and never overflow / oversize on small screens. */
+  .text-hero {
+    font-size: clamp(2.25rem, 1.4rem + 4.2vw, 4.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .text-section-title {
+    font-size: clamp(1.75rem, 1.2rem + 2.6vw, 3rem);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .text-lead {
+    font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem);
+    line-height: 1.7;
+  }
+
+  /* Elegant underline animation for inline links. */
+  .link-underline {
+    background-image: linear-gradient(currentcolor, currentcolor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1.5px;
+    transition: background-size 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .link-underline:hover {
+    background-size: 100% 1.5px;
+  }
+
+  /* Scroll-reveal — default (no-JS / SSR) state is fully visible.
+     The hidden state only applies once the client adds `reveal-ready`. */
+  html.reveal-ready .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: opacity, transform;
+  }
+
+  html.reveal-ready .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Gentle one-time zoom-in for the hero image (image reveal). */
+  .hero-image {
+    animation: hero-zoom 1.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.reveal-ready .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .hero-image {
+      animation: none;
+    }
   }
 }

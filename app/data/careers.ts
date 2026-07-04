@@ -51,13 +51,13 @@ export const jobs: Job[] = [
   },
   {
     id: 'tho-moc-lap-dat',
-    title: 'Thợ mộc / thợ lắp đặt',
+    title: 'Thợ mộc / thợ thi công',
     location: 'Bến Tre / công trình',
     type: 'Toàn thời gian',
     description:
-      'Gia công, hoàn thiện và lắp đặt các hạng mục nội thất tại xưởng hoặc công trình theo bản vẽ.',
+      'Gia công, hoàn thiện và thi công các hạng mục nội thất tại xưởng hoặc công trình theo bản vẽ.',
     requirements: [
-      'Có kinh nghiệm mộc nội thất hoặc lắp đặt công trình',
+      'Có kinh nghiệm mộc nội thất hoặc thi công công trình',
       'Biết sử dụng dụng cụ, máy móc cơ bản an toàn',
       'Kỷ luật, đúng giờ và có trách nhiệm với chất lượng hoàn thiện'
     ]
@@ -68,7 +68,7 @@ export const jobs: Job[] = [
     location: 'Toàn quốc theo dự án',
     type: 'Toàn thời gian',
     description:
-      'Giám sát tiến độ lắp đặt, phối hợp hiện trường và nghiệm thu hạng mục nội thất dự án.',
+      'Giám sát tiến độ thi công, phối hợp hiện trường và nghiệm thu hạng mục nội thất dự án.',
     requirements: [
       'Có kinh nghiệm giám sát nội thất hoặc hoàn thiện công trình',
       'Đọc hiểu bản vẽ, biết lập kế hoạch triển khai',

@@ -81,17 +81,17 @@ export const projects: Project[] = [
     categoryName: 'Khách sạn',
     segment: 'hotel',
     shortDescription:
-      'Case study khách sạn boutique 50 phòng, triển khai thiết kế, sản xuất và lắp đặt nội thất gỗ công nghiệp trong 2 tháng.',
+      'Case study khách sạn boutique 50 phòng, triển khai thiết kế, sản xuất và thi công nội thất gỗ công nghiệp trong 2 tháng.',
     description: [
       'Dự án Eo Gió là mô hình khách sạn boutique cần kiểm soát đồng thời hình ảnh thương hiệu, tiến độ sản xuất và chất lượng hoàn thiện theo số lượng phòng lớn.',
-      'Lai Huy Interior tham gia từ giai đoạn thiết kế, bóc tách kỹ thuật đến sản xuất tại xưởng và lắp đặt tại công trình.',
+      'Lai Huy Interior tham gia từ giai đoạn thiết kế, bóc tách kỹ thuật đến sản xuất tại xưởng và thi công tại công trình.',
       'Giải pháp tập trung vào module hóa hạng mục nội thất, đồng bộ vật liệu và tổ chức bàn giao theo từng khu vực để giảm rủi ro tiến độ.'
     ],
     ...createImageAliases(eoGioHotelImages),
-    location: 'Việt Nam',
+    location: 'Bến Tre',
     area: 'Khách sạn boutique',
     rooms: '50 phòng',
-    duration: '2 tháng',
+    duration: '60 ngày',
     year: '2026',
     client: 'Eo Gió Hotel',
     style: 'Hospitality hiện đại ấm áp',
@@ -99,7 +99,7 @@ export const projects: Project[] = [
       'Thiết kế nội thất',
       'Bóc tách bản vẽ sản xuất',
       'Sản xuất nội thất gỗ công nghiệp',
-      'Lắp đặt tại công trình',
+      'Thi công tại công trình',
       'Kiểm soát chất lượng và bàn giao'
     ],
     materials: [
@@ -111,14 +111,14 @@ export const projects: Project[] = [
     featured: true,
     content: {
       overview:
-        'Eo Gió Hotel được phát triển như một dự án hospitality có yêu cầu rõ về tiến độ, tính đồng bộ và trải nghiệm lưu trú. Thay vì chỉ tạo ra hình ảnh đẹp, Lai Huy Interior tập trung vào khả năng sản xuất hàng loạt có kiểm soát, giữ chất lượng hoàn thiện ổn định giữa các phòng và đảm bảo quá trình lắp đặt không làm gián đoạn kế hoạch vận hành.',
+        'Eo Gió Hotel được phát triển như một dự án hospitality có yêu cầu rõ về tiến độ, tính đồng bộ và trải nghiệm lưu trú. Thay vì chỉ tạo ra hình ảnh đẹp, Lai Huy Interior tập trung vào khả năng sản xuất hàng loạt có kiểm soát, giữ chất lượng hoàn thiện ổn định giữa các phòng và đảm bảo quá trình thi công không làm gián đoạn kế hoạch vận hành.',
       challenge:
         'Thách thức chính nằm ở việc triển khai nhiều hạng mục nội thất trong thời gian ngắn, đồng thời giữ được độ đồng nhất về màu vật liệu, kích thước, phụ kiện và cảm giác hoàn thiện giữa các phòng.',
       solution:
-        'Đội ngũ kỹ thuật bóc tách hồ sơ theo module, phân loại chi tiết theo phòng và khu vực, sau đó tổ chức sản xuất tại xưởng theo từng đợt. Quy trình QC trước khi đóng gói giúp giảm sai sót tại công trình, còn đội lắp đặt triển khai theo tiến độ bàn giao đã thống nhất với chủ đầu tư.',
+        'Đội ngũ kỹ thuật bóc tách hồ sơ theo module, phân loại chi tiết theo phòng và khu vực, sau đó tổ chức sản xuất tại xưởng theo từng đợt. Quy trình QC trước khi đóng gói giúp giảm sai sót tại công trình, còn đội thi công triển khai theo tiến độ bàn giao đã thống nhất với chủ đầu tư.',
       highlights: [
         'Tổ chức sản xuất theo module để kiểm soát tiến độ 50 phòng',
-        'Phối hợp thiết kế, xưởng và lắp đặt trong một quy trình thống nhất',
+        'Phối hợp thiết kế, xưởng và thi công trong một quy trình thống nhất',
         'Ưu tiên vật liệu bền, dễ bảo trì cho môi trường khách sạn',
         'Khu lễ tân tạo nhận diện thương hiệu rõ ràng ngay khi khách bước vào',
         'Hệ ánh sáng gián tiếp và bảng màu gỗ ấm nâng trải nghiệm lưu trú'
@@ -155,7 +155,7 @@ export const projects: Project[] = [
       'Thiết kế khu lễ tân',
       'Sản xuất hạng mục phòng ngủ',
       'Hoàn thiện hệ tủ và chi tiết lưu trú',
-      'Lắp đặt và nghiệm thu'
+      'Thi công và nghiệm thu'
     ],
     materials: [
       'Gỗ công nghiệp',
@@ -187,7 +187,7 @@ export const projects: Project[] = [
   },
   {
     id: 3,
-    name: 'Codi Villa hiện đại',
+    name: 'Codi Villa nghỉ dưỡng cao cấp',
     slug: 'codi-villa-hien-dai',
     category: 'VILLA',
     categoryName: 'Villa',
@@ -208,7 +208,7 @@ export const projects: Project[] = [
     scope: [
       'Thiết kế nội thất villa',
       'Sản xuất hệ tủ và đồ rời',
-      'Lắp đặt phòng khách, bếp, phòng ngủ',
+      'Thi công phòng khách, bếp, phòng ngủ',
       'Hoàn thiện và bàn giao'
     ],
     materials: [
@@ -262,7 +262,7 @@ export const projects: Project[] = [
     scope: [
       'Thiết kế nội thất nhà phố',
       'Sản xuất hệ tủ và khu bếp',
-      'Lắp đặt các phòng chức năng',
+      'Thi công các phòng chức năng',
       'Hoàn thiện và bàn giao'
     ],
     materials: [
@@ -315,7 +315,7 @@ export const projects: Project[] = [
     scope: [
       'Thiết kế nội thất',
       'Sản xuất hệ tủ và đồ nội thất',
-      'Lắp đặt phòng khách, bếp, phòng ngủ',
+      'Thi công phòng khách, bếp, phòng ngủ',
       'Bàn giao hoàn thiện'
     ],
     materials: [
@@ -367,7 +367,7 @@ export const projects: Project[] = [
     scope: [
       'Thiết kế văn phòng',
       'Sản xuất bàn dài và hệ tủ',
-      'Lắp đặt khu làm việc',
+      'Thi công khu làm việc',
       'Hoàn thiện ánh sáng và lưu trữ'
     ],
     materials: [

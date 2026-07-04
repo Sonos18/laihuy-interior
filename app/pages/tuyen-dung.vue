@@ -23,7 +23,7 @@ useSeoMeta({
       :topic="t({ vi: 'Tuyển dụng', en: 'Careers' })"
       :title="t({ vi: 'Tuyển dụng', en: 'Careers' })"
       special-title="Lai Huy Interior"
-      :subtitle="t({ vi: 'Gia nhập môi trường sản xuất và thi công nội thất dự án chuyên nghiệp, nơi thiết kế, kỹ thuật, xưởng và công trình làm việc cùng một mục tiêu.', en: 'Join a professional project interior environment where design, technical detailing, factory production, and site installation work toward one delivery goal.' })"
+      :subtitle="t({ vi: 'Gia nhập môi trường sản xuất và thi công nội thất dự án chuyên nghiệp, nơi thiết kế, kỹ thuật, xưởng và công trình làm việc cùng một mục tiêu.', en: 'Join a professional project interior environment where design, technical detailing, factory production, and on-site contracting work toward one delivery goal.' })"
       bg-image="/images/about_workspace.jpg"
     />
 

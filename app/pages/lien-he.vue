@@ -87,7 +87,7 @@ useSeoMeta({
       :topic="t({ vi: 'Liên hệ', en: 'Contact' })"
       :title="t({ vi: 'Liên hệ tư vấn', en: 'Contact' })"
       :special-title="t({ vi: 'dự án', en: 'our team' })"
-      :subtitle="t({ vi: 'Gửi bản vẽ, BOQ hoặc thông tin công trình để Lai Huy Interior tư vấn phương án sản xuất và thi công phù hợp.', en: 'Send drawings, BOQ, or project information so Lai Huy Interior can advise on production and installation solutions.' })"
+      :subtitle="t({ vi: 'Gửi bản vẽ, BOQ hoặc thông tin công trình để Lai Huy Interior tư vấn phương án sản xuất và thi công phù hợp.', en: 'Send drawings, BOQ, or project information so Lai Huy Interior can advise on production and contracting solutions.' })"
       bg-image="/images/projects/house/anhduy_house/gieng_troi.jpg"
     />
 

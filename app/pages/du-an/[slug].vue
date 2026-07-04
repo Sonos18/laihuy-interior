@@ -246,7 +246,7 @@ useSeoMeta({
               {{ t(uiText.labels.scope) }}
             </p>
             <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
-              {{ t({ vi: 'Từ thiết kế đến sản xuất và lắp đặt', en: 'From design to production and installation' }) }}
+              {{ t({ vi: 'Từ thiết kế đến sản xuất và thi công', en: 'From design to production and contracting' }) }}
             </h2>
             <div
               v-if="ta(project.scope).length"
@@ -336,7 +336,7 @@ useSeoMeta({
               </h2>
             </div>
             <p class="max-w-md text-sm leading-6 text-ink-500">
-              {{ t({ vi: 'Bộ hình ghi lại các khu vực đã hoàn thiện, giúp chủ đầu tư đánh giá vật liệu, tỷ lệ và chất lượng lắp đặt.', en: 'The gallery records completed areas so owners can review materials, proportions, and installation quality.' }) }}
+              {{ t({ vi: 'Bộ hình ghi lại các khu vực đã hoàn thiện, giúp chủ đầu tư đánh giá vật liệu, tỷ lệ và chất lượng thi công.', en: 'The gallery records completed areas so owners can review materials, proportions, and finishing quality.' }) }}
             </p>
           </div>
 

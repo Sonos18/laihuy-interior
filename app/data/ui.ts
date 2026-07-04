@@ -31,8 +31,8 @@ export const uiText = {
     callNow: { vi: 'Gọi ngay', en: 'Call now' },
     sendEmail: { vi: 'Gửi email', en: 'Send email' },
     factoryDirectContractor: {
-      vi: 'Nhà thầu nội thất trực tiếp từ xưởng',
-      en: 'Factory-direct interior contractor'
+      vi: 'Nhà thầu sản xuất, thiết kế & thi công nội thất',
+      en: 'Manufacturing, design & interior contracting'
     },
     caseStudies: { vi: 'Dự án tiêu biểu', en: 'Featured case studies' },
     productionWorkflow: { vi: 'Quy trình triển khai', en: 'Production workflow' },
@@ -68,11 +68,11 @@ export const uiText = {
   },
   projectFacts: {
     category: { vi: 'Hạng mục', en: 'Category' },
-    location: { vi: 'Vị trí', en: 'Location' },
+    location: { vi: 'Địa điểm', en: 'Location' },
     scale: { vi: 'Quy mô', en: 'Scale' },
-    rooms: { vi: 'Số phòng', en: 'Rooms' },
-    duration: { vi: 'Thời gian', en: 'Duration' },
-    year: { vi: 'Năm', en: 'Year' },
+    rooms: { vi: 'Tổng khối lượng', en: 'Total volume' },
+    duration: { vi: 'Tiến độ', en: 'Timeline' },
+    year: { vi: 'Năm hoàn thành', en: 'Completion year' },
     scope: { vi: 'Phạm vi', en: 'Scope' },
     materials: { vi: 'Vật liệu chính', en: 'Main materials' },
     fallbackMetric: { vi: 'Dự án nội thất', en: 'Interior project' }

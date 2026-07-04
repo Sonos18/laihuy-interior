@@ -44,7 +44,7 @@ useSeoMeta({
           </h2>
         </div>
         <p class="text-lg leading-9 text-ink-600">
-          {{ t({ vi: 'Lai Huy Interior sở hữu hệ thống xưởng sản xuất trực tiếp, hỗ trợ kiểm soát tiến độ, chất lượng và tính đồng bộ trong từng hạng mục nội thất. Quy trình làm việc kết nối thiết kế, kỹ thuật, sản xuất, QC và đội lắp dựng để giảm sai lệch giữa bản vẽ và công trình thực tế.', en: 'Lai Huy Interior operates through direct factory production, connecting design, technical detailing, manufacturing, QC, and installation teams to reduce gaps between drawings and site execution.' }) }}
+          {{ t({ vi: 'Lai Huy Interior sở hữu hệ thống xưởng sản xuất trực tiếp, hỗ trợ kiểm soát tiến độ, chất lượng và tính đồng bộ trong từng hạng mục nội thất. Quy trình làm việc kết nối thiết kế, kỹ thuật, sản xuất, QC và đội lắp dựng để giảm sai lệch giữa bản vẽ và công trình thực tế.', en: 'Lai Huy Interior operates through direct factory production, connecting design, technical detailing, manufacturing, QC, and on-site contracting teams to reduce gaps between drawings and site execution.' }) }}
         </p>
       </div>
     </section>
@@ -78,7 +78,7 @@ useSeoMeta({
             {{ t(uiText.labels.machinery) }}
           </p>
           <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
-            {{ t({ vi: 'Máy móc phục vụ gia công nội thất dự án', en: 'Machinery for project interior manufacturing' }) }}
+            {{ t({ vi: 'Hệ thống máy phục vụ sản xuất nội thất dự án', en: 'Machinery system for project interior manufacturing' }) }}
           </h2>
         </div>
 

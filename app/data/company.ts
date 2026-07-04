@@ -25,24 +25,24 @@ const representativeOffice
   = 'Lô Q-2, đường số 8, KCN Long Hậu mở rộng, Ấp 3, Xã Cần Giuộc, Tỉnh Tây Ninh'
 
 const factoryAddress
-  = '557E1 - KP2 - Phường Phú Khương, TP. Bến Tre - Bến Tre, Tỉnh Bến Tre, Vietnam'
+  = '557E1 - KP2 - Phường Phú Khương, Tỉnh Vĩnh Long, Việt Nam'
 
 export const company = {
   name: 'Lai Huy Interior',
-  phone: '+84 90 310 20 12',
+  phone: '+84 903 102 012',
   email: 'noithatlaihuy@gmail.com',
   facebook: 'https://www.facebook.com/noithatlaihuy',
   tagline: {
-    vi: 'Xưởng sản xuất trực tiếp - Kiểm soát chất lượng - Thi công toàn quốc',
-    en: 'Direct factory production - Quality control - Nationwide installation'
+    vi: 'Xưởng sản xuất trực tiếp - Kiểm soát chất lượng - An toàn tiến độ',
+    en: 'Direct factory production - Quality control - On-time delivery'
   },
   positioning: {
-    vi: 'Lai Huy Interior chuyên sản xuất và thi công nội thất khách sạn 3-5 sao, villa, căn hộ và các dự án quy mô lớn với hệ thống xưởng trực tiếp, đội ngũ kỹ thuật và quy trình kiểm soát chất lượng rõ ràng.',
-    en: 'Lai Huy Interior manufactures and installs interiors for 3-5 star hotels, villas, apartments, and large-scale projects through a direct factory system, technical team, and clear quality control process.'
+    vi: 'Nhà thầu sản xuất và thi công nội thất khách sạn, villa và căn hộ cao cấp với hệ thống xưởng trực tiếp và quy trình kiểm soát chất lượng đồng bộ.',
+    en: 'A factory-direct contractor that manufactures and builds interiors for hotels, villas, and premium apartments, backed by an integrated quality control process.'
   },
   shortPositioning: {
     vi: 'Sản xuất và thi công nội thất khách sạn, villa, căn hộ và dự án thương mại với năng lực nhà xưởng trực tiếp.',
-    en: 'Factory-direct manufacturing and installation for hotels, villas, apartments, and commercial interior projects.'
+    en: 'Factory-direct manufacturing and contracting for hotels, villas, apartments, and commercial interior projects.'
   },
   workingHours: {
     vi: ['Từ 8:00 - 17:00', 'Từ thứ 2 đến thứ 7'],
@@ -50,7 +50,7 @@ export const company = {
   } satisfies LocalizedArray,
   addresses: [
     {
-      label: { vi: 'Văn phòng đại diện', en: 'Representative office' },
+      label: { vi: 'Văn phòng giao dịch', en: 'Business office' },
       address: representativeOffice,
       mapUrl: buildMapUrl(representativeOffice)
     },
@@ -94,14 +94,14 @@ export const company = {
     vi: [
       'Thiết kế nội thất khách sạn',
       'Sản xuất nội thất tại xưởng',
-      'Thi công và lắp đặt toàn quốc',
+      'Thi công nội thất toàn quốc',
       'Gia công theo bản vẽ',
       'Kiểm soát chất lượng dự án'
     ],
     en: [
       'Hotel interior design',
       'Factory-direct furniture production',
-      'Nationwide installation',
+      'Nationwide interior contracting',
       'Production from technical drawings',
       'Project quality control'
     ]
@@ -114,7 +114,7 @@ export const company = {
       },
       description: {
         vi: 'Lai Huy Interior chuyên thiết kế, sản xuất và thi công nội thất khách sạn, villa, căn hộ và dự án lớn với xưởng sản xuất trực tiếp, kiểm soát chất lượng và thi công toàn quốc.',
-        en: 'Lai Huy Interior provides design, manufacturing, and installation solutions for hotels, villas, apartments, and large-scale interior projects with direct factory production and quality control.'
+        en: 'Lai Huy Interior provides design, manufacturing, and contracting solutions for hotels, villas, apartments, and large-scale interior projects with direct factory production and quality control.'
       },
       ogImage: '/images/projects/hotel/eo_gio/reception.png'
     },
@@ -135,19 +135,19 @@ export const company = {
         en: 'Factory Capability For Hotel Interiors | Lai Huy Interior'
       },
       description: {
-        vi: 'Khám phá năng lực xưởng sản xuất nội thất trực tiếp của Lai Huy Interior: máy móc, quy trình sản xuất, kiểm soát chất lượng và đội lắp đặt.',
-        en: 'Discover Lai Huy Interior direct production capability: machinery, workflow, quality control, and installation coordination.'
+        vi: 'Khám phá năng lực xưởng sản xuất nội thất trực tiếp của Lai Huy Interior: máy móc, quy trình sản xuất, kiểm soát chất lượng và đội thi công.',
+        en: 'Discover Lai Huy Interior direct production capability: machinery, workflow, quality control, and on-site contracting.'
       },
       ogImage: '/images/about_workspace.jpg'
     },
     services: {
       title: {
         vi: 'Dịch vụ thi công & sản xuất nội thất khách sạn | Lai Huy Interior',
-        en: 'Hotel Interior Manufacturing & Installation Services | Lai Huy Interior'
+        en: 'Hotel Interior Manufacturing & Contracting Services | Lai Huy Interior'
       },
       description: {
-        vi: 'Dịch vụ thiết kế, sản xuất tại xưởng, thi công lắp đặt nội thất khách sạn 3-5 sao, villa, căn hộ, thương mại và gia công xuất khẩu.',
-        en: 'Design, factory production, installation, hotel interiors, villas, apartments, commercial projects, and export-ready manufacturing services.'
+        vi: 'Dịch vụ thiết kế, sản xuất tại xưởng, thi công nội thất khách sạn 3-5 sao, villa, căn hộ, thương mại và gia công xuất khẩu.',
+        en: 'Design, factory production, contracting, hotel interiors, villas, apartments, commercial projects, and export-ready manufacturing services.'
       },
       ogImage: '/images/projects/hotel/codi/reception_desk.jpg'
     },

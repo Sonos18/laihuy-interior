@@ -169,7 +169,7 @@ useSeoMeta({
             {{ t(uiText.cta.hotelConsult) }}
           </p>
           <h2 class="mt-4 max-w-3xl text-3xl font-black uppercase md:text-5xl">
-            {{ t({ vi: 'Bạn cần đội ngũ sản xuất và lắp đặt cho dự án tiếp theo?', en: 'Need a production and installation team for your next project?' }) }}
+            {{ t({ vi: 'Bạn cần đội ngũ sản xuất và thi công cho dự án tiếp theo?', en: 'Need a production and contracting team for your next project?' }) }}
           </h2>
         </div>
         <NuxtLink

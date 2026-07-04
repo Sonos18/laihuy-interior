@@ -10,27 +10,15 @@ export type Service = {
 
 export const services: Service[] = [
   {
-    id: 'hotel-interior',
-    icon: 'i-lucide-building-2',
-    title: 'Nội thất khách sạn 3-5 sao',
-    description:
-      'Giải pháp thiết kế, sản xuất và lắp đặt nội thất khách sạn theo tiêu chuẩn vận hành, tiến độ và độ bền sử dụng.',
-    details: [
-      'Phòng ngủ khách sạn, sảnh, lễ tân, hành lang và khu tiện ích',
-      'Sản xuất theo module để kiểm soát số lượng lớn',
-      'Bàn giao đồng bộ theo phòng, tầng hoặc giai đoạn dự án'
-    ]
-  },
-  {
     id: 'design',
     icon: 'i-lucide-pencil-ruler',
-    title: 'Thiết kế nội thất',
+    title: 'Thiết kế & triển khai kỹ thuật',
     description:
-      'Định hướng concept, bố trí công năng và hoàn thiện hồ sơ thiết kế phù hợp mục tiêu đầu tư và vận hành.',
+      'Triển khai concept, shopdrawing và hồ sơ kỹ thuật phục vụ sản xuất và thi công nội thất dự án.',
     details: [
-      'Tư vấn phong cách, vật liệu và ngân sách',
-      'Bản vẽ 2D, phối cảnh 3D và hồ sơ triển khai',
-      'Tối ưu công năng cho khách sạn, villa, căn hộ và thương mại'
+      'Định hướng concept, bố trí công năng và vật liệu',
+      'Shopdrawing, bản vẽ 2D và phối cảnh 3D',
+      'Hồ sơ kỹ thuật phục vụ sản xuất và thi công'
     ]
   },
   {
@@ -38,7 +26,7 @@ export const services: Service[] = [
     icon: 'i-lucide-factory',
     title: 'Sản xuất nội thất tại xưởng',
     description:
-      'Gia công trực tiếp tại xưởng giúp kiểm soát vật liệu, chất lượng hoàn thiện và tiến độ sản xuất.',
+      'Gia công trực tiếp tại xưởng với quy trình kiểm soát vật liệu, tiến độ và chất lượng hoàn thiện.',
     details: [
       'Bóc tách bản vẽ sản xuất',
       'Gia công hệ tủ, giường, vách, quầy, bàn và chi tiết nội thất',
@@ -46,23 +34,35 @@ export const services: Service[] = [
     ]
   },
   {
-    id: 'installation',
+    id: 'construction',
     icon: 'i-lucide-hard-hat',
-    title: 'Thi công & lắp đặt',
+    title: 'Thi công nội thất dự án',
     description:
-      'Đội lắp dựng triển khai tại công trình, phối hợp hiện trường và nghiệm thu theo từng hạng mục.',
+      'Triển khai thi công và lắp dựng nội thất khách sạn, resort và căn hộ theo tiến độ công trình.',
     details: [
-      'Khảo sát hiện trạng và lập kế hoạch lắp đặt',
+      'Khảo sát hiện trạng và lập kế hoạch thi công',
       'Tổ chức nhân sự theo tiến độ công trình',
       'Xử lý hoàn thiện, nghiệm thu và bàn giao'
     ]
   },
   {
+    id: 'hotel-interior',
+    icon: 'i-lucide-building-2',
+    title: 'Nội thất khách sạn & resort',
+    description:
+      'Giải pháp nội thất đồng bộ cho khách sạn boutique, resort và mô hình lưu trú cao cấp.',
+    details: [
+      'Phòng ngủ, sảnh, lễ tân, hành lang và khu tiện ích',
+      'Sản xuất theo module để kiểm soát số lượng lớn',
+      'Bàn giao đồng bộ theo phòng, tầng hoặc giai đoạn dự án'
+    ]
+  },
+  {
     id: 'commercial-projects',
     icon: 'i-lucide-briefcase-business',
-    title: 'Villa, căn hộ & thương mại',
+    title: 'Nội thất thương mại',
     description:
-      'Triển khai nội thất cho villa, căn hộ cao cấp, showroom, văn phòng và không gian thương mại.',
+      'Thi công showroom, văn phòng, retail và không gian thương mại theo yêu cầu vận hành.',
     details: [
       'Giữ đồng bộ thiết kế và vật liệu giữa các khu vực',
       'Tối ưu lưu trữ, vận hành và trải nghiệm người dùng',
@@ -72,9 +72,9 @@ export const services: Service[] = [
   {
     id: 'export-oem',
     icon: 'i-lucide-container',
-    title: 'Gia công theo bản vẽ / xuất khẩu',
+    title: 'Gia công theo hồ sơ kỹ thuật / xuất khẩu',
     description:
-      'Nhận gia công theo hồ sơ kỹ thuật, đơn hàng dự án và nhu cầu xuất khẩu với quy trình sản xuất có kiểm soát.',
+      'Nhận gia công theo bản vẽ kỹ thuật, đơn hàng dự án và đơn hàng xuất khẩu.',
     details: [
       'Tiếp nhận bản vẽ, mẫu vật liệu và tiêu chuẩn đóng gói',
       'Sản xuất hàng loạt theo module',

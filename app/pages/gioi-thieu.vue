@@ -15,7 +15,7 @@ const values = [
     icon: 'i-lucide-list-checks',
     title: 'Quản lý dự án rõ ràng',
     description:
-      'Quy trình phối hợp giữa thiết kế, kỹ thuật, sản xuất, QC và lắp đặt giúp giảm sai lệch khi triển khai.'
+      'Quy trình phối hợp giữa thiết kế, kỹ thuật, sản xuất, QC và thi công giúp giảm sai lệch khi triển khai.'
   },
   {
     icon: 'i-lucide-hard-hat',
@@ -43,7 +43,7 @@ useSeoMeta({
       topic="About Lai Huy"
       title="Đơn vị sản xuất & thi công"
       special-title="nội thất dự án"
-      subtitle="Lai Huy Interior phát triển theo mô hình xưởng trực tiếp, kết hợp thiết kế, sản xuất và lắp đặt cho khách sạn, villa, căn hộ và công trình thương mại."
+      subtitle="Lai Huy Interior phát triển theo mô hình xưởng trực tiếp, kết hợp thiết kế, sản xuất và thi công cho khách sạn, villa, căn hộ và công trình thương mại."
       bg-image="/images/projects/hotel/eo_gio/table.png"
     />
 
@@ -71,7 +71,7 @@ useSeoMeta({
               Trong ngành nội thất dự án, khách hàng không chỉ mua hình ảnh đẹp. Chủ đầu tư cần năng lực quản lý, tiến độ, chất lượng, sản xuất ổn định và đội ngũ có thể xử lý thực tế tại công trình.
             </p>
             <p>
-              Lai Huy Interior xây dựng năng lực quanh mô hình factory + project capability: bản vẽ được bóc tách kỹ thuật, sản phẩm được gia công tại xưởng, chất lượng được kiểm tra trước khi giao hàng và đội lắp đặt triển khai theo kế hoạch bàn giao.
+              Lai Huy Interior xây dựng năng lực quanh mô hình factory + project capability: bản vẽ được bóc tách kỹ thuật, sản phẩm được gia công tại xưởng, chất lượng được kiểm tra trước khi giao hàng và đội thi công triển khai theo kế hoạch bàn giao.
             </p>
           </div>
         </div>
