@@ -1,2 +1,0 @@
-- [ORYZO visual layer](oryzo-visual-layer.md) — light homepage + protect natural-scroll; ORYZO layout/type/motion only, keep palette
-- [Feedback round 2](feedback-round2.md) — THI CÔNG not LẮP ĐẶT, Vĩnh Long address; machinery photos + non-Eo-Gió project data still owed by client
