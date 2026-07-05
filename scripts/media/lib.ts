@@ -3,6 +3,7 @@ import { existsSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import process from 'node:process'
 import { MEDIA_BUCKET } from '../../app/shared/media/constants'
+import { assertManifestSchemaVersion } from '../../app/shared/media/validation'
 import type { MediaManifest, MediaManifestAsset } from '../../app/shared/media/types'
 
 export const REPO_ROOT = resolve(import.meta.dirname, '../..')
@@ -20,8 +21,11 @@ export const loadEnv = () => {
 export const sha256 = (buffer: Buffer): string =>
   `sha256:${createHash('sha256').update(buffer).digest('hex')}`
 
-export const readManifest = (): MediaManifest =>
-  JSON.parse(readFileSync(MANIFEST_PATH, 'utf8')) as MediaManifest
+export const readManifest = (): MediaManifest => {
+  const manifest = JSON.parse(readFileSync(MANIFEST_PATH, 'utf8')) as MediaManifest
+  assertManifestSchemaVersion(manifest)
+  return manifest
+}
 
 export const writeManifest = (manifest: MediaManifest) => {
   manifest.generatedAt = new Date().toISOString()

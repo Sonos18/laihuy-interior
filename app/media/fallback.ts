@@ -1,5 +1,8 @@
 import manifest from '../shared/media/manifest.json'
+import { assertManifestSchemaVersion } from '../shared/media/validation'
 import type { MediaManifest } from '../shared/media/types'
+
+assertManifestSchemaVersion(manifest as MediaManifest)
 
 const assets = (manifest as MediaManifest).assets
 

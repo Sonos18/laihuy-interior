@@ -15,7 +15,7 @@ useSeoMeta({
   description: seoDescription,
   ogTitle: seoTitle,
   ogDescription: seoDescription,
-  ogImage: mediaUrl(company.seo.careers.ogImage)
+  ogImage: mediaUrl(company.seo.careers.ogImage.path)
 })
 </script>
 

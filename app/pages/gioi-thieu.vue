@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { company } from '~/data/company'
 import { factoryCapabilities, qualityControl } from '~/data/factory'
-import { eoGioHotelPhotos } from '~/data/projects'
 import { siteImages } from '~/data/site-images'
+import { projectMedia } from '~/media/catalog.generated'
+import { withAlt } from '~/media/project-media'
 
 const { t } = useLanguage()
 const { resolve: mediaUrl } = useMediaUrl()
+
+const heroImage = withAlt(projectMedia['khach-san-eo-gio'].cover, '')
 
 const values = [
   {
@@ -36,7 +39,7 @@ useSeoMeta({
   description: seoDescription,
   ogTitle: seoTitle,
   ogDescription: seoDescription,
-  ogImage: mediaUrl(company.seo.about.ogImage)
+  ogImage: mediaUrl(company.seo.about.ogImage.path)
 })
 </script>
 
@@ -47,7 +50,7 @@ useSeoMeta({
       title="Đơn vị sản xuất & thi công"
       special-title="nội thất dự án"
       subtitle="Lai Huy Interior phát triển theo mô hình xưởng trực tiếp, kết hợp thiết kế, sản xuất và thi công cho khách sạn, villa, căn hộ và công trình thương mại."
-      :image="eoGioHotelPhotos.table"
+      :image="heroImage"
     />
 
     <section class="section-spacing bg-white">

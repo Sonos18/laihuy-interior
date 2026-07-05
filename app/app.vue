@@ -21,7 +21,7 @@ useSeoMeta({
   description,
   ogTitle: title,
   ogDescription: description,
-  ogImage: mediaUrl(company.seo.home.ogImage),
+  ogImage: mediaUrl(company.seo.home.ogImage.path),
   twitterCard: 'summary_large_image'
 })
 

@@ -1,5 +1,20 @@
-import { MEDIA_TOP_LEVEL_FOLDERS } from './constants'
+import { MANIFEST_SCHEMA_VERSION, MEDIA_TOP_LEVEL_FOLDERS } from './constants'
 import type { MediaPath } from './types'
+
+/**
+ * Guard every manifest load against schema drift. Throws a clear, actionable error
+ * when the manifest's `schemaVersion` is missing or not the version this codebase
+ * supports (`MANIFEST_SCHEMA_VERSION`), so future format changes are explicit.
+ */
+export const assertManifestSchemaVersion = (manifest: { schemaVersion?: number }): void => {
+  if (manifest.schemaVersion !== MANIFEST_SCHEMA_VERSION) {
+    throw new Error(
+      `[media] Unsupported manifest schemaVersion: ${manifest.schemaVersion ?? '(missing)'} `
+      + `(expected ${MANIFEST_SCHEMA_VERSION}). Regenerate with 'pnpm media:scan --write' `
+      + 'or migrate the manifest to the current schema.'
+    )
+  }
+}
 
 const FOLDER_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 

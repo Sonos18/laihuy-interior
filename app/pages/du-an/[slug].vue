@@ -3,6 +3,8 @@ import { company } from '~/data/company'
 import { projects } from '~/data/projects'
 import { siteImages } from '~/data/site-images'
 import { uiText } from '~/data/ui'
+import { projectCover, projectImages } from '~/media/project-media'
+import type { MediaImage } from '~/shared/media/types'
 import type { Project } from '~/shared/types/project'
 
 type Fact = {
@@ -20,12 +22,10 @@ const slug = Array.isArray(route.params.slug)
 
 const project = projects.find(item => item.slug === slug)
 
-const getProjectImage = (item?: Project) =>
-  item?.image[0] ?? item?.gallery[0] ?? siteImages.bannerHome
+const getProjectImage = (item?: Project): MediaImage =>
+  projectCover(item?.mediaId, item?.name ?? '') ?? siteImages.bannerHome
 
-const allImages = project
-  ? [...new Set([...project.image, ...project.gallery])]
-  : []
+const allImages: MediaImage[] = projectImages(project?.mediaId, project?.name ?? '')
 
 const facts = computed<Fact[]>(() => {
   if (!project) {

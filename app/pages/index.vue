@@ -1,18 +1,26 @@
 <script setup lang="ts">
 import { company } from '~/data/company'
 import { factoryCapabilities, machinery, productionWorkflow } from '~/data/factory'
-import { eoGioHotelPhotos, projects } from '~/data/projects'
+import { projects } from '~/data/projects'
 import { services } from '~/data/services'
 import { siteImages } from '~/data/site-images'
 import { uiText } from '~/data/ui'
+import { projectMedia } from '~/media/catalog.generated'
+import { getProjectMedia } from '~/media/project-media'
+import type { MediaAsset } from '~/shared/media/types'
+import type { Project } from '~/shared/types/project'
 
 const { t, ta } = useLanguage()
 const { resolve: mediaUrl } = useMediaUrl()
 
-const heroImage = eoGioHotelPhotos.reception
+const heroImage = projectMedia['khach-san-eo-gio'].cover
 
 const featuredProjects = computed(() =>
-  projects.filter(project => project.featured).slice(0, 3)
+  projects
+    .filter(project => project.featured)
+    .map(project => ({ project, cover: getProjectMedia(project.mediaId)?.cover }))
+    .filter((entry): entry is { project: Project, cover: MediaAsset } => entry.cover !== undefined)
+    .slice(0, 3)
 )
 
 const heroMetrics = computed(() => [
@@ -30,7 +38,7 @@ useSeoMeta({
   description: seoDescription,
   ogTitle: seoTitle,
   ogDescription: seoDescription,
-  ogImage: mediaUrl(company.seo.home.ogImage)
+  ogImage: mediaUrl(company.seo.home.ogImage.path)
 })
 
 useHead({
@@ -215,7 +223,7 @@ useHead({
 
         <div class="grid gap-6 lg:grid-cols-3">
           <NuxtLink
-            v-for="(project, index) in featuredProjects"
+            v-for="({ project, cover }, index) in featuredProjects"
             :key="project.slug"
             v-reveal="index * 110"
             :to="`/du-an/${project.slug}`"
@@ -223,11 +231,10 @@ useHead({
           >
             <div class="relative aspect-[4/3] overflow-hidden bg-ink-100">
               <NuxtImg
-                v-if="project.image[0]"
-                :src="project.image[0].path"
+                :src="cover.path"
                 :alt="t(project.name)"
-                :width="project.image[0].width"
-                :height="project.image[0].height"
+                :width="cover.width"
+                :height="cover.height"
                 sizes="sm:100vw md:50vw lg:33vw"
                 loading="lazy"
                 class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"

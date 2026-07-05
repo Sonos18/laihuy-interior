@@ -1,5 +1,5 @@
 import type { LocalizedArray, LocalizedText } from './localization'
-import type { MediaImage } from '../media/types'
+import type { ProjectMediaId } from '~/media/catalog.generated'
 
 export type ProjectSegment = 'hotel' | 'villa' | 'apartment' | 'house' | 'commercial' | 'office' | 'other'
 
@@ -14,12 +14,13 @@ export type ProjectContent = {
 
 export type Project = {
   id: number
+  /** Stable media identifier — the project's folder name in the media catalog.
+   *  Absent when no matching media folder exists (business content awaiting media). */
+  mediaId?: ProjectMediaId
   name: LocalizedText
   title?: LocalizedText
   shortDescription: LocalizedText
   description: LocalizedArray
-  image: MediaImage[]
-  gallery: MediaImage[]
   category: string
   categoryName: LocalizedText
   slug: string
@@ -33,8 +34,6 @@ export type Project = {
   materials?: LocalizedArray
   duration?: LocalizedText
   rooms?: LocalizedText
-  thumbnail?: MediaImage
-  images?: MediaImage[]
   content?: ProjectContent
   featured?: boolean
 }

@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import { company } from '~/data/company'
-import { anhDuyHousePhotos } from '~/data/projects'
 import { siteImages } from '~/data/site-images'
 import { uiText } from '~/data/ui'
+import { projectMedia } from '~/media/catalog.generated'
+import { withAlt } from '~/media/project-media'
 
 const { t, ta } = useLanguage()
 const { resolve: mediaUrl } = useMediaUrl()
+
+// Previous hero used an Anh Duy image; that folder is absent from the new library.
+// Substituted with a residential project cover.
+const heroImage = withAlt(projectMedia['nha-vuon-chily'].cover, '')
 
 const form = reactive({
   name: '',
@@ -80,7 +85,7 @@ useSeoMeta({
   description: seoDescription,
   ogTitle: seoTitle,
   ogDescription: seoDescription,
-  ogImage: mediaUrl(company.seo.contact.ogImage)
+  ogImage: mediaUrl(company.seo.contact.ogImage.path)
 })
 </script>
 
@@ -91,7 +96,7 @@ useSeoMeta({
       :title="t({ vi: 'Liên hệ tư vấn', en: 'Contact' })"
       :special-title="t({ vi: 'dự án', en: 'our team' })"
       :subtitle="t({ vi: 'Gửi bản vẽ, BOQ hoặc thông tin công trình để Lai Huy Interior tư vấn phương án sản xuất và thi công phù hợp.', en: 'Send drawings, BOQ, or project information so Lai Huy Interior can advise on production and contracting solutions.' })"
-      :image="anhDuyHousePhotos.giengTroi"
+      :image="heroImage"
     />
 
     <section class="section-spacing bg-white">

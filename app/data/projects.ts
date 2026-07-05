@@ -1,307 +1,4 @@
 import type { Project } from '~/shared/types/project'
-import type { MediaImage } from '~/shared/media/types'
-
-export const eoGioHotelPhotos = {
-  reception: {
-    path: 'projects/hotel/eo-gio/reception.webp',
-    alt: { vi: 'Khu lễ tân khách sạn Eo Gió', en: 'Eo Gio hotel reception area' },
-    width: 3200,
-    height: 2000
-  },
-  bed: {
-    path: 'projects/hotel/eo-gio/bed.webp',
-    alt: { vi: 'Phòng ngủ khách sạn Eo Gió', en: 'Eo Gio hotel guest bedroom' },
-    width: 2560,
-    height: 1682
-  },
-  room1: {
-    path: 'projects/hotel/eo-gio/room-1.webp',
-    alt: { vi: 'Phòng nghỉ khách sạn Eo Gió', en: 'Eo Gio hotel guest room' },
-    width: 3200,
-    height: 2000
-  },
-  room2: {
-    path: 'projects/hotel/eo-gio/room-2.webp',
-    alt: { vi: 'Không gian phòng nghỉ khách sạn Eo Gió', en: 'Eo Gio hotel guest room interior' },
-    width: 3200,
-    height: 2000
-  },
-  table: {
-    path: 'projects/hotel/eo-gio/table.webp',
-    alt: { vi: 'Bàn làm việc trong phòng khách sạn Eo Gió', en: 'Eo Gio hotel in-room work desk' },
-    width: 2560,
-    height: 1829
-  },
-  toilet: {
-    path: 'projects/hotel/eo-gio/toilet.webp',
-    alt: { vi: 'Phòng vệ sinh khách sạn Eo Gió', en: 'Eo Gio hotel bathroom' },
-    width: 2500,
-    height: 2500
-  }
-} satisfies Record<string, MediaImage>
-
-export const codiHotelPhotos = {
-  receptionDesk: {
-    path: 'projects/hotel/codi/reception-desk.webp',
-    alt: { vi: 'Quầy lễ tân Codi Boutique Hotel', en: 'Codi Boutique Hotel reception desk' },
-    width: 2500,
-    height: 1500
-  },
-  bed: {
-    path: 'projects/hotel/codi/bed.webp',
-    alt: { vi: 'Phòng ngủ Codi Boutique Hotel', en: 'Codi Boutique Hotel bedroom' },
-    width: 2500,
-    height: 1507
-  },
-  wardrobe: {
-    path: 'projects/hotel/codi/wardrobe.webp',
-    alt: { vi: 'Hệ tủ lưu trú Codi Boutique Hotel', en: 'Codi Boutique Hotel wardrobe unit' },
-    width: 1000,
-    height: 1200
-  }
-} satisfies Record<string, MediaImage>
-
-const codiVillaPhotos = {
-  phongKhach: {
-    path: 'projects/villa/codi/phong-khach.webp',
-    alt: { vi: 'Phòng khách Codi Villa', en: 'Codi Villa living room' },
-    width: 6000,
-    height: 4000
-  },
-  phongKhach2: {
-    path: 'projects/villa/codi/phong-khach-2.webp',
-    alt: { vi: 'Góc phòng khách Codi Villa', en: 'Codi Villa living room detail' },
-    width: 6000,
-    height: 4000
-  },
-  phongBep: {
-    path: 'projects/villa/codi/phong-bep.webp',
-    alt: { vi: 'Phòng bếp Codi Villa', en: 'Codi Villa kitchen' },
-    width: 6000,
-    height: 4000
-  },
-  phongNgu: {
-    path: 'projects/villa/codi/phong-ngu.webp',
-    alt: { vi: 'Phòng ngủ Codi Villa', en: 'Codi Villa bedroom' },
-    width: 5892,
-    height: 3928
-  },
-  phongNgu2: {
-    path: 'projects/villa/codi/phong-ngu-2.webp',
-    alt: { vi: 'Phòng ngủ thứ hai Codi Villa', en: 'Codi Villa second bedroom' },
-    width: 6000,
-    height: 4000
-  },
-  toilet: {
-    path: 'projects/villa/codi/toilet.webp',
-    alt: { vi: 'Phòng vệ sinh Codi Villa', en: 'Codi Villa bathroom' },
-    width: 4000,
-    height: 6000
-  }
-} satisfies Record<string, MediaImage>
-
-export const anhDuyHousePhotos = {
-  phongKhach: {
-    path: 'projects/house/anhduy/phong-khach.webp',
-    alt: { vi: 'Phòng khách nhà phố Anh Duy', en: 'Anh Duy townhouse living room' },
-    width: 2500,
-    height: 1875
-  },
-  phongKhach2: {
-    path: 'projects/house/anhduy/phong-khach-2.webp',
-    alt: { vi: 'Góc phòng khách nhà phố Anh Duy', en: 'Anh Duy townhouse living room detail' },
-    width: 2500,
-    height: 1875
-  },
-  phongAn: {
-    path: 'projects/house/anhduy/phong-an.webp',
-    alt: { vi: 'Phòng ăn nhà phố Anh Duy', en: 'Anh Duy townhouse dining room' },
-    width: 2500,
-    height: 1875
-  },
-  bep: {
-    path: 'projects/house/anhduy/bep.webp',
-    alt: { vi: 'Khu bếp nhà phố Anh Duy', en: 'Anh Duy townhouse kitchen' },
-    width: 2500,
-    height: 2500
-  },
-  giengTroi: {
-    path: 'projects/house/anhduy/gieng-troi.webp',
-    alt: { vi: 'Giếng trời nhà phố Anh Duy', en: 'Anh Duy townhouse skylight well' },
-    width: 2500,
-    height: 1188
-  },
-  phongNgu: {
-    path: 'projects/house/anhduy/phong-ngu.webp',
-    alt: { vi: 'Phòng ngủ nhà phố Anh Duy', en: 'Anh Duy townhouse bedroom' },
-    width: 2500,
-    height: 1875
-  },
-  phongNgu2: {
-    path: 'projects/house/anhduy/phong-ngu-2.webp',
-    alt: { vi: 'Phòng ngủ thứ hai nhà phố Anh Duy', en: 'Anh Duy townhouse second bedroom' },
-    width: 2500,
-    height: 1500
-  },
-  mayGiat: {
-    path: 'projects/house/anhduy/may-giat.webp',
-    alt: { vi: 'Khu giặt nhà phố Anh Duy', en: 'Anh Duy townhouse laundry area' },
-    width: 1760,
-    height: 2200
-  },
-  toilet: {
-    path: 'projects/house/anhduy/toilet.webp',
-    alt: { vi: 'Phòng vệ sinh nhà phố Anh Duy', en: 'Anh Duy townhouse bathroom' },
-    width: 1760,
-    height: 2200
-  }
-} satisfies Record<string, MediaImage>
-
-const chilyHousePhotos = {
-  phongKhach: {
-    path: 'projects/house/chily/phong-khach.webp',
-    alt: { vi: 'Phòng khách nhà phố Chily', en: 'Chily townhouse living room' },
-    width: 2200,
-    height: 1800
-  },
-  phongKhach2: {
-    path: 'projects/house/chily/phong-khach-2.webp',
-    alt: { vi: 'Góc phòng khách nhà phố Chily', en: 'Chily townhouse living room detail' },
-    width: 2200,
-    height: 1672
-  },
-  banAn: {
-    path: 'projects/house/chily/ban-an.webp',
-    alt: { vi: 'Bàn ăn nhà phố Chily', en: 'Chily townhouse dining table' },
-    width: 2000,
-    height: 2000
-  },
-  phongBep: {
-    path: 'projects/house/chily/phong-bep.webp',
-    alt: { vi: 'Phòng bếp nhà phố Chily', en: 'Chily townhouse kitchen' },
-    width: 1800,
-    height: 2200
-  },
-  phongNgu: {
-    path: 'projects/house/chily/phong-ngu.webp',
-    alt: { vi: 'Phòng ngủ nhà phố Chily', en: 'Chily townhouse bedroom' },
-    width: 2000,
-    height: 1600
-  },
-  phongNgu2: {
-    path: 'projects/house/chily/phong-ngu-2.webp',
-    alt: { vi: 'Phòng ngủ thứ hai nhà phố Chily', en: 'Chily townhouse second bedroom' },
-    width: 1600,
-    height: 1600
-  },
-  phongBeTrai: {
-    path: 'projects/house/chily/phong-be-trai.webp',
-    alt: { vi: 'Phòng bé trai nhà phố Chily', en: 'Chily townhouse boy bedroom' },
-    width: 1600,
-    height: 2000
-  },
-  phongBeTrai2: {
-    path: 'projects/house/chily/phong-be-trai-2.webp',
-    alt: { vi: 'Góc phòng bé trai nhà phố Chily', en: 'Chily townhouse boy bedroom detail' },
-    width: 1600,
-    height: 1838
-  }
-} satisfies Record<string, MediaImage>
-
-const officeWorkspacePhotos = {
-  longDesk: {
-    path: 'projects/office/lai-huy-office/long-desk.webp',
-    alt: { vi: 'Bàn làm việc dài văn phòng Lai Huy', en: 'Lai Huy office long work desk' },
-    width: 2200,
-    height: 1300
-  },
-  banDai: {
-    path: 'projects/office/lai-huy-office/ban-dai.webp',
-    alt: { vi: 'Khu bàn dài văn phòng Lai Huy', en: 'Lai Huy office long table area' },
-    width: 2200,
-    height: 1300
-  },
-  banLamViec: {
-    path: 'projects/office/lai-huy-office/ban-lam-viec.webp',
-    alt: { vi: 'Khu làm việc văn phòng Lai Huy', en: 'Lai Huy office workstation' },
-    width: 2200,
-    height: 1500
-  },
-  keChua: {
-    path: 'projects/office/lai-huy-office/ke-chua.webp',
-    alt: { vi: 'Hệ kệ lưu trữ văn phòng Lai Huy', en: 'Lai Huy office storage shelving' },
-    width: 2200,
-    height: 1500
-  },
-  phongLamViec: {
-    path: 'projects/office/lai-huy-office/phong-lam-viec.webp',
-    alt: { vi: 'Phòng làm việc văn phòng Lai Huy', en: 'Lai Huy office workspace room' },
-    width: 1700,
-    height: 2200
-  }
-} satisfies Record<string, MediaImage>
-
-const eoGioHotelImages: [MediaImage, ...MediaImage[]] = [
-  eoGioHotelPhotos.reception,
-  eoGioHotelPhotos.bed,
-  eoGioHotelPhotos.room1,
-  eoGioHotelPhotos.room2,
-  eoGioHotelPhotos.table,
-  eoGioHotelPhotos.toilet
-]
-
-const codiHotelImages: [MediaImage, ...MediaImage[]] = [
-  codiHotelPhotos.receptionDesk,
-  codiHotelPhotos.bed,
-  codiHotelPhotos.wardrobe
-]
-
-const codiVillaImages: [MediaImage, ...MediaImage[]] = [
-  codiVillaPhotos.phongKhach,
-  codiVillaPhotos.phongKhach2,
-  codiVillaPhotos.phongBep,
-  codiVillaPhotos.phongNgu,
-  codiVillaPhotos.phongNgu2,
-  codiVillaPhotos.toilet
-]
-
-const anhDuyHouseImages: [MediaImage, ...MediaImage[]] = [
-  anhDuyHousePhotos.phongKhach,
-  anhDuyHousePhotos.phongKhach2,
-  anhDuyHousePhotos.phongAn,
-  anhDuyHousePhotos.bep,
-  anhDuyHousePhotos.giengTroi,
-  anhDuyHousePhotos.phongNgu,
-  anhDuyHousePhotos.phongNgu2,
-  anhDuyHousePhotos.mayGiat,
-  anhDuyHousePhotos.toilet
-]
-
-const chilyHouseImages: [MediaImage, ...MediaImage[]] = [
-  chilyHousePhotos.phongKhach,
-  chilyHousePhotos.phongKhach2,
-  chilyHousePhotos.banAn,
-  chilyHousePhotos.phongBep,
-  chilyHousePhotos.phongNgu,
-  chilyHousePhotos.phongNgu2,
-  chilyHousePhotos.phongBeTrai,
-  chilyHousePhotos.phongBeTrai2
-]
-
-const officeWorkspaceImages: [MediaImage, ...MediaImage[]] = [
-  officeWorkspacePhotos.longDesk,
-  officeWorkspacePhotos.banDai,
-  officeWorkspacePhotos.banLamViec,
-  officeWorkspacePhotos.keChua,
-  officeWorkspacePhotos.phongLamViec
-]
-
-const createImageAliases = (images: [MediaImage, ...MediaImage[]]) => ({
-  image: [images[0]],
-  gallery: images.slice(1),
-  thumbnail: images[0],
-  images
-})
 
 export const projectCategories = [
   'Tất cả',
@@ -328,7 +25,7 @@ export const projects: Project[] = [
       'Lai Huy Interior tham gia từ giai đoạn thiết kế, bóc tách kỹ thuật đến sản xuất tại xưởng và thi công tại công trình.',
       'Giải pháp tập trung vào module hóa hạng mục nội thất, đồng bộ vật liệu và tổ chức bàn giao theo từng khu vực để giảm rủi ro tiến độ.'
     ],
-    ...createImageAliases(eoGioHotelImages),
+    mediaId: 'khach-san-eo-gio',
     location: 'Bến Tre',
     area: 'Khách sạn boutique',
     rooms: '50 phòng',
@@ -386,7 +83,7 @@ export const projects: Project[] = [
       'Thiết kế ưu tiên tỷ lệ đẹp, vật liệu sáng màu và chi tiết dễ bảo trì trong vận hành.',
       'Các hạng mục được xử lý theo hướng gọn, đồng bộ và có khả năng nhân rộng cho nhiều phòng.'
     ],
-    ...createImageAliases(codiHotelImages),
+    mediaId: 'codi-boutique-hotel',
     location: 'Việt Nam',
     area: 'Khách sạn boutique quy mô nhỏ',
     year: '2026',
@@ -440,7 +137,7 @@ export const projects: Project[] = [
       'Các khu vực sinh hoạt chung được kết nối bằng bảng màu trung tính, gỗ ấm và đường nét nội thất mạnh mẽ.',
       'Phòng ngủ và khu vệ sinh được tiết chế chi tiết để giữ cảm giác riêng tư, sạch gọn và thư giãn.'
     ],
-    ...createImageAliases(codiVillaImages),
+    mediaId: 'codi-villa-phan-thiet',
     location: 'Việt Nam',
     area: 'Không gian villa gia đình',
     year: '2026',
@@ -494,7 +191,6 @@ export const projects: Project[] = [
       'Phòng khách, phòng ăn và bếp được kết nối mạch lạc, trong khi giếng trời giúp bổ sung ánh sáng cho công trình.',
       'Các phòng ngủ, khu giặt và vệ sinh được xử lý gọn gàng để đáp ứng nhu cầu sử dụng thực tế.'
     ],
-    ...createImageAliases(anhDuyHouseImages),
     location: 'Việt Nam',
     area: 'Nhà phố gia đình',
     year: '2026',
@@ -547,7 +243,6 @@ export const projects: Project[] = [
       'Các không gian chung sử dụng màu sắc ấm, đường nét gọn và bố cục dễ sinh hoạt.',
       'Phòng ngủ và phòng bé được phát triển với ngôn ngữ riêng, vừa cá nhân hóa vừa giữ sự đồng bộ tổng thể.'
     ],
-    ...createImageAliases(chilyHouseImages),
     location: 'Việt Nam',
     area: 'Nhà phố gia đình',
     year: '2026',
@@ -600,7 +295,6 @@ export const projects: Project[] = [
       'Các đường sáng tuyến tính giúp định hình không gian, đồng thời tạo cảm giác chuyên nghiệp và tập trung.',
       'Thiết kế hướng đến một môi trường làm việc gọn gàng, linh hoạt và có hình ảnh thương hiệu rõ ràng.'
     ],
-    ...createImageAliases(officeWorkspaceImages),
     location: 'Việt Nam',
     area: 'Không gian làm việc nhóm',
     year: '2026',

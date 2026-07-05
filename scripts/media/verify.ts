@@ -10,7 +10,7 @@ import process from 'node:process'
 import { isValidMediaPath } from '../../app/shared/media/validation'
 import { assetObjects, fileExists, loadEnv, publicObjectUrl, readManifest, REPO_ROOT } from './lib'
 
-const PATH_PATTERN = /['"`]((?:hero|company|projects|services|blog)\/[a-z0-9/-]+(?:-v\d+)?\.(?:webp|svg|jpg|png))['"`]/g
+const PATH_PATTERN = /['"`]((?:projects|company|brand)\/[a-z0-9/-]+(?:-v\d+)?\.(?:webp|svg|jpg|png))['"`]/g
 
 const walk = (dir: string, extensions: string[]): string[] =>
   readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {

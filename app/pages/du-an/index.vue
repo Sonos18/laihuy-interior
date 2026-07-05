@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { company } from '~/data/company'
-import { eoGioHotelPhotos, projects } from '~/data/projects'
+import { projects } from '~/data/projects'
 import { uiText } from '~/data/ui'
+import { projectMedia } from '~/media/catalog.generated'
+import { getProjectMedia, withAlt } from '~/media/project-media'
 import type { Project, ProjectSegment } from '~/shared/types/project'
 
 const { t, ta } = useLanguage()
 const { resolve: mediaUrl } = useMediaUrl()
+
+const heroImage = withAlt(projectMedia['khach-san-eo-gio'].cover, '')
 
 type CategoryOption = {
   value: 'all' | ProjectSegment | 'townhouse'
@@ -67,7 +71,9 @@ const sortedProjects = computed(() =>
 )
 
 const filteredProjects = computed(() =>
-  sortedProjects.value.filter(project => projectMatchesCategory(project, selectedCategory.value))
+  sortedProjects.value
+    .filter(project => projectMatchesCategory(project, selectedCategory.value))
+    .map(project => ({ project, cover: getProjectMedia(project.mediaId)?.cover }))
 )
 
 const getProjectMetric = (project: Project) =>
@@ -85,7 +91,7 @@ useSeoMeta({
   description: seoDescription,
   ogTitle: seoTitle,
   ogDescription: seoDescription,
-  ogImage: mediaUrl(company.seo.projects.ogImage)
+  ogImage: mediaUrl(company.seo.projects.ogImage.path)
 })
 </script>
 
@@ -96,7 +102,7 @@ useSeoMeta({
       :title="t({ vi: 'Dự án nội thất', en: 'Interior' })"
       :special-title="t({ vi: 'khách sạn & công trình lớn', en: 'case studies' })"
       :subtitle="t({ vi: 'Các dự án được trình bày theo hướng năng lực triển khai: phạm vi công việc, vật liệu, tiến độ và chất lượng bàn giao.', en: 'Projects are presented as delivery case studies, showing scope, materials, schedule, and handover quality.' })"
-      :image="eoGioHotelPhotos.bed"
+      :image="heroImage"
     />
 
     <section class="section-spacing bg-white">
@@ -120,18 +126,18 @@ useSeoMeta({
 
         <div class="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
           <NuxtLink
-            v-for="project in filteredProjects"
+            v-for="{ project, cover } in filteredProjects"
             :key="project.id"
             :to="`/du-an/${project.slug}`"
             class="group block overflow-hidden rounded-2xl bg-white"
           >
             <div class="relative aspect-[4/3] overflow-hidden bg-ink-100">
               <NuxtImg
-                v-if="project.image[0]"
-                :src="project.image[0].path"
+                v-if="cover"
+                :src="cover.path"
                 :alt="t(project.name)"
-                :width="project.image[0].width"
-                :height="project.image[0].height"
+                :width="cover.width"
+                :height="cover.height"
                 sizes="sm:100vw md:50vw lg:33vw"
                 loading="lazy"
                 class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
