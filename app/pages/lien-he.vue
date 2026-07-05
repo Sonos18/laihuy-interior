@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { company } from '~/data/company'
+import { anhDuyHousePhotos } from '~/data/projects'
+import { siteImages } from '~/data/site-images'
 import { uiText } from '~/data/ui'
 
 const { t, ta } = useLanguage()
+const { resolve: mediaUrl } = useMediaUrl()
 
 const form = reactive({
   name: '',
@@ -77,7 +80,7 @@ useSeoMeta({
   description: seoDescription,
   ogTitle: seoTitle,
   ogDescription: seoDescription,
-  ogImage: company.seo.contact.ogImage
+  ogImage: mediaUrl(company.seo.contact.ogImage)
 })
 </script>
 
@@ -88,7 +91,7 @@ useSeoMeta({
       :title="t({ vi: 'Liên hệ tư vấn', en: 'Contact' })"
       :special-title="t({ vi: 'dự án', en: 'our team' })"
       :subtitle="t({ vi: 'Gửi bản vẽ, BOQ hoặc thông tin công trình để Lai Huy Interior tư vấn phương án sản xuất và thi công phù hợp.', en: 'Send drawings, BOQ, or project information so Lai Huy Interior can advise on production and contracting solutions.' })"
-      bg-image="/images/projects/house/anhduy_house/gieng_troi.jpg"
+      :image="anhDuyHousePhotos.giengTroi"
     />
 
     <section class="section-spacing bg-white">
@@ -232,11 +235,15 @@ useSeoMeta({
             rel="noopener noreferrer"
             class="mt-8 block overflow-hidden rounded-2xl border border-ink-200 bg-white"
           >
-            <img
-              src="/images/map_address.png"
-              alt="Lai Huy Interior map"
+            <NuxtImg
+              :src="siteImages.mapAddress.path"
+              :alt="t(siteImages.mapAddress.alt)"
+              :width="siteImages.mapAddress.width"
+              :height="siteImages.mapAddress.height"
+              sizes="sm:100vw lg:50vw"
+              loading="lazy"
               class="h-80 w-full object-cover"
-            >
+            />
           </a>
           <div class="mt-6 space-y-4">
             <a

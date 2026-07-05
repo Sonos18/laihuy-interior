@@ -1,26 +1,49 @@
 <script setup lang="ts">
+import type { MediaImage } from '~/shared/media/types'
+
 type Props = {
   title: string
   subtitle?: string
-  bgImage: string
+  image: MediaImage
   specialTitle?: string
   topic?: string
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   subtitle: '',
   specialTitle: '',
   topic: ''
+})
+
+const { t } = useLanguage()
+const { resolve } = useMediaUrl()
+
+const altText = computed(() => (props.image.alt === '' ? '' : t(props.image.alt)))
+
+useHead({
+  link: [
+    {
+      rel: 'preload',
+      as: 'image',
+      href: resolve(props.image.path, { width: 1600 }),
+      fetchpriority: 'high'
+    }
+  ]
 })
 </script>
 
 <template>
   <section class="relative flex min-h-[62vh] items-end overflow-hidden bg-ink-950">
-    <img
-      :src="bgImage"
-      alt=""
+    <NuxtImg
+      :src="image.path"
+      :alt="altText"
+      :width="image.width"
+      :height="image.height"
+      sizes="sm:100vw md:100vw lg:100vw xl:100vw"
+      loading="eager"
+      fetchpriority="high"
       class="absolute inset-0 h-full w-full object-cover object-center"
-    >
+    />
     <div class="hero-overlay" />
 
     <div class="relative z-10 w-full">

@@ -1,4 +1,5 @@
 import type { LocalizedText } from '~/shared/types/localization'
+import type { MediaImage } from '~/shared/media/types'
 
 export type Capability = {
   label: LocalizedText
@@ -14,7 +15,7 @@ export type Machinery = {
 export type FactoryImage = {
   title: LocalizedText
   description?: LocalizedText
-  image: string
+  image: MediaImage
 }
 
 export const factoryCapabilities: Capability[] = [

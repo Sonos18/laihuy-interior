@@ -1,0 +1,1442 @@
+{
+  "schemaVersion": 1,
+  "bucket": "media",
+  "generatedAt": "2026-07-04T16:09:35.886Z",
+  "assets": [
+    {
+      "path": "hero/banner-home.webp",
+      "kind": "raster",
+      "category": "hero",
+      "group": null,
+      "oldPublicPath": "/images/banner_home.jpg",
+      "sourceFile": "public/images/banner_home.jpg",
+      "sourceChecksum": "sha256:e940c6ef45c8a5897a7e5887d2e44beba0b897119585eadd2e55a53c696f7c38",
+      "checksum": "sha256:c8186890da6c78250b1f8b5f8a7bbcbe9478e835e7ba0b404c02ffbcf2451180",
+      "width": 2560,
+      "height": 1636,
+      "bytes": 1001528,
+      "variants": [
+        {
+          "path": "hero/banner-home-w400.webp",
+          "width": 400,
+          "bytes": 15872
+        },
+        {
+          "path": "hero/banner-home-w800.webp",
+          "width": 800,
+          "bytes": 60970
+        },
+        {
+          "path": "hero/banner-home-w1600.webp",
+          "width": 1600,
+          "bytes": 274886
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "company/about-workspace.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": null,
+      "oldPublicPath": "/images/about_workspace.jpg",
+      "sourceFile": "public/images/about_workspace.jpg",
+      "sourceChecksum": "sha256:7f6af5de5d9b4f6eabd7d0910289344e051c96eaa54a0f7a8ac70007e4bf2464",
+      "checksum": "sha256:d07605644970680b42c6b69d57b44aa564039fa1e6252e35bd69b6ca7ae36e67",
+      "width": 2048,
+      "height": 2560,
+      "bytes": 831282,
+      "variants": [
+        {
+          "path": "company/about-workspace-w400.webp",
+          "width": 400,
+          "bytes": 26312
+        },
+        {
+          "path": "company/about-workspace-w800.webp",
+          "width": 800,
+          "bytes": 111106
+        },
+        {
+          "path": "company/about-workspace-w1600.webp",
+          "width": 1600,
+          "bytes": 395382
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "company/company-story.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": null,
+      "oldPublicPath": "/images/company-story.jpg",
+      "sourceFile": "public/images/company-story.jpg",
+      "sourceChecksum": "sha256:560286a5fa4274effb22d02193891a01379fb3251cf15bc946a3fc86a3efec9e",
+      "checksum": "sha256:e8a3e445a669f479f4a483e7ab835574af8d6af65906b0fe5fd557ed6a45d920",
+      "width": 900,
+      "height": 603,
+      "bytes": 94282,
+      "variants": [
+        {
+          "path": "company/company-story-w400.webp",
+          "width": 400,
+          "bytes": 27262
+        },
+        {
+          "path": "company/company-story-w800.webp",
+          "width": 800,
+          "bytes": 69188
+        },
+        {
+          "path": "company/company-story-w1600.webp",
+          "width": 1600,
+          "bytes": 92138
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "company/map-address.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": null,
+      "oldPublicPath": "/images/map_address.png",
+      "sourceFile": "public/images/map_address.png",
+      "sourceChecksum": "sha256:ec1a80b939fb75352494565c0c1be45cc392eba34014427eda83ab77750dc335",
+      "checksum": "sha256:dcae5fae0428a3141290b8ff5b129e5721304a14f0ccf2d0290d2906903ce4b7",
+      "width": 1105,
+      "height": 637,
+      "bytes": 52250,
+      "variants": [
+        {
+          "path": "company/map-address-w400.webp",
+          "width": 400,
+          "bytes": 9192
+        },
+        {
+          "path": "company/map-address-w800.webp",
+          "width": 800,
+          "bytes": 27122
+        },
+        {
+          "path": "company/map-address-w1600.webp",
+          "width": 1600,
+          "bytes": 50350
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/hotel/eo-gio/reception.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "hotel/eo-gio",
+      "oldPublicPath": "/images/projects/hotel/eo_gio/reception.png",
+      "sourceFile": "public/images/projects/hotel/eo_gio/reception.png",
+      "sourceChecksum": "sha256:af1eead14c4a5da2a53a8caac3e565d585012b3570fd848c477345fc116d1348",
+      "checksum": "sha256:3bd679b351125498d2012b0d75a526500640dbe8c96ee2a23fb5765c536373d8",
+      "width": 2560,
+      "height": 1600,
+      "bytes": 411154,
+      "variants": [
+        {
+          "path": "projects/hotel/eo-gio/reception-w400.webp",
+          "width": 400,
+          "bytes": 10602
+        },
+        {
+          "path": "projects/hotel/eo-gio/reception-w800.webp",
+          "width": 800,
+          "bytes": 33190
+        },
+        {
+          "path": "projects/hotel/eo-gio/reception-w1600.webp",
+          "width": 1600,
+          "bytes": 122792
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/hotel/eo-gio/bed.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "hotel/eo-gio",
+      "oldPublicPath": "/images/projects/hotel/eo_gio/bed.png",
+      "sourceFile": "public/images/projects/hotel/eo_gio/bed.png",
+      "sourceChecksum": "sha256:39adcdb75612b46f179292737174f27b977f62ca99e35da10d111d7aad544299",
+      "checksum": "sha256:700cea53484912da3dd403e67e762ed33caad4b48ab863af92ac2f52eb0b5740",
+      "width": 2560,
+      "height": 1682,
+      "bytes": 399290,
+      "variants": [
+        {
+          "path": "projects/hotel/eo-gio/bed-w400.webp",
+          "width": 400,
+          "bytes": 10458
+        },
+        {
+          "path": "projects/hotel/eo-gio/bed-w800.webp",
+          "width": 800,
+          "bytes": 32150
+        },
+        {
+          "path": "projects/hotel/eo-gio/bed-w1600.webp",
+          "width": 1600,
+          "bytes": 123132
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/hotel/eo-gio/room-1.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "hotel/eo-gio",
+      "oldPublicPath": "/images/projects/hotel/eo_gio/image_1.png",
+      "sourceFile": "public/images/projects/hotel/eo_gio/image_1.png",
+      "sourceChecksum": "sha256:e4d1d56c35cae4fd6b5cc40dcd364b883670ac17bc87ec62d1cc2bd53d81eaec",
+      "checksum": "sha256:d3673b10c4c3ce2e21062068dedc8ae06cb2989e4787828fa5e280a0711893e7",
+      "width": 2560,
+      "height": 1600,
+      "bytes": 380096,
+      "variants": [
+        {
+          "path": "projects/hotel/eo-gio/room-1-w400.webp",
+          "width": 400,
+          "bytes": 13496
+        },
+        {
+          "path": "projects/hotel/eo-gio/room-1-w800.webp",
+          "width": 800,
+          "bytes": 41374
+        },
+        {
+          "path": "projects/hotel/eo-gio/room-1-w1600.webp",
+          "width": 1600,
+          "bytes": 131276
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/hotel/eo-gio/room-2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "hotel/eo-gio",
+      "oldPublicPath": "/images/projects/hotel/eo_gio/image_2.png",
+      "sourceFile": "public/images/projects/hotel/eo_gio/image_2.png",
+      "sourceChecksum": "sha256:cd022b5787b464b20dbee4622626793634c6bbb5e815cb8e189967618407a81a",
+      "checksum": "sha256:4f9461fd821d112ad9926b50005f23b3e31ce53aa0cb5116cb900abd2e7915a0",
+      "width": 2560,
+      "height": 1600,
+      "bytes": 352502,
+      "variants": [
+        {
+          "path": "projects/hotel/eo-gio/room-2-w400.webp",
+          "width": 400,
+          "bytes": 12082
+        },
+        {
+          "path": "projects/hotel/eo-gio/room-2-w800.webp",
+          "width": 800,
+          "bytes": 35658
+        },
+        {
+          "path": "projects/hotel/eo-gio/room-2-w1600.webp",
+          "width": 1600,
+          "bytes": 117502
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/hotel/eo-gio/table.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "hotel/eo-gio",
+      "oldPublicPath": "/images/projects/hotel/eo_gio/table.png",
+      "sourceFile": "public/images/projects/hotel/eo_gio/table.png",
+      "sourceChecksum": "sha256:123040d33298199109cea46ac11ef109a7059b51a72eb033112888ead7326762",
+      "checksum": "sha256:7a0ca5b3dff0bcbffcb1f9a0084ddf8f5d97e03603015fc549b23726bda24eb0",
+      "width": 2560,
+      "height": 1829,
+      "bytes": 343388,
+      "variants": [
+        {
+          "path": "projects/hotel/eo-gio/table-w400.webp",
+          "width": 400,
+          "bytes": 9154
+        },
+        {
+          "path": "projects/hotel/eo-gio/table-w800.webp",
+          "width": 800,
+          "bytes": 28508
+        },
+        {
+          "path": "projects/hotel/eo-gio/table-w1600.webp",
+          "width": 1600,
+          "bytes": 105624
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/hotel/eo-gio/toilet.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "hotel/eo-gio",
+      "oldPublicPath": "/images/projects/hotel/eo_gio/toilet.png",
+      "sourceFile": "public/images/projects/hotel/eo_gio/toilet.png",
+      "sourceChecksum": "sha256:4ffe3871e7d0ca33722a46b794cff6f569b8ed28667800be102c15e694e7aaee",
+      "checksum": "sha256:8fb8f6ab59dd758ddb48668c9825a284f8ac0f3e5128583c37cfa738a8c90755",
+      "width": 2500,
+      "height": 2500,
+      "bytes": 600458,
+      "variants": [
+        {
+          "path": "projects/hotel/eo-gio/toilet-w400.webp",
+          "width": 400,
+          "bytes": 10784
+        },
+        {
+          "path": "projects/hotel/eo-gio/toilet-w800.webp",
+          "width": 800,
+          "bytes": 39600
+        },
+        {
+          "path": "projects/hotel/eo-gio/toilet-w1600.webp",
+          "width": 1600,
+          "bytes": 188264
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/hotel/codi/reception-desk.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "hotel/codi",
+      "oldPublicPath": "/images/projects/hotel/codi/reception_desk.jpg",
+      "sourceFile": "public/images/projects/hotel/codi/reception_desk.jpg",
+      "sourceChecksum": "sha256:ddc245162a62a904e18a628f79b32ba95cf9049e57685dbcc4a8dd7620025b46",
+      "checksum": "sha256:e26d64f1c44b880c7baffbf7cbc00d67fa2bbf27bf8151395aa533c3e3522930",
+      "width": 2500,
+      "height": 1500,
+      "bytes": 192696,
+      "variants": [
+        {
+          "path": "projects/hotel/codi/reception-desk-w400.webp",
+          "width": 400,
+          "bytes": 6260
+        },
+        {
+          "path": "projects/hotel/codi/reception-desk-w800.webp",
+          "width": 800,
+          "bytes": 19246
+        },
+        {
+          "path": "projects/hotel/codi/reception-desk-w1600.webp",
+          "width": 1600,
+          "bytes": 66798
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/hotel/codi/bed.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "hotel/codi",
+      "oldPublicPath": "/images/projects/hotel/codi/bed_2.jpg",
+      "sourceFile": "public/images/projects/hotel/codi/bed_2.jpg",
+      "sourceChecksum": "sha256:b9c762edf7682a81806afa92da2f6d4dd213504e3a0b5cea8985319a19465ab9",
+      "checksum": "sha256:bf74a97771a0c29e785c1bc8a02bf83b0cd69d45cf618a6e1961252ded8ebaee",
+      "width": 2500,
+      "height": 1507,
+      "bytes": 746280,
+      "variants": [
+        {
+          "path": "projects/hotel/codi/bed-w400.webp",
+          "width": 400,
+          "bytes": 10994
+        },
+        {
+          "path": "projects/hotel/codi/bed-w800.webp",
+          "width": 800,
+          "bytes": 43090
+        },
+        {
+          "path": "projects/hotel/codi/bed-w1600.webp",
+          "width": 1600,
+          "bytes": 211756
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/hotel/codi/wardrobe.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "hotel/codi",
+      "oldPublicPath": "/images/projects/hotel/codi/wardrobe.jpg",
+      "sourceFile": "public/images/projects/hotel/codi/wardrobe.jpg",
+      "sourceChecksum": "sha256:82c15ca320a36156e99eb55901300da7aa5513091b00a9c0134bc30f82195413",
+      "checksum": "sha256:c0391d189653ff26f744c06d589fb49dbcd9837e5788e055efee6d2b8accd1a5",
+      "width": 1000,
+      "height": 1200,
+      "bytes": 155184,
+      "variants": [
+        {
+          "path": "projects/hotel/codi/wardrobe-w400.webp",
+          "width": 400,
+          "bytes": 20174
+        },
+        {
+          "path": "projects/hotel/codi/wardrobe-w800.webp",
+          "width": 800,
+          "bytes": 74590
+        },
+        {
+          "path": "projects/hotel/codi/wardrobe-w1600.webp",
+          "width": 1600,
+          "bytes": 148488
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/villa/codi/phong-khach.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "villa/codi",
+      "oldPublicPath": "/images/projects/villa/codi_villa/phong_khach.jpg",
+      "sourceFile": "public/images/projects/villa/codi_villa/phong_khach.jpg",
+      "sourceChecksum": "sha256:36d12c205b518392908a4f509db8b4dddae636ac38bff15c999a84ee1c4217d3",
+      "checksum": "sha256:27d4660e6c875da030357d0bd648a09ca51cbe1f9df7ddc47e7484dac59d513b",
+      "width": 2560,
+      "height": 1707,
+      "bytes": 458094,
+      "variants": [
+        {
+          "path": "projects/villa/codi/phong-khach-w400.webp",
+          "width": 400,
+          "bytes": 16990
+        },
+        {
+          "path": "projects/villa/codi/phong-khach-w800.webp",
+          "width": 800,
+          "bytes": 52722
+        },
+        {
+          "path": "projects/villa/codi/phong-khach-w1600.webp",
+          "width": 1600,
+          "bytes": 177240
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/villa/codi/phong-khach-2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "villa/codi",
+      "oldPublicPath": "/images/projects/villa/codi_villa/phong_khach_2.jpg",
+      "sourceFile": "public/images/projects/villa/codi_villa/phong_khach_2.jpg",
+      "sourceChecksum": "sha256:01a50e2cc93f1c0bc3c89d798c182b12ff54701f817a9e6e189a5613128a52ed",
+      "checksum": "sha256:e8fbecdb3a2223248e1dbefff2ca79da8fdafcf20afe935458d9d867d4691e47",
+      "width": 2560,
+      "height": 1707,
+      "bytes": 406416,
+      "variants": [
+        {
+          "path": "projects/villa/codi/phong-khach-2-w400.webp",
+          "width": 400,
+          "bytes": 15018
+        },
+        {
+          "path": "projects/villa/codi/phong-khach-2-w800.webp",
+          "width": 800,
+          "bytes": 46030
+        },
+        {
+          "path": "projects/villa/codi/phong-khach-2-w1600.webp",
+          "width": 1600,
+          "bytes": 160342
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/villa/codi/phong-bep.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "villa/codi",
+      "oldPublicPath": "/images/projects/villa/codi_villa/phong_bep.jpg",
+      "sourceFile": "public/images/projects/villa/codi_villa/phong_bep.jpg",
+      "sourceChecksum": "sha256:eea0cb5b64099c559fd6ac6fa9adc38d167771948546d121d56e131b7e137d4d",
+      "checksum": "sha256:9441a70169771b9c7aed46cf7ff3e0bb27dae08004130281188db05d3de8340f",
+      "width": 2560,
+      "height": 1707,
+      "bytes": 334626,
+      "variants": [
+        {
+          "path": "projects/villa/codi/phong-bep-w400.webp",
+          "width": 400,
+          "bytes": 13764
+        },
+        {
+          "path": "projects/villa/codi/phong-bep-w800.webp",
+          "width": 800,
+          "bytes": 39304
+        },
+        {
+          "path": "projects/villa/codi/phong-bep-w1600.webp",
+          "width": 1600,
+          "bytes": 113124
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/villa/codi/phong-ngu.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "villa/codi",
+      "oldPublicPath": "/images/projects/villa/codi_villa/phong_ngu.jpg",
+      "sourceFile": "public/images/projects/villa/codi_villa/phong_ngu.jpg",
+      "sourceChecksum": "sha256:d6592b0938c93b3fa3a3c3dc97fd4b1f92b2675ca43ad2ba83c1880e7fdcd801",
+      "checksum": "sha256:fb330026070909ce6a1ea6f0be92f588ff1bf8fe601c982a7608f5782f506a72",
+      "width": 2560,
+      "height": 1707,
+      "bytes": 366146,
+      "variants": [
+        {
+          "path": "projects/villa/codi/phong-ngu-w400.webp",
+          "width": 400,
+          "bytes": 7404
+        },
+        {
+          "path": "projects/villa/codi/phong-ngu-w800.webp",
+          "width": 800,
+          "bytes": 33036
+        },
+        {
+          "path": "projects/villa/codi/phong-ngu-w1600.webp",
+          "width": 1600,
+          "bytes": 140632
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/villa/codi/phong-ngu-2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "villa/codi",
+      "oldPublicPath": "/images/projects/villa/codi_villa/phong_ngu_2.jpg",
+      "sourceFile": "public/images/projects/villa/codi_villa/phong_ngu_2.jpg",
+      "sourceChecksum": "sha256:10aaba5fda2e93deb3ee03c021ebd48b44dfa8753bec527507f18c756deed103",
+      "checksum": "sha256:99e89074c79dff6cce5676f7765eb22edcee58b97de3593ddd23e81b62cdf867",
+      "width": 2560,
+      "height": 1707,
+      "bytes": 247926,
+      "variants": [
+        {
+          "path": "projects/villa/codi/phong-ngu-2-w400.webp",
+          "width": 400,
+          "bytes": 10568
+        },
+        {
+          "path": "projects/villa/codi/phong-ngu-2-w800.webp",
+          "width": 800,
+          "bytes": 34234
+        },
+        {
+          "path": "projects/villa/codi/phong-ngu-2-w1600.webp",
+          "width": 1600,
+          "bytes": 102172
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/villa/codi/toilet.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "villa/codi",
+      "oldPublicPath": "/images/projects/villa/codi_villa/toilet.jpg",
+      "sourceFile": "public/images/projects/villa/codi_villa/toilet.jpg",
+      "sourceChecksum": "sha256:df1b3b9c17478bffb05e1ee7cbab55a6d734816b265185a64f6b9c826f7ae30b",
+      "checksum": "sha256:23fba3f2263bdcac71154481a524aaf9be248f1cf0c5a3117d200e395d7fa8fe",
+      "width": 1707,
+      "height": 2560,
+      "bytes": 468256,
+      "variants": [
+        {
+          "path": "projects/villa/codi/toilet-w400.webp",
+          "width": 400,
+          "bytes": 19330
+        },
+        {
+          "path": "projects/villa/codi/toilet-w800.webp",
+          "width": 800,
+          "bytes": 56948
+        },
+        {
+          "path": "projects/villa/codi/toilet-w1600.webp",
+          "width": 1600,
+          "bytes": 203242
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/house/anhduy/phong-khach.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "house/anhduy",
+      "oldPublicPath": "/images/projects/house/anhduy_house/phong_khach.jpg",
+      "sourceFile": "public/images/projects/house/anhduy_house/phong_khach.jpg",
+      "sourceChecksum": "sha256:be71cc5743ba8eca4184cb5ae3db3e0477ce010ee433c38dc385e23d93cb3b3b",
+      "checksum": "sha256:e33ee2bfd959b915cf46692d96d0334914774e43e2e186a0a0c12f9317157540",
+      "width": 2500,
+      "height": 1875,
+      "bytes": 611456,
+      "variants": [
+        {
+          "path": "projects/house/anhduy/phong-khach-w400.webp",
+          "width": 400,
+          "bytes": 14002
+        },
+        {
+          "path": "projects/house/anhduy/phong-khach-w800.webp",
+          "width": 800,
+          "bytes": 44632
+        },
+        {
+          "path": "projects/house/anhduy/phong-khach-w1600.webp",
+          "width": 1600,
+          "bytes": 168164
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/house/anhduy/phong-khach-2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "house/anhduy",
+      "oldPublicPath": "/images/projects/house/anhduy_house/phong_khach_2.jpg",
+      "sourceFile": "public/images/projects/house/anhduy_house/phong_khach_2.jpg",
+      "sourceChecksum": "sha256:4d0966753d5f5fa0fcba8a8b056ee128ef0cd3b60a04bbba3ce82e0dd64d6947",
+      "checksum": "sha256:58d436134f9bbe4a36c4cd24280227806cd4f4a5b72ce0e8b05c3dd175710936",
+      "width": 2500,
+      "height": 1875,
+      "bytes": 460422,
+      "variants": [
+        {
+          "path": "projects/house/anhduy/phong-khach-2-w400.webp",
+          "width": 400,
+          "bytes": 12776
+        },
+        {
+          "path": "projects/house/anhduy/phong-khach-2-w800.webp",
+          "width": 800,
+          "bytes": 38192
+        },
+        {
+          "path": "projects/house/anhduy/phong-khach-2-w1600.webp",
+          "width": 1600,
+          "bytes": 138976
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/house/anhduy/phong-an.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "house/anhduy",
+      "oldPublicPath": "/images/projects/house/anhduy_house/phong_an.jpg",
+      "sourceFile": "public/images/projects/house/anhduy_house/phong_an.jpg",
+      "sourceChecksum": "sha256:1ab61223d703fe0a3b4972302c008a00394ed8656e9e9df946d91140f06d9c2b",
+      "checksum": "sha256:22b9011c40e3e2c401c3826d20cd7eda3549389a1fddec7feafedb0d76623923",
+      "width": 2500,
+      "height": 1875,
+      "bytes": 344566,
+      "variants": [
+        {
+          "path": "projects/house/anhduy/phong-an-w400.webp",
+          "width": 400,
+          "bytes": 9962
+        },
+        {
+          "path": "projects/house/anhduy/phong-an-w800.webp",
+          "width": 800,
+          "bytes": 30838
+        },
+        {
+          "path": "projects/house/anhduy/phong-an-w1600.webp",
+          "width": 1600,
+          "bytes": 108000
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/house/anhduy/bep.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "house/anhduy",
+      "oldPublicPath": "/images/projects/house/anhduy_house/bep.jpg",
+      "sourceFile": "public/images/projects/house/anhduy_house/bep.jpg",
+      "sourceChecksum": "sha256:8e9d2ad0685a98e42773ed9a33f9b3fac07f0afe9cb0f35090aa8db0e3101ffe",
+      "checksum": "sha256:8d8a23965dc3fc315b2c45e17fe3a1e92760c27cb1fb19a14328913da36955c5",
+      "width": 2500,
+      "height": 2500,
+      "bytes": 573894,
+      "variants": [
+        {
+          "path": "projects/house/anhduy/bep-w400.webp",
+          "width": 400,
+          "bytes": 15002
+        },
+        {
+          "path": "projects/house/anhduy/bep-w800.webp",
+          "width": 800,
+          "bytes": 50340
+        },
+        {
+          "path": "projects/house/anhduy/bep-w1600.webp",
+          "width": 1600,
+          "bytes": 180120
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/house/anhduy/gieng-troi.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "house/anhduy",
+      "oldPublicPath": "/images/projects/house/anhduy_house/gieng_troi.jpg",
+      "sourceFile": "public/images/projects/house/anhduy_house/gieng_troi.jpg",
+      "sourceChecksum": "sha256:388e7e65dffa18ff64bc8ec861a05d3d3314afeea87c6f3f8ffc30f6162416a8",
+      "checksum": "sha256:777dbf73cd0e61b50f5f18e6ee31d1b97379a2160262ea385f6c0f2bf299b47b",
+      "width": 2500,
+      "height": 1188,
+      "bytes": 429034,
+      "variants": [
+        {
+          "path": "projects/house/anhduy/gieng-troi-w400.webp",
+          "width": 400,
+          "bytes": 8730
+        },
+        {
+          "path": "projects/house/anhduy/gieng-troi-w800.webp",
+          "width": 800,
+          "bytes": 30570
+        },
+        {
+          "path": "projects/house/anhduy/gieng-troi-w1600.webp",
+          "width": 1600,
+          "bytes": 128530
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/house/anhduy/phong-ngu.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "house/anhduy",
+      "oldPublicPath": "/images/projects/house/anhduy_house/phong_ngu.jpg",
+      "sourceFile": "public/images/projects/house/anhduy_house/phong_ngu.jpg",
+      "sourceChecksum": "sha256:3f2b3ba41426d786e92f67df0302dfaf6b85aa0e36d1f82167d24c5fa5a4b3ca",
+      "checksum": "sha256:517a9f7fcf9df7f64759a7cdb3b1fff4b956fc1b69fa9aa89d9c0a5a6b3b26bb",
+      "width": 2500,
+      "height": 1875,
+      "bytes": 439118,
+      "variants": [
+        {
+          "path": "projects/house/anhduy/phong-ngu-w400.webp",
+          "width": 400,
+          "bytes": 10864
+        },
+        {
+          "path": "projects/house/anhduy/phong-ngu-w800.webp",
+          "width": 800,
+          "bytes": 37528
+        },
+        {
+          "path": "projects/house/anhduy/phong-ngu-w1600.webp",
+          "width": 1600,
+          "bytes": 138466
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/house/anhduy/phong-ngu-2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "house/anhduy",
+      "oldPublicPath": "/images/projects/house/anhduy_house/phong_ngu_2.jpg",
+      "sourceFile": "public/images/projects/house/anhduy_house/phong_ngu_2.jpg",
+      "sourceChecksum": "sha256:15d351afcc9133b700dd1810f92192e4dfce2a47f5b312ee2f81b679300979fe",
+      "checksum": "sha256:27cd1bc326c094a856dcddd85c8abed622828da085aac676d87a94b0e15e0eec",
+      "width": 2500,
+      "height": 1500,
+      "bytes": 317840,
+      "variants": [
+        {
+          "path": "projects/house/anhduy/phong-ngu-2-w400.webp",
+          "width": 400,
+          "bytes": 8974
+        },
+        {
+          "path": "projects/house/anhduy/phong-ngu-2-w800.webp",
+          "width": 800,
+          "bytes": 29314
+        },
+        {
+          "path": "projects/house/anhduy/phong-ngu-2-w1600.webp",
+          "width": 1600,
+          "bytes": 103494
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/house/anhduy/may-giat.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "house/anhduy",
+      "oldPublicPath": "/images/projects/house/anhduy_house/may_giat.jpg",
+      "sourceFile": "public/images/projects/house/anhduy_house/may_giat.jpg",
+      "sourceChecksum": "sha256:7fb33809251d423fb029df1c5884a6e0101716d3fde22305533a2d21387ef3f6",
+      "checksum": "sha256:ee45b9d16113badfe731650927386246890e5e43c78862421b394175f76044bf",
+      "width": 1760,
+      "height": 2200,
+      "bytes": 156200,
+      "variants": [
+        {
+          "path": "projects/house/anhduy/may-giat-w400.webp",
+          "width": 400,
+          "bytes": 9726
+        },
+        {
+          "path": "projects/house/anhduy/may-giat-w800.webp",
+          "width": 800,
+          "bytes": 26680
+        },
+        {
+          "path": "projects/house/anhduy/may-giat-w1600.webp",
+          "width": 1600,
+          "bytes": 78522
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/house/anhduy/toilet.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "house/anhduy",
+      "oldPublicPath": "/images/projects/house/anhduy_house/toilet.jpg",
+      "sourceFile": "public/images/projects/house/anhduy_house/toilet.jpg",
+      "sourceChecksum": "sha256:4bc81ece39061e1c05e444a9fbc70b345489d6f384da50acdd13b0800e88bf0b",
+      "checksum": "sha256:ecbce16fd7f290e317c52f25e7dcb14b0b1c9917b43ff0a7417b7301c6cbf259",
+      "width": 1760,
+      "height": 2200,
+      "bytes": 160540,
+      "variants": [
+        {
+          "path": "projects/house/anhduy/toilet-w400.webp",
+          "width": 400,
+          "bytes": 6490
+        },
+        {
+          "path": "projects/house/anhduy/toilet-w800.webp",
+          "width": 800,
+          "bytes": 19630
+        },
+        {
+          "path": "projects/house/anhduy/toilet-w1600.webp",
+          "width": 1600,
+          "bytes": 69264
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/house/chily/phong-khach.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "house/chily",
+      "oldPublicPath": "/images/projects/house/chily_house/phong_khach.jpg",
+      "sourceFile": "public/images/projects/house/chily_house/phong_khach.jpg",
+      "sourceChecksum": "sha256:c1fc705c9f8775761f3a24df7ffffd9dd732755759b8d1915aa57faa2b16cc5a",
+      "checksum": "sha256:c13a80500ef8ea8e1e518a83bcec3a34718c2adb2d250f2141cc8f1753b1ca46",
+      "width": 2200,
+      "height": 1800,
+      "bytes": 915490,
+      "variants": [
+        {
+          "path": "projects/house/chily/phong-khach-w400.webp",
+          "width": 400,
+          "bytes": 22592
+        },
+        {
+          "path": "projects/house/chily/phong-khach-w800.webp",
+          "width": 800,
+          "bytes": 78370
+        },
+        {
+          "path": "projects/house/chily/phong-khach-w1600.webp",
+          "width": 1600,
+          "bytes": 332372
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/house/chily/phong-khach-2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "house/chily",
+      "oldPublicPath": "/images/projects/house/chily_house/phong_khach_2.jpg",
+      "sourceFile": "public/images/projects/house/chily_house/phong_khach_2.jpg",
+      "sourceChecksum": "sha256:d126d47741c67713f29857b11462e367118cd75ad8ed02b03a2fa0c5bf648ba5",
+      "checksum": "sha256:5e9b97b64f19720e0c628dc0812a47ad60190033e8762ba946be723c396bca96",
+      "width": 2200,
+      "height": 1672,
+      "bytes": 777872,
+      "variants": [
+        {
+          "path": "projects/house/chily/phong-khach-2-w400.webp",
+          "width": 400,
+          "bytes": 16464
+        },
+        {
+          "path": "projects/house/chily/phong-khach-2-w800.webp",
+          "width": 800,
+          "bytes": 55028
+        },
+        {
+          "path": "projects/house/chily/phong-khach-2-w1600.webp",
+          "width": 1600,
+          "bytes": 248720
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/house/chily/ban-an.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "house/chily",
+      "oldPublicPath": "/images/projects/house/chily_house/ban_an.jpg",
+      "sourceFile": "public/images/projects/house/chily_house/ban_an.jpg",
+      "sourceChecksum": "sha256:dd1962d13ddad449c8f8cbe6ca9ce3ef714810483a5e6a91387438dea9c137f6",
+      "checksum": "sha256:d2c823c783400d42dc9a949e548ff082ee25c52841a49878b467ad010dcd7643",
+      "width": 2000,
+      "height": 2000,
+      "bytes": 774192,
+      "variants": [
+        {
+          "path": "projects/house/chily/ban-an-w400.webp",
+          "width": 400,
+          "bytes": 18786
+        },
+        {
+          "path": "projects/house/chily/ban-an-w800.webp",
+          "width": 800,
+          "bytes": 65074
+        },
+        {
+          "path": "projects/house/chily/ban-an-w1600.webp",
+          "width": 1600,
+          "bytes": 287394
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/house/chily/phong-bep.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "house/chily",
+      "oldPublicPath": "/images/projects/house/chily_house/phong_bep.jpg",
+      "sourceFile": "public/images/projects/house/chily_house/phong_bep.jpg",
+      "sourceChecksum": "sha256:d9bab8ec22d940c1b6311a156d2c973accc000e9746e09ca3a07ebd9fc5da4c5",
+      "checksum": "sha256:e9f628a86db3c7327c040f1ddc7b22e39b66a3ebc989dd03423999cdc0d29058",
+      "width": 1800,
+      "height": 2200,
+      "bytes": 593238,
+      "variants": [
+        {
+          "path": "projects/house/chily/phong-bep-w400.webp",
+          "width": 400,
+          "bytes": 21482
+        },
+        {
+          "path": "projects/house/chily/phong-bep-w800.webp",
+          "width": 800,
+          "bytes": 69582
+        },
+        {
+          "path": "projects/house/chily/phong-bep-w1600.webp",
+          "width": 1600,
+          "bytes": 253518
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/house/chily/phong-ngu.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "house/chily",
+      "oldPublicPath": "/images/projects/house/chily_house/phong_ngu.jpg",
+      "sourceFile": "public/images/projects/house/chily_house/phong_ngu.jpg",
+      "sourceChecksum": "sha256:b2eb4b73c95d6e73906cbf049e979ef8ac396b1d563328c9bf3aceca8ab4066d",
+      "checksum": "sha256:5ca807ef873a17f5e38762aaa027911d1e68b3935fbc7744caeb04cbce3fc48f",
+      "width": 2000,
+      "height": 1600,
+      "bytes": 515132,
+      "variants": [
+        {
+          "path": "projects/house/chily/phong-ngu-w400.webp",
+          "width": 400,
+          "bytes": 14186
+        },
+        {
+          "path": "projects/house/chily/phong-ngu-w800.webp",
+          "width": 800,
+          "bytes": 51572
+        },
+        {
+          "path": "projects/house/chily/phong-ngu-w1600.webp",
+          "width": 1600,
+          "bytes": 213184
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/house/chily/phong-ngu-2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "house/chily",
+      "oldPublicPath": "/images/projects/house/chily_house/phong_ngu_2.jpg",
+      "sourceFile": "public/images/projects/house/chily_house/phong_ngu_2.jpg",
+      "sourceChecksum": "sha256:2a82a1927bd27589fc324433f00a08b28167f7deda98f878ed3ada975ddef746",
+      "checksum": "sha256:f5b2590629a2faec1294ca1a740fef1ba590a3198aab43a010bad9de8fa8e06a",
+      "width": 1600,
+      "height": 1600,
+      "bytes": 420894,
+      "variants": [
+        {
+          "path": "projects/house/chily/phong-ngu-2-w400.webp",
+          "width": 400,
+          "bytes": 18654
+        },
+        {
+          "path": "projects/house/chily/phong-ngu-2-w800.webp",
+          "width": 800,
+          "bytes": 76802
+        },
+        {
+          "path": "projects/house/chily/phong-ngu-2-w1600.webp",
+          "width": 1600,
+          "bytes": 376678
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/house/chily/phong-be-trai.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "house/chily",
+      "oldPublicPath": "/images/projects/house/chily_house/phong_be_trai.jpg",
+      "sourceFile": "public/images/projects/house/chily_house/phong_be_trai.jpg",
+      "sourceChecksum": "sha256:94241a4caa48f78c5eba730a03036ecdaf3f6b6b3fdbd4948396fba457dbad3b",
+      "checksum": "sha256:dec7c34d12821429c98e5d329f34296c83b96ad59a9579c8a0749fb13728cecc",
+      "width": 1600,
+      "height": 2000,
+      "bytes": 401900,
+      "variants": [
+        {
+          "path": "projects/house/chily/phong-be-trai-w400.webp",
+          "width": 400,
+          "bytes": 28498
+        },
+        {
+          "path": "projects/house/chily/phong-be-trai-w800.webp",
+          "width": 800,
+          "bytes": 107204
+        },
+        {
+          "path": "projects/house/chily/phong-be-trai-w1600.webp",
+          "width": 1600,
+          "bytes": 383714
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/house/chily/phong-be-trai-2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "house/chily",
+      "oldPublicPath": "/images/projects/house/chily_house/phong_be_trai_2.jpg",
+      "sourceFile": "public/images/projects/house/chily_house/phong_be_trai_2.jpg",
+      "sourceChecksum": "sha256:1265f411de7bc88f68cbd5d439fa620b70698eb6dad4b9dad3ffa0dcf5d77087",
+      "checksum": "sha256:92bb6dbd5b66fe7c028bcf213286cea6a1c81488770f8df2053603c7cd4078d5",
+      "width": 1600,
+      "height": 1838,
+      "bytes": 308144,
+      "variants": [
+        {
+          "path": "projects/house/chily/phong-be-trai-2-w400.webp",
+          "width": 400,
+          "bytes": 18648
+        },
+        {
+          "path": "projects/house/chily/phong-be-trai-2-w800.webp",
+          "width": 800,
+          "bytes": 75920
+        },
+        {
+          "path": "projects/house/chily/phong-be-trai-2-w1600.webp",
+          "width": 1600,
+          "bytes": 289928
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/office/lai-huy-office/long-desk.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "office/lai-huy-office",
+      "oldPublicPath": "/images/projects/office/long_desk.jpg",
+      "sourceFile": "public/images/projects/office/long_desk.jpg",
+      "sourceChecksum": "sha256:88f128fc86b090d3b568188d585c9f24c6fd4184da80498516971836a304202d",
+      "checksum": "sha256:3501e86b1c5edd4d76a819f326b9d3eabdd2ff49b407682b9e8a94721be8f046",
+      "width": 2200,
+      "height": 1300,
+      "bytes": 215534,
+      "variants": [
+        {
+          "path": "projects/office/lai-huy-office/long-desk-w400.webp",
+          "width": 400,
+          "bytes": 12272
+        },
+        {
+          "path": "projects/office/lai-huy-office/long-desk-w800.webp",
+          "width": 800,
+          "bytes": 37498
+        },
+        {
+          "path": "projects/office/lai-huy-office/long-desk-w1600.webp",
+          "width": 1600,
+          "bytes": 112366
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/office/lai-huy-office/ban-dai.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "office/lai-huy-office",
+      "oldPublicPath": "/images/projects/office/ban_dai.jpg",
+      "sourceFile": "public/images/projects/office/ban_dai.jpg",
+      "sourceChecksum": "sha256:724cd95396efaa548c9577ca163f79a183ee09b1f630f6022e1429bbf2e71819",
+      "checksum": "sha256:1be2b278c131fbfb647400b419c25a09e0cc9510c5813a34160dffbc8328e910",
+      "width": 2200,
+      "height": 1300,
+      "bytes": 218544,
+      "variants": [
+        {
+          "path": "projects/office/lai-huy-office/ban-dai-w400.webp",
+          "width": 400,
+          "bytes": 12360
+        },
+        {
+          "path": "projects/office/lai-huy-office/ban-dai-w800.webp",
+          "width": 800,
+          "bytes": 37994
+        },
+        {
+          "path": "projects/office/lai-huy-office/ban-dai-w1600.webp",
+          "width": 1600,
+          "bytes": 115634
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/office/lai-huy-office/ban-lam-viec.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "office/lai-huy-office",
+      "oldPublicPath": "/images/projects/office/ban_lam_viec.jpg",
+      "sourceFile": "public/images/projects/office/ban_lam_viec.jpg",
+      "sourceChecksum": "sha256:9909c0bbf6d6f6c5fb33abe12f4a2a4744ccf8423b67dbf7b4fae950291e9724",
+      "checksum": "sha256:1cc813e0d35d9e03c0d98f9d325929d8b796d4b318b50cc48ecf2c8c10ad2f2e",
+      "width": 2200,
+      "height": 1500,
+      "bytes": 175272,
+      "variants": [
+        {
+          "path": "projects/office/lai-huy-office/ban-lam-viec-w400.webp",
+          "width": 400,
+          "bytes": 11686
+        },
+        {
+          "path": "projects/office/lai-huy-office/ban-lam-viec-w800.webp",
+          "width": 800,
+          "bytes": 35364
+        },
+        {
+          "path": "projects/office/lai-huy-office/ban-lam-viec-w1600.webp",
+          "width": 1600,
+          "bytes": 101200
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/office/lai-huy-office/ke-chua.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "office/lai-huy-office",
+      "oldPublicPath": "/images/projects/office/ke_chua.jpg",
+      "sourceFile": "public/images/projects/office/ke_chua.jpg",
+      "sourceChecksum": "sha256:ffd07f0dadf91223e2af8459f23be9b05da5f13cae41967bf27bf17ccaa4076e",
+      "checksum": "sha256:d0d292d77feada08e4337c5c0dcac775e5883319253eed812bd4b702f23abf59",
+      "width": 2200,
+      "height": 1500,
+      "bytes": 139734,
+      "variants": [
+        {
+          "path": "projects/office/lai-huy-office/ke-chua-w400.webp",
+          "width": 400,
+          "bytes": 11006
+        },
+        {
+          "path": "projects/office/lai-huy-office/ke-chua-w800.webp",
+          "width": 800,
+          "bytes": 27574
+        },
+        {
+          "path": "projects/office/lai-huy-office/ke-chua-w1600.webp",
+          "width": 1600,
+          "bytes": 72386
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "projects/office/lai-huy-office/phong-lam-viec.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "office/lai-huy-office",
+      "oldPublicPath": "/images/projects/office/phong.jpg",
+      "sourceFile": "public/images/projects/office/phong.jpg",
+      "sourceChecksum": "sha256:28f5213eba6db3cb627883df0dc862c076e66630a3091f573b1948b088b2e8a3",
+      "checksum": "sha256:849511ecf33c5bb7545747099b356acc5ec201ee676aed544ea4aa2c92bd76cc",
+      "width": 1700,
+      "height": 2200,
+      "bytes": 128302,
+      "variants": [
+        {
+          "path": "projects/office/lai-huy-office/phong-lam-viec-w400.webp",
+          "width": 400,
+          "bytes": 12926
+        },
+        {
+          "path": "projects/office/lai-huy-office/phong-lam-viec-w800.webp",
+          "width": 800,
+          "bytes": 34124
+        },
+        {
+          "path": "projects/office/lai-huy-office/phong-lam-viec-w1600.webp",
+          "width": 1600,
+          "bytes": 86432
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    }
+  ]
+}

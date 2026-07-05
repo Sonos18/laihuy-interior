@@ -3,6 +3,7 @@ import { company } from '~/data/company'
 import { navLinks, uiText } from '~/data/ui'
 
 const { locale, setLocale, t, ta } = useLanguage()
+const { resolve: mediaUrl } = useMediaUrl()
 
 useHead({
   meta: [{ name: 'viewport', content: 'width=device-width, initial-scale=1' }],
@@ -20,7 +21,7 @@ useSeoMeta({
   description,
   ogTitle: title,
   ogDescription: description,
-  ogImage: company.seo.home.ogImage,
+  ogImage: mediaUrl(company.seo.home.ogImage),
   twitterCard: 'summary_large_image'
 })
 
@@ -80,7 +81,7 @@ watch(isMobileMenuOpen, (value) => {
           aria-label="Lai Huy Interior"
         >
           <img
-            src="/images/logo_white_bg-removebg-preview.png"
+            src="/logo-white.png"
             alt="Lai Huy Interior"
             class="h-16 w-auto md:h-[4.5rem]"
           >
@@ -168,7 +169,7 @@ watch(isMobileMenuOpen, (value) => {
       >
         <div class="flex items-center justify-between border-b border-ink-100 p-6">
           <img
-            src="/images/logo.png"
+            src="/logo.png"
             alt="Lai Huy Interior"
             class="h-9 w-auto"
           >
@@ -232,7 +233,7 @@ watch(isMobileMenuOpen, (value) => {
         <div class="grid gap-12 lg:grid-cols-[1.3fr_0.8fr_0.9fr_1.2fr]">
           <div>
             <img
-              src="/images/logo_white_bg-removebg-preview.png"
+              src="/logo-white.png"
               alt="Lai Huy Interior"
               class="mb-6 h-20 w-auto"
             >

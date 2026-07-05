@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { careerBenefits, jobs } from '~/data/careers'
 import { company } from '~/data/company'
+import { siteImages } from '~/data/site-images'
 import { uiText } from '~/data/ui'
 
 const { t, ta } = useLanguage()
+const { resolve: mediaUrl } = useMediaUrl()
 
 const seoTitle = computed(() => t(company.seo.careers.title))
 const seoDescription = computed(() => t(company.seo.careers.description))
@@ -13,7 +15,7 @@ useSeoMeta({
   description: seoDescription,
   ogTitle: seoTitle,
   ogDescription: seoDescription,
-  ogImage: company.seo.careers.ogImage
+  ogImage: mediaUrl(company.seo.careers.ogImage)
 })
 </script>
 
@@ -24,7 +26,7 @@ useSeoMeta({
       :title="t({ vi: 'Tuyển dụng', en: 'Careers' })"
       special-title="Lai Huy Interior"
       :subtitle="t({ vi: 'Gia nhập môi trường sản xuất và thi công nội thất dự án chuyên nghiệp, nơi thiết kế, kỹ thuật, xưởng và công trình làm việc cùng một mục tiêu.', en: 'Join a professional project interior environment where design, technical detailing, factory production, and on-site contracting work toward one delivery goal.' })"
-      bg-image="/images/about_workspace.jpg"
+      :image="siteImages.aboutWorkspace"
     />
 
     <section class="section-spacing bg-white">

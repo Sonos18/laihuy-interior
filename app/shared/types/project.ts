@@ -1,4 +1,5 @@
 import type { LocalizedArray, LocalizedText } from './localization'
+import type { MediaImage } from '../media/types'
 
 export type ProjectSegment = 'hotel' | 'villa' | 'apartment' | 'house' | 'commercial' | 'office' | 'other'
 
@@ -17,8 +18,8 @@ export type Project = {
   title?: LocalizedText
   shortDescription: LocalizedText
   description: LocalizedArray
-  image: string[]
-  gallery: string[]
+  image: MediaImage[]
+  gallery: MediaImage[]
   category: string
   categoryName: LocalizedText
   slug: string
@@ -32,8 +33,8 @@ export type Project = {
   materials?: LocalizedArray
   duration?: LocalizedText
   rooms?: LocalizedText
-  thumbnail?: string
-  images?: string[]
+  thumbnail?: MediaImage
+  images?: MediaImage[]
   content?: ProjectContent
   featured?: boolean
 }

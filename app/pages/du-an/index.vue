@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { company } from '~/data/company'
-import { projects } from '~/data/projects'
+import { eoGioHotelPhotos, projects } from '~/data/projects'
 import { uiText } from '~/data/ui'
 import type { Project, ProjectSegment } from '~/shared/types/project'
 
 const { t, ta } = useLanguage()
+const { resolve: mediaUrl } = useMediaUrl()
 
 type CategoryOption = {
   value: 'all' | ProjectSegment | 'townhouse'
@@ -84,7 +85,7 @@ useSeoMeta({
   description: seoDescription,
   ogTitle: seoTitle,
   ogDescription: seoDescription,
-  ogImage: company.seo.projects.ogImage
+  ogImage: mediaUrl(company.seo.projects.ogImage)
 })
 </script>
 
@@ -95,7 +96,7 @@ useSeoMeta({
       :title="t({ vi: 'Dự án nội thất', en: 'Interior' })"
       :special-title="t({ vi: 'khách sạn & công trình lớn', en: 'case studies' })"
       :subtitle="t({ vi: 'Các dự án được trình bày theo hướng năng lực triển khai: phạm vi công việc, vật liệu, tiến độ và chất lượng bàn giao.', en: 'Projects are presented as delivery case studies, showing scope, materials, schedule, and handover quality.' })"
-      bg-image="/images/projects/hotel/eo_gio/bed.png"
+      :image="eoGioHotelPhotos.bed"
     />
 
     <section class="section-spacing bg-white">
@@ -125,11 +126,16 @@ useSeoMeta({
             class="group block overflow-hidden rounded-2xl bg-white"
           >
             <div class="relative aspect-[4/3] overflow-hidden bg-ink-100">
-              <img
-                :src="project.image[0]"
+              <NuxtImg
+                v-if="project.image[0]"
+                :src="project.image[0].path"
                 :alt="t(project.name)"
+                :width="project.image[0].width"
+                :height="project.image[0].height"
+                sizes="sm:100vw md:50vw lg:33vw"
+                loading="lazy"
                 class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-              >
+              />
               <div class="absolute left-4 top-4 rounded-full bg-ink-950 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-white">
                 {{ t(project.categoryName) }}
               </div>

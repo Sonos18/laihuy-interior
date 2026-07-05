@@ -7,9 +7,11 @@ import {
   productionWorkflow,
   qualityControl
 } from '~/data/factory'
+import { siteImages } from '~/data/site-images'
 import { uiText } from '~/data/ui'
 
 const { t } = useLanguage()
+const { resolve: mediaUrl } = useMediaUrl()
 
 const seoTitle = computed(() => t(company.seo.factory.title))
 const seoDescription = computed(() => t(company.seo.factory.description))
@@ -19,7 +21,7 @@ useSeoMeta({
   description: seoDescription,
   ogTitle: seoTitle,
   ogDescription: seoDescription,
-  ogImage: company.seo.factory.ogImage
+  ogImage: mediaUrl(company.seo.factory.ogImage)
 })
 </script>
 
@@ -30,7 +32,7 @@ useSeoMeta({
       :title="t({ vi: 'Năng lực', en: 'Factory' })"
       :special-title="t({ vi: 'nhà xưởng', en: 'capability' })"
       :subtitle="t({ vi: 'Hệ thống xưởng sản xuất trực tiếp hỗ trợ kiểm soát tiến độ, chất lượng và tính đồng bộ trong từng hạng mục nội thất.', en: 'A direct production system that supports schedule control, quality consistency, and coordinated delivery across interior packages.' })"
-      bg-image="/images/about_workspace.jpg"
+      :image="siteImages.aboutWorkspace"
     />
 
     <section class="section-spacing bg-white">
@@ -169,14 +171,14 @@ useSeoMeta({
         <div class="grid gap-5 md:grid-cols-3">
           <article
             v-for="item in factoryGallery"
-            :key="item.image"
+            :key="item.image.path"
             class="overflow-hidden rounded-2xl bg-white"
           >
-            <img
-              :src="item.image"
-              :alt="t(item.title)"
-              class="aspect-[4/3] w-full object-cover"
-            >
+            <MediaImage
+              :image="item.image"
+              preset="card"
+              class="aspect-[4/3] w-full"
+            />
             <div class="border border-t-0 border-ink-200 p-5">
               <h3 class="font-black text-ink-950">
                 {{ t(item.title) }}
