@@ -27,6 +27,12 @@ const getProjectImage = (item?: Project): MediaImage =>
 
 const allImages: MediaImage[] = projectImages(project?.mediaId, project?.name ?? '')
 
+// The cover opens the gallery as a full-width lead at its natural ratio; the rest
+// flow into the aspect-aware masonry. `leadImage` is undefined for projects with
+// no media, so the lead is guarded to preserve the existing no-image behaviour.
+const leadImage = allImages[0]
+const galleryImages = allImages.slice(1)
+
 const facts = computed<Fact[]>(() => {
   if (!project) {
     return []
@@ -347,19 +353,22 @@ useSeoMeta({
             </p>
           </div>
 
-          <div class="grid gap-5 md:grid-cols-2">
+          <div
+            v-if="leadImage"
+            class="w-full"
+            :style="{ aspectRatio: `${leadImage.width} / ${leadImage.height}` }"
+          >
             <MediaImage
-              v-for="(image, index) in allImages"
-              :key="image.path"
-              :image="image"
-              preset="gallery"
-              :class="[
-                'w-full rounded-2xl',
-                index === 0 ? 'aspect-[16/9] md:col-span-2' : 'aspect-[4/3]'
-              ]"
+              :image="leadImage"
+              preset="full"
+              class="h-full w-full rounded-2xl"
               img-class="rounded-2xl"
             />
           </div>
+          <AppGalleryGrid
+            :images="galleryImages"
+            class="mt-5"
+          />
         </div>
       </section>
 
