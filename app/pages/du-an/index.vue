@@ -9,7 +9,7 @@ import type { Project, ProjectSegment } from '~/shared/types/project'
 const { t, ta } = useLanguage()
 const { resolve: mediaUrl } = useMediaUrl()
 
-const heroImage = withAlt(projectMedia['khach-san-eo-gio'].cover, '')
+const heroImage = withAlt(projectMedia['codi-villa-phan-thiet'].cover, '')
 
 type CategoryOption = {
   value: 'all' | ProjectSegment | 'townhouse'

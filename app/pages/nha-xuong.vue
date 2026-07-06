@@ -6,15 +6,16 @@ import {
   productionWorkflow,
   qualityControl
 } from '~/data/factory'
-import { siteImages } from '~/data/site-images'
 import { uiText } from '~/data/ui'
-import { workshopMedia } from '~/media/catalog.generated'
+import { projectMedia, workshopMedia } from '~/media/catalog.generated'
 import { withAlt } from '~/media/project-media'
 
 // Business rule: the company/workshop catalog collection powers this page's gallery.
 const workshopImages = workshopMedia.map(asset =>
   withAlt(asset, { vi: 'Xưởng sản xuất nội thất Lai Huy Interior', en: 'Lai Huy Interior production workshop' })
 )
+
+const heroImage = withAlt(projectMedia['nha-xuong-anh-cuong'].cover, '')
 
 const { t } = useLanguage()
 const { resolve: mediaUrl } = useMediaUrl()
@@ -38,7 +39,7 @@ useSeoMeta({
       :title="t({ vi: 'Năng lực', en: 'Factory' })"
       :special-title="t({ vi: 'nhà xưởng', en: 'capability' })"
       :subtitle="t({ vi: 'Hệ thống xưởng sản xuất trực tiếp hỗ trợ kiểm soát tiến độ, chất lượng và tính đồng bộ trong từng hạng mục nội thất.', en: 'A direct production system that supports schedule control, quality consistency, and coordinated delivery across interior packages.' })"
-      :image="siteImages.aboutWorkspace"
+      :image="heroImage"
     />
 
     <section class="section-spacing bg-white">

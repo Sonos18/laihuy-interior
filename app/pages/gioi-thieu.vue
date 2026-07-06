@@ -2,13 +2,11 @@
 import { company } from '~/data/company'
 import { factoryCapabilities, qualityControl } from '~/data/factory'
 import { siteImages } from '~/data/site-images'
-import { projectMedia } from '~/media/catalog.generated'
-import { withAlt } from '~/media/project-media'
 
 const { t } = useLanguage()
 const { resolve: mediaUrl } = useMediaUrl()
 
-const heroImage = withAlt(projectMedia['khach-san-eo-gio'].cover, '')
+const heroImage = siteImages.bannerHome
 
 const values = [
   {

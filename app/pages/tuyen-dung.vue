@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { careerBenefits, jobs } from '~/data/careers'
 import { company } from '~/data/company'
-import { siteImages } from '~/data/site-images'
 import { uiText } from '~/data/ui'
+import { brandMedia, workshopMedia } from '~/media/catalog.generated'
+import { withAlt } from '~/media/project-media'
 
 const { t, ta } = useLanguage()
 const { resolve: mediaUrl } = useMediaUrl()
+
+// A landscape workshop image gives Careers a distinct, on-theme hero;
+// fall back to the brand banner if the workshop set ever lacks one.
+const workshopHero = workshopMedia.find(asset => asset.width > asset.height) ?? brandMedia.bannerHome
+const heroImage = withAlt(workshopHero, '')
 
 const seoTitle = computed(() => t(company.seo.careers.title))
 const seoDescription = computed(() => t(company.seo.careers.description))
@@ -26,7 +32,7 @@ useSeoMeta({
       :title="t({ vi: 'Tuyển dụng', en: 'Careers' })"
       special-title="Lai Huy Interior"
       :subtitle="t({ vi: 'Gia nhập môi trường sản xuất và thi công nội thất dự án chuyên nghiệp, nơi thiết kế, kỹ thuật, xưởng và công trình làm việc cùng một mục tiêu.', en: 'Join a professional project interior environment where design, technical detailing, factory production, and on-site contracting work toward one delivery goal.' })"
-      :image="siteImages.aboutWorkspace"
+      :image="heroImage"
     />
 
     <section class="section-spacing bg-white">
