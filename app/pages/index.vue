@@ -5,8 +5,9 @@ import { projects } from '~/data/projects'
 import { services } from '~/data/services'
 import { siteImages } from '~/data/site-images'
 import { uiText } from '~/data/ui'
+import { categoryDefinitions } from '~/data/categories'
 import { projectMedia } from '~/media/catalog.generated'
-import { getProjectMedia } from '~/media/project-media'
+import { projectCoverAsset } from '~/media/project-media'
 import type { MediaAsset } from '~/shared/media/types'
 import type { Project } from '~/shared/types/project'
 
@@ -18,7 +19,7 @@ const heroImage = projectMedia['khach-san-eo-gio'].cover
 const featuredProjects = computed(() =>
   projects
     .filter(project => project.featured)
-    .map(project => ({ project, cover: getProjectMedia(project.mediaId)?.cover }))
+    .map(project => ({ project, cover: projectCoverAsset(project.mediaId, project.coverImage) }))
     .filter((entry): entry is { project: Project, cover: MediaAsset } => entry.cover !== undefined)
     .slice(0, 3)
 )
@@ -242,7 +243,7 @@ useHead({
                 class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div class="absolute left-4 top-4 rounded-full bg-ink-950 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-white">
-                {{ t(project.categoryName) }}
+                {{ t(categoryDefinitions[project.category].label) }}
               </div>
             </div>
             <div class="border border-t-0 border-ink-200 p-6">
@@ -264,19 +265,13 @@ useHead({
                   {{ t(project.location) }}
                 </span>
                 <span
-                  v-if="project.rooms"
+                  v-if="project.area"
                   class="rounded-full border border-ink-200 px-3 py-2"
                 >
-                  {{ t(project.rooms) }}
+                  {{ t(project.area) }}
                 </span>
                 <span
-                  v-if="project.duration"
-                  class="rounded-full border border-ink-200 px-3 py-2"
-                >
-                  {{ t(project.duration) }}
-                </span>
-                <span
-                  v-else-if="ta(project.scope)[0]"
+                  v-if="ta(project.scope)[0]"
                   class="rounded-full border border-ink-200 px-3 py-2"
                 >
                   {{ ta(project.scope)[0] }}

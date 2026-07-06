@@ -15,9 +15,27 @@ export const withAlt = (asset: MediaAsset, alt: LocalizedText | ''): MediaImage 
   alt
 })
 
-export const projectCover = (mediaId: ProjectMediaId | undefined, alt: LocalizedText | ''): MediaImage | undefined => {
+/** Resolve a project's cover asset, honouring an optional business-layer override.
+ *  `coverImage` is stored relative to the project folder (e.g. `'sanh-don/24.webp'`);
+ *  when it doesn't resolve to a real catalog image, the catalog cover is used. */
+export const projectCoverAsset = (mediaId: ProjectMediaId | undefined, coverImage?: string): MediaAsset | undefined => {
   const media = getProjectMedia(mediaId)
-  return media ? withAlt(media.cover, alt) : undefined
+  if (!media) {
+    return undefined
+  }
+  const override = coverImage
+    ? media.images.find(image => image.path === `projects/${mediaId}/${coverImage}`)
+    : undefined
+  return override ?? media.cover
+}
+
+export const projectCover = (
+  mediaId: ProjectMediaId | undefined,
+  alt: LocalizedText | '',
+  coverImage?: string
+): MediaImage | undefined => {
+  const asset = projectCoverAsset(mediaId, coverImage)
+  return asset ? withAlt(asset, alt) : undefined
 }
 
 export const projectImages = (mediaId: ProjectMediaId | undefined, alt: LocalizedText | ''): MediaImage[] => {

@@ -1,11 +1,10 @@
 export type Locale = 'vi' | 'en'
 
-export type LocalizedText = string | {
-  vi: string
-  en?: string
+export type LocalizedValue<T> = T | {
+  vi: T
+  en?: T
 }
 
-export type LocalizedArray = string[] | {
-  vi: string[]
-  en?: string[]
-}
+export type LocalizedText = LocalizedValue<string>
+
+export type LocalizedArray = LocalizedValue<string[]>
