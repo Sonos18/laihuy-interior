@@ -1,67 +1,5 @@
 import type { Project } from '~/shared/types/project'
 
-const eoGioHotelImages: [string, ...string[]] = [
-  '/images/projects/hotel/eo_gio/reception.png',
-  '/images/projects/hotel/eo_gio/bed.png',
-  '/images/projects/hotel/eo_gio/image_1.png',
-  '/images/projects/hotel/eo_gio/image_2.png',
-  '/images/projects/hotel/eo_gio/table.png',
-  '/images/projects/hotel/eo_gio/toilet.png'
-]
-
-const codiHotelImages: [string, ...string[]] = [
-  '/images/projects/hotel/codi/reception_desk.jpg',
-  '/images/projects/hotel/codi/bed_2.jpg',
-  '/images/projects/hotel/codi/wardrobe.jpg'
-]
-
-const codiVillaImages: [string, ...string[]] = [
-  '/images/projects/villa/codi_villa/phong_khach.jpg',
-  '/images/projects/villa/codi_villa/phong_khach_2.jpg',
-  '/images/projects/villa/codi_villa/phong_bep.jpg',
-  '/images/projects/villa/codi_villa/phong_ngu.jpg',
-  '/images/projects/villa/codi_villa/phong_ngu_2.jpg',
-  '/images/projects/villa/codi_villa/toilet.jpg'
-]
-
-const anhDuyHouseImages: [string, ...string[]] = [
-  '/images/projects/house/anhduy_house/phong_khach.jpg',
-  '/images/projects/house/anhduy_house/phong_khach_2.jpg',
-  '/images/projects/house/anhduy_house/phong_an.jpg',
-  '/images/projects/house/anhduy_house/bep.jpg',
-  '/images/projects/house/anhduy_house/gieng_troi.jpg',
-  '/images/projects/house/anhduy_house/phong_ngu.jpg',
-  '/images/projects/house/anhduy_house/phong_ngu_2.jpg',
-  '/images/projects/house/anhduy_house/may_giat.jpg',
-  '/images/projects/house/anhduy_house/toilet.jpg'
-]
-
-const chilyHouseImages: [string, ...string[]] = [
-  '/images/projects/house/chily_house/phong_khach.jpg',
-  '/images/projects/house/chily_house/phong_khach_2.jpg',
-  '/images/projects/house/chily_house/ban_an.jpg',
-  '/images/projects/house/chily_house/phong_bep.jpg',
-  '/images/projects/house/chily_house/phong_ngu.jpg',
-  '/images/projects/house/chily_house/phong_ngu_2.jpg',
-  '/images/projects/house/chily_house/phong_be_trai.jpg',
-  '/images/projects/house/chily_house/phong_be_trai_2.jpg'
-]
-
-const officeWorkspaceImages: [string, ...string[]] = [
-  '/images/projects/office/long_desk.jpg',
-  '/images/projects/office/ban_dai.jpg',
-  '/images/projects/office/ban_lam_viec.jpg',
-  '/images/projects/office/ke_chua.jpg',
-  '/images/projects/office/phong.jpg'
-]
-
-const createImageAliases = (images: [string, ...string[]]) => ({
-  image: [images[0]],
-  gallery: images.slice(1),
-  thumbnail: images[0],
-  images
-})
-
 export const projectCategories = [
   'Tất cả',
   'Khách sạn',
@@ -87,7 +25,7 @@ export const projects: Project[] = [
       'Lai Huy Interior tham gia từ giai đoạn thiết kế, bóc tách kỹ thuật đến sản xuất tại xưởng và thi công tại công trình.',
       'Giải pháp tập trung vào module hóa hạng mục nội thất, đồng bộ vật liệu và tổ chức bàn giao theo từng khu vực để giảm rủi ro tiến độ.'
     ],
-    ...createImageAliases(eoGioHotelImages),
+    mediaId: 'khach-san-eo-gio',
     location: 'Bến Tre',
     area: 'Khách sạn boutique',
     rooms: '50 phòng',
@@ -145,7 +83,7 @@ export const projects: Project[] = [
       'Thiết kế ưu tiên tỷ lệ đẹp, vật liệu sáng màu và chi tiết dễ bảo trì trong vận hành.',
       'Các hạng mục được xử lý theo hướng gọn, đồng bộ và có khả năng nhân rộng cho nhiều phòng.'
     ],
-    ...createImageAliases(codiHotelImages),
+    mediaId: 'codi-boutique-hotel',
     location: 'Việt Nam',
     area: 'Khách sạn boutique quy mô nhỏ',
     year: '2026',
@@ -199,7 +137,7 @@ export const projects: Project[] = [
       'Các khu vực sinh hoạt chung được kết nối bằng bảng màu trung tính, gỗ ấm và đường nét nội thất mạnh mẽ.',
       'Phòng ngủ và khu vệ sinh được tiết chế chi tiết để giữ cảm giác riêng tư, sạch gọn và thư giãn.'
     ],
-    ...createImageAliases(codiVillaImages),
+    mediaId: 'codi-villa-phan-thiet',
     location: 'Việt Nam',
     area: 'Không gian villa gia đình',
     year: '2026',
@@ -253,7 +191,6 @@ export const projects: Project[] = [
       'Phòng khách, phòng ăn và bếp được kết nối mạch lạc, trong khi giếng trời giúp bổ sung ánh sáng cho công trình.',
       'Các phòng ngủ, khu giặt và vệ sinh được xử lý gọn gàng để đáp ứng nhu cầu sử dụng thực tế.'
     ],
-    ...createImageAliases(anhDuyHouseImages),
     location: 'Việt Nam',
     area: 'Nhà phố gia đình',
     year: '2026',
@@ -306,7 +243,6 @@ export const projects: Project[] = [
       'Các không gian chung sử dụng màu sắc ấm, đường nét gọn và bố cục dễ sinh hoạt.',
       'Phòng ngủ và phòng bé được phát triển với ngôn ngữ riêng, vừa cá nhân hóa vừa giữ sự đồng bộ tổng thể.'
     ],
-    ...createImageAliases(chilyHouseImages),
     location: 'Việt Nam',
     area: 'Nhà phố gia đình',
     year: '2026',
@@ -359,7 +295,6 @@ export const projects: Project[] = [
       'Các đường sáng tuyến tính giúp định hình không gian, đồng thời tạo cảm giác chuyên nghiệp và tập trung.',
       'Thiết kế hướng đến một môi trường làm việc gọn gàng, linh hoạt và có hình ảnh thương hiệu rõ ràng.'
     ],
-    ...createImageAliases(officeWorkspaceImages),
     location: 'Việt Nam',
     area: 'Không gian làm việc nhóm',
     year: '2026',

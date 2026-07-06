@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { company } from '~/data/company'
 import { factoryCapabilities, qualityControl } from '~/data/factory'
+import { siteImages } from '~/data/site-images'
+import { projectMedia } from '~/media/catalog.generated'
+import { withAlt } from '~/media/project-media'
 
 const { t } = useLanguage()
+const { resolve: mediaUrl } = useMediaUrl()
+
+const heroImage = withAlt(projectMedia['khach-san-eo-gio'].cover, '')
 
 const values = [
   {
@@ -33,7 +39,7 @@ useSeoMeta({
   description: seoDescription,
   ogTitle: seoTitle,
   ogDescription: seoDescription,
-  ogImage: company.seo.about.ogImage
+  ogImage: mediaUrl(company.seo.about.ogImage.path)
 })
 </script>
 
@@ -44,17 +50,21 @@ useSeoMeta({
       title="Đơn vị sản xuất & thi công"
       special-title="nội thất dự án"
       subtitle="Lai Huy Interior phát triển theo mô hình xưởng trực tiếp, kết hợp thiết kế, sản xuất và thi công cho khách sạn, villa, căn hộ và công trình thương mại."
-      bg-image="/images/projects/hotel/eo_gio/table.png"
+      :image="heroImage"
     />
 
     <section class="section-spacing bg-white">
       <div class="section-shell grid gap-12 lg:grid-cols-2 lg:items-center">
         <div>
-          <img
-            src="/images/company-story.jpg"
-            alt="Lai Huy Interior"
+          <NuxtImg
+            :src="siteImages.companyStory.path"
+            :alt="t(siteImages.companyStory.alt)"
+            :width="siteImages.companyStory.width"
+            :height="siteImages.companyStory.height"
+            sizes="sm:100vw lg:50vw"
+            loading="lazy"
             class="aspect-[4/3] w-full object-cover"
-          >
+          />
         </div>
         <div>
           <p class="eyebrow">

@@ -1,0 +1,5607 @@
+{
+  "schemaVersion": 1,
+  "bucket": "media",
+  "generatedAt": "2026-07-05T09:48:14.335Z",
+  "assets": [
+    {
+      "path": "brand/banner-home.webp",
+      "kind": "raster",
+      "category": "brand",
+      "group": null,
+      "oldPublicPath": "/images/banner_home.jpg",
+      "sourceFile": "public/images/banner_home.jpg",
+      "sourceChecksum": "sha256:e940c6ef45c8a5897a7e5887d2e44beba0b897119585eadd2e55a53c696f7c38",
+      "checksum": "sha256:c8186890da6c78250b1f8b5f8a7bbcbe9478e835e7ba0b404c02ffbcf2451180",
+      "width": 2560,
+      "height": 1636,
+      "bytes": 1001528,
+      "variants": [
+        {
+          "path": "brand/banner-home-w400.webp",
+          "width": 400,
+          "bytes": 15872
+        },
+        {
+          "path": "brand/banner-home-w800.webp",
+          "width": 800,
+          "bytes": 60970
+        },
+        {
+          "path": "brand/banner-home-w1600.webp",
+          "width": 1600,
+          "bytes": 274886
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:39:14.808Z",
+      "alt": null
+    },
+    {
+      "path": "company/about-workspace.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": null,
+      "oldPublicPath": "/images/about_workspace.jpg",
+      "sourceFile": "public/images/about_workspace.jpg",
+      "sourceChecksum": "sha256:7f6af5de5d9b4f6eabd7d0910289344e051c96eaa54a0f7a8ac70007e4bf2464",
+      "checksum": "sha256:d07605644970680b42c6b69d57b44aa564039fa1e6252e35bd69b6ca7ae36e67",
+      "width": 2048,
+      "height": 2560,
+      "bytes": 831282,
+      "variants": [
+        {
+          "path": "company/about-workspace-w400.webp",
+          "width": 400,
+          "bytes": 26312
+        },
+        {
+          "path": "company/about-workspace-w800.webp",
+          "width": 800,
+          "bytes": 111106
+        },
+        {
+          "path": "company/about-workspace-w1600.webp",
+          "width": 1600,
+          "bytes": 395382
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:39:18.267Z",
+      "alt": null
+    },
+    {
+      "path": "company/company-story.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": null,
+      "oldPublicPath": "/images/company-story.jpg",
+      "sourceFile": "public/images/company-story.jpg",
+      "sourceChecksum": "sha256:560286a5fa4274effb22d02193891a01379fb3251cf15bc946a3fc86a3efec9e",
+      "checksum": "sha256:e8a3e445a669f479f4a483e7ab835574af8d6af65906b0fe5fd557ed6a45d920",
+      "width": 900,
+      "height": 603,
+      "bytes": 94282,
+      "variants": [
+        {
+          "path": "company/company-story-w400.webp",
+          "width": 400,
+          "bytes": 27262
+        },
+        {
+          "path": "company/company-story-w800.webp",
+          "width": 800,
+          "bytes": 69188
+        },
+        {
+          "path": "company/company-story-w1600.webp",
+          "width": 1600,
+          "bytes": 92138
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:39:21.332Z",
+      "alt": null
+    },
+    {
+      "path": "company/map-address.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": null,
+      "oldPublicPath": "/images/map_address.png",
+      "sourceFile": "public/images/map_address.png",
+      "sourceChecksum": "sha256:ec1a80b939fb75352494565c0c1be45cc392eba34014427eda83ab77750dc335",
+      "checksum": "sha256:dcae5fae0428a3141290b8ff5b129e5721304a14f0ccf2d0290d2906903ce4b7",
+      "width": 1105,
+      "height": 637,
+      "bytes": 52250,
+      "variants": [
+        {
+          "path": "company/map-address-w400.webp",
+          "width": 400,
+          "bytes": 9192
+        },
+        {
+          "path": "company/map-address-w800.webp",
+          "width": 800,
+          "bytes": 27122
+        },
+        {
+          "path": "company/map-address-w1600.webp",
+          "width": 1600,
+          "bytes": 50350
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:39:25.048Z",
+      "alt": null
+    },
+    {
+      "path": "company/workshop/1.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/1.jpg",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/1.jpg",
+      "sourceChecksum": "sha256:31ef10048c79e2b8f68a5b7b8fd426b15c80da80bd4c2fd18af07292be8b6acc",
+      "checksum": "sha256:c6da484de2512e4b6c699029868b1a4300e2a8c688f3fc57104ae9f8f17c5b37",
+      "width": 1771,
+      "height": 2552,
+      "bytes": 220716,
+      "variants": [
+        {
+          "path": "company/workshop/1-w400.webp",
+          "width": 400,
+          "bytes": 26918
+        },
+        {
+          "path": "company/workshop/1-w800.webp",
+          "width": 800,
+          "bytes": 72510
+        },
+        {
+          "path": "company/workshop/1-w1600.webp",
+          "width": 1600,
+          "bytes": 168504
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:39:27.975Z",
+      "alt": null
+    },
+    {
+      "path": "company/workshop/10.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/10.jpg",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/10.jpg",
+      "sourceChecksum": "sha256:9c27e77b883e570ef4c875c44df5080b1b8567d29a04c8b73d2f4128af6b5c88",
+      "checksum": "sha256:d7644e150e548ece3c273b63592edf718cdbb740e3dfe41e5eae14b54593882d",
+      "width": 2560,
+      "height": 1711,
+      "bytes": 241760,
+      "variants": [
+        {
+          "path": "company/workshop/10-w400.webp",
+          "width": 400,
+          "bytes": 15036
+        },
+        {
+          "path": "company/workshop/10-w800.webp",
+          "width": 800,
+          "bytes": 44970
+        },
+        {
+          "path": "company/workshop/10-w1600.webp",
+          "width": 1600,
+          "bytes": 120092
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:39:31.090Z",
+      "alt": null
+    },
+    {
+      "path": "company/workshop/11.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/11.jpg",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/11.jpg",
+      "sourceChecksum": "sha256:e95b5a881bdff8c4c7f06517ebe5a0486c3f80acce12e3cdd777273f74231384",
+      "checksum": "sha256:72af1c136416c4ca7376f13b229d5eedd9c7823dbd04858a001eae99eb4a789d",
+      "width": 2560,
+      "height": 1711,
+      "bytes": 214954,
+      "variants": [
+        {
+          "path": "company/workshop/11-w400.webp",
+          "width": 400,
+          "bytes": 14788
+        },
+        {
+          "path": "company/workshop/11-w800.webp",
+          "width": 800,
+          "bytes": 40734
+        },
+        {
+          "path": "company/workshop/11-w1600.webp",
+          "width": 1600,
+          "bytes": 105942
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:39:34.792Z",
+      "alt": null
+    },
+    {
+      "path": "company/workshop/2.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/2.jpg",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/2.jpg",
+      "sourceChecksum": "sha256:b442719437b29eae3811009f01ca87e72733dcd7d8b58f72cbce4691d05ee976",
+      "checksum": "sha256:db57dcb722f77810920a41df9b4828bf192b2d1a4bec9f0179f34b70ecc6c799",
+      "width": 2560,
+      "height": 1711,
+      "bytes": 1131220,
+      "variants": [
+        {
+          "path": "company/workshop/2-w400.webp",
+          "width": 400,
+          "bytes": 36660
+        },
+        {
+          "path": "company/workshop/2-w800.webp",
+          "width": 800,
+          "bytes": 160364
+        },
+        {
+          "path": "company/workshop/2-w1600.webp",
+          "width": 1600,
+          "bytes": 546782
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:39:38.702Z",
+      "alt": null
+    },
+    {
+      "path": "company/workshop/3.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/3.jpg",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/3.jpg",
+      "sourceChecksum": "sha256:9f45ad2bc24397c9d6ddfcf8ba6c4864a718f122706fb958c4e391434b045000",
+      "checksum": "sha256:01a27ecfb042b4d8673f01251d10ca0da294f8b1b9a29b39dddbc14157c22d3c",
+      "width": 2560,
+      "height": 1581,
+      "bytes": 603916,
+      "variants": [
+        {
+          "path": "company/workshop/3-w400.webp",
+          "width": 400,
+          "bytes": 21230
+        },
+        {
+          "path": "company/workshop/3-w800.webp",
+          "width": 800,
+          "bytes": 73794
+        },
+        {
+          "path": "company/workshop/3-w1600.webp",
+          "width": 1600,
+          "bytes": 245264
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:39:43.617Z",
+      "alt": null
+    },
+    {
+      "path": "company/workshop/4.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/4.jpg",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/4.jpg",
+      "sourceChecksum": "sha256:f720692d2c45a7bbc8f061a351f9933248dc4a83b3356c6b358c95d617ac2ebe",
+      "checksum": "sha256:e631a44d7ce6bd30d9da8b9d83eaccc024a0714f6f9ae4c3852064531507f90b",
+      "width": 2560,
+      "height": 1541,
+      "bytes": 513380,
+      "variants": [
+        {
+          "path": "company/workshop/4-w400.webp",
+          "width": 400,
+          "bytes": 21552
+        },
+        {
+          "path": "company/workshop/4-w800.webp",
+          "width": 800,
+          "bytes": 74420
+        },
+        {
+          "path": "company/workshop/4-w1600.webp",
+          "width": 1600,
+          "bytes": 227776
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:39:46.897Z",
+      "alt": null
+    },
+    {
+      "path": "company/workshop/5.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/5.jpg",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/5.jpg",
+      "sourceChecksum": "sha256:aa691ce01074c81fc1609025065d8a7f89cd5c295a6c9c6ff68a3b304a795e37",
+      "checksum": "sha256:9cccd1f81670bd98e18a97af78dd6e1721b8fd681747762a6a79fad29fb25afc",
+      "width": 2560,
+      "height": 1508,
+      "bytes": 321730,
+      "variants": [
+        {
+          "path": "company/workshop/5-w400.webp",
+          "width": 400,
+          "bytes": 18476
+        },
+        {
+          "path": "company/workshop/5-w800.webp",
+          "width": 800,
+          "bytes": 55900
+        },
+        {
+          "path": "company/workshop/5-w1600.webp",
+          "width": 1600,
+          "bytes": 152486
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:39:50.383Z",
+      "alt": null
+    },
+    {
+      "path": "company/workshop/6.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/6.jpg",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/6.jpg",
+      "sourceChecksum": "sha256:ad8cfd6cb30fe97c98053eaf1f10a7762051d8a8be4e29f6b946209b11fe3cd9",
+      "checksum": "sha256:f776e4e42988c03584b1eaff9facbf02d18a555e764cc60f1cf119f96d269a9e",
+      "width": 2560,
+      "height": 1710,
+      "bytes": 438490,
+      "variants": [
+        {
+          "path": "company/workshop/6-w400.webp",
+          "width": 400,
+          "bytes": 21432
+        },
+        {
+          "path": "company/workshop/6-w800.webp",
+          "width": 800,
+          "bytes": 72766
+        },
+        {
+          "path": "company/workshop/6-w1600.webp",
+          "width": 1600,
+          "bytes": 211836
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:39:54.754Z",
+      "alt": null
+    },
+    {
+      "path": "company/workshop/7.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/7.jpg",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/7.jpg",
+      "sourceChecksum": "sha256:72dc5cb3d24a24299136df2a9b00daff698bd0f7ab6d06f383d6837be4b76701",
+      "checksum": "sha256:c08888765194a7733dffe9259775bdd92bd76996f01df12a236abea568c48e1e",
+      "width": 2560,
+      "height": 1733,
+      "bytes": 489178,
+      "variants": [
+        {
+          "path": "company/workshop/7-w400.webp",
+          "width": 400,
+          "bytes": 19900
+        },
+        {
+          "path": "company/workshop/7-w800.webp",
+          "width": 800,
+          "bytes": 68504
+        },
+        {
+          "path": "company/workshop/7-w1600.webp",
+          "width": 1600,
+          "bytes": 218174
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:39:58.486Z",
+      "alt": null
+    },
+    {
+      "path": "company/workshop/8.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/8.jpg",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/8.jpg",
+      "sourceChecksum": "sha256:297ab87b2ab2f284becb08977f545ed3124a9b1cbece515d9ac51efb934cf23d",
+      "checksum": "sha256:37048b4e96a4018ff6f019ebb8a2fd71da484edb642f5625888a0ff89c323882",
+      "width": 2560,
+      "height": 1711,
+      "bytes": 254100,
+      "variants": [
+        {
+          "path": "company/workshop/8-w400.webp",
+          "width": 400,
+          "bytes": 16400
+        },
+        {
+          "path": "company/workshop/8-w800.webp",
+          "width": 800,
+          "bytes": 48662
+        },
+        {
+          "path": "company/workshop/8-w1600.webp",
+          "width": 1600,
+          "bytes": 126978
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:40:01.777Z",
+      "alt": null
+    },
+    {
+      "path": "company/workshop/9.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/9.jpg",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/9.jpg",
+      "sourceChecksum": "sha256:a48e44e0ba21f34c3c4c81a95736838a653c69eb0bd63df2bf7c98fe68d90257",
+      "checksum": "sha256:fcec5b84a1c3e5cbdbf05391ebf5a7193c719f45207fa6ea8b5813b640d72d58",
+      "width": 2560,
+      "height": 1830,
+      "bytes": 330234,
+      "variants": [
+        {
+          "path": "company/workshop/9-w400.webp",
+          "width": 400,
+          "bytes": 18876
+        },
+        {
+          "path": "company/workshop/9-w800.webp",
+          "width": 800,
+          "bytes": 61848
+        },
+        {
+          "path": "company/workshop/9-w1600.webp",
+          "width": 1600,
+          "bytes": 169138
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:40:04.689Z",
+      "alt": null
+    },
+    {
+      "path": "projects/cai-tao-nha-quan-8/12.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "cai-tao-nha-quan-8",
+      "oldPublicPath": "/images/projects/cai-tao-nha-quan-8/12.png",
+      "sourceFile": "public/images/projects/cai-tao-nha-quan-8/12.png",
+      "sourceChecksum": "sha256:edbe6d485cc24915083533c00a4f584274939bc6d1fa88a8b3f675d8f49b98e6",
+      "checksum": "sha256:f7c5ded787a10360f2be759a4641d5e057c3970001e913c77eb6614eec996c67",
+      "width": 2560,
+      "height": 1707,
+      "bytes": 429856,
+      "variants": [
+        {
+          "path": "projects/cai-tao-nha-quan-8/12-w400.webp",
+          "width": 400,
+          "bytes": 12750
+        },
+        {
+          "path": "projects/cai-tao-nha-quan-8/12-w800.webp",
+          "width": 800,
+          "bytes": 40528
+        },
+        {
+          "path": "projects/cai-tao-nha-quan-8/12-w1600.webp",
+          "width": 1600,
+          "bytes": 142404
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:40:08.021Z",
+      "alt": null
+    },
+    {
+      "path": "projects/cai-tao-nha-quan-8/13.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "cai-tao-nha-quan-8",
+      "oldPublicPath": "/images/projects/cai-tao-nha-quan-8/13.png",
+      "sourceFile": "public/images/projects/cai-tao-nha-quan-8/13.png",
+      "sourceChecksum": "sha256:6fa73bb0544651396c55c59f96f81a5722418d00078eb2acb1d112e461a6be57",
+      "checksum": "sha256:53f7664883a88c2ec0740eefa230f1d7d78b08a2b3fdb21381574fb5f204a0e3",
+      "width": 2560,
+      "height": 1707,
+      "bytes": 417408,
+      "variants": [
+        {
+          "path": "projects/cai-tao-nha-quan-8/13-w400.webp",
+          "width": 400,
+          "bytes": 9748
+        },
+        {
+          "path": "projects/cai-tao-nha-quan-8/13-w800.webp",
+          "width": 800,
+          "bytes": 31820
+        },
+        {
+          "path": "projects/cai-tao-nha-quan-8/13-w1600.webp",
+          "width": 1600,
+          "bytes": 122014
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:40:11.202Z",
+      "alt": null
+    },
+    {
+      "path": "projects/cai-tao-nha-quan-8/14.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "cai-tao-nha-quan-8",
+      "oldPublicPath": "/images/projects/cai-tao-nha-quan-8/14.png",
+      "sourceFile": "public/images/projects/cai-tao-nha-quan-8/14.png",
+      "sourceChecksum": "sha256:a2f592d0f5f56ef668eaf68b4369241abc75fbe3875515f4950e16840e0a1c47",
+      "checksum": "sha256:f2cba0c6dbb18e1d18fdf9a386f5eefb6b62dccdf63e8fdd87ed1c5bf7f203ea",
+      "width": 2560,
+      "height": 1707,
+      "bytes": 353806,
+      "variants": [
+        {
+          "path": "projects/cai-tao-nha-quan-8/14-w400.webp",
+          "width": 400,
+          "bytes": 8784
+        },
+        {
+          "path": "projects/cai-tao-nha-quan-8/14-w800.webp",
+          "width": 800,
+          "bytes": 26254
+        },
+        {
+          "path": "projects/cai-tao-nha-quan-8/14-w1600.webp",
+          "width": 1600,
+          "bytes": 98930
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:40:14.944Z",
+      "alt": null
+    },
+    {
+      "path": "projects/cai-tao-nha-quan-8/3.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "cai-tao-nha-quan-8",
+      "oldPublicPath": "/images/projects/cai-tao-nha-quan-8/3.png",
+      "sourceFile": "public/images/projects/cai-tao-nha-quan-8/3.png",
+      "sourceChecksum": "sha256:34bfd01ce171949d30318b9493e50ff1fa3931d6ad03e060ec0d766e42b29469",
+      "checksum": "sha256:b7ee98e872b81641f635f44dddb34cada863d51de1fc4fb50d7e8639778baa15",
+      "width": 2560,
+      "height": 1707,
+      "bytes": 262120,
+      "variants": [
+        {
+          "path": "projects/cai-tao-nha-quan-8/3-w400.webp",
+          "width": 400,
+          "bytes": 11016
+        },
+        {
+          "path": "projects/cai-tao-nha-quan-8/3-w800.webp",
+          "width": 800,
+          "bytes": 32648
+        },
+        {
+          "path": "projects/cai-tao-nha-quan-8/3-w1600.webp",
+          "width": 1600,
+          "bytes": 100654
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:40:18.361Z",
+      "alt": null
+    },
+    {
+      "path": "projects/cai-tao-nha-quan-8/5.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "cai-tao-nha-quan-8",
+      "oldPublicPath": "/images/projects/cai-tao-nha-quan-8/5.png",
+      "sourceFile": "public/images/projects/cai-tao-nha-quan-8/5.png",
+      "sourceChecksum": "sha256:e2c3f2795a49ff1758e2f2d56760ea9c29417cfeacbdb852ec881366cad7add3",
+      "checksum": "sha256:0fbbf39557240a6af8673867c2323182a5e3a5a85737ef42ae2cf723a2e86169",
+      "width": 2133,
+      "height": 2560,
+      "bytes": 450246,
+      "variants": [
+        {
+          "path": "projects/cai-tao-nha-quan-8/5-w400.webp",
+          "width": 400,
+          "bytes": 21792
+        },
+        {
+          "path": "projects/cai-tao-nha-quan-8/5-w800.webp",
+          "width": 800,
+          "bytes": 66418
+        },
+        {
+          "path": "projects/cai-tao-nha-quan-8/5-w1600.webp",
+          "width": 1600,
+          "bytes": 206962
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:40:22.180Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-03.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/phong-dien-hinh-1",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/phong-dien-hinh-1/P3 03.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/phong-dien-hinh-1/P3 03.png",
+      "sourceChecksum": "sha256:bb4e27088360aca89bced8fe383a622aaadb804efdbb6fd5529211ace7df608e",
+      "checksum": "sha256:77ccb801c83a8700f5c0f027b6ca3318adfcf078ef44c2bb625928eefa4277ad",
+      "width": 2500,
+      "height": 1507,
+      "bytes": 814430,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-03-w400.webp",
+          "width": 400,
+          "bytes": 11022
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-03-w800.webp",
+          "width": 800,
+          "bytes": 43182
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-03-w1600.webp",
+          "width": 1600,
+          "bytes": 214014
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:40:26.000Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-04.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/phong-dien-hinh-1",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/phong-dien-hinh-1/P3 04.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/phong-dien-hinh-1/P3 04.png",
+      "sourceChecksum": "sha256:1745fdb4d1f09b4118d7d46ee3d2c2c4c4ab8a354b0ddcb3182bcc8db7236a4b",
+      "checksum": "sha256:1f0611fe2cd40c766e9ed7743beaee45d62d9f62a3d1fec5e6b22a19a63d1ad6",
+      "width": 2500,
+      "height": 1563,
+      "bytes": 598958,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-04-w400.webp",
+          "width": 400,
+          "bytes": 10732
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-04-w800.webp",
+          "width": 800,
+          "bytes": 36418
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-04-w1600.webp",
+          "width": 1600,
+          "bytes": 151600
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:40:29.740Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-05.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/phong-dien-hinh-1",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/phong-dien-hinh-1/P3 05.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/phong-dien-hinh-1/P3 05.png",
+      "sourceChecksum": "sha256:684dae29f8d1bea3148740d31f25a277810ff3ac58d71f2c6a5c96b453c4d160",
+      "checksum": "sha256:0a020d7be1dc1829be80d023faa648e8295195e5aa2fc068b9d1fc5d3e10fa84",
+      "width": 2500,
+      "height": 1563,
+      "bytes": 608574,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-05-w400.webp",
+          "width": 400,
+          "bytes": 8254
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-05-w800.webp",
+          "width": 800,
+          "bytes": 30610
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-05-w1600.webp",
+          "width": 1600,
+          "bytes": 138554
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:40:33.047Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-06.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/phong-dien-hinh-1",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/phong-dien-hinh-1/P3 06.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/phong-dien-hinh-1/P3 06.png",
+      "sourceChecksum": "sha256:b240dfb499d2614f3988833d2125883ad21625d0a8a05149ec6e27fe45b44460",
+      "checksum": "sha256:652e03f285f731a139bdb1a8093c686f15851be4b120933262157387deda458c",
+      "width": 2000,
+      "height": 2500,
+      "bytes": 1124304,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-06-w400.webp",
+          "width": 400,
+          "bytes": 24480
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-06-w800.webp",
+          "width": 800,
+          "bytes": 115032
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-06-w1600.webp",
+          "width": 1600,
+          "bytes": 475074
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:40:36.434Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-07.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/phong-dien-hinh-1",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/phong-dien-hinh-1/P3 07.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/phong-dien-hinh-1/P3 07.png",
+      "sourceChecksum": "sha256:3264994b9023afafa2a51abc43ee7683aec87a78e7617c5bb4f94fabde1993f1",
+      "checksum": "sha256:13de3753d88059eecf9e1355561d45e5e8f07f674af73af9baac16315cc35d83",
+      "width": 2000,
+      "height": 2000,
+      "bytes": 354666,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-07-w400.webp",
+          "width": 400,
+          "bytes": 13412
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-07-w800.webp",
+          "width": 800,
+          "bytes": 44580
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-07-w1600.webp",
+          "width": 1600,
+          "bytes": 153298
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:40:39.748Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-08.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/phong-dien-hinh-1",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/phong-dien-hinh-1/P3 08.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/phong-dien-hinh-1/P3 08.png",
+      "sourceChecksum": "sha256:228ccbf48c2481b533082a72391c8f18ecac3d1e439cbfa36d8c2b507092302c",
+      "checksum": "sha256:eaa1c37dc7fbc1af98a5c3e74edbe28ac77a53e7acc3121e459cf6143a7145d0",
+      "width": 1000,
+      "height": 1200,
+      "bytes": 171960,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-08-w400.webp",
+          "width": 400,
+          "bytes": 20202
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-08-w800.webp",
+          "width": 800,
+          "bytes": 76608
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-1/p3-08-w1600.webp",
+          "width": 1600,
+          "bytes": 159824
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:40:43.116Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-01.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/phong-dien-hinh-2",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/phong-dien-hinh-2/P8 01.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/phong-dien-hinh-2/P8 01.png",
+      "sourceChecksum": "sha256:5bec251c2871c6952760b75664538a2c2ee4b519495863a8852689d2a3dd0987",
+      "checksum": "sha256:b37b460d5225141d1b6bd19595eed150f3d34fce33145fbdb6ddec342d09206d",
+      "width": 2500,
+      "height": 1667,
+      "bytes": 443376,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-01-w400.webp",
+          "width": 400,
+          "bytes": 7914
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-01-w800.webp",
+          "width": 800,
+          "bytes": 24420
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-01-w1600.webp",
+          "width": 1600,
+          "bytes": 99200
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:40:46.582Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-02.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/phong-dien-hinh-2",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/phong-dien-hinh-2/P8 02.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/phong-dien-hinh-2/P8 02.png",
+      "sourceChecksum": "sha256:dc41d3ea28d7e3a2cd7aa3c5b16adeb80308b5860bc6a62474f3c3be2d2366e1",
+      "checksum": "sha256:4420903a9e03d734742076df4b90dabfddf7da54e8b525ba2251290e0b85edbb",
+      "width": 2500,
+      "height": 1667,
+      "bytes": 433496,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-02-w400.webp",
+          "width": 400,
+          "bytes": 7488
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-02-w800.webp",
+          "width": 800,
+          "bytes": 23860
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-02-w1600.webp",
+          "width": 1600,
+          "bytes": 98950
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:40:49.677Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-03.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/phong-dien-hinh-2",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/phong-dien-hinh-2/P8 03.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/phong-dien-hinh-2/P8 03.png",
+      "sourceChecksum": "sha256:2ef2fe7d55206270948745fe3238aac145c3be9217b6a5f94e3c685f46b75415",
+      "checksum": "sha256:24f5aac9a8465ee6df1a6adbeb0c0b74ccfb13c1c18444f75940b580dc78e113",
+      "width": 2500,
+      "height": 1667,
+      "bytes": 436608,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-03-w400.webp",
+          "width": 400,
+          "bytes": 8998
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-03-w800.webp",
+          "width": 800,
+          "bytes": 30636
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-03-w1600.webp",
+          "width": 1600,
+          "bytes": 118490
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:40:52.915Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-04.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/phong-dien-hinh-2",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/phong-dien-hinh-2/P8 04.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/phong-dien-hinh-2/P8 04.png",
+      "sourceChecksum": "sha256:fa7371f5933351d3c74b177ef52140a44564f10d4b243e3b6167a8f478ab3daf",
+      "checksum": "sha256:2dca22184391faf197b64562f8b8dd8dae3a8414fe00cfee2895b155cb6ef320",
+      "width": 2500,
+      "height": 1667,
+      "bytes": 358574,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-04-w400.webp",
+          "width": 400,
+          "bytes": 7216
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-04-w800.webp",
+          "width": 800,
+          "bytes": 22758
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-04-w1600.webp",
+          "width": 1600,
+          "bytes": 81556
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:40:56.250Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-05.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/phong-dien-hinh-2",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/phong-dien-hinh-2/P8 05.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/phong-dien-hinh-2/P8 05.png",
+      "sourceChecksum": "sha256:fa227ae4ddc1220283d207df7ab65a1d8998ddd0856dc8fefd7c1c8d1fb940d5",
+      "checksum": "sha256:e24c4c2d36e971fec1af3f485c36a472c31b65f1b953cda6df79dd397b5aea5a",
+      "width": 2000,
+      "height": 2400,
+      "bytes": 586574,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-05-w400.webp",
+          "width": 400,
+          "bytes": 19342
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-05-w800.webp",
+          "width": 800,
+          "bytes": 69284
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-05-w1600.webp",
+          "width": 1600,
+          "bytes": 261462
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:41:00.353Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-06.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/phong-dien-hinh-2",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/phong-dien-hinh-2/P8 06.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/phong-dien-hinh-2/P8 06.png",
+      "sourceChecksum": "sha256:2c2a075955c119c839ed0e0fa763e24993c37468e42ca6e095fc45acdd936147",
+      "checksum": "sha256:0abfcc88c85eb0ca1497af1e4f047cc65c333ffe0c4a2493059c071ff739375e",
+      "width": 2000,
+      "height": 2400,
+      "bytes": 588502,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-06-w400.webp",
+          "width": 400,
+          "bytes": 16968
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-06-w800.webp",
+          "width": 800,
+          "bytes": 61604
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-2/p8-06-w1600.webp",
+          "width": 1600,
+          "bytes": 242916
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:41:03.382Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/phong-dien-hinh-3/1.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/phong-dien-hinh-3",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/phong-dien-hinh-3/1.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/phong-dien-hinh-3/1.png",
+      "sourceChecksum": "sha256:2cdfcc67fe23306dd4b2e36cdaf9ec8107f53ea69e8facfd84f7fb9969ba5e24",
+      "checksum": "sha256:278eb33e80a70a4447521cf0f32951b72c09101cd31f4a6a2886558092f31665",
+      "width": 2500,
+      "height": 1800,
+      "bytes": 312452,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-3/1-w400.webp",
+          "width": 400,
+          "bytes": 6876
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-3/1-w800.webp",
+          "width": 800,
+          "bytes": 22524
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-3/1-w1600.webp",
+          "width": 1600,
+          "bytes": 82582
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:41:06.634Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/phong-dien-hinh-3/2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/phong-dien-hinh-3",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/phong-dien-hinh-3/2.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/phong-dien-hinh-3/2.png",
+      "sourceChecksum": "sha256:c64ff03eebb88afd020c854d75dad5e763ad4cc78aaad029ed6d7298d3e26431",
+      "checksum": "sha256:88808d7bfba91e40ccc715f72e079f2c36d0b41a8003a9dd5a819ae1503418c1",
+      "width": 2000,
+      "height": 2500,
+      "bytes": 662950,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-3/2-w400.webp",
+          "width": 400,
+          "bytes": 17408
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-3/2-w800.webp",
+          "width": 800,
+          "bytes": 73054
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-3/2-w1600.webp",
+          "width": 1600,
+          "bytes": 283954
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:41:09.508Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/phong-dien-hinh-3/5.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/phong-dien-hinh-3",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/phong-dien-hinh-3/5.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/phong-dien-hinh-3/5.png",
+      "sourceChecksum": "sha256:1d635029853b7075514cba3826a49e13ceb71bf401e7b5afb210195bb463ffde",
+      "checksum": "sha256:c54898173d60124ed14ad0c84a274c4058c3038a05eb4cd91e4f5034c3a9c4b0",
+      "width": 2000,
+      "height": 2500,
+      "bytes": 251400,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-3/5-w400.webp",
+          "width": 400,
+          "bytes": 8714
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-3/5-w800.webp",
+          "width": 800,
+          "bytes": 28324
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-3/5-w1600.webp",
+          "width": 1600,
+          "bytes": 109020
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:41:12.732Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/phong-dien-hinh-3/6.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/phong-dien-hinh-3",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/phong-dien-hinh-3/6.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/phong-dien-hinh-3/6.png",
+      "sourceChecksum": "sha256:2c67c173df61fca768e5f73778d6aaa65b47cc91273846697874c1b6c85308d9",
+      "checksum": "sha256:22a8c1bf3fd86db4ad22292db49c8eb4b37f83376d536f1bdea5fc56a95c6bd7",
+      "width": 1000,
+      "height": 1360,
+      "bytes": 165516,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-3/6-w400.webp",
+          "width": 400,
+          "bytes": 20576
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-3/6-w800.webp",
+          "width": 800,
+          "bytes": 76608
+        },
+        {
+          "path": "projects/codi-boutique-hotel/phong-dien-hinh-3/6-w1600.webp",
+          "width": 1600,
+          "bytes": 156992
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:41:15.920Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/sanh-don/1.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/sanh-don",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/sanh-don/1.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/sanh-don/1.png",
+      "sourceChecksum": "sha256:f808b372c21bbcaa27d4aae1b7a196a83ecacc27fea84472e62a0f7be19750f0",
+      "checksum": "sha256:02ff9f8719adf4dc8f386459433bff48f66415a92ae6fae95b8df4d51c646cd1",
+      "width": 2500,
+      "height": 1500,
+      "bytes": 182304,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/sanh-don/1-w400.webp",
+          "width": 400,
+          "bytes": 6206
+        },
+        {
+          "path": "projects/codi-boutique-hotel/sanh-don/1-w800.webp",
+          "width": 800,
+          "bytes": 19088
+        },
+        {
+          "path": "projects/codi-boutique-hotel/sanh-don/1-w1600.webp",
+          "width": 1600,
+          "bytes": 65860
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:41:18.923Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/sanh-don/2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/sanh-don",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/sanh-don/2.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/sanh-don/2.png",
+      "sourceChecksum": "sha256:1248b7d890233abdd45b8016fa9cacf2ea44949913f7998f20f839ee1ed19f0a",
+      "checksum": "sha256:1597f18e4ba4bce56090c90ee9a57cf3aa2c138d03e90949ed5f8a671bfff872",
+      "width": 2500,
+      "height": 1600,
+      "bytes": 293514,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/sanh-don/2-w400.webp",
+          "width": 400,
+          "bytes": 8576
+        },
+        {
+          "path": "projects/codi-boutique-hotel/sanh-don/2-w800.webp",
+          "width": 800,
+          "bytes": 28316
+        },
+        {
+          "path": "projects/codi-boutique-hotel/sanh-don/2-w1600.webp",
+          "width": 1600,
+          "bytes": 99054
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:41:22.056Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/sanh-don/3.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/sanh-don",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/sanh-don/3.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/sanh-don/3.png",
+      "sourceChecksum": "sha256:20f4168f536f6883ea03e1b45443aff6dd1c4ace9cd47265ecffad8730e9dce9",
+      "checksum": "sha256:931c9ae2c324f288dc1ab6326d7d1bad6c957167a450db7af49fcb35eeef2a53",
+      "width": 2000,
+      "height": 2500,
+      "bytes": 347910,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/sanh-don/3-w400.webp",
+          "width": 400,
+          "bytes": 17236
+        },
+        {
+          "path": "projects/codi-boutique-hotel/sanh-don/3-w800.webp",
+          "width": 800,
+          "bytes": 52170
+        },
+        {
+          "path": "projects/codi-boutique-hotel/sanh-don/3-w1600.webp",
+          "width": 1600,
+          "bytes": 157306
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:41:25.520Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-boutique-hotel/sanh-don/5.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-boutique-hotel/sanh-don",
+      "oldPublicPath": "/images/projects/codi-boutique-hotel/sanh-don/5.png",
+      "sourceFile": "public/images/projects/codi-boutique-hotel/sanh-don/5.png",
+      "sourceChecksum": "sha256:52e5a964a50079b0fac7d28c1964cba60653305a99427a2574e7a5f183ea1018",
+      "checksum": "sha256:468e90c25006cc2ef5f51d9582ace59a544708d1d132917b00bc99adb52faa57",
+      "width": 2500,
+      "height": 1600,
+      "bytes": 152692,
+      "variants": [
+        {
+          "path": "projects/codi-boutique-hotel/sanh-don/5-w400.webp",
+          "width": 400,
+          "bytes": 4484
+        },
+        {
+          "path": "projects/codi-boutique-hotel/sanh-don/5-w800.webp",
+          "width": 800,
+          "bytes": 12112
+        },
+        {
+          "path": "projects/codi-boutique-hotel/sanh-don/5-w1600.webp",
+          "width": 1600,
+          "bytes": 39824
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:41:28.605Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-villa-phan-thiet/1.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-villa-phan-thiet",
+      "oldPublicPath": "/images/projects/codi-villa-phan-thiet/1.png",
+      "sourceFile": "public/images/projects/codi-villa-phan-thiet/1.png",
+      "sourceChecksum": "sha256:640658b7194877b03eb55a83ab1ad3c0bf2d5e3eb78671c8cea8d842696a7145",
+      "checksum": "sha256:9ac1e70d3d576aa09a06e830d4e0787dc876f6511a8eab3bf3274f9b0b3daaae",
+      "width": 2560,
+      "height": 1636,
+      "bytes": 1124642,
+      "variants": [
+        {
+          "path": "projects/codi-villa-phan-thiet/1-w400.webp",
+          "width": 400,
+          "bytes": 15590
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/1-w800.webp",
+          "width": 800,
+          "bytes": 62120
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/1-w1600.webp",
+          "width": 1600,
+          "bytes": 294180
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:41:31.596Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-villa-phan-thiet/10.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-villa-phan-thiet",
+      "oldPublicPath": "/images/projects/codi-villa-phan-thiet/10.png",
+      "sourceFile": "public/images/projects/codi-villa-phan-thiet/10.png",
+      "sourceChecksum": "sha256:e137ad4b244ff44003e9f5f6514cd31af989dd2ab0187ae08dd33b00f84323f0",
+      "checksum": "sha256:e4f314561c7aa6d11085370d448d508c255ce1c7ffe20611a9e3d1de04026603",
+      "width": 2033,
+      "height": 2500,
+      "bytes": 1435528,
+      "variants": [
+        {
+          "path": "projects/codi-villa-phan-thiet/10-w400.webp",
+          "width": 400,
+          "bytes": 34218
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/10-w800.webp",
+          "width": 800,
+          "bytes": 162154
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/10-w1600.webp",
+          "width": 1600,
+          "bytes": 669172
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:41:34.969Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-villa-phan-thiet/11.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-villa-phan-thiet",
+      "oldPublicPath": "/images/projects/codi-villa-phan-thiet/11.png",
+      "sourceFile": "public/images/projects/codi-villa-phan-thiet/11.png",
+      "sourceChecksum": "sha256:08b6a671448534c1dbe11f7e5cb6e9cf0d45db917f96744dec08fed713ec177d",
+      "checksum": "sha256:b86c08520a77ad49af5007f9f8a643a2149e5e5b5d3445a06c504f58684c3e5f",
+      "width": 2059,
+      "height": 2500,
+      "bytes": 289010,
+      "variants": [
+        {
+          "path": "projects/codi-villa-phan-thiet/11-w400.webp",
+          "width": 400,
+          "bytes": 17582
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/11-w800.webp",
+          "width": 800,
+          "bytes": 57206
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/11-w1600.webp",
+          "width": 1600,
+          "bytes": 155362
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:41:38.404Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-villa-phan-thiet/12.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-villa-phan-thiet",
+      "oldPublicPath": "/images/projects/codi-villa-phan-thiet/12.png",
+      "sourceFile": "public/images/projects/codi-villa-phan-thiet/12.png",
+      "sourceChecksum": "sha256:97bbf7725379b6dd122dc01b08ddb29445cfc75f18b93cb6ec341bc5b3d2873e",
+      "checksum": "sha256:3c64dc4570a115950a823fc6f337c1fcbbea12dffc3aae3c462aa407988fd23b",
+      "width": 2134,
+      "height": 2000,
+      "bytes": 756458,
+      "variants": [
+        {
+          "path": "projects/codi-villa-phan-thiet/12-w400.webp",
+          "width": 400,
+          "bytes": 24050
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/12-w800.webp",
+          "width": 800,
+          "bytes": 100882
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/12-w1600.webp",
+          "width": 1600,
+          "bytes": 358096
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:41:42.515Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-villa-phan-thiet/14.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-villa-phan-thiet",
+      "oldPublicPath": "/images/projects/codi-villa-phan-thiet/14.png",
+      "sourceFile": "public/images/projects/codi-villa-phan-thiet/14.png",
+      "sourceChecksum": "sha256:8855fd2031e0839650a8fa0e1775ba4716328d8f814cf31de50a2da737aa18c4",
+      "checksum": "sha256:ca4f90a23a4a591e7f373a8914a65f39a650a25923cabf3f2e4f69d3d066150a",
+      "width": 2560,
+      "height": 1660,
+      "bytes": 1009840,
+      "variants": [
+        {
+          "path": "projects/codi-villa-phan-thiet/14-w400.webp",
+          "width": 400,
+          "bytes": 9848
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/14-w800.webp",
+          "width": 800,
+          "bytes": 34030
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/14-w1600.webp",
+          "width": 1600,
+          "bytes": 197356
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:41:46.455Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-villa-phan-thiet/15.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-villa-phan-thiet",
+      "oldPublicPath": "/images/projects/codi-villa-phan-thiet/15.png",
+      "sourceFile": "public/images/projects/codi-villa-phan-thiet/15.png",
+      "sourceChecksum": "sha256:ed9652c7900d060c0458334ac3a4c4fc1d3d2d577b9bd4bfda527f6d3cd087c3",
+      "checksum": "sha256:b2c99938792fb512ea9376578f020510f25513e8a49d79a1d6c53e320a08dab0",
+      "width": 2500,
+      "height": 1893,
+      "bytes": 917894,
+      "variants": [
+        {
+          "path": "projects/codi-villa-phan-thiet/15-w400.webp",
+          "width": 400,
+          "bytes": 9806
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/15-w800.webp",
+          "width": 800,
+          "bytes": 35224
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/15-w1600.webp",
+          "width": 1600,
+          "bytes": 196674
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:41:49.683Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-villa-phan-thiet/17.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-villa-phan-thiet",
+      "oldPublicPath": "/images/projects/codi-villa-phan-thiet/17.png",
+      "sourceFile": "public/images/projects/codi-villa-phan-thiet/17.png",
+      "sourceChecksum": "sha256:25a915235ceb97aaeeb9bb22e3d8627e038d90fbbdd7d842f06b690f3db1169a",
+      "checksum": "sha256:1873fe1fa09dc273e244e71f029a6b19d16c8a981a336b175638dbf9473c3faa",
+      "width": 1864,
+      "height": 2560,
+      "bytes": 1290334,
+      "variants": [
+        {
+          "path": "projects/codi-villa-phan-thiet/17-w400.webp",
+          "width": 400,
+          "bytes": 19092
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/17-w800.webp",
+          "width": 800,
+          "bytes": 94734
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/17-w1600.webp",
+          "width": 1600,
+          "bytes": 612116
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:41:53.146Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-villa-phan-thiet/21.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-villa-phan-thiet",
+      "oldPublicPath": "/images/projects/codi-villa-phan-thiet/21.png",
+      "sourceFile": "public/images/projects/codi-villa-phan-thiet/21.png",
+      "sourceChecksum": "sha256:d6c1a052a349e10b6102a209a16d55546d1bc228a05eaa8cbbf2a166cff2b87e",
+      "checksum": "sha256:921f6f6d839d15e70eb61fe2fa0bf44c6fc0ac391ff1d7264847ff1dba81616a",
+      "width": 2560,
+      "height": 1735,
+      "bytes": 914708,
+      "variants": [
+        {
+          "path": "projects/codi-villa-phan-thiet/21-w400.webp",
+          "width": 400,
+          "bytes": 10598
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/21-w800.webp",
+          "width": 800,
+          "bytes": 53566
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/21-w1600.webp",
+          "width": 1600,
+          "bytes": 270060
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:41:56.764Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-villa-phan-thiet/22.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-villa-phan-thiet",
+      "oldPublicPath": "/images/projects/codi-villa-phan-thiet/22.png",
+      "sourceFile": "public/images/projects/codi-villa-phan-thiet/22.png",
+      "sourceChecksum": "sha256:04d8be4012b2770fec2e52e5471953dc2d5a9944f805445fd340be048d81ab58",
+      "checksum": "sha256:8964991675faba93ba31f296a760afff2ba3f192fca3db34e793bb3fba3ae451",
+      "width": 2560,
+      "height": 1735,
+      "bytes": 432090,
+      "variants": [
+        {
+          "path": "projects/codi-villa-phan-thiet/22-w400.webp",
+          "width": 400,
+          "bytes": 8308
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/22-w800.webp",
+          "width": 800,
+          "bytes": 32822
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/22-w1600.webp",
+          "width": 1600,
+          "bytes": 139598
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:42:00.451Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-villa-phan-thiet/23.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-villa-phan-thiet",
+      "oldPublicPath": "/images/projects/codi-villa-phan-thiet/23.png",
+      "sourceFile": "public/images/projects/codi-villa-phan-thiet/23.png",
+      "sourceChecksum": "sha256:5f6796692e5a6809d5c0073df4961e1f4174222fe417c7d1fd1489dc71ea2c0b",
+      "checksum": "sha256:b938a20b2f2af1ab5ec48453bfb3a0bf1135fcd4cb27a4d391d4a61324cf51e1",
+      "width": 2048,
+      "height": 2560,
+      "bytes": 735302,
+      "variants": [
+        {
+          "path": "projects/codi-villa-phan-thiet/23-w400.webp",
+          "width": 400,
+          "bytes": 18366
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/23-w800.webp",
+          "width": 800,
+          "bytes": 94924
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/23-w1600.webp",
+          "width": 1600,
+          "bytes": 366504
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:42:03.798Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-villa-phan-thiet/25.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-villa-phan-thiet",
+      "oldPublicPath": "/images/projects/codi-villa-phan-thiet/25.png",
+      "sourceFile": "public/images/projects/codi-villa-phan-thiet/25.png",
+      "sourceChecksum": "sha256:9133198bb8679c79fd11b33fa48dfaa508af24014c24e5a560cf8dd89768fadf",
+      "checksum": "sha256:838321388c45abec5b939b762b6239c4b2c0df978689eb4edde44370c633d264",
+      "width": 2048,
+      "height": 2560,
+      "bytes": 993324,
+      "variants": [
+        {
+          "path": "projects/codi-villa-phan-thiet/25-w400.webp",
+          "width": 400,
+          "bytes": 26654
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/25-w800.webp",
+          "width": 800,
+          "bytes": 121856
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/25-w1600.webp",
+          "width": 1600,
+          "bytes": 489274
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:42:07.294Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-villa-phan-thiet/26.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-villa-phan-thiet",
+      "oldPublicPath": "/images/projects/codi-villa-phan-thiet/26.png",
+      "sourceFile": "public/images/projects/codi-villa-phan-thiet/26.png",
+      "sourceChecksum": "sha256:d62f264a8f8ae153d275ec7aadfd00c84d0550fefb107c79c1f2cac95bc268cb",
+      "checksum": "sha256:28c438a121e2fa8fba27fedfe1215b958f1d54c53a889f51c3c2462810ba52e9",
+      "width": 2560,
+      "height": 1858,
+      "bytes": 823746,
+      "variants": [
+        {
+          "path": "projects/codi-villa-phan-thiet/26-w400.webp",
+          "width": 400,
+          "bytes": 10410
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/26-w800.webp",
+          "width": 800,
+          "bytes": 44592
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/26-w1600.webp",
+          "width": 1600,
+          "bytes": 228486
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:42:10.545Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-villa-phan-thiet/27.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-villa-phan-thiet",
+      "oldPublicPath": "/images/projects/codi-villa-phan-thiet/27.png",
+      "sourceFile": "public/images/projects/codi-villa-phan-thiet/27.png",
+      "sourceChecksum": "sha256:49409c944608cc8c967009c5087a8dec6f78cd6315bb00ec3f37fbdd8fe9947f",
+      "checksum": "sha256:623318af6d234135b8bce16dda0d673fa3daa431bf4c4328bdad5dd47ea59585",
+      "width": 2560,
+      "height": 1859,
+      "bytes": 359904,
+      "variants": [
+        {
+          "path": "projects/codi-villa-phan-thiet/27-w400.webp",
+          "width": 400,
+          "bytes": 7546
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/27-w800.webp",
+          "width": 800,
+          "bytes": 26620
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/27-w1600.webp",
+          "width": 1600,
+          "bytes": 116900
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:42:13.457Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-villa-phan-thiet/29.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-villa-phan-thiet",
+      "oldPublicPath": "/images/projects/codi-villa-phan-thiet/29.png",
+      "sourceFile": "public/images/projects/codi-villa-phan-thiet/29.png",
+      "sourceChecksum": "sha256:97d7f866ea90314d89a44ba25ea5f1143eb0d257d5d5d9dd8d171f7b35187dd6",
+      "checksum": "sha256:ba29aa421157252391c9871f5e6f20358b614c5ad4d1413f0acc01bbb9bf5579",
+      "width": 2560,
+      "height": 1968,
+      "bytes": 640682,
+      "variants": [
+        {
+          "path": "projects/codi-villa-phan-thiet/29-w400.webp",
+          "width": 400,
+          "bytes": 10566
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/29-w800.webp",
+          "width": 800,
+          "bytes": 43158
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/29-w1600.webp",
+          "width": 1600,
+          "bytes": 187084
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:42:16.405Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-villa-phan-thiet/7.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-villa-phan-thiet",
+      "oldPublicPath": "/images/projects/codi-villa-phan-thiet/7.png",
+      "sourceFile": "public/images/projects/codi-villa-phan-thiet/7.png",
+      "sourceChecksum": "sha256:04c5d626e8e2e82b7f0a94bf8bf8bf55aa462e175d42b9d0722c2edaf38dd105",
+      "checksum": "sha256:7e8d2b900a100f9502450f20ea5b19c205131c55dc2f6b80700da51aa046bc97",
+      "width": 2047,
+      "height": 2560,
+      "bytes": 1721052,
+      "variants": [
+        {
+          "path": "projects/codi-villa-phan-thiet/7-w400.webp",
+          "width": 400,
+          "bytes": 34534
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/7-w800.webp",
+          "width": 800,
+          "bytes": 187998
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/7-w1600.webp",
+          "width": 1600,
+          "bytes": 859896
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:42:20.386Z",
+      "alt": null
+    },
+    {
+      "path": "projects/codi-villa-phan-thiet/8.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "codi-villa-phan-thiet",
+      "oldPublicPath": "/images/projects/codi-villa-phan-thiet/8.png",
+      "sourceFile": "public/images/projects/codi-villa-phan-thiet/8.png",
+      "sourceChecksum": "sha256:1ef36ebd0bdcf1580a70e8aa7688bc0d763b5b10bf5ad4beac2e15a698013335",
+      "checksum": "sha256:93ca99f90aaf02b3e1b64f58566253934a427211f9b25bd59500e1a90363e2cc",
+      "width": 2560,
+      "height": 1472,
+      "bytes": 1176566,
+      "variants": [
+        {
+          "path": "projects/codi-villa-phan-thiet/8-w400.webp",
+          "width": 400,
+          "bytes": 12370
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/8-w800.webp",
+          "width": 800,
+          "bytes": 56162
+        },
+        {
+          "path": "projects/codi-villa-phan-thiet/8-w1600.webp",
+          "width": 1600,
+          "bytes": 325586
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:42:23.642Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/1-2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/can-ho-1-phong-ngu",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/can-ho-1-phong-ngu/1.2.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/can-ho-1-phong-ngu/1.2.png",
+      "sourceChecksum": "sha256:6148f8bd993a23401762f0fbfc599d27dad5ff78038bc31aee80ed1a00c1651e",
+      "checksum": "sha256:1748754bee625bf41a93d1cc1df9eaef33a5e7a89a07f03293bd9c5275acc6cd",
+      "width": 2560,
+      "height": 1417,
+      "bytes": 248688,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/1-2-w400.webp",
+          "width": 400,
+          "bytes": 11182
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/1-2-w800.webp",
+          "width": 800,
+          "bytes": 31830
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/1-2-w1600.webp",
+          "width": 1600,
+          "bytes": 92814
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:42:26.860Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/11.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/can-ho-1-phong-ngu",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/can-ho-1-phong-ngu/11.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/can-ho-1-phong-ngu/11.png",
+      "sourceChecksum": "sha256:0979fd75392f748d36054547eed7ba6de596c0803a41fd02ad8ffd65458e4394",
+      "checksum": "sha256:0d8a74c859e94a29cf7225dc22e5022f664e61ad433947a9844f4885f33ddf6c",
+      "width": 2560,
+      "height": 1536,
+      "bytes": 298346,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/11-w400.webp",
+          "width": 400,
+          "bytes": 7450
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/11-w800.webp",
+          "width": 800,
+          "bytes": 22470
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/11-w1600.webp",
+          "width": 1600,
+          "bytes": 91562
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:42:30.246Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/12.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/can-ho-1-phong-ngu",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/can-ho-1-phong-ngu/12.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/can-ho-1-phong-ngu/12.png",
+      "sourceChecksum": "sha256:75d290ff0e3a39bb08e7cb69e3e0fed309e1fd40569cdd899df6e6d1c73ff619",
+      "checksum": "sha256:7004f8e07f2111401725c7a809dda28845e32f111c6f3f3be8bea1477ed9e670",
+      "width": 2560,
+      "height": 1536,
+      "bytes": 295664,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/12-w400.webp",
+          "width": 400,
+          "bytes": 6838
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/12-w800.webp",
+          "width": 800,
+          "bytes": 19216
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/12-w1600.webp",
+          "width": 1600,
+          "bytes": 79200
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:42:33.419Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/3.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/can-ho-1-phong-ngu",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/can-ho-1-phong-ngu/3.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/can-ho-1-phong-ngu/3.png",
+      "sourceChecksum": "sha256:49da389581d657d34fbbf83dcab269da7ea19f28604a8253e1e80a1b5a822029",
+      "checksum": "sha256:34fe35ecf66b7faab9c8ee0fea5fbb685efc5eeebb0107c22d966fc1bdf9cecf",
+      "width": 2560,
+      "height": 1417,
+      "bytes": 268442,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/3-w400.webp",
+          "width": 400,
+          "bytes": 7654
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/3-w800.webp",
+          "width": 800,
+          "bytes": 22826
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/3-w1600.webp",
+          "width": 1600,
+          "bytes": 83386
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:42:36.671Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/4.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/can-ho-1-phong-ngu",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/can-ho-1-phong-ngu/4.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/can-ho-1-phong-ngu/4.png",
+      "sourceChecksum": "sha256:39e7db9ce0c95174c3385fbdb8149cc3de12d868f6dff938b24462385cbdbcaf",
+      "checksum": "sha256:6a24696037437d39ab404a2359f7bbc77ab177a9f5d263a2de8aba20fd16b9a7",
+      "width": 2133,
+      "height": 2560,
+      "bytes": 746436,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/4-w400.webp",
+          "width": 400,
+          "bytes": 22340
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/4-w800.webp",
+          "width": 800,
+          "bytes": 84200
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/4-w1600.webp",
+          "width": 1600,
+          "bytes": 328212
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:42:40.212Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/5.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/can-ho-1-phong-ngu",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/can-ho-1-phong-ngu/5.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/can-ho-1-phong-ngu/5.png",
+      "sourceChecksum": "sha256:e5f21309f36c48a50c89cdb7c962743094d6cfc23d5de1f88600c515a2334b81",
+      "checksum": "sha256:eab2dfa3c768a1071ef2056e15f85739344f586b22f0a25e4a8d420cd6e75b2e",
+      "width": 2133,
+      "height": 2560,
+      "bytes": 609262,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/5-w400.webp",
+          "width": 400,
+          "bytes": 15658
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/5-w800.webp",
+          "width": 800,
+          "bytes": 56264
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/5-w1600.webp",
+          "width": 1600,
+          "bytes": 231444
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:42:43.406Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/9.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/can-ho-1-phong-ngu",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/can-ho-1-phong-ngu/9.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/can-ho-1-phong-ngu/9.png",
+      "sourceChecksum": "sha256:35500cf9ed66b092f52d012809e0704f1d1dd850d3549b8574263dc459ae98ab",
+      "checksum": "sha256:896fb0135e825a6d83463af5b1c529a6834ec4591f621a50642e61bbfa7f7901",
+      "width": 2133,
+      "height": 2560,
+      "bytes": 305032,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/9-w400.webp",
+          "width": 400,
+          "bytes": 12386
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/9-w800.webp",
+          "width": 800,
+          "bytes": 41538
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-1-phong-ngu/9-w1600.webp",
+          "width": 1600,
+          "bytes": 136486
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:42:48.395Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/12.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/can-ho-3-phong-ngu",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/can-ho-3-phong-ngu/12.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/can-ho-3-phong-ngu/12.png",
+      "sourceChecksum": "sha256:4253e7eaa0306703a6a7683cc3bec15826761d94d1dbc300cc39afbb162a24a3",
+      "checksum": "sha256:b136f49f9f668b44c47d20b9dd2b8b6d82235cdcacfcdb65d3660c2b0c398e16",
+      "width": 2560,
+      "height": 2560,
+      "bytes": 395968,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/12-w400.webp",
+          "width": 400,
+          "bytes": 9434
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/12-w800.webp",
+          "width": 800,
+          "bytes": 29644
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/12-w1600.webp",
+          "width": 1600,
+          "bytes": 124460
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:42:52.022Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/20.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/can-ho-3-phong-ngu",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/can-ho-3-phong-ngu/20.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/can-ho-3-phong-ngu/20.png",
+      "sourceChecksum": "sha256:39e2fc6c2765f96680c79937a1784f9dfb3a564f5c608232ef7fe09409dae959",
+      "checksum": "sha256:c091485978d9eecd72ac2963f7d40dcd50cd93b9b27683a43b31c0e548c29b62",
+      "width": 2500,
+      "height": 2500,
+      "bytes": 349440,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/20-w400.webp",
+          "width": 400,
+          "bytes": 10994
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/20-w800.webp",
+          "width": 800,
+          "bytes": 33220
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/20-w1600.webp",
+          "width": 1600,
+          "bytes": 119630
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:42:55.005Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/22.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/can-ho-3-phong-ngu",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/can-ho-3-phong-ngu/22.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/can-ho-3-phong-ngu/22.png",
+      "sourceChecksum": "sha256:fe9ffe1d797f9db95bcbecb5b73f59671036f9e57eb0f6a6c57b60f8670279d8",
+      "checksum": "sha256:257b0a16b71e8f16ba6826c07ce83a56dee1a3a6c05aede07f8930533f135460",
+      "width": 2560,
+      "height": 1536,
+      "bytes": 261268,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/22-w400.webp",
+          "width": 400,
+          "bytes": 8554
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/22-w800.webp",
+          "width": 800,
+          "bytes": 22930
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/22-w1600.webp",
+          "width": 1600,
+          "bytes": 84912
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:42:57.778Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/3.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/can-ho-3-phong-ngu",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/can-ho-3-phong-ngu/3.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/can-ho-3-phong-ngu/3.png",
+      "sourceChecksum": "sha256:d2f4b7d3c791f8822a3f68e51b54cb30d8c0a8350303afce83bd66ac400d0abb",
+      "checksum": "sha256:ecc2f2fcb2c8b201f48ed94d0c0287b916b89423fbe321739b652da36bbcf579",
+      "width": 2560,
+      "height": 1600,
+      "bytes": 403052,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/3-w400.webp",
+          "width": 400,
+          "bytes": 13732
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/3-w800.webp",
+          "width": 800,
+          "bytes": 41902
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/3-w1600.webp",
+          "width": 1600,
+          "bytes": 143636
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:43:00.809Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/4.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/can-ho-3-phong-ngu",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/can-ho-3-phong-ngu/4.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/can-ho-3-phong-ngu/4.png",
+      "sourceChecksum": "sha256:da945cccca82f70c93150bed7f0ff1f67be7d7f40323ae1a337a00c4720dffb0",
+      "checksum": "sha256:89e235e42aa6e36b6c5b55bd866cd199e79d429d5e42cf138b3a1b045f767f40",
+      "width": 2560,
+      "height": 1365,
+      "bytes": 244170,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/4-w400.webp",
+          "width": 400,
+          "bytes": 8186
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/4-w800.webp",
+          "width": 800,
+          "bytes": 22800
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/4-w1600.webp",
+          "width": 1600,
+          "bytes": 78850
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:43:03.910Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/5.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/can-ho-3-phong-ngu",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/can-ho-3-phong-ngu/5.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/can-ho-3-phong-ngu/5.png",
+      "sourceChecksum": "sha256:0059ce6ea10d482d78022bcbe454c351b1385b266ba24a16a23b91483aa6f01f",
+      "checksum": "sha256:87e8f50a426306dc9b5cdd4db1369294e0bafa050bcc175db2a0992972df3000",
+      "width": 2560,
+      "height": 1365,
+      "bytes": 230526,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/5-w400.webp",
+          "width": 400,
+          "bytes": 8350
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/5-w800.webp",
+          "width": 800,
+          "bytes": 24862
+        },
+        {
+          "path": "projects/khach-san-eo-gio/can-ho-3-phong-ngu/5-w1600.webp",
+          "width": 1600,
+          "bytes": 84702
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:43:07.821Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/1.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/phong-doi-dien-hinh",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/phong-doi-dien-hinh/1.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/phong-doi-dien-hinh/1.png",
+      "sourceChecksum": "sha256:7ac96fd7f5e9916a1caedef9f96b3ad79bc0f855a6f0b2db55265b3c0fa0ac02",
+      "checksum": "sha256:a787ab4e12916d60f940f4af032e27e437fb69b01a3817381370066dd836aae3",
+      "width": 2560,
+      "height": 1417,
+      "bytes": 351326,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/1-w400.webp",
+          "width": 400,
+          "bytes": 9806
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/1-w800.webp",
+          "width": 800,
+          "bytes": 29950
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/1-w1600.webp",
+          "width": 1600,
+          "bytes": 114500
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:43:12.199Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/phong-doi-dien-hinh",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/phong-doi-dien-hinh/2.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/phong-doi-dien-hinh/2.png",
+      "sourceChecksum": "sha256:2e8a31263f1ffa96c8444ab195cb277af8be43b4cdf086fd1a831189392befa7",
+      "checksum": "sha256:448885f08d23d02f0a306b8b16edb429edc80f1f830eb79ac14bcd118c1dd70a",
+      "width": 2560,
+      "height": 1417,
+      "bytes": 370778,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/2-w400.webp",
+          "width": 400,
+          "bytes": 7022
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/2-w800.webp",
+          "width": 800,
+          "bytes": 22212
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/2-w1600.webp",
+          "width": 1600,
+          "bytes": 97248
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:43:15.327Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/3.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/phong-doi-dien-hinh",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/phong-doi-dien-hinh/3.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/phong-doi-dien-hinh/3.png",
+      "sourceChecksum": "sha256:527a5f4195b57da31d3a159706a46c6d98b8ed4bcaa94c903532471d9dfa3e0d",
+      "checksum": "sha256:db25ec69e4f71db45e4f9b9175972fad3b2d8bc3ad00e4f0eaed5876b3f2c9ea",
+      "width": 2560,
+      "height": 1417,
+      "bytes": 292892,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/3-w400.webp",
+          "width": 400,
+          "bytes": 8372
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/3-w800.webp",
+          "width": 800,
+          "bytes": 24900
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/3-w1600.webp",
+          "width": 1600,
+          "bytes": 92972
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:43:18.709Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/5.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/phong-doi-dien-hinh",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/phong-doi-dien-hinh/5.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/phong-doi-dien-hinh/5.png",
+      "sourceChecksum": "sha256:7a6dbd6103f290032086f0b3593075a262d2700504656ab8a0a59b5dce2e57c1",
+      "checksum": "sha256:11b9cc1f1a296b557d40c4af267f3972b6f4b7a74491906d350a91a03925cad3",
+      "width": 1969,
+      "height": 2560,
+      "bytes": 462346,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/5-w400.webp",
+          "width": 400,
+          "bytes": 17280
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/5-w800.webp",
+          "width": 800,
+          "bytes": 61682
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/5-w1600.webp",
+          "width": 1600,
+          "bytes": 232122
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:43:21.680Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/7.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/phong-doi-dien-hinh",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/phong-doi-dien-hinh/7.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/phong-doi-dien-hinh/7.png",
+      "sourceChecksum": "sha256:20d15d09c95a4847f9272834253af21dfea0c30fa7e8503fe9ef499b936d5414",
+      "checksum": "sha256:c6e99275af367f32262431232d852240eca5a773887dce19440ea41a5f18a447",
+      "width": 1920,
+      "height": 2560,
+      "bytes": 540366,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/7-w400.webp",
+          "width": 400,
+          "bytes": 17684
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/7-w800.webp",
+          "width": 800,
+          "bytes": 77530
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/7-w1600.webp",
+          "width": 1600,
+          "bytes": 307686
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:43:24.801Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/8.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/phong-doi-dien-hinh",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/phong-doi-dien-hinh/8.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/phong-doi-dien-hinh/8.png",
+      "sourceChecksum": "sha256:57a34869913bfcfffd4f8a6f401e24596d915cfc88781af928dc8c81af81b781",
+      "checksum": "sha256:04c57c107438dcd14557e8898af2f59449e58c685e3a8c7f608d393b97f167ac",
+      "width": 2560,
+      "height": 1417,
+      "bytes": 318976,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/8-w400.webp",
+          "width": 400,
+          "bytes": 10700
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/8-w800.webp",
+          "width": 800,
+          "bytes": 31098
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-doi-dien-hinh/8-w1600.webp",
+          "width": 1600,
+          "bytes": 109894
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:43:27.791Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/phong-don-dien-hinh/1.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/phong-don-dien-hinh",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/phong-don-dien-hinh/1.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/phong-don-dien-hinh/1.png",
+      "sourceChecksum": "sha256:d8b9c020e519b9f5d710371eed05a2ec02bb1aae1db42d160f2dc81c3ee6bf02",
+      "checksum": "sha256:dd27dec0ac8af54b753c778e02e13a2467b5feeac5a28532b78d969a6766db2f",
+      "width": 2560,
+      "height": 1417,
+      "bytes": 620198,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/phong-don-dien-hinh/1-w400.webp",
+          "width": 400,
+          "bytes": 6976
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-don-dien-hinh/1-w800.webp",
+          "width": 800,
+          "bytes": 28198
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-don-dien-hinh/1-w1600.webp",
+          "width": 1600,
+          "bytes": 161780
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:43:30.850Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/phong-don-dien-hinh/2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/phong-don-dien-hinh",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/phong-don-dien-hinh/2.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/phong-don-dien-hinh/2.png",
+      "sourceChecksum": "sha256:3563c51f1d2ee8ecab9e7c1cbe98cec541826fe70c62fd5e592cf7b37fe012d5",
+      "checksum": "sha256:4aec3b9a0b01de68ede080509cb2317b0d6ef5d45aa7210677708680ce0a7ecf",
+      "width": 2560,
+      "height": 1417,
+      "bytes": 628412,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/phong-don-dien-hinh/2-w400.webp",
+          "width": 400,
+          "bytes": 11060
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-don-dien-hinh/2-w800.webp",
+          "width": 800,
+          "bytes": 37872
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-don-dien-hinh/2-w1600.webp",
+          "width": 1600,
+          "bytes": 178588
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:43:35.910Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/phong-don-dien-hinh/4.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/phong-don-dien-hinh",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/phong-don-dien-hinh/4.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/phong-don-dien-hinh/4.png",
+      "sourceChecksum": "sha256:79107f8fa2483ce6af9d3066dfbf93e71a8c8081fcef35319cb1eaf0b5b66609",
+      "checksum": "sha256:350617da6e6df5453031cbc3109830740f0d859bb62919fba777cafe63b8a9d6",
+      "width": 2560,
+      "height": 1417,
+      "bytes": 568724,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/phong-don-dien-hinh/4-w400.webp",
+          "width": 400,
+          "bytes": 8640
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-don-dien-hinh/4-w800.webp",
+          "width": 800,
+          "bytes": 30648
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-don-dien-hinh/4-w1600.webp",
+          "width": 1600,
+          "bytes": 161796
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:43:39.971Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/phong-studio-01/3.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/phong-studio-01",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/phong-studio-01/3.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/phong-studio-01/3.png",
+      "sourceChecksum": "sha256:842b1adeae24f371ab7506127e7a0bfcfe5d99176f607e395aa86e41b25545de",
+      "checksum": "sha256:6e18eea89a2b13f972101a33de427acb1647a83a150d86017ec4d054329aa538",
+      "width": 2560,
+      "height": 1417,
+      "bytes": 405178,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/phong-studio-01/3-w400.webp",
+          "width": 400,
+          "bytes": 7190
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-studio-01/3-w800.webp",
+          "width": 800,
+          "bytes": 25288
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-studio-01/3-w1600.webp",
+          "width": 1600,
+          "bytes": 114366
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:43:42.955Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/phong-studio-02/1.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/phong-studio-02",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/phong-studio-02/1.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/phong-studio-02/1.png",
+      "sourceChecksum": "sha256:0e0d5848bdd05b30c4bd83671402b91225ee1a5fd2671ddd3f1bffdc4efdf6fd",
+      "checksum": "sha256:7bd12d3e9a076252104788efbe6e29e90d4a6adb2ea7ba308dc3157e6788b081",
+      "width": 2560,
+      "height": 1600,
+      "bytes": 445170,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/phong-studio-02/1-w400.webp",
+          "width": 400,
+          "bytes": 8734
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-studio-02/1-w800.webp",
+          "width": 800,
+          "bytes": 29484
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-studio-02/1-w1600.webp",
+          "width": 1600,
+          "bytes": 130712
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:43:45.887Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/phong-studio-02/2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/phong-studio-02",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/phong-studio-02/2.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/phong-studio-02/2.png",
+      "sourceChecksum": "sha256:63116a706368549a9cfa2a4df9f4e4923762e39306676792fa848fb5c46e8cf4",
+      "checksum": "sha256:76c1d616b9756885b3ee85f7d198798d812cc7ba381a921d7cc666f10ba09d06",
+      "width": 2560,
+      "height": 1417,
+      "bytes": 531688,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/phong-studio-02/2-w400.webp",
+          "width": 400,
+          "bytes": 8598
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-studio-02/2-w800.webp",
+          "width": 800,
+          "bytes": 31852
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-studio-02/2-w1600.webp",
+          "width": 1600,
+          "bytes": 153168
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:43:48.934Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/phong-studio-02/3.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/phong-studio-02",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/phong-studio-02/3.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/phong-studio-02/3.png",
+      "sourceChecksum": "sha256:9980f045a1a9bc402cb7e2739948b9793ba08ca69dbdee873b373fb4f29c4ff8",
+      "checksum": "sha256:470f3776d0633b2362698c518c43c5b7ed71c93a8b6b04d497fccaa2091bb129",
+      "width": 2560,
+      "height": 1417,
+      "bytes": 279626,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/phong-studio-02/3-w400.webp",
+          "width": 400,
+          "bytes": 8658
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-studio-02/3-w800.webp",
+          "width": 800,
+          "bytes": 26906
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-studio-02/3-w1600.webp",
+          "width": 1600,
+          "bytes": 91610
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:43:52.166Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/phong-studio-02/5.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/phong-studio-02",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/phong-studio-02/5.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/phong-studio-02/5.png",
+      "sourceChecksum": "sha256:d3f9c5327fa328e3c618fbacc36ae7ad8531d0844e2d336a6d1b5147c243d835",
+      "checksum": "sha256:dce75a62aa017f7313bc1171b96ccf22523cd222487ef15bedf8968704946c22",
+      "width": 2560,
+      "height": 1195,
+      "bytes": 240996,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/phong-studio-02/5-w400.webp",
+          "width": 400,
+          "bytes": 6208
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-studio-02/5-w800.webp",
+          "width": 800,
+          "bytes": 17998
+        },
+        {
+          "path": "projects/khach-san-eo-gio/phong-studio-02/5-w1600.webp",
+          "width": 1600,
+          "bytes": 64796
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:43:55.235Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/sanh-don/14.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/sanh-don",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/sanh-don/14.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/sanh-don/14.png",
+      "sourceChecksum": "sha256:5fd25e2f01ddd07981718a4f968e9cc4dd1ddb2d1d3ac2fbbefd13da83fb4c69",
+      "checksum": "sha256:ffff0b4fe09aa9a277a40441628ab17264583747c86e2a62366893b6823dda7d",
+      "width": 2560,
+      "height": 1600,
+      "bytes": 530850,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/sanh-don/14-w400.webp",
+          "width": 400,
+          "bytes": 11850
+        },
+        {
+          "path": "projects/khach-san-eo-gio/sanh-don/14-w800.webp",
+          "width": 800,
+          "bytes": 40330
+        },
+        {
+          "path": "projects/khach-san-eo-gio/sanh-don/14-w1600.webp",
+          "width": 1600,
+          "bytes": 167482
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:44:00.700Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/sanh-don/21.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/sanh-don",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/sanh-don/21.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/sanh-don/21.png",
+      "sourceChecksum": "sha256:1e44e1ff6555b95b59ae13ee78861c9b815b5dcc1294b59d25f23028252ae736",
+      "checksum": "sha256:cbb9a024d8f3f7ae7fe64c5a9934a79067b921756d101fcc54f76d7988a9f8d3",
+      "width": 2560,
+      "height": 1600,
+      "bytes": 391092,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/sanh-don/21-w400.webp",
+          "width": 400,
+          "bytes": 10514
+        },
+        {
+          "path": "projects/khach-san-eo-gio/sanh-don/21-w800.webp",
+          "width": 800,
+          "bytes": 33252
+        },
+        {
+          "path": "projects/khach-san-eo-gio/sanh-don/21-w1600.webp",
+          "width": 1600,
+          "bytes": 121314
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:44:04.453Z",
+      "alt": null
+    },
+    {
+      "path": "projects/khach-san-eo-gio/sanh-don/24.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "khach-san-eo-gio/sanh-don",
+      "oldPublicPath": "/images/projects/khach-san-eo-gio/sanh-don/24.png",
+      "sourceFile": "public/images/projects/khach-san-eo-gio/sanh-don/24.png",
+      "sourceChecksum": "sha256:6ae3bd5db763feda4c43b6b8e2023ccf8a58fcbd20c91cc843327e81523cc8c2",
+      "checksum": "sha256:d96ab9755ae3647bef2791520170f2f340a09a710fe47ce26a227f1e800504a7",
+      "width": 2560,
+      "height": 1600,
+      "bytes": 350178,
+      "variants": [
+        {
+          "path": "projects/khach-san-eo-gio/sanh-don/24-w400.webp",
+          "width": 400,
+          "bytes": 11358
+        },
+        {
+          "path": "projects/khach-san-eo-gio/sanh-don/24-w800.webp",
+          "width": 800,
+          "bytes": 33742
+        },
+        {
+          "path": "projects/khach-san-eo-gio/sanh-don/24-w1600.webp",
+          "width": 1600,
+          "bytes": 113526
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:44:07.183Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-anh-nam/1.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-anh-nam",
+      "oldPublicPath": "/images/projects/nha-anh-nam/1.png",
+      "sourceFile": "public/images/projects/nha-anh-nam/1.png",
+      "sourceChecksum": "sha256:6076974c2c6731c73b57a6b907390390925a3457fedb3cdb33ac5945388fbf72",
+      "checksum": "sha256:08e295c8cd193afbe972e93e9dc2af241a451ddb7ddaca14fac1170c3cd90f55",
+      "width": 2560,
+      "height": 1600,
+      "bytes": 351852,
+      "variants": [
+        {
+          "path": "projects/nha-anh-nam/1-w400.webp",
+          "width": 400,
+          "bytes": 8810
+        },
+        {
+          "path": "projects/nha-anh-nam/1-w800.webp",
+          "width": 800,
+          "bytes": 29644
+        },
+        {
+          "path": "projects/nha-anh-nam/1-w1600.webp",
+          "width": 1600,
+          "bytes": 107094
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:44:10.098Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-anh-nam/10.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-anh-nam",
+      "oldPublicPath": "/images/projects/nha-anh-nam/10.png",
+      "sourceFile": "public/images/projects/nha-anh-nam/10.png",
+      "sourceChecksum": "sha256:00a6d888e2ca6da14f5e86546d0a29b49968ca26457531a9eeff378a16de777f",
+      "checksum": "sha256:9eb10228b1259741b65f2a5c58639a2576dbd73b01c496ffe08c01877ea0a7f0",
+      "width": 2560,
+      "height": 1600,
+      "bytes": 234588,
+      "variants": [
+        {
+          "path": "projects/nha-anh-nam/10-w400.webp",
+          "width": 400,
+          "bytes": 5694
+        },
+        {
+          "path": "projects/nha-anh-nam/10-w800.webp",
+          "width": 800,
+          "bytes": 20616
+        },
+        {
+          "path": "projects/nha-anh-nam/10-w1600.webp",
+          "width": 1600,
+          "bytes": 77048
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:44:12.699Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-anh-nam/11.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-anh-nam",
+      "oldPublicPath": "/images/projects/nha-anh-nam/11.png",
+      "sourceFile": "public/images/projects/nha-anh-nam/11.png",
+      "sourceChecksum": "sha256:2b20aba782774813a5f7d1a97ee9007e92208b0701ad6028d7c8d85dc33c7fb6",
+      "checksum": "sha256:6543beb7401848696a26d0289c019ef2629cd9b34418a856dd49da7869d42f7c",
+      "width": 2560,
+      "height": 1600,
+      "bytes": 158880,
+      "variants": [
+        {
+          "path": "projects/nha-anh-nam/11-w400.webp",
+          "width": 400,
+          "bytes": 5426
+        },
+        {
+          "path": "projects/nha-anh-nam/11-w800.webp",
+          "width": 800,
+          "bytes": 15016
+        },
+        {
+          "path": "projects/nha-anh-nam/11-w1600.webp",
+          "width": 1600,
+          "bytes": 48584
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:44:15.675Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-anh-nam/2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-anh-nam",
+      "oldPublicPath": "/images/projects/nha-anh-nam/2.png",
+      "sourceFile": "public/images/projects/nha-anh-nam/2.png",
+      "sourceChecksum": "sha256:2f01daff5eb570a9ebcd8cccac999d64fa258ac9ca3bde6fe1ba7aa4a66ccf7b",
+      "checksum": "sha256:053e6d07c3fa0ebe0b4d6dd4823cda03db1f9cd9f1444100124ece6e689233c3",
+      "width": 2560,
+      "height": 1600,
+      "bytes": 358524,
+      "variants": [
+        {
+          "path": "projects/nha-anh-nam/2-w400.webp",
+          "width": 400,
+          "bytes": 8266
+        },
+        {
+          "path": "projects/nha-anh-nam/2-w800.webp",
+          "width": 800,
+          "bytes": 28790
+        },
+        {
+          "path": "projects/nha-anh-nam/2-w1600.webp",
+          "width": 1600,
+          "bytes": 104278
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:44:18.551Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-anh-nam/3.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-anh-nam",
+      "oldPublicPath": "/images/projects/nha-anh-nam/3.png",
+      "sourceFile": "public/images/projects/nha-anh-nam/3.png",
+      "sourceChecksum": "sha256:3b59c76db515cf11ab2554447ffe182f09ddcba548440e8cec9072cc00f64d71",
+      "checksum": "sha256:b00557581bb430594796f7302c55ff06788ce6689f1471aac4034f3c9c026c37",
+      "width": 2560,
+      "height": 1600,
+      "bytes": 450336,
+      "variants": [
+        {
+          "path": "projects/nha-anh-nam/3-w400.webp",
+          "width": 400,
+          "bytes": 11766
+        },
+        {
+          "path": "projects/nha-anh-nam/3-w800.webp",
+          "width": 800,
+          "bytes": 35586
+        },
+        {
+          "path": "projects/nha-anh-nam/3-w1600.webp",
+          "width": 1600,
+          "bytes": 123938
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:44:21.508Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-anh-nam/4.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-anh-nam",
+      "oldPublicPath": "/images/projects/nha-anh-nam/4.png",
+      "sourceFile": "public/images/projects/nha-anh-nam/4.png",
+      "sourceChecksum": "sha256:c72dc5bb1313443f0cece19d519037d0bcbe0ad3e3f55be1fb8912c6224e0c9d",
+      "checksum": "sha256:61692bd9c7a5ed7939777f1f12c1025ffbf881b4499a6dea7cb53ca86e32198b",
+      "width": 2048,
+      "height": 2560,
+      "bytes": 398368,
+      "variants": [
+        {
+          "path": "projects/nha-anh-nam/4-w400.webp",
+          "width": 400,
+          "bytes": 17036
+        },
+        {
+          "path": "projects/nha-anh-nam/4-w800.webp",
+          "width": 800,
+          "bytes": 50660
+        },
+        {
+          "path": "projects/nha-anh-nam/4-w1600.webp",
+          "width": 1600,
+          "bytes": 172616
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:44:24.636Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-anh-nam/5.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-anh-nam",
+      "oldPublicPath": "/images/projects/nha-anh-nam/5.png",
+      "sourceFile": "public/images/projects/nha-anh-nam/5.png",
+      "sourceChecksum": "sha256:1824e074e82e11d5b0f45d9c9ab283665de7567da89dacd0270b3f758e0f09df",
+      "checksum": "sha256:633baca10567327b0b1d0eddd0d94b985c17bf2f3a276916538fb18bd8030228",
+      "width": 2560,
+      "height": 1600,
+      "bytes": 221834,
+      "variants": [
+        {
+          "path": "projects/nha-anh-nam/5-w400.webp",
+          "width": 400,
+          "bytes": 10716
+        },
+        {
+          "path": "projects/nha-anh-nam/5-w800.webp",
+          "width": 800,
+          "bytes": 27228
+        },
+        {
+          "path": "projects/nha-anh-nam/5-w1600.webp",
+          "width": 1600,
+          "bytes": 78830
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:44:28.637Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-anh-nam/7.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-anh-nam",
+      "oldPublicPath": "/images/projects/nha-anh-nam/7.png",
+      "sourceFile": "public/images/projects/nha-anh-nam/7.png",
+      "sourceChecksum": "sha256:83cd374f6316853ff3d4e489844749c1392a641948a01562a414dbb51207ed23",
+      "checksum": "sha256:6127b59366d163188441cd97e027503ff313b82c7e97d9259b7aebadfd9c58ca",
+      "width": 2560,
+      "height": 1551,
+      "bytes": 279890,
+      "variants": [
+        {
+          "path": "projects/nha-anh-nam/7-w400.webp",
+          "width": 400,
+          "bytes": 7934
+        },
+        {
+          "path": "projects/nha-anh-nam/7-w800.webp",
+          "width": 800,
+          "bytes": 22290
+        },
+        {
+          "path": "projects/nha-anh-nam/7-w1600.webp",
+          "width": 1600,
+          "bytes": 80322
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:44:31.891Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-anh-nam/8.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-anh-nam",
+      "oldPublicPath": "/images/projects/nha-anh-nam/8.png",
+      "sourceFile": "public/images/projects/nha-anh-nam/8.png",
+      "sourceChecksum": "sha256:ac9190dbf36c5f7e63ccc803676a5067e6d95b217dba76d9f26db7322ca007b7",
+      "checksum": "sha256:01ae00dc4fef94fb4da8caccdd54aa4723d67506d73b2ccea68eaeded8535d8a",
+      "width": 2560,
+      "height": 1600,
+      "bytes": 300668,
+      "variants": [
+        {
+          "path": "projects/nha-anh-nam/8-w400.webp",
+          "width": 400,
+          "bytes": 6196
+        },
+        {
+          "path": "projects/nha-anh-nam/8-w800.webp",
+          "width": 800,
+          "bytes": 21820
+        },
+        {
+          "path": "projects/nha-anh-nam/8-w1600.webp",
+          "width": 1600,
+          "bytes": 92246
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:44:34.857Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-ta-dung/1.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-ta-dung",
+      "oldPublicPath": "/images/projects/nha-ta-dung/1.png",
+      "sourceFile": "public/images/projects/nha-ta-dung/1.png",
+      "sourceChecksum": "sha256:0374fbb355368fa597624306b9b31d662c1192d06952e3c001a00428333bb57c",
+      "checksum": "sha256:7995974039cd2bc726e8992894cf456f01918e1d59d64a5de6505f0033851c6e",
+      "width": 2560,
+      "height": 1829,
+      "bytes": 329582,
+      "variants": [
+        {
+          "path": "projects/nha-ta-dung/1-w400.webp",
+          "width": 400,
+          "bytes": 9128
+        },
+        {
+          "path": "projects/nha-ta-dung/1-w800.webp",
+          "width": 800,
+          "bytes": 28830
+        },
+        {
+          "path": "projects/nha-ta-dung/1-w1600.webp",
+          "width": 1600,
+          "bytes": 102150
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:44:38.929Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-ta-dung/2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-ta-dung",
+      "oldPublicPath": "/images/projects/nha-ta-dung/2.png",
+      "sourceFile": "public/images/projects/nha-ta-dung/2.png",
+      "sourceChecksum": "sha256:f790451892e85124666ee6f11a426f14b0debe0cfd18a048170bedcac17fef14",
+      "checksum": "sha256:7ee225d3d60db3007b6752d31d38d178ac44bb34cbb4c82a2b6ce5dbf052e8a1",
+      "width": 2560,
+      "height": 1829,
+      "bytes": 421652,
+      "variants": [
+        {
+          "path": "projects/nha-ta-dung/2-w400.webp",
+          "width": 400,
+          "bytes": 13022
+        },
+        {
+          "path": "projects/nha-ta-dung/2-w800.webp",
+          "width": 800,
+          "bytes": 39382
+        },
+        {
+          "path": "projects/nha-ta-dung/2-w1600.webp",
+          "width": 1600,
+          "bytes": 141156
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:44:42.337Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-ta-dung/3.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-ta-dung",
+      "oldPublicPath": "/images/projects/nha-ta-dung/3.png",
+      "sourceFile": "public/images/projects/nha-ta-dung/3.png",
+      "sourceChecksum": "sha256:dbc1cb474ff2664eab84c69d4e2d541838c5a482bc4736d6a03db3d257bb9b12",
+      "checksum": "sha256:454b096bba2fcb2f09760bff509d7d37798cfd752f6536af13e37dea560c477f",
+      "width": 2560,
+      "height": 1682,
+      "bytes": 392372,
+      "variants": [
+        {
+          "path": "projects/nha-ta-dung/3-w400.webp",
+          "width": 400,
+          "bytes": 10502
+        },
+        {
+          "path": "projects/nha-ta-dung/3-w800.webp",
+          "width": 800,
+          "bytes": 32270
+        },
+        {
+          "path": "projects/nha-ta-dung/3-w1600.webp",
+          "width": 1600,
+          "bytes": 120080
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:44:45.648Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-ta-dung/4.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-ta-dung",
+      "oldPublicPath": "/images/projects/nha-ta-dung/4.png",
+      "sourceFile": "public/images/projects/nha-ta-dung/4.png",
+      "sourceChecksum": "sha256:9f13fc9eb36d745a5205bc327b5c20c6f6841d4127373ec234becf3df49429de",
+      "checksum": "sha256:5728b384a85e25676b420392ca27b5b277ab74e85d2eccb16728e0976cc84f51",
+      "width": 2560,
+      "height": 1682,
+      "bytes": 222692,
+      "variants": [
+        {
+          "path": "projects/nha-ta-dung/4-w400.webp",
+          "width": 400,
+          "bytes": 7200
+        },
+        {
+          "path": "projects/nha-ta-dung/4-w800.webp",
+          "width": 800,
+          "bytes": 21438
+        },
+        {
+          "path": "projects/nha-ta-dung/4-w1600.webp",
+          "width": 1600,
+          "bytes": 73956
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:44:49.049Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-ta-dung/5.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-ta-dung",
+      "oldPublicPath": "/images/projects/nha-ta-dung/5.png",
+      "sourceFile": "public/images/projects/nha-ta-dung/5.png",
+      "sourceChecksum": "sha256:12f0765a3334172a6920e5a724d751e198f64f2f795d781a96b661be9e0e5789",
+      "checksum": "sha256:6b21498460898a06cac962502ca08e236029d8342b71dcb83d8b325ba7ba4885",
+      "width": 2560,
+      "height": 1682,
+      "bytes": 339858,
+      "variants": [
+        {
+          "path": "projects/nha-ta-dung/5-w400.webp",
+          "width": 400,
+          "bytes": 7612
+        },
+        {
+          "path": "projects/nha-ta-dung/5-w800.webp",
+          "width": 800,
+          "bytes": 24702
+        },
+        {
+          "path": "projects/nha-ta-dung/5-w1600.webp",
+          "width": 1600,
+          "bytes": 104616
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:44:52.394Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-ta-dung/6.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-ta-dung",
+      "oldPublicPath": "/images/projects/nha-ta-dung/6.png",
+      "sourceFile": "public/images/projects/nha-ta-dung/6.png",
+      "sourceChecksum": "sha256:5af1f3940f0499deb62eeabe3269c82e8f634ef29ca6bbb9f0424d46dfb34380",
+      "checksum": "sha256:1e95c957061451f136cf0e26fccb0af5cd797c640008f61664ac70a41bfbc08c",
+      "width": 2103,
+      "height": 2560,
+      "bytes": 219862,
+      "variants": [
+        {
+          "path": "projects/nha-ta-dung/6-w400.webp",
+          "width": 400,
+          "bytes": 11460
+        },
+        {
+          "path": "projects/nha-ta-dung/6-w800.webp",
+          "width": 800,
+          "bytes": 33424
+        },
+        {
+          "path": "projects/nha-ta-dung/6-w1600.webp",
+          "width": 1600,
+          "bytes": 106474
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:44:55.529Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-ta-dung/7.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-ta-dung",
+      "oldPublicPath": "/images/projects/nha-ta-dung/7.png",
+      "sourceFile": "public/images/projects/nha-ta-dung/7.png",
+      "sourceChecksum": "sha256:9f5a16e4c21e31893c840dc4d526a1e8a2f0d71e2825bcfeb3f32a4304146223",
+      "checksum": "sha256:33958b43ce16940bae27bfe44657b4b5f8d016b878a639218c62454fb7f06835",
+      "width": 2103,
+      "height": 2560,
+      "bytes": 438662,
+      "variants": [
+        {
+          "path": "projects/nha-ta-dung/7-w400.webp",
+          "width": 400,
+          "bytes": 13110
+        },
+        {
+          "path": "projects/nha-ta-dung/7-w800.webp",
+          "width": 800,
+          "bytes": 46134
+        },
+        {
+          "path": "projects/nha-ta-dung/7-w1600.webp",
+          "width": 1600,
+          "bytes": 200754
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:44:58.595Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/1.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/1.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/1.jpg",
+      "sourceChecksum": "sha256:cc51833f13bf52f1fcdd5123210daaddc17e6385621ab11278e42298226742bf",
+      "checksum": "sha256:a8c7cae379ae32da24634ecb089ba33630efacee0511899b8450414efbe95e30",
+      "width": 2200,
+      "height": 1800,
+      "bytes": 1044104,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/1-w400.webp",
+          "width": 400,
+          "bytes": 22686
+        },
+        {
+          "path": "projects/nha-vuon-chily/1-w800.webp",
+          "width": 800,
+          "bytes": 78964
+        },
+        {
+          "path": "projects/nha-vuon-chily/1-w1600.webp",
+          "width": 1600,
+          "bytes": 343118
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:45:02.574Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/10.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/10.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/10.jpg",
+      "sourceChecksum": "sha256:218fdf7234d2dbbfe3e657683680d426e93eedcf6a55bf951ea3892ba4cdeb17",
+      "checksum": "sha256:9f748bec6329851cb3298220baa9568245910cb52c4284b1cea3fabc36fbaa88",
+      "width": 2000,
+      "height": 2000,
+      "bytes": 1063534,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/10-w400.webp",
+          "width": 400,
+          "bytes": 25480
+        },
+        {
+          "path": "projects/nha-vuon-chily/10-w800.webp",
+          "width": 800,
+          "bytes": 90664
+        },
+        {
+          "path": "projects/nha-vuon-chily/10-w1600.webp",
+          "width": 1600,
+          "bytes": 407932
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:45:06.688Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/12.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/12.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/12.jpg",
+      "sourceChecksum": "sha256:1fbbf19b64befd415732176f5fcf18a1b82da1e2484eeec8c5abfc335af4d1d2",
+      "checksum": "sha256:a02006884d9f28d0a37a40214ce1596f504b8e155164de8b4b0403784ab387f3",
+      "width": 1800,
+      "height": 2200,
+      "bytes": 814268,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/12-w400.webp",
+          "width": 400,
+          "bytes": 16680
+        },
+        {
+          "path": "projects/nha-vuon-chily/12-w800.webp",
+          "width": 800,
+          "bytes": 59808
+        },
+        {
+          "path": "projects/nha-vuon-chily/12-w1600.webp",
+          "width": 1600,
+          "bytes": 325906
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:45:10.084Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/14.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/14.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/14.jpg",
+      "sourceChecksum": "sha256:ebc14fce0593e8b4d142f13703e97bdcc9ad65bd83bf78f2a30a08bd83f1a80b",
+      "checksum": "sha256:dc54c78de8506ee2fff680702542a9736f927fc5c47c4cd1d4491db80a11f9d7",
+      "width": 1800,
+      "height": 2200,
+      "bytes": 738526,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/14-w400.webp",
+          "width": 400,
+          "bytes": 21512
+        },
+        {
+          "path": "projects/nha-vuon-chily/14-w800.webp",
+          "width": 800,
+          "bytes": 70150
+        },
+        {
+          "path": "projects/nha-vuon-chily/14-w1600.webp",
+          "width": 1600,
+          "bytes": 291754
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:45:13.313Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/15.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/15.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/15.jpg",
+      "sourceChecksum": "sha256:bc96d526d1dfb8e1205426e536b49b1aef67b3a180a455c1ed54335999969d2b",
+      "checksum": "sha256:d0010db87254a37804b0f28cd3d0f2aa8a8aed2749f349099940c4b8e7957f74",
+      "width": 2000,
+      "height": 1600,
+      "bytes": 661250,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/15-w400.webp",
+          "width": 400,
+          "bytes": 16886
+        },
+        {
+          "path": "projects/nha-vuon-chily/15-w800.webp",
+          "width": 800,
+          "bytes": 55428
+        },
+        {
+          "path": "projects/nha-vuon-chily/15-w1600.webp",
+          "width": 1600,
+          "bytes": 233958
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:45:17.012Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/22.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/22.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/22.jpg",
+      "sourceChecksum": "sha256:228263b5ea42246abe27a1fa8257d4a8a7aca99c9998358483ff8bdf2b0dccf4",
+      "checksum": "sha256:40d1f248013532e2913c0a5c567ef01f8512c203e4ffe928a93d4e6e0fdcfc0e",
+      "width": 2200,
+      "height": 1700,
+      "bytes": 405648,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/22-w400.webp",
+          "width": 400,
+          "bytes": 14416
+        },
+        {
+          "path": "projects/nha-vuon-chily/22-w800.webp",
+          "width": 800,
+          "bytes": 49334
+        },
+        {
+          "path": "projects/nha-vuon-chily/22-w1600.webp",
+          "width": 1600,
+          "bytes": 178486
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:45:20.239Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/23.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/23.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/23.jpg",
+      "sourceChecksum": "sha256:790dddf737689bb69adf5da94ba75371928d9bd97b57683d7a11e29f12483c6d",
+      "checksum": "sha256:f6cdd41a8a8a0b3ebe8e0bc5c8128c8a8665082630472d836a45c11807fea529",
+      "width": 1760,
+      "height": 2200,
+      "bytes": 503906,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/23-w400.webp",
+          "width": 400,
+          "bytes": 23548
+        },
+        {
+          "path": "projects/nha-vuon-chily/23-w800.webp",
+          "width": 800,
+          "bytes": 86336
+        },
+        {
+          "path": "projects/nha-vuon-chily/23-w1600.webp",
+          "width": 1600,
+          "bytes": 313220
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:45:23.741Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/24.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/24.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/24.jpg",
+      "sourceChecksum": "sha256:f62685f4b7b96b6ff81960f3759ca716d387342406b8737d85df99c97ab5af21",
+      "checksum": "sha256:bd048e7d9941e4c07dd6706a7e262c591fcedbf31f9aae85eff52dd68f492314",
+      "width": 1760,
+      "height": 2200,
+      "bytes": 208824,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/24-w400.webp",
+          "width": 400,
+          "bytes": 19810
+        },
+        {
+          "path": "projects/nha-vuon-chily/24-w800.webp",
+          "width": 800,
+          "bytes": 55424
+        },
+        {
+          "path": "projects/nha-vuon-chily/24-w1600.webp",
+          "width": 1600,
+          "bytes": 144966
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:45:26.765Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/25.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/25.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/25.jpg",
+      "sourceChecksum": "sha256:30e926d5d22240ef4ebdf1512a74b02eb5aebe401d6e876fd96cee0cba82d1b5",
+      "checksum": "sha256:4a9a2d1600797f6a1c5de3bc8e96e6e893e9ad47b19d3810e38c7dd13920971a",
+      "width": 1660,
+      "height": 2200,
+      "bytes": 396548,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/25-w400.webp",
+          "width": 400,
+          "bytes": 29400
+        },
+        {
+          "path": "projects/nha-vuon-chily/25-w800.webp",
+          "width": 800,
+          "bytes": 93218
+        },
+        {
+          "path": "projects/nha-vuon-chily/25-w1600.webp",
+          "width": 1600,
+          "bytes": 288088
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:45:30.835Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/26.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/26.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/26.jpg",
+      "sourceChecksum": "sha256:00cc87464af8edfaf464f3989d9f705e3fc7030f2e7e5a571225fc5aad74667e",
+      "checksum": "sha256:a6878e71c2ad19c3b55a336c8c817aa9cc52a45f603ac95f5339c22b884949b8",
+      "width": 1760,
+      "height": 2200,
+      "bytes": 463710,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/26-w400.webp",
+          "width": 400,
+          "bytes": 32350
+        },
+        {
+          "path": "projects/nha-vuon-chily/26-w800.webp",
+          "width": 800,
+          "bytes": 105760
+        },
+        {
+          "path": "projects/nha-vuon-chily/26-w1600.webp",
+          "width": 1600,
+          "bytes": 314150
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:45:35.306Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/27.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/27.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/27.jpg",
+      "sourceChecksum": "sha256:0835398eed33451598dbc8909cc7baa82aeef35968f6f03bb0963d32b3c8ac21",
+      "checksum": "sha256:7ee3643477b573625ed742d2a22e53e380e06e65932f5eb757c9d9f4a4332a4e",
+      "width": 1600,
+      "height": 2000,
+      "bytes": 403074,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/27-w400.webp",
+          "width": 400,
+          "bytes": 28368
+        },
+        {
+          "path": "projects/nha-vuon-chily/27-w800.webp",
+          "width": 800,
+          "bytes": 105956
+        },
+        {
+          "path": "projects/nha-vuon-chily/27-w1600.webp",
+          "width": 1600,
+          "bytes": 387280
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:45:38.574Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/28.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/28.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/28.jpg",
+      "sourceChecksum": "sha256:22de31d25d6bb301130a1a9439ba3d268534eee61ddb43b2c5ec521f24724f2f",
+      "checksum": "sha256:9a3f965a7575124782f6016f56ba5dd7679231738e774c3061155bf011030624",
+      "width": 1600,
+      "height": 1838,
+      "bytes": 310860,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/28-w400.webp",
+          "width": 400,
+          "bytes": 18610
+        },
+        {
+          "path": "projects/nha-vuon-chily/28-w800.webp",
+          "width": 800,
+          "bytes": 75606
+        },
+        {
+          "path": "projects/nha-vuon-chily/28-w1600.webp",
+          "width": 1600,
+          "bytes": 300156
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:45:42.268Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/29.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/29.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/29.jpg",
+      "sourceChecksum": "sha256:947542b67616e682d22353d9004252e64eff70602d4a9f55252312a90fe9fb09",
+      "checksum": "sha256:bb0b4cdfaa85d04c0e7276e8bbf96401f8326b0370c6aebf0bb9a1d07a6a4f01",
+      "width": 1600,
+      "height": 2000,
+      "bytes": 300214,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/29-w400.webp",
+          "width": 400,
+          "bytes": 19860
+        },
+        {
+          "path": "projects/nha-vuon-chily/29-w800.webp",
+          "width": 800,
+          "bytes": 76696
+        },
+        {
+          "path": "projects/nha-vuon-chily/29-w1600.webp",
+          "width": 1600,
+          "bytes": 291996
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:45:46.499Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/3.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/3.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/3.jpg",
+      "sourceChecksum": "sha256:31ed33d9d2ccbe99fc2d32b09297880259f30d97a6a4c230bd5bbda9b00ea40b",
+      "checksum": "sha256:dc8a35c3e9757a7ff393c461e9e4baaf5534885e688277f637b2aefa4cfa7d3e",
+      "width": 1500,
+      "height": 1800,
+      "bytes": 683112,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/3-w400.webp",
+          "width": 400,
+          "bytes": 31250
+        },
+        {
+          "path": "projects/nha-vuon-chily/3-w800.webp",
+          "width": 800,
+          "bytes": 123028
+        },
+        {
+          "path": "projects/nha-vuon-chily/3-w1600.webp",
+          "width": 1600,
+          "bytes": 665900
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:45:50.068Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/30.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/30.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/30.jpg",
+      "sourceChecksum": "sha256:f7d09bf58c8d54790972b8f803683f51ece24c474fab610c46e873bc56aa8559",
+      "checksum": "sha256:9398adb1f457176e45c619434523dcc2fb68545bac76bfc022bbf9b0ada793bd",
+      "width": 2200,
+      "height": 1700,
+      "bytes": 309070,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/30-w400.webp",
+          "width": 400,
+          "bytes": 11646
+        },
+        {
+          "path": "projects/nha-vuon-chily/30-w800.webp",
+          "width": 800,
+          "bytes": 37554
+        },
+        {
+          "path": "projects/nha-vuon-chily/30-w1600.webp",
+          "width": 1600,
+          "bytes": 132640
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:45:53.254Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/31.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/31.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/31.jpg",
+      "sourceChecksum": "sha256:6844d64c1c499373ae57d78858efd9d2993e57836b66900e3d412c138641d2ba",
+      "checksum": "sha256:c39e1c68e0e4a9205cf627a444d9d7ea47a8d528b2d98e7c449d55e6ef2a6d3a",
+      "width": 1600,
+      "height": 2000,
+      "bytes": 127614,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/31-w400.webp",
+          "width": 400,
+          "bytes": 15746
+        },
+        {
+          "path": "projects/nha-vuon-chily/31-w800.webp",
+          "width": 800,
+          "bytes": 44782
+        },
+        {
+          "path": "projects/nha-vuon-chily/31-w1600.webp",
+          "width": 1600,
+          "bytes": 115336
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:45:57.621Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/32.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/32.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/32.jpg",
+      "sourceChecksum": "sha256:480a6499a3537cb1b1543d1e324973b5a80335c8e16fc6fdb43936f6a4666a1e",
+      "checksum": "sha256:7d942f4010430c3afecbf2b453e68c5ffe5d006fa5a8932921c2bd68d095c47b",
+      "width": 2000,
+      "height": 1600,
+      "bytes": 631908,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/32-w400.webp",
+          "width": 400,
+          "bytes": 14170
+        },
+        {
+          "path": "projects/nha-vuon-chily/32-w800.webp",
+          "width": 800,
+          "bytes": 51794
+        },
+        {
+          "path": "projects/nha-vuon-chily/32-w1600.webp",
+          "width": 1600,
+          "bytes": 229302
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:46:00.539Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/34.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/34.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/34.jpg",
+      "sourceChecksum": "sha256:6f4b7cad07fb02c155bd2a937523faaf9419d52896cc51ab2efcf45e9f484d25",
+      "checksum": "sha256:9da8cc3363f01f593b01679b63a825d5f170faa3405ac8d919f673049b0de75f",
+      "width": 1600,
+      "height": 2000,
+      "bytes": 597758,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/34-w400.webp",
+          "width": 400,
+          "bytes": 19566
+        },
+        {
+          "path": "projects/nha-vuon-chily/34-w800.webp",
+          "width": 800,
+          "bytes": 88184
+        },
+        {
+          "path": "projects/nha-vuon-chily/34-w1600.webp",
+          "width": 1600,
+          "bytes": 570762
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:46:04.066Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/35.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/35.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/35.jpg",
+      "sourceChecksum": "sha256:9cf28901c3bf0e6b46bf236d541eb8c94fdf4690de3e1c28cc12b2321eaa3648",
+      "checksum": "sha256:ae4825223ea7c64f46e1a5f6b1ea416ae1848e9067480827e14fa4ebf63b5b04",
+      "width": 1600,
+      "height": 2000,
+      "bytes": 628318,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/35-w400.webp",
+          "width": 400,
+          "bytes": 25146
+        },
+        {
+          "path": "projects/nha-vuon-chily/35-w800.webp",
+          "width": 800,
+          "bytes": 102712
+        },
+        {
+          "path": "projects/nha-vuon-chily/35-w1600.webp",
+          "width": 1600,
+          "bytes": 559242
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:46:06.877Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/36.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/36.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/36.jpg",
+      "sourceChecksum": "sha256:fb0a3b940645e856a607392b4967c5968e4fa867cddbcd3ee0422a3e1351c829",
+      "checksum": "sha256:d6381f9f9f5ddf0de9217e3c373e0a86c43b57ed98f02069decd7eaa55c2cad6",
+      "width": 1600,
+      "height": 2000,
+      "bytes": 562394,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/36-w400.webp",
+          "width": 400,
+          "bytes": 16670
+        },
+        {
+          "path": "projects/nha-vuon-chily/36-w800.webp",
+          "width": 800,
+          "bytes": 80536
+        },
+        {
+          "path": "projects/nha-vuon-chily/36-w1600.webp",
+          "width": 1600,
+          "bytes": 505444
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:46:10.909Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/37.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/37.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/37.jpg",
+      "sourceChecksum": "sha256:0beae8130df72782470e41a2c30372896b6ffa165cc8ac1200f3ddf182fd18ba",
+      "checksum": "sha256:5a15539358c251df1efef78b04d4574a06fc8ed13627dd0423e5f8783d9ba57c",
+      "width": 1600,
+      "height": 2000,
+      "bytes": 671604,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/37-w400.webp",
+          "width": 400,
+          "bytes": 27914
+        },
+        {
+          "path": "projects/nha-vuon-chily/37-w800.webp",
+          "width": 800,
+          "bytes": 123476
+        },
+        {
+          "path": "projects/nha-vuon-chily/37-w1600.webp",
+          "width": 1600,
+          "bytes": 614538
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:46:14.016Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/4.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/4.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/4.jpg",
+      "sourceChecksum": "sha256:0555b838df1f05a107526a30db9553ee51f123cb7f245cc0c3b9e22f10947ac9",
+      "checksum": "sha256:772ffb301b1aee66f3a47981b8d9f2912977d4f48f46e9ba452318f9b86bf92a",
+      "width": 1500,
+      "height": 1800,
+      "bytes": 611130,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/4-w400.webp",
+          "width": 400,
+          "bytes": 29608
+        },
+        {
+          "path": "projects/nha-vuon-chily/4-w800.webp",
+          "width": 800,
+          "bytes": 109634
+        },
+        {
+          "path": "projects/nha-vuon-chily/4-w1600.webp",
+          "width": 1600,
+          "bytes": 599998
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:46:17.321Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/5.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/5.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/5.jpg",
+      "sourceChecksum": "sha256:75e43e4ccf811ef877192396642ededcdf2f9e9c7a205a8bb7b9fa51d6057400",
+      "checksum": "sha256:00e2673bcc65aa3b525a428913842b726e446a61d5b089109b44797c451ca2ec",
+      "width": 2200,
+      "height": 1672,
+      "bytes": 895724,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/5-w400.webp",
+          "width": 400,
+          "bytes": 16608
+        },
+        {
+          "path": "projects/nha-vuon-chily/5-w800.webp",
+          "width": 800,
+          "bytes": 55474
+        },
+        {
+          "path": "projects/nha-vuon-chily/5-w1600.webp",
+          "width": 1600,
+          "bytes": 263730
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:46:20.194Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/7.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/7.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/7.jpg",
+      "sourceChecksum": "sha256:b2add2e259114c39e8803356e898d1f3275707bb4e0b05bdf3d4d2eb02a5f689",
+      "checksum": "sha256:09eb5a3df9acfcb3e40bf23323c56c1227a65fb4f5c7cdb14c36ccb437c055ab",
+      "width": 1600,
+      "height": 2000,
+      "bytes": 604598,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/7-w400.webp",
+          "width": 400,
+          "bytes": 24934
+        },
+        {
+          "path": "projects/nha-vuon-chily/7-w800.webp",
+          "width": 800,
+          "bytes": 83630
+        },
+        {
+          "path": "projects/nha-vuon-chily/7-w1600.webp",
+          "width": 1600,
+          "bytes": 527016
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:46:23.374Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/8.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/8.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/8.jpg",
+      "sourceChecksum": "sha256:dd569ee7ed2cf6557e1a0ca737486e532893276afa9cfdcb7b1dbfa03d7d2620",
+      "checksum": "sha256:96b259465d1ca4897b8ada46758ca05914e65b3ecb697f84a5f394f49c01d2e3",
+      "width": 1600,
+      "height": 2000,
+      "bytes": 700964,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/8-w400.webp",
+          "width": 400,
+          "bytes": 23946
+        },
+        {
+          "path": "projects/nha-vuon-chily/8-w800.webp",
+          "width": 800,
+          "bytes": 93838
+        },
+        {
+          "path": "projects/nha-vuon-chily/8-w1600.webp",
+          "width": 1600,
+          "bytes": 655188
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:46:27.460Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-vuon-chily/9.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-vuon-chily",
+      "oldPublicPath": "/images/projects/nha-vuon-chily/9.jpg",
+      "sourceFile": "public/images/projects/nha-vuon-chily/9.jpg",
+      "sourceChecksum": "sha256:a2741cdafd2969565d4f3a32229353103fdc68cbfe9fac20d24f5ad495fa433d",
+      "checksum": "sha256:c6fb395aed9ebe6c44f1d33cf00979c61efc3faa46e87b98bb14d8c0c61503ca",
+      "width": 2000,
+      "height": 2000,
+      "bytes": 909038,
+      "variants": [
+        {
+          "path": "projects/nha-vuon-chily/9-w400.webp",
+          "width": 400,
+          "bytes": 18958
+        },
+        {
+          "path": "projects/nha-vuon-chily/9-w800.webp",
+          "width": 800,
+          "bytes": 65458
+        },
+        {
+          "path": "projects/nha-vuon-chily/9-w1600.webp",
+          "width": 1600,
+          "bytes": 315168
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:46:30.548Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-xuong-anh-cuong/1.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-xuong-anh-cuong",
+      "oldPublicPath": "/images/projects/nha-xuong-anh-cuong/1.png",
+      "sourceFile": "public/images/projects/nha-xuong-anh-cuong/1.png",
+      "sourceChecksum": "sha256:0a653fcf78003f69c28e073a4faef29528cbb7e68a8478781e8554848c482f07",
+      "checksum": "sha256:7668c93561b10052132cf1c6b77d84653fbed45e59d5fffc69b0c1cb740c17f7",
+      "width": 2560,
+      "height": 1600,
+      "bytes": 605926,
+      "variants": [
+        {
+          "path": "projects/nha-xuong-anh-cuong/1-w400.webp",
+          "width": 400,
+          "bytes": 17468
+        },
+        {
+          "path": "projects/nha-xuong-anh-cuong/1-w800.webp",
+          "width": 800,
+          "bytes": 60478
+        },
+        {
+          "path": "projects/nha-xuong-anh-cuong/1-w1600.webp",
+          "width": 1600,
+          "bytes": 218856
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:46:33.293Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-xuong-anh-cuong/2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-xuong-anh-cuong",
+      "oldPublicPath": "/images/projects/nha-xuong-anh-cuong/2.png",
+      "sourceFile": "public/images/projects/nha-xuong-anh-cuong/2.png",
+      "sourceChecksum": "sha256:70e3688a678341d6acaf3955de02699f44889bc5cec6027025e54f109f5ed327",
+      "checksum": "sha256:d6684816138097e58e901ac016b69162aec75c58c8fa665f544505f1761c2264",
+      "width": 2560,
+      "height": 1600,
+      "bytes": 452956,
+      "variants": [
+        {
+          "path": "projects/nha-xuong-anh-cuong/2-w400.webp",
+          "width": 400,
+          "bytes": 11282
+        },
+        {
+          "path": "projects/nha-xuong-anh-cuong/2-w800.webp",
+          "width": 800,
+          "bytes": 40840
+        },
+        {
+          "path": "projects/nha-xuong-anh-cuong/2-w1600.webp",
+          "width": 1600,
+          "bytes": 158432
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:46:36.649Z",
+      "alt": null
+    },
+    {
+      "path": "projects/nha-xuong-anh-cuong/4.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "nha-xuong-anh-cuong",
+      "oldPublicPath": "/images/projects/nha-xuong-anh-cuong/4.png",
+      "sourceFile": "public/images/projects/nha-xuong-anh-cuong/4.png",
+      "sourceChecksum": "sha256:c24485c38dd1deb7cde5ac7839febaa18a9942bb32e25cffb6943a67b0f959a0",
+      "checksum": "sha256:a9366f52a074d97af9f35eeae37732654161ca66221ce0ae0fa03f9bfcf39533",
+      "width": 2560,
+      "height": 942,
+      "bytes": 303660,
+      "variants": [
+        {
+          "path": "projects/nha-xuong-anh-cuong/4-w400.webp",
+          "width": 400,
+          "bytes": 6874
+        },
+        {
+          "path": "projects/nha-xuong-anh-cuong/4-w800.webp",
+          "width": 800,
+          "bytes": 25642
+        },
+        {
+          "path": "projects/nha-xuong-anh-cuong/4-w1600.webp",
+          "width": 1600,
+          "bytes": 101232
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:46:40.337Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-giam-doc/1.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-giam-doc",
+      "oldPublicPath": "/images/projects/phong-giam-doc/1.jpg",
+      "sourceFile": "public/images/projects/phong-giam-doc/1.jpg",
+      "sourceChecksum": "sha256:110efd1eeb3db9b3a685a0320267f5075622148473057bcd6c7fb98a5ae05fab",
+      "checksum": "sha256:dea5586f93eee4d3e3ca9c2097559daea9a0b1ed7bf2db3e0ea7b8752d0b635c",
+      "width": 1900,
+      "height": 1417,
+      "bytes": 153624,
+      "variants": [
+        {
+          "path": "projects/phong-giam-doc/1-w400.webp",
+          "width": 400,
+          "bytes": 9860
+        },
+        {
+          "path": "projects/phong-giam-doc/1-w800.webp",
+          "width": 800,
+          "bytes": 29196
+        },
+        {
+          "path": "projects/phong-giam-doc/1-w1600.webp",
+          "width": 1600,
+          "bytes": 89050
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:46:43.493Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-giam-doc/10.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-giam-doc",
+      "oldPublicPath": "/images/projects/phong-giam-doc/10.jpg",
+      "sourceFile": "public/images/projects/phong-giam-doc/10.jpg",
+      "sourceChecksum": "sha256:fb7de53b2cd761a1b1bc9875ed64a74833fdc8bd09d8220987948fcacbd74218",
+      "checksum": "sha256:0843e5fc3d356b120eee311eb846090c4bf97c8a3939e3a0f5646066882d8f1f",
+      "width": 1831,
+      "height": 1916,
+      "bytes": 94558,
+      "variants": [
+        {
+          "path": "projects/phong-giam-doc/10-w400.webp",
+          "width": 400,
+          "bytes": 8408
+        },
+        {
+          "path": "projects/phong-giam-doc/10-w800.webp",
+          "width": 800,
+          "bytes": 24440
+        },
+        {
+          "path": "projects/phong-giam-doc/10-w1600.webp",
+          "width": 1600,
+          "bytes": 62332
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:46:46.423Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-giam-doc/2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-giam-doc",
+      "oldPublicPath": "/images/projects/phong-giam-doc/2.jpg",
+      "sourceFile": "public/images/projects/phong-giam-doc/2.jpg",
+      "sourceChecksum": "sha256:20737749b150838fa9a487be754aaf070914e163aab6968fe9f1d364e37c7ac8",
+      "checksum": "sha256:4f97e94abb0613465cf3783cfd91f59b14a629a02803253d3a730ede8602ad27",
+      "width": 1900,
+      "height": 1924,
+      "bytes": 208482,
+      "variants": [
+        {
+          "path": "projects/phong-giam-doc/2-w400.webp",
+          "width": 400,
+          "bytes": 13272
+        },
+        {
+          "path": "projects/phong-giam-doc/2-w800.webp",
+          "width": 800,
+          "bytes": 39790
+        },
+        {
+          "path": "projects/phong-giam-doc/2-w1600.webp",
+          "width": 1600,
+          "bytes": 119380
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:46:49.936Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-giam-doc/3.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-giam-doc",
+      "oldPublicPath": "/images/projects/phong-giam-doc/3.jpg",
+      "sourceFile": "public/images/projects/phong-giam-doc/3.jpg",
+      "sourceChecksum": "sha256:f98b55b4d951cd2e69d0cd7c935d94c57eb8114a21c0880d77c82cee4eb39e91",
+      "checksum": "sha256:98e7f88083f0375edb889ae5aaca3a6070295a90eb49cb72567caca1ab8a5f98",
+      "width": 1900,
+      "height": 1427,
+      "bytes": 127270,
+      "variants": [
+        {
+          "path": "projects/phong-giam-doc/3-w400.webp",
+          "width": 400,
+          "bytes": 12004
+        },
+        {
+          "path": "projects/phong-giam-doc/3-w800.webp",
+          "width": 800,
+          "bytes": 33092
+        },
+        {
+          "path": "projects/phong-giam-doc/3-w1600.webp",
+          "width": 1600,
+          "bytes": 80502
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:46:53.649Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-giam-doc/4.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-giam-doc",
+      "oldPublicPath": "/images/projects/phong-giam-doc/4.jpg",
+      "sourceFile": "public/images/projects/phong-giam-doc/4.jpg",
+      "sourceChecksum": "sha256:61e4f4fc75138cf33bd4211e7c343a4deaea1f159f7357002382b57c10606c88",
+      "checksum": "sha256:f8f51bc338c2ad67860941d465061b37a5a85ff770609706486f03e51d0c99fa",
+      "width": 1900,
+      "height": 1425,
+      "bytes": 145290,
+      "variants": [
+        {
+          "path": "projects/phong-giam-doc/4-w400.webp",
+          "width": 400,
+          "bytes": 12624
+        },
+        {
+          "path": "projects/phong-giam-doc/4-w800.webp",
+          "width": 800,
+          "bytes": 33896
+        },
+        {
+          "path": "projects/phong-giam-doc/4-w1600.webp",
+          "width": 1600,
+          "bytes": 87976
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:46:57.313Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-giam-doc/5.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-giam-doc",
+      "oldPublicPath": "/images/projects/phong-giam-doc/5.jpg",
+      "sourceFile": "public/images/projects/phong-giam-doc/5.jpg",
+      "sourceChecksum": "sha256:25b00793977d24c1f528f067c02336800882dc966072905531815cdbf18c9bfe",
+      "checksum": "sha256:fa01034a3ac2342024b558d564444d4a581db69513a7ab00ce15078eb5bd0c8e",
+      "width": 1900,
+      "height": 2097,
+      "bytes": 238096,
+      "variants": [
+        {
+          "path": "projects/phong-giam-doc/5-w400.webp",
+          "width": 400,
+          "bytes": 17196
+        },
+        {
+          "path": "projects/phong-giam-doc/5-w800.webp",
+          "width": 800,
+          "bytes": 48986
+        },
+        {
+          "path": "projects/phong-giam-doc/5-w1600.webp",
+          "width": 1600,
+          "bytes": 138258
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:47:00.161Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-giam-doc/6.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-giam-doc",
+      "oldPublicPath": "/images/projects/phong-giam-doc/6.jpg",
+      "sourceFile": "public/images/projects/phong-giam-doc/6.jpg",
+      "sourceChecksum": "sha256:58c33c597ac672e1b7dd59a41a5e433ff3afd89cfff7aa72303aaddc1d924cd1",
+      "checksum": "sha256:06b4c634b25519c6e6b2754ef2a0e242e309f03f948b1f6c5b6355dfabe0f465",
+      "width": 1900,
+      "height": 2121,
+      "bytes": 164048,
+      "variants": [
+        {
+          "path": "projects/phong-giam-doc/6-w400.webp",
+          "width": 400,
+          "bytes": 11706
+        },
+        {
+          "path": "projects/phong-giam-doc/6-w800.webp",
+          "width": 800,
+          "bytes": 33948
+        },
+        {
+          "path": "projects/phong-giam-doc/6-w1600.webp",
+          "width": 1600,
+          "bytes": 94540
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:47:03.439Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-giam-doc/7.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-giam-doc",
+      "oldPublicPath": "/images/projects/phong-giam-doc/7.jpg",
+      "sourceFile": "public/images/projects/phong-giam-doc/7.jpg",
+      "sourceChecksum": "sha256:0c339445dc7ca9f57b762f108d23a6baeebd1f6b1e1a50c15a796ee14284ee31",
+      "checksum": "sha256:e128813606a3a3de48bd3013dc444125e67ab7a6f34b8e158d90fc608d5ebc34",
+      "width": 1900,
+      "height": 2122,
+      "bytes": 341600,
+      "variants": [
+        {
+          "path": "projects/phong-giam-doc/7-w400.webp",
+          "width": 400,
+          "bytes": 17772
+        },
+        {
+          "path": "projects/phong-giam-doc/7-w800.webp",
+          "width": 800,
+          "bytes": 56454
+        },
+        {
+          "path": "projects/phong-giam-doc/7-w1600.webp",
+          "width": 1600,
+          "bytes": 195392
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:47:06.532Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-giam-doc/8.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-giam-doc",
+      "oldPublicPath": "/images/projects/phong-giam-doc/8.jpg",
+      "sourceFile": "public/images/projects/phong-giam-doc/8.jpg",
+      "sourceChecksum": "sha256:6879023932e0ee730c34fc11c68bed1312a32c14dbe37b7dacd84a872d5b72e5",
+      "checksum": "sha256:c5e92273473a87ec80893ee82d885241bcd4a0e104e455706b2cab84c7c22b49",
+      "width": 1900,
+      "height": 2125,
+      "bytes": 371734,
+      "variants": [
+        {
+          "path": "projects/phong-giam-doc/8-w400.webp",
+          "width": 400,
+          "bytes": 16882
+        },
+        {
+          "path": "projects/phong-giam-doc/8-w800.webp",
+          "width": 800,
+          "bytes": 59098
+        },
+        {
+          "path": "projects/phong-giam-doc/8-w1600.webp",
+          "width": 1600,
+          "bytes": 208644
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:47:09.983Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-giam-doc/9.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-giam-doc",
+      "oldPublicPath": "/images/projects/phong-giam-doc/9.jpg",
+      "sourceFile": "public/images/projects/phong-giam-doc/9.jpg",
+      "sourceChecksum": "sha256:505f9e814b1c4cebeee59bd6592700f8ae68dc184b184e095bbce421a19810fc",
+      "checksum": "sha256:ebdece58412cf4e59a88ad284d64651a3de1d731c53f25a26d6866f22bd97387",
+      "width": 1900,
+      "height": 2113,
+      "bytes": 154272,
+      "variants": [
+        {
+          "path": "projects/phong-giam-doc/9-w400.webp",
+          "width": 400,
+          "bytes": 17120
+        },
+        {
+          "path": "projects/phong-giam-doc/9-w800.webp",
+          "width": 800,
+          "bytes": 44126
+        },
+        {
+          "path": "projects/phong-giam-doc/9-w1600.webp",
+          "width": 1600,
+          "bytes": 101956
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:47:13.306Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-hop-quan-7/p-hop1.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-hop-quan-7",
+      "oldPublicPath": "/images/projects/phong-hop-quan-7/P.HOP1.jpg",
+      "sourceFile": "public/images/projects/phong-hop-quan-7/P.HOP1.jpg",
+      "sourceChecksum": "sha256:f63516a88b318fe1d43c0617d6f04a9531316501f09d482d99241803dfa57247",
+      "checksum": "sha256:68b91cb7e127d866dbc708c77dff45291f32e34993bbf877bbe18ebf1bbaa73c",
+      "width": 1979,
+      "height": 2560,
+      "bytes": 492504,
+      "variants": [
+        {
+          "path": "projects/phong-hop-quan-7/p-hop1-w400.webp",
+          "width": 400,
+          "bytes": 36976
+        },
+        {
+          "path": "projects/phong-hop-quan-7/p-hop1-w800.webp",
+          "width": 800,
+          "bytes": 119282
+        },
+        {
+          "path": "projects/phong-hop-quan-7/p-hop1-w1600.webp",
+          "width": 1600,
+          "bytes": 311968
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:47:16.316Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-hop-quan-7/p-hop2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-hop-quan-7",
+      "oldPublicPath": "/images/projects/phong-hop-quan-7/P.HOP2.jpg",
+      "sourceFile": "public/images/projects/phong-hop-quan-7/P.HOP2.jpg",
+      "sourceChecksum": "sha256:d13d6d603cfcacd813aed6da8805a83fac3d29eceaf4c7a76eb50c5e69583091",
+      "checksum": "sha256:0cb3a6951a7f4f4905e13861797166e2881393f34b58c8e1f3dcac110a23361b",
+      "width": 1979,
+      "height": 2560,
+      "bytes": 444336,
+      "variants": [
+        {
+          "path": "projects/phong-hop-quan-7/p-hop2-w400.webp",
+          "width": 400,
+          "bytes": 33564
+        },
+        {
+          "path": "projects/phong-hop-quan-7/p-hop2-w800.webp",
+          "width": 800,
+          "bytes": 105334
+        },
+        {
+          "path": "projects/phong-hop-quan-7/p-hop2-w1600.webp",
+          "width": 1600,
+          "bytes": 277732
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:47:19.684Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-hop-quan-7/p-hop3.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-hop-quan-7",
+      "oldPublicPath": "/images/projects/phong-hop-quan-7/P.HOP3.jpg",
+      "sourceFile": "public/images/projects/phong-hop-quan-7/P.HOP3.jpg",
+      "sourceChecksum": "sha256:64b2caabd45502168ac1b1edf07df5bbb9f1053d735297c5ce298b239a5b33b4",
+      "checksum": "sha256:0d9fdabe654e6108bf2dba658bc2a6972488f25d9c0e891a824187bec0234d9e",
+      "width": 2560,
+      "height": 1513,
+      "bytes": 327824,
+      "variants": [
+        {
+          "path": "projects/phong-hop-quan-7/p-hop3-w400.webp",
+          "width": 400,
+          "bytes": 15356
+        },
+        {
+          "path": "projects/phong-hop-quan-7/p-hop3-w800.webp",
+          "width": 800,
+          "bytes": 48946
+        },
+        {
+          "path": "projects/phong-hop-quan-7/p-hop3-w1600.webp",
+          "width": 1600,
+          "bytes": 147406
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:47:22.509Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-hop-quan-7/p-hop4.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-hop-quan-7",
+      "oldPublicPath": "/images/projects/phong-hop-quan-7/P.HOP4.jpg",
+      "sourceFile": "public/images/projects/phong-hop-quan-7/P.HOP4.jpg",
+      "sourceChecksum": "sha256:7f1f15d35ed7b12a09287a8e01709c7fa9a7e77477b9564f7fa9ca70fece7dbd",
+      "checksum": "sha256:9ce963b9c80ff1a9f59624af94e9b123662c2204266a6823aba26319cb7695c3",
+      "width": 2200,
+      "height": 1300,
+      "bytes": 362086,
+      "variants": [
+        {
+          "path": "projects/phong-hop-quan-7/p-hop4-w400.webp",
+          "width": 400,
+          "bytes": 14470
+        },
+        {
+          "path": "projects/phong-hop-quan-7/p-hop4-w800.webp",
+          "width": 800,
+          "bytes": 47872
+        },
+        {
+          "path": "projects/phong-hop-quan-7/p-hop4-w1600.webp",
+          "width": 1600,
+          "bytes": 158386
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:47:25.599Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-hop-quan-7/pkd-1.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-hop-quan-7",
+      "oldPublicPath": "/images/projects/phong-hop-quan-7/PKD - 1.jpg",
+      "sourceFile": "public/images/projects/phong-hop-quan-7/PKD - 1.jpg",
+      "sourceChecksum": "sha256:a58b30fa57fb63ef92da841ad5e16afe1496d8aabbedbd0e161c1fc06010e4e4",
+      "checksum": "sha256:7f43490b98c701a7d31bf0bb5c5b041a654df6e99b6ceb64266f36c54535b975",
+      "width": 2560,
+      "height": 1677,
+      "bytes": 393004,
+      "variants": [
+        {
+          "path": "projects/phong-hop-quan-7/pkd-1-w400.webp",
+          "width": 400,
+          "bytes": 16374
+        },
+        {
+          "path": "projects/phong-hop-quan-7/pkd-1-w800.webp",
+          "width": 800,
+          "bytes": 51404
+        },
+        {
+          "path": "projects/phong-hop-quan-7/pkd-1-w1600.webp",
+          "width": 1600,
+          "bytes": 167616
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:47:29.011Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-hop-quan-7/pkd-2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-hop-quan-7",
+      "oldPublicPath": "/images/projects/phong-hop-quan-7/PKD - 2.jpg",
+      "sourceFile": "public/images/projects/phong-hop-quan-7/PKD - 2.jpg",
+      "sourceChecksum": "sha256:1830f5ba7f90abdb5bfc18a13041f83af1918f1203b0372a11fb451eaeccbd61",
+      "checksum": "sha256:1f492ef1299f9ef7a8912a62b2dbafe23e6dc29ce69a3c2956c24970becb4b50",
+      "width": 2560,
+      "height": 1632,
+      "bytes": 261078,
+      "variants": [
+        {
+          "path": "projects/phong-hop-quan-7/pkd-2-w400.webp",
+          "width": 400,
+          "bytes": 10798
+        },
+        {
+          "path": "projects/phong-hop-quan-7/pkd-2-w800.webp",
+          "width": 800,
+          "bytes": 31370
+        },
+        {
+          "path": "projects/phong-hop-quan-7/pkd-2-w1600.webp",
+          "width": 1600,
+          "bytes": 101136
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:47:31.849Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-hop-quan-7/pkd-3.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-hop-quan-7",
+      "oldPublicPath": "/images/projects/phong-hop-quan-7/PKD - 3.jpg",
+      "sourceFile": "public/images/projects/phong-hop-quan-7/PKD - 3.jpg",
+      "sourceChecksum": "sha256:4e5804cd33f9b3b85ac45d3f79b819421a0faee81ebd002de3558035572a917c",
+      "checksum": "sha256:98ac98458a0937cc14e8a2b4330b9fc12bc331bf84a11eeb03640142393f40e2",
+      "width": 2560,
+      "height": 2560,
+      "bytes": 784548,
+      "variants": [
+        {
+          "path": "projects/phong-hop-quan-7/pkd-3-w400.webp",
+          "width": 400,
+          "bytes": 27928
+        },
+        {
+          "path": "projects/phong-hop-quan-7/pkd-3-w800.webp",
+          "width": 800,
+          "bytes": 100054
+        },
+        {
+          "path": "projects/phong-hop-quan-7/pkd-3-w1600.webp",
+          "width": 1600,
+          "bytes": 336574
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:47:35.096Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-hop-quan-7/pkt1-1.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-hop-quan-7",
+      "oldPublicPath": "/images/projects/phong-hop-quan-7/PKT1 - 1.jpg",
+      "sourceFile": "public/images/projects/phong-hop-quan-7/PKT1 - 1.jpg",
+      "sourceChecksum": "sha256:4f04720100b52ddcec46addef49761350bf5fcbe304df87fe587285551d9459a",
+      "checksum": "sha256:f6f10ec800c135d835ab46a10021f9079e25ddc72b88a3a0ba3147ac8892e8d5",
+      "width": 2560,
+      "height": 1609,
+      "bytes": 263684,
+      "variants": [
+        {
+          "path": "projects/phong-hop-quan-7/pkt1-1-w400.webp",
+          "width": 400,
+          "bytes": 12092
+        },
+        {
+          "path": "projects/phong-hop-quan-7/pkt1-1-w800.webp",
+          "width": 800,
+          "bytes": 33326
+        },
+        {
+          "path": "projects/phong-hop-quan-7/pkt1-1-w1600.webp",
+          "width": 1600,
+          "bytes": 99362
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:47:38.236Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-hop-quan-7/pkt1-2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-hop-quan-7",
+      "oldPublicPath": "/images/projects/phong-hop-quan-7/PKT1 - 2.jpg",
+      "sourceFile": "public/images/projects/phong-hop-quan-7/PKT1 - 2.jpg",
+      "sourceChecksum": "sha256:8b515fea303bd0829c1154bb31218c24da34513ce48da49090d0ca9c788ed249",
+      "checksum": "sha256:cdb3a3fa5968173143dfa59c5bbcdd6387a991bd1babcf814e98b0a22c74a201",
+      "width": 1979,
+      "height": 2560,
+      "bytes": 717408,
+      "variants": [
+        {
+          "path": "projects/phong-hop-quan-7/pkt1-2-w400.webp",
+          "width": 400,
+          "bytes": 31916
+        },
+        {
+          "path": "projects/phong-hop-quan-7/pkt1-2-w800.webp",
+          "width": 800,
+          "bytes": 123054
+        },
+        {
+          "path": "projects/phong-hop-quan-7/pkt1-2-w1600.webp",
+          "width": 1600,
+          "bytes": 408552
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:47:41.909Z",
+      "alt": null
+    },
+    {
+      "path": "projects/phong-hop-quan-7/pkt1-3.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "phong-hop-quan-7",
+      "oldPublicPath": "/images/projects/phong-hop-quan-7/PKT1 - 3.jpg",
+      "sourceFile": "public/images/projects/phong-hop-quan-7/PKT1 - 3.jpg",
+      "sourceChecksum": "sha256:548e8884c13d0fc8dd2daca1b4117507f83ee59336d4ed4f69e94dce9437d1e2",
+      "checksum": "sha256:db91cbcb1dde9d5dabdc8864db53d16aae78cf67da564f486e52905def279e4d",
+      "width": 2560,
+      "height": 1746,
+      "bytes": 479412,
+      "variants": [
+        {
+          "path": "projects/phong-hop-quan-7/pkt1-3-w400.webp",
+          "width": 400,
+          "bytes": 15020
+        },
+        {
+          "path": "projects/phong-hop-quan-7/pkt1-3-w800.webp",
+          "width": 800,
+          "bytes": 51250
+        },
+        {
+          "path": "projects/phong-hop-quan-7/pkt1-3-w1600.webp",
+          "width": 1600,
+          "bytes": 183488
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:47:45.502Z",
+      "alt": null
+    },
+    {
+      "path": "projects/van-phong-quan-4/1.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "van-phong-quan-4",
+      "oldPublicPath": "/images/projects/van-phong-quan-4/1.jpg",
+      "sourceFile": "public/images/projects/van-phong-quan-4/1.jpg",
+      "sourceChecksum": "sha256:3f7633fd520e90e10922457ab3c2fff807e267d3a3309e2e9174a907ab3982bc",
+      "checksum": "sha256:26896d595c8840033010f7c92d8603a19643b61ef3f3ddea6e9e875647590ec2",
+      "width": 2560,
+      "height": 2560,
+      "bytes": 522876,
+      "variants": [
+        {
+          "path": "projects/van-phong-quan-4/1-w400.webp",
+          "width": 400,
+          "bytes": 26420
+        },
+        {
+          "path": "projects/van-phong-quan-4/1-w800.webp",
+          "width": 800,
+          "bytes": 85922
+        },
+        {
+          "path": "projects/van-phong-quan-4/1-w1600.webp",
+          "width": 1600,
+          "bytes": 243422
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:47:48.935Z",
+      "alt": null
+    },
+    {
+      "path": "projects/van-phong-quan-4/10.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "van-phong-quan-4",
+      "oldPublicPath": "/images/projects/van-phong-quan-4/10.jpg",
+      "sourceFile": "public/images/projects/van-phong-quan-4/10.jpg",
+      "sourceChecksum": "sha256:c25c0e1669815fbc4e08ee61186563c69249818a14fc77caa78c460c62459654",
+      "checksum": "sha256:4a3e6cf374404e6dac799d82c864d69e93e7d47a8fc83e3ae49458e5d77c58a1",
+      "width": 2560,
+      "height": 1920,
+      "bytes": 472946,
+      "variants": [
+        {
+          "path": "projects/van-phong-quan-4/10-w400.webp",
+          "width": 400,
+          "bytes": 21650
+        },
+        {
+          "path": "projects/van-phong-quan-4/10-w800.webp",
+          "width": 800,
+          "bytes": 70232
+        },
+        {
+          "path": "projects/van-phong-quan-4/10-w1600.webp",
+          "width": 1600,
+          "bytes": 208468
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:47:51.987Z",
+      "alt": null
+    },
+    {
+      "path": "projects/van-phong-quan-4/11.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "van-phong-quan-4",
+      "oldPublicPath": "/images/projects/van-phong-quan-4/11.jpg",
+      "sourceFile": "public/images/projects/van-phong-quan-4/11.jpg",
+      "sourceChecksum": "sha256:20e44a0cf429dd47d662b2bbd9aa6577dd95ee87618bc1843a4d307e136b6d05",
+      "checksum": "sha256:24bd2897979d61f41968a51df7ab2d0ce3ff5143399466e40bca7c05d3e33682",
+      "width": 2286,
+      "height": 2560,
+      "bytes": 707376,
+      "variants": [
+        {
+          "path": "projects/van-phong-quan-4/11-w400.webp",
+          "width": 400,
+          "bytes": 39282
+        },
+        {
+          "path": "projects/van-phong-quan-4/11-w800.webp",
+          "width": 800,
+          "bytes": 125010
+        },
+        {
+          "path": "projects/van-phong-quan-4/11-w1600.webp",
+          "width": 1600,
+          "bytes": 355614
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:47:54.988Z",
+      "alt": null
+    },
+    {
+      "path": "projects/van-phong-quan-4/2.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "van-phong-quan-4",
+      "oldPublicPath": "/images/projects/van-phong-quan-4/2.jpg",
+      "sourceFile": "public/images/projects/van-phong-quan-4/2.jpg",
+      "sourceChecksum": "sha256:d56bb5f0a2a8e86e3ee31f4165433b488612e2154b000b1e4c65c30ab8f70387",
+      "checksum": "sha256:250f384919e2a45c57d63a56f943e1473a7eeb0f81117bcf41c30a81ff1c1234",
+      "width": 2560,
+      "height": 2560,
+      "bytes": 598126,
+      "variants": [
+        {
+          "path": "projects/van-phong-quan-4/2-w400.webp",
+          "width": 400,
+          "bytes": 24010
+        },
+        {
+          "path": "projects/van-phong-quan-4/2-w800.webp",
+          "width": 800,
+          "bytes": 87684
+        },
+        {
+          "path": "projects/van-phong-quan-4/2-w1600.webp",
+          "width": 1600,
+          "bytes": 265308
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:47:58.048Z",
+      "alt": null
+    },
+    {
+      "path": "projects/van-phong-quan-4/5.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "van-phong-quan-4",
+      "oldPublicPath": "/images/projects/van-phong-quan-4/5.jpg",
+      "sourceFile": "public/images/projects/van-phong-quan-4/5.jpg",
+      "sourceChecksum": "sha256:9b6310fc9cf9d93be33dbd61101366af44932be2795abae8addf6f903cdfffab",
+      "checksum": "sha256:fcd0e5ad3b622a2c40e1e68f257f78403d7e54b34e5858d8c8bd94680c74ab42",
+      "width": 2560,
+      "height": 2560,
+      "bytes": 496094,
+      "variants": [
+        {
+          "path": "projects/van-phong-quan-4/5-w400.webp",
+          "width": 400,
+          "bytes": 19872
+        },
+        {
+          "path": "projects/van-phong-quan-4/5-w800.webp",
+          "width": 800,
+          "bytes": 71812
+        },
+        {
+          "path": "projects/van-phong-quan-4/5-w1600.webp",
+          "width": 1600,
+          "bytes": 225170
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:48:01.231Z",
+      "alt": null
+    },
+    {
+      "path": "projects/van-phong-quan-4/6.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "van-phong-quan-4",
+      "oldPublicPath": "/images/projects/van-phong-quan-4/6.jpg",
+      "sourceFile": "public/images/projects/van-phong-quan-4/6.jpg",
+      "sourceChecksum": "sha256:dcf3e2a24670e4721ecfe19f891686b54c2af9401a42d78fe7fcfae7dbdb4761",
+      "checksum": "sha256:0a132a5e6a94793ba1cb5f6e70a956d9835e058ecd9471831bc7db679cd8f3d0",
+      "width": 2560,
+      "height": 2560,
+      "bytes": 383116,
+      "variants": [
+        {
+          "path": "projects/van-phong-quan-4/6-w400.webp",
+          "width": 400,
+          "bytes": 18524
+        },
+        {
+          "path": "projects/van-phong-quan-4/6-w800.webp",
+          "width": 800,
+          "bytes": 61272
+        },
+        {
+          "path": "projects/van-phong-quan-4/6-w1600.webp",
+          "width": 1600,
+          "bytes": 177800
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:48:04.761Z",
+      "alt": null
+    },
+    {
+      "path": "projects/van-phong-quan-4/7.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "van-phong-quan-4",
+      "oldPublicPath": "/images/projects/van-phong-quan-4/7.jpg",
+      "sourceFile": "public/images/projects/van-phong-quan-4/7.jpg",
+      "sourceChecksum": "sha256:bf1f6c79987d1618f68698332b0751f2cea7e3b3a076d6be646f15e74ea0babd",
+      "checksum": "sha256:b292bd5d92c3673cb82b6513a91982883ba841d06aeb61d8254df952aa3fe269",
+      "width": 2560,
+      "height": 2560,
+      "bytes": 148368,
+      "variants": [
+        {
+          "path": "projects/van-phong-quan-4/7-w400.webp",
+          "width": 400,
+          "bytes": 8232
+        },
+        {
+          "path": "projects/van-phong-quan-4/7-w800.webp",
+          "width": 800,
+          "bytes": 23016
+        },
+        {
+          "path": "projects/van-phong-quan-4/7-w1600.webp",
+          "width": 1600,
+          "bytes": 64182
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:48:07.805Z",
+      "alt": null
+    },
+    {
+      "path": "projects/van-phong-quan-4/8.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "van-phong-quan-4",
+      "oldPublicPath": "/images/projects/van-phong-quan-4/8.jpg",
+      "sourceFile": "public/images/projects/van-phong-quan-4/8.jpg",
+      "sourceChecksum": "sha256:6e2b5f57099b07c198b0b66ed65750a2143b277b829fac458ef404123b350947",
+      "checksum": "sha256:c47feebdf4c772ac684acde3d8166e8d45cf8988cf517253c5c5fe0703f83b79",
+      "width": 2560,
+      "height": 2560,
+      "bytes": 160766,
+      "variants": [
+        {
+          "path": "projects/van-phong-quan-4/8-w400.webp",
+          "width": 400,
+          "bytes": 8316
+        },
+        {
+          "path": "projects/van-phong-quan-4/8-w800.webp",
+          "width": 800,
+          "bytes": 24496
+        },
+        {
+          "path": "projects/van-phong-quan-4/8-w1600.webp",
+          "width": 1600,
+          "bytes": 68044
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:48:10.816Z",
+      "alt": null
+    },
+    {
+      "path": "projects/van-phong-quan-4/9.webp",
+      "kind": "raster",
+      "category": "projects",
+      "group": "van-phong-quan-4",
+      "oldPublicPath": "/images/projects/van-phong-quan-4/9.jpg",
+      "sourceFile": "public/images/projects/van-phong-quan-4/9.jpg",
+      "sourceChecksum": "sha256:ed23ed6b34d24c05b90fbf41c01dc1441db656ad4d7b734e1fc61f38dd81697e",
+      "checksum": "sha256:9f079490c60d39ce441b81f9cecfdaa9d536f7c0ed1f4bad58efd230211001eb",
+      "width": 2560,
+      "height": 2560,
+      "bytes": 487192,
+      "variants": [
+        {
+          "path": "projects/van-phong-quan-4/9-w400.webp",
+          "width": 400,
+          "bytes": 18834
+        },
+        {
+          "path": "projects/van-phong-quan-4/9-w800.webp",
+          "width": 800,
+          "bytes": 68414
+        },
+        {
+          "path": "projects/van-phong-quan-4/9-w1600.webp",
+          "width": 1600,
+          "bytes": 210780
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-07-05T09:48:14.335Z",
+      "alt": null
+    }
+  ]
+}

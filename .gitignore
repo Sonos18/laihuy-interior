@@ -22,3 +22,10 @@ logs
 .env
 .env.*
 !.env.example
+
+# Media pipeline staging (sources in, optimized output - never committed)
+media-src
+.media-build
+
+# Image library — served from Supabase Storage; not tracked in git (2GB+)
+public/images/

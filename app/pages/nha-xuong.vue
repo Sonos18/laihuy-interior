@@ -2,14 +2,22 @@
 import { company } from '~/data/company'
 import {
   factoryCapabilities,
-  factoryGallery,
   machinery,
   productionWorkflow,
   qualityControl
 } from '~/data/factory'
+import { siteImages } from '~/data/site-images'
 import { uiText } from '~/data/ui'
+import { workshopMedia } from '~/media/catalog.generated'
+import { withAlt } from '~/media/project-media'
+
+// Business rule: the company/workshop catalog collection powers this page's gallery.
+const workshopImages = workshopMedia.map(asset =>
+  withAlt(asset, { vi: 'Xưởng sản xuất nội thất Lai Huy Interior', en: 'Lai Huy Interior production workshop' })
+)
 
 const { t } = useLanguage()
+const { resolve: mediaUrl } = useMediaUrl()
 
 const seoTitle = computed(() => t(company.seo.factory.title))
 const seoDescription = computed(() => t(company.seo.factory.description))
@@ -19,7 +27,7 @@ useSeoMeta({
   description: seoDescription,
   ogTitle: seoTitle,
   ogDescription: seoDescription,
-  ogImage: company.seo.factory.ogImage
+  ogImage: mediaUrl(company.seo.factory.ogImage.path)
 })
 </script>
 
@@ -30,7 +38,7 @@ useSeoMeta({
       :title="t({ vi: 'Năng lực', en: 'Factory' })"
       :special-title="t({ vi: 'nhà xưởng', en: 'capability' })"
       :subtitle="t({ vi: 'Hệ thống xưởng sản xuất trực tiếp hỗ trợ kiểm soát tiến độ, chất lượng và tính đồng bộ trong từng hạng mục nội thất.', en: 'A direct production system that supports schedule control, quality consistency, and coordinated delivery across interior packages.' })"
-      bg-image="/images/about_workspace.jpg"
+      :image="siteImages.aboutWorkspace"
     />
 
     <section class="section-spacing bg-white">
@@ -154,7 +162,7 @@ useSeoMeta({
     </section>
 
     <section
-      v-if="factoryGallery.length"
+      v-if="workshopImages.length"
       class="section-spacing bg-ink-50"
     >
       <div class="section-shell">
@@ -167,28 +175,13 @@ useSeoMeta({
           </h2>
         </div>
         <div class="grid gap-5 md:grid-cols-3">
-          <article
-            v-for="item in factoryGallery"
-            :key="item.image"
-            class="overflow-hidden rounded-2xl bg-white"
-          >
-            <img
-              :src="item.image"
-              :alt="t(item.title)"
-              class="aspect-[4/3] w-full object-cover"
-            >
-            <div class="border border-t-0 border-ink-200 p-5">
-              <h3 class="font-black text-ink-950">
-                {{ t(item.title) }}
-              </h3>
-              <p
-                v-if="item.description"
-                class="mt-2 text-sm leading-6 text-ink-600"
-              >
-                {{ t(item.description) }}
-              </p>
-            </div>
-          </article>
+          <MediaImage
+            v-for="image in workshopImages"
+            :key="image.path"
+            :image="image"
+            preset="card"
+            class="aspect-[4/3] w-full overflow-hidden rounded-2xl bg-white"
+          />
         </div>
       </div>
     </section>

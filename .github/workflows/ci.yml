@@ -30,5 +30,11 @@ jobs:
       - name: Lint
         run: pnpm run lint
 
+      - name: Media layer guard
+        run: pnpm run lint:media
+
+      - name: Unit tests
+        run: pnpm run test
+
       - name: Typecheck
         run: pnpm run typecheck

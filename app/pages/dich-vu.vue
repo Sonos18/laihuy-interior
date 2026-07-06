@@ -2,8 +2,13 @@
 import { company } from '~/data/company'
 import { services } from '~/data/services'
 import { uiText } from '~/data/ui'
+import { projectMedia } from '~/media/catalog.generated'
+import { withAlt } from '~/media/project-media'
 
 const { t, ta } = useLanguage()
+const { resolve: mediaUrl } = useMediaUrl()
+
+const heroImage = withAlt(projectMedia['codi-boutique-hotel'].cover, '')
 
 const seoTitle = computed(() => t(company.seo.services.title))
 const seoDescription = computed(() => t(company.seo.services.description))
@@ -13,7 +18,7 @@ useSeoMeta({
   description: seoDescription,
   ogTitle: seoTitle,
   ogDescription: seoDescription,
-  ogImage: company.seo.services.ogImage
+  ogImage: mediaUrl(company.seo.services.ogImage.path)
 })
 </script>
 
@@ -24,7 +29,7 @@ useSeoMeta({
       :title="t({ vi: 'Dịch vụ', en: 'Services' })"
       :special-title="t({ vi: 'nội thất dự án', en: 'for project interiors' })"
       :subtitle="t({ vi: 'Thiết kế, sản xuất tại xưởng và thi công nội thất cho khách sạn 3-5 sao, villa, căn hộ, thương mại và đơn hàng gia công.', en: 'Design, factory production, and contracting for 3-5 star hotels, villas, apartments, commercial spaces, and production-from-drawings orders.' })"
-      bg-image="/images/projects/hotel/codi/reception_desk.jpg"
+      :image="heroImage"
     />
 
     <section class="section-spacing bg-white">

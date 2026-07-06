@@ -3,12 +3,24 @@ import { company } from '~/data/company'
 import { factoryCapabilities, machinery, productionWorkflow } from '~/data/factory'
 import { projects } from '~/data/projects'
 import { services } from '~/data/services'
+import { siteImages } from '~/data/site-images'
 import { uiText } from '~/data/ui'
+import { projectMedia } from '~/media/catalog.generated'
+import { getProjectMedia } from '~/media/project-media'
+import type { MediaAsset } from '~/shared/media/types'
+import type { Project } from '~/shared/types/project'
 
 const { t, ta } = useLanguage()
+const { resolve: mediaUrl } = useMediaUrl()
+
+const heroImage = projectMedia['khach-san-eo-gio'].cover
 
 const featuredProjects = computed(() =>
-  projects.filter(project => project.featured).slice(0, 3)
+  projects
+    .filter(project => project.featured)
+    .map(project => ({ project, cover: getProjectMedia(project.mediaId)?.cover }))
+    .filter((entry): entry is { project: Project, cover: MediaAsset } => entry.cover !== undefined)
+    .slice(0, 3)
 )
 
 const heroMetrics = computed(() => [
@@ -26,18 +38,34 @@ useSeoMeta({
   description: seoDescription,
   ogTitle: seoTitle,
   ogDescription: seoDescription,
-  ogImage: company.seo.home.ogImage
+  ogImage: mediaUrl(company.seo.home.ogImage.path)
+})
+
+useHead({
+  link: [
+    {
+      rel: 'preload',
+      as: 'image',
+      href: mediaUrl(heroImage.path, { width: 1600 }),
+      fetchpriority: 'high'
+    }
+  ]
 })
 </script>
 
 <template>
   <div>
     <section class="relative min-h-screen overflow-hidden bg-ink-950 text-white">
-      <img
-        src="/images/projects/hotel/eo_gio/reception.png"
+      <NuxtImg
+        :src="heroImage.path"
         :alt="t({ vi: 'Thi công nội thất khách sạn Lai Huy Interior', en: 'Lai Huy Interior hotel interior contracting' })"
+        :width="heroImage.width"
+        :height="heroImage.height"
+        sizes="sm:100vw md:100vw lg:100vw xl:100vw"
+        loading="eager"
+        fetchpriority="high"
         class="hero-image absolute inset-0 h-full w-full object-cover"
-      >
+      />
       <div class="absolute inset-0 bg-ink-950/78" />
       <div class="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-ink-950 to-transparent" />
 
@@ -195,18 +223,22 @@ useSeoMeta({
 
         <div class="grid gap-6 lg:grid-cols-3">
           <NuxtLink
-            v-for="(project, index) in featuredProjects"
+            v-for="({ project, cover }, index) in featuredProjects"
             :key="project.slug"
             v-reveal="index * 110"
             :to="`/du-an/${project.slug}`"
             class="group reveal block overflow-hidden rounded-2xl bg-white"
           >
             <div class="relative aspect-[4/3] overflow-hidden bg-ink-100">
-              <img
-                :src="project.image[0]"
+              <NuxtImg
+                :src="cover.path"
                 :alt="t(project.name)"
+                :width="cover.width"
+                :height="cover.height"
+                sizes="sm:100vw md:50vw lg:33vw"
+                loading="lazy"
                 class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-              >
+              />
               <div class="absolute left-4 top-4 rounded-full bg-ink-950 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-white">
                 {{ t(project.categoryName) }}
               </div>
@@ -338,11 +370,15 @@ useSeoMeta({
           v-reveal
           class="reveal group overflow-hidden rounded-2xl"
         >
-          <img
-            src="/images/about_workspace.jpg"
-            :alt="t({ vi: 'Không gian làm việc và sản xuất Lai Huy Interior', en: 'Lai Huy Interior workspace and production capability' })"
+          <NuxtImg
+            :src="siteImages.aboutWorkspace.path"
+            :alt="t(siteImages.aboutWorkspace.alt)"
+            :width="siteImages.aboutWorkspace.width"
+            :height="siteImages.aboutWorkspace.height"
+            sizes="sm:100vw lg:50vw"
+            loading="lazy"
             class="aspect-[4/3] w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-          >
+          />
         </div>
         <div>
           <p

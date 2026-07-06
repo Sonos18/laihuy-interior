@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { company } from '~/data/company'
 import { projects } from '~/data/projects'
+import { siteImages } from '~/data/site-images'
 import { uiText } from '~/data/ui'
+import { projectCover, projectImages } from '~/media/project-media'
+import type { MediaImage } from '~/shared/media/types'
 import type { Project } from '~/shared/types/project'
 
 type Fact = {
@@ -11,6 +14,7 @@ type Fact = {
 }
 
 const { t, ta } = useLanguage()
+const { resolve: mediaUrl } = useMediaUrl()
 const route = useRoute()
 const slug = Array.isArray(route.params.slug)
   ? route.params.slug[0]
@@ -18,12 +22,10 @@ const slug = Array.isArray(route.params.slug)
 
 const project = projects.find(item => item.slug === slug)
 
-const getProjectImage = (item?: Project) =>
-  item?.image[0] ?? item?.gallery[0] ?? '/images/banner_home.jpg'
+const getProjectImage = (item?: Project): MediaImage =>
+  projectCover(item?.mediaId, item?.name ?? '') ?? siteImages.bannerHome
 
-const allImages = project
-  ? [...new Set([...project.image, ...project.gallery])]
-  : []
+const allImages: MediaImage[] = projectImages(project?.mediaId, project?.name ?? '')
 
 const facts = computed<Fact[]>(() => {
   if (!project) {
@@ -116,7 +118,7 @@ useSeoMeta({
   description: seoDescription,
   ogTitle: computed(() => project ? `${t(project.name)} | Lai Huy Interior` : t(company.seo.projects.title)),
   ogDescription: seoDescription,
-  ogImage: computed(() => getProjectImage(project))
+  ogImage: computed(() => mediaUrl(getProjectImage(project).path))
 })
 </script>
 
@@ -146,11 +148,16 @@ useSeoMeta({
 
     <template v-else>
       <section class="relative min-h-screen overflow-hidden bg-ink-950 text-white">
-        <img
-          :src="getProjectImage(project)"
+        <NuxtImg
+          :src="getProjectImage(project).path"
           :alt="t(project.name)"
+          :width="getProjectImage(project).width"
+          :height="getProjectImage(project).height"
+          sizes="sm:100vw md:100vw lg:100vw xl:100vw"
+          loading="eager"
+          fetchpriority="high"
           class="absolute inset-0 h-full w-full object-cover"
-        >
+        />
         <div class="absolute inset-0 bg-ink-950/72" />
         <div class="absolute inset-x-0 bottom-0 h-52 bg-linear-to-t from-ink-950 to-transparent" />
 
@@ -341,16 +348,17 @@ useSeoMeta({
           </div>
 
           <div class="grid gap-5 md:grid-cols-2">
-            <img
+            <MediaImage
               v-for="(image, index) in allImages"
-              :key="image"
-              :src="image"
-              :alt="`${t(project.name)} - ${t(uiText.labels.completedImages)} ${Number(index) + 1}`"
+              :key="image.path"
+              :image="image"
+              preset="gallery"
               :class="[
-                'w-full rounded-2xl object-cover',
+                'w-full rounded-2xl',
                 index === 0 ? 'aspect-[16/9] md:col-span-2' : 'aspect-[4/3]'
               ]"
-            >
+              img-class="rounded-2xl"
+            />
           </div>
         </div>
       </section>
@@ -411,11 +419,15 @@ useSeoMeta({
               :to="`/du-an/${item.slug}`"
               class="group block overflow-hidden rounded-2xl bg-white"
             >
-              <img
-                :src="getProjectImage(item)"
+              <NuxtImg
+                :src="getProjectImage(item).path"
                 :alt="t(item.name)"
+                :width="getProjectImage(item).width"
+                :height="getProjectImage(item).height"
+                sizes="sm:100vw md:33vw"
+                loading="lazy"
                 class="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
-              >
+              />
               <div class="border border-t-0 border-ink-200 p-5">
                 <span class="text-xs font-bold uppercase tracking-[0.16em] text-wood-600">
                   {{ t(item.categoryName) }}

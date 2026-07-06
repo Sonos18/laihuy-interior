@@ -8,11 +8,19 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
+    "lint:media": "node scripts/check-media-literals.mjs",
+    "media:scan": "tsx scripts/media/scan.ts",
+    "media:catalog": "tsx scripts/media/catalog.ts",
+    "media:optimize": "tsx scripts/media/optimize.ts",
+    "media:upload": "tsx scripts/media/upload.ts",
+    "media:verify": "tsx scripts/media/verify.ts",
+    "test": "vitest run",
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.90",
     "@iconify-json/simple-icons": "^1.2.70",
+    "@nuxt/image": "^2.0.0",
     "@nuxt/ui": "^4.4.0",
     "@nuxtjs/device": "4.0.0",
     "motion": "^12.38.0",
@@ -21,9 +29,19 @@
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.15.1",
+    "@supabase/supabase-js": "^2.49.0",
+    "@types/node": "^26.1.0",
     "eslint": "^9.39.4",
+    "sharp": "^0.34.5",
+    "tsx": "^4.19.0",
     "typescript": "^5.9.3",
+    "vitest": "^4.1.9",
     "vue-tsc": "^3.2.4"
   },
-  "packageManager": "pnpm@10.29.3"
+  "packageManager": "pnpm@10.29.3",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp"
+    ]
+  }
 }
