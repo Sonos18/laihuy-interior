@@ -192,6 +192,14 @@
     background-size: 100% 1.5px;
   }
 
+  /* Consistent, on-brand keyboard focus indicator for all interactive elements.
+     Wood-500 clears WCAG 2.4.11 (>= 3:1) against both the light and dark surfaces
+     used across the site. */
+  :focus-visible {
+    outline: 2px solid var(--color-wood-500);
+    outline-offset: 2px;
+  }
+
   /* Scroll-reveal — default (no-JS / SSR) state is fully visible.
      The hidden state only applies once the client adds `reveal-ready`. */
   html.reveal-ready .reveal {
