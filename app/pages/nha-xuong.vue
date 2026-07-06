@@ -175,15 +175,7 @@ useSeoMeta({
             {{ t({ vi: 'Hình ảnh nhà xưởng', en: 'Factory images' }) }}
           </h2>
         </div>
-        <div class="grid gap-5 md:grid-cols-3">
-          <MediaImage
-            v-for="image in workshopImages"
-            :key="image.path"
-            :image="image"
-            preset="card"
-            class="aspect-[4/3] w-full overflow-hidden rounded-2xl bg-white"
-          />
-        </div>
+        <AppGalleryGrid :images="workshopImages" />
       </div>
     </section>
 
