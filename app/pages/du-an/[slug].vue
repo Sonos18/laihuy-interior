@@ -3,7 +3,7 @@ import { company } from '~/data/company'
 import { projects } from '~/data/projects'
 import { siteImages } from '~/data/site-images'
 import { uiText } from '~/data/ui'
-import { projectCover, projectImages } from '~/media/project-media'
+import { getProjectMedia, projectCover, projectImages } from '~/media/project-media'
 import type { MediaImage } from '~/shared/media/types'
 import type { Project } from '~/shared/types/project'
 
@@ -96,7 +96,7 @@ const facts = computed<Fact[]>(() => {
   ].filter((item): item is Fact => Boolean(item))
 })
 
-const relatedProjects = project
+const relatedCandidates = project
   ? projects
       .filter(item => item.slug !== project.slug)
       .sort((first, second) => {
@@ -105,8 +105,14 @@ const relatedProjects = project
 
         return firstScore - secondScore
       })
-      .slice(0, 3)
+      .map(item => ({ item, cover: getProjectMedia(item.mediaId)?.cover }))
   : []
+
+// Projects with real cover imagery lead; those still awaiting media follow.
+const relatedProjects = [
+  ...relatedCandidates.filter(entry => entry.cover),
+  ...relatedCandidates.filter(entry => !entry.cover)
+].slice(0, 3)
 
 const seoTitle = computed(() =>
   project
@@ -337,7 +343,10 @@ useSeoMeta({
         </div>
       </section>
 
-      <section class="section-spacing bg-white">
+      <section
+        v-if="allImages.length"
+        class="section-spacing bg-white"
+      >
         <div class="section-shell">
           <div class="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
@@ -423,21 +432,22 @@ useSeoMeta({
 
           <div class="grid gap-6 md:grid-cols-3">
             <NuxtLink
-              v-for="item in relatedProjects"
+              v-for="{ item, cover } in relatedProjects"
               :key="item.slug"
               :to="`/du-an/${item.slug}`"
               class="group block overflow-hidden rounded-2xl bg-white"
             >
               <NuxtImg
-                :src="getProjectImage(item).path"
+                v-if="cover"
+                :src="cover.path"
                 :alt="t(item.name)"
-                :width="getProjectImage(item).width"
-                :height="getProjectImage(item).height"
+                :width="cover.width"
+                :height="cover.height"
                 sizes="sm:100vw md:33vw"
                 loading="lazy"
                 class="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
               />
-              <div class="border border-t-0 border-ink-200 p-5">
+              <div :class="['border border-ink-200 p-5', cover ? 'border-t-0' : '']">
                 <span class="text-xs font-bold uppercase tracking-[0.16em] text-wood-600">
                   {{ t(item.categoryName) }}
                 </span>

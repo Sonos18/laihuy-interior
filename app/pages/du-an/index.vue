@@ -131,9 +131,11 @@ useSeoMeta({
             :to="`/du-an/${project.slug}`"
             class="group block overflow-hidden rounded-2xl bg-white"
           >
-            <div class="relative aspect-[4/3] overflow-hidden bg-ink-100">
+            <div
+              v-if="cover"
+              class="relative aspect-[4/3] overflow-hidden bg-ink-100"
+            >
               <NuxtImg
-                v-if="cover"
                 :src="cover.path"
                 :alt="t(project.name)"
                 :width="cover.width"
@@ -146,10 +148,16 @@ useSeoMeta({
                 {{ t(project.categoryName) }}
               </div>
             </div>
-            <div class="border border-t-0 border-ink-200 p-6">
+            <div :class="['border border-ink-200 p-6', cover ? 'border-t-0' : '']">
               <div class="mb-4 inline-flex rounded-full border border-ink-200 px-3 py-2 text-xs font-bold text-wood-700">
                 {{ getProjectMetric(project) }}
               </div>
+              <p
+                v-if="!cover"
+                class="eyebrow mb-3"
+              >
+                {{ t(project.categoryName) }}
+              </p>
               <h2 class="text-2xl font-black leading-tight text-ink-950">
                 {{ t(project.name) }}
               </h2>
