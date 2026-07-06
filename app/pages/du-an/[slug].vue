@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { company } from '~/data/company'
+import { categoryDefinitions } from '~/data/categories'
 import { projects } from '~/data/projects'
 import { siteImages } from '~/data/site-images'
 import { uiText } from '~/data/ui'
-import { projectCover, projectImages } from '~/media/project-media'
+import { projectCover, projectCoverAsset, projectImages } from '~/media/project-media'
 import type { MediaImage } from '~/shared/media/types'
-import type { Project } from '~/shared/types/project'
 
 type Fact = {
   label: string
@@ -22,10 +22,18 @@ const slug = Array.isArray(route.params.slug)
 
 const project = projects.find(item => item.slug === slug)
 
-const getProjectImage = (item?: Project): MediaImage =>
-  projectCover(item?.mediaId, item?.name ?? '') ?? siteImages.bannerHome
+// Hero / OG cover, honouring the project's optional cover override.
+const heroImage = computed<MediaImage>(() =>
+  projectCover(project?.mediaId, project?.name ?? '', project?.coverImage) ?? siteImages.bannerHome
+)
 
 const allImages: MediaImage[] = projectImages(project?.mediaId, project?.name ?? '')
+
+// The cover opens the gallery as a full-width lead at its natural ratio; the rest
+// flow into the aspect-aware masonry. `leadImage` is undefined for projects with
+// no media, so the lead is guarded to preserve the existing no-image behaviour.
+const leadImage = allImages[0]
+const galleryImages = allImages.slice(1)
 
 const facts = computed<Fact[]>(() => {
   if (!project) {
@@ -35,62 +43,28 @@ const facts = computed<Fact[]>(() => {
   return [
     {
       label: t(uiText.projectFacts.category),
-      value: t(project.categoryName),
+      value: t(categoryDefinitions[project.category].label),
       icon: 'i-lucide-tag'
     },
     project.location
-      ? {
-          label: t(uiText.projectFacts.location),
-          value: t(project.location),
-          icon: 'i-lucide-map-pin'
-        }
+      ? { label: t(uiText.projectFacts.location), value: t(project.location), icon: 'i-lucide-map-pin' }
       : null,
     project.area
-      ? {
-          label: t(uiText.projectFacts.scale),
-          value: t(project.area),
-          icon: 'i-lucide-ruler'
-        }
-      : null,
-    project.rooms
-      ? {
-          label: t(uiText.projectFacts.rooms),
-          value: t(project.rooms),
-          icon: 'i-lucide-bed-double'
-        }
-      : null,
-    project.duration
-      ? {
-          label: t(uiText.projectFacts.duration),
-          value: t(project.duration),
-          icon: 'i-lucide-calendar-clock'
-        }
+      ? { label: t(uiText.projectFacts.scale), value: t(project.area), icon: 'i-lucide-ruler' }
       : null,
     project.year
-      ? {
-          label: t(uiText.projectFacts.year),
-          value: t(project.year),
-          icon: 'i-lucide-calendar'
-        }
+      ? { label: t(uiText.projectFacts.year), value: t(project.year), icon: 'i-lucide-calendar' }
+      : null,
+    project.style
+      ? { label: t({ vi: 'Phong cách', en: 'Style' }), value: t(project.style), icon: 'i-lucide-palette' }
       : null,
     ta(project.scope).length
-      ? {
-          label: t(uiText.projectFacts.scope),
-          value: ta(project.scope).join(', '),
-          icon: 'i-lucide-list-checks'
-        }
-      : null,
-    ta(project.materials).length
-      ? {
-          label: t(uiText.projectFacts.materials),
-          value: ta(project.materials).join(', '),
-          icon: 'i-lucide-layers-3'
-        }
+      ? { label: t(uiText.projectFacts.scope), value: ta(project.scope).join(', '), icon: 'i-lucide-list-checks' }
       : null
   ].filter((item): item is Fact => Boolean(item))
 })
 
-const relatedProjects = project
+const relatedCandidates = project
   ? projects
       .filter(item => item.slug !== project.slug)
       .sort((first, second) => {
@@ -99,26 +73,31 @@ const relatedProjects = project
 
         return firstScore - secondScore
       })
-      .slice(0, 3)
+      .map(item => ({ item, cover: projectCoverAsset(item.mediaId, item.coverImage) }))
   : []
 
+const relatedProjects = relatedCandidates.slice(0, 3)
+
+const seoName = computed(() => t(project?.seo?.title ?? project?.name))
 const seoTitle = computed(() =>
   project
-    ? `${t(project.name)} | ${t({ vi: 'Case study nội thất dự án', en: 'Interior project case study' })} | Lai Huy Interior`
+    ? `${seoName.value} | ${t({ vi: 'Dự án nội thất', en: 'Interior project' })} | Lai Huy Interior`
     : t(company.seo.projects.title)
 )
 const seoDescription = computed(() =>
   project
-    ? t(project.content?.overview) || t(project.shortDescription)
+    ? t(project.seo?.description) || t(project.content?.overview) || t(project.shortDescription)
     : t(company.seo.projects.description)
 )
+const seoKeywords = computed(() => (project ? ta(project.seo?.keywords).join(', ') : ''))
 
 useSeoMeta({
   title: seoTitle,
   description: seoDescription,
-  ogTitle: computed(() => project ? `${t(project.name)} | Lai Huy Interior` : t(company.seo.projects.title)),
+  keywords: seoKeywords,
+  ogTitle: computed(() => (project ? `${seoName.value} | Lai Huy Interior` : t(company.seo.projects.title))),
   ogDescription: seoDescription,
-  ogImage: computed(() => mediaUrl(getProjectImage(project).path))
+  ogImage: computed(() => mediaUrl(heroImage.value.path))
 })
 </script>
 
@@ -149,10 +128,10 @@ useSeoMeta({
     <template v-else>
       <section class="relative min-h-screen overflow-hidden bg-ink-950 text-white">
         <NuxtImg
-          :src="getProjectImage(project).path"
+          :src="heroImage.path"
           :alt="t(project.name)"
-          :width="getProjectImage(project).width"
-          :height="getProjectImage(project).height"
+          :width="heroImage.width"
+          :height="heroImage.height"
           sizes="sm:100vw md:100vw lg:100vw xl:100vw"
           loading="eager"
           fetchpriority="high"
@@ -174,7 +153,7 @@ useSeoMeta({
           </NuxtLink>
 
           <p class="eyebrow mb-5 text-wood-300">
-            {{ t(project.categoryName) }} case study
+            {{ t(categoryDefinitions[project.category].label) }}
           </p>
           <h1 class="max-w-5xl text-4xl font-black uppercase leading-tight md:text-6xl lg:text-7xl">
             {{ t(project.name) }}
@@ -221,20 +200,18 @@ useSeoMeta({
         </div>
       </section>
 
-      <section class="section-spacing bg-white">
+      <section
+        v-if="project.content?.overview"
+        class="section-spacing bg-white"
+      >
         <div class="section-shell grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
           <div>
             <p class="eyebrow">
               {{ t(uiText.labels.overview) }}
             </p>
-            <h2 class="mt-4 text-3xl font-black uppercase leading-tight text-ink-950 md:text-5xl">
-              {{ t({ vi: 'Dự án được nhìn như một bài toán vận hành, tiến độ và chất lượng', en: 'A project viewed through operations, schedule, and quality control' }) }}
-            </h2>
           </div>
           <div class="space-y-6 text-lg leading-9 text-ink-600">
-            <p>
-              {{ t(project.content?.overview) || ta(project.description).join(' ') }}
-            </p>
+            <p>{{ t(project.content.overview) }}</p>
             <p
               v-if="project.content?.challenge"
               class="border-l-4 border-wood-500 pl-6 text-ink-800"
@@ -246,53 +223,26 @@ useSeoMeta({
         </div>
       </section>
 
-      <section class="section-spacing bg-ink-50">
+      <section
+        v-if="project.content?.solution || ta(project.content?.designHighlights).length"
+        class="section-spacing bg-ink-50"
+      >
         <div class="section-shell grid gap-10 lg:grid-cols-2">
-          <div>
-            <p class="eyebrow">
-              {{ t(uiText.labels.scope) }}
-            </p>
-            <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
-              {{ t({ vi: 'Từ thiết kế đến sản xuất và thi công', en: 'From design to production and contracting' }) }}
-            </h2>
-            <div
-              v-if="ta(project.scope).length"
-              class="mt-8 grid gap-3"
-            >
-              <div
-                v-for="(scope, index) in ta(project.scope)"
-                :key="scope"
-                class="flex gap-4 rounded-2xl border border-ink-200 bg-white p-5"
-              >
-                <span class="font-black text-wood-600">
-                  {{ String(Number(index) + 1).padStart(2, '0') }}
-                </span>
-                <span class="font-bold text-ink-800">
-                  {{ scope }}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div>
+          <div v-if="project.content?.solution">
             <p class="eyebrow">
               {{ t(uiText.labels.solution) }}
             </p>
-            <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
-              {{ t({ vi: 'Kiểm soát đồng bộ giữa xưởng và công trình', en: 'Keeping factory and site execution aligned' }) }}
-            </h2>
-            <p
-              v-if="project.content?.solution"
-              class="mt-6 text-lg leading-8 text-ink-600"
-            >
+            <p class="mt-6 text-lg leading-8 text-ink-600">
               {{ t(project.content.solution) }}
             </p>
-            <div
-              v-if="ta(project.content?.highlights).length"
-              class="mt-8 space-y-4"
-            >
+          </div>
+          <div v-if="ta(project.content?.designHighlights).length">
+            <p class="eyebrow">
+              {{ t({ vi: 'Điểm nhấn thiết kế', en: 'Design highlights' }) }}
+            </p>
+            <div class="mt-6 space-y-4">
               <div
-                v-for="highlight in ta(project.content?.highlights)"
+                v-for="highlight in ta(project.content?.designHighlights)"
                 :key="highlight"
                 class="border-b border-ink-200 pb-4 text-base font-semibold leading-7 text-ink-800"
               >
@@ -310,10 +260,10 @@ useSeoMeta({
         <div class="section-shell">
           <div class="mb-10 max-w-3xl">
             <p class="eyebrow text-wood-300">
-              {{ t({ vi: 'Vật liệu & tiêu chuẩn', en: 'Materials and standards' }) }}
+              {{ t({ vi: 'Vật liệu & hoàn thiện', en: 'Materials and finishes' }) }}
             </p>
             <h2 class="mt-4 text-3xl font-black uppercase leading-tight md:text-5xl">
-              {{ t({ vi: 'Chọn vật liệu theo độ bền, khả năng bảo trì và hình ảnh thương hiệu', en: 'Materials selected for durability, maintenance, and brand experience' }) }}
+              {{ t({ vi: 'Bảng vật liệu định hình cảm giác không gian', en: 'The material palette that shapes the space' }) }}
             </h2>
           </div>
           <div class="grid gap-4 md:grid-cols-2">
@@ -331,7 +281,42 @@ useSeoMeta({
         </div>
       </section>
 
-      <section class="section-spacing bg-white">
+      <section
+        v-if="project.content?.craftsmanship"
+        class="section-spacing bg-white"
+      >
+        <div class="section-shell grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+          <div>
+            <p class="eyebrow">
+              {{ t({ vi: 'Sản xuất & thi công', en: 'Craftsmanship' }) }}
+            </p>
+          </div>
+          <div class="text-lg leading-9 text-ink-600">
+            <p>{{ t(project.content.craftsmanship) }}</p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        v-if="project.content?.experience"
+        class="section-spacing bg-ink-50"
+      >
+        <div class="section-shell grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+          <div>
+            <p class="eyebrow">
+              {{ t({ vi: 'Trải nghiệm', en: 'Experience' }) }}
+            </p>
+          </div>
+          <div class="text-lg leading-9 text-ink-600">
+            <p>{{ t(project.content.experience) }}</p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        v-if="allImages.length"
+        class="section-spacing bg-white"
+      >
         <div class="section-shell">
           <div class="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
@@ -347,19 +332,22 @@ useSeoMeta({
             </p>
           </div>
 
-          <div class="grid gap-5 md:grid-cols-2">
+          <div
+            v-if="leadImage"
+            class="w-full"
+            :style="{ aspectRatio: `${leadImage.width} / ${leadImage.height}` }"
+          >
             <MediaImage
-              v-for="(image, index) in allImages"
-              :key="image.path"
-              :image="image"
-              preset="gallery"
-              :class="[
-                'w-full rounded-2xl',
-                index === 0 ? 'aspect-[16/9] md:col-span-2' : 'aspect-[4/3]'
-              ]"
+              :image="leadImage"
+              preset="full"
+              class="h-full w-full rounded-2xl"
               img-class="rounded-2xl"
             />
           </div>
+          <AppGalleryGrid
+            :images="galleryImages"
+            class="mt-5"
+          />
         </div>
       </section>
 
@@ -367,10 +355,10 @@ useSeoMeta({
         <div class="section-shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
           <div>
             <p class="eyebrow text-wood-300">
-              {{ t(uiText.cta.hotelConsult) }}
+              {{ t({ vi: 'Hợp tác cùng Lai Huy', en: 'Work with Lai Huy' }) }}
             </p>
             <h2 class="mt-4 max-w-3xl text-3xl font-black uppercase md:text-5xl">
-              {{ t({ vi: 'Bạn cần tư vấn giải pháp thi công nội thất khách sạn?', en: 'Need consultation for a hotel interior project?' }) }}
+              {{ t({ vi: 'Bạn có một dự án cần thiết kế và thi công?', en: 'Have a project you’d like to design and build?' }) }}
             </h2>
           </div>
           <div class="flex flex-col gap-3 sm:flex-row md:flex-col">
@@ -414,23 +402,24 @@ useSeoMeta({
 
           <div class="grid gap-6 md:grid-cols-3">
             <NuxtLink
-              v-for="item in relatedProjects"
+              v-for="{ item, cover } in relatedProjects"
               :key="item.slug"
               :to="`/du-an/${item.slug}`"
               class="group block overflow-hidden rounded-2xl bg-white"
             >
               <NuxtImg
-                :src="getProjectImage(item).path"
+                v-if="cover"
+                :src="cover.path"
                 :alt="t(item.name)"
-                :width="getProjectImage(item).width"
-                :height="getProjectImage(item).height"
+                :width="cover.width"
+                :height="cover.height"
                 sizes="sm:100vw md:33vw"
                 loading="lazy"
                 class="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
               />
-              <div class="border border-t-0 border-ink-200 p-5">
+              <div :class="['border border-ink-200 p-5', cover ? 'border-t-0' : '']">
                 <span class="text-xs font-bold uppercase tracking-[0.16em] text-wood-600">
-                  {{ t(item.categoryName) }}
+                  {{ t(categoryDefinitions[item.category].label) }}
                 </span>
                 <h3 class="mt-3 text-xl font-black text-ink-950">
                   {{ t(item.name) }}

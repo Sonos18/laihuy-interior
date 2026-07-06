@@ -1,87 +1,47 @@
 <script setup lang="ts">
 import { company } from '~/data/company'
+import { categoryDefinitions, orderedCategories } from '~/data/categories'
 import { projects } from '~/data/projects'
 import { uiText } from '~/data/ui'
 import { projectMedia } from '~/media/catalog.generated'
-import { getProjectMedia, withAlt } from '~/media/project-media'
-import type { Project, ProjectSegment } from '~/shared/types/project'
+import { projectCoverAsset, withAlt } from '~/media/project-media'
+import type { LocalizedText } from '~/shared/types/localization'
+import type { Project, ProjectCategory } from '~/shared/types/project'
 
 const { t, ta } = useLanguage()
 const { resolve: mediaUrl } = useMediaUrl()
 
-const heroImage = withAlt(projectMedia['khach-san-eo-gio'].cover, '')
+const heroImage = withAlt(projectMedia['codi-villa-phan-thiet'].cover, '')
 
-type CategoryOption = {
-  value: 'all' | ProjectSegment | 'townhouse'
-  label: {
-    vi: string
-    en: string
-  }
-}
+type CategoryFilter = 'all' | ProjectCategory
 
-const selectedCategory = ref<CategoryOption['value']>('all')
+const selectedCategory = ref<CategoryFilter>('all')
 
-const categoryOptions: CategoryOption[] = [
+// Filter options derive from the category source of truth. Only categories with
+// at least one project appear, preceded by an "All" entry.
+const categories = computed<{ value: CategoryFilter, label: LocalizedText }[]>(() => [
   { value: 'all', label: { vi: 'Tất cả', en: 'All' } },
-  { value: 'hotel', label: { vi: 'Khách sạn', en: 'Hotels' } },
-  { value: 'commercial', label: { vi: 'Thương mại', en: 'Commercial' } },
-  { value: 'villa', label: { vi: 'Villa', en: 'Villas' } },
-  { value: 'apartment', label: { vi: 'Căn hộ', en: 'Apartments' } },
-  { value: 'townhouse', label: { vi: 'Nhà phố', en: 'Townhouses' } },
-  { value: 'other', label: { vi: 'Khác', en: 'Other' } }
-]
-
-const segmentPriority: Record<string, number> = {
-  hotel: 0,
-  commercial: 1,
-  office: 1,
-  villa: 2,
-  apartment: 3,
-  house: 4,
-  townhouse: 4,
-  other: 5
-}
-
-const projectMatchesCategory = (project: Project, category: CategoryOption['value']) => {
-  if (category === 'all') {
-    return true
-  }
-
-  if (category === 'townhouse') {
-    return project.segment === 'house'
-  }
-
-  if (category === 'commercial') {
-    return project.segment === 'commercial' || project.segment === 'office'
-  }
-
-  return project.segment === category
-}
-
-const categories = computed(() =>
-  categoryOptions.filter(option =>
-    option.value === 'all' || projects.some(project => projectMatchesCategory(project, option.value))
-  )
-)
+  ...orderedCategories
+    .filter(category => projects.some(project => project.category === category))
+    .map(category => ({ value: category, label: categoryDefinitions[category].label }))
+])
 
 const sortedProjects = computed(() =>
   [...projects].sort((first, second) =>
-    (segmentPriority[first.segment ?? 'other'] ?? 5) - (segmentPriority[second.segment ?? 'other'] ?? 5)
+    categoryDefinitions[first.category].order - categoryDefinitions[second.category].order
   )
 )
 
 const filteredProjects = computed(() =>
   sortedProjects.value
-    .filter(project => projectMatchesCategory(project, selectedCategory.value))
-    .map(project => ({ project, cover: getProjectMedia(project.mediaId)?.cover }))
+    .filter(project => selectedCategory.value === 'all' || project.category === selectedCategory.value)
+    .map(project => ({ project, cover: projectCoverAsset(project.mediaId, project.coverImage) }))
 )
 
 const getProjectMetric = (project: Project) =>
-  t(project.rooms)
-  || t(project.duration)
-  || t(project.area)
+  t(project.area)
   || ta(project.scope)[0]
-  || t(uiText.projectFacts.fallbackMetric)
+  || t(categoryDefinitions[project.category].label)
 
 const seoTitle = computed(() => t(company.seo.projects.title))
 const seoDescription = computed(() => t(company.seo.projects.description))
@@ -127,13 +87,15 @@ useSeoMeta({
         <div class="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
           <NuxtLink
             v-for="{ project, cover } in filteredProjects"
-            :key="project.id"
+            :key="project.slug"
             :to="`/du-an/${project.slug}`"
             class="group block overflow-hidden rounded-2xl bg-white"
           >
-            <div class="relative aspect-[4/3] overflow-hidden bg-ink-100">
+            <div
+              v-if="cover"
+              class="relative aspect-[4/3] overflow-hidden bg-ink-100"
+            >
               <NuxtImg
-                v-if="cover"
                 :src="cover.path"
                 :alt="t(project.name)"
                 :width="cover.width"
@@ -143,13 +105,19 @@ useSeoMeta({
                 class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div class="absolute left-4 top-4 rounded-full bg-ink-950 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-white">
-                {{ t(project.categoryName) }}
+                {{ t(categoryDefinitions[project.category].label) }}
               </div>
             </div>
-            <div class="border border-t-0 border-ink-200 p-6">
+            <div :class="['border border-ink-200 p-6', cover ? 'border-t-0' : '']">
               <div class="mb-4 inline-flex rounded-full border border-ink-200 px-3 py-2 text-xs font-bold text-wood-700">
                 {{ getProjectMetric(project) }}
               </div>
+              <p
+                v-if="!cover"
+                class="eyebrow mb-3"
+              >
+                {{ t(categoryDefinitions[project.category].label) }}
+              </p>
               <h2 class="text-2xl font-black leading-tight text-ink-950">
                 {{ t(project.name) }}
               </h2>

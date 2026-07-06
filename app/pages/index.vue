@@ -5,8 +5,9 @@ import { projects } from '~/data/projects'
 import { services } from '~/data/services'
 import { siteImages } from '~/data/site-images'
 import { uiText } from '~/data/ui'
+import { categoryDefinitions } from '~/data/categories'
 import { projectMedia } from '~/media/catalog.generated'
-import { getProjectMedia } from '~/media/project-media'
+import { projectCoverAsset } from '~/media/project-media'
 import type { MediaAsset } from '~/shared/media/types'
 import type { Project } from '~/shared/types/project'
 
@@ -18,7 +19,7 @@ const heroImage = projectMedia['khach-san-eo-gio'].cover
 const featuredProjects = computed(() =>
   projects
     .filter(project => project.featured)
-    .map(project => ({ project, cover: getProjectMedia(project.mediaId)?.cover }))
+    .map(project => ({ project, cover: projectCoverAsset(project.mediaId, project.coverImage) }))
     .filter((entry): entry is { project: Project, cover: MediaAsset } => entry.cover !== undefined)
     .slice(0, 3)
 )
@@ -66,14 +67,16 @@ useHead({
         fetchpriority="high"
         class="hero-image absolute inset-0 h-full w-full object-cover"
       />
-      <div class="absolute inset-0 bg-ink-950/78" />
-      <div class="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-ink-950 to-transparent" />
+      <!-- Primary atmospheric overlay: warm veil that lifts toward the top so the photography reads. -->
+      <div class="absolute inset-0 bg-linear-to-t from-wood-950/86 from-70% to-wood-950/68" />
+      <!-- Lower protection layer: deepens the base of the frame to keep the metrics and CTAs legible. -->
+      <div class="absolute inset-0 bg-linear-to-t from-wood-950/43 via-transparent via-70% to-transparent" />
 
       <div class="section-shell relative z-10 flex min-h-screen flex-col justify-end px-6 pb-12 pt-32 md:pb-18">
         <div class="max-w-5xl">
           <p
             v-reveal
-            class="eyebrow reveal mb-6 text-wood-300"
+            class="eyebrow reveal mb-6 text-wood-200"
           >
             {{ t(uiText.labels.factoryDirectContractor) }}
           </p>
@@ -129,7 +132,7 @@ useHead({
             v-reveal="360 + index * 90"
             class="reveal border-b border-white/10 p-5 sm:border-r lg:border-b-0"
           >
-            <p class="text-xs uppercase tracking-[0.18em] text-white/45">
+            <p class="text-xs uppercase tracking-[0.18em] text-white/70">
               {{ metric.label }}
             </p>
             <p class="mt-2 text-lg font-black text-white md:text-xl">
@@ -240,7 +243,7 @@ useHead({
                 class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div class="absolute left-4 top-4 rounded-full bg-ink-950 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-white">
-                {{ t(project.categoryName) }}
+                {{ t(categoryDefinitions[project.category].label) }}
               </div>
             </div>
             <div class="border border-t-0 border-ink-200 p-6">
@@ -262,19 +265,13 @@ useHead({
                   {{ t(project.location) }}
                 </span>
                 <span
-                  v-if="project.rooms"
+                  v-if="project.area"
                   class="rounded-full border border-ink-200 px-3 py-2"
                 >
-                  {{ t(project.rooms) }}
+                  {{ t(project.area) }}
                 </span>
                 <span
-                  v-if="project.duration"
-                  class="rounded-full border border-ink-200 px-3 py-2"
-                >
-                  {{ t(project.duration) }}
-                </span>
-                <span
-                  v-else-if="ta(project.scope)[0]"
+                  v-if="ta(project.scope)[0]"
                   class="rounded-full border border-ink-200 px-3 py-2"
                 >
                   {{ ta(project.scope)[0] }}
