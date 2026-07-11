@@ -16,20 +16,8 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const { t } = useLanguage()
-const { resolve } = useMediaUrl()
 
 const altText = computed(() => (props.image.alt === '' ? '' : t(props.image.alt)))
-
-useHead({
-  link: [
-    {
-      rel: 'preload',
-      as: 'image',
-      href: resolve(props.image.path, { width: 1600 }),
-      fetchpriority: 'high'
-    }
-  ]
-})
 </script>
 
 <template>

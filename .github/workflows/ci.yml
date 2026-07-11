@@ -33,8 +33,16 @@ jobs:
       - name: Media layer guard
         run: pnpm run lint:media
 
+      - name: Generated media files are up to date
+        run: |
+          pnpm run media:catalog
+          git diff --exit-code app/media/catalog.generated.ts app/media/fallback.generated.ts
+
       - name: Unit tests
         run: pnpm run test
 
       - name: Typecheck
         run: pnpm run typecheck
+
+      - name: Build
+        run: pnpm run build

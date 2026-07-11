@@ -41,17 +41,6 @@ useSeoMeta({
   ogDescription: seoDescription,
   ogImage: mediaUrl(company.seo.home.ogImage.path)
 })
-
-useHead({
-  link: [
-    {
-      rel: 'preload',
-      as: 'image',
-      href: mediaUrl(heroImage.path, { width: 1600 }),
-      fetchpriority: 'high'
-    }
-  ]
-})
 </script>
 
 <template>

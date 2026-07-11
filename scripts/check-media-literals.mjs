@@ -9,6 +9,7 @@ const SCAN_DIR = join(ROOT, 'app')
 const SCANNED_EXTENSIONS = ['.vue', '.ts', '.js', '.mjs']
 const ALLOWED_FILES = new Set([
   ['app', 'media', 'fallback.ts'].join(sep),
+  ['app', 'media', 'fallback.generated.ts'].join(sep),
   ['app', 'media', 'url.ts'].join(sep),
   ['app', 'shared', 'media', 'manifest.json'].join(sep)
 ])
