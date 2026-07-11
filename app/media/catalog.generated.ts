@@ -38,13 +38,13 @@ export type ProjectMedia = {
 export const projectMedia = {
   'cai-tao-nha-quan-8': {
     id: 'cai-tao-nha-quan-8',
-    cover: { path: 'projects/cai-tao-nha-quan-8/3.webp', width: 3000, height: 2000 },
+    cover: { path: 'projects/cai-tao-nha-quan-8/3.webp', width: 2560, height: 1707 },
     images: [
-      { path: 'projects/cai-tao-nha-quan-8/3.webp', width: 3000, height: 2000 },
-      { path: 'projects/cai-tao-nha-quan-8/5.webp', width: 2500, height: 3000 },
-      { path: 'projects/cai-tao-nha-quan-8/12.webp', width: 3000, height: 2000 },
-      { path: 'projects/cai-tao-nha-quan-8/13.webp', width: 3000, height: 2000 },
-      { path: 'projects/cai-tao-nha-quan-8/14.webp', width: 3000, height: 2000 }
+      { path: 'projects/cai-tao-nha-quan-8/3.webp', width: 2560, height: 1707 },
+      { path: 'projects/cai-tao-nha-quan-8/5.webp', width: 2133, height: 2560 },
+      { path: 'projects/cai-tao-nha-quan-8/12.webp', width: 2560, height: 1707 },
+      { path: 'projects/cai-tao-nha-quan-8/13.webp', width: 2560, height: 1707 },
+      { path: 'projects/cai-tao-nha-quan-8/14.webp', width: 2560, height: 1707 }
     ],
     galleries: {}
   },
@@ -106,136 +106,136 @@ export const projectMedia = {
   },
   'codi-villa-phan-thiet': {
     id: 'codi-villa-phan-thiet',
-    cover: { path: 'projects/codi-villa-phan-thiet/1.webp', width: 3000, height: 1917 },
+    cover: { path: 'projects/codi-villa-phan-thiet/1.webp', width: 2560, height: 1636 },
     images: [
-      { path: 'projects/codi-villa-phan-thiet/1.webp', width: 3000, height: 1917 },
-      { path: 'projects/codi-villa-phan-thiet/7.webp', width: 2239, height: 2800 },
-      { path: 'projects/codi-villa-phan-thiet/8.webp', width: 2940, height: 1690 },
+      { path: 'projects/codi-villa-phan-thiet/1.webp', width: 2560, height: 1636 },
+      { path: 'projects/codi-villa-phan-thiet/7.webp', width: 2047, height: 2560 },
+      { path: 'projects/codi-villa-phan-thiet/8.webp', width: 2560, height: 1472 },
       { path: 'projects/codi-villa-phan-thiet/10.webp', width: 2033, height: 2500 },
       { path: 'projects/codi-villa-phan-thiet/11.webp', width: 2059, height: 2500 },
       { path: 'projects/codi-villa-phan-thiet/12.webp', width: 2134, height: 2000 },
-      { path: 'projects/codi-villa-phan-thiet/14.webp', width: 3000, height: 1945 },
+      { path: 'projects/codi-villa-phan-thiet/14.webp', width: 2560, height: 1660 },
       { path: 'projects/codi-villa-phan-thiet/15.webp', width: 2500, height: 1893 },
-      { path: 'projects/codi-villa-phan-thiet/17.webp', width: 2039, height: 2800 },
-      { path: 'projects/codi-villa-phan-thiet/21.webp', width: 3000, height: 2033 },
-      { path: 'projects/codi-villa-phan-thiet/22.webp', width: 3000, height: 2033 },
-      { path: 'projects/codi-villa-phan-thiet/23.webp', width: 2240, height: 2800 },
-      { path: 'projects/codi-villa-phan-thiet/25.webp', width: 2240, height: 2800 },
-      { path: 'projects/codi-villa-phan-thiet/26.webp', width: 3000, height: 2177 },
-      { path: 'projects/codi-villa-phan-thiet/27.webp', width: 2800, height: 2033 },
-      { path: 'projects/codi-villa-phan-thiet/29.webp', width: 2800, height: 2153 }
+      { path: 'projects/codi-villa-phan-thiet/17.webp', width: 1864, height: 2560 },
+      { path: 'projects/codi-villa-phan-thiet/21.webp', width: 2560, height: 1735 },
+      { path: 'projects/codi-villa-phan-thiet/22.webp', width: 2560, height: 1735 },
+      { path: 'projects/codi-villa-phan-thiet/23.webp', width: 2048, height: 2560 },
+      { path: 'projects/codi-villa-phan-thiet/25.webp', width: 2048, height: 2560 },
+      { path: 'projects/codi-villa-phan-thiet/26.webp', width: 2560, height: 1858 },
+      { path: 'projects/codi-villa-phan-thiet/27.webp', width: 2560, height: 1859 },
+      { path: 'projects/codi-villa-phan-thiet/29.webp', width: 2560, height: 1968 }
     ],
     galleries: {}
   },
   'khach-san-eo-gio': {
     id: 'khach-san-eo-gio',
-    cover: { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/1-2.webp', width: 3000, height: 1661 },
+    cover: { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/1-2.webp', width: 2560, height: 1417 },
     images: [
-      { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/1-2.webp', width: 3000, height: 1661 },
-      { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/3.webp', width: 3000, height: 1661 },
-      { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/4.webp', width: 2500, height: 3000 },
-      { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/5.webp', width: 2500, height: 3000 },
-      { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/9.webp', width: 2500, height: 3000 },
-      { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/11.webp', width: 3000, height: 1800 },
-      { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/12.webp', width: 3000, height: 1800 },
-      { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/3.webp', width: 3000, height: 1875 },
-      { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/4.webp', width: 3000, height: 1600 },
-      { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/5.webp', width: 3000, height: 1600 },
-      { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/12.webp', width: 3000, height: 3000 },
+      { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/1-2.webp', width: 2560, height: 1417 },
+      { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/3.webp', width: 2560, height: 1417 },
+      { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/4.webp', width: 2133, height: 2560 },
+      { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/5.webp', width: 2133, height: 2560 },
+      { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/9.webp', width: 2133, height: 2560 },
+      { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/11.webp', width: 2560, height: 1536 },
+      { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/12.webp', width: 2560, height: 1536 },
+      { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/3.webp', width: 2560, height: 1600 },
+      { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/4.webp', width: 2560, height: 1365 },
+      { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/5.webp', width: 2560, height: 1365 },
+      { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/12.webp', width: 2560, height: 2560 },
       { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/20.webp', width: 2500, height: 2500 },
-      { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/22.webp', width: 3000, height: 1800 },
-      { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/1.webp', width: 3000, height: 1660 },
-      { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/2.webp', width: 3000, height: 1660 },
-      { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/3.webp', width: 3000, height: 1660 },
-      { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/5.webp', width: 2308, height: 3000 },
-      { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/7.webp', width: 2250, height: 3000 },
-      { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/8.webp', width: 3000, height: 1660 },
-      { path: 'projects/khach-san-eo-gio/phong-don-dien-hinh/1.webp', width: 3000, height: 1660 },
-      { path: 'projects/khach-san-eo-gio/phong-don-dien-hinh/2.webp', width: 3000, height: 1660 },
-      { path: 'projects/khach-san-eo-gio/phong-don-dien-hinh/4.webp', width: 3000, height: 1660 },
-      { path: 'projects/khach-san-eo-gio/phong-studio-01/3.webp', width: 3000, height: 1661 },
-      { path: 'projects/khach-san-eo-gio/phong-studio-02/1.webp', width: 3000, height: 1875 },
-      { path: 'projects/khach-san-eo-gio/phong-studio-02/2.webp', width: 3000, height: 1660 },
-      { path: 'projects/khach-san-eo-gio/phong-studio-02/3.webp', width: 3000, height: 1660 },
-      { path: 'projects/khach-san-eo-gio/phong-studio-02/5.webp', width: 3857, height: 1800 },
-      { path: 'projects/khach-san-eo-gio/sanh-don/14.webp', width: 3200, height: 2000 },
-      { path: 'projects/khach-san-eo-gio/sanh-don/21.webp', width: 3200, height: 2000 },
-      { path: 'projects/khach-san-eo-gio/sanh-don/24.webp', width: 3200, height: 2000 }
+      { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/22.webp', width: 2560, height: 1536 },
+      { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/1.webp', width: 2560, height: 1417 },
+      { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/2.webp', width: 2560, height: 1417 },
+      { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/3.webp', width: 2560, height: 1417 },
+      { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/5.webp', width: 1969, height: 2560 },
+      { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/7.webp', width: 1920, height: 2560 },
+      { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/8.webp', width: 2560, height: 1417 },
+      { path: 'projects/khach-san-eo-gio/phong-don-dien-hinh/1.webp', width: 2560, height: 1417 },
+      { path: 'projects/khach-san-eo-gio/phong-don-dien-hinh/2.webp', width: 2560, height: 1417 },
+      { path: 'projects/khach-san-eo-gio/phong-don-dien-hinh/4.webp', width: 2560, height: 1417 },
+      { path: 'projects/khach-san-eo-gio/phong-studio-01/3.webp', width: 2560, height: 1417 },
+      { path: 'projects/khach-san-eo-gio/phong-studio-02/1.webp', width: 2560, height: 1600 },
+      { path: 'projects/khach-san-eo-gio/phong-studio-02/2.webp', width: 2560, height: 1417 },
+      { path: 'projects/khach-san-eo-gio/phong-studio-02/3.webp', width: 2560, height: 1417 },
+      { path: 'projects/khach-san-eo-gio/phong-studio-02/5.webp', width: 2560, height: 1195 },
+      { path: 'projects/khach-san-eo-gio/sanh-don/14.webp', width: 2560, height: 1600 },
+      { path: 'projects/khach-san-eo-gio/sanh-don/21.webp', width: 2560, height: 1600 },
+      { path: 'projects/khach-san-eo-gio/sanh-don/24.webp', width: 2560, height: 1600 }
     ],
     galleries: {
         'can-ho-1-phong-ngu': [
-          { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/1-2.webp', width: 3000, height: 1661 },
-          { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/3.webp', width: 3000, height: 1661 },
-          { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/4.webp', width: 2500, height: 3000 },
-          { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/5.webp', width: 2500, height: 3000 },
-          { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/9.webp', width: 2500, height: 3000 },
-          { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/11.webp', width: 3000, height: 1800 },
-          { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/12.webp', width: 3000, height: 1800 }
+          { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/1-2.webp', width: 2560, height: 1417 },
+          { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/3.webp', width: 2560, height: 1417 },
+          { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/4.webp', width: 2133, height: 2560 },
+          { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/5.webp', width: 2133, height: 2560 },
+          { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/9.webp', width: 2133, height: 2560 },
+          { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/11.webp', width: 2560, height: 1536 },
+          { path: 'projects/khach-san-eo-gio/can-ho-1-phong-ngu/12.webp', width: 2560, height: 1536 }
         ],
         'can-ho-3-phong-ngu': [
-          { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/3.webp', width: 3000, height: 1875 },
-          { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/4.webp', width: 3000, height: 1600 },
-          { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/5.webp', width: 3000, height: 1600 },
-          { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/12.webp', width: 3000, height: 3000 },
+          { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/3.webp', width: 2560, height: 1600 },
+          { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/4.webp', width: 2560, height: 1365 },
+          { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/5.webp', width: 2560, height: 1365 },
+          { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/12.webp', width: 2560, height: 2560 },
           { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/20.webp', width: 2500, height: 2500 },
-          { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/22.webp', width: 3000, height: 1800 }
+          { path: 'projects/khach-san-eo-gio/can-ho-3-phong-ngu/22.webp', width: 2560, height: 1536 }
         ],
         'phong-doi-dien-hinh': [
-          { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/1.webp', width: 3000, height: 1660 },
-          { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/2.webp', width: 3000, height: 1660 },
-          { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/3.webp', width: 3000, height: 1660 },
-          { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/5.webp', width: 2308, height: 3000 },
-          { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/7.webp', width: 2250, height: 3000 },
-          { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/8.webp', width: 3000, height: 1660 }
+          { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/1.webp', width: 2560, height: 1417 },
+          { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/2.webp', width: 2560, height: 1417 },
+          { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/3.webp', width: 2560, height: 1417 },
+          { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/5.webp', width: 1969, height: 2560 },
+          { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/7.webp', width: 1920, height: 2560 },
+          { path: 'projects/khach-san-eo-gio/phong-doi-dien-hinh/8.webp', width: 2560, height: 1417 }
         ],
         'phong-don-dien-hinh': [
-          { path: 'projects/khach-san-eo-gio/phong-don-dien-hinh/1.webp', width: 3000, height: 1660 },
-          { path: 'projects/khach-san-eo-gio/phong-don-dien-hinh/2.webp', width: 3000, height: 1660 },
-          { path: 'projects/khach-san-eo-gio/phong-don-dien-hinh/4.webp', width: 3000, height: 1660 }
+          { path: 'projects/khach-san-eo-gio/phong-don-dien-hinh/1.webp', width: 2560, height: 1417 },
+          { path: 'projects/khach-san-eo-gio/phong-don-dien-hinh/2.webp', width: 2560, height: 1417 },
+          { path: 'projects/khach-san-eo-gio/phong-don-dien-hinh/4.webp', width: 2560, height: 1417 }
         ],
         'phong-studio-01': [
-          { path: 'projects/khach-san-eo-gio/phong-studio-01/3.webp', width: 3000, height: 1661 }
+          { path: 'projects/khach-san-eo-gio/phong-studio-01/3.webp', width: 2560, height: 1417 }
         ],
         'phong-studio-02': [
-          { path: 'projects/khach-san-eo-gio/phong-studio-02/1.webp', width: 3000, height: 1875 },
-          { path: 'projects/khach-san-eo-gio/phong-studio-02/2.webp', width: 3000, height: 1660 },
-          { path: 'projects/khach-san-eo-gio/phong-studio-02/3.webp', width: 3000, height: 1660 },
-          { path: 'projects/khach-san-eo-gio/phong-studio-02/5.webp', width: 3857, height: 1800 }
+          { path: 'projects/khach-san-eo-gio/phong-studio-02/1.webp', width: 2560, height: 1600 },
+          { path: 'projects/khach-san-eo-gio/phong-studio-02/2.webp', width: 2560, height: 1417 },
+          { path: 'projects/khach-san-eo-gio/phong-studio-02/3.webp', width: 2560, height: 1417 },
+          { path: 'projects/khach-san-eo-gio/phong-studio-02/5.webp', width: 2560, height: 1195 }
         ],
         'sanh-don': [
-          { path: 'projects/khach-san-eo-gio/sanh-don/14.webp', width: 3200, height: 2000 },
-          { path: 'projects/khach-san-eo-gio/sanh-don/21.webp', width: 3200, height: 2000 },
-          { path: 'projects/khach-san-eo-gio/sanh-don/24.webp', width: 3200, height: 2000 }
+          { path: 'projects/khach-san-eo-gio/sanh-don/14.webp', width: 2560, height: 1600 },
+          { path: 'projects/khach-san-eo-gio/sanh-don/21.webp', width: 2560, height: 1600 },
+          { path: 'projects/khach-san-eo-gio/sanh-don/24.webp', width: 2560, height: 1600 }
         ]
       }
   },
   'nha-anh-nam': {
     id: 'nha-anh-nam',
-    cover: { path: 'projects/nha-anh-nam/1.webp', width: 3000, height: 1875 },
+    cover: { path: 'projects/nha-anh-nam/1.webp', width: 2560, height: 1600 },
     images: [
-      { path: 'projects/nha-anh-nam/1.webp', width: 3000, height: 1875 },
-      { path: 'projects/nha-anh-nam/2.webp', width: 3000, height: 1875 },
-      { path: 'projects/nha-anh-nam/3.webp', width: 3000, height: 1875 },
-      { path: 'projects/nha-anh-nam/4.webp', width: 2800, height: 3500 },
-      { path: 'projects/nha-anh-nam/5.webp', width: 3000, height: 1875 },
-      { path: 'projects/nha-anh-nam/7.webp', width: 3000, height: 1818 },
-      { path: 'projects/nha-anh-nam/8.webp', width: 3000, height: 1875 },
-      { path: 'projects/nha-anh-nam/10.webp', width: 3000, height: 1875 },
-      { path: 'projects/nha-anh-nam/11.webp', width: 3000, height: 1875 }
+      { path: 'projects/nha-anh-nam/1.webp', width: 2560, height: 1600 },
+      { path: 'projects/nha-anh-nam/2.webp', width: 2560, height: 1600 },
+      { path: 'projects/nha-anh-nam/3.webp', width: 2560, height: 1600 },
+      { path: 'projects/nha-anh-nam/4.webp', width: 2048, height: 2560 },
+      { path: 'projects/nha-anh-nam/5.webp', width: 2560, height: 1600 },
+      { path: 'projects/nha-anh-nam/7.webp', width: 2560, height: 1551 },
+      { path: 'projects/nha-anh-nam/8.webp', width: 2560, height: 1600 },
+      { path: 'projects/nha-anh-nam/10.webp', width: 2560, height: 1600 },
+      { path: 'projects/nha-anh-nam/11.webp', width: 2560, height: 1600 }
     ],
     galleries: {}
   },
   'nha-ta-dung': {
     id: 'nha-ta-dung',
-    cover: { path: 'projects/nha-ta-dung/1.webp', width: 3500, height: 2500 },
+    cover: { path: 'projects/nha-ta-dung/1.webp', width: 2560, height: 1829 },
     images: [
-      { path: 'projects/nha-ta-dung/1.webp', width: 3500, height: 2500 },
-      { path: 'projects/nha-ta-dung/2.webp', width: 3500, height: 2500 },
-      { path: 'projects/nha-ta-dung/3.webp', width: 3500, height: 2300 },
-      { path: 'projects/nha-ta-dung/4.webp', width: 3500, height: 2300 },
-      { path: 'projects/nha-ta-dung/5.webp', width: 3500, height: 2300 },
-      { path: 'projects/nha-ta-dung/6.webp', width: 2300, height: 2800 },
-      { path: 'projects/nha-ta-dung/7.webp', width: 2300, height: 2800 }
+      { path: 'projects/nha-ta-dung/1.webp', width: 2560, height: 1829 },
+      { path: 'projects/nha-ta-dung/2.webp', width: 2560, height: 1829 },
+      { path: 'projects/nha-ta-dung/3.webp', width: 2560, height: 1682 },
+      { path: 'projects/nha-ta-dung/4.webp', width: 2560, height: 1682 },
+      { path: 'projects/nha-ta-dung/5.webp', width: 2560, height: 1682 },
+      { path: 'projects/nha-ta-dung/6.webp', width: 2103, height: 2560 },
+      { path: 'projects/nha-ta-dung/7.webp', width: 2103, height: 2560 }
     ],
     galleries: {}
   },
@@ -274,11 +274,11 @@ export const projectMedia = {
   },
   'nha-xuong-anh-cuong': {
     id: 'nha-xuong-anh-cuong',
-    cover: { path: 'projects/nha-xuong-anh-cuong/1.webp', width: 3000, height: 1875 },
+    cover: { path: 'projects/nha-xuong-anh-cuong/1.webp', width: 2560, height: 1600 },
     images: [
-      { path: 'projects/nha-xuong-anh-cuong/1.webp', width: 3000, height: 1875 },
-      { path: 'projects/nha-xuong-anh-cuong/2.webp', width: 3000, height: 1875 },
-      { path: 'projects/nha-xuong-anh-cuong/4.webp', width: 5000, height: 1840 }
+      { path: 'projects/nha-xuong-anh-cuong/1.webp', width: 2560, height: 1600 },
+      { path: 'projects/nha-xuong-anh-cuong/2.webp', width: 2560, height: 1600 },
+      { path: 'projects/nha-xuong-anh-cuong/4.webp', width: 2560, height: 942 }
     ],
     galleries: {}
   },
@@ -301,34 +301,34 @@ export const projectMedia = {
   },
   'phong-hop-quan-7': {
     id: 'phong-hop-quan-7',
-    cover: { path: 'projects/phong-hop-quan-7/p-hop1.webp', width: 3542, height: 4583 },
+    cover: { path: 'projects/phong-hop-quan-7/p-hop1.webp', width: 1979, height: 2560 },
     images: [
-      { path: 'projects/phong-hop-quan-7/p-hop1.webp', width: 3542, height: 4583 },
-      { path: 'projects/phong-hop-quan-7/p-hop2.webp', width: 3542, height: 4583 },
-      { path: 'projects/phong-hop-quan-7/p-hop3.webp', width: 4583, height: 2708 },
+      { path: 'projects/phong-hop-quan-7/p-hop1.webp', width: 1979, height: 2560 },
+      { path: 'projects/phong-hop-quan-7/p-hop2.webp', width: 1979, height: 2560 },
+      { path: 'projects/phong-hop-quan-7/p-hop3.webp', width: 2560, height: 1513 },
       { path: 'projects/phong-hop-quan-7/p-hop4.webp', width: 2200, height: 1300 },
-      { path: 'projects/phong-hop-quan-7/pkd-1.webp', width: 4583, height: 3002 },
-      { path: 'projects/phong-hop-quan-7/pkd-2.webp', width: 4583, height: 2921 },
-      { path: 'projects/phong-hop-quan-7/pkd-3.webp', width: 4167, height: 4167 },
-      { path: 'projects/phong-hop-quan-7/pkt1-1.webp', width: 4583, height: 2881 },
-      { path: 'projects/phong-hop-quan-7/pkt1-2.webp', width: 3542, height: 4583 },
-      { path: 'projects/phong-hop-quan-7/pkt1-3.webp', width: 4583, height: 3125 }
+      { path: 'projects/phong-hop-quan-7/pkd-1.webp', width: 2560, height: 1677 },
+      { path: 'projects/phong-hop-quan-7/pkd-2.webp', width: 2560, height: 1632 },
+      { path: 'projects/phong-hop-quan-7/pkd-3.webp', width: 2560, height: 2560 },
+      { path: 'projects/phong-hop-quan-7/pkt1-1.webp', width: 2560, height: 1609 },
+      { path: 'projects/phong-hop-quan-7/pkt1-2.webp', width: 1979, height: 2560 },
+      { path: 'projects/phong-hop-quan-7/pkt1-3.webp', width: 2560, height: 1746 }
     ],
     galleries: {}
   },
   'van-phong-quan-4': {
     id: 'van-phong-quan-4',
-    cover: { path: 'projects/van-phong-quan-4/1.webp', width: 2800, height: 2800 },
+    cover: { path: 'projects/van-phong-quan-4/1.webp', width: 2560, height: 2560 },
     images: [
-      { path: 'projects/van-phong-quan-4/1.webp', width: 2800, height: 2800 },
-      { path: 'projects/van-phong-quan-4/2.webp', width: 2800, height: 2800 },
-      { path: 'projects/van-phong-quan-4/5.webp', width: 2800, height: 2800 },
-      { path: 'projects/van-phong-quan-4/6.webp', width: 2800, height: 2800 },
-      { path: 'projects/van-phong-quan-4/7.webp', width: 2800, height: 2800 },
-      { path: 'projects/van-phong-quan-4/8.webp', width: 2800, height: 2800 },
-      { path: 'projects/van-phong-quan-4/9.webp', width: 2800, height: 2800 },
-      { path: 'projects/van-phong-quan-4/10.webp', width: 2800, height: 2100 },
-      { path: 'projects/van-phong-quan-4/11.webp', width: 2500, height: 2800 }
+      { path: 'projects/van-phong-quan-4/1.webp', width: 2560, height: 2560 },
+      { path: 'projects/van-phong-quan-4/2.webp', width: 2560, height: 2560 },
+      { path: 'projects/van-phong-quan-4/5.webp', width: 2560, height: 2560 },
+      { path: 'projects/van-phong-quan-4/6.webp', width: 2560, height: 2560 },
+      { path: 'projects/van-phong-quan-4/7.webp', width: 2560, height: 2560 },
+      { path: 'projects/van-phong-quan-4/8.webp', width: 2560, height: 2560 },
+      { path: 'projects/van-phong-quan-4/9.webp', width: 2560, height: 2560 },
+      { path: 'projects/van-phong-quan-4/10.webp', width: 2560, height: 1920 },
+      { path: 'projects/van-phong-quan-4/11.webp', width: 2286, height: 2560 }
     ],
     galleries: {}
   }
@@ -337,16 +337,16 @@ export const projectMedia = {
 /** Company's own workshop gallery - powers the Nha xuong (factory) page. */
 export const workshopMedia: readonly MediaAsset[] = [
   { path: 'company/workshop/1.webp', width: 1771, height: 2552 },
-  { path: 'company/workshop/2.webp', width: 3367, height: 2250 },
-  { path: 'company/workshop/3.webp', width: 5350, height: 3304 },
-  { path: 'company/workshop/4.webp', width: 5350, height: 3221 },
-  { path: 'company/workshop/5.webp', width: 5350, height: 3152 },
-  { path: 'company/workshop/6.webp', width: 4235, height: 2829 },
-  { path: 'company/workshop/7.webp', width: 5069, height: 3431 },
-  { path: 'company/workshop/8.webp', width: 3367, height: 2250 },
-  { path: 'company/workshop/9.webp', width: 2838, height: 2029 },
-  { path: 'company/workshop/10.webp', width: 3367, height: 2250 },
-  { path: 'company/workshop/11.webp', width: 3367, height: 2250 }
+  { path: 'company/workshop/2.webp', width: 2560, height: 1711 },
+  { path: 'company/workshop/3.webp', width: 2560, height: 1581 },
+  { path: 'company/workshop/4.webp', width: 2560, height: 1541 },
+  { path: 'company/workshop/5.webp', width: 2560, height: 1508 },
+  { path: 'company/workshop/6.webp', width: 2560, height: 1710 },
+  { path: 'company/workshop/7.webp', width: 2560, height: 1733 },
+  { path: 'company/workshop/8.webp', width: 2560, height: 1711 },
+  { path: 'company/workshop/9.webp', width: 2560, height: 1830 },
+  { path: 'company/workshop/10.webp', width: 2560, height: 1711 },
+  { path: 'company/workshop/11.webp', width: 2560, height: 1711 }
 ]
 
 export const companyMedia = {

@@ -22,7 +22,11 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       supabaseUrl: '',
-      useSupabaseMedia: false
+      useSupabaseMedia: false,
+      // Absolute production origin, used for robots.txt + sitemap.xml (and later
+      // canonical/OG URLs). Override per environment with NUXT_PUBLIC_SITE_URL.
+      // TODO: replace the placeholder with the real domain before launch.
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://laihuy-interior.com'
     }
   },
 
@@ -37,6 +41,12 @@ export default defineNuxtConfig({
   },
 
   compatibilityDate: '2025-01-15',
+
+  nitro: {
+    prerender: {
+      routes: ['/robots.txt', '/sitemap.xml']
+    }
+  },
 
   eslint: {
     config: {
