@@ -18,7 +18,9 @@ const { t } = useLanguage()
 
 const dialogEl = ref<HTMLElement | null>(null)
 const closeButton = ref<HTMLElement | null>(null)
+const thumbStrip = ref<HTMLElement | null>(null)
 const zoomed = ref(false)
+const isFullscreen = ref(false)
 const origin = ref('center center')
 let previouslyFocused: HTMLElement | null = null
 
@@ -52,6 +54,30 @@ const toggleZoom = (event: MouseEvent) => {
   const y = ((event.clientY - rect.top) / rect.height) * 100
   origin.value = `${x}% ${y}%`
   zoomed.value = !zoomed.value
+}
+
+const onFullscreenChange = () => {
+  isFullscreen.value = Boolean(document.fullscreenElement)
+}
+
+const toggleFullscreen = async () => {
+  if (!import.meta.client) {
+    return
+  }
+  try {
+    if (document.fullscreenElement) {
+      await document.exitFullscreen()
+    } else {
+      await dialogEl.value?.requestFullscreen()
+    }
+  } catch {
+    // Fullscreen can be rejected (e.g. permissions) — fail quietly.
+  }
+}
+
+const selectIndex = (index: number) => {
+  zoomed.value = false
+  emit('update:index', index)
 }
 
 // Touch swipe → prev/next.
@@ -105,6 +131,19 @@ const onKeydown = (event: KeyboardEvent) => {
   }
 }
 
+const scrollActiveThumbIntoView = () => {
+  if (!import.meta.client) {
+    return
+  }
+  nextTick(() => {
+    thumbStrip.value
+      ?.querySelector<HTMLElement>('[data-active="true"]')
+      ?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' })
+  })
+}
+
+watch(() => props.index, scrollActiveThumbIntoView)
+
 watch(
   () => props.open,
   (open) => {
@@ -116,10 +155,19 @@ watch(
       zoomed.value = false
       document.body.style.overflow = 'hidden'
       window.addEventListener('keydown', onKeydown)
-      nextTick(() => closeButton.value?.focus())
+      document.addEventListener('fullscreenchange', onFullscreenChange)
+      nextTick(() => {
+        closeButton.value?.focus()
+        scrollActiveThumbIntoView()
+      })
     } else {
       document.body.style.overflow = ''
       window.removeEventListener('keydown', onKeydown)
+      document.removeEventListener('fullscreenchange', onFullscreenChange)
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {})
+      }
+      isFullscreen.value = false
       previouslyFocused?.focus()
     }
   }
@@ -129,6 +177,7 @@ onUnmounted(() => {
   if (import.meta.client) {
     document.body.style.overflow = ''
     window.removeEventListener('keydown', onKeydown)
+    document.removeEventListener('fullscreenchange', onFullscreenChange)
   }
 })
 </script>
@@ -141,7 +190,7 @@ onUnmounted(() => {
       class="fixed inset-0 z-80 flex items-center justify-center bg-ink-950/95 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
-      :aria-label="t({ vi: 'Xem ảnh nhà xưởng', en: 'Workshop image viewer' })"
+      :aria-label="t({ vi: 'Trình xem ảnh', en: 'Image viewer' })"
     >
       <button
         ref="closeButton"
@@ -152,6 +201,20 @@ onUnmounted(() => {
       >
         <Icon
           name="i-lucide-x"
+          class="h-5 w-5"
+        />
+      </button>
+
+      <button
+        type="button"
+        class="absolute right-16 top-4 z-10 hidden rounded-full bg-white/10 p-3 text-white transition-colors hover:bg-white/20 md:block"
+        :aria-label="isFullscreen
+          ? t({ vi: 'Thoát toàn màn hình', en: 'Exit fullscreen' })
+          : t({ vi: 'Toàn màn hình', en: 'Fullscreen' })"
+        @click="toggleFullscreen"
+      >
+        <Icon
+          :name="isFullscreen ? 'i-lucide-minimize' : 'i-lucide-maximize'"
           class="h-5 w-5"
         />
       </button>
@@ -183,7 +246,7 @@ onUnmounted(() => {
       </button>
 
       <div
-        class="flex h-full w-full items-center justify-center overflow-hidden px-4 py-16 md:px-20"
+        class="flex h-full w-full items-center justify-center overflow-hidden px-4 pb-32 pt-16 md:px-20"
         :class="zoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'"
         @click="toggleZoom"
         @touchstart.passive="onTouchStart"
@@ -202,22 +265,52 @@ onUnmounted(() => {
         />
       </div>
 
-      <div
-        v-if="altText || counter"
-        class="pointer-events-none absolute inset-x-0 bottom-0 flex flex-col items-center gap-1 bg-linear-to-t from-ink-950/80 to-transparent px-6 pb-6 pt-12 text-center"
-      >
-        <p
-          v-if="altText"
-          class="max-w-2xl text-sm text-white/86"
+      <div class="absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 bg-linear-to-t from-ink-950/90 via-ink-950/60 to-transparent px-4 pb-4 pt-12">
+        <div
+          v-if="altText || counter"
+          class="flex flex-col items-center gap-1 text-center"
         >
-          {{ altText }}
-        </p>
-        <p
-          v-if="counter"
-          class="text-xs font-semibold uppercase tracking-[0.2em] text-white/55"
+          <p
+            v-if="altText"
+            class="max-w-2xl text-sm text-white/86"
+          >
+            {{ altText }}
+          </p>
+          <p
+            v-if="counter"
+            class="text-xs font-semibold uppercase tracking-[0.2em] text-white/55"
+          >
+            {{ counter }}
+          </p>
+        </div>
+
+        <div
+          v-if="images.length > 1"
+          ref="thumbStrip"
+          class="flex max-w-full gap-2 overflow-x-auto px-1 pb-1"
         >
-          {{ counter }}
-        </p>
+          <button
+            v-for="(image, i) in images"
+            :key="image.path"
+            type="button"
+            :data-active="i === index"
+            class="relative h-12 w-16 shrink-0 overflow-hidden rounded-md ring-2 transition-all md:h-14 md:w-20"
+            :class="i === index ? 'ring-wood-400 opacity-100' : 'ring-transparent opacity-55 hover:opacity-90'"
+            :aria-label="t({ vi: `Ảnh ${i + 1}`, en: `Image ${i + 1}` })"
+            :aria-current="i === index ? 'true' : undefined"
+            @click="selectIndex(i)"
+          >
+            <NuxtImg
+              :src="image.path"
+              alt=""
+              :width="image.width"
+              :height="image.height"
+              sizes="sm:80px md:96px"
+              loading="lazy"
+              class="h-full w-full object-cover"
+            />
+          </button>
+        </div>
       </div>
     </div>
   </Transition>

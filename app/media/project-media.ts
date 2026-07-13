@@ -42,3 +42,26 @@ export const projectImages = (mediaId: ProjectMediaId | undefined, alt: Localize
   const media = getProjectMedia(mediaId)
   return media ? media.images.map(asset => withAlt(asset, alt)) : []
 }
+
+/** A named sub-gallery (media catalog folder group) paired with alt text. */
+export type ProjectGalleryGroup = {
+  slug: string
+  images: MediaImage[]
+}
+
+/** Resolve a project's named gallery folders (e.g. `sanh-don`, `phong-studio-01`)
+ *  into renderable groups. Empty for projects whose images sit directly in the
+ *  project folder — the caller then falls back to a single flat gallery. */
+export const projectGalleryGroups = (
+  mediaId: ProjectMediaId | undefined,
+  alt: LocalizedText | ''
+): ProjectGalleryGroup[] => {
+  const media = getProjectMedia(mediaId)
+  if (!media) {
+    return []
+  }
+  return Object.entries(media.galleries).map(([slug, assets]) => ({
+    slug,
+    images: assets.map(asset => withAlt(asset, alt))
+  }))
+}
