@@ -20,6 +20,44 @@ export type AddressEntry = {
   mapUrl: string
 }
 
+// --- Optional About-page content. Every field renders conditionally and stays
+// empty until authored with authentic content — never fabricated. -------------
+export type CompanyValue = {
+  icon: string
+  title: LocalizedText
+  description: LocalizedText
+}
+
+export type CompanyMilestone = {
+  year: string
+  title: LocalizedText
+  description?: LocalizedText
+}
+
+export type CompanyFounder = {
+  name: string
+  role: LocalizedText
+  /** Portrait path relative to the media bucket — authentic photography only. */
+  portrait?: string
+  story: LocalizedText
+  quote?: LocalizedText
+  signature?: string
+}
+
+export type CompanyTeamMember = {
+  name: string
+  role: LocalizedText
+  /** Portrait path relative to the media bucket — authentic photography only. */
+  photo: string
+  bio?: LocalizedText
+}
+
+export type CompanyTestimonial = {
+  quote: LocalizedText
+  author: LocalizedText
+  role?: LocalizedText
+}
+
 const buildMapUrl = (address: string) =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`
 
@@ -46,6 +84,44 @@ export const company = {
     vi: 'Sản xuất và thi công nội thất khách sạn, villa, căn hộ và dự án thương mại với năng lực nhà xưởng trực tiếp.',
     en: 'Factory-direct manufacturing and contracting for hotels, villas, apartments, and commercial interior projects.'
   },
+  // --- Optional About-page content (renders only when authored) --------------
+  /** Founding year — enables "Since …" cues once set. */
+  foundingYear: undefined as string | undefined,
+  mission: undefined as LocalizedText | undefined,
+  vision: undefined as LocalizedText | undefined,
+  /** Core values — migrated from the original About page copy, now bilingual. */
+  coreValues: [
+    {
+      icon: 'i-lucide-factory',
+      title: { vi: 'Sản xuất trực tiếp', en: 'Direct production' },
+      description: {
+        vi: 'Chủ động xưởng giúp kiểm soát vật liệu, tiến độ và chất lượng hoàn thiện cho từng hạng mục nội thất.',
+        en: 'Owning the workshop lets us control materials, schedule and finishing quality on every interior package.'
+      }
+    },
+    {
+      icon: 'i-lucide-list-checks',
+      title: { vi: 'Quản lý dự án rõ ràng', en: 'Clear project management' },
+      description: {
+        vi: 'Quy trình phối hợp giữa thiết kế, kỹ thuật, sản xuất, QC và thi công giúp giảm sai lệch khi triển khai.',
+        en: 'A coordinated flow across design, engineering, production, QC and installation reduces gaps during delivery.'
+      }
+    },
+    {
+      icon: 'i-lucide-hard-hat',
+      title: { vi: 'Thi công thực chiến', en: 'Hands-on installation' },
+      description: {
+        vi: 'Đội ngũ lắp dựng làm việc tại công trình, phối hợp hiện trường và nghiệm thu theo từng giai đoạn.',
+        en: 'Our installation teams work on site, coordinating in the field and signing off stage by stage.'
+      }
+    }
+  ] satisfies CompanyValue[],
+  milestones: [] as CompanyMilestone[],
+  founder: undefined as CompanyFounder | undefined,
+  team: [] as CompanyTeamMember[],
+  certifications: undefined as LocalizedArray | undefined,
+  awards: undefined as LocalizedArray | undefined,
+  testimonials: [] as CompanyTestimonial[],
   workingHours: {
     vi: ['Từ 8:00 - 17:00', 'Từ thứ 2 đến thứ 7'],
     en: ['8:00 - 17:00', 'Monday to Saturday']
