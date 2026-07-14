@@ -1,9 +1,20 @@
-import type { LocalizedText } from '~/shared/types/localization'
+import type { Locale, LocalizedText } from '~/shared/types/localization'
 
 export type LocalizedNavLink = {
   label: LocalizedText
   to: string
 }
+
+export type LocaleOption = {
+  label: string
+  value: Locale
+}
+
+/** Shared by AppHeader and AppDrawer. Extracted verbatim from app.vue in Phase 1. */
+export const localeOptions: LocaleOption[] = [
+  { label: 'VI', value: 'vi' },
+  { label: 'EN', value: 'en' }
+]
 
 export const navLinks: LocalizedNavLink[] = [
   { label: { vi: 'Trang chủ', en: 'Home' }, to: '/' },

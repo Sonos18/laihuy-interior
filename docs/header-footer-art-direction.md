@@ -809,6 +809,21 @@ Recovery Sequence (§21.0).
 comparison is meaningless and is never done. Every capture: `animations: 'disabled'`,
 reduced-motion emulated, `document.fonts.ready` awaited, all images decoded.
 
+> ### Never scroll the page to "materialise" content before a capture
+>
+> Phase 0's harness swept the page to force lazy content to load. **That sweep was itself the
+> nondeterminism**: it drove IntersectionObservers and lazy-load decisions at timing-dependent
+> scroll positions, so consecutive runs of the *same commit* differed by **~370,000 pixels**,
+> with whole content blocks left unpainted. It even poisoned the Phase 0 baseline, which then
+> "passed" its own compare run by reproducing the same blanks.
+>
+> **Force `loading="eager"` and await `decode()` instead** — same outcome, no race. Measured:
+> three consecutive full-page captures of the tallest page (home @ 390, ~12,000px) are now
+> **byte-identical**.
+>
+> A new baseline must be proven with **two** consecutive green compare runs, not one. Phase 0's
+> single run was too weak a bar and is exactly how the bad baseline slipped through.
+
 **Canonical set — 32 shots:** 8 pages × 3 viewports (390 / 768 / 1440) rest-state = 24, plus 8
 scrolled-state **header-strip clips**.
 
@@ -1838,12 +1853,18 @@ production, and it degrades the design without breaking the site.
 
 ## A.7 Assets
 
-| Metric | Limit |
-|---|---|
-| Mono logo, each | **≤ 8KB** (@3x, 2-colour palette PNG) |
-| Net asset delta | **negative** (≈ **−120KB**) — colour masters leave the render path |
-| New font requests | **0** (pending **O1**) |
-| New network requests from chrome | **0** |
+| Metric | Limit | Gate |
+|---|---|---|
+| **Client JS delta** | **≤ +6KB raw** (≈ 2KB gz) | **`pnpm bundle`** — deterministic |
+| Mono logo, each | **≤ 8KB** (@3x, 2-colour palette PNG) | manual |
+| Net asset delta | **negative** (≈ **−120KB**) — colour masters leave the render path | manual |
+| New font requests | **0** (O1 closed: Inter already served) | manual |
+| New network requests from chrome | **0** | manual |
+
+**`pnpm bundle` is the deterministic performance gate**, and it exists because §42 is not. Lab
+timings on a loaded machine cannot resolve a small JS change — Phase 1's real cost was
+**+800 bytes (+0.17%)**, which is invisible against a ±2110ms LCP noise floor but exact in bytes.
+Baseline is taken from the pre-change build (`pnpm bundle:baseline`), same as Web Vitals.
 
 ---
 
@@ -2707,8 +2728,20 @@ unreviewed change (§28.1, §39.2).
 | **LCP** | Median increase **> 100ms** *or* **> 2%** vs. baseline (whichever is larger) → **reject** |
 | **CLS — chrome** | Any non-zero value → **reject** (§40.4 makes it impossible by construction; a non-zero result is a bug, never a tolerance) |
 | **CLS — page** | Increase **> 0.005** vs. baseline → **reject** |
-| **TBT** | Any increase → **reject** |
+| **TBT** | Median increase **> 50ms** *or* **> 25%** (whichever is larger) → **reject** |
 | **INP** | Median increase **> 20ms** → **reject**. Not measurable in a Lighthouse cold load; gated by the **interaction suite** (§38.2). **TBT is the lab proxy tracked here** |
+
+> ### Corrected in Phase 1 — "any TBT increase rejects" was unusable
+>
+> The original rule rejected **any** TBT increase. Phase 1 measured the **same build twice** and
+> got: factory **44 → 70ms**, contact **57 → 32ms**, project-detail **111 → 132ms**.
+>
+> **The gate rejected a build against itself.** TBT in the 20–130ms range carries ±30ms of
+> run-to-run variance even at a 5-run median — the absolute values are simply too small for a
+> zero-tolerance rule. A gate that fires on noise is not a gate; it is something everyone learns
+> to override, which is worse than having no gate at all.
+>
+> The band (**50ms / 25%**) is set from the *measured* variance, not guessed.
 
 **Site goals** — tracked, reported, **not** merge gates for this redesign:
 
@@ -2725,8 +2758,41 @@ unreviewed change (§28.1, §39.2).
 | **Runs** | **5 per page**, compare **medians** (not means — one slow run must not decide a merge) |
 | **Environment** | Lighthouse CI, mobile preset, **4× CPU throttle**, identical between baseline and candidate |
 | **Pages** | **All 8.** `/` is mandatory — it is the LCP page **and** the bespoke Home hero (§30.1) |
-| **Baseline** | Captured in **Phase 0**, committed, re-used unchanged for every phase |
+| **Baseline** | **Re-captured from the pre-change build, in the same session, immediately before the candidate run** (see below) |
 | **INP interactions** | Drawer open/close, nav activation, language toggle |
+
+> ### Same-session baselining is mandatory
+>
+> A baseline captured hours earlier, under different machine load, is **not comparable**.
+> Phase 1 hit exactly this: contact LCP appeared to regress **+151ms** against a Phase 0
+> baseline, while the *same build* re-measured back-to-back was stable to within **2ms**
+> (7376 → 7374ms). The "regression" was ambient drift, not code.
+>
+> **Protocol:** `git stash` the change → rebuild → `pnpm vitals:baseline` → restore the change →
+> rebuild → `pnpm vitals`. Baseline and candidate are then measured minutes apart on the same
+> machine, and the only variable is the code.
+>
+> This is **not** a licence to re-baseline away a real regression. The baseline is always taken
+> from the **pre-change build**, never from the candidate.
+
+> ### The machine must be exclusive, and the gate knows its own noise
+>
+> Phase 1 measured a **±2110ms LCP spread on project-detail** and **±223ms on TBT** — across five
+> runs of a *single unchanged build*. And a concurrent background Lighthouse process (my own)
+> inflated TBT from 25ms to 129ms. Two consequences, both now enforced:
+>
+> 1. **`pnpm vitals` requires an exclusive machine.** No builds, no dev server, no second
+>    Lighthouse. A contended run measures the contention.
+> 2. **Every budget is floored at the page's own measured noise** — the spread across the
+>    baseline's own 5 runs, recorded in `vitals.json`. *A regression smaller than the measurement
+>    noise is not detectable*, and a gate that claims otherwise fails builds against themselves.
+>    That is how gates get overridden, and then ignored.
+>
+> **The honest consequence: this gate cannot resolve small JS regressions.** That is what the
+> **client-JS budget (A.7) is for** — bytes are deterministic where lab timings are not. The two
+> are complementary and **neither alone is sufficient**: Web Vitals catch render-blocking, layout
+> and paint; bytes catch bloat. Phase 1 relied on the byte gate (+800B) precisely because the
+> timing gate could not see a change that small.
 
 ### 42.3 Expectations
 

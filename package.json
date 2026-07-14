@@ -19,7 +19,9 @@
     "test:vr": "playwright test --project=vr",
     "test:vr:approve": "playwright test --project=vr --update-snapshots",
     "vitals": "node scripts/verify/vitals.mjs",
-    "vitals:baseline": "node scripts/verify/vitals.mjs --baseline"
+    "vitals:baseline": "node scripts/verify/vitals.mjs --baseline",
+    "bundle": "node scripts/verify/bundle.mjs",
+    "bundle:baseline": "node scripts/verify/bundle.mjs --baseline"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.90",

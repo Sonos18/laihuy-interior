@@ -33,34 +33,32 @@ export const SCROLLED_Y = 600
  * materialised, scroll reset. Without this the suite flakes, and §41 P8 forbids "fix" by
  * regenerating baselines.
  */
+/**
+ * Make a page byte-stable before capture (§14).
+ *
+ * There is NO scroll-sweep here, deliberately. An earlier version swept the page to
+ * "materialise" lazy content — and that sweep was itself the source of nondeterminism: it
+ * drove IntersectionObservers and lazy-load decisions at timing-dependent scroll positions,
+ * so consecutive runs of the *same commit* produced screenshots differing by ~370,000 pixels,
+ * with whole content blocks left unpainted.
+ *
+ * Forcing `loading="eager"` makes the browser fetch every image immediately, independent of
+ * viewport — which is what the sweep was trying to achieve, without the race. Measured: three
+ * consecutive full-page captures of the tallest page (home @ 390, ~12,000px) are byte-identical.
+ *
+ * §41 P8: flake is fixed by determinism, never by re-rolling a baseline.
+ */
 export async function settle(page: Page) {
-  // A full-page screenshot expands the viewport to the document height, which drags every
-  // `loading="lazy"` image into view *during* the capture — so Playwright's two stabilisation
-  // probes disagree and the shot never settles. Defuse it by making every image eager up
-  // front, then waiting for actual decode (not merely `load`).
   await page.evaluate(() => {
     for (const img of document.images) img.loading = 'eager'
   })
 
-  // Sweep the page so any observer-driven content materialises, then return to top.
-  await page.evaluate(async () => {
-    const step = window.innerHeight
-    for (let y = 0; y < document.body.scrollHeight; y += step) {
-      window.scrollTo(0, y)
-      await new Promise(r => setTimeout(r, 60))
-    }
-    window.scrollTo(0, 0)
-  })
-
   await page.evaluate(() => document.fonts.ready)
 
-  // Images added during the sweep are also forced eager, then all are decoded.
+  // Decoded, not merely loaded.
   await page.evaluate(async () => {
-    for (const img of document.images) img.loading = 'eager'
     await Promise.all(
-      Array.from(document.images).map(img =>
-        img.decode().catch(() => undefined)
-      )
+      Array.from(document.images).map(img => img.decode().catch(() => undefined))
     )
   })
 

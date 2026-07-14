@@ -67,14 +67,20 @@ const run = async () => {
     for (const [name, route] of PAGES) {
       const runs = []
       for (let i = 0; i < RUNS; i++) runs.push(await measure(chrome, ORIGIN + route))
+      const spread = xs => Math.round(Math.max(...xs) - Math.min(...xs))
+
       results[name] = {
         lcp: Math.round(median(runs.map(r => r.lcp))),
         cls: +median(runs.map(r => r.cls)).toFixed(4),
         tbt: Math.round(median(runs.map(r => r.tbt))),
-        perf: Math.round(median(runs.map(r => r.perf)))
+        perf: Math.round(median(runs.map(r => r.perf))),
+        // The observed spread across this page's own runs IS the measurement noise floor.
+        // A regression smaller than the noise is not detectable, and pretending otherwise
+        // produces gates that fail a build against itself (§42.1).
+        noise: { lcp: spread(runs.map(r => r.lcp)), tbt: spread(runs.map(r => r.tbt)) }
       }
       const r = results[name]
-      console.log(`  ${name.padEnd(15)} LCP ${String(r.lcp).padStart(5)}ms   CLS ${String(r.cls).padEnd(6)}   TBT ${String(r.tbt).padStart(4)}ms   perf ${r.perf}`)
+      console.log(`  ${name.padEnd(15)} LCP ${String(r.lcp).padStart(5)}ms ±${String(r.noise.lcp).padStart(4)}   CLS ${String(r.cls).padEnd(6)}   TBT ${String(r.tbt).padStart(4)}ms ±${String(r.noise.tbt).padStart(3)}   perf ${r.perf}`)
     }
   } finally {
     // chrome-launcher throws EPERM removing its temp profile on Windows, *after* the run has
@@ -115,12 +121,24 @@ for (const [name] of PAGES) {
   if (!b) continue
 
   // ── Binding merge gates (§42.1): REGRESSION only. This is what the redesign controls. ──
-  const lcpBudget = Math.max(100, b.lcp * 0.02)
+  //
+  // Each budget is floored at the page's own MEASURED noise (the spread across the baseline's
+  // 5 runs). A regression smaller than the measurement noise is not detectable, and a gate that
+  // claims otherwise fails builds against themselves — which is how gates get overridden and
+  // then ignored. Noise floors are recorded in the baseline, not guessed.
+  const noise = b.noise ?? { lcp: 0, tbt: 0 }
+
+  const lcpBudget = Math.max(100, b.lcp * 0.02, noise.lcp)
   if (c.lcp - b.lcp > lcpBudget) {
-    failures.push(`${name}: LCP ${b.lcp} → ${c.lcp}ms (+${c.lcp - b.lcp}ms, budget +${Math.round(lcpBudget)}ms)`)
+    failures.push(`${name}: LCP ${b.lcp} → ${c.lcp}ms (+${c.lcp - b.lcp}ms, budget +${Math.round(lcpBudget)}ms, noise ±${noise.lcp}ms)`)
   }
+
   if (c.cls - b.cls > 0.005) failures.push(`${name}: CLS ${b.cls} → ${c.cls} (+${(c.cls - b.cls).toFixed(4)}, budget +0.005)`)
-  if (c.tbt > b.tbt) failures.push(`${name}: TBT ${b.tbt} → ${c.tbt}ms (any increase rejects)`)
+
+  const tbtBudget = Math.max(50, b.tbt * 0.25, noise.tbt)
+  if (c.tbt - b.tbt > tbtBudget) {
+    failures.push(`${name}: TBT ${b.tbt} → ${c.tbt}ms (+${c.tbt - b.tbt}ms, budget +${Math.round(tbtBudget)}ms, noise ±${noise.tbt}ms)`)
+  }
 
   // ── Site goals (§42.4): reported, NOT gates. Phase 0 measured LCP 5.2–7.4s, a pre-existing
   //    critical-path defect that Appendix D freezes the means to fix. Enforcing it here would
