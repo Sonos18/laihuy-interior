@@ -29,3 +29,10 @@ media-src
 
 # Image library — served from Supabase Storage; not tracked in git (2GB+)
 public/images/
+
+# Playwright
+tests/.report/
+test-results/
+
+# Claude worktrees
+.claude/worktrees/

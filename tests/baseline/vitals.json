@@ -1,0 +1,50 @@
+{
+  "home": {
+    "lcp": 6249,
+    "cls": 0,
+    "tbt": 23,
+    "perf": 64
+  },
+  "projects": {
+    "lcp": 5579,
+    "cls": 0,
+    "tbt": 30,
+    "perf": 66
+  },
+  "project-detail": {
+    "lcp": 7385,
+    "cls": 0,
+    "tbt": 111,
+    "perf": 59
+  },
+  "factory": {
+    "lcp": 6556,
+    "cls": 0,
+    "tbt": 43,
+    "perf": 62
+  },
+  "services": {
+    "lcp": 5207,
+    "cls": 0,
+    "tbt": 27,
+    "perf": 68
+  },
+  "about": {
+    "lcp": 6478,
+    "cls": 0,
+    "tbt": 60,
+    "perf": 62
+  },
+  "careers": {
+    "lcp": 5203,
+    "cls": 0,
+    "tbt": 31,
+    "perf": 68
+  },
+  "contact": {
+    "lcp": 7225,
+    "cls": 0,
+    "tbt": 26,
+    "perf": 64
+  }
+}

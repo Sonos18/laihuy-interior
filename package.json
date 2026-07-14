@@ -15,7 +15,11 @@
     "media:upload": "tsx scripts/media/upload.ts",
     "media:verify": "tsx scripts/media/verify.ts",
     "test": "vitest run",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "test:vr": "playwright test --project=vr",
+    "test:vr:approve": "playwright test --project=vr --update-snapshots",
+    "vitals": "node scripts/verify/vitals.mjs",
+    "vitals:baseline": "node scripts/verify/vitals.mjs --baseline"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.90",
@@ -29,9 +33,12 @@
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.15.1",
+    "@playwright/test": "^1.61.1",
     "@supabase/supabase-js": "^2.49.0",
     "@types/node": "^26.1.0",
+    "chrome-launcher": "^1.2.1",
     "eslint": "^9.39.4",
+    "lighthouse": "^13.4.0",
     "sharp": "^0.34.5",
     "tsx": "^4.19.0",
     "typescript": "^5.9.3",
