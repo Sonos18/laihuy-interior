@@ -8,10 +8,17 @@ import { withAlt } from '~/media/project-media'
 const { t, ta } = useLanguage()
 const { resolve: mediaUrl } = useMediaUrl()
 
-// A landscape workshop image gives Careers a distinct, on-theme hero;
-// fall back to the brand banner if the workshop set ever lacks one.
-const workshopHero = workshopMedia.find(asset => asset.width > asset.height) ?? brandMedia.bannerHome
-const heroImage = withAlt(workshopHero, '')
+// Hero: a real production-floor photo, distinct from About/Factory (image ownership,
+// docs/hero-art-direction.md §10, Recruitment · Culture). The workers photo is the
+// ideal "Culture" frame but too low-res for full-bleed; use a high-res hall until
+// authentic hero-resolution people photography exists (Hero Lifecycle §15).
+const workshopHero = workshopMedia.find(asset => asset.path.endsWith('/5.webp'))
+  ?? workshopMedia.find(asset => asset.width > asset.height)
+  ?? brandMedia.bannerHome
+const heroImage = withAlt(workshopHero, {
+  vi: 'Không gian sản xuất tại xưởng Lai Huy',
+  en: 'The production floor at the Lai Huy workshop'
+})
 
 const seoTitle = computed(() => t(company.seo.careers.title))
 const seoDescription = computed(() => t(company.seo.careers.description))
@@ -33,6 +40,7 @@ useSeoMeta({
       special-title="Lai Huy Interior"
       :subtitle="t({ vi: 'Gia nhập môi trường sản xuất và thi công nội thất dự án chuyên nghiệp, nơi thiết kế, kỹ thuật, xưởng và công trình làm việc cùng một mục tiêu.', en: 'Join a professional project interior environment where design, technical detailing, factory production, and on-site contracting work toward one delivery goal.' })"
       :image="heroImage"
+      focal="50% 40%"
     />
 
     <section class="section-spacing bg-white">

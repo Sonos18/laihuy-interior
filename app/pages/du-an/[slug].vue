@@ -264,22 +264,15 @@ useHead({
 
 <template>
   <div class="bg-white">
-    <!-- 1 · Hero ------------------------------------------------------------->
-    <section class="relative flex min-h-screen items-end overflow-hidden bg-ink-950 text-white">
-      <NuxtImg
-        :src="heroImage.path"
-        :alt="t(project.name)"
-        :width="heroImage.width"
-        :height="heroImage.height"
-        sizes="sm:100vw md:100vw lg:100vw xl:100vw"
-        loading="eager"
-        fetchpriority="high"
-        class="absolute inset-0 h-full w-full object-cover"
-      />
-      <div class="absolute inset-0 bg-linear-to-t from-ink-950/92 from-10% via-ink-950/55 to-ink-950/30" />
-      <div class="absolute inset-0 bg-linear-to-r from-ink-950/70 via-transparent to-transparent" />
-
-      <div class="section-shell relative z-10 w-full px-6 pb-16 pt-32 md:pb-20">
+    <!-- 1 · Hero — caption / per-project (docs/hero-art-direction.md §10, Project detail · Craftsmanship) -->
+    <AppHero
+      :title="t(project.name)"
+      :image="heroImage"
+      mode="caption"
+      atmosphere="dark"
+      focal="50% 40%"
+    >
+      <template #breadcrumb>
         <nav
           class="mb-8 flex items-center gap-2 text-sm font-semibold text-white/62"
           :aria-label="t({ vi: 'Đường dẫn', en: 'Breadcrumb' })"
@@ -295,8 +288,10 @@ useHead({
             {{ t({ vi: 'Dự án', en: 'Projects' }) }}
           </NuxtLink>
         </nav>
+      </template>
 
-        <div class="flex flex-wrap items-center gap-3">
+      <template #chips>
+        <div class="mb-5 flex flex-wrap items-center gap-3">
           <span class="rounded-full bg-wood-500 px-3 py-1.5 text-xs font-black uppercase tracking-[0.16em] text-white">
             {{ t(categoryLabel) }}
           </span>
@@ -311,11 +306,9 @@ useHead({
             {{ statusText }}
           </span>
         </div>
+      </template>
 
-        <h1 class="mt-5 max-w-5xl text-hero font-black uppercase leading-tight text-white">
-          {{ t(project.name) }}
-        </h1>
-
+      <template #meta>
         <p
           v-if="project.location"
           class="mt-4 flex items-center gap-2 text-lg font-semibold text-wood-200"
@@ -327,37 +320,37 @@ useHead({
           {{ t(project.location) }}
         </p>
 
-        <p class="mt-5 max-w-3xl text-lg leading-8 text-white/80">
+        <p class="mt-5 text-lg leading-8 text-white/80">
           {{ t(project.shortDescription) }}
         </p>
 
         <p
           v-if="project.projectOutcome"
-          class="mt-4 max-w-3xl border-l-2 border-wood-400 pl-4 text-base font-semibold leading-7 text-white/86"
+          class="mt-4 border-l-2 border-wood-400 pl-4 text-base font-semibold leading-7 text-white/86"
         >
           {{ t(project.projectOutcome) }}
         </p>
+      </template>
 
-        <div class="mt-9 flex flex-col gap-3 sm:flex-row">
-          <NuxtLink
-            to="/lien-he"
-            class="btn-primary"
-          >
-            {{ t(uiText.cta.contact) }}
-            <Icon
-              name="i-lucide-arrow-right"
-              class="h-4 w-4"
-            />
-          </NuxtLink>
-          <NuxtLink
-            to="/du-an"
-            class="btn-secondary"
-          >
-            {{ t(uiText.cta.allProjects) }}
-          </NuxtLink>
-        </div>
-      </div>
-    </section>
+      <template #actions>
+        <NuxtLink
+          to="/lien-he"
+          class="btn-primary"
+        >
+          {{ t(uiText.cta.contact) }}
+          <Icon
+            name="i-lucide-arrow-right"
+            class="h-4 w-4"
+          />
+        </NuxtLink>
+        <NuxtLink
+          to="/du-an"
+          class="btn-secondary"
+        >
+          {{ t(uiText.cta.allProjects) }}
+        </NuxtLink>
+      </template>
+    </AppHero>
 
     <!-- Sticky in-page nav --------------------------------------------------->
     <nav

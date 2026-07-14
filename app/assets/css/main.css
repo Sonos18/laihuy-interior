@@ -95,8 +95,10 @@
     @apply mx-auto max-w-7xl;
   }
 
-  .hero-overlay {
-    @apply absolute inset-0 bg-linear-to-r from-ink-950/95 via-ink-950/70 to-ink-950/30;
+  /* Subtle cinematic treatment for hero photography — gentle contrast + warmth only.
+     No dramatic grading; readability comes from composition + the single scrim. */
+  .hero-media {
+    filter: contrast(1.04) saturate(1.04);
   }
 
   .eyebrow {

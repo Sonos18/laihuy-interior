@@ -63,6 +63,9 @@ useSeoMeta({
       :special-title="t({ vi: 'khách sạn & công trình lớn', en: 'case studies' })"
       :subtitle="t({ vi: 'Các dự án được trình bày theo hướng năng lực triển khai: phạm vi công việc, vật liệu, tiến độ và chất lượng bàn giao.', en: 'Projects are presented as delivery case studies, showing scope, materials, schedule, and handover quality.' })"
       :image="heroImage"
+      mode="caption"
+      atmosphere="dark"
+      focal="50% 42%"
     />
 
     <section class="section-spacing bg-white">

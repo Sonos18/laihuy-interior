@@ -8,9 +8,15 @@ import { withAlt } from '~/media/project-media'
 const { t, ta } = useLanguage()
 const { resolve: mediaUrl } = useMediaUrl()
 
-// Previous hero used an Anh Duy image; that folder is absent from the new library.
-// Substituted with a residential project cover.
-const heroImage = withAlt(projectMedia['nha-vuon-chily'].cover, '')
+// Hero: an inviting residential living room — see docs/hero-art-direction.md §10
+// (Contact · Conversation). Compact height, then flows into the contact form.
+const heroAsset = projectMedia['nha-vuon-chily'].images.find(
+  image => image.path.endsWith('nha-vuon-chily/5.webp')
+) ?? projectMedia['nha-vuon-chily'].cover
+const heroImage = withAlt(heroAsset, {
+  vi: 'Phòng khách trong dự án nhà vườn Chi Ly',
+  en: 'Living room in the Chi Ly garden villa project'
+})
 
 const form = reactive({
   name: '',
@@ -97,6 +103,9 @@ useSeoMeta({
       :special-title="t({ vi: 'dự án', en: 'our team' })"
       :subtitle="t({ vi: 'Gửi bản vẽ, BOQ hoặc thông tin công trình để Lai Huy Interior tư vấn phương án sản xuất và thi công phù hợp.', en: 'Send drawings, BOQ, or project information so Lai Huy Interior can advise on production and contracting solutions.' })"
       :image="heroImage"
+      atmosphere="warm"
+      size="compact"
+      focal="50% 42%"
     />
 
     <section class="section-spacing bg-white">

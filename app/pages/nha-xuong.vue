@@ -298,64 +298,34 @@ useHead({
 
 <template>
   <div>
-    <!-- 1 · Hero ------------------------------------------------------------->
-    <section class="relative flex min-h-screen items-end overflow-hidden bg-ink-950 text-white">
-      <NuxtImg
-        :src="heroImage.path"
-        :alt="t(heroImage.alt)"
-        :width="heroImage.width"
-        :height="heroImage.height"
-        sizes="sm:100vw md:100vw lg:100vw xl:100vw"
-        loading="eager"
-        fetchpriority="high"
-        class="hero-image absolute inset-0 h-full w-full object-cover"
-      />
-      <div class="absolute inset-0 bg-linear-to-t from-ink-950/92 from-10% via-ink-950/55 to-ink-950/35" />
-      <div class="absolute inset-0 bg-linear-to-r from-ink-950/70 via-transparent to-transparent" />
-
-      <div class="section-shell relative z-10 w-full px-6 pb-16 pt-36 md:pb-24 md:pt-44">
-        <p
-          v-reveal
-          class="eyebrow reveal mb-5 text-wood-300"
+    <!-- 1 · Hero — offset / neutral (docs/hero-art-direction.md §10, Factory · Capability) -->
+    <AppHero
+      :topic="t({ vi: 'Năng lực nhà xưởng', en: 'Factory capability' })"
+      :title="t({ vi: 'Nơi bản vẽ trở thành', en: 'Where drawings become' })"
+      :special-title="t({ vi: 'sản phẩm thật', en: 'the real thing' })"
+      :subtitle="t({ vi: 'Xưởng sản xuất trực tiếp 3.000 m² của Lai Huy kiểm soát vật liệu, máy móc, tay nghề và chất lượng — để mỗi dự án khách sạn, villa và căn hộ được bàn giao đúng tiến độ.', en: 'Lai Huy’s directly operated 3,000 m² workshop controls materials, machinery, craft and quality — so every hotel, villa and apartment project is delivered on schedule.' })"
+      :image="heroImage"
+      focal="50% 48%"
+    >
+      <template #actions>
+        <NuxtLink
+          to="/lien-he"
+          class="btn-primary"
         >
-          {{ t({ vi: 'Năng lực nhà xưởng', en: 'Factory capability' }) }}
-        </p>
-        <h1
-          v-reveal="80"
-          class="reveal text-hero max-w-4xl font-black uppercase text-white"
+          {{ t(uiText.cta.contact) }}
+          <Icon
+            name="i-lucide-arrow-right"
+            class="h-4 w-4"
+          />
+        </NuxtLink>
+        <NuxtLink
+          to="/du-an"
+          class="btn-secondary"
         >
-          {{ t({ vi: 'Nơi bản vẽ trở thành', en: 'Where drawings become' }) }}
-          <span class="text-wood-300">{{ t({ vi: 'sản phẩm thật', en: 'the real thing' }) }}</span>
-        </h1>
-        <p
-          v-reveal="150"
-          class="reveal text-lead mt-6 max-w-2xl text-white/80"
-        >
-          {{ t({ vi: 'Xưởng sản xuất trực tiếp 3.000 m² của Lai Huy kiểm soát vật liệu, máy móc, tay nghề và chất lượng — để mỗi dự án khách sạn, villa và căn hộ được bàn giao đúng tiến độ.', en: 'Lai Huy’s directly operated 3,000 m² workshop controls materials, machinery, craft and quality — so every hotel, villa and apartment project is delivered on schedule.' }) }}
-        </p>
-        <div
-          v-reveal="230"
-          class="reveal mt-9 flex flex-col gap-3 sm:flex-row"
-        >
-          <NuxtLink
-            to="/lien-he"
-            class="btn-primary"
-          >
-            {{ t(uiText.cta.contact) }}
-            <Icon
-              name="i-lucide-arrow-right"
-              class="h-4 w-4"
-            />
-          </NuxtLink>
-          <NuxtLink
-            to="/du-an"
-            class="btn-secondary"
-          >
-            {{ t(uiText.cta.allProjects) }}
-          </NuxtLink>
-        </div>
-      </div>
-    </section>
+          {{ t(uiText.cta.allProjects) }}
+        </NuxtLink>
+      </template>
+    </AppHero>
 
     <!-- 2 · Why our factory -------------------------------------------------->
     <section class="section-spacing bg-white">

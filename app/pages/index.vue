@@ -54,12 +54,13 @@ useSeoMeta({
         sizes="sm:100vw md:100vw lg:100vw xl:100vw"
         loading="eager"
         fetchpriority="high"
-        class="hero-image absolute inset-0 h-full w-full object-cover"
+        class="hero-image hero-media absolute inset-0 h-full w-full object-cover"
       />
-      <!-- Primary atmospheric overlay: warm veil that lifts toward the top so the photography reads. -->
-      <div class="absolute inset-0 bg-linear-to-t from-wood-950/86 from-70% to-wood-950/68" />
-      <!-- Lower protection layer: deepens the base of the frame to keep the metrics and CTAs legible. -->
-      <div class="absolute inset-0 bg-linear-to-t from-wood-950/43 via-transparent via-70% to-transparent" />
+      <!-- Single localized scrim (rendering budget = 1) — full-width bottom-up so the
+           metrics row and CTAs stay legible, lighter toward the top so the photography
+           reads. Home stays a bespoke flagship cover but shares the hero design language
+           (see docs/hero-art-direction.md §10, Home · Inspiration). -->
+      <div class="absolute inset-0 bg-linear-to-t from-wood-950/88 via-wood-950/28 to-transparent" />
 
       <div class="section-shell relative z-10 flex min-h-screen flex-col justify-end px-6 pb-12 pt-32 md:pb-18">
         <div class="max-w-5xl">

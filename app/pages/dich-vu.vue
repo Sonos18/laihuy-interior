@@ -8,7 +8,15 @@ import { withAlt } from '~/media/project-media'
 const { t, ta } = useLanguage()
 const { resolve: mediaUrl } = useMediaUrl()
 
-const heroImage = withAlt(projectMedia['codi-boutique-hotel'].cover, '')
+// Hero: a single clear architectural subject (staircase + interior garden) with a
+// usable quiet zone — see docs/hero-art-direction.md §10 (Services · Expertise).
+const heroAsset = projectMedia['codi-boutique-hotel'].images.find(
+  image => image.path.endsWith('/sanh-don/2.webp')
+) ?? projectMedia['codi-boutique-hotel'].cover
+const heroImage = withAlt(heroAsset, {
+  vi: 'Cầu thang và tiểu cảnh trong dự án nội thất Codi',
+  en: 'Staircase and interior garden in the Codi interior project'
+})
 
 const seoTitle = computed(() => t(company.seo.services.title))
 const seoDescription = computed(() => t(company.seo.services.description))
@@ -30,6 +38,8 @@ useSeoMeta({
       :special-title="t({ vi: 'nội thất dự án', en: 'for project interiors' })"
       :subtitle="t({ vi: 'Thiết kế, sản xuất tại xưởng và thi công nội thất cho khách sạn 3-5 sao, villa, căn hộ, thương mại và đơn hàng gia công.', en: 'Design, factory production, and contracting for 3-5 star hotels, villas, apartments, commercial spaces, and production-from-drawings orders.' })"
       :image="heroImage"
+      atmosphere="warm"
+      focal="55% 45%"
     />
 
     <section class="section-spacing bg-white">
