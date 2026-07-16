@@ -62,7 +62,7 @@ useSeoMeta({
            (see docs/hero-art-direction.md §10, Home · Inspiration). -->
       <div class="absolute inset-0 bg-linear-to-t from-wood-950/88 via-wood-950/28 to-transparent" />
 
-      <div class="section-shell relative z-10 flex min-h-screen flex-col justify-end px-6 pb-12 pt-32 md:pb-18">
+      <div class="shell relative z-10 flex min-h-screen flex-col justify-end pb-12 pt-32 md:pb-18">
         <div class="max-w-5xl">
           <p
             v-reveal
@@ -133,8 +133,8 @@ useSeoMeta({
       </div>
     </section>
 
-    <section class="section-spacing bg-white">
-      <div class="section-shell">
+    <section class="section-y bg-white">
+      <div class="shell">
         <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
           <div>
             <p
@@ -188,8 +188,8 @@ useSeoMeta({
       </div>
     </section>
 
-    <section class="section-spacing bg-ink-50">
-      <div class="section-shell">
+    <section class="section-y bg-ink-50">
+      <div class="shell">
         <div class="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <p
@@ -273,8 +273,8 @@ useSeoMeta({
       </div>
     </section>
 
-    <section class="section-spacing bg-ink-950 text-white">
-      <div class="section-shell">
+    <section class="section-y bg-ink-950 text-white">
+      <div class="shell">
         <div class="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
           <div>
             <p
@@ -312,8 +312,8 @@ useSeoMeta({
       </div>
     </section>
 
-    <section class="section-spacing bg-white">
-      <div class="section-shell">
+    <section class="section-y bg-white">
+      <div class="shell">
         <div class="mb-12 max-w-3xl">
           <p
             v-reveal
@@ -351,8 +351,8 @@ useSeoMeta({
       </div>
     </section>
 
-    <section class="section-spacing bg-ink-50">
-      <div class="section-shell grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
+    <section class="section-y bg-ink-50">
+      <div class="shell grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
         <div
           v-reveal
           class="reveal group overflow-hidden rounded-2xl"
@@ -405,8 +405,8 @@ useSeoMeta({
       </div>
     </section>
 
-    <section class="bg-ink-950 px-6 py-16 text-white">
-      <div class="section-shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+    <section class="bg-ink-950 py-16 text-white">
+      <div class="shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
         <div>
           <p
             v-reveal

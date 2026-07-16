@@ -9,7 +9,7 @@ const { t, ta } = useLanguage()
 
 <template>
   <footer class="bg-ink-950 text-white">
-    <div class="section-shell px-6 py-16">
+    <div class="shell py-16">
       <div class="grid gap-12 lg:grid-cols-[1.3fr_0.8fr_0.9fr_1.2fr]">
         <div>
           <img

@@ -7,6 +7,162 @@
   --color-warm: #b8875a;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESIGN TOKEN CONTRACT — docs/header-footer-art-direction.md §29
+   ───────────────────────────────────────────────────────────────────────────
+   Phase 3A (refactor) DECLARES this set. Only the shell/rhythm tokens are
+   consumed today, by `.shell` and `.section-y` below — and their values are
+   transcribed to match what the body already renders, so adopting them moves
+   nothing (ADR-001: "Body sections move 0px at every viewport").
+
+   The rest are declared and deliberately UNCONSUMED. They are the contract the
+   later phases transcribe against: chrome + hero converge onto the rail in
+   Phase 3B, the header state machine in Phase 4, the drawer in Phase 5, the
+   footer in Phase 6. Declaring a token renders nothing; a token is not a
+   dependency (§2).
+
+   Tokens flow downward only: L0 (@theme primitives) → L1 → L2. No component
+   may invent a colour; new colours enter at L0 via a doc PR (§22.1).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── L1 · Shell / rhythm ────────────────────────────────────────────────
+     The alignment rail (ADR-001). --shell-measure is CONTENT width, not box
+     width: the gutter is added to the max-width rather than subtracted from
+     the measure, so changing one knob never silently changes the other. That
+     coupling is exactly why ADR-001 rejected Option B. */
+  --shell-measure: 80rem;      /* 1280px of CONTENT                        */
+  --shell-gutter: 1.5rem;      /*   24px  < md  — matches today's px-6     */
+  --shell-gutter-md: 2rem;     /*   32px  ≥ md  — matches today's md:px-8  */
+  --section-py: 5rem;          /*   80px  < md  — matches today's py-20    */
+  --section-py-md: 7rem;       /*  112px  ≥ md  — matches today's md:py-28 */
+
+  /* ── L1 · Breakpoints (reference; media queries use the literal) ─────── */
+  --bp-md: 48rem;              /*  768px                                   */
+  --bp-xl: 80rem;              /* 1280px — the chrome breakpoint.
+                                  `lg` is NOT a chrome breakpoint (§9)     */
+
+  /* ── L1 · Foreground on DARK ────────────────────────────────────────── */
+  --fg-dark: #fff;
+  --fg-dark-muted: rgb(255 255 255 / 0.72);    /* 10.1:1 on ink-950        */
+  --fg-dark-subtle: rgb(255 255 255 / 0.48);   /*  5.0:1 on ink-950 (§25.2)*/
+  --rule-dark: rgb(255 255 255 / 0.12);
+  --accent-dark: var(--color-wood-300);        /*  7.8:1 on ink-950        */
+
+  /* ── L1 · Foreground on LIGHT ───────────────────────────────────────── */
+  --fg-light: var(--color-ink-950);
+  --fg-light-muted: var(--color-ink-600);      /*  7.4:1 on white          */
+  --fg-light-subtle: var(--color-ink-500);     /*  5.4:1 on white (§25.2)  */
+  --rule-light: rgb(216 210 202 / 0.6);        /* ink-200/60               */
+  --accent-light: var(--color-wood-600);
+
+  /* ── L1 · Motion ────────────────────────────────────────────────────── */
+  --ease-editorial: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --dur-hover: 240ms;
+  --dur-state: 400ms;
+  --dur-drawer: 300ms;
+  --dur-reveal: 700ms;
+
+  /* ── L1 · Radius / shadow ───────────────────────────────────────────── */
+  --radius-pill: 9999px;
+  --radius-card: 1rem;
+  --shadow-drawer: 0 0 40px rgb(11 10 9 / 0.28);  /* the ONLY chrome shadow */
+
+  /* ── L2 · Header (consumed in Phase 4) ──────────────────────────────── */
+  --header-h: 4.5rem;          /*  72px  < xl                              */
+  --header-h-xl: 5.5rem;       /*  88px  ≥ xl                              */
+  --header-scrim-h: 10rem;     /* 160px                                    */
+  --logo-h-header: 2.5rem;     /*  40px OPTICAL (trimmed) < xl             */
+  --logo-h-header-xl: 3rem;    /*  48px OPTICAL (trimmed) ≥ xl             */
+  --logo-aspect: 2 / 1;        /* measured: 424 × 212                      */
+  --nav-item-px: 1rem;
+  --nav-item-min-h: 2.75rem;   /*  44px — WCAG 2.5.5                       */
+  --nav-item-gap: 0.25rem;
+  --nav-rule-h: 1.5px;
+  --header-group-gap: 2rem;
+  --header-action-gap: 1rem;
+  --surface-chrome: rgb(255 255 255 / 0.92);
+  --surface-chrome-blur: 16px; /* the ONE blur radius                      */
+  --header-border-a: 0.6;
+  --header-scrim-a1: 0.55;
+  --header-scrim-a2: 0.18;
+  --scrim-chrome: linear-gradient(
+    to bottom,
+    rgb(11 10 9 / var(--header-scrim-a1)),
+    rgb(11 10 9 / var(--header-scrim-a2)) 45%,
+    transparent
+  );
+  --header-blur-in: 0.05;      /* p at which backdrop-filter engages       */
+  --header-action-in: 0.5;     /* p at which CTA/phone become focusable    */
+
+  /* Runtime — written by useHeaderState AND NOTHING ELSE (§29 R2). */
+  --header-p: 0;               /* 0 … 1                                    */
+  --header-shift: 0px;         /* 0 | calc(-1 * var(--header-h))           */
+
+  /* ── L2 · Header typography (Phase 4) ───────────────────────────────── */
+  --type-nav-size: 0.8125rem;
+  --type-nav-weight: 600;
+  --type-nav-track: 0.12em;
+  --type-nav-leading: 1;
+  --type-lang-size: 0.75rem;
+  --type-lang-weight: 600;
+  --type-lang-track: 0.08em;
+  --type-meta-size: 0.8125rem;
+  --type-meta-weight: 600;
+  --type-meta-track: 0.02em;
+  --type-action-size: 0.875rem;
+  --type-action-weight: 700;
+  --type-action-track: 0.01em;
+
+  /* ── L2 · Drawer (consumed in Phase 5) ──────────────────────────────── */
+  --drawer-w: 21rem;           /* 336px                                    */
+  --drawer-w-max: 88vw;
+  --drawer-px: 1.5rem;
+  --drawer-item-py: 1.25rem;
+  --drawer-overlay: rgb(11 10 9 / 0.6);
+  --drawer-blur: 8px;
+  --type-drawer-nav-size: 1.5rem;
+  --type-drawer-nav-weight: 600;
+  --type-drawer-nav-track: -0.01em;
+  --type-drawer-nav-leading: 1.3;
+
+  /* ── L2 · Footer (consumed in Phase 6) ──────────────────────────────── */
+  --footer-py: 7rem;           /* 112px  < md                              */
+  --footer-py-md: 9rem;        /* 144px  ≥ md                              */
+  --footer-masthead-gap: 4rem;
+  --footer-col-gap: 3rem;
+  --footer-meta-gap: 4rem;
+  --logo-h-footer: 3.5rem;     /*  56px OPTICAL  < md                      */
+  --logo-h-footer-md: 4rem;    /*  64px OPTICAL  ≥ md                      */
+  --footer-surface: var(--color-ink-950);
+  --footer-top-gradient: linear-gradient(
+    to bottom, var(--color-ink-900), var(--color-ink-950) 12.5rem
+  );
+  --type-eyebrow-size: 0.75rem;
+  --type-eyebrow-weight: 600;
+  --type-eyebrow-track: 0.22em;
+  --type-body-sm-size: 0.875rem;
+  --type-body-sm-leading: 1.7;
+  --type-meta-sm-size: 0.8125rem;
+  --type-meta-sm-leading: 1.6;
+
+  /* ── L3 · Project sub-nav (page-owned, header-coupled) ──────────────── */
+  --subnav-h: 3.5rem;          /*  56px                                    */
+}
+
+/* The responsive half of the rail. Redefining the token (rather than the rule)
+   keeps --shell-gutter a single source of truth: `.shell` derives BOTH its
+   max-width and its padding from it, so the two can never disagree.
+   48rem = --bp-md = Tailwind's `md`, so this fires exactly where the old
+   `md:px-8` / `md:py-28` variants did. */
+@media (min-width: 48rem) {
+  :root {
+    --shell-gutter: var(--shell-gutter-md);
+    --section-py: var(--section-py-md);
+  }
+}
+
 @theme {
   --color-ink-50: #f7f7f5;
   --color-ink-100: #ece9e4;
@@ -87,13 +243,44 @@
 }
 
 @layer components {
-  .section-spacing {
-    @apply px-6 py-20 md:px-8 md:py-28;
+  /* The canonical alignment rail — ADR-001 Option A, §4.2, §26.7.
+     ONE utility. Padding INSIDE a max-width sized to CONTENT, so the measure is
+     stable and the gutter is responsive.
+
+     This reproduces the geometry the body already had (`section-spacing` px on
+     the section + `section-shell` max-w-7xl on the child) to the pixel, at every
+     viewport — which is the whole reason Phase 3 splits in two. Verified:
+
+       vw     element        content left   measure
+       390    390            24             342
+       768    768            32             704
+       1280   1280           32             1216
+       1440   1344 (centred) 80             1280
+       1920   1344 (centred) 320            1280
+
+     Phase 3B converged chrome, the hero and the `px-6` bands onto this rail and
+     retired `.section-shell` with them. There is now exactly ONE shell (§26.7):
+     every left edge on the site is this one. A component defining its own
+     max-width + horizontal padding re-creates the two-shell defect (§4.1) — the
+     defect this rail exists to end. */
+  .shell {
+    width: 100%;
+    margin-inline: auto;
+    max-width: calc(var(--shell-measure) + 2 * var(--shell-gutter));
+    padding-inline: var(--shell-gutter);
   }
 
-  .section-shell {
-    @apply mx-auto max-w-7xl;
+  /* Vertical rhythm only — the horizontal half now belongs to `.shell` (§4.2).
+     Values are transcribed from the `section-spacing` it replaces: 80px / 112px. */
+  .section-y {
+    padding-block: var(--section-py);
   }
+
+  /* `.section-shell` (mx-auto max-w-7xl, padding applied outside it by each
+     consumer) was the second of the two conflicting shells (§4.1). Phase 3B
+     moved its last consumer onto `.shell`, so it is gone. Do not reintroduce it:
+     a component that owns both a max-width and horizontal padding couples the
+     gutter to the measure, which is precisely what ADR-001 rejected. */
 
   /* Subtle cinematic treatment for hero photography — gentle contrast + warmth only.
      No dramatic grading; readability comes from composition + the single scrim. */

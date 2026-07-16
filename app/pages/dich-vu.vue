@@ -42,8 +42,8 @@ useSeoMeta({
       focal="55% 45%"
     />
 
-    <section class="section-spacing bg-white">
-      <div class="section-shell">
+    <section class="section-y bg-white">
+      <div class="shell">
         <div class="mb-12 max-w-3xl">
           <p class="eyebrow">
             {{ t({ vi: 'Dịch vụ tích hợp', en: 'Integrated service' }) }}
@@ -90,8 +90,8 @@ useSeoMeta({
       </div>
     </section>
 
-    <section class="section-spacing bg-ink-50">
-      <div class="section-shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+    <section class="section-y bg-ink-50">
+      <div class="shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
         <div>
           <p class="eyebrow">
             {{ t({ vi: 'Hồ sơ dự án', en: 'Project documents' }) }}

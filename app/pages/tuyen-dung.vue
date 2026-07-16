@@ -43,8 +43,8 @@ useSeoMeta({
       focal="50% 40%"
     />
 
-    <section class="section-spacing bg-white">
-      <div class="section-shell grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+    <section class="section-y bg-white">
+      <div class="shell grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
         <div>
           <p class="eyebrow">
             {{ t({ vi: 'Môi trường làm việc', en: 'Work environment' }) }}
@@ -70,8 +70,8 @@ useSeoMeta({
       </div>
     </section>
 
-    <section class="section-spacing bg-ink-50">
-      <div class="section-shell">
+    <section class="section-y bg-ink-50">
+      <div class="shell">
         <div class="mb-12 max-w-3xl">
           <p class="eyebrow">
             {{ t(uiText.labels.openPositions) }}
@@ -119,8 +119,8 @@ useSeoMeta({
       </div>
     </section>
 
-    <section class="bg-ink-950 px-6 py-16 text-white">
-      <div class="section-shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+    <section class="bg-ink-950 py-16 text-white">
+      <div class="shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
         <div>
           <p class="eyebrow text-wood-300">
             {{ t({ vi: 'Ứng tuyển', en: 'Apply' }) }}

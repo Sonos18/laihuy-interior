@@ -34,7 +34,7 @@ onUnmounted(() => {
         : 'border-white/10 bg-ink-950/10 text-white backdrop-blur-sm'
     ]"
   >
-    <nav class="section-shell flex h-20 items-center justify-between px-6">
+    <nav class="shell flex h-20 items-center justify-between">
       <NuxtLink
         to="/"
         class="flex shrink-0 items-center gap-3"

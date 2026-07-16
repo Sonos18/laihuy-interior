@@ -110,7 +110,7 @@ const scrimClass = computed(() => {
 
     <div class="relative z-10 w-full">
       <div
-        class="section-shell px-6"
+        class="shell"
         :class="isCentered ? 'py-36 md:py-44' : 'pb-16 pt-36 md:pb-24 md:pt-44'"
       >
         <div :class="contentClass">

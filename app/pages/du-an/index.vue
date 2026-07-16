@@ -68,8 +68,8 @@ useSeoMeta({
       focal="50% 42%"
     />
 
-    <section class="section-spacing bg-white">
-      <div class="section-shell">
+    <section class="section-y bg-white">
+      <div class="shell">
         <div class="mb-10 flex flex-wrap gap-3">
           <button
             v-for="category in categories"
@@ -145,8 +145,8 @@ useSeoMeta({
       </div>
     </section>
 
-    <section class="bg-ink-950 px-6 py-16 text-white">
-      <div class="section-shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+    <section class="bg-ink-950 py-16 text-white">
+      <div class="shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
         <div>
           <p class="eyebrow text-wood-300">
             {{ t(uiText.cta.hotelConsult) }}

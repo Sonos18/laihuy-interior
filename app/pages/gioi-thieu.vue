@@ -195,8 +195,8 @@ useHead({
     </AppHero>
 
     <!-- 2 · Who we are (split, image left) ----------------------------------->
-    <section class="section-spacing bg-white">
-      <div class="section-shell grid gap-12 lg:grid-cols-2 lg:items-center">
+    <section class="section-y bg-white">
+      <div class="shell grid gap-12 lg:grid-cols-2 lg:items-center">
         <div
           v-reveal
           class="reveal overflow-hidden rounded-2xl"
@@ -241,8 +241,8 @@ useHead({
     </section>
 
     <!-- 3 · Philosophy (centered + value cards) ------------------------------>
-    <section class="section-spacing bg-ink-50">
-      <div class="section-shell">
+    <section class="section-y bg-ink-50">
+      <div class="shell">
         <div class="mx-auto mb-12 max-w-2xl text-center">
           <p
             v-reveal
@@ -313,9 +313,9 @@ useHead({
     <!-- 4 · Our journey (timeline — horizontal desktop / vertical mobile) ----->
     <section
       v-if="company.milestones.length"
-      class="section-spacing bg-white"
+      class="section-y bg-white"
     >
-      <div class="section-shell">
+      <div class="shell">
         <div class="mb-12 max-w-2xl">
           <p
             v-reveal
@@ -358,9 +358,9 @@ useHead({
     <!-- 5 · Founder (image-first — conditional) ------------------------------>
     <section
       v-if="company.founder"
-      class="section-spacing bg-ink-50"
+      class="section-y bg-ink-50"
     >
-      <div class="section-shell grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+      <div class="shell grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
         <div
           v-if="company.founder.portrait"
           v-reveal
@@ -414,7 +414,7 @@ useHead({
         class="absolute inset-0 h-full w-full object-cover"
       />
       <div class="absolute inset-0 bg-ink-950/70" />
-      <div class="section-shell relative z-10 px-6 py-24 md:py-32">
+      <div class="shell relative z-10 py-24 md:py-32">
         <div class="max-w-2xl">
           <p
             v-reveal
@@ -467,8 +467,8 @@ useHead({
     </section>
 
     <!-- 7 · Craftsmanship (split, image right) ------------------------------->
-    <section class="section-spacing bg-white">
-      <div class="section-shell grid gap-12 lg:grid-cols-2 lg:items-center">
+    <section class="section-y bg-white">
+      <div class="shell grid gap-12 lg:grid-cols-2 lg:items-center">
         <div>
           <p
             v-reveal
@@ -505,8 +505,8 @@ useHead({
     </section>
 
     <!-- 8 · How we work (stepped process) ------------------------------------>
-    <section class="section-spacing bg-ink-50">
-      <div class="section-shell">
+    <section class="section-y bg-ink-50">
+      <div class="shell">
         <div class="mb-12 max-w-2xl">
           <p
             v-reveal
@@ -543,8 +543,8 @@ useHead({
     </section>
 
     <!-- 9 · Quality commitment (dark split + checklist) ---------------------->
-    <section class="section-spacing bg-ink-950 text-white">
-      <div class="section-shell grid gap-12 lg:grid-cols-2 lg:items-center">
+    <section class="section-y bg-ink-950 text-white">
+      <div class="shell grid gap-12 lg:grid-cols-2 lg:items-center">
         <div>
           <p
             v-reveal
@@ -589,8 +589,8 @@ useHead({
     </section>
 
     <!-- 10 · Why Lai Huy (differentiator cards) ------------------------------>
-    <section class="section-spacing bg-white">
-      <div class="section-shell">
+    <section class="section-y bg-white">
+      <div class="shell">
         <div class="mb-12 max-w-2xl">
           <p
             v-reveal
@@ -631,7 +631,7 @@ useHead({
 
     <!-- 11 · Trust band (stat strip) ----------------------------------------->
     <section class="bg-ink-950 text-white">
-      <div class="section-shell grid gap-4 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="shell grid gap-4 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div
           v-for="stat in trustStats"
           :key="t(stat.label)"
@@ -656,9 +656,9 @@ useHead({
     <!-- 12 · People (portrait grid — conditional) ---------------------------->
     <section
       v-if="company.team.length"
-      class="section-spacing bg-ink-50"
+      class="section-y bg-ink-50"
     >
-      <div class="section-shell">
+      <div class="shell">
         <div class="mb-12 max-w-2xl">
           <p
             v-reveal
@@ -701,8 +701,8 @@ useHead({
     </section>
 
     <!-- 13 · Inside Lai Huy gallery (curated real photos + lightbox) --------->
-    <section class="section-spacing bg-white">
-      <div class="section-shell">
+    <section class="section-y bg-white">
+      <div class="shell">
         <div class="mb-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div class="max-w-2xl">
             <p
@@ -735,8 +735,8 @@ useHead({
     </section>
 
     <!-- 14 · Explore our work (editorial image + link) ----------------------->
-    <section class="section-spacing bg-ink-50">
-      <div class="section-shell grid gap-10 lg:grid-cols-2 lg:items-center">
+    <section class="section-y bg-ink-50">
+      <div class="shell grid gap-10 lg:grid-cols-2 lg:items-center">
         <div
           v-reveal
           class="reveal group overflow-hidden rounded-2xl"
@@ -781,9 +781,9 @@ useHead({
     <!-- 15 · Testimonials (conditional) -------------------------------------->
     <section
       v-if="company.testimonials.length"
-      class="section-spacing bg-white"
+      class="section-y bg-white"
     >
-      <div class="section-shell">
+      <div class="shell">
         <div class="mb-12 max-w-2xl">
           <p class="eyebrow">
             {{ t({ vi: 'Khách hàng nói gì', en: 'What clients say' }) }}
@@ -816,8 +816,8 @@ useHead({
     </section>
 
     <!-- 16 · Closing CTA ----------------------------------------------------->
-    <section class="bg-ink-950 px-6 py-20 text-white">
-      <div class="section-shell text-center">
+    <section class="bg-ink-950 py-20 text-white">
+      <div class="shell text-center">
         <p class="eyebrow text-wood-300">
           {{ t({ vi: 'Bắt đầu cùng Lai Huy', en: 'Start with Lai Huy' }) }}
         </p>

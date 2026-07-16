@@ -108,8 +108,8 @@ useSeoMeta({
       focal="50% 42%"
     />
 
-    <section class="section-spacing bg-white">
-      <div class="section-shell">
+    <section class="section-y bg-white">
+      <div class="shell">
         <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           <article
             v-for="card in contactCards"
@@ -144,8 +144,8 @@ useSeoMeta({
       </div>
     </section>
 
-    <section class="section-spacing bg-ink-50">
-      <div class="section-shell grid gap-12 lg:grid-cols-[1fr_0.9fr]">
+    <section class="section-y bg-ink-50">
+      <div class="shell grid gap-12 lg:grid-cols-[1fr_0.9fr]">
         <div class="rounded-2xl border border-ink-200 bg-white p-6 md:p-8">
           <p class="eyebrow">
             {{ t(uiText.cta.quote24h) }}

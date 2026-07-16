@@ -357,7 +357,7 @@ useHead({
       class="sticky top-20 z-30 border-b border-ink-200 bg-white/95 backdrop-blur-md"
       :aria-label="t({ vi: 'Mục lục dự án', en: 'Case study sections' })"
     >
-      <div class="section-shell flex gap-1 overflow-x-auto px-6 py-3">
+      <div class="shell flex gap-1 overflow-x-auto py-3">
         <a
           v-for="section in navSections"
           :key="section.id"
@@ -377,9 +377,9 @@ useHead({
     <section
       v-if="project.content?.overview"
       id="overview"
-      class="section-spacing scroll-mt-36 bg-white"
+      class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] bg-white"
     >
-      <div class="section-shell grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+      <div class="shell grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
         <div>
           <p
             v-reveal
@@ -417,9 +417,9 @@ useHead({
     <!-- 3 · Project facts ---------------------------------------------------->
     <section
       id="facts"
-      class="section-spacing scroll-mt-36 bg-ink-50"
+      class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] bg-ink-50"
     >
-      <div class="section-shell">
+      <div class="shell">
         <div class="mb-10 max-w-2xl">
           <p
             v-reveal
@@ -460,9 +460,9 @@ useHead({
     <section
       v-if="project.content?.challenge"
       id="challenge"
-      class="section-spacing scroll-mt-36 bg-white"
+      class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] bg-white"
     >
-      <div class="section-shell grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+      <div class="shell grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
         <div>
           <p
             v-reveal
@@ -490,9 +490,9 @@ useHead({
     <section
       v-if="project.content?.solution"
       id="solution"
-      class="section-spacing scroll-mt-36 bg-ink-950 text-white"
+      class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] bg-ink-950 text-white"
     >
-      <div class="section-shell grid gap-12 lg:grid-cols-2 lg:items-center">
+      <div class="shell grid gap-12 lg:grid-cols-2 lg:items-center">
         <div>
           <p
             v-reveal
@@ -533,9 +533,9 @@ useHead({
     <section
       v-if="services.length"
       id="services"
-      class="section-spacing scroll-mt-36 bg-white"
+      class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] bg-white"
     >
-      <div class="section-shell">
+      <div class="shell">
         <div class="mb-10 max-w-2xl">
           <p
             v-reveal
@@ -605,9 +605,9 @@ useHead({
     <section
       v-if="allImages.length"
       id="gallery"
-      class="section-spacing scroll-mt-36 bg-ink-50"
+      class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] bg-ink-50"
     >
-      <div class="section-shell">
+      <div class="shell">
         <div class="mb-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div class="max-w-2xl">
             <p
@@ -667,9 +667,9 @@ useHead({
     <section
       v-if="project.content?.experience || walkthroughSteps.length"
       id="experience"
-      class="section-spacing scroll-mt-36 bg-white"
+      class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] bg-white"
     >
-      <div class="section-shell">
+      <div class="shell">
         <div class="mb-12 max-w-3xl">
           <p
             v-reveal
@@ -728,9 +728,9 @@ useHead({
     <section
       v-if="ta(project.content?.materials).length || project.content?.craftsmanship"
       id="materials"
-      class="section-spacing scroll-mt-36 bg-ink-950 text-white"
+      class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] bg-ink-950 text-white"
     >
-      <div class="section-shell grid gap-12 lg:grid-cols-2">
+      <div class="shell grid gap-12 lg:grid-cols-2">
         <div v-if="ta(project.content?.materials).length">
           <p
             v-reveal
@@ -794,34 +794,41 @@ useHead({
     <section
       v-if="project.testimonial"
       id="testimonial"
-      class="section-spacing scroll-mt-36 bg-white"
+      class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] bg-white"
     >
-      <div class="section-shell max-w-4xl text-center">
-        <Icon
-          name="i-lucide-quote"
-          class="mx-auto h-10 w-10 text-wood-400"
-        />
-        <blockquote class="mt-6 text-2xl font-black leading-snug text-ink-950 md:text-3xl">
-          “{{ t(project.testimonial.quote) }}”
-        </blockquote>
-        <p class="mt-6 text-base font-bold text-ink-950">
-          {{ t(project.testimonial.author) }}
-        </p>
-        <p
-          v-if="project.testimonial.role"
-          class="text-sm text-ink-500"
-        >
-          {{ t(project.testimonial.role) }}
-        </p>
+      <div class="shell">
+        <!-- The narrower measure nests INSIDE the rail rather than riding on it.
+             `.shell max-w-4xl` would cap the element and then subtract the gutter
+             from it, narrowing the text from 896px to 832px — a component owning
+             both a max-width and horizontal padding is the two-shell defect in
+             miniature (§4.1, §26.7). Nested, the rendered box is unchanged. -->
+        <div class="mx-auto max-w-4xl text-center">
+          <Icon
+            name="i-lucide-quote"
+            class="mx-auto h-10 w-10 text-wood-400"
+          />
+          <blockquote class="mt-6 text-2xl font-black leading-snug text-ink-950 md:text-3xl">
+            “{{ t(project.testimonial.quote) }}”
+          </blockquote>
+          <p class="mt-6 text-base font-bold text-ink-950">
+            {{ t(project.testimonial.author) }}
+          </p>
+          <p
+            v-if="project.testimonial.role"
+            class="text-sm text-ink-500"
+          >
+            {{ t(project.testimonial.role) }}
+          </p>
+        </div>
       </div>
     </section>
 
     <!-- 11 · Related projects ------------------------------------------------>
     <section
       v-if="relatedProjects.length"
-      class="section-spacing bg-ink-50"
+      class="section-y bg-ink-50"
     >
-      <div class="section-shell">
+      <div class="shell">
         <div class="mb-10 flex items-end justify-between gap-6">
           <div>
             <p
@@ -882,7 +889,7 @@ useHead({
 
     <!-- 12 · Trust band + conversion CTA ------------------------------------->
     <section class="bg-ink-950 text-white">
-      <div class="section-shell px-6 py-16">
+      <div class="shell py-16">
         <div class="grid gap-4 border-b border-white/10 pb-12 sm:grid-cols-2 lg:grid-cols-4">
           <div
             v-for="stat in trustStats"
