@@ -2,11 +2,11 @@
 // Phase 1 — pure extraction from app.vue. DOM, classes, behaviour unchanged.
 // The redesign lands in Phase 4 (docs/header-footer-art-direction.md §5).
 import { company } from '~/data/company'
-import { localeOptions, navLinks, uiText } from '~/data/ui'
+import { navLinks, uiText } from '~/data/ui'
 
 const emit = defineEmits<{ openMenu: [] }>()
 
-const { locale, setLocale, t } = useLanguage()
+const { locale, t } = useLanguage()
 const { isActive } = useActiveLink()
 
 const isScrolled = ref(false)
@@ -64,24 +64,7 @@ onUnmounted(() => {
       </div>
 
       <div class="hidden items-center gap-3 lg:flex">
-        <div
-          class="inline-flex rounded-full border p-1"
-          :class="isScrolled ? 'border-ink-200 bg-white' : 'border-white/20 bg-white/8'"
-          :aria-label="t(uiText.language)"
-        >
-          <button
-            v-for="option in localeOptions"
-            :key="option.value"
-            type="button"
-            class="rounded-full px-3 py-1.5 text-xs font-black transition-colors"
-            :class="locale === option.value
-              ? isScrolled ? 'bg-ink-950 text-white' : 'bg-white text-ink-950'
-              : isScrolled ? 'text-ink-500 hover:text-ink-950' : 'text-white/62 hover:text-white'"
-            @click="setLocale(option.value)"
-          >
-            {{ option.label }}
-          </button>
-        </div>
+        <AppLangToggle :surface="isScrolled ? 'light' : 'dark'" />
         <a
           :href="`tel:${company.phone.replaceAll(' ', '')}`"
           class="text-sm font-bold"

@@ -3,7 +3,7 @@
 // The modal contract (focus trap, Esc, aria-modal, inert, focus return) lands in Phase 5
 // (docs/header-footer-art-direction.md §26.4, §33) — it is deliberately NOT added here, so
 // this commit stays a pure refactor.
-import { localeOptions, navLinks, uiText } from '~/data/ui'
+import { navLinks, uiText } from '~/data/ui'
 
 // Plain prop + emit, deliberately NOT defineModel. defineModel derives its value from the
 // prop, so `watch(open, ...)` would fire a component-update cycle later than the original
@@ -12,7 +12,7 @@ import { localeOptions, navLinks, uiText } from '~/data/ui'
 defineProps<{ open: boolean }>()
 const emit = defineEmits<{ close: [] }>()
 
-const { locale, setLocale, t } = useLanguage()
+const { locale, t } = useLanguage()
 const { isActive } = useActiveLink()
 </script>
 
@@ -64,21 +64,10 @@ const { isActive } = useActiveLink()
       </div>
 
       <div class="border-t border-ink-100 p-6">
-        <div
-          class="mb-4 inline-flex rounded-full border border-ink-200 bg-ink-50 p-1"
-          :aria-label="t(uiText.language)"
-        >
-          <button
-            v-for="option in localeOptions"
-            :key="option.value"
-            type="button"
-            class="rounded-full px-4 py-2 text-xs font-black transition-colors"
-            :class="locale === option.value ? 'bg-ink-950 text-white' : 'text-ink-500'"
-            @click="setLocale(option.value)"
-          >
-            {{ option.label }}
-          </button>
-        </div>
+        <AppLangToggle
+          class="mb-4"
+          surface="drawer"
+        />
         <NuxtLink
           to="/lien-he"
           class="btn-dark w-full"
