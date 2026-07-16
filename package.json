@@ -9,6 +9,7 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "lint:media": "node scripts/check-media-literals.mjs",
+    "brand:logos": "tsx scripts/brand/derive-logos.ts",
     "media:scan": "tsx scripts/media/scan.ts",
     "media:catalog": "tsx scripts/media/catalog.ts",
     "media:optimize": "tsx scripts/media/optimize.ts",
