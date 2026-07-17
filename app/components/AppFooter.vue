@@ -1,6 +1,14 @@
 <script setup lang="ts">
-// Phase 1 — pure extraction from app.vue. DOM, classes, behaviour unchanged.
-// The redesign lands in Phase 6 (docs/header-footer-art-direction.md §10).
+// Phase 6 — the footer redesign (docs/header-footer-art-direction.md §10).
+//
+// The footer is the final page of the magazine, not the bottom of the document (§1). It closes
+// the loop the hero opened: the site begins on ink-950 + wood over photography and ends on
+// ink-950 + wood in type.
+//
+// PURELY PRESENTATIONAL (§26.3, §30.2). No state, no composable, no lifecycle hooks. Forbidden
+// knowledge: scroll position, header state, route — everything. If this component ever needs
+// state, the requirement is wrong: it is the one component in the system with zero moving
+// parts, and that is a feature to be defended.
 import { company } from '~/data/company'
 import { navLinks, uiText } from '~/data/ui'
 
@@ -8,46 +16,56 @@ const { t, ta } = useLanguage()
 </script>
 
 <template>
-  <footer class="bg-ink-950 text-white">
-    <div class="shell py-16">
-      <div class="grid gap-12 lg:grid-cols-[1.3fr_0.8fr_0.9fr_1.2fr]">
-        <div>
-          <img
-            src="/logo-white.png"
-            alt="Lai Huy Interior"
-            class="mb-6 h-20 w-auto"
-          >
-          <p class="max-w-sm text-sm leading-7 text-white/68">
-            {{ t(company.positioning) }}
-          </p>
-          <div class="mt-7 flex flex-wrap gap-3">
-            <NuxtLink
-              to="/lien-he"
-              class="btn-primary"
-            >
-              {{ t(uiText.cta.contact) }}
-            </NuxtLink>
-            <NuxtLink
-              to="/nha-xuong"
-              class="btn-secondary"
-            >
-              {{ t(uiText.cta.factory) }}
-            </NuxtLink>
-          </div>
-        </div>
+  <footer class="app-footer">
+    <div class="shell">
+      <!-- §10 — the masthead is promoted OUT of the grid. -->
+      <div class="footer-masthead">
+        <!-- §35 — below fold, always: lazy + fetchpriority auto. Explicit width/height like
+             every other logo in the system (FG-15). -->
+        <img
+          src="/logo-mono-white.png"
+          alt="Lai Huy Interior"
+          width="424"
+          height="212"
+          loading="lazy"
+          fetchpriority="auto"
+          class="footer-logo"
+        >
 
+        <p class="text-lead footer-statement max-w-xl">
+          {{ t(company.positioning) }}
+        </p>
+
+        <div class="footer-actions">
+          <NuxtLink
+            to="/lien-he"
+            class="btn-primary"
+          >
+            {{ t(uiText.cta.contact) }}
+          </NuxtLink>
+          <NuxtLink
+            to="/nha-xuong"
+            class="footer-textlink"
+          >
+            {{ t(uiText.cta.factory) }}<span aria-hidden="true">&nbsp;&rarr;</span>
+          </NuxtLink>
+        </div>
+      </div>
+
+      <!-- §10 — 3 equal columns, beneath the ONE hairline. -->
+      <div class="footer-index">
         <div>
-          <h4 class="mb-5 text-sm font-bold uppercase tracking-[0.2em] text-white/55">
+          <h2 class="footer-eyebrow">
             {{ t(uiText.labels.navigation) }}
-          </h4>
-          <ul class="space-y-3">
+          </h2>
+          <ul class="footer-list">
             <li
               v-for="link in navLinks"
               :key="link.to"
             >
               <NuxtLink
                 :to="link.to"
-                class="text-sm text-white/62 transition-colors hover:text-white"
+                class="footer-link"
               >
                 {{ t(link.label) }}
               </NuxtLink>
@@ -56,13 +74,14 @@ const { t, ta } = useLanguage()
         </div>
 
         <div>
-          <h4 class="mb-5 text-sm font-bold uppercase tracking-[0.2em] text-white/55">
+          <h2 class="footer-eyebrow">
             {{ t(uiText.labels.services) }}
-          </h4>
-          <ul class="space-y-3 text-sm text-white/62">
+          </h2>
+          <ul class="footer-list">
             <li
               v-for="service in ta(company.footerServices)"
               :key="service"
+              class="footer-value"
             >
               {{ service }}
             </li>
@@ -70,67 +89,73 @@ const { t, ta } = useLanguage()
         </div>
 
         <div>
-          <h4 class="mb-5 text-sm font-bold uppercase tracking-[0.2em] text-white/55">
+          <h2 class="footer-eyebrow">
             {{ t(uiText.labels.contact) }}
-          </h4>
-          <ul class="space-y-4 text-sm text-white/68">
-            <li class="flex gap-3">
-              <Icon
-                name="i-lucide-phone"
-                class="mt-0.5 h-4 w-4 shrink-0 text-wood-300"
-              />
-              <a :href="`tel:${company.phone.replaceAll(' ', '')}`">
+          </h2>
+          <!-- §10 — one lucide icon per line becomes an eyebrow LABEL per value. A description
+               list is what this data actually is: label/value pairs. -->
+          <dl class="footer-contact">
+            <dt class="footer-label">
+              {{ t(uiText.labels.phone) }}
+            </dt>
+            <dd>
+              <a
+                :href="`tel:${company.phone.replaceAll(' ', '')}`"
+                class="footer-link"
+              >
                 {{ company.phone }}
               </a>
-            </li>
-            <li class="flex gap-3">
-              <Icon
-                name="i-lucide-mail"
-                class="mt-0.5 h-4 w-4 shrink-0 text-wood-300"
-              />
-              <a :href="`mailto:${company.email}`">
+            </dd>
+
+            <dt class="footer-label">
+              {{ t(uiText.labels.email) }}
+            </dt>
+            <dd>
+              <a
+                :href="`mailto:${company.email}`"
+                class="footer-link"
+              >
                 {{ company.email }}
               </a>
-            </li>
-            <li
+            </dd>
+
+            <template
               v-for="address in company.addresses"
               :key="t(address.label)"
-              class="flex gap-3"
             >
-              <Icon
-                name="i-lucide-map-pin"
-                class="mt-0.5 h-4 w-4 shrink-0 text-wood-300"
-              />
-              <a
-                :href="address.mapUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="leading-6 hover:text-white"
-              >
-                <strong class="block text-white/86">{{ t(address.label) }}</strong>
-                {{ t(address.address) }}
-              </a>
-            </li>
-            <li class="flex gap-3">
-              <Icon
-                name="i-lucide-clock"
-                class="mt-0.5 h-4 w-4 shrink-0 text-wood-300"
-              />
-              <span>
-                <span
-                  v-for="line in ta(company.workingHours)"
-                  :key="line"
-                  class="block"
+              <dt class="footer-label">
+                {{ t(address.label) }}
+              </dt>
+              <dd>
+                <a
+                  :href="address.mapUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="footer-link"
                 >
-                  {{ line }}
-                </span>
+                  {{ t(address.address) }}
+                </a>
+              </dd>
+            </template>
+
+            <dt class="footer-label">
+              {{ t(uiText.labels.workingHours) }}
+            </dt>
+            <dd class="footer-value">
+              <span
+                v-for="line in ta(company.workingHours)"
+                :key="line"
+                class="block"
+              >
+                {{ line }}
               </span>
-            </li>
-          </ul>
+            </dd>
+          </dl>
         </div>
       </div>
 
-      <div class="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 text-sm text-white/42 md:flex-row md:items-center md:justify-between">
+      <!-- §10 — separated by space alone: no border. -->
+      <div class="footer-meta">
         <p>
           &copy; {{ new Date().getFullYear() }} Lai Huy Interior. All rights reserved.
         </p>
@@ -138,12 +163,7 @@ const { t, ta } = useLanguage()
           :href="company.facebook"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 transition-colors hover:text-white"
         >
-          <Icon
-            name="i-simple-icons-facebook"
-            class="h-4 w-4"
-          />
           Facebook
         </a>
       </div>

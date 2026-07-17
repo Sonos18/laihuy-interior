@@ -155,6 +155,14 @@
   --footer-masthead-gap: 4rem;
   --footer-col-gap: 3rem;
   --footer-meta-gap: 4rem;
+  /* SPEC GAP, raised not decided (§0, D.4): §29 tokenises the footer's
+     STRUCTURAL rhythm (masthead / column / meta) but not its INTRA-column one —
+     the space between list items, between contact label/value pairs, and between
+     the two masthead actions. §10's decision table does not change that rhythm,
+     so the unambiguous reading is "preserve today's value": 0.75rem is
+     transcribed from the `space-y-3` / `gap-3` this footer already shipped.
+     §29 needs this row added. */
+  --footer-item-gap: 0.75rem;
   --logo-h-footer: 3.5rem;     /*  56px OPTICAL  < md                      */
   --logo-h-footer-md: 4rem;    /*  64px OPTICAL  ≥ md                      */
   --footer-surface: var(--color-ink-950);
@@ -881,6 +889,205 @@
   .lang-toggle-light .lang-option:hover,
   .lang-toggle-light .lang-option[aria-pressed="true"] {
     color: var(--fg-light);
+  }
+
+  /* ── FOOTER — §10, §29, §12 ────────────────────────────────────────────────
+     The footer is the FINAL PAGE OF THE MAGAZINE, not the bottom of the
+     document (§1). It closes the loop the hero opened: the site begins on
+     ink-950 + wood over photography and ends on ink-950 + wood in type.
+
+     §12 budget for this surface: 1 gradient, 0 blur, 0 shadow.
+
+     §10 — white content meeting ink-950 was a hard cut. ONE ink-900 → ink-950
+     vertical gradient at the top edge makes the dark arrive as DEPTH rather
+     than a slab. That gradient is the footer's entire motion and rendering
+     budget. --footer-surface is the base colour beneath it; the gradient's last
+     stop holds ink-950 for the remaining height. */
+  .app-footer {
+    background-color: var(--footer-surface);
+    background-image: var(--footer-top-gradient);
+    color: var(--fg-dark);
+    /* §10 — --footer-py DELIBERATELY exceeds body spacing (--section-py, 80/112).
+       The old py-16 (64px) gave the finale LESS air than an ordinary body
+       section, and that single fact is why it read as a bottom bar.
+       §33.2 — notch safety on the bottom edge. */
+    padding-top: var(--footer-py);
+    padding-bottom: max(var(--footer-py), env(safe-area-inset-bottom));
+  }
+
+  @media (min-width: 48rem) {
+    .app-footer {
+      padding-top: var(--footer-py-md);
+      padding-bottom: max(var(--footer-py-md), env(safe-area-inset-bottom));
+    }
+  }
+
+  /* §10 — the masthead is PROMOTED OUT of the grid, which kills the arbitrary
+     [1.3fr_0.8fr_0.9fr_1.2fr] weights. */
+  .footer-masthead {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--footer-masthead-gap);
+  }
+
+  /* ADR-004 — one lockup site-wide. The footer sits on ink-950, so it takes the
+     mono-WHITE derivation; the colour master (1.86:1 — a live WCAG 1.4.11
+     failure, and 69KB) leaves the render path here.
+     §10 — 56/64px optical vs today's 34px: equal-or-greater weight to the header
+     signature. The assets are TRIMMED, so the box IS the mark (V16). */
+  .footer-logo {
+    display: block;
+    height: var(--logo-h-footer);
+    width: auto;
+    aspect-ratio: var(--logo-aspect);
+  }
+
+  @media (min-width: 48rem) {
+    .footer-logo {
+      height: var(--logo-h-footer-md);
+    }
+  }
+
+  .footer-statement {
+    color: var(--fg-dark-muted);
+  }
+
+  /* §10 — the footer CLOSES; it does not re-pitch. ONE solid + ONE text link,
+     where there were two buttons. */
+  .footer-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--footer-item-gap);
+  }
+
+  /* §12 / A.4 — the footer carries ZERO shadows. The site-wide CTA ships
+     shadow-sm + hover:shadow-md, so both are suppressed here rather than the CTA
+     being re-implemented: D.1 freezes the CTA copy AND its 206px width, and a
+     bespoke footer CTA would fork that geometry. The :hover selector needs the
+     extra specificity to beat `.btn-primary:hover`, which is declared later in
+     this layer. */
+  .app-footer .btn-primary,
+  .app-footer .btn-primary:hover {
+    font-size: var(--type-action-size);
+    font-weight: var(--type-action-weight);
+    letter-spacing: var(--type-action-track);
+    box-shadow: none;
+  }
+
+  .footer-textlink {
+    display: inline-flex;
+    align-items: center;
+    font-size: var(--type-action-size);
+    font-weight: var(--type-action-weight);
+    letter-spacing: var(--type-action-track);
+    color: var(--fg-dark);
+    transition: color var(--dur-hover) var(--ease-editorial);
+  }
+
+  .footer-textlink:hover {
+    color: var(--accent-dark);
+  }
+
+  /* §10 — THE one hairline, and it now does editorial work: separating the
+     finale's cover from its index, rather than fencing the copyright. Two
+     borders became one. */
+  .footer-index {
+    margin-top: var(--footer-masthead-gap);
+    padding-top: var(--footer-masthead-gap);
+    border-top: 1px solid var(--rule-dark);
+    display: grid;
+    /* Both axes: 48px between the 3 columns at md+, and between the stacked
+       column blocks on mobile. */
+    gap: var(--footer-col-gap);
+  }
+
+  /* §10 — 3 EQUAL columns, replacing 4 arbitrary fractions. Real rhythm. */
+  @media (min-width: 48rem) {
+    .footer-index {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* §3.3 / §22.2 — --type-eyebrow is DELIBERATELY identical to the hero's
+     `.eyebrow`: the kicker above a hero headline and the label above a footer
+     column are the same typographic gesture, and that single reuse is what makes
+     the top and bottom of the site read as one publication. Same size/weight/
+     tracking; only the surface colour differs (--accent-dark = wood-300, 7.83:1
+     on flat ink-950 — see §3.1: the hero doc's wood-300 ban was "fails OVER
+     PHOTOGRAPHY", and context is the variable, not the hue). */
+  .footer-eyebrow {
+    font-size: var(--type-eyebrow-size);
+    font-weight: var(--type-eyebrow-weight);
+    letter-spacing: var(--type-eyebrow-track);
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+  }
+
+  /* The eyebrow sits directly ABOVE its column (§10): --footer-col-gap is the
+     gap BETWEEN columns and would float the label off its own list. */
+  .footer-list,
+  .footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: var(--footer-item-gap);
+    margin-top: var(--footer-item-gap);
+  }
+
+  .footer-link,
+  .footer-value {
+    font-size: var(--type-body-sm-size);
+    line-height: var(--type-body-sm-leading);
+    color: var(--fg-dark-muted);
+  }
+
+  .footer-link {
+    transition: color var(--dur-hover) var(--ease-editorial);
+  }
+
+  .footer-link:hover {
+    color: var(--fg-dark);
+  }
+
+  /* §10 — the icon-per-line contact list was THE template tell. One lucide icon
+     per line becomes an eyebrow LABEL per value. --fg-dark-subtle is the meta
+     colour (§3.1), which keeps the item labels subordinate to the column
+     eyebrows above them. */
+  .footer-label {
+    font-size: var(--type-eyebrow-size);
+    font-weight: var(--type-eyebrow-weight);
+    letter-spacing: var(--type-eyebrow-track);
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--fg-dark-subtle);
+  }
+
+  .footer-contact dd + dt {
+    margin-top: var(--footer-item-gap);
+  }
+
+  /* §10 — copyright and Facebook, separated BY SPACE ALONE: the second border is
+     gone, and this row is no longer fenced off from the index. */
+  .footer-meta {
+    margin-top: var(--footer-meta-gap);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--footer-col-gap);
+    font-size: var(--type-meta-sm-size);
+    line-height: var(--type-meta-sm-leading);
+    color: var(--fg-dark-subtle);
+  }
+
+  .footer-meta a {
+    transition: color var(--dur-hover) var(--ease-editorial);
+  }
+
+  .footer-meta a:hover {
+    color: var(--fg-dark);
   }
 
   /* `.section-shell` (mx-auto max-w-7xl, padding applied outside it by each
