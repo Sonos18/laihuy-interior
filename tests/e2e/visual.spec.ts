@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, test } from './fixtures'
 import { HEADER_CLIP_H, PAGES, SCROLLED_Y, VIEWPORTS, scrollTo, settle } from './helpers'
 
 /**

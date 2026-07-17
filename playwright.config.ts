@@ -25,9 +25,7 @@ export default defineConfig({
   // §14: every capture is deterministic — motion disabled, reduced-motion emulated.
   use: {
     baseURL: 'http://localhost:3000',
-    reducedMotion: 'reduce',
-    // Freeze all animation before the first paint of every screenshot.
-    launchOptions: { args: ['--font-render-hinting=none'] }
+    reducedMotion: 'reduce'
   },
 
   expect: {
@@ -41,10 +39,41 @@ export default defineConfig({
     }
   },
 
+  /**
+   * §14 — baselines are committed PER BROWSER, and cross-browser comparison is meaningless and
+   * is never done (C-5: font rasterisation differs across engines and OSes). Playwright's
+   * default snapshot path carries `{-projectName}`, so each project below owns its own baseline
+   * set by construction rather than by convention.
+   *
+   * `vr` stays named `vr` — it is Chromium, and renaming it would orphan every baseline
+   * committed in Phase 0.
+   *
+   * §38.1 requires all four engines. Tier 1 (C.1) = full VR suite on each.
+   */
   projects: [
     {
       name: 'vr',
-      use: { ...devices['Desktop Chrome'] }
+      // --font-render-hinting=none is a CHROMIUM flag and is scoped to the Chromium family:
+      // Firefox and WebKit take their own CLI arguments and would reject it.
+      use: { ...devices['Desktop Chrome'], launchOptions: { args: ['--font-render-hinting=none'] } }
+    },
+    {
+      name: 'vr-edge',
+      use: {
+        ...devices['Desktop Edge'],
+        channel: 'msedge',
+        launchOptions: { args: ['--font-render-hinting=none'] }
+      }
+    },
+    {
+      name: 'vr-firefox',
+      use: { ...devices['Desktop Firefox'] }
+    },
+    {
+      // WebKit is the engine behind Safari. C.1 marks iOS Safari MANDATORY — this covers the
+      // engine, not the device; a real-device pass remains a manual gate (§38.1).
+      name: 'vr-webkit',
+      use: { ...devices['Desktop Safari'] }
     }
   ],
 

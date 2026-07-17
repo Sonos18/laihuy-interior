@@ -9,6 +9,7 @@
 // Invariant: DRAWER_OPEN ⟹ header REVEALED ∧ header blur disabled (I4, FG-12) — wired by
 // app.vue through useHeaderState.setDrawerOpen, which is where the drawer dimension of the
 // state machine already lives (§5.1). This component never touches chrome state itself.
+import { company } from '~/data/company'
 import { navLinks, uiText } from '~/data/ui'
 
 const props = defineProps<{ open: boolean }>()
@@ -226,12 +227,22 @@ onScopeDispose(() => {
 
       <!-- §9 — phone + CTA sit at the drawer's foot, where tapping a phone number is the
            natural, expected act. The phone is not "restored" on mobile; mobile is where it
-           belongs. §33.2 keeps them clear of the home indicator. -->
+           belongs. §33.2 keeps them clear of the home indicator.
+
+           The phone is now here ONLY: the O3 resolution removed it from the desktop
+           NAVIGATION row, which could not fit it in Vietnamese at 1280. Phase 1 extracted a
+           drawer that never had one, so this also closes a §9/§33.2 gap that predates it. -->
       <div class="app-drawer-foot">
         <AppLangToggle
           class="mb-4"
           surface="light"
         />
+        <a
+          :href="`tel:${company.phone.replaceAll(' ', '')}`"
+          class="drawer-phone mb-4 block"
+        >
+          {{ company.phone }}
+        </a>
         <NuxtLink
           to="/lien-he"
           class="btn-dark w-full"

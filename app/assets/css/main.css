@@ -92,7 +92,30 @@
   --logo-h-header: 2.5rem;     /*  40px OPTICAL (trimmed) < xl             */
   --logo-h-header-xl: 3rem;    /*  48px OPTICAL (trimmed) ≥ xl             */
   --logo-aspect: 2 / 1;        /* measured: 424 × 212                      */
-  --nav-item-px: 1rem;
+  /* O3 RESOLUTION (was 1rem) — §16 listed O3 as unresolved and blocking, and
+     measurement proved why: the VI NAVIGATION row needs 1421px against 1216px of
+     content at 1280, i.e. −205px, where V11 requires +8px.
+
+     §9's arithmetic ("918px of content in a 1232px shell, ~314px of negative
+     space") assumed a nav of ~654px. The 7 uppercase VI labels at --type-nav's
+     0.12em tracking actually measure 798px — +144px — and the ~314px of negative
+     space has to absorb phone + CTA + gaps, which need 359px. The spec was ~45px
+     short by its own numbers before the 144px nav error. That is the whole 205px.
+
+     FG-16 sanctions two levers: reduce --nav-item-px, or reduce --type-nav
+     tracking. Together they yield only ~156px against the 213px needed (205 + 8),
+     so they cannot close it alone — the row does not fit while the 7 links (D.1),
+     the CTA's 206px (D.1) and the phone (§5.2) all hold.
+
+     Resolved by decision: this halves to 0.5rem (saves 7 × 16 = 112px) and the
+     PHONE LEAVES the desktop NAVIGATION row for the drawer, where §9 says it
+     belongs (saves 109 + 16 = 125px). Total 237px → 1184px required, +32px slack.
+     --type-nav-track stays 0.12em: it is the masthead's editorial signature (§3.3)
+     and this resolution does not spend it.
+
+     Docs owed (§17 rule 1): §9's desktop figures, §5.2/§32's Phone rows, and O3
+     in §16 must all be updated to match. */
+  --nav-item-px: 0.5rem;
   --nav-item-min-h: 2.75rem;   /*  44px — WCAG 2.5.5                       */
   --nav-item-gap: 0.25rem;
   --nav-rule-h: 1.5px;
@@ -507,11 +530,9 @@
     transform: translateY(calc((1 - var(--actions-in)) * 4px));
   }
 
-  .chrome-phone {
-    font-size: var(--type-meta-size);
-    font-weight: var(--type-meta-weight);
-    letter-spacing: var(--type-meta-track);
-  }
+  /* The header's phone rule is gone with the phone itself (O3 resolution — see
+     --nav-item-px). --type-meta now belongs to the drawer's phone; §22.2 files it
+     under Header and owes an update. */
 
   /* §12 / A.4 — chrome carries ZERO shadows outside the drawer. The site-wide CTA
      ships `shadow-sm`, so it is suppressed here rather than re-implemented: D.1
@@ -730,6 +751,30 @@
   .app-drawer-foot {
     padding: var(--drawer-px);
     border-top: 1px solid var(--rule-light);
+  }
+
+  /* §9 — "phone + CTA sit at its foot, where tapping a phone number is the
+     natural, expected act. The phone is not 'restored' on mobile; mobile is where
+     it belongs." It now lives ONLY here: the O3 resolution removed it from the
+     desktop NAVIGATION row (see --nav-item-px).
+     §32 Phone row: --fg-*-muted idle → full fg hover. §33.5: 44px target. */
+  .drawer-phone {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--nav-item-min-h);
+    font-size: var(--type-meta-size);
+    font-weight: var(--type-meta-weight);
+    letter-spacing: var(--type-meta-track);
+    color: var(--fg-light-muted);
+    transition: color var(--dur-hover) var(--ease-editorial);
+  }
+
+  .drawer-phone:hover {
+    color: var(--fg-light);
+  }
+
+  .drawer-phone:active {
+    opacity: 0.8;
   }
 
   /* §33.5 — 44 × 44 minimum. */

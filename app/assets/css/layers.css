@@ -1,0 +1,57 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   CASCADE LAYER ORDER — pinned, not inferred.
+   ───────────────────────────────────────────────────────────────────────────
+   This file exists for ONE statement, and it is loaded before main.css so that
+   the statement precedes Tailwind's own layer blocks. It cannot live in
+   main.css: Tailwind v4 strips a bare `@layer` statement placed before its
+   `@import`, and a statement placed AFTER the import is too late — the import
+   has already expanded into `@layer theme{…} @layer base{…}`, so first-
+   appearance ordering is settled before the statement is read.
+
+   WHY IT IS NEEDED — the defect it fixes:
+
+   CSS orders layers by FIRST DECLARATION. `@nuxt/icon` renders each icon's CSS
+   into a `<style>` and deliberately PREPENDS it before the first stylesheet
+   (runtime/components/css.js: `document.head.insertBefore(style, firstStyle)`)
+   so icon rules stay low-priority. `@nuxt/ui` configures that CSS to be wrapped
+   in `@layer components` (its module.mjs: `icon: { cssLayer: 'components' }`).
+
+   The two combine badly: the prepended sheet declares `components` FIRST, so the
+   document order became
+
+       components → theme → properties → base → utilities        (measured)
+
+   i.e. Tailwind's preflight (`@layer base`) outranked every component class.
+   The damage only appeared once an icon was injected CLIENT-side — opening the
+   mobile drawer mounts `i-lucide:x`, which prepends a sheet and re-orders the
+   cascade mid-session. From that moment:
+
+       img { height: auto }     beat  .app-drawer-logo { height: … }  → 168px logo
+       *   { padding: 0 }       beat  .drawer-link { padding-block: … }
+       *   { border: 0 }        beat  .drawer-link { border-bottom: … }
+       a   { color: inherit }   beat  every chrome colour rule
+
+   — the drawer rendered unstyled, and the footer's links turned white the moment
+   the drawer opened.
+
+   THE FIX: `icon.cssLayer` is set to `icons` (nuxt.config.ts) so the prepended
+   sheet no longer claims `components`, and this statement pins the full order.
+   `icons` is declared FIRST — i.e. lowest priority — which is exactly the
+   precedence @nuxt/icon prepends to achieve, so Tailwind's `h-6 w-6` utilities
+   still size icons.
+
+   The statement makes the order deterministic REGARDLESS of where the icon sheet
+   lands: prepended (client-mounted icons) or appended (SSR icons, which use
+   useHead with tagPriority 'low'). Both orders occur on the same page today.
+
+   docs/header-footer-art-direction.md §37 (CSS architecture) — the layer order is
+   now a declared contract rather than an emergent property of injection timing.
+
+   `properties` is included because Tailwind emits it first (it holds the
+   @property polyfill's `*{--tw-*: initial}` fallbacks). Omitting it here would
+   let it first-appear AFTER `utilities` and become the HIGHEST layer, so on a
+   browser without @property support `*{--tw-translate-x:0}` would outrank
+   `.translate-x-4`. This statement reproduces Tailwind's own order exactly and
+   only adds `icons` beneath it.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@layer icons, properties, theme, base, components, utilities;

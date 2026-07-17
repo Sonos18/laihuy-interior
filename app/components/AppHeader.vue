@@ -7,7 +7,6 @@
 // CSS-var write belong to useHeaderState (§2, §26.1, §27). Forbidden knowledge (§26.1): the
 // current route, hero mode/atmosphere/focal, whether a hero exists, any page's DOM, and its own
 // height in pixels — it reads --header-h.
-import { company } from '~/data/company'
 import { navLinks, uiText } from '~/data/ui'
 
 const props = withDefaults(defineProps<{
@@ -108,18 +107,18 @@ watch(() => props.solid, value => setSolid(value))
         <AppLangToggle :surface="chromeState === 'nav' ? 'light' : 'dark'" />
 
         <!-- I8 — never tab into an invisible control. `opacity: 0` alone is not hiding (FG-09):
-             inert + aria-hidden while p < 0.5. -->
+             inert + aria-hidden while p < 0.5.
+
+             O3 RESOLUTION: the phone is NOT here. The VI NAVIGATION row needed 1421px against
+             1216px at 1280 (−205px, where V11 requires +8px), and FG-16's sanctioned levers
+             could not close it. The phone moved to the drawer's foot — where §9 says it belongs
+             ("mobile is where it belongs") — and the CTA stays, because §9 calls it the action
+             the header takes over conversion with. See --nav-item-px in main.css. -->
         <div
           class="chrome-actions"
           :inert="chromeState === 'cover'"
           :aria-hidden="chromeState === 'cover'"
         >
-          <a
-            :href="`tel:${company.phone.replaceAll(' ', '')}`"
-            class="chrome-phone chrome-nav-color"
-          >
-            {{ company.phone }}
-          </a>
           <NuxtLink
             to="/lien-he"
             class="btn-primary"
