@@ -8,9 +8,21 @@ Companion to [`hero-art-direction.md`](./hero-art-direction.md). That document g
 rendering budget, motion, accessibility — **this document defers to the hero doc on hero
 internals and owns everything else.**
 
-Status: **frozen engineering specification — implementation pending.** Nothing here is
-optional. Every rule is a review gate (§19). Four items are **unverified** and block
-implementation (§16).
+Status: **implemented through Phase 6. Phase 7 (verification) in progress.** Nothing here is
+optional. Every rule is a review gate (§19). **One** item remains unverified and blocks
+sign-off — **O2** (§16).
+
+> ### This document has been corrected against the built implementation
+>
+> Phases 0–7 found rules here that were **wrong**, not merely unimplemented: the §9 desktop
+> arithmetic, the `@property` inheritance rule (A.2), the `--header-shift` owner (§22.2), the
+> V10/V11 measurement method (§14.1), and §38.1's "~10px of slack" all contradicted what the
+> code must actually do. Each is corrected **at the rule**, with the measurement that forced
+> it, rather than silently reconciled.
+>
+> This is the determinism rule (§0) working as designed: *"An implementer who has to decide
+> something has found a defect in this spec — the correct response is to raise it."* Every
+> correction below was raised from a measurement, not from taste.
 
 ### The determinism rule
 
@@ -182,7 +194,7 @@ body text and may only ever be used for rules).
 --header-scrim-h:      10rem;    /* 160px                 */
 --subnav-h:            3.5rem;   /* project-detail sticky sub-nav */
 
---nav-item-px:         1rem;
+--nav-item-px:         0.5rem;   /* was 1rem — see §16 O3 / §9 */
 --nav-item-min-h:      2.75rem;  /* 44px — WCAG 2.5.5 target */
 --nav-item-gap:        0.25rem;
 --header-group-gap:    2rem;     /* logo↔nav, nav↔actions */
@@ -229,7 +241,7 @@ the headline's weight; that is a hierarchy violation, not a style choice.
 |---|---|---|---|---|---|---|
 | `--type-nav` | Header nav link | `0.8125rem` | 600 | `0.12em` | 1 | upper |
 | `--type-lang` | VI / EN toggle | `0.75rem` | 600 | `0.08em` | 1 | upper |
-| `--type-meta` | Header phone | `0.8125rem` | 600 | `0.02em` | 1 | none |
+| `--type-meta` | **Drawer** phone (§16 O3 — it left the header) | `0.8125rem` | 600 | `0.02em` | 1 | none |
 | `--type-action` | CTA (header + footer) | `0.875rem` | 700 | `0.01em` | 1 | none |
 | `--type-eyebrow` | Footer column labels | `0.75rem` | 600 | `0.22em` | 1 | upper |
 | `--type-drawer-nav` | Drawer nav link | `1.5rem` | 600 | `-0.01em` | 1.3 | none |
@@ -360,7 +372,7 @@ State is the product of four orthogonal dimensions. They compose; they are not a
 | Hairline | none | rides the glass layer's opacity | `--rule-light` |
 | Logo | mono **white** | opacity cross-fade | mono **ink** |
 | Nav | `--fg-dark-muted` | `color-mix()` on `p` | `--fg-light-muted` |
-| Phone + CTA | absent, `inert` | fading in at `p > 0.5` | visible, CTA **solid wood** |
+| CTA | absent, `inert` | fading in at `p > 0.5` | visible, **solid wood** |
 
 **The two layers are prebuilt and animated by `opacity` alone — never by interpolating
 `background-color`.** This is a compositing decision with real teeth ([ADR-006](#adr-006--rendering--compositing-strategy)):
@@ -409,7 +421,7 @@ These are **enforceable assertions**, not aspirations. Each maps to a test in §
 | **I5** | `ROUTING ⟹ transitions suppressed ∧ DRAWER_CLOSED` | §7. |
 | **I6** | `prefers-reduced-motion ⟹ HIDDEN unreachable` | Hide/reveal is motion. |
 | **I7** | `α_scrim + α_glass ≤ 1` | Rendering budget. |
-| **I8** | `CTA/phone focusable ⟺ p ≥ 0.5` | Never tab into an invisible control. |
+| **I8** | `CTA focusable ⟺ p ≥ 0.5` | Never tab into an invisible control. |
 | **I9** | Every page opens with a dark cover, or opts into `solid` | §1. |
 
 ### 5.4 Transition table
@@ -443,7 +455,7 @@ suppresses transitions entirely rather than animating through them.
 | Logo | — | no effect | outline | — | n/a |
 | VI / EN | inactive `--fg-*-subtle` | full fg | outline | full fg, weight 600 | active option `aria-pressed="true"` |
 | CTA | ghost (rest) / solid (nav) | ghost→ tint; solid→ `wood-600` | outline | — | n/a |
-| Phone | `--fg-*-muted` | full fg | outline | — | n/a |
+| Phone | *drawer only* — `--fg-light-muted` | `--fg-light` | outline | — | n/a |
 | Drawer trigger | full fg | full fg | outline | `aria-expanded="true"` | n/a |
 
 Hover uses `--dur-hover` and the existing `.link-underline` mechanic — **reused, not
@@ -649,7 +661,7 @@ layer is handled by the compositor and re-runs nothing. See [ADR-006](#adr-006--
 `prefers-reduced-motion: reduce`:
 
 - Hide/reveal **disabled entirely** — the header is permanently `REVEALED` (I6).
-- CTA/phone entrance: **opacity only**, no translate.
+- CTA entrance: **opacity only**, no translate.
 - Drawer: opacity, no slide.
 - Hero zoom + scroll-reveals: already disabled site-wide. Unchanged.
 - **Scroll-linked chrome is retained.** It is direct manipulation, not animation — it responds
@@ -664,11 +676,42 @@ truncated desktop.
 
 ### Desktop (≥ 1280px) — *the open cover*
 
-The full masthead. Logo + the 7-link index + VI/EN, and **nothing else**: 918px of content in
-a 1232px shell, leaving **~314px of deliberate negative space**. That space is the luxury
-signal — it is the design, not a leftover. Phone and CTA are absent, because the hero below
-already carries the single primary action. They arrive on scroll, when the hero's CTA has left
-the viewport and the header must take over conversion.
+The full masthead. Logo + the 7-link index + VI/EN, and **nothing else**: **886px** of content
+in a 1280px shell, leaving **~330px of deliberate negative space**. That space is the luxury
+signal — it is the design, not a leftover. The CTA is absent, because the hero below already
+carries the single primary action. It arrives on scroll, when the hero's CTA has left the
+viewport and the header must take over conversion.
+
+> ### Corrected in Phase 7 — the original arithmetic here was wrong, and it is what O3 caught
+>
+> This section claimed **"918px of content in a 1232px shell, leaving ~314px"**, and that the
+> *phone and* CTA both arrive on scroll. Measured, in Vietnamese, at `--type-nav`'s specified
+> 13px / 600 / `0.12em` / uppercase:
+>
+> | | Claimed | Measured |
+> |---|---|---|
+> | 7-link nav | ~654px | **798px** (+144) |
+> | Rest-state content | 918px | 1062px |
+> | `NAVIGATION` row (logo + nav + VI/EN + phone + CTA + gaps) | — | **1421px** |
+> | Available at 1280 (`--shell-measure` − gutters) | — | **1216px** |
+> | **Slack** | ~10px (§38.1) | **−205px** |
+>
+> The 918px figure is only reachable with a nav ~144px narrower than the one this document
+> specifies — almost certainly measured in English, or before uppercase + `0.12em` tracking.
+> And the "~314px of negative space" was supposed to absorb phone + CTA + gaps, which need
+> **359px**: the row was ~45px over *by the document's own numbers*, before the 144px error.
+> 144 + 45 ≈ the 205px deficit. **O3 existed to find exactly this.**
+>
+> **Resolution (§16 O3):** `--nav-item-px` halves to `0.5rem` (−112px) and **the phone leaves
+> the desktop row for the drawer**, where §9's own mobile section already says it belongs
+> (−125px). Result: **1184px required, +17px of real slack at 1280** (the scrollbar takes 15
+> of the theoretical 32). `--type-nav`'s `0.12em` tracking is **not** spent — it is the
+> masthead's editorial signature (§3.3), and FG-16's other lever is deliberately left unused.
+>
+> FG-16's two sanctioned levers together yield only ~156px against the 213px needed
+> (205 + 8). **They could not close it.** The row does not fit while the 7 links (D.1), the
+> CTA's 206px (D.1) and the phone (§5.2) all hold — so one had to give, and the phone is the
+> one this document already calls secondary to the CTA.
 
 ### Tablet (768–1279px) — *the quieter cover*
 
@@ -809,6 +852,27 @@ Recovery Sequence (§21.0).
 comparison is meaningless and is never done. Every capture: `animations: 'disabled'`,
 reduced-motion emulated, `document.fonts.ready` awaited, all images decoded.
 
+> ### Corrected in Phase 7 — reduced-motion emulation must be imperative, and asserted
+>
+> `use: { reducedMotion: 'reduce' }` in `playwright.config.ts` **does not work** on Playwright
+> 1.61.1. The option *resolves* (`testInfo.project.use.reducedMotion === 'reduce'`) but never
+> reaches the browser context: `matchMedia('(prefers-reduced-motion: reduce)').matches` returns
+> **`false`** on `about:blank`, with the option set at config, project **and** spec level. The
+> imperative paths — `page.emulateMedia()` and `browser.newContext({ reducedMotion })` — both
+> work.
+>
+> **It had been inert since Phase 0, and it was not cosmetic.** Without reduced motion,
+> scrolling to the capture position is a 600px downward delta, so the header legitimately
+> **hides** (I1 is satisfied at `p = 1` in the content zone) — and every scrolled header-strip
+> baseline recorded **an empty strip** instead of the chrome it exists to assert. §13 was
+> signing the design off as "final art with every animation disabled" against a page where
+> **I6 was never active**.
+>
+> **Mandated:** apply `page.emulateMedia({ reducedMotion: 'reduce' })` in an auto-fixture,
+> **before navigation** (`useHeaderState` reads `matchMedia` when it registers), and assert the
+> emulation in the suite itself. A harness rule that is not asserted is not a rule — it is a
+> comment. Implemented in `tests/e2e/fixtures.ts`, guarded by two tests in `gates.spec.ts`.
+
 > ### Never scroll the page to "materialise" content before a capture
 >
 > Phase 0's harness swept the page to force lazy content to load. **That sweep was itself the
@@ -859,8 +923,8 @@ independently of the screenshot suite.
 | **V7** | **Colour deviation** — rendered token vs. spec value | **ΔE₀₀ ≤ 1.0** | Sampled `getComputedStyle` → Lab |
 | **V8** | **Unexpected horizontal scrollbar** | **0** — `documentElement.scrollWidth ≤ clientWidth` at every viewport | assertion |
 | **V9** | **Unexpected vertical scrollbar** while `DRAWER_OPEN` | **0** on `<body>` | assertion |
-| **V10** | **Text reflow** — nav row line-count | **= 1** at every viewport, `lang="vi"` **and** `lang="en"` | `getClientRects().length` |
-| **V11** | **Nav row overflow slack** at 1280px, VI, `NAVIGATION` | **≥ 8px** (absorbs Safari's ±7px tracking variance) | `clientWidth − scrollWidth` |
+| **V10** | **Text reflow** — nav row line-count | **= 1** at every viewport, `lang="vi"` **and** `lang="en"` | A `Range` over the link's contents — **not** `getClientRects().length` on the element (see below) |
+| **V11** | **Nav row overflow slack** at 1280px, VI, `NAVIGATION` | **≥ 8px** (absorbs Safari's ±7px tracking variance) | Natural width with `flex-shrink: 0` forced — **not** `clientWidth − scrollWidth` (see below) |
 | **V12** | **Tap-target size** — every chrome control | **≥ 44 × 44px** | `getBoundingClientRect()` |
 | **V13** | **Focus-ring contrast** vs. both surfaces | **≥ 3:1** | computed |
 | **V14** | **Blur layers on screen** | **≤ 1** at any `p`; **= 0** at `p = 0` | count of computed `backdrop-filter ≠ none` |
@@ -871,6 +935,25 @@ independently of the screenshot suite.
 asserting the element's height would happily pass a logo that renders at 27px. The assertion
 must measure the **trimmed content box** of the rendered asset. This single check is what
 prevents the original "logo is too small" defect from silently returning.
+
+> ### Corrected in Phase 7 — both prescribed methods are blind to the failure they gate
+>
+> V10 and V11 originally specified `getClientRects().length` and `clientWidth − scrollWidth`.
+> **Measured against a row that was 205px over budget, both reported a pass.**
+>
+> - **V11.** `.chrome-nav` and `.chrome-right` are flex items with the default
+>   `flex-shrink: 1`. An over-budget row therefore **does not overflow — it silently
+>   compresses**, and the labels wrap inside their own boxes. `scrollWidth` equals
+>   `clientWidth` *exactly* while the row is 205px over. The only reading that answers the
+>   question V11 asks is to force `flex-shrink: 0` + `white-space: nowrap` and re-measure the
+>   **natural** width against the available width.
+> - **V10.** `.nav-link` is `display: inline-flex`, so its own `getClientRects()` returns **1**
+>   no matter what the text does inside it. The line-count must be taken from a `Range` over
+>   the link's *contents*.
+>
+> This is §14.1's own thesis turned on itself: *"Pixel diffing catches change. It cannot catch
+> wrongness."* A number can — **but only if it measures the right thing.** A gate that reports
+> a pass on a broken row is worse than no gate, because it is trusted.
 
 ---
 
@@ -913,8 +996,8 @@ document that guesses is worse than none.
 |---|---|---|---|
 | ~~**O1**~~ | ✅ **RESOLVED (Phase 0) — Inter IS served.** `@nuxt/fonts` (via `@nuxt/ui`) *does* detect the `:root` declaration: it provisions Inter, generates fallback-metric faces, and serves 3 woff2 files from `/_fonts/`. **Measured**, not inferred: the nav string at 13px/600/`0.12em` uppercase renders **202.34px**, identical to forced Inter and distinct from Segoe UI's **194.94px**. ⚠️ Note `document.fonts.check('16px Inter')` returns **`false`** despite Inter rendering — a subsetting artefact. **It is not a valid test; do not use it.** | — | **Closed. §3.3 / §29 typography tokens stand; the §6.4 overflow budget is computed against the correct metrics.** |
 | **O2** | **Per-hero contrast of nav + logo over the composited scrim.** | The 4.5:1 / 3:1 gates in §11 are asserted against ink-950, not against *photographs*. A hero with a blown-out ceiling could still fail under the nav. | Sample composited pixels beneath each nav link and the logo across all 8 heroes × 3 breakpoints. Any failure → hero-art-direction §12 recovery (adjust **that hero's** focal), **not** a heavier global scrim. |
-| **O3** | **Vietnamese scrolled-row overflow at 1280px.** VI labels run longer than EN; the scrolled row has only ~10px of slack, and Safari's tracking variance is ±7px. | The row could wrap on one browser and not another. | Assert at exactly 1280px, `lang="vi"`, `NAVIGATION` state: `scrollWidth ≤ clientWidth`, no wrap. Blocked behind O1. |
-| **O4** | The `motion` package is a dependency. | §8.3 forbids JS animation in chrome. | Confirm it is unused by chrome; if unused site-wide, remove it. |
+| ~~**O3**~~ | ✅ **RESOLVED (Phase 7) — the row did not fit, by 205px.** The premise ("~10px of slack") was **wrong**: measured at 1280 / `lang="vi"` / `NAVIGATION`, the row required **1421px** against **1216px**. Not a tracking-variance risk — a 205px deficit. Root cause in §9's arithmetic: the nav measures **798px**, not the ~654px §9 assumed. **FG-16's sanctioned levers yield only ~156px of the 213px needed and could not close it.** | — | **Closed by decision, not by tuning.** `--nav-item-px` 1rem → **0.5rem** (−112px) + **the phone moved to the drawer** (−125px, §9: "mobile is where it belongs"). Measured result: **1184px required, +17px real slack at 1280** (scrollbar takes 15 of the theoretical 32), **+96px at 1440**. `--type-nav-track` **unspent** at `0.12em`. Asserted by the V11 gate (`tests/e2e/gates.spec.ts`) on Chromium, Edge and Firefox. §9, §5.2, §32, §3.2, §3.3, §29 and §22.2 are all corrected to match. |
+| ~~**O4**~~ | ✅ **RESOLVED (Phase 2) — `motion` is gone.** Confirmed unused by chrome *and* site-wide (its only consumer was `useScrollReveal.ts`, itself dead), and removed from `package.json` in commit `8bc9455`. Chrome motion is CSS-only, per ADR-005. | — | **Closed. §8.3 holds by construction: there is no JS animation library in the project.** |
 
 ---
 
@@ -929,8 +1012,13 @@ document that guesses is worse than none.
 2. **No hardcoded values.** Every visual value in `AppHeader`, `AppFooter`, `AppLangToggle` and
    the drawer resolves to a §3 token. A raw opacity, spacing or duration in chrome markup is a
    rejection. This is the rule that prevents the six-ad-hoc-opacities problem from growing back.
-3. **Adding a nav item, changing CTA copy, or adding a submenu** requires re-running the §6.4
-   overflow math and the O3 gate. The row has ~10px of slack; it cannot absorb an eighth link.
+3. **Adding a nav item, changing CTA copy, or adding a submenu** requires re-running the **V11
+   gate** (`tests/e2e/gates.spec.ts`). The row has **+17px** of slack at 1280 after the O3
+   resolution (§16) — it cannot absorb an eighth link, a longer CTA, or the phone's return.
+   *(Corrected in Phase 7: this said "~10px", and pointed at a "§6.4 overflow math" that does
+   not exist — §6.4 is the hide/reveal transform. The math now lives in the V11 gate, which is
+   executable and therefore cannot rot. Every other reference to "the §6.4 overflow math" in
+   this document means the V11 gate.)*
 4. **Changing `--header-h`** requires auditing every consumer (§3.2). Two exist. They must both
    read the token — that is the whole point of the token.
 5. **Changing the hero system** requires re-validating invariant **I9**, the §12 budget, and O2.
@@ -955,6 +1043,18 @@ Unchanged from the approved plan, with Phase 3 expanded to absorb the alignment 
 | 6 | **Footer** (§10) | Token-purity review (rule 2) |
 | 7 | **Verification** — §13, §14, §15 across 4 browsers | All gates green |
 | 8 | **Docs** — resolve O1–O4, promote this doc from *specification* to *implemented* | — |
+
+**Status at the time of writing.** Phases 0–6 are complete. Phase 7 is **partially** complete:
+
+| | State |
+|---|---|
+| Numeric gates (V1/V2 alignment, V7, V11/O3, V16, I6, harness) | ✅ **150/150** on Chromium, Edge, Firefox (`tests/e2e/gates.spec.ts`, `alignment.spec.ts`) |
+| **Safari / WebKit** | ⏳ **Blocked** — `EPERM` writing `Playwright.exe`; the machine's AV quarantines the WebKit binary. C.1 makes iOS Safari **mandatory**, so this is a real gap, not a skip |
+| **32-shot VR suite** | ⏳ **Unapproved.** Every shot diffs, all explained by Phases 4–6 + the O3 resolution. §41 P5 makes approval a **human** act; baselines are still Phase-0 art captured in the wrong motion state (§14) and must be re-taken, not merely approved |
+| **O2** | ❌ Open — the last blocker (§16) |
+
+Phase 8 (this pass) has corrected the document against the build. **The status line at the top
+may not be promoted to *implemented* until O2, WebKit and the VR baselines close.**
 
 **Phase 1 is deliberately a no-op.** It separates *"did moving the code break something"* from
 *"did the redesign change something."* Without it the Phase 4–6 diffs are unreviewable.
@@ -1364,14 +1464,14 @@ first pass. Record which step resolved it.** This mirrors `hero-art-direction.md
 | **FG-06** | Route change: no melt | After landing on the new page, the white header **fades away** over ~500ms | Transitions were re-enabled in the same frame the vars were written; the browser coalesced and animated | The **double rAF** in §7.2 phase 4. Removing it reintroduces this exactly |
 | **FG-07** | I1 — never hide over a cover | Scrolling down 100px on `/du-an`, the header slides away while the hero is still full-screen | Hide guard is checking scroll delta but not `chrome === NAVIGATION` | Restore the I1 guard. Hide is only legal in the content/footer zone |
 | **FG-08** | I2 — focus never lost | Tabbing through the nav with the page scrolled, the header retracts mid-tab and focus lands off-screen | Hide logic does not consult `:focus-within` | Restore I2. A keyboard user must never lose the element they are inside |
-| **FG-09** | I8 — no invisible focus targets | On the cover, pressing Tab three times moves focus to *nothing*; the ring is invisible | CTA/phone are `opacity: 0` but still in the tab order | `inert` + `aria-hidden` while `p < 0.5`. `opacity: 0` alone is not hiding |
+| **FG-09** | I8 — no invisible focus targets | On the cover, pressing Tab three times moves focus to *nothing*; the ring is invisible | The CTA is `opacity: 0` but still in the tab order | `inert` + `aria-hidden` while `p < 0.5`. `opacity: 0` alone is not hiding |
 | **FG-10** | Alignment matrix | At 1440px the hero headline starts 24px right of the "Dịch vụ" section title below it | The two-shell defect (§4.1) — or a new element that bypassed `.shell` | ADR-001 geometry + the §4.3 numeric assertion. Screenshot review will **not** catch this |
 | **FG-11** | Sub-nav tracks the header | On a project page, scrolling down leaves an **88px empty gap** above the sticky section nav | The sub-nav is anchored at `top: var(--header-h)` but does not consume `--header-shift` | §6.4 — both elements share the same shift token, in lockstep |
 | **FG-12** | ≤ 1 blur on screen | Opening the mobile drawer while scrolled: the blurred drawer overlay sits over the blurred glass header. Text behind reads as mush | Two `backdrop-filter` layers stacked. Each component is "within budget"; the **screen** is not | ADR-006's screen-wide rule. While `DRAWER_OPEN`, the header's blur is disabled |
 | **FG-13** | Reduced motion still premium | With reduced-motion on, content below the fold is **invisible** | A `.reveal` element was given an animated-only visible state | The no-JS/reduced default must be *visible* (§13). This already holds today and must not regress |
 | **FG-14** | Footer is the final page | The footer still reads as a bottom bar: cramped, logo lost, four ragged columns | `--footer-py` was not applied, or the logo box was sized without accounting for the 42.4% ink fill | §10 + §3.2. Verify **optical** logo height, not box height |
 | **FG-15** | CLS = 0 from chrome | A ~0.02 CLS on first load; the nav row twitches as the logo appears | The two cross-fading `<img>` lack explicit `width`/`height` | Explicit dimensions on both (ADR-004). Chrome is `fixed` and *cannot* otherwise contribute CLS — a non-zero chrome CLS is always this bug |
-| **FG-16** | VI row does not wrap at 1280px | In Vietnamese at exactly 1280px, scrolled: "LIÊN HỆ" wraps to a second line and the header grows to 120px | ~10px of slack, and Safari's tracking variance is ±7px (§15) | Reduce `--nav-item-px`, or `--type-nav` tracking. Blocked behind **O1** — the numbers are wrong if Inter is not served |
+| **FG-16** | VI row does not wrap at 1280px | In Vietnamese at 1280px, scrolled: the labels wrap **inside** their own boxes — "TRANG CHỦ" breaks over two lines. The row does **not** overflow and the header does **not** grow: `.chrome-nav` is a flex item with default `flex-shrink: 1`, so it silently **compresses** instead | **Historically:** the row was **205px** over budget, not ~10px short (§16 O3, §9). **Now:** +17px of slack — so a recurrence means something was added to the row | Re-run the **V11 gate**. It measures the row's NATURAL width (`flex-shrink: 0` forced) — `scrollWidth ≤ clientWidth` reports a false pass here (§14.1). Recovery: reduce `--nav-item-px`; **do not spend `--type-nav` tracking** — it is the masthead signature (§3.3) and O3 was resolved without it |
 | **FG-17** | No re-filter during `VEIL` | On Firefox, mid-tier hardware: visible stutter while the glass fades in. DevTools shows a full-strip repaint every frame | Someone interpolated the glass's `background-color` instead of its `opacity` | ADR-006(b). This is the trap the ADR exists to prevent, and it will *look* correct in a screenshot |
 | **FG-18** | Token purity | `text-white/62` appears in `AppFooter.vue` | A seventh ad-hoc opacity. This is precisely how the current six accumulated | §17 rule 2 — reject the PR. Add the token, or use an existing one |
 
@@ -1399,8 +1499,9 @@ doc update.
 
 | Owner | Tokens |
 |---|---|
-| **Header** | `--header-h`, `--header-h-xl`, `--header-scrim-h`, `--header-p`, `--header-shift`, `--surface-chrome`, `--surface-chrome-blur`, `--scrim-chrome`, `--nav-item-*`, `--header-group-gap`, `--header-action-gap`, `--logo-h-header*`, `--type-nav`, `--type-lang`, `--type-meta` |
-| **Footer** | `--footer-py*`, `--footer-masthead-gap`, `--footer-col-gap`, `--footer-meta-gap`, `--logo-h-footer*`, `--type-body-sm`, `--type-meta-sm` |
+| **Header** | `--header-h`, `--header-h-xl`, `--header-scrim-h`, `--header-p`, `--header-shift`, `--surface-chrome`, `--surface-chrome-blur`, `--scrim-chrome`, `--nav-item-*`, `--header-group-gap`, `--header-action-gap`, `--logo-h-header*`, `--type-nav`, `--type-lang` |
+| **Drawer** | `--drawer-*` (incl. `--drawer-surface`), `--type-drawer-nav-*`, **`--type-meta`** — the phone moved here in Phase 7 (§16 O3), and its type token with it |
+| **Footer** | `--footer-py*`, `--footer-masthead-gap`, `--footer-col-gap`, `--footer-meta-gap`, `--footer-item-gap`, `--logo-h-footer*`, `--type-body-sm`, `--type-meta-sm` |
 | **Hero** | Scrim gradients, focal/anchor. Owned by `hero-art-direction.md`. **Currently expressed as inline Tailwind classes, not tokens** — a known inconsistency, out of scope here, recorded so it is not mistaken for a pattern to copy |
 | **Shared (L1, deliberately)** | `--type-eyebrow`, `--type-action`, `--type-lead`, `--ease-editorial` |
 
@@ -1408,6 +1509,20 @@ doc update.
 redesign.** The kicker above a hero headline and the label above a footer column are the same
 typographic gesture. If a future contributor "tidies" it into two component-local tokens, the
 top and bottom of the site will drift apart — which is exactly the state we started from.
+
+> ### Open follow-up (Phase 6) — the token is shared; the *class* is not, yet
+>
+> The hero's `.eyebrow` utility still hardcodes its values via `@apply`
+> (`text-xs font-semibold uppercase tracking-[0.22em]`), and the footer's `.footer-eyebrow`
+> consumes the `--type-eyebrow-*` tokens. **The values are identical by construction**
+> (0.75rem / 600 / 0.22em) and only the surface colour differs — which §3.1 sanctions — so the
+> two do not currently disagree.
+>
+> But this is precisely the fork this section warns about, held together by coincidence rather
+> than by the token. `.eyebrow` is a **shared utility consumed by the hero**, so refactoring it
+> onto the tokens reaches outside chrome and was correctly kept out of a footer-only phase
+> (§28.1). **It owes its own commit.** Until then, a change to `--type-eyebrow-*` moves the
+> footer and leaves the hero behind — the exact drift this token exists to prevent.
 
 ### 22.3 Public chrome API
 
@@ -1424,6 +1539,19 @@ The **only** tokens a page or another component may read. Everything else is pri
 **`--header-p` and `--header-shift` are written by `useHeaderState` and by nothing else.**
 `--header-shift` is readable but never writable outside the composable. Any other component
 writing chrome state is a §2 dependency violation.
+
+> ### Corrected in Phase 4 — the two runtime tokens live on different elements
+>
+> §29 files both under **L2 — Header**, which reads as "both are written on the header
+> element." Only `--header-p` is.
+>
+> **`--header-shift` is written on `document.documentElement`.** It has to be: this very
+> section makes it **public** so the project sub-nav can consume it, and the sub-nav is not in
+> the header's subtree. Scoped to the header element it would be invisible to its only
+> external reader, and FG-11's 88px gap would open by construction.
+>
+> `--header-p` stays on the header element, where its invalidation is confined (§23.1, A.2).
+> The two tokens are both owned by `useHeaderState`; they are not both *scoped* to the header.
 
 ---
 
@@ -1490,7 +1618,7 @@ attached to the PR. A row without evidence is not done — it is asserted.
 
 | # | Criterion | Evidence required | Blocking |
 |---|---|---|---|
-| 1 | **Open items resolved** | O1–O4 (§15) each closed with a finding, not an assumption | ✅ |
+| 1 | **Open items resolved** | O1–O4 (**§16**) each closed with a finding, not an assumption. **O1 ✅ (Phase 0) · O3 ✅ (Phase 7) · O4 ✅ (Phase 2) · O2 ❌ still open** | ✅ |
 | 2 | **Visual review** | 24 rest-state screenshots (8 pages × 3 viewports), signed off **with motion disabled** (§13) | ✅ |
 | 3 | **Header integrated into every cover** | Transparent, no border, no blur at `p = 0`, on all 8 pages | ✅ |
 | 4 | **Contrast, measured** | Nav ≥ 4.5:1 and logo ≥ 3:1 on **composited pixels**, all 8 heroes × 3 viewports (O2). Any recovery step used is recorded | ✅ |
@@ -1501,7 +1629,7 @@ attached to the PR. A row without evidence is not done — it is asserted.
 | 9 | **Accessibility** | WCAG **AA**: keyboard traversal, focus trap, `Esc`, focus return, `aria-current`, `aria-pressed`, `inert`, 44px targets. Screen-reader pass on header + drawer + footer | ✅ |
 | 10 | **Reduced motion** | Header never hides; all content visible; design still premium (§13) | ✅ |
 | 11 | **Responsiveness** | 390 / 768 / 1440 each **intentionally composed** (§9) — not a scaled desktop | ✅ |
-| 12 | **VI overflow** | No wrap at 1280px, `lang="vi"`, `NAVIGATION` state, **≥ 8px slack** (O3, FG-16) | ✅ |
+| 12 | **VI overflow** | No wrap at 1280px, `lang="vi"`, `NAVIGATION` state, **≥ 8px slack** (O3, FG-16). **Met: +17px**, asserted by the V11 gate on Chromium/Edge/Firefox | ✅ |
 | 13 | **Visual regression** | 32-shot suite within the §14 budget | ✅ |
 | 14 | **Browser validation** | Full suite on **Chrome, Edge, Safari, Firefox**; §15 deltas confirmed as *accepted*, not new | ✅ |
 | 15 | **Performance** | §23 budget met. Lighthouse ≥ baseline. **0 chrome CLS. ≤ 1 blur on screen. 0 blur on the cover** | ✅ |
@@ -1556,10 +1684,11 @@ Each of these is a **computed constant**, not a taste choice. They are frozen he
 | `0.48` | `--fg-dark-subtle` | `0.45` composites to **4.54:1** on ink-950 — passes AA by 0.04. `0.48` → **5.0:1** | Re-deriving contrast |
 | `ink-500` | `--fg-light-subtle` | `ink-400` = **3.4:1** on white → fails body text. `ink-500` = **5.4:1** | Re-deriving contrast |
 | `0.05` | Blur engage threshold | Glass is 5% opaque → blur arrival imperceptible, and `backdrop-filter: none` holds on the cover | ADR-006 |
-| `0.5` | CTA/phone focusability | I8 — the point at which they are visible enough to be legitimate targets | §5.3 |
+| `0.5` | CTA focusability | I8 — the point at which it is visible enough to be a legitimate target | §5.3 |
 | `min(0.5 × vh, 400px)` | `P_END` | Proven (§5.2) never to strand a dark scrim over white content, down to a 600px viewport | Re-running the table |
 | `64px / 4px` | Hide / reveal deltas | Asymmetric **by design** — §6.1. Reveal is eager; hide is deliberate | §6.1 |
-| `8px` | Nav overflow slack | Absorbs Safari's ±7px tracking variance over 7 links (§15) | O1, O3 |
+| `8px` | Nav overflow slack | Absorbs Safari's ±7px tracking variance over 7 links (§15). **Actual after O3: +17px at 1280** | Re-running V11 |
+| `0.5rem` | `--nav-item-px` | Halved from `1rem` to recover 112px of the 205px O3 deficit (§16, §9) | Re-running V11 |
 | `2:1` | Logo aspect | Measured from the trimmed asset (424×212) | Re-deriving the asset |
 | `160px` | `--header-scrim-h` | Covers an 88px header + the type beneath it, decaying to 0 before hero content | O2 |
 
@@ -1588,8 +1717,8 @@ creates the coupling this architecture exists to prevent.
 |---|---|
 | **Responsibilities** | Chrome markup; nav; language toggle mount; CTA + phone; drawer trigger; applying `--header-p` / `--header-shift` to its own subtree |
 | **Non-responsibilities** | Computing scroll state (that is `useHeaderState`); knowing what page it is on; knowing what is behind it |
-| **Public API** | `<AppHeader :solid="boolean" />` — `solid` forces permanent `NAVIGATION` chrome (the I9 escape hatch). **That is the entire API.** |
-| **Emits** | Nothing |
+| **Public API** | `<AppHeader :solid="boolean" />` — `solid` forces permanent `NAVIGATION` chrome (the I9 escape hatch). **That is the entire prop API.** |
+| **Emits** | `openMenu` — **corrected in Phase 4** (was: "Nothing"). The header owns the drawer *trigger* (§26.1 responsibilities) but §26.4 forbids it from deciding when the drawer may open, and §5.1 makes the drawer a dimension of the state machine that `app.vue` already wires to `useHeaderState`. So the trigger emits and `app.vue` mediates. The §26.8 graph's `AppHeader ──► AppDrawer` edge is therefore drawn through `app.vue`; **no cycle is introduced**, and the header still knows nothing about the drawer's state |
 | **Forbidden knowledge** | The current route. Hero mode / atmosphere / focal. Whether a hero exists. Any page's DOM. Its own height in pixels (it reads `--header-h`) |
 
 ### 26.2 `AppHero`
@@ -1621,7 +1750,7 @@ creates the coupling this architecture exists to prevent.
 |---|---|
 | **Responsibilities** | Modal panel; focus trap; `Esc`; focus return; body scroll lock; page `inert`; its own overlay |
 | **Non-responsibilities** | Deciding *when* it may open (the header's breakpoint owns that); nav content (it renders the same `navLinks`) |
-| **Public API** | `v-model:open` · `@close` |
+| **Public API** | `:open` · `@close` — **corrected in Phase 1/5** (was: `v-model:open`). `defineModel` derives its value from the prop, so the drawer's `watch(open)` would fire a component-update cycle later. That ordering is **load-bearing**: `app.vue`'s `setDrawerOpen` must freeze the machine *before* the drawer locks the body, or the `position: fixed` body reports `scrollY: 0` and drives the header to `COVER` behind the open drawer (T10, §33.3). The plain prop preserves the flush order |
 | **Forbidden knowledge** | `--header-p`. Scroll progress. Which page it is on |
 | **Invariant** | `DRAWER_OPEN ⟹ header REVEALED ∧ header blur disabled` (I4, **FG-12**) |
 
@@ -1802,10 +1931,27 @@ production, and it degrades the design without breaking the site.
 | Style-recalc scope on a `--header-p` write | Header subtree only — **no** document-wide invalidation |
 | Layout-inducing animated properties | **0** — `width`, `height`, `top`, `left`, `margin` are forbidden (§8.3) |
 
-> The `--header-p` custom property is declared with `@property { inherits: false }` on the
-> header element, so a write cannot invalidate the document. Without that declaration a custom
-> property write invalidates every descendant that *might* inherit it — the single most common
-> way a "cheap" CSS-var animation becomes expensive.
+> The `--header-p` custom property is declared with `@property`, and registering it types the
+> value (no re-parse per frame) and gives it an initial value, so the chrome is correct before
+> hydration.
+>
+> ### Corrected in Phase 3 — `inherits: false` is impossible here
+>
+> This rule originally mandated **`inherits: false`**, reasoning that a custom-property write
+> otherwise invalidates every descendant that *might* inherit it. **The two rules cannot both
+> hold.** §31.1 drives the scrim, the glass, both logos and the nav colour — all
+> **descendants** of the header — from `var(--header-p)`. With `inherits: false` those
+> descendants resolve the *initial* value (`0`) instead of the header's, and **the chrome never
+> leaves `COVER`**: white-on-white nav, the exact failure §8.4 says the scroll-linked chrome
+> exists to prevent.
+>
+> **Inheritance is the load-bearing half, so it wins:** `inherits: true`.
+>
+> A.2's actual aim — *"style-recalc scope: header subtree only"* (§23.1) — **is still met**,
+> because `useHeaderState` writes the property on the **header element**, never on `:root`. The
+> invalidation cannot escape the subtree either way; `inherits: false` was never what was
+> containing it. The optimisation this clause was reaching for is delivered by the write site,
+> not by the declaration.
 
 ## A.3 rAF & scheduling
 
@@ -1877,7 +2023,7 @@ Baseline is taken from the pre-change build (`pnpm bundle:baseline`), same as We
 | **Keyboard** | Tab through header → drawer → page → footer, on cover and scrolled | Logical order; **no** focus on `inert`/invisible controls (**I8**); header never retracts under focus (**I2**); every control reachable and operable via `Enter`/`Space` |
 | **Touch** | 390px, real device | Targets **≥ 44×44px** (V12); drawer opens/closes; no hover-only affordance; `tel:`/`mailto:` links work |
 | **Mouse** | Hover across all chrome | Header never retracts under the cursor (**I3**); hover states are not the *only* signal |
-| **Screen reader** | NVDA + Firefox · VoiceOver + Safari | Nav announced as navigation; **active link announced via `aria-current`, not colour**; language toggle announced as a group with `aria-pressed`; drawer announced as a modal dialog and traps SR focus; the header's hidden CTA/phone are **not announced** at `p < 0.5` |
+| **Screen reader** | NVDA + Firefox · VoiceOver + Safari | Nav announced as navigation; **active link announced via `aria-current`, not colour**; language toggle announced as a group with `aria-pressed`; drawer announced as a modal dialog and traps SR focus; the header's hidden CTA is **not announced** at `p < 0.5` |
 | **Reduced motion** | `prefers-reduced-motion: reduce` | Header **never hides** (**I6**); no slide/zoom; **all content visible**; scroll-linked chrome retained (removing it leaves white-on-white) |
 | **High contrast** | Windows **Forced Colors Mode** | Chrome remains legible; the scrim is decorative and may vanish — **so the header must fall back to a solid `Canvas` background**, not rely on the scrim for contrast. `forced-colors: active` ⇒ `--surface-chrome: Canvas`, `--fg-*: CanvasText`, blur `none` |
 | **200% zoom** | 1280px @ 200% | No content loss; no horizontal scrollbar (**V8**); nav collapses to the drawer |
@@ -1962,6 +2108,9 @@ Exhaustive. Anything not on this list is frozen.
 | `AppHeader`, `AppFooter`, `AppDrawer`, `AppLangToggle`, `useHeaderState` | New |
 | `AppLogo.vue` | **Deleted** — Nuxt UI starter residue |
 | `app/assets/css/main.css` | Tokens, `.shell`, `.section-y`, `.nav-link` |
+| `app/assets/css/layers.css` | **New** — the pinned cascade layer order (§37 R11). Load order in `nuxt.config.ts` is part of the contract |
+| `nuxt.config.ts` | **Only**: `css[]` order for `layers.css`, and `icon: { cssLayer: 'icons' }` (§37 R11) |
+| `playwright.config.ts`, `tests/e2e/*` | Verification harness — browser projects, per-browser baselines, fixtures, gates |
 | `app/pages/**` | **Only**: `section-spacing` → `section-y` + `.shell`; `top-20` → `var(--header-h)`; `scroll-mt-36` → token. **No content, no copy, no structure** |
 | `app/components/AppHero.vue` | **Only**: adopt `.shell` |
 | `public/logo-mono-{white,ink}.png` | New, derived |
@@ -2060,7 +2209,7 @@ in a component is a build failure** (§25, §37).
 --logo-h-header:        2.5rem;     /*  40px OPTICAL (trimmed) < xl    */
 --logo-h-header-xl:     3rem;       /*  48px OPTICAL (trimmed) ≥ xl    */
 --logo-aspect:          2 / 1;      /* measured: 424 × 212             */
---nav-item-px:          1rem;
+--nav-item-px:          0.5rem;     /* was 1rem — §16 O3 (−112px)      */
 --nav-item-min-h:       2.75rem;    /*  44px — WCAG 2.5.5              */
 --nav-item-gap:         0.25rem;
 --nav-rule-h:           1.5px;
@@ -2082,7 +2231,7 @@ in a component is a build failure** (§25, §37).
 
 /* ── Thresholds (see §25.2 — each is derived, not chosen) ─────────── */
 --header-blur-in:       0.05;       /* p at which backdrop-filter engages   */
---header-action-in:     0.5;        /* p at which CTA/phone become focusable */
+--header-action-in:     0.5;        /* p at which CTA become focusable */
 
 /* ── Runtime — written by useHeaderState AND NOTHING ELSE ─────────── */
 --header-p:             0;          /* 0 … 1                           */
@@ -2093,8 +2242,6 @@ in a component is a build failure** (§25, §37).
 --type-nav-track:       0.12em;     --type-nav-leading:   1;
 --type-lang-size:       0.75rem;    --type-lang-weight:   600;
 --type-lang-track:      0.08em;
---type-meta-size:       0.8125rem;  --type-meta-weight:   600;
---type-meta-track:      0.02em;
 --type-action-size:     0.875rem;   --type-action-weight: 700;
 --type-action-track:    0.01em;
 
@@ -2107,6 +2254,16 @@ in a component is a build failure** (§25, §37).
 --drawer-item-py:       1.25rem;    /* → 44px+ target with line-height */
 --drawer-overlay:       rgb(11 10 9 / 0.6);
 --drawer-blur:          8px;
+/* The panel's own surface. Added in Phase 5: §29 declared every drawer
+   value EXCEPT this one, while §32 puts --fg-light / --fg-light-muted /
+   --accent-light on it — all of which presuppose a light surface. R2
+   forbids a literal #fff in the component, so it enters as a token. */
+--drawer-surface:       #fff;
+/* The phone moved here from the header in Phase 7 (§16 O3), and with it
+   --type-meta. §22.2 files --type-meta under Header; it is a DRAWER
+   token now. */
+--type-meta-size:       0.8125rem;  --type-meta-weight:   600;
+--type-meta-track:      0.02em;
 --type-drawer-nav-size:    1.5rem;
 --type-drawer-nav-weight:  600;
 --type-drawer-nav-track:  -0.01em;
@@ -2117,9 +2274,17 @@ in a component is a build failure** (§25, §37).
    ═══════════════════════════════════════════════════════════════════ */
 --footer-py:            7rem;       /* 112px  < md                     */
 --footer-py-md:         9rem;       /* 144px  ≥ md                     */
---footer-masthead-gap:  4rem;
+--footer-masthead-gap:  4rem;       /* masthead's internal rhythm AND   */
+                                    /* its gap to the hairline — one    */
+                                    /* token does both (Phase 6)        */
 --footer-col-gap:       3rem;
 --footer-meta-gap:      4rem;
+/* Added in Phase 6: §29 tokenised the footer's STRUCTURAL rhythm
+   (masthead / column / meta) but not its INTRA-column one — the space
+   between list items, between contact label/value pairs, and between the
+   two masthead actions. §10 does not change that rhythm, so the value is
+   transcribed from the `space-y-3` / `gap-3` the footer already shipped. */
+--footer-item-gap:      0.75rem;
 --logo-h-footer:        3.5rem;     /*  56px OPTICAL  < md             */
 --logo-h-footer-md:     4rem;       /*  64px OPTICAL  ≥ md             */
 --footer-surface:       var(--color-ink-950);
@@ -2212,8 +2377,8 @@ Every value. No adjectives.
 | Logo — white | `opacity` | `calc(1 - var(--header-p))` |
 | Logo — ink | `opacity` | `var(--header-p)` |
 | Nav / logo colour | `color` | `color-mix(in oklab, var(--fg-dark-muted), var(--fg-light-muted) calc(var(--header-p) * 100%))` |
-| CTA + phone | `opacity` | `clamp((var(--header-p) - 0.5) / 0.5, 0, 1)` |
-| CTA + phone | `transform` | `translateY(calc((1 - <above>) * 4px))` · **`0` under reduced motion** |
+| CTA *(the phone left the header — §16 O3)* | `opacity` | `clamp((var(--header-p) - 0.5) / 0.5, 0, 1)` |
+| CTA | `transform` | `translateY(calc((1 - <above>) * 4px))` · **`0` under reduced motion** |
 | Blur | `backdrop-filter` | `blur(var(--surface-chrome-blur))` **iff** `p ≥ 0.05`, else `none`. **Discrete. Never interpolated** |
 | Hairline | — | Lives **on** the glass layer; carried by its opacity. **Not a third animated value** |
 
@@ -2267,7 +2432,7 @@ row — never suppressed, never restyled per element.
 | **Lang toggle — active** | full fg, weight `600`, `aria-pressed="true"` | *no change* | ring | `opacity: 0.8` | — | **never disabled** |
 | **CTA — ghost** (`p < 0.5`) | `1px` border `--fg-dark` @ `0.4`, bg transparent, text `--fg-dark` | bg `rgb(255 255 255 / 0.12)` | ring | bg `rgb(255 255 255 / 0.18)` | — | never |
 | **CTA — solid** (`p ≥ 0.5`) | bg `wood-500`, text `#fff` | bg `wood-600` | ring | bg `wood-700` | — | never |
-| **Phone** | `--fg-*-muted` | full fg | ring | `opacity: 0.8` | — | never |
+| **Phone** *(drawer only — §16 O3)* | `--fg-light-muted` | `--fg-light` | ring | `opacity: 0.8` | — | never |
 | **Drawer trigger** | full fg | `opacity: 0.8` | ring | `opacity: 0.7` | `aria-expanded` | never |
 | **Drawer close** | `--fg-light-muted` | `--fg-light` | ring | `opacity: 0.7` | — | never |
 | **Drawer nav item** | `--fg-light` | `--accent-light` | ring | `opacity: 0.8` | `--accent-light` + rule + `aria-current` | never |
@@ -2289,7 +2454,7 @@ uses `aria-disabled="true"` and remains focusable.**
 | Element | Change |
 |---|---|
 | Header hide/reveal | **Disabled** — permanently `REVEALED` (I6) |
-| CTA / phone entrance | `opacity` only; `translateY` forced to `0` |
+| CTA entrance | `opacity` only; `translateY` forced to `0` |
 | Drawer | `transform` `none`; `opacity` fade at `--dur-hover` |
 | Nav underline | Retained — a 400ms `scaleX` on a 1.5px rule is not vestibular motion |
 | Scroll-linked chrome | **Retained.** It is direct manipulation, not animation. Removing it leaves white-on-white text |
@@ -2488,6 +2653,60 @@ Raw `z-*` utilities are **forbidden** in chrome (§37).
 | **R8** | **No `filter:`** in chrome — it creates a containing block and **breaks Safari's `backdrop-filter`** (ADR-004 alt 3) | Lint |
 | **R9** | `@apply` only inside `main.css`'s component layer, never in an SFC `<style>` | Review |
 | **R10** | **One blur radius exists** (`--surface-chrome-blur`). A second blur value implies a second blur — see §12 | Review |
+| **R11** | **The cascade layer order is PINNED, never inferred.** `app/assets/css/layers.css` declares `@layer icons, properties, theme, base, components, utilities;` and loads **before** `main.css`. It may not be removed, reordered, or merged into `main.css` | Build + review — see below |
+
+### 37.1 R11 — why the layer order is a declared contract (added in Phase 7)
+
+> **Without this, an icon decides your cascade.** This is not hypothetical: it shipped, and it
+> unstyled the drawer.
+
+CSS orders layers by **first declaration**. Two upstream behaviours combine to exploit that:
+
+1. **`@nuxt/icon` prepends** each icon's `<style>` before the first stylesheet —
+   `document.head.insertBefore(style, firstStyle)` — deliberately, so icon rules stay
+   low-priority.
+2. **`@nuxt/ui` configures that CSS as `@layer components`** (`icon: { cssLayer: 'components' }`).
+
+So the **prepended sheet declared `components` first**, and the document order became:
+
+```
+components → theme → properties → base → utilities        (measured)
+```
+
+**Tailwind's preflight (`@layer base`) therefore outranked every component class.** Measured
+consequences, all from `@layer base` winning:
+
+| Preflight rule | Beat | Result |
+|---|---|---|
+| `img { height: auto }` | `.app-drawer-logo { height: … }` | **168px logo**, overflowing the panel |
+| `* { padding: 0 }` | `.drawer-link { padding-block: … }` | links cramped to 0 |
+| `* { border: 0 }` | `.drawer-link { border-bottom: … }` | dividers gone |
+| `a { color: inherit }` | every chrome colour rule | drawer links ink-900; **footer links turned white** |
+
+`.app-drawer { width }` and `font-size` survived only because preflight does not set those —
+which is exactly why the failure looked arbitrary rather than systemic.
+
+**It was invisible for six phases because SSR icons are harmless.** They attach via `useHead`
+with `tagPriority: 'low'` and land *after* the main stylesheet. Only a **client-mounted** icon
+prepends — and opening the mobile drawer mounts `i-lucide:x`, **re-ordering the cascade
+mid-session**. The drawer broke itself by opening.
+
+**The fix is two coordinated changes; neither works alone.**
+
+- `nuxt.config.ts` → `icon: { cssLayer: 'icons' }`, so the prepended sheet no longer claims
+  `components`.
+- `layers.css` → pins the full order. It **cannot** live in `main.css`: Tailwind v4 strips a bare
+  `@layer` statement placed before its `@import`, and after the import it is too late — the
+  import has already expanded into layer blocks and settled first-appearance.
+
+`icons` is pinned **first (lowest)**, which is the precedence `@nuxt/icon` prepends to achieve
+anyway, so `h-6 w-6` still sizes icons. `properties` is included because Tailwind emits it
+first; omitting it would let it first-appear *after* `utilities` and become the **highest**
+layer, so on a browser without `@property` support `*{--tw-translate-x:0}` would outrank
+`.translate-x-4`.
+
+> **This is an upstream bug worth reporting.** Pointing `@nuxt/icon`'s prepended stylesheet at
+> `components` inverts the cascade for **any** project that does not pin its layer order.
 
 ---
 
@@ -2503,8 +2722,18 @@ Raw `z-*` utilities are **forbidden** in chrome (§37).
 | **Safari** (**iOS, real device**) | ✅ | ✅ | — | — |
 | **Firefox** | ✅ | ✅ | ✅ | ✅ |
 
-**1280px is mandatory, not a rounding of 1440.** It is the exact width at which the nav row has
-~10px of slack and Safari's tracking variance is ±7px (**V11**, **O3**).
+**1280px is mandatory, not a rounding of 1440.** It is the tightest width at which the full
+masthead must hold, and the width O3 was resolved against (**V11**, §16).
+
+> ### Corrected in Phase 7 — "~10px of slack" was never true
+>
+> This section claimed 1280 was "the exact width at which the nav row has ~10px of slack",
+> framing O3 as a **tracking-variance** risk: ±7px against ~10px of headroom. Measured, the row
+> was **−205px**. Not a variance risk — a design that did not fit, by two orders of magnitude
+> more than the number here implied. See §9 and §16 O3.
+>
+> 1280 remains mandatory, and post-O3 it carries **+17px** of real slack (the scrollbar takes 15
+> of the theoretical 32) — which *is* now a genuine ±7px-variance margin, for the first time.
 
 ### 38.2 Interaction tests
 
@@ -2532,7 +2761,7 @@ Raw `z-*` utilities are **forbidden** in chrome (§37).
 | A1 | **Skip link** is the first focusable element and reaches `<main>` | **2.4.1 (Level A)** |
 | A2 | Nav + logo contrast on **composited pixels**, all 8 covers × 3 viewports (**O2**) | 1.4.3 / 1.4.11 |
 | A3 | Active nav announced via `aria-current` — **not colour alone** | 1.4.1 |
-| A4 | CTA/phone **not focusable and not announced** at `p < 0.5` (**I8**) | 2.4.3 |
+| A4 | CTA **not focusable and not announced** at `p < 0.5` (**I8**) | 2.4.3 |
 | A5 | Drawer: `role="dialog"`, `aria-modal`, trap, `Esc`, focus return, page `inert` | 4.1.2 |
 | A6 | Lang toggle: `role="group"` + `aria-pressed`; **active option not `disabled`** (§32.1) | 4.1.2 |
 | A7 | Every chrome target **≥ 44×44px** | 2.5.5 |
@@ -2827,4 +3056,3 @@ media pipeline** — all frozen by **Appendix D**.
 
 **It gets its own ADR and its own workstream.** It must not be silently absorbed into this
 redesign, and it must not block it. Recorded here so it is not lost.
-```
