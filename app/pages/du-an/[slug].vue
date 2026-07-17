@@ -354,7 +354,7 @@ useHead({
 
     <!-- Sticky in-page nav --------------------------------------------------->
     <nav
-      class="sticky top-20 z-30 border-b border-ink-200 bg-white/95 backdrop-blur-md"
+      class="subnav-anchor sticky z-30 border-b border-ink-200 bg-white/95 backdrop-blur-md"
       :aria-label="t({ vi: 'Mục lục dự án', en: 'Case study sections' })"
     >
       <div class="shell flex gap-1 overflow-x-auto py-3">

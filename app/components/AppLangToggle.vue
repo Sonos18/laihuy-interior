@@ -1,59 +1,45 @@
 <script setup lang="ts">
-// Phase 1 — pure extraction from AppHeader + AppDrawer. DOM, classes, behaviour unchanged.
-// The a11y contract (role="group", aria-pressed, no `disabled` on the active option) lands in
-// Phase 5 (docs/header-footer-art-direction.md §26.5, §32.1) — deliberately NOT added here, so
-// this stays a pure refactor. The bare <div aria-label> below is a known live defect (§11).
+// Phase 5 — the a11y contract lands (docs/header-footer-art-direction.md §26.5, §32, §32.1).
 //
 // This component exists because its logic was duplicated between the header and the drawer (§2).
+// Re-duplicating it is a regression, not a shortcut.
+//
+// Owns: rendering VI/EN, calling setLocale, role="group" + aria-pressed.
+// Does NOT own: locale state (that is useLanguage), or styling itself for a surface.
+// Forbidden knowledge (§26.5): header state, scroll, route.
 import { localeOptions, uiText } from '~/data/ui'
 
-// `surface` is a prop, never a detection — the parent knows the surface, the child is told (§26.5).
+// `surface` is a PROP, never a detection — the toggle must never inspect its own background to
+// decide its colour. The parent knows the surface; the child is told (§26.5).
 //
-// §26.5 specifies 'dark' | 'light'. There are three values here because the drawer's toggle is
-// drawn differently from the scrolled header's TODAY: px-4 py-2 vs px-3 py-1.5, bg-ink-50 vs
-// bg-white, and no hover state. That drift is pre-existing; Phase 1 preserves it verbatim rather
-// than unifying it, because unifying it would change pixels. Phase 5/6 collapses 'drawer' into
-// 'light' once the §29 tokens exist — at which point this prop matches §26.5 exactly.
-const props = defineProps<{ surface: 'dark' | 'light' | 'drawer' }>()
+// Phase 1 carried a third value, 'drawer', because the drawer's toggle was drawn differently
+// from the scrolled header's (px-4 py-2 vs px-3 py-1.5, bg-ink-50 vs bg-white, no hover). That
+// drift was pre-existing and preserved verbatim so the extraction stayed pixel-identical. The
+// §29 tokens now exist, so 'drawer' collapses into 'light' and the prop matches §26.5 exactly.
+defineProps<{ surface: 'dark' | 'light' }>()
 
 const { locale, setLocale, t } = useLanguage()
-
-const surfaces = {
-  dark: {
-    container: 'border-white/20 bg-white/8',
-    item: 'px-3 py-1.5',
-    active: 'bg-white text-ink-950',
-    inactive: 'text-white/62 hover:text-white'
-  },
-  light: {
-    container: 'border-ink-200 bg-white',
-    item: 'px-3 py-1.5',
-    active: 'bg-ink-950 text-white',
-    inactive: 'text-ink-500 hover:text-ink-950'
-  },
-  drawer: {
-    container: 'border-ink-200 bg-ink-50',
-    item: 'px-4 py-2',
-    active: 'bg-ink-950 text-white',
-    inactive: 'text-ink-500'
-  }
-} as const
-
-const style = computed(() => surfaces[props.surface])
 </script>
 
 <template>
+  <!-- §11 — role="group" is what makes the label real: the aria-label previously sat on a bare
+       <div>, where assistive tech ignores it. That was a live defect, not a new requirement. -->
   <div
-    class="inline-flex rounded-full border p-1"
-    :class="style.container"
+    class="lang-toggle"
+    :class="`lang-toggle-${surface}`"
+    role="group"
     :aria-label="t(uiText.language)"
   >
+    <!-- §32.1 — NO chrome control is ever `disabled`, not even the currently-active language:
+         `disabled` removes an element from the tab order and from most screen readers, so a
+         VI-speaking user on the VI locale would find the language control had vanished. The
+         active option stays focusable and carries aria-pressed="true". -->
     <button
       v-for="option in localeOptions"
       :key="option.value"
       type="button"
-      class="rounded-full text-xs font-black transition-colors"
-      :class="[style.item, locale === option.value ? style.active : style.inactive]"
+      class="lang-option"
+      :aria-pressed="locale === option.value"
       @click="setLocale(option.value)"
     >
       {{ option.label }}

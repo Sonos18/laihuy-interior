@@ -1,90 +1,139 @@
 <script setup lang="ts">
-// Phase 1 — pure extraction from app.vue. DOM, classes, behaviour unchanged.
-// The redesign lands in Phase 4 (docs/header-footer-art-direction.md §5).
+// Phase 4 — the header is part of the cover, not a bar above it (§1).
+// At rest it owns no background, no border and no blur — only a scrim that protects
+// legibility (§5.2). It is the signature on the photograph.
+//
+// This component owns MARKUP only. Scroll state, direction, visibility, route hooks and every
+// CSS-var write belong to useHeaderState (§2, §26.1, §27). Forbidden knowledge (§26.1): the
+// current route, hero mode/atmosphere/focal, whether a hero exists, any page's DOM, and its own
+// height in pixels — it reads --header-h.
 import { company } from '~/data/company'
 import { navLinks, uiText } from '~/data/ui'
+
+const props = withDefaults(defineProps<{
+  /**
+   * I9 escape hatch, and the ONLY prop this component has (§26.1). A page that cannot open with
+   * a dark cover must opt into permanent NAVIGATION chrome. Also the §28.4 kill switch: `solid`
+   * globally reproduces a conventional, accessible header on every page.
+   */
+  solid?: boolean
+}>(), { solid: false })
 
 const emit = defineEmits<{ openMenu: [] }>()
 
 const { locale, t } = useLanguage()
 const { isActive } = useActiveLink()
+const { register, setSolid, chromeState, drawerOpen } = useHeaderState()
 
-const isScrolled = ref(false)
+const headerEl = ref<HTMLElement | null>(null)
 
-const onScroll = () => {
-  isScrolled.value = window.scrollY > 40
-}
-
+// §34.1 — the first measurement runs synchronously in onMounted, before paint.
 onMounted(() => {
-  window.addEventListener('scroll', onScroll, { passive: true })
-  onScroll()
+  setSolid(props.solid)
+  if (headerEl.value) register(headerEl.value)
 })
 
-onUnmounted(() => {
-  window.removeEventListener('scroll', onScroll)
-})
+watch(() => props.solid, value => setSolid(value))
 </script>
 
 <template>
   <header
-    class="fixed inset-x-0 top-0 z-50 border-b transition-all duration-300"
-    :class="[
-      isScrolled
-        ? 'border-ink-200 bg-white/95 text-ink-950 shadow-sm backdrop-blur-md'
-        : 'border-white/10 bg-ink-950/10 text-white backdrop-blur-sm'
-    ]"
+    ref="headerEl"
+    class="app-header"
+    data-blur="off"
+    data-chrome-state="cover"
   >
-    <nav class="shell flex h-20 items-center justify-between">
+    <!-- Two prebuilt layers, animated by opacity alone (ADR-006b). Complementary, never
+         additive: α_scrim + α_glass ≤ 1 at every p (I7). -->
+    <div
+      class="chrome-layer chrome-scrim"
+      aria-hidden="true"
+    />
+    <div
+      class="chrome-layer chrome-glass"
+      aria-hidden="true"
+    />
+
+    <nav
+      class="shell chrome-bar"
+      :aria-label="t({ vi: 'Điều hướng chính', en: 'Main navigation' })"
+    >
       <NuxtLink
         to="/"
-        class="flex shrink-0 items-center gap-3"
+        class="chrome-logo"
         aria-label="Lai Huy Interior"
       >
+        <!-- §35 — mono-white is in the LCP viewport and must never pop in after the cover.
+             mono-ink is opacity:0 but must be DECODED before the user scrolls, or the
+             cross-fade flashes an empty box. Both carry explicit width/height (FG-15). -->
         <img
-          src="/logo-white.png"
+          src="/logo-mono-white.png"
           alt="Lai Huy Interior"
-          class="h-16 w-auto md:h-[4.5rem]"
+          width="424"
+          height="212"
+          loading="eager"
+          fetchpriority="high"
+          class="chrome-logo-img chrome-logo-white"
+        >
+        <img
+          src="/logo-mono-ink.png"
+          alt=""
+          aria-hidden="true"
+          width="424"
+          height="212"
+          loading="eager"
+          fetchpriority="low"
+          class="chrome-logo-img chrome-logo-ink"
         >
       </NuxtLink>
 
-      <div class="hidden items-center gap-1 lg:flex">
+      <!-- §9 — the desktop nav breakpoint is `xl`, not `lg`. A narrative decision, not a width
+           workaround: at tablet the 7-link index would crowd the logo, so the cover becomes
+           purer and the index moves into the drawer, where it reads as a contents page. -->
+      <div class="chrome-nav hidden xl:flex">
         <NuxtLink
           v-for="link in navLinks"
           :key="link.to"
           :to="link.to"
-          class="px-3 py-2 text-sm font-semibold transition-colors"
-          :class="[
-            isActive(link.to)
-              ? isScrolled ? 'text-wood-600' : 'text-white'
-              : isScrolled ? 'text-ink-600 hover:text-wood-600' : 'text-white/72 hover:text-white'
-          ]"
+          class="nav-link chrome-nav-color"
+          :aria-current="isActive(link.to) ? 'page' : undefined"
         >
           {{ t(link.label) }}
         </NuxtLink>
       </div>
 
-      <div class="hidden items-center gap-3 lg:flex">
-        <AppLangToggle :surface="isScrolled ? 'light' : 'dark'" />
-        <a
-          :href="`tel:${company.phone.replaceAll(' ', '')}`"
-          class="text-sm font-bold"
-          :class="isScrolled ? 'text-ink-800' : 'text-white'"
+      <div class="chrome-right hidden xl:flex">
+        <!-- §9 — VI/EN is part of the masthead at rest. Phone and CTA are not: the hero below
+             already carries the single primary action. They arrive on scroll. -->
+        <AppLangToggle :surface="chromeState === 'nav' ? 'light' : 'dark'" />
+
+        <!-- I8 — never tab into an invisible control. `opacity: 0` alone is not hiding (FG-09):
+             inert + aria-hidden while p < 0.5. -->
+        <div
+          class="chrome-actions"
+          :inert="chromeState === 'cover'"
+          :aria-hidden="chromeState === 'cover'"
         >
-          {{ company.phone }}
-        </a>
-        <NuxtLink
-          to="/lien-he"
-          class="btn-primary py-3"
-        >
-          {{ t(uiText.cta.quote24h) }}
-        </NuxtLink>
+          <a
+            :href="`tel:${company.phone.replaceAll(' ', '')}`"
+            class="chrome-phone chrome-nav-color"
+          >
+            {{ company.phone }}
+          </a>
+          <NuxtLink
+            to="/lien-he"
+            class="btn-primary"
+          >
+            {{ t(uiText.cta.quote24h) }}
+          </NuxtLink>
+        </div>
       </div>
 
       <button
         type="button"
-        class="p-2 lg:hidden"
-        :class="isScrolled ? 'text-ink-950' : 'text-white'"
+        class="chrome-trigger chrome-nav-color xl:hidden"
         :aria-label="locale === 'vi' ? 'Mở menu' : 'Open menu'"
+        :aria-expanded="drawerOpen"
         @click="emit('openMenu')"
       >
         <Icon
