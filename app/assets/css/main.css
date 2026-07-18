@@ -7,6 +7,244 @@
   --color-warm: #b8875a;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESIGN TOKEN CONTRACT — docs/header-footer-art-direction.md §29
+   ───────────────────────────────────────────────────────────────────────────
+   Phase 3A (refactor) DECLARES this set. Only the shell/rhythm tokens are
+   consumed today, by `.shell` and `.section-y` below — and their values are
+   transcribed to match what the body already renders, so adopting them moves
+   nothing (ADR-001: "Body sections move 0px at every viewport").
+
+   The rest are declared and deliberately UNCONSUMED. They are the contract the
+   later phases transcribe against: chrome + hero converge onto the rail in
+   Phase 3B, the header state machine in Phase 4, the drawer in Phase 5, the
+   footer in Phase 6. Declaring a token renders nothing; a token is not a
+   dependency (§2).
+
+   Tokens flow downward only: L0 (@theme primitives) → L1 → L2. No component
+   may invent a colour; new colours enter at L0 via a doc PR (§22.1).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── L1 · Shell / rhythm ────────────────────────────────────────────────
+     The alignment rail (ADR-001). --shell-measure is CONTENT width, not box
+     width: the gutter is added to the max-width rather than subtracted from
+     the measure, so changing one knob never silently changes the other. That
+     coupling is exactly why ADR-001 rejected Option B. */
+  --shell-measure: 80rem;      /* 1280px of CONTENT                        */
+  --shell-gutter: 1.5rem;      /*   24px  < md  — matches today's px-6     */
+  --shell-gutter-md: 2rem;     /*   32px  ≥ md  — matches today's md:px-8  */
+  --section-py: 5rem;          /*   80px  < md  — matches today's py-20    */
+  --section-py-md: 7rem;       /*  112px  ≥ md  — matches today's md:py-28 */
+
+  /* ── L1 · Breakpoints (reference; media queries use the literal) ─────── */
+  --bp-md: 48rem;              /*  768px                                   */
+  --bp-xl: 80rem;              /* 1280px — the chrome breakpoint.
+                                  `lg` is NOT a chrome breakpoint (§9)     */
+
+  /* ── L1 · Foreground on DARK ────────────────────────────────────────── */
+  --fg-dark: #fff;
+  --fg-dark-muted: rgb(255 255 255 / 0.72);    /* 10.1:1 on ink-950        */
+  --fg-dark-subtle: rgb(255 255 255 / 0.48);   /*  5.0:1 on ink-950 (§25.2)*/
+  --rule-dark: rgb(255 255 255 / 0.12);
+  --accent-dark: var(--color-wood-300);        /*  7.8:1 on ink-950        */
+
+  /* ── L1 · Foreground on LIGHT ───────────────────────────────────────── */
+  --fg-light: var(--color-ink-950);
+  --fg-light-muted: var(--color-ink-600);      /*  7.4:1 on white          */
+  --fg-light-subtle: var(--color-ink-500);     /*  5.4:1 on white (§25.2)  */
+  --rule-light: rgb(216 210 202 / 0.6);        /* ink-200/60               */
+  --accent-light: var(--color-wood-600);
+
+  /* ── L1 · Motion ────────────────────────────────────────────────────── */
+  --ease-editorial: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --dur-hover: 240ms;
+  --dur-state: 400ms;
+  --dur-drawer: 300ms;
+  --dur-reveal: 700ms;
+
+  /* ── L1 · Radius / shadow ───────────────────────────────────────────── */
+  --radius-pill: 9999px;
+  --radius-card: 1rem;
+  --shadow-drawer: 0 0 40px rgb(11 10 9 / 0.28);  /* the ONLY chrome shadow */
+
+  /* ── L1 · Layer contract (§36) ──────────────────────────────────────────
+     The COMPLETE hierarchy. No z-index may exist outside this table, and raw
+     `z-*` utilities are forbidden in chrome (§37 R7).
+
+     The drawer, its overlay and the header were ALL z-50 and stacked correctly
+     only by DOM ORDER in app.vue — a coincidence, not a contract. Any reorder
+     silently put the header on top of an open drawer. 60/61 makes it explicit. */
+  --z-base: 0;
+  --z-hero-content: 10;
+  --z-subnav: 30;
+  --z-header: 50;
+  --z-drawer-overlay: 60;      /* was z-50 — raised (§36)                   */
+  --z-drawer: 61;              /* was z-50 — raised (§36)                   */
+  --z-lightbox: 80;
+  --z-skiplink: 90;            /* new (§36)                                 */
+
+  /* ── L2 · Header (consumed in Phase 4) ──────────────────────────────── */
+  --header-h: 4.5rem;          /*  72px  < xl                              */
+  --header-h-xl: 5.5rem;       /*  88px  ≥ xl                              */
+  --header-scrim-h: 10rem;     /* 160px                                    */
+  --logo-h-header: 2.5rem;     /*  40px OPTICAL (trimmed) < xl             */
+  --logo-h-header-xl: 3rem;    /*  48px OPTICAL (trimmed) ≥ xl             */
+  --logo-aspect: 2 / 1;        /* measured: 424 × 212                      */
+  /* O3 RESOLUTION (was 1rem) — §16 listed O3 as unresolved and blocking, and
+     measurement proved why: the VI NAVIGATION row needs 1421px against 1216px of
+     content at 1280, i.e. −205px, where V11 requires +8px.
+
+     §9's arithmetic ("918px of content in a 1232px shell, ~314px of negative
+     space") assumed a nav of ~654px. The 7 uppercase VI labels at --type-nav's
+     0.12em tracking actually measure 798px — +144px — and the ~314px of negative
+     space has to absorb phone + CTA + gaps, which need 359px. The spec was ~45px
+     short by its own numbers before the 144px nav error. That is the whole 205px.
+
+     FG-16 sanctions two levers: reduce --nav-item-px, or reduce --type-nav
+     tracking. Together they yield only ~156px against the 213px needed (205 + 8),
+     so they cannot close it alone — the row does not fit while the 7 links (D.1),
+     the CTA's 206px (D.1) and the phone (§5.2) all hold.
+
+     Resolved by decision: this halves to 0.5rem (saves 7 × 16 = 112px) and the
+     PHONE LEAVES the desktop NAVIGATION row for the drawer, where §9 says it
+     belongs (saves 109 + 16 = 125px). Total 237px → 1184px required, +32px slack.
+     --type-nav-track stays 0.12em: it is the masthead's editorial signature (§3.3)
+     and this resolution does not spend it.
+
+     Docs owed (§17 rule 1): §9's desktop figures, §5.2/§32's Phone rows, and O3
+     in §16 must all be updated to match. */
+  --nav-item-px: 0.5rem;
+  --nav-item-min-h: 2.75rem;   /*  44px — WCAG 2.5.5                       */
+  --nav-item-gap: 0.25rem;
+  --nav-rule-h: 1.5px;
+  --header-group-gap: 2rem;
+  --header-action-gap: 1rem;
+  --surface-chrome: rgb(255 255 255 / 0.92);
+  --surface-chrome-blur: 16px; /* the ONE blur radius                      */
+  --header-border-a: 0.6;
+  --header-scrim-a1: 0.55;
+  --header-scrim-a2: 0.18;
+  --scrim-chrome: linear-gradient(
+    to bottom,
+    rgb(11 10 9 / var(--header-scrim-a1)),
+    rgb(11 10 9 / var(--header-scrim-a2)) 45%,
+    transparent
+  );
+  --header-blur-in: 0.05;      /* p at which backdrop-filter engages       */
+  --header-action-in: 0.5;     /* p at which CTA/phone become focusable    */
+
+  /* Runtime — written by useHeaderState AND NOTHING ELSE (§29 R2). */
+  --header-p: 0;               /* 0 … 1                                    */
+  --header-shift: 0px;         /* 0 | calc(-1 * var(--header-h))           */
+
+  /* ── L2 · Header typography (Phase 4) ───────────────────────────────── */
+  --type-nav-size: 0.8125rem;
+  --type-nav-weight: 600;
+  --type-nav-track: 0.12em;
+  --type-nav-leading: 1;
+  --type-lang-size: 0.75rem;
+  --type-lang-weight: 600;
+  --type-lang-track: 0.08em;
+  --type-meta-size: 0.8125rem;
+  --type-meta-weight: 600;
+  --type-meta-track: 0.02em;
+  --type-action-size: 0.875rem;
+  --type-action-weight: 700;
+  --type-action-track: 0.01em;
+
+  /* ── L2 · Drawer (consumed in Phase 5) ──────────────────────────────── */
+  /* SPEC DEFECT, raised not decided (§0, D.4): §29 declares every drawer
+     value EXCEPT the panel's own surface, yet §32 puts --fg-light /
+     --fg-light-muted / --accent-light on it, all of which presuppose a light
+     surface. R2 forbids a literal `#fff` in the component, so the value enters
+     as a token here rather than inline. §29 needs this row added. */
+  --drawer-surface: #fff;
+  --drawer-w: 21rem;           /* 336px                                    */
+  --drawer-w-max: 88vw;
+  --drawer-px: 1.5rem;
+  --drawer-item-py: 1.25rem;
+  --drawer-overlay: rgb(11 10 9 / 0.6);
+  --drawer-blur: 8px;
+  --type-drawer-nav-size: 1.5rem;
+  --type-drawer-nav-weight: 600;
+  --type-drawer-nav-track: -0.01em;
+  --type-drawer-nav-leading: 1.3;
+
+  /* ── L2 · Footer (consumed in Phase 6) ──────────────────────────────── */
+  --footer-py: 7rem;           /* 112px  < md                              */
+  --footer-py-md: 9rem;        /* 144px  ≥ md                              */
+  --footer-masthead-gap: 4rem;
+  --footer-col-gap: 3rem;
+  --footer-meta-gap: 4rem;
+  /* SPEC GAP, raised not decided (§0, D.4): §29 tokenises the footer's
+     STRUCTURAL rhythm (masthead / column / meta) but not its INTRA-column one —
+     the space between list items, between contact label/value pairs, and between
+     the two masthead actions. §10's decision table does not change that rhythm,
+     so the unambiguous reading is "preserve today's value": 0.75rem is
+     transcribed from the `space-y-3` / `gap-3` this footer already shipped.
+     §29 needs this row added. */
+  --footer-item-gap: 0.75rem;
+  --logo-h-footer: 3.5rem;     /*  56px OPTICAL  < md                      */
+  --logo-h-footer-md: 4rem;    /*  64px OPTICAL  ≥ md                      */
+  --footer-surface: var(--color-ink-950);
+  --footer-top-gradient: linear-gradient(
+    to bottom, var(--color-ink-900), var(--color-ink-950) 12.5rem
+  );
+  --type-eyebrow-size: 0.75rem;
+  --type-eyebrow-weight: 600;
+  --type-eyebrow-track: 0.22em;
+  --type-body-sm-size: 0.875rem;
+  --type-body-sm-leading: 1.7;
+  --type-meta-sm-size: 0.8125rem;
+  --type-meta-sm-leading: 1.6;
+
+  /* ── L3 · Project sub-nav (page-owned, header-coupled) ──────────────── */
+  --subnav-h: 3.5rem;          /*  56px                                    */
+}
+
+/* The responsive half of the rail. Redefining the token (rather than the rule)
+   keeps --shell-gutter a single source of truth: `.shell` derives BOTH its
+   max-width and its padding from it, so the two can never disagree.
+   48rem = --bp-md = Tailwind's `md`, so this fires exactly where the old
+   `md:px-8` / `md:py-28` variants did. */
+@media (min-width: 48rem) {
+  :root {
+    --shell-gutter: var(--shell-gutter-md);
+    --section-py: var(--section-py-md);
+  }
+}
+
+/* --bp-xl = 80rem = 1280px — the chrome breakpoint (§9: `lg` is NOT one).
+   --header-h is redefined rather than switched at each consumer so that §22.3's
+   contract ("current header height") stays literally true at every width. Its
+   two public readers — the sub-nav's `top` and the scroll anchors — then track
+   the header for free (§3.2), which is the entire point of the token. */
+@media (min-width: 80rem) {
+  :root {
+    --header-h: var(--header-h-xl);
+  }
+}
+
+/* A.2 — registering --header-p types it (no re-parse per frame) and gives it an
+   initial value, so the chrome is correct before hydration.
+
+   NOTE: A.2 specifies `inherits: false`; this is `inherits: true` deliberately.
+   §31.1 drives the scrim, glass, logo and nav — all DESCENDANTS of the header —
+   from var(--header-p). With inherits:false those descendants resolve the
+   initial value (0) instead of the header's, and the chrome never leaves COVER.
+   The two rules cannot both hold. Inheritance is the load-bearing one; A.2's aim
+   (§23.1 "style-recalc scope: header subtree only") is already satisfied because
+   useHeaderState writes the property on the HEADER ELEMENT, never on :root — so
+   the invalidation never escapes the subtree either way. Reported, not silently
+   diverged. */
+@property --header-p {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
 @theme {
   --color-ink-50: #f7f7f5;
   --color-ink-100: #ece9e4;
@@ -87,13 +325,821 @@
 }
 
 @layer components {
-  .section-spacing {
-    @apply px-6 py-20 md:px-8 md:py-28;
+  /* The canonical alignment rail — ADR-001 Option A, §4.2, §26.7.
+     ONE utility. Padding INSIDE a max-width sized to CONTENT, so the measure is
+     stable and the gutter is responsive.
+
+     This reproduces the geometry the body already had (`section-spacing` px on
+     the section + `section-shell` max-w-7xl on the child) to the pixel, at every
+     viewport — which is the whole reason Phase 3 splits in two. Verified:
+
+       vw     element        content left   measure
+       390    390            24             342
+       768    768            32             704
+       1280   1280           32             1216
+       1440   1344 (centred) 80             1280
+       1920   1344 (centred) 320            1280
+
+     Phase 3B converged chrome, the hero and the `px-6` bands onto this rail and
+     retired `.section-shell` with them. There is now exactly ONE shell (§26.7):
+     every left edge on the site is this one. A component defining its own
+     max-width + horizontal padding re-creates the two-shell defect (§4.1) — the
+     defect this rail exists to end. */
+  .shell {
+    width: 100%;
+    margin-inline: auto;
+    max-width: calc(var(--shell-measure) + 2 * var(--shell-gutter));
+    padding-inline: var(--shell-gutter);
   }
 
-  .section-shell {
-    @apply mx-auto max-w-7xl;
+  /* Vertical rhythm only — the horizontal half now belongs to `.shell` (§4.2).
+     Values are transcribed from the `section-spacing` it replaces: 80px / 112px. */
+  .section-y {
+    padding-block: var(--section-py);
   }
+
+  /* ── CHROME — §5, §31, ADR-006 ─────────────────────────────────────────────
+     The header is `position: fixed` and hide/reveal is a transform, so chrome
+     CANNOT contribute CLS by construction (§23.3, §40.4). A non-zero chrome CLS
+     has exactly one cause: a logo <img> missing explicit dimensions (FG-15). */
+  .app-header {
+    /* C-4 / M4: Safari drops backdrop-filter on a `fixed` element inside a
+       TRANSFORMED ancestor. The header must never be nested under one. */
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: var(--z-header);
+    transform: translateY(var(--header-shift));
+    transition: transform var(--dur-state) var(--ease-editorial);
+    /* §33.2 — notch safety. */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* §7.2 — the router suppresses transitions rather than animating through them.
+     The ONLY !important in the codebase, and §37 R6 names it as the sole
+     exception: it must beat every transition declaration unconditionally. */
+  .chrome-no-transition,
+  .chrome-no-transition * {
+    transition: none !important;
+  }
+
+  /* §34.2 — static NAVIGATION for the one pre-hydration frame after a reload that
+     restored a mid-page scroll. The composable's inline write outranks this and
+     then deletes the attribute. */
+  :root[data-chrome="nav"] .app-header {
+    --header-p: 1;
+
+    transition: none;
+  }
+
+  /* §6.4 — the project sub-nav is anchored to the header and MUST move with it.
+     Both consume the same tokens, so they move in lockstep by construction rather
+     than by two coincidentally-matching animations. If the header hides and the
+     sub-nav does not, an 88px gap opens above it (FG-11). */
+  .subnav-anchor {
+    top: var(--header-h);
+    transform: translateY(var(--header-shift));
+    transition: transform var(--dur-state) var(--ease-editorial);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .subnav-anchor {
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* Two PREBUILT layers animated by opacity alone (ADR-006b). Interpolating the
+     glass's background-color would repaint it every frame, and repainting an
+     element that has backdrop-filter RE-RUNS ITS FILTER — the single most
+     expensive thing this design could do, and invisible in a screenshot (FG-17).
+     α_scrim + α_glass ≤ 1 at every p: the layers are complementary, never
+     additive, so total overdraw never exceeds one opaque layer (I7). */
+  .chrome-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .chrome-scrim {
+    /* Every hero's own scrim is weakest exactly where the header sits (§5.2), so
+       this is not decoration — it is what makes a transparent background legible. */
+    height: var(--header-scrim-h);
+    background: var(--scrim-chrome);
+    opacity: calc(1 - var(--header-p));
+  }
+
+  .chrome-glass {
+    background: var(--surface-chrome);
+    border-bottom: 1px solid var(--rule-light);
+    opacity: var(--header-p);
+  }
+
+  /* Blur is a DISCRETE TOGGLE, never an interpolated radius (§8.2, §25.2).
+     Engaged at p ≥ 0.05 — the glass is 5% opaque there, so its arrival is
+     imperceptible, and gating it this way keeps `backdrop-filter: none` on the
+     cover, which is the property that actually matters: it removes the blur from
+     the LCP frame entirely (§12, A.4). */
+  .app-header[data-blur="on"] .chrome-glass {
+    backdrop-filter: blur(var(--surface-chrome-blur));
+  }
+
+  /* C.2 — never leave the glass translucent-without-blur: text over a moving
+     photo at α 0.92 with no blur fails contrast. */
+  @supports not (backdrop-filter: blur(1px)) {
+    .chrome-glass {
+      background: rgb(255 255 255 / 0.98);
+    }
+  }
+
+  /* FG-12 / V14 — screen-wide budget: ≤ 1 backdrop blur on screen. The drawer
+     overlay owns the blur while it is open, so the header gives its up. */
+  .app-header[data-drawer="open"] .chrome-glass {
+    backdrop-filter: none;
+  }
+
+  /* The bar itself. `.shell` supplies the rail (ADR-001); this supplies height. */
+  .chrome-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--header-group-gap);
+    height: var(--header-h);
+  }
+
+  /* ADR-004 — the logo is an adaptive signature, not a coloured badge. Two mono
+     assets cross-fade by opacity; the colour master (1.86:1 over photography, a
+     live WCAG 1.4.11 failure) leaves the render path here.
+
+     --logo-h-* is OPTICAL height and the derived assets are TRIMMED, so the box
+     IS the mark: no 42.4% padding to discount (V16). */
+  .chrome-logo {
+    position: relative;
+    display: block;
+    flex: none;
+    height: var(--logo-h-header);
+    aspect-ratio: var(--logo-aspect);
+  }
+
+  @media (min-width: 80rem) {
+    .chrome-logo {
+      height: var(--logo-h-header-xl);
+    }
+  }
+
+  /* FG-15 — both carry explicit width/height in the markup. Chrome is `fixed` and
+     cannot otherwise contribute CLS, so a non-zero chrome CLS is always this bug. */
+  .chrome-logo-img {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  .chrome-logo-white {
+    opacity: calc(1 - var(--header-p));
+  }
+
+  .chrome-logo-ink {
+    opacity: var(--header-p);
+  }
+
+  .chrome-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--nav-item-gap);
+  }
+
+  .chrome-right {
+    display: flex;
+    align-items: center;
+    gap: var(--header-action-gap);
+  }
+
+  /* §31.1 — CTA + phone arrive on scroll, once the hero's own CTA has left the
+     viewport and the header must take over conversion (§9). */
+  .chrome-actions {
+    --actions-in: clamp(0, calc((var(--header-p) - var(--header-action-in)) / 0.5), 1);
+
+    display: flex;
+    align-items: center;
+    gap: var(--header-action-gap);
+    opacity: var(--actions-in);
+    transform: translateY(calc((1 - var(--actions-in)) * 4px));
+  }
+
+  /* The header's phone rule is gone with the phone itself (O3 resolution — see
+     --nav-item-px). --type-meta now belongs to the drawer's phone; §22.2 files it
+     under Header and owes an update. */
+
+  /* §12 / A.4 — chrome carries ZERO shadows outside the drawer. The site-wide CTA
+     ships `shadow-sm`, so it is suppressed here rather than re-implemented: D.1
+     freezes the CTA copy *and* its 206px width as a hard input to the header's
+     overflow budget (§6.4), and a bespoke chrome CTA would fork that geometry. */
+  .app-header .btn-primary {
+    min-height: var(--nav-item-min-h);
+    font-size: var(--type-action-size);
+    font-weight: var(--type-action-weight);
+    letter-spacing: var(--type-action-track);
+    box-shadow: none;
+  }
+
+  /* §33.5 — 44×44 minimum. */
+  .chrome-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--nav-item-min-h);
+    min-width: var(--nav-item-min-h);
+  }
+
+  .chrome-nav-color {
+    color: color-mix(
+      in oklab,
+      var(--fg-dark-muted),
+      var(--fg-light-muted) calc(var(--header-p) * 100%)
+    );
+  }
+
+  /* C.2 — discrete fallback where color-mix() is unsupported. */
+  @supports not (color: color-mix(in oklab, white, black)) {
+    .chrome-nav-color {
+      color: var(--fg-dark-muted);
+    }
+
+    .app-header[data-chrome-state="nav"] .chrome-nav-color {
+      color: var(--fg-light-muted);
+    }
+  }
+
+  /* §40.3 — the underline is `transform: scaleX()`, NOT background-size. The
+     spec caught its own violation here: background-size is a paint property and
+     is on the §40.2 banlist. scaleX is compositor-only — identical picture,
+     strictly cheaper. `.link-underline` survives for BODY copy only, where links
+     wrap and a ::after would underline only the first line box. */
+  .nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--nav-item-min-h);
+    padding-inline: var(--nav-item-px);
+    font-size: var(--type-nav-size);
+    font-weight: var(--type-nav-weight);
+    letter-spacing: var(--type-nav-track);
+    line-height: var(--type-nav-leading);
+    text-transform: uppercase;
+    transition: color var(--dur-hover) var(--ease-editorial);
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline: var(--nav-item-px);
+    block-size: var(--nav-rule-h);
+    background: currentcolor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-state) var(--ease-editorial);
+  }
+
+  .nav-link:hover::after,
+  .nav-link[aria-current="page"]::after {
+    transform: scaleX(1);
+  }
+
+  /* §5.5 / §32 — the active state is never colour-only (today it is): it carries
+     a persistent rule AND aria-current, satisfying WCAG 1.4.1. */
+  .nav-link:hover,
+  .nav-link[aria-current="page"] {
+    color: color-mix(in oklab, var(--fg-dark), var(--fg-light) calc(var(--header-p) * 100%));
+  }
+
+  /* §8.4 / I6 — hide/reveal is motion and is disabled entirely. Scroll-linked
+     chrome is RETAINED: it is direct manipulation, not animation, and removing
+     it would leave white-on-white text. */
+  @media (prefers-reduced-motion: reduce) {
+    .app-header {
+      transform: none;
+      transition: none;
+    }
+
+    .chrome-actions {
+      transform: none !important;
+    }
+  }
+
+  /* Appendix B — Forced Colors Mode removes background IMAGES and gradients, so
+     the scrim vanishes and the nav would become CanvasText over a photograph: a
+     total failure. The header must therefore fall back to a solid Canvas
+     surface. This is specified, not discovered. */
+  @media (forced-colors: active) {
+    .app-header {
+      background: Canvas;
+    }
+
+    .chrome-scrim {
+      display: none;
+    }
+
+    .chrome-glass {
+      opacity: 1;
+      background: Canvas;
+      backdrop-filter: none;
+    }
+
+    .chrome-nav-color,
+    .nav-link,
+    .nav-link:hover,
+    .nav-link[aria-current="page"] {
+      color: CanvasText;
+    }
+  }
+
+  /* ── SKIP LINK — §33.6, §32, A1 ────────────────────────────────────────────
+     WCAG 2.4.1 Bypass Blocks is LEVEL A, and the site repeats 7 nav links on
+     every page with no bypass mechanism — a live Level-A failure, not a new
+     requirement. First focusable element in the DOM; visually hidden until
+     focused; targets <main id="main">. */
+  .skip-link {
+    position: fixed;
+    top: 0;
+    left: var(--shell-gutter);
+    z-index: var(--z-skiplink);
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--nav-item-min-h);
+    padding-inline: var(--nav-item-px);
+    background: var(--fg-light);
+    color: var(--fg-dark);
+    font-size: var(--type-action-size);
+    font-weight: var(--type-action-weight);
+    letter-spacing: var(--type-action-track);
+    /* Hidden by TRANSFORM, not by `display`/`visibility`: S10 and I8 forbid
+       unfocusable-but-tabbable controls, and the inverse also has to hold — the
+       skip link must stay in the tab order while invisible. Not animated. */
+    transform: translateY(-100%);
+  }
+
+  /* :focus, not :focus-visible — the skip link is reached only by keyboard, and
+     it must appear the moment it receives focus. */
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+
+  /* ── DRAWER — §26.4, §29, §31.2, §32, §33 ──────────────────────────────────
+     §12 budget for this surface: 0 gradients, 1 backdrop blur (the overlay),
+     1 shadow (--shadow-drawer). The header gives its blur up while the drawer
+     is open, so the SCREEN still carries ≤ 1 (FG-12, V14, ADR-006). */
+  .app-drawer-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-drawer-overlay);
+    background: var(--drawer-overlay);
+    backdrop-filter: blur(var(--drawer-blur));
+  }
+
+  .app-drawer {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-end: 0;
+    z-index: var(--z-drawer);
+    display: flex;
+    flex-direction: column;
+    /* §33.1 — min(336px, 88vw). */
+    width: min(var(--drawer-w), var(--drawer-w-max));
+    background: var(--drawer-surface);
+    box-shadow: var(--shadow-drawer);
+    /* §33.4 — no scroll chaining to the page. NEVER set on html/body, which
+       would kill pull-to-refresh site-wide. */
+    overscroll-behavior: contain;
+    /* §33.2 — the BOTTOM inset is the one that matters: phone + CTA live at the
+       drawer's foot and would otherwise sit under a notched iPhone's home
+       indicator — the two most conversion-critical controls on mobile. */
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .app-drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--header-action-gap);
+    padding: var(--drawer-px);
+    border-bottom: 1px solid var(--rule-light);
+  }
+
+  /* §35 — REUSES the header's mono-ink asset: same URL, already cached, zero
+     extra request (A.7). This is also where ADR-004's second lockup dies: the
+     circular badge (/logo.png) was a different mark at a different aspect
+     ratio, and it is now retired from the site. */
+  .app-drawer-logo {
+    display: block;
+    height: var(--logo-h-header);
+    width: auto;
+    aspect-ratio: var(--logo-aspect);
+  }
+
+  .app-drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    padding-inline: var(--drawer-px);
+  }
+
+  .app-drawer-foot {
+    padding: var(--drawer-px);
+    border-top: 1px solid var(--rule-light);
+  }
+
+  /* §9 — "phone + CTA sit at its foot, where tapping a phone number is the
+     natural, expected act. The phone is not 'restored' on mobile; mobile is where
+     it belongs." It now lives ONLY here: the O3 resolution removed it from the
+     desktop NAVIGATION row (see --nav-item-px).
+     §32 Phone row: --fg-*-muted idle → full fg hover. §33.5: 44px target. */
+  .drawer-phone {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--nav-item-min-h);
+    font-size: var(--type-meta-size);
+    font-weight: var(--type-meta-weight);
+    letter-spacing: var(--type-meta-track);
+    color: var(--fg-light-muted);
+    transition: color var(--dur-hover) var(--ease-editorial);
+  }
+
+  .drawer-phone:hover {
+    color: var(--fg-light);
+  }
+
+  .drawer-phone:active {
+    opacity: 0.8;
+  }
+
+  /* §33.5 — 44 × 44 minimum. */
+  .drawer-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--nav-item-min-h);
+    min-width: var(--nav-item-min-h);
+    color: var(--fg-light-muted);
+    transition: color var(--dur-hover) var(--ease-editorial);
+  }
+
+  .drawer-close:hover {
+    color: var(--fg-light);
+  }
+
+  .drawer-close:active {
+    opacity: 0.7;
+  }
+
+  /* §9 — at --type-drawer-nav (24px) the index reads as a CONTENTS PAGE, not a
+     phone menu. That is the whole reason the desktop nav breakpoint is `xl` and
+     not `lg`: at tablet the story shifts rather than shrinks.
+     §33.5 — full width × ≥ 48px: --drawer-item-py (20px × 2) over a 24px/1.3
+     line box gives ~71px, so no min-height is needed to clear the floor. */
+  .drawer-link {
+    position: relative;
+    display: block;
+    padding-block: var(--drawer-item-py);
+    border-bottom: 1px solid var(--rule-light);
+    font-size: var(--type-drawer-nav-size);
+    font-weight: var(--type-drawer-nav-weight);
+    letter-spacing: var(--type-drawer-nav-track);
+    line-height: var(--type-drawer-nav-leading);
+    color: var(--fg-light);
+    transition: color var(--dur-hover) var(--ease-editorial);
+  }
+
+  .drawer-link:hover,
+  .drawer-link[aria-current="page"] {
+    color: var(--accent-light);
+  }
+
+  .drawer-link:active {
+    opacity: 0.8;
+  }
+
+  /* §32 — the current state is NEVER colour-only: it carries a persistent rule
+     AND aria-current (WCAG 1.4.1). Same scaleX mechanic as .nav-link (§40.3) —
+     compositor-only, and background-size is on the §40.2 banlist. */
+  .drawer-link::after {
+    content: "";
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline: 0;
+    block-size: var(--nav-rule-h);
+    background: currentcolor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-state) var(--ease-editorial);
+  }
+
+  .drawer-link[aria-current="page"]::after {
+    transform: scaleX(1);
+  }
+
+  /* §31.2 — enter --ease-editorial, exit --ease-exit; overlay is linear. */
+  .drawer-panel-enter-active {
+    transition: transform var(--dur-drawer) var(--ease-editorial);
+  }
+
+  .drawer-panel-leave-active {
+    transition: transform var(--dur-drawer) var(--ease-exit);
+  }
+
+  .drawer-panel-enter-from,
+  .drawer-panel-leave-to {
+    transform: translateX(100%);
+  }
+
+  .drawer-overlay-enter-active,
+  .drawer-overlay-leave-active {
+    transition: opacity var(--dur-drawer) linear;
+  }
+
+  .drawer-overlay-enter-from,
+  .drawer-overlay-leave-to {
+    opacity: 0;
+  }
+
+  /* §32.2 — the drawer opens correctly with NO SLIDE: transform none, opacity
+     fade at --dur-hover. §13 requires the drawer to open correctly with every
+     animation disabled. */
+  @media (prefers-reduced-motion: reduce) {
+    .drawer-panel-enter-active,
+    .drawer-panel-leave-active {
+      transition: opacity var(--dur-hover) var(--ease-editorial);
+    }
+
+    .drawer-panel-enter-from,
+    .drawer-panel-leave-to {
+      transform: none;
+      opacity: 0;
+    }
+  }
+
+  /* ── LANGUAGE TOGGLE — §26.5, §32, §32.1 ───────────────────────────────────
+     §32 specifies two TEXT options — inactive `--fg-*-subtle`, active full fg
+     at weight 600 — not a pill with a filled active chip. The old control used
+     `font-black` (900), which §3.3 reserves for the HERO HEADLINE: chrome may
+     never use it. That was a hierarchy violation, not a style choice. */
+  .lang-toggle {
+    display: inline-flex;
+    align-items: center;
+    /* §33.5 — ≥ 8px between adjacent targets. See the report: §29 has no
+       lang-gap token, so this reuses the nearest correct one rather than
+       inventing a value. */
+    gap: var(--header-action-gap);
+  }
+
+  /* §33.5 — 44 × 44. §32.1 — NEVER `disabled`, not even the active option:
+     `disabled` drops it from the tab order and from most screen readers, so a
+     VI reader on the VI locale would find the control had vanished. */
+  .lang-option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--nav-item-min-h);
+    min-width: var(--nav-item-min-h);
+    font-size: var(--type-lang-size);
+    font-weight: var(--type-lang-weight);
+    letter-spacing: var(--type-lang-track);
+    text-transform: uppercase;
+    transition: color var(--dur-hover) var(--ease-editorial);
+  }
+
+  .lang-option:active {
+    opacity: 0.8;
+  }
+
+  /* `surface` is a PROP, never a detection — the parent knows the surface, the
+     child is told (§26.5). */
+  .lang-toggle-dark .lang-option {
+    color: var(--fg-dark-subtle);
+  }
+
+  .lang-toggle-dark .lang-option:hover,
+  .lang-toggle-dark .lang-option[aria-pressed="true"] {
+    color: var(--fg-dark);
+  }
+
+  .lang-toggle-light .lang-option {
+    color: var(--fg-light-subtle);
+  }
+
+  .lang-toggle-light .lang-option:hover,
+  .lang-toggle-light .lang-option[aria-pressed="true"] {
+    color: var(--fg-light);
+  }
+
+  /* ── FOOTER — §10, §29, §12 ────────────────────────────────────────────────
+     The footer is the FINAL PAGE OF THE MAGAZINE, not the bottom of the
+     document (§1). It closes the loop the hero opened: the site begins on
+     ink-950 + wood over photography and ends on ink-950 + wood in type.
+
+     §12 budget for this surface: 1 gradient, 0 blur, 0 shadow.
+
+     §10 — white content meeting ink-950 was a hard cut. ONE ink-900 → ink-950
+     vertical gradient at the top edge makes the dark arrive as DEPTH rather
+     than a slab. That gradient is the footer's entire motion and rendering
+     budget. --footer-surface is the base colour beneath it; the gradient's last
+     stop holds ink-950 for the remaining height. */
+  .app-footer {
+    background-color: var(--footer-surface);
+    background-image: var(--footer-top-gradient);
+    color: var(--fg-dark);
+    /* §10 — --footer-py DELIBERATELY exceeds body spacing (--section-py, 80/112).
+       The old py-16 (64px) gave the finale LESS air than an ordinary body
+       section, and that single fact is why it read as a bottom bar.
+       §33.2 — notch safety on the bottom edge. */
+    padding-top: var(--footer-py);
+    padding-bottom: max(var(--footer-py), env(safe-area-inset-bottom));
+  }
+
+  @media (min-width: 48rem) {
+    .app-footer {
+      padding-top: var(--footer-py-md);
+      padding-bottom: max(var(--footer-py-md), env(safe-area-inset-bottom));
+    }
+  }
+
+  /* §10 — the masthead is PROMOTED OUT of the grid, which kills the arbitrary
+     [1.3fr_0.8fr_0.9fr_1.2fr] weights. */
+  .footer-masthead {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--footer-masthead-gap);
+  }
+
+  /* ADR-004 — one lockup site-wide. The footer sits on ink-950, so it takes the
+     mono-WHITE derivation; the colour master (1.86:1 — a live WCAG 1.4.11
+     failure, and 69KB) leaves the render path here.
+     §10 — 56/64px optical vs today's 34px: equal-or-greater weight to the header
+     signature. The assets are TRIMMED, so the box IS the mark (V16). */
+  .footer-logo {
+    display: block;
+    height: var(--logo-h-footer);
+    width: auto;
+    aspect-ratio: var(--logo-aspect);
+  }
+
+  @media (min-width: 48rem) {
+    .footer-logo {
+      height: var(--logo-h-footer-md);
+    }
+  }
+
+  .footer-statement {
+    color: var(--fg-dark-muted);
+  }
+
+  /* §10 — the footer CLOSES; it does not re-pitch. ONE solid + ONE text link,
+     where there were two buttons. */
+  .footer-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--footer-item-gap);
+  }
+
+  /* §12 / A.4 — the footer carries ZERO shadows. The site-wide CTA ships
+     shadow-sm + hover:shadow-md, so both are suppressed here rather than the CTA
+     being re-implemented: D.1 freezes the CTA copy AND its 206px width, and a
+     bespoke footer CTA would fork that geometry. The :hover selector needs the
+     extra specificity to beat `.btn-primary:hover`, which is declared later in
+     this layer. */
+  .app-footer .btn-primary,
+  .app-footer .btn-primary:hover {
+    font-size: var(--type-action-size);
+    font-weight: var(--type-action-weight);
+    letter-spacing: var(--type-action-track);
+    box-shadow: none;
+  }
+
+  .footer-textlink {
+    display: inline-flex;
+    align-items: center;
+    font-size: var(--type-action-size);
+    font-weight: var(--type-action-weight);
+    letter-spacing: var(--type-action-track);
+    color: var(--fg-dark);
+    transition: color var(--dur-hover) var(--ease-editorial);
+  }
+
+  .footer-textlink:hover {
+    color: var(--accent-dark);
+  }
+
+  /* §10 — THE one hairline, and it now does editorial work: separating the
+     finale's cover from its index, rather than fencing the copyright. Two
+     borders became one. */
+  .footer-index {
+    margin-top: var(--footer-masthead-gap);
+    padding-top: var(--footer-masthead-gap);
+    border-top: 1px solid var(--rule-dark);
+    display: grid;
+    /* Both axes: 48px between the 3 columns at md+, and between the stacked
+       column blocks on mobile. */
+    gap: var(--footer-col-gap);
+  }
+
+  /* §10 — 3 EQUAL columns, replacing 4 arbitrary fractions. Real rhythm. */
+  @media (min-width: 48rem) {
+    .footer-index {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* §3.3 / §22.2 — --type-eyebrow is DELIBERATELY identical to the hero's
+     `.eyebrow`: the kicker above a hero headline and the label above a footer
+     column are the same typographic gesture, and that single reuse is what makes
+     the top and bottom of the site read as one publication. Same size/weight/
+     tracking; only the surface colour differs (--accent-dark = wood-300, 7.83:1
+     on flat ink-950 — see §3.1: the hero doc's wood-300 ban was "fails OVER
+     PHOTOGRAPHY", and context is the variable, not the hue). */
+  .footer-eyebrow {
+    font-size: var(--type-eyebrow-size);
+    font-weight: var(--type-eyebrow-weight);
+    letter-spacing: var(--type-eyebrow-track);
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+  }
+
+  /* The eyebrow sits directly ABOVE its column (§10): --footer-col-gap is the
+     gap BETWEEN columns and would float the label off its own list. */
+  .footer-list,
+  .footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: var(--footer-item-gap);
+    margin-top: var(--footer-item-gap);
+  }
+
+  .footer-link,
+  .footer-value {
+    font-size: var(--type-body-sm-size);
+    line-height: var(--type-body-sm-leading);
+    color: var(--fg-dark-muted);
+  }
+
+  .footer-link {
+    transition: color var(--dur-hover) var(--ease-editorial);
+  }
+
+  .footer-link:hover {
+    color: var(--fg-dark);
+  }
+
+  /* §10 — the icon-per-line contact list was THE template tell. One lucide icon
+     per line becomes an eyebrow LABEL per value. --fg-dark-subtle is the meta
+     colour (§3.1), which keeps the item labels subordinate to the column
+     eyebrows above them. */
+  .footer-label {
+    font-size: var(--type-eyebrow-size);
+    font-weight: var(--type-eyebrow-weight);
+    letter-spacing: var(--type-eyebrow-track);
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--fg-dark-subtle);
+  }
+
+  .footer-contact dd + dt {
+    margin-top: var(--footer-item-gap);
+  }
+
+  /* §10 — copyright and Facebook, separated BY SPACE ALONE: the second border is
+     gone, and this row is no longer fenced off from the index. */
+  .footer-meta {
+    margin-top: var(--footer-meta-gap);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--footer-col-gap);
+    font-size: var(--type-meta-sm-size);
+    line-height: var(--type-meta-sm-leading);
+    color: var(--fg-dark-subtle);
+  }
+
+  .footer-meta a {
+    transition: color var(--dur-hover) var(--ease-editorial);
+  }
+
+  .footer-meta a:hover {
+    color: var(--fg-dark);
+  }
+
+  /* `.section-shell` (mx-auto max-w-7xl, padding applied outside it by each
+     consumer) was the second of the two conflicting shells (§4.1). Phase 3B
+     moved its last consumer onto `.shell`, so it is gone. Do not reintroduce it:
+     a component that owns both a max-width and horizontal padding couples the
+     gutter to the measure, which is precisely what ADR-001 rejected. */
 
   /* Subtle cinematic treatment for hero photography — gentle contrast + warmth only.
      No dramatic grading; readability comes from composition + the single scrim. */

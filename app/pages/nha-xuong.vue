@@ -328,8 +328,8 @@ useHead({
     </AppHero>
 
     <!-- 2 · Why our factory -------------------------------------------------->
-    <section class="section-spacing bg-white">
-      <div class="section-shell">
+    <section class="section-y bg-white">
+      <div class="shell">
         <div class="grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:items-center">
           <div
             v-reveal
@@ -382,8 +382,8 @@ useHead({
     </section>
 
     <!-- 3 · Manufacturing process (timeline) --------------------------------->
-    <section class="section-spacing bg-ink-950 text-white">
-      <div class="section-shell">
+    <section class="section-y bg-ink-950 text-white">
+      <div class="shell">
         <div class="mb-14 max-w-3xl">
           <p
             v-reveal
@@ -421,8 +421,8 @@ useHead({
     </section>
 
     <!-- 4 · Factory-tour gallery --------------------------------------------->
-    <section class="section-spacing bg-ink-50">
-      <div class="section-shell">
+    <section class="section-y bg-ink-50">
+      <div class="shell">
         <div class="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div class="max-w-2xl">
             <p
@@ -484,8 +484,8 @@ useHead({
     </section>
 
     <!-- 5 · Equipment & technology (benefit-led) ----------------------------->
-    <section class="section-spacing bg-white">
-      <div class="section-shell">
+    <section class="section-y bg-white">
+      <div class="shell">
         <div class="mb-12 max-w-3xl">
           <p
             v-reveal
@@ -537,8 +537,8 @@ useHead({
     </section>
 
     <!-- 6 · Craftsmanship ---------------------------------------------------->
-    <section class="section-spacing bg-ink-50">
-      <div class="section-shell grid gap-12 lg:grid-cols-2 lg:items-center">
+    <section class="section-y bg-ink-50">
+      <div class="shell grid gap-12 lg:grid-cols-2 lg:items-center">
         <div
           v-reveal
           class="reveal overflow-hidden rounded-2xl"
@@ -581,8 +581,8 @@ useHead({
     </section>
 
     <!-- 7 · Production capacity ---------------------------------------------->
-    <section class="section-spacing bg-ink-950 text-white">
-      <div class="section-shell">
+    <section class="section-y bg-ink-950 text-white">
+      <div class="shell">
         <div class="mb-12 max-w-3xl">
           <p
             v-reveal
@@ -624,8 +624,8 @@ useHead({
     </section>
 
     <!-- 8 · Quality control -------------------------------------------------->
-    <section class="section-spacing bg-white">
-      <div class="section-shell grid gap-12 lg:grid-cols-2 lg:items-center">
+    <section class="section-y bg-white">
+      <div class="shell grid gap-12 lg:grid-cols-2 lg:items-center">
         <div>
           <p
             v-reveal
@@ -670,8 +670,8 @@ useHead({
     </section>
 
     <!-- 9 · FAQ -------------------------------------------------------------->
-    <section class="section-spacing bg-ink-50">
-      <div class="section-shell grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
+    <section class="section-y bg-ink-50">
+      <div class="shell grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
         <div>
           <p
             v-reveal
@@ -709,8 +709,8 @@ useHead({
     </section>
 
     <!-- 10 · CTA ------------------------------------------------------------->
-    <section class="bg-ink-950 px-6 py-16 text-white">
-      <div class="section-shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+    <section class="bg-ink-950 py-16 text-white">
+      <div class="shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
         <div>
           <p class="eyebrow text-wood-300">
             {{ t({ vi: 'Tư vấn năng lực sản xuất', en: 'Production capability review' }) }}

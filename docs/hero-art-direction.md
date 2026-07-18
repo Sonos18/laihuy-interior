@@ -1,12 +1,33 @@
 # Hero Art Direction — Lai Huy Interior
-<!-- claude --resume 9dafabec-ea3a-40df-8951-cc2067c6c3ef -->
 A **long-term design system**, not a one-off spec. It governs how every page hero is
 conceived, composed, reviewed, and retired. Future contributors should be able to
 read this and understand the *reasoning*, then produce a hero that belongs to the
 same publication — even for photography that does not exist yet.
 
-Status: specification (implementation pending approval). Nothing here is optional;
-each rule is a **review gate** (see §11).
+Status: **frozen engineering specification** (implementation pending approval). Nothing here is
+optional; each rule is a **review gate** (see §11).
+
+> **Companion document:** [`header-footer-art-direction.md`](./header-footer-art-direction.md)
+> governs the chrome *around* every cover — and it is **superordinate** on four shared concerns:
+>
+> | Concern | Owner |
+> |---|---|
+> | Rendering budget (**screen-wide**, not per-hero) | chrome doc §12 / ADR-006 — **supersedes §9 below** |
+> | Alignment rail (`.shell`) | chrome doc ADR-001 — the hero **adopts** it; see §18 |
+> | Design tokens (no magic numbers) | chrome doc §25 |
+> | Animation ownership | chrome doc §27 |
+
+### The determinism rule
+
+> **Implementation contains no design decisions.** Where this document previously said
+> *evaluate*, *judge*, or *pick*, it now specifies a **computed threshold**. Image score, mode,
+> atmosphere and focal are **outputs of `scripts/hero/analyze.ts`** (§19) — not opinions.
+>
+> An implementer who has to *decide* something has found a **defect in this spec**. Raise it;
+> do not exercise taste.
+
+Prose here that reads as judgement (*"cinematic"*, *"quiet luxury"*) is **rationale, never
+criteria.** Only numbers, tokens and scripts are criteria.
 
 ---
 
@@ -90,21 +111,66 @@ Image Analysis
 | Contact | Conversation |
 | Recruitment | Culture |
 
-## 5. Image Quality Gate
+## 5. Image Quality Gate — **hard gates (computed)**
 
-Evaluate **before** composing. Reject/replace an image with: unclear subject,
-excessive clutter, competing focal points, poor/uneven lighting, insufficient
-resolution (< ~1600px usable width), or **no usable quiet zone**. Composition must
-never compensate for an unsuitable photograph.
+Run **before** composing. Every gate is measured by `scripts/hero/analyze.ts` (§19). Composition
+must never compensate for an unsuitable photograph.
 
-Current verdicts: About/Factory (real workshop) **pass**; Home/Projects **pass
-(marginal)**; **Services, Contact, Recruitment fail → replace** (busy renders /
-competing subjects / no quiet zone).
+### 5.1 Hard rejects — any single failure rejects the image, regardless of score
+
+| # | Gate | Threshold | Measurement |
+|---|---|---|---|
+| **G1** | Usable width | **≥ 1600px** | Intrinsic width |
+| **G2** | **Quiet zone exists** | ≥ **20%** of frame area is a contiguous region with local luminance σ **≤ 12** (0–255) | 32×32px tile grid; 4-connected region growing |
+| **G3** | Single dominant subject | **≤ 1** saliency region occupying **> 20%** of frame | Saliency map, thresholded |
+| **G4** | Exposure | Clipped highlights **< 5%** of pixels (L > 250); crushed shadows **< 5%** (L < 5) | Histogram |
+| **G5** | Headline legibility | Composited contrast of the headline over its placement region **≥ 4.5:1** *(large text: ≥ 3:1)* after §12 recovery | Pixel sampling |
+| **G6** | Chrome legibility | Nav **≥ 4.5:1**, logo **≥ 3:1** over the top `--header-scrim-h` band | Chrome doc **O2** |
+
+> **G6 is new and is not negotiable.** A photograph now has to carry the *header* as well as the
+> headline. An image that passes G1–G5 and fails G6 is **still a reject** — see chrome doc §21.0
+> (never deepen the global scrim to rescue one photograph).
+
+### 5.2 Score
+
+```
+raw   = Σ (rating(0–5) × weight)          max = 110
+score = round(raw / 110 × 100)            → 0–100
+```
+
+| Score | Verdict | Action |
+|---|---|---|
+| **≥ 85** | **Use** | Auto-approved. No discussion |
+| **70 – 84** | **Manual approval required** | Must be signed off **and the reason recorded in `HeroMeta.approval`** (§10). A hero at 70–84 without a recorded approval is a **merge blocker** |
+| **< 70** | **Reject** | Replace. Not recoverable by composition |
+
+### 5.3 Scoring rubric — objective anchors
+
+Ratings are **measured**, not felt. `0`, `3` and `5` are defined; `1`, `2`, `4` interpolate.
+
+| Criterion | W | `5` | `3` | `0` |
+|---|---|---|---|---|
+| **Subject clarity** | 5 | Exactly 1 saliency region, **25–60%** of frame | 1 region, `<25%` or `>60%` | ≥ 2 regions each `>20%` |
+| **Quiet zone** | 5 | ≥ **35%** of frame, σ ≤ 12, contiguous | **20–34%** | `< 20%` → **G2 reject** |
+| **Narrative fit** | 4 | Matches the page's §4 emotion **and** shows the page's subject matter | Matches one of the two | Matches neither |
+| **Light direction** | 3 | Quiet zone mean L **≤ 90** (type sits in natural shadow) | Quiet zone mean L **91–150** | Quiet zone mean L **> 150** (type must fight the light) |
+| **Composition** | 3 | Dominant lines converge **toward** the type anchor (±30°) | Neutral | Lines lead **away** from the anchor |
+| **Resolution** | 2 | ≥ 2400px | 1600–2399px | `< 1600px` → **G1 reject** |
+
+### 5.4 Current verdicts
+
+| Page | Gate | Score | Verdict |
+|---|---|---|---|
+| About, Factory | pass | — | **Use** |
+| Home, Projects | pass | — | **Use** *(previously "marginal" — a non-verdict. Re-score with §5.2; if 70–84, record the approval)* |
+| Services, Contact, Recruitment | **fail** | `< 70` | **Reject → replace** (busy renders / competing subjects / no quiet zone) |
+
+> "Pass (marginal)" was a taste hedge. It is abolished. An image is **Use**, **Manual approval**,
+> or **Reject** — there is no fourth state.
 
 ## 6. Image Selection Matrix
 
-When multiple candidates exist, score objectively; highest total wins. Never pick
-subjectively.
+When multiple candidates exist, **the highest §5.2 score wins.** No exceptions, no override.
 
 | Criterion | Weight |
 |---|---|
@@ -115,42 +181,95 @@ subjectively.
 | Composition (leads eye subject → headline) | 3 |
 | Resolution / technical quality | 2 |
 
-`score = Σ (criterion_rating 0–5 × weight)`. Record the matrix for the chosen image
-in its metadata (§10).
+**Ties** (equal score) break in this order — deterministically, never by preference:
 
-## 7. Derived modes (mode is an output, not a style choice)
+1. Higher **quiet-zone** rating
+2. Higher **subject-clarity** rating
+3. Higher resolution
+4. **Image not already used elsewhere on the site** (§13 image ownership)
+
+Record the full matrix and the final score in the chosen image's metadata (§10).
+
+## 7. Derived modes — **computed, not chosen**
+
+Mode is an **output**. It is never a style preference.
 
 ```
-mode = derive(ImageQualityGate, Composition, ContentDensity)
+D = count of populated slots among:
+    { topic, title, specialTitle, subtitle, actions,
+      breadcrumb, chips, meta, aside }          → 0…9
 
-  clear generous quiet zone + low/med content        → offset   (type in the quiet zone; one gradient; no glass)
-  busy-but-passing frame + strong perspective/density → caption  (organized editorial caption; one gradient)
-  high content density (breadcrumb+chips+facts+CTAs)  → caption
-  glass                                               → NOT a hero-text mode; only a single info-container bridge
+Q = quiet-zone area, % of frame (§5.1 G2)
+
+mode = caption   if  D ≥ 5  OR  Q < 30
+     = offset    otherwise
 ```
 
-If an image is swapped later, **re-derive the mode** — do not keep a page's mode fixed.
-Because the quality gate replaces the busy covers, most heroes derive to **offset**;
-content-dense pages (Projects list, Project detail) derive to **caption**; glass appears
-at most once per hero as a section bridge (metrics/facts).
+| | `offset` | `caption` |
+|---|---|---|
+| Condition | `D ≤ 4` **and** `Q ≥ 30%` | `D ≥ 5` **or** `Q < 30%` |
+| Type placement | In the quiet zone | Organised editorial caption block |
+| Gradient | 1 | 1 |
+| Glass | **0** | **0** |
 
-## 8. Atmosphere tokens (within the existing palette)
+**`glass` is not a mode.** It is a single info-container bridge (§13, chrome doc §26.6) and may
+never be a text background.
 
-| Atmosphere | Scrim | Glass tint | Use |
+**Re-derivation is mandatory.** If an image is swapped, `D` changes, or the shell changes, the
+mode is **recomputed** — a page's mode is never inherited. `scripts/hero/analyze.ts` emits it;
+a hand-set `mode` prop that disagrees with the computed value is a **build failure**.
+
+## 8. Atmosphere — **computed, not chosen**
+
+```
+meanL  = mean luminance of the image           (0–255)
+warmth = mean(R) − mean(B)                     (−255…255)
+
+atmosphere = dark     if  meanL < 60
+           = warm     if  warmth ≥ 20
+           = neutral  otherwise
+```
+
+Evaluated **in that order** — `dark` wins over `warm`.
+
+| Atmosphere | Scrim | Glass tint | Derives from |
 |---|---|---|---|
-| `warm` | `wood-950` | warm | wood/oak interiors (Home) |
-| `neutral` | `ink-950` | cool | concrete/industrial (About, Factory, Recruitment) |
-| `dark` | `ink-950` | cool | industrial-dark covers (Projects) |
+| `warm` | `wood-950` | warm | `warmth ≥ 20` (wood/oak interiors) |
+| `neutral` | `ink-950` | cool | otherwise (concrete/industrial) |
+| `dark` | `ink-950` | cool | `meanL < 60` |
 
-Kicker stays `wood-300`; primary CTA stays the wood primary. Atmosphere is the only
-per-hero color lever — no new colors.
+**Atmosphere is the only per-hero colour lever. No new colours.** The primary CTA stays the wood
+primary.
 
-## 9. Rendering budget (hard limit)
+> ### Correction — the kicker is `wood-200`, not `wood-300`
+>
+> This section previously read *"Kicker stays `wood-300`"*, which **contradicted §11's own review
+> finding** — `wood-300` was **measured at 3.87:1** over warm/light photography and **fails** the
+> 4.5:1 requirement. `wood-200` measured 5.84:1 / 5.45:1 / 4.81:1 and is what ships.
+>
+> **The kicker is `wood-200`.** The contradiction is resolved here in favour of the measurement.
+> Do not "restore" `wood-300` for brand consistency — it is an accessibility fix, and `wood-200`
+> is the same accent one step lighter.
 
-Per hero: **≤ 1 backdrop blur · ≤ 1 localized gradient · ≤ 1 glass surface · ≤ 1 image
-transform.** No nested backdrop filters, no stacked translucent overlays. Premium
-quality comes from composition, typography, photography, and spacing — not accumulated
-effects.
+## 9. Rendering budget
+
+> **Superseded by [`header-footer-art-direction.md`](./header-footer-art-direction.md) §12 /
+> ADR-006.** The budget below is **per-hero** and does **not compose** — the header and the hero
+> can each satisfy it while stacking two backdrop blurs on one screen. The chrome doc's
+> **screen-wide** budget is normative.
+
+**Per hero (subordinate):** ≤ 1 localized gradient · ≤ 1 glass surface · ≤ 1 image transform ·
+**0 backdrop blurs in the hero itself.**
+
+**Screen-wide (normative, chrome doc §12):**
+
+- **≤ 1 backdrop blur on screen at any moment.**
+- Chrome layers must be **complementary** (`α_scrim + α_glass ≤ 1`), never additive.
+- **0 blur on the cover** — therefore 0 blur on the LCP frame.
+
+**Consequence for the Hero Bridge:** a glass `#aside` bridge and the glass header may **never**
+be visible simultaneously. They are separated by scroll position — and this is **asserted**
+(chrome doc **V14**), not assumed.
 
 ## 10. Per-hero art direction + metadata
 
@@ -301,3 +420,344 @@ type AppHeroProps = {
 
 The component enforces the rendering budget (§9) and the atmosphere tokens (§8); the
 mode/atmosphere/focal/anchor for each page come from §10.
+
+---
+
+## 18. Alignment — the hero adopts the shared rail
+
+**Consequence of chrome doc [ADR-001](./header-footer-art-direction.md#adr-001--shell-geometry).**
+
+The site had two conflicting shell systems. The hero used `section-shell px-6` (padding *inside*
+the max-width); body sections used `section-spacing` + `section-shell` (padding *outside*). They
+resolved to **different left edges and different measures** — so on desktop **the hero headline
+sat 24px right of every section title beneath it.**
+
+`AppHero` now adopts the canonical `.shell`. The measurable consequences:
+
+| Viewport | Hero text moves | Hero measure |
+|---|---|---|
+| 390px | **0px** | unchanged |
+| 768–1280px | **+8px** (right) | 1216px |
+| ≥ 1440px | **−24px** (left) | 1232 → **1280px** (+48px) |
+
+> ### This invalidates the tuning in §10 — re-run the gates
+>
+> The compositions in §10 were tuned with the headline at its **old** position. Moving it up to
+> 24px left and widening it by 48px means **a headline that previously sat in a photograph's
+> quiet zone may now sit 24px into the subject.**
+>
+> After the shell migration, the following are **mandatory** on **all 8 heroes**:
+>
+> - **§5.1 G5** — headline contrast over its *new* composited region
+> - **§11** — architectural integrity (type must not cover entrances, furniture, stairs, people)
+> - **§11** — poster test
+> - Recompute `Q` (quiet zone under the new anchor) → **re-derive `mode`** per §7
+>
+> Any failure routes through **§12**, least-invasive first. This is a **blocking row** in the
+> chrome doc's Definition of Done (§24, row 6).
+
+## 19. `scripts/hero/analyze.ts` — the source of truth for every derived value
+
+Taste is replaced by a committed script. Given an image path, it emits:
+
+```ts
+type HeroAnalysis = {
+  // Hard gates (§5.1)
+  width: number                  // G1
+  quietZonePct: number           // G2 — % of frame, σ ≤ 12
+  quietZoneBox: [x, y, w, h]     // largest contiguous quiet region, % units
+  quietZoneMeanL: number         // light-direction rating input
+  salientRegions: number         // G3 — count occupying > 20%
+  clippedHighlightPct: number    // G4
+  crushedShadowPct: number       // G4
+
+  // Derived (§5.2, §7, §8)
+  score: number                  // 0–100
+  verdict: 'use' | 'manual' | 'reject'
+  mode: 'offset' | 'caption'     // §7 — computed from D + Q
+  atmosphere: 'warm' | 'neutral' | 'dark'   // §8 — computed from meanL + warmth
+  focal: string                  // object-position centring the dominant subject
+  anchor: Anchor                 // the quiet zone's quadrant
+}
+```
+
+**Rules.**
+
+1. `mode`, `atmosphere`, `verdict` and `score` are **computed**. A prop that disagrees with the
+   computed value is a **build failure**, not an override.
+2. `focal` and `anchor` are **computed defaults**. A manual override is permitted **only** with a
+   recorded reason in `HeroMeta.overrideReason` — typically because §12 recovery moved it.
+3. Re-run on **every** image swap, **every** content-density change, and after the §18 shell
+   migration.
+
+### `HeroMeta` — extended (supersedes the shape in §10)
+
+```ts
+type HeroMeta = {
+  // …all existing fields…
+  score: number                    // §5.2
+  verdict: 'use' | 'manual'        // 'reject' may never ship
+  approval?: string                // REQUIRED when verdict === 'manual' (score 70–84)
+  overrideReason?: string          // REQUIRED when focal/anchor differ from computed
+  chromeContrast: {                // §5.1 G6 — the header must survive this cover
+    nav: number                    // ≥ 4.5
+    logo: number                   // ≥ 3.0
+  }
+}
+```
+
+A hero with `verdict: 'manual'` and **no `approval` string** is a **merge blocker**. That is the
+entire mechanism preventing "pass (marginal)" from creeping back in.
+
+## 20. Ownership — deferred to the chrome doc
+
+To avoid two sources of truth, the hero's contracts live in the chrome document.
+
+| Concern | Where |
+|---|---|
+| `AppHero` component contract (responsibilities, non-responsibilities, public API, **forbidden knowledge**) | chrome doc **§26.2** |
+| Hero Bridge (`#aside`) contract | chrome doc **§26.6** |
+| Animation ownership — hero zoom, content reveal | chrome doc **§27** |
+| Design token freeze — no magic numbers | chrome doc **§25** |
+| Implementation constraints — what may not change | chrome doc **Appendix D** |
+
+**The two contracts that matter most, restated here because violating them is silent:**
+
+> `AppHero` **may not** import `useHeaderState`, read `--header-p` / `--header-shift`, or know
+> whether the header is transparent, hidden or solid.
+>
+> `AppHero` **must** uphold **I9**: it renders a dark cover. That is the *only* promise the
+> header relies on — and the reason the header can be transparent at all.
+
+**Animations owned by the hero, and by nothing else:**
+
+| Animation | Owner | Never touched by |
+|---|---|---|
+| Hero image zoom (`.hero-image`, one-shot) | `AppHero` (CSS keyframe) | Chrome, JS, scroll |
+| Hero content reveal (`v-reveal`) | `plugins/reveal.ts` (IntersectionObserver) | `useHeaderState`, `AppHero` |
+| The hero scrim | `AppHero` | The header — which owns its **own** scrim (`--scrim-chrome`) |
+
+> The hero scrim and the chrome scrim are **two different layers with two different owners**,
+> and that is deliberate. The hero's scrim protects the **headline**; the chrome's protects the
+> **nav**. Merging them would couple the components (chrome doc §26) and re-break the budget.
+
+---
+
+## 21. The hero registry — typed, validated, single source of truth
+
+### 21.1 The problem it solves
+
+Today `focal`, `anchor`, `mode` and `atmosphere` are **literal strings scattered across 8 page
+templates** (`focal="50% 42%"`, `mode="caption"`). That is three defects at once:
+
+1. **Magic numbers in pages** — violates the token freeze (chrome doc §25).
+2. **`HeroMeta` is prose, not a type** — §10 described "a non-rendered metadata object". Nothing
+   enforces it, so nothing has ever validated it.
+3. **It invites page-specific conditionals** in `AppHero` — the exact thing §22 forbids.
+
+One registry fixes all three: **`app/data/heroes.ts`**.
+
+### 21.2 Types — `app/shared/types/hero.ts` (types only; safe to import from components)
+
+```ts
+export type Anchor     = 'bottom-left' | 'bottom-center' | 'center-left'
+export type HeroMode   = 'offset' | 'caption'
+export type Atmosphere = 'warm' | 'neutral' | 'dark'
+export type HeroSize   = 'cover' | 'tall' | 'compact'
+
+/** §23 — the semantic focal vocabulary. New heroes MUST use one of these. */
+export type FocalToken =
+  | 'center'      | 'upper'       | 'upper-mid'   | 'lower-mid'  | 'lower'
+  | 'left-mid'    | 'right-mid'   | 'left-upper'  | 'right-upper'
+
+/**
+ * A precise object-position. BRANDED: constructible only from the output of
+ * scripts/hero/analyze.ts. It cannot be hand-typed — that is the point (§23).
+ */
+export type ComputedFocal = string & { readonly __computedFocal: unique symbol }
+
+export type Focal = FocalToken | ComputedFocal
+
+/** Exactly what AppHero consumes. Nothing more. */
+export interface HeroConfig {
+  image:         MediaImage
+  topic?:        LocalizedText
+  title:         LocalizedText
+  specialTitle?: LocalizedText
+  subtitle?:     LocalizedText
+  mode:          HeroMode      // §7  — COMPUTED
+  atmosphere:    Atmosphere    // §8  — COMPUTED
+  anchor:        Anchor
+  focal:         Focal         // §23
+  size:          HeroSize
+  eager:         boolean
+}
+
+/** Audit trail. NEVER imported by a component. */
+export interface HeroReview {
+  page:            string
+  narrative:       string
+  emotion:         string
+  dominantSubject: string
+  quietZone:       string
+  lightDirection:  string
+  visualPath:      string
+  exit:            string
+  imageOwnership:  string
+  score:           number                 // §5.2 — 0–100
+  verdict:         'use' | 'manual'       // 'reject' may never ship
+  approval?:       string                 // REQUIRED iff verdict === 'manual'
+  overrideReason?: string                 // REQUIRED iff focal/anchor ≠ computed
+  matrix:          SelectionMatrix        // §6 — per-criterion ratings
+  chromeContrast:  { nav: number, logo: number }   // §5.1 G6
+}
+
+export interface HeroEntry { config: HeroConfig, review: HeroReview }
+```
+
+### 21.3 Validation — Zod, at build time only
+
+The schema lives in **`scripts/hero/schema.ts`**. Zod is a **`devDependency`**.
+
+```ts
+const HeroEntrySchema = z.object({ config: …, review: … })
+  .refine(e => e.review.verdict !== 'manual' || !!e.review.approval?.trim(),
+    'verdict "manual" (score 70–84) requires a recorded approval — §5.2')
+  .refine(e => e.review.score >= 70,
+    'score < 70 is a REJECT and may never ship — §5.2')
+  .refine(e => e.review.chromeContrast.nav >= 4.5 && e.review.chromeContrast.logo >= 3.0,
+    'the cover must carry the header — §5.1 G6')
+  .refine(e => e.config.mode === analyze(e.config.image).mode,
+    'mode is COMPUTED (§7). A hand-set value that disagrees is a build failure')
+  .refine(e => e.config.atmosphere === analyze(e.config.image).atmosphere,
+    'atmosphere is COMPUTED (§8)')
+  .refine(e => isTokenFocal(e.config.focal) || !!e.review.overrideReason?.trim(),
+    'a non-token focal requires an analyzer origin + overrideReason — §23')
+```
+
+> **Zod must never reach the client bundle, and neither must `HeroReview`.**
+> `HeroConfig` is imported by `AppHero`; `HeroReview` and the schema are imported **only** by
+> `scripts/` and the test suite. Importing the schema from a component would ship the validator
+> *and* every narrative string to every visitor. **Enforced by lint:** `scripts/hero/schema` may
+> not appear in any `app/**` import graph.
+
+### 21.4 Pages
+
+```vue
+<AppHero v-bind="heroes.about.config" />
+```
+
+That is the **entire** hero call site. No focal, no mode, no atmosphere, no magic numbers.
+
+---
+
+## 22. `AppHero` is configuration-driven
+
+> **`AppHero` may branch on *configuration*. It may never branch on *identity*.**
+
+| | |
+|---|---|
+| **Allowed** — configuration | `mode`, `atmosphere`, `anchor`, `size`, `focal`, slot presence |
+| **Forbidden** — identity | Page name, `useRoute()`, `route.path`, slug, `$route`, any `v-if="page === …"` |
+
+**Enforcement:** an import of `useRoute` / `vue-router` in `AppHero.vue` is a **build failure**.
+
+**A slot used by exactly one page must be justified in this document.** `#breadcrumb`, `#chips`
+and `#meta` are used by the project-detail hero — justified by its `caption` **mode**, not by its
+identity. If a slot's only justification is "the X page needs it", it belongs in **that page**, not
+in `AppHero`'s API.
+
+### 22.1 This is precisely why the Home hero stays bespoke
+
+Chrome doc **§30.1** keeps `index.vue`'s hero bespoke. The two rules **agree, and reinforce each
+other**: absorbing Home into `AppHero` would require branching on **identity** — a stacked
+two-part headline, two body layers, and a full-width scrim that exist for exactly one page. That
+is the one thing §22 forbids.
+
+**The alternative is worse than the duplication.** Either `AppHero` grows props that exist for one
+page (bloating the API for the other seven), or Home is flattened into a template cover. Keeping it
+bespoke is the *consequence* of the configuration-driven rule, not an exception to it.
+
+---
+
+## 23. Focal tokens
+
+### 23.1 The vocabulary
+
+Tokens map to CSS **inside `AppHero`** (`focalToCss()`). A page never sees a percentage.
+
+| Token | `object-position` |
+|---|---|
+| `center` | `50% 50%` |
+| `upper` | `50% 35%` |
+| `upper-mid` | `50% 40%` |
+| `lower-mid` | `50% 60%` |
+| `lower` | `50% 70%` |
+| `left-mid` | `35% 45%` |
+| `right-mid` | `60% 45%` |
+| `left-upper` | `35% 35%` |
+| `right-upper` | `60% 35%` |
+
+### 23.2 Why the existing eight heroes keep computed values — and that is correct
+
+**Full tokenisation is not practical here, and forcing it would be a visual redesign.**
+
+The current heroes sit at **`40% / 42% / 45% / 48%`** on the y-axis and **`48% / 50% / 55%`** on x.
+A token scale coarse enough to be *semantic* (5% steps) would move several of those crops by
+**3–5%** — recropping photographs that were tuned against their quiet zones. **This document
+forbids visual change.** A scale fine enough to preserve them (1% steps) would be percentages
+wearing names, which buys nothing.
+
+So the rule is split, honestly:
+
+| Case | Rule |
+|---|---|
+| **New heroes** | **MUST** use a `FocalToken`. No exceptions |
+| **The existing 8** | Keep their analyzer-computed values, typed as **`ComputedFocal`** — branded, so they **cannot be hand-typed**, only produced by `scripts/hero/analyze.ts` and recorded in `HeroReview.overrideReason` |
+| **Both** | The value lives in the **registry** (§21), **never in a page template** |
+
+> **This is what "no hardcoded percentages" actually buys.** The win is not that `50% 42%` becomes
+> a word — it is that **pages stop carrying magic numbers at all**, and that every non-token value
+> is provably an analyzer output rather than someone's guess. The brand on `ComputedFocal` is the
+> mechanism: you cannot type one by hand, even if you want to.
+
+### 23.3 §12 recovery still works
+
+Recovery step 1 is *"adjust focal"*. Under this system that means: **re-run the analyzer** with an
+adjusted subject weighting, and record the new `ComputedFocal` + `overrideReason`. It does **not**
+mean nudging a percentage by hand until it looks right — that is exactly the taste this
+specification exists to remove.
+
+---
+
+## 24. Replacement image log — **mandatory before merge**
+
+§5.4 rejects **Services, Contact and Recruitment** (score < 70). Each replacement must record the
+**full §6 matrix for every candidate considered** — not only the winner. A replacement merged
+without this table is a **blocker**.
+
+### Template — one per replaced page
+
+| Candidate | Subject (×5) | Quiet zone (×5) | Narrative (×4) | Light (×3) | Composition (×3) | Resolution (×2) | Raw | **Score** | Verdict |
+|---|---|---|---|---|---|---|---|---|---|
+| `path/to/a.webp` | | | | | | | | | |
+| `path/to/b.webp` | | | | | | | | | |
+| **Winner** | | | | | | | | | |
+
+Plus, for the winner: `mode` (computed), `atmosphere` (computed), `focal`, `anchor`,
+`chromeContrast.nav`, `chromeContrast.logo`, and — if the score is **70–84** — the recorded
+**`approval`**.
+
+> Recording only the winner's score is **not** compliance. The matrix exists to prove the choice
+> was *ranked*, not preferred. Without the losing candidates, "highest score wins" (§6) is an
+> unverifiable claim.
+
+### Status
+
+| Page | Current | Required |
+|---|---|---|
+| Services | **REJECT** — busy render, no quiet zone | Matrix + replacement |
+| Contact | **REJECT** — competing subjects | Matrix + replacement |
+| Recruitment | **REJECT** — no quiet zone | Matrix + replacement |
+| Home, Projects | Re-score (was "pass (marginal)" — a non-verdict, §5.4) | Score + verdict; `approval` if 70–84 |
+| About, Factory | Pass | Score recorded |

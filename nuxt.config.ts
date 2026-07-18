@@ -17,7 +17,10 @@ export default defineNuxtConfig({
     enabled: true
   },
 
-  css: ['~/assets/css/main.css'],
+  // layers.css MUST precede main.css: it carries the cascade-layer order
+  // statement, which has to be read before Tailwind's own layer blocks. See the
+  // comment in that file for the defect it fixes.
+  css: ['~/assets/css/layers.css', '~/assets/css/main.css'],
 
   runtimeConfig: {
     public: {
@@ -55,6 +58,16 @@ export default defineNuxtConfig({
         braceStyle: '1tbs'
       }
     }
+  },
+
+  // @nuxt/ui defaults this to `components` (its module.mjs), which makes
+  // @nuxt/icon's PREPENDED <style> the first declaration of the `components`
+  // layer and silently inverts the cascade — preflight then beats every
+  // component class. Giving icons their own layer name keeps the injected sheet
+  // from claiming `components`; layers.css pins `icons` to lowest priority,
+  // which is the precedence @nuxt/icon prepends to achieve anyway.
+  icon: {
+    cssLayer: 'icons'
   },
 
   image: {
