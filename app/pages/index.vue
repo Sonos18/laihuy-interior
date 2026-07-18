@@ -405,12 +405,12 @@ useSeoMeta({
       </div>
     </section>
 
-    <section class="bg-ink-950 py-16 text-white">
+    <section class="section-cta">
       <div class="shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
         <div>
           <p
             v-reveal
-            class="eyebrow reveal text-wood-300"
+            class="eyebrow reveal"
           >
             {{ t({ vi: 'Tư vấn dự án', en: 'Project consultation' }) }}
           </p>
@@ -422,7 +422,7 @@ useSeoMeta({
           </h2>
           <p
             v-reveal="140"
-            class="reveal mt-4 max-w-2xl text-white/62"
+            class="reveal mt-4 max-w-2xl text-ink-600"
           >
             {{ t({ vi: 'Đội ngũ kỹ thuật Lai Huy Interior sẽ rà soát hồ sơ, tư vấn vật liệu, tiến độ sản xuất và phương án triển khai phù hợp với ngân sách và mục tiêu vận hành dự án.', en: 'The Lai Huy Interior technical team will review your documents and advise on materials, production schedule, and a delivery plan that fits your budget and operational goals.' }) }}
           </p>
@@ -440,29 +440,29 @@ useSeoMeta({
             </NuxtLink>
             <NuxtLink
               to="/nha-xuong"
-              class="btn-secondary"
+              class="btn-outline"
             >
               {{ t(uiText.cta.factory) }}
             </NuxtLink>
           </div>
-          <div class="flex flex-col gap-2 text-sm font-semibold text-white/80">
+          <div class="flex flex-col gap-2 text-sm font-semibold text-ink-600">
             <a
               :href="`mailto:${company.email}`"
-              class="inline-flex items-center gap-2.5 transition-colors hover:text-white"
+              class="inline-flex items-center gap-2.5 transition-colors hover:text-ink-950"
             >
               <Icon
                 name="i-lucide-mail"
-                class="h-4 w-4 shrink-0 text-wood-300"
+                class="h-4 w-4 shrink-0 text-wood-500"
               />
               {{ company.email }}
             </a>
             <a
               :href="`tel:${company.phone.replaceAll(' ', '')}`"
-              class="inline-flex items-center gap-2.5 transition-colors hover:text-white"
+              class="inline-flex items-center gap-2.5 transition-colors hover:text-ink-950"
             >
               <Icon
                 name="i-lucide-phone"
-                class="h-4 w-4 shrink-0 text-wood-300"
+                class="h-4 w-4 shrink-0 text-wood-500"
               />
               {{ company.phone }}
             </a>

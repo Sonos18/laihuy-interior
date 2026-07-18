@@ -816,15 +816,15 @@ useHead({
     </section>
 
     <!-- 16 · Closing CTA ----------------------------------------------------->
-    <section class="bg-ink-950 py-20 text-white">
+    <section class="section-cta">
       <div class="shell text-center">
-        <p class="eyebrow text-wood-300">
+        <p class="eyebrow">
           {{ t({ vi: 'Bắt đầu cùng Lai Huy', en: 'Start with Lai Huy' }) }}
         </p>
         <h2 class="mx-auto mt-4 max-w-3xl text-3xl font-black uppercase leading-tight md:text-5xl">
           {{ t({ vi: 'Cùng kiến tạo một không gian bền vững', en: 'Let’s build something that lasts' }) }}
         </h2>
-        <p class="mx-auto mt-5 max-w-2xl text-lg text-white/72">
+        <p class="mx-auto mt-5 max-w-2xl text-lg text-ink-600">
           {{ t({ vi: 'Gửi bản vẽ hoặc ý tưởng của bạn — đội ngũ Lai Huy sẽ tư vấn phương án sản xuất và thi công phù hợp.', en: 'Send your drawings or ideas — the Lai Huy team will advise on the right production and delivery plan.' }) }}
         </p>
         <div class="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
@@ -836,7 +836,7 @@ useHead({
           </NuxtLink>
           <a
             :href="`tel:${company.phone.replaceAll(' ', '')}`"
-            class="btn-secondary"
+            class="btn-outline"
           >
             {{ company.phone }}
           </a>

@@ -358,6 +358,21 @@
     padding-block: var(--section-py);
   }
 
+  /* The pre-footer service CTA — the site's final conversion block. The footer is
+     the ONE dark finale (ink-900 → ink-950); a dark CTA stacked directly above it
+     merged into a single near-black mass, so the two content regions read as one.
+     This band is deliberately LIGHT: warm paper (wood-50) keeps the premium tone,
+     the light → dark edge INTO the footer is the separator (no divider needed
+     there), and one top hairline delineates it from the — also light — section
+     above. It owns the body vertical rhythm (--section-py, 80/112) so the finale
+     no longer has less air than an ordinary section, which the old py-16 gave it. */
+  .section-cta {
+    border-top: 1px solid var(--color-ink-200);
+    background-color: var(--color-wood-50);
+    color: var(--color-ink-950);
+    padding-block: var(--section-py);
+  }
+
   /* ── CHROME — §5, §31, ADR-006 ─────────────────────────────────────────────
      The header is `position: fixed` and hide/reveal is a transform, so chrome
      CANNOT contribute CLS by construction (§23.3, §40.4). A non-zero chrome CLS

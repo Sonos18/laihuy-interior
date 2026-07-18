@@ -145,10 +145,10 @@ useSeoMeta({
       </div>
     </section>
 
-    <section class="bg-ink-950 py-16 text-white">
+    <section class="section-cta">
       <div class="shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
         <div>
-          <p class="eyebrow text-wood-300">
+          <p class="eyebrow">
             {{ t(uiText.cta.hotelConsult) }}
           </p>
           <h2 class="mt-4 max-w-3xl text-3xl font-black uppercase md:text-5xl">

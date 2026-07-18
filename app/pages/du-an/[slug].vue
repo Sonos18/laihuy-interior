@@ -888,9 +888,9 @@ useHead({
     </section>
 
     <!-- 12 · Trust band + conversion CTA ------------------------------------->
-    <section class="bg-ink-950 text-white">
-      <div class="shell py-16">
-        <div class="grid gap-4 border-b border-white/10 pb-12 sm:grid-cols-2 lg:grid-cols-4">
+    <section class="section-cta">
+      <div class="shell">
+        <div class="grid gap-4 border-b border-ink-200 pb-12 sm:grid-cols-2 lg:grid-cols-4">
           <div
             v-for="stat in trustStats"
             :key="t(stat.label)"
@@ -898,13 +898,13 @@ useHead({
           >
             <Icon
               :name="stat.icon"
-              class="h-9 w-9 shrink-0 text-wood-300"
+              class="h-9 w-9 shrink-0 text-wood-500"
             />
             <div>
-              <p class="text-xl font-black text-white">
+              <p class="text-xl font-black text-ink-950">
                 {{ t(stat.value) }}
               </p>
-              <p class="text-xs font-bold uppercase tracking-[0.14em] text-white/55">
+              <p class="text-xs font-bold uppercase tracking-[0.14em] text-ink-500">
                 {{ t(stat.label) }}
               </p>
             </div>
@@ -916,7 +916,7 @@ useHead({
             <h2 class="max-w-3xl text-3xl font-black uppercase leading-tight md:text-5xl">
               {{ t({ vi: 'Ấn tượng với dự án này?', en: 'Inspired by this project?' }) }}
             </h2>
-            <p class="mt-4 max-w-2xl text-lg text-white/72">
+            <p class="mt-4 max-w-2xl text-lg text-ink-600">
               {{ t({ vi: 'Hãy cùng Lai Huy kiến tạo một không gian tương tự cho công trình của bạn — từ thiết kế đến bàn giao.', en: 'Let’s create something similar for your space — from first sketch to final handover, with Lai Huy.' }) }}
             </p>
           </div>
@@ -929,7 +929,7 @@ useHead({
             </NuxtLink>
             <a
               :href="`tel:${company.phone.replaceAll(' ', '')}`"
-              class="btn-secondary"
+              class="btn-outline"
             >
               {{ company.phone }}
             </a>

@@ -119,16 +119,16 @@ useSeoMeta({
       </div>
     </section>
 
-    <section class="bg-ink-950 py-16 text-white">
+    <section class="section-cta">
       <div class="shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
         <div>
-          <p class="eyebrow text-wood-300">
+          <p class="eyebrow">
             {{ t({ vi: 'Ứng tuyển', en: 'Apply' }) }}
           </p>
           <h2 class="mt-4 max-w-3xl text-3xl font-black uppercase md:text-5xl">
             {{ t({ vi: 'Gửi hồ sơ để cùng Lai Huy triển khai những dự án lớn hơn', en: 'Send your profile and help Lai Huy deliver larger projects' }) }}
           </h2>
-          <p class="mt-4 text-white/62">
+          <p class="mt-4 text-ink-600">
             {{ t({ vi: 'Email tuyển dụng hiện dùng chung với kênh liên hệ công ty.', en: 'Recruitment applications currently use the company contact email.' }) }}
           </p>
         </div>
