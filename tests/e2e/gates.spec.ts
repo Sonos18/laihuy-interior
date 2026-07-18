@@ -95,6 +95,8 @@ test.describe('V7 — colour deviation ≤ ΔE₀₀ 1.0', () => {
     for (const row of rendered) {
       expect(row.value, `${row.token} — ${row.selector} must exist`).not.toBeNull()
       const dE = deviation(row.value!, row.expected, ON_INK_950)
+      // §24 requires evidence, not assertion: record the measured value, not just the verdict.
+      console.log(`V7 ${row.token.padEnd(18)} ${row.selector.padEnd(18)} ΔE₀₀=${dE.toFixed(3)}  rendered=${row.value}`)
       expect(dE, `${row.token} on ${row.selector}: rendered ${row.value} vs spec ${row.expected}`)
         .toBeLessThanOrEqual(1.0)
     }
@@ -133,17 +135,23 @@ test.describe('V7 — colour deviation ≤ ΔE₀₀ 1.0', () => {
       }
     })
 
+    const record = (token: string, rendered: string, expected: string) => {
+      const dE = deviation(rendered, expected, ON_WHITE)
+      console.log(`V7 ${token.padEnd(18)} ${'(drawer)'.padEnd(18)} ΔE₀₀=${dE.toFixed(3)}  rendered=${rendered}`)
+      return dE
+    }
+
     // --fg-light — drawer nav item idle (§32).
-    expect(deviation(rows.drawerLink!, INK_950, ON_WHITE)).toBeLessThanOrEqual(1.0)
+    expect(record('--fg-light', rows.drawerLink!, INK_950)).toBeLessThanOrEqual(1.0)
     // --accent-light — drawer nav item CURRENT (§32). Never colour-alone: the rule and
     // aria-current are asserted by the a11y gates, this asserts the colour is the right one.
-    expect(deviation(rows.drawerCurrent!, WOOD_600, ON_WHITE)).toBeLessThanOrEqual(1.0)
+    expect(record('--accent-light', rows.drawerCurrent!, WOOD_600)).toBeLessThanOrEqual(1.0)
     // --fg-light-muted — drawer close idle (§32).
-    expect(deviation(rows.drawerClose!, INK_600, ON_WHITE)).toBeLessThanOrEqual(1.0)
+    expect(record('--fg-light-muted', rows.drawerClose!, INK_600)).toBeLessThanOrEqual(1.0)
     // --drawer-surface.
-    expect(deviation(rows.drawerSurface!, '#ffffff', ON_WHITE)).toBeLessThanOrEqual(1.0)
+    expect(record('--drawer-surface', rows.drawerSurface!, '#ffffff')).toBeLessThanOrEqual(1.0)
     // --fg-light-subtle — lang toggle inactive (§32). §25.2: ink-500, NOT ink-400.
-    expect(deviation(rows.langInactive!, INK_500, ON_WHITE)).toBeLessThanOrEqual(1.0)
+    expect(record('--fg-light-subtle', rows.langInactive!, INK_500)).toBeLessThanOrEqual(1.0)
   })
 })
 
@@ -205,6 +213,11 @@ for (const width of [1280, 1440] as const) {
         slack: available - required
       }
     })
+
+    console.log(
+      `V11 @${width} required=${row.required}px available=${row.available}px SLACK=${row.slack}px  `
+      + `(logo ${row.logo} · nav ${row.nav} · lang ${row.lang} · phone ${row.phone} · cta ${row.cta})`
+    )
 
     expect(row.phone, 'O3 — the phone must not return to the NAVIGATION row (§9, FG-16)').toBe(0)
 
@@ -289,6 +302,10 @@ test.describe('V16 — optical logo height within 1px of its token', () => {
     for (const sel of ['.chrome-logo-white', '.chrome-logo-ink']) {
       const measured = await opticalHeight(page, sel)
       expect(measured, `${sel} must render`).not.toBeNull()
+      console.log(
+        `V16 ${sel.padEnd(20)} optical=${measured!.optical.toFixed(2)}px  token=${expected}px  `
+        + `Δ=${Math.abs(measured!.optical - expected).toFixed(2)}px  ink=${(measured!.inkRatio * 100).toFixed(1)}%`
+      )
       expect(
         Math.abs(measured!.optical - expected),
         `${sel}: optical ${measured!.optical.toFixed(2)}px vs --logo-h-header ${expected}px `
@@ -304,6 +321,10 @@ test.describe('V16 — optical logo height within 1px of its token', () => {
 
     const expected = await tokenPx(page, '--logo-h-header-xl')
     const measured = await opticalHeight(page, '.chrome-logo-white')
+    console.log(
+      `V16 ${'.chrome-logo-white@1440'.padEnd(20)} optical=${measured!.optical.toFixed(2)}px  `
+      + `token=${expected}px  Δ=${Math.abs(measured!.optical - expected).toFixed(2)}px  ink=${(measured!.inkRatio * 100).toFixed(1)}%`
+    )
     expect(Math.abs(measured!.optical - expected)).toBeLessThanOrEqual(1)
   })
 
@@ -316,6 +337,10 @@ test.describe('V16 — optical logo height within 1px of its token', () => {
       const expected = await tokenPx(page, token)
       const measured = await opticalHeight(page, '.footer-logo')
       expect(measured, 'footer logo must render').not.toBeNull()
+      console.log(
+        `V16 ${`.footer-logo@${width}`.padEnd(20)} optical=${measured!.optical.toFixed(2)}px  `
+        + `token=${expected}px  Δ=${Math.abs(measured!.optical - expected).toFixed(2)}px  ink=${(measured!.inkRatio * 100).toFixed(1)}%`
+      )
       expect(
         Math.abs(measured!.optical - expected),
         `footer logo @ ${width}: optical ${measured!.optical.toFixed(2)}px vs ${token} ${expected}px`

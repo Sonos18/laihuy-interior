@@ -19,7 +19,21 @@ export default defineConfig({
   // are approval artefacts — a shot that depends on machine load is worthless. Determinism
   // over speed (§41 P8: flake is fixed by determinism, never by re-rolling).
   workers: 1,
-  timeout: 60_000,
+  /**
+   * 120s, not 60s. The media pipeline serves images from **Supabase over the network**
+   * (`NUXT_PUBLIC_USE_SUPABASE_MEDIA=true`), so the suite's determinism is bounded by a remote
+   * third-party host. Forcing `loading="eager"` across 96 image-heavy shots issues hundreds of
+   * remote requests, and under the full 246-test run a request intermittently stalls past 60s.
+   *
+   * This is a budget, not a mask: `settle()` WAITS for every image to arrive and fails loudly
+   * if one never does (§41 P8). What it must not do is fail a shot because a remote host was
+   * slow — the previous handler "solved" that by swallowing the error and capturing a
+   * stable-but-wrong frame, which is the defect §14 was written about.
+   *
+   * The media pipeline is frozen by Appendix D, so pointing the harness at local assets is out
+   * of scope here and is recorded as a Phase 7 finding instead.
+   */
+  timeout: 120_000,
   reporter: [['list'], ['html', { open: 'never', outputFolder: 'tests/.report' }]],
 
   // §14: every capture is deterministic — motion disabled, reduced-motion emulated.

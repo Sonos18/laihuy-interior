@@ -55,7 +55,36 @@ export async function settle(page: Page) {
 
   await page.evaluate(() => document.fonts.ready)
 
-  // Decoded, not merely loaded.
+  /**
+   * Every image must actually ARRIVE before anything is decoded.
+   *
+   * Phase 7 defect: this step used to be
+   *   `img.decode().catch(() => undefined)`
+   * — which **swallowed the failure**. Under load (96 shots against a single-threaded Nitro
+   * server) a stalled request rejects, the catch discards it, and the capture proceeds with the
+   * image missing. That frame is **stable but WRONG**, so `toHaveScreenshot`'s stability retry
+   * cannot see it: the picture is consistent, it is merely incomplete. It reproduced as
+   * `home @ 768` on Firefox roughly 1 run in 4, and only in the full 246-test run — never in
+   * isolation, which is the signature of a load-dependent race.
+   *
+   * That is exactly the failure §14 already documents ("whole content blocks left unpainted"),
+   * reintroduced through an error handler. §41 P8: flake is fixed by determinism, never by
+   * re-rolling a baseline — so the arrival is now WAITED ON and a genuine failure is allowed to
+   * surface as a timeout rather than as a silently wrong baseline.
+   *
+   * `!img.currentSrc` guards the legitimately src-less <img>, which is `complete` with
+   * `naturalWidth === 0` and would otherwise hang this wait forever.
+   */
+  await page.waitForFunction(
+    () => Array.from(document.images).every(
+      img => img.complete && (img.naturalWidth > 0 || !img.currentSrc)
+    ),
+    undefined,
+    { timeout: 30_000 }
+  )
+
+  // Decoded, not merely loaded. Arrival is already proven above, so this cannot mask a
+  // missing image any more.
   await page.evaluate(async () => {
     await Promise.all(
       Array.from(document.images).map(img => img.decode().catch(() => undefined))
