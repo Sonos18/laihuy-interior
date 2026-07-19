@@ -34,8 +34,21 @@
   --shell-measure: 80rem;      /* 1280px of CONTENT                        */
   --shell-gutter: 1.5rem;      /*   24px  < md  — matches today's px-6     */
   --shell-gutter-md: 2rem;     /*   32px  ≥ md  — matches today's md:px-8  */
-  --section-py: 5rem;          /*   80px  < md  — matches today's py-20    */
-  --section-py-md: 7rem;       /*  112px  ≥ md  — matches today's md:py-28 */
+  /* Body vertical rhythm. `padding-block`, so the SPACE BETWEEN two sections is twice
+     these numbers — that doubling is the thing to keep in mind when reading them, and it
+     is what made the old 112px feel like a gap rather than a breath: 224px between every
+     pair of sections, six times down the homepage, is ~1.75 laptop viewports of nothing.
+
+     80/112 -> 64/88 (boundary 160/224 -> 128/176). Deliberately still generous: this is a
+     premium architecture site, and the fix for "too far apart" is not "tight". 88px reads
+     as composed; 112px read as unfinished. Below md the cut is proportionally larger
+     because mobile pays the boundary cost most often — the homepage crosses six of them.
+
+     One token, site-wide, on purpose: a homepage with a different rhythm from /du-an would
+     re-create exactly the two-system divergence ADR-001 and the single `.shell` exist to
+     prevent (§26.7). Every page moves together or the rhythm is not a system. */
+  --section-py: 4rem;          /*   64px  < md                             */
+  --section-py-md: 5.5rem;     /*   88px  ≥ md                             */
 
   /* Cover-hero floor. NOT decorative — this is what keeps the hero's crop
      locale-INDEPENDENT, and it is a MEASURED value, not a round number.
