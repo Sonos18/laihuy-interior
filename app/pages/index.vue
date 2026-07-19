@@ -231,7 +231,10 @@ useSeoMeta({
           </NuxtLink>
         </div>
 
-        <div class="grid gap-6 lg:grid-cols-3">
+        <!-- The `md:` step is load-bearing, not symmetry with the other grids: without it this
+             grid is single-column from 0 to 1023px, so at 834px the three cards stacked to
+             2737px — 2.5 viewports for three cards, and the single largest block on tablet. -->
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <NuxtLink
             v-for="({ project, cover }, index) in featuredProjects"
             :key="project.slug"
