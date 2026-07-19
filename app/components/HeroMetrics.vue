@@ -16,13 +16,13 @@
 // Putting it back inside the hero reintroduces that regression AND breaks the per-breakpoint
 // --hero-min-h floor, which is sized on the assumption that this band sits outside.
 // tests/e2e/hero.spec.ts (G1/G2) fails if either happens.
-type Metric = { label: string; value: string };
+type Metric = { label: string, value: string }
 
 defineProps<{
-  metrics: Metric[];
+  metrics: Metric[]
   /** Reveal delay of the element this band follows, so the stagger stays continuous. */
-  baseDelay?: number;
-}>();
+  baseDelay?: number
+}>()
 </script>
 
 <template>

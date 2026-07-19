@@ -136,7 +136,6 @@ useSeoMeta({
             </NuxtLink>
           </div>
         </div>
-
       </div>
     </section>
 
@@ -161,61 +160,49 @@ useSeoMeta({
       </div>
     </section>
 
+    <!-- Services first: "what does this company actually do" is the question a visitor arrives
+         with, and it used to be answered fifth, at viewport 4.66. Orientation precedes proof. -->
     <section class="section-y bg-white">
       <div class="shell">
-        <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
-          <div>
-            <p
-              v-reveal
-              class="eyebrow reveal"
-            >
-              {{ t({ vi: 'Năng lực nhà xưởng', en: 'Factory capability' }) }}
-            </p>
-            <h2
-              v-reveal="80"
-              class="reveal text-section-title mt-4 max-w-xl font-black uppercase text-ink-950"
-            >
-              {{ t({ vi: 'Kiểm soát tiến độ, chất lượng và chi phí từ xưởng trực tiếp', en: 'Control schedule, quality, and cost through direct production' }) }}
-            </h2>
-          </div>
+        <div class="mb-12 max-w-3xl">
           <p
-            v-reveal="140"
-            class="reveal text-lead max-w-3xl text-ink-600"
+            v-reveal
+            class="eyebrow reveal"
           >
-            {{ t({ vi: 'Hệ thống sản xuất trực tiếp giúp Lai Huy Interior kiểm soát xuyên suốt từ bóc tách bản vẽ, vật liệu, sản xuất đến thi công cho các dự án khách sạn, resort và căn hộ cao cấp.', en: 'Direct in-house production lets Lai Huy Interior control the whole flow — from shop-drawing breakdown and materials to manufacturing and on-site contracting — across hotel, resort, and premium apartment projects.' }) }}
+            {{ t(uiText.labels.services) }}
           </p>
+          <h2
+            v-reveal="80"
+            class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
+          >
+            {{ t({ vi: 'Giải pháp nội thất cho chủ đầu tư, tổng thầu và đơn vị vận hành', en: 'Interior solutions for owners, contractors, and operators' }) }}
+          </h2>
         </div>
 
-        <div class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <article
-            v-for="(capability, index) in factoryCapabilities"
-            :key="t(capability.label)"
-            v-reveal="index * 100"
-            class="metric-card reveal transition-colors hover:border-wood-400"
+            v-for="(service, index) in services"
+            :key="service.id"
+            v-reveal="(index % 3) * 90"
+            class="industrial-card reveal"
           >
-            <p class="text-sm font-bold text-wood-600">
-              {{ t(capability.label) }}
-            </p>
-            <p class="mt-3 text-3xl font-black text-ink-950">
-              {{ capability.value }}
-            </p>
-            <p class="mt-4 text-sm leading-6 text-ink-600">
-              {{ t(capability.description) }}
+            <Icon
+              :name="service.icon"
+              class="h-8 w-8 text-wood-500"
+            />
+            <h3 class="mt-6 text-xl font-black text-ink-950">
+              {{ t(service.title) }}
+            </h3>
+            <p class="mt-3 text-sm leading-6 text-ink-600">
+              {{ t(service.description) }}
             </p>
           </article>
-        </div>
-
-        <div class="mt-10">
-          <NuxtLink
-            to="/nha-xuong"
-            class="btn-outline"
-          >
-            {{ t(uiText.cta.factory) }}
-          </NuxtLink>
         </div>
       </div>
     </section>
 
+    <!-- Projects second: the proof for the claim immediately above it. Was third, starting at
+         viewport 2.40 — past the point where most visitors stop scrolling. -->
     <section class="section-y bg-ink-50">
       <div class="shell">
         <div class="mb-12 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
@@ -304,6 +291,127 @@ useSeoMeta({
       </div>
     </section>
 
+    <!-- Factory capability + machinery, MERGED. They were sections 2 and 6, four apart, with
+         projects and the workflow wedged between — but they are one argument: "we control
+         schedule, quality and cost because we own the plant, and here is the plant." Split,
+         the claim sat at the top of the page and its evidence 3,000px below it, and machinery
+         alone was the LARGEST section on the homepage (1189px) while being the most granular
+         content on it. Merged, the capability cards are the claim and the machinery block is
+         the proof, under one heading and one boundary instead of two. -->
+    <section class="section-y bg-white">
+      <div class="shell">
+        <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
+          <div>
+            <p
+              v-reveal
+              class="eyebrow reveal"
+            >
+              {{ t({ vi: 'Năng lực nhà xưởng', en: 'Factory capability' }) }}
+            </p>
+            <h2
+              v-reveal="80"
+              class="reveal text-section-title mt-4 max-w-xl font-black uppercase text-ink-950"
+            >
+              {{ t({ vi: 'Kiểm soát tiến độ, chất lượng và chi phí từ xưởng trực tiếp', en: 'Control schedule, quality, and cost through direct production' }) }}
+            </h2>
+          </div>
+          <p
+            v-reveal="140"
+            class="reveal text-lead max-w-3xl text-ink-600"
+          >
+            {{ t({ vi: 'Hệ thống sản xuất trực tiếp giúp Lai Huy Interior kiểm soát xuyên suốt từ bóc tách bản vẽ, vật liệu, sản xuất đến thi công cho các dự án khách sạn, resort và căn hộ cao cấp.', en: 'Direct in-house production lets Lai Huy Interior control the whole flow — from shop-drawing breakdown and materials to manufacturing and on-site contracting — across hotel, resort, and premium apartment projects.' }) }}
+          </p>
+        </div>
+
+        <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <article
+            v-for="(capability, index) in factoryCapabilities"
+            :key="t(capability.label)"
+            v-reveal="index * 100"
+            class="metric-card reveal transition-colors hover:border-wood-400"
+          >
+            <p class="text-sm font-bold text-wood-600">
+              {{ t(capability.label) }}
+            </p>
+            <p class="mt-3 text-3xl font-black text-ink-950">
+              {{ capability.value }}
+            </p>
+            <p class="mt-4 text-sm leading-6 text-ink-600">
+              {{ t(capability.description) }}
+            </p>
+          </article>
+        </div>
+
+        <!-- The evidence half. `mt-14` rather than a section boundary (176px) is the whole
+             point of the merge: enough air to read as its own movement, not enough to read
+             as a different subject. Headings step h2 -> h3 -> h4 so the machinery block is
+             SUBORDINATE to the capability claim in the outline, not a peer of it. -->
+        <div class="mt-14 grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
+          <div
+            v-reveal
+            class="reveal group overflow-hidden rounded-2xl"
+          >
+            <NuxtImg
+              :src="siteImages.aboutWorkspace.path"
+              :alt="t(siteImages.aboutWorkspace.alt)"
+              :width="siteImages.aboutWorkspace.width"
+              :height="siteImages.aboutWorkspace.height"
+              sizes="sm:100vw lg:50vw"
+              loading="lazy"
+              class="aspect-[4/3] w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+            />
+          </div>
+          <div>
+            <p
+              v-reveal
+              class="eyebrow reveal"
+            >
+              {{ t(uiText.labels.machinery) }}
+            </p>
+            <h3
+              v-reveal="80"
+              class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
+            >
+              {{ t({ vi: 'Hệ thống máy phục vụ sản xuất nội thất dự án', en: 'Machinery system for project interior manufacturing' }) }}
+            </h3>
+            <p
+              v-reveal="140"
+              class="reveal mt-5 max-w-xl text-base leading-7 text-ink-600"
+            >
+              {{ t({ vi: 'Xưởng sản xuất nội thất ứng dụng CNC với quy trình cắt – khoan – dán cạnh – ép hoàn thiện đồng bộ, phục vụ các dự án khách sạn, villa và căn hộ cao cấp.', en: 'A CNC-driven interior workshop with a synchronised cut – drill – edge-band – press finishing process, serving hotel, villa, and premium apartment projects.' }) }}
+            </p>
+            <div class="mt-8 grid gap-3 sm:grid-cols-2">
+              <div
+                v-for="(item, index) in machinery"
+                :key="t(item.name)"
+                v-reveal="(index % 2) * 80"
+                class="reveal rounded-2xl border border-ink-200 bg-white p-4 transition-colors hover:border-wood-400"
+              >
+                <h4 class="text-base font-black text-ink-950">
+                  {{ t(item.name) }}
+                </h4>
+                <p class="mt-2 text-sm leading-6 text-ink-600">
+                  {{ t(item.description) }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-10">
+          <NuxtLink
+            to="/nha-xuong"
+            class="btn-outline"
+          >
+            {{ t(uiText.cta.factory) }}
+          </NuxtLink>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process last before the CTA: "how do you work" is a question asked once the company is
+         already credible, so it follows the capability proof rather than preceding it. The
+         one dark band in the body also anchors the page just before the conversion block. -->
     <section class="section-y bg-ink-950 text-white">
       <div class="shell">
         <div class="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
@@ -338,99 +446,6 @@ useSeoMeta({
                 {{ t(step.description) }}
               </p>
             </article>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-y bg-white">
-      <div class="shell">
-        <div class="mb-12 max-w-3xl">
-          <p
-            v-reveal
-            class="eyebrow reveal"
-          >
-            {{ t(uiText.labels.services) }}
-          </p>
-          <h2
-            v-reveal="80"
-            class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
-          >
-            {{ t({ vi: 'Giải pháp nội thất cho chủ đầu tư, tổng thầu và đơn vị vận hành', en: 'Interior solutions for owners, contractors, and operators' }) }}
-          </h2>
-        </div>
-
-        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <article
-            v-for="(service, index) in services"
-            :key="service.id"
-            v-reveal="(index % 3) * 90"
-            class="industrial-card reveal"
-          >
-            <Icon
-              :name="service.icon"
-              class="h-8 w-8 text-wood-500"
-            />
-            <h3 class="mt-6 text-xl font-black text-ink-950">
-              {{ t(service.title) }}
-            </h3>
-            <p class="mt-3 text-sm leading-6 text-ink-600">
-              {{ t(service.description) }}
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-y bg-ink-50">
-      <div class="shell grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
-        <div
-          v-reveal
-          class="reveal group overflow-hidden rounded-2xl"
-        >
-          <NuxtImg
-            :src="siteImages.aboutWorkspace.path"
-            :alt="t(siteImages.aboutWorkspace.alt)"
-            :width="siteImages.aboutWorkspace.width"
-            :height="siteImages.aboutWorkspace.height"
-            sizes="sm:100vw lg:50vw"
-            loading="lazy"
-            class="aspect-[4/3] w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-          />
-        </div>
-        <div>
-          <p
-            v-reveal
-            class="eyebrow reveal"
-          >
-            {{ t(uiText.labels.machinery) }}
-          </p>
-          <h2
-            v-reveal="80"
-            class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
-          >
-            {{ t({ vi: 'Hệ thống máy phục vụ sản xuất nội thất dự án', en: 'Machinery system for project interior manufacturing' }) }}
-          </h2>
-          <p
-            v-reveal="140"
-            class="reveal mt-5 max-w-xl text-base leading-7 text-ink-600"
-          >
-            {{ t({ vi: 'Xưởng sản xuất nội thất ứng dụng CNC với quy trình cắt – khoan – dán cạnh – ép hoàn thiện đồng bộ, phục vụ các dự án khách sạn, villa và căn hộ cao cấp.', en: 'A CNC-driven interior workshop with a synchronised cut – drill – edge-band – press finishing process, serving hotel, villa, and premium apartment projects.' }) }}
-          </p>
-          <div class="mt-8 grid gap-3 sm:grid-cols-2">
-            <div
-              v-for="(item, index) in machinery"
-              :key="t(item.name)"
-              v-reveal="(index % 2) * 80"
-              class="reveal rounded-2xl border border-ink-200 bg-white p-4 transition-colors hover:border-wood-400"
-            >
-              <h3 class="text-base font-black text-ink-950">
-                {{ t(item.name) }}
-              </h3>
-              <p class="mt-2 text-sm leading-6 text-ink-600">
-                {{ t(item.description) }}
-              </p>
-            </div>
           </div>
         </div>
       </div>
