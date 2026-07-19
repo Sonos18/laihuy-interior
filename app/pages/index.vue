@@ -45,13 +45,24 @@ useSeoMeta({
 
 <template>
   <div>
-    <section class="relative min-h-screen overflow-hidden bg-ink-950 text-white">
+    <!-- min-h is --hero-min-h, NOT 100vh: the image below is `h-full object-cover`, so a
+         content-driven height change rescales the photograph. The EN headline takes one
+         more line than VI, which is what made the hero look zoomed after switching
+         language. The token holds both locales at the same height. -->
+    <section class="relative min-h-[var(--hero-min-h)] overflow-hidden bg-ink-950 text-white">
+      <!-- `sizes` is NOT 100vw, deliberately. It describes the box's WIDTH, but this box is
+           object-cover and --hero-min-h (960px) TALL, so height is the binding dimension: the
+           source must be ~960 × 1.807 (master aspect, 2560×1417) ≈ 1735px wide before it stops
+           being upscaled. At 100vw a 390px phone asked for 390px and got the w800 variant —
+           443px tall against a 960px box, a 2.17× vertical upscale on the LCP image.
+           1536px selects w1600 (~91KB vs 31KB) and drops that to ~1.08×. xl+ hands back to
+           100vw, where the viewport is finally the binding dimension. -->
       <NuxtImg
         :src="heroImage.path"
         :alt="t({ vi: 'Thi công nội thất khách sạn Lai Huy Interior', en: 'Lai Huy Interior hotel interior contracting' })"
         :width="heroImage.width"
         :height="heroImage.height"
-        sizes="sm:100vw md:100vw lg:100vw xl:100vw"
+        sizes="1536px xl:100vw"
         loading="eager"
         fetchpriority="high"
         class="hero-image hero-media absolute inset-0 h-full w-full object-cover"
@@ -62,7 +73,9 @@ useSeoMeta({
            (see docs/hero-art-direction.md §10, Home · Inspiration). -->
       <div class="absolute inset-0 bg-linear-to-t from-wood-950/88 via-wood-950/28 to-transparent" />
 
-      <div class="shell relative z-10 flex min-h-screen flex-col justify-end pb-12 pt-32 md:pb-18">
+      <!-- Same token as the section: if these two disagree, the shell drives the section's
+           height and the floor stops applying. -->
+      <div class="shell relative z-10 flex min-h-[var(--hero-min-h)] flex-col justify-end pb-12 pt-32 md:pb-18">
         <div class="max-w-5xl">
           <p
             v-reveal
@@ -115,21 +128,25 @@ useSeoMeta({
           </div>
         </div>
 
-        <div class="mt-12 grid overflow-hidden rounded-2xl border border-white/12 bg-white/[0.04] backdrop-blur-sm sm:grid-cols-2 lg:grid-cols-4">
-          <div
-            v-for="(metric, index) in heroMetrics"
-            :key="metric.label"
-            v-reveal="360 + index * 90"
-            class="reveal border-b border-white/10 p-5 sm:border-r lg:border-b-0"
-          >
-            <p class="text-xs uppercase tracking-[0.18em] text-white/70">
-              {{ metric.label }}
-            </p>
-            <p class="mt-2 text-lg font-black text-white md:text-xl">
-              {{ metric.value }}
-            </p>
-          </div>
-        </div>
+        <!-- lg+ ONLY, and the breakpoint is `lg` for a MEASURED reason, not for symmetry with
+             the grid's own `lg:grid-cols-4`. This band is a single row only at lg+. Below it
+             it wraps — 2 rows at sm/md, 4 rows under sm — and each extra row is height the
+             hero's `h-full object-cover` photograph has to absorb. Inside the hero it peaked
+             at 992.6px (834px wide, EN) vs 843.6px (VI), which is the language-switch zoom.
+             Kept out below lg, the hero's natural height never exceeds 937.9px in any locale.
+             Moving this to `md` reintroduces the 768–1023px spike. -->
+        <HeroMetrics
+          :metrics="heroMetrics"
+          class="mt-12 hidden lg:grid"
+        />
+      </div>
+    </section>
+
+    <!-- The below-lg placement of the band above. Dark surface so it reads as a continuation
+         of the hero rather than a new section, and sits outside the hero's height. -->
+    <section class="bg-ink-950 pb-12 text-white lg:hidden">
+      <div class="shell">
+        <HeroMetrics :metrics="heroMetrics" />
       </div>
     </section>
 

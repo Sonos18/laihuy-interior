@@ -37,6 +37,37 @@
   --section-py: 5rem;          /*   80px  < md  — matches today's py-20    */
   --section-py-md: 7rem;       /*  112px  ≥ md  — matches today's md:py-28 */
 
+  /* Cover-hero floor. NOT decorative — this is what keeps the hero's crop
+     locale-INDEPENDENT, and it is a MEASURED value, not a round number.
+
+     A cover hero is `min-height` + an `absolute inset-0 h-full object-cover`
+     photograph, so the image's box height is slaved to the CONTENT height, and
+     content height is locale-dependent: the EN homepage headline wraps to 3
+     lines where VI takes 2 (+79.8px, exactly one line-height at the --text-hero
+     clamp max). That grew the section past 100vh, and `cover` answered by
+     upscaling the photo — measured 1.0843 → 1.1115 at 1440×900 and 1.0695 →
+     1.1708 at 1366×700. Same image, same src, same object-fit, same font-size:
+     container height was the only variable.
+
+     The general rule, because it is what makes this token necessary: cover
+     scale = max(boxW/naturalW, boxH/naturalH). While the image is HEIGHT-
+     constrained, any content-driven height change rescales it. A floor that no
+     locale's content can reach makes box height constant, so it cannot.
+
+     60rem = 960px. The tallest hero content measured across 320–1920px, both
+     locales, every cover-hero page, is 937.9px (homepage, 320px, EN); 960
+     clears it by 22px of cross-engine headroom. Do NOT lower it to fit a single
+     viewport — the binding case is narrow-and-EN, not desktop.
+
+     Re-measure if: hero copy changes, --text-hero changes, or the homepage
+     metrics band moves back inside the hero below lg (see index.vue — that
+     placement is what keeps this at 60rem instead of 63rem).
+
+     svh, not vh/dvh: dvh re-triggers the growth every time a mobile URL bar
+     collapses, which is exactly the content-driven resize this token exists to
+     prevent. */
+  --hero-min-h: max(100svh, 60rem);
+
   /* ── L1 · Breakpoints (reference; media queries use the literal) ─────── */
   --bp-md: 48rem;              /*  768px                                   */
   --bp-xl: 80rem;              /* 1280px — the chrome breakpoint.

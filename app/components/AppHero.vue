@@ -42,8 +42,15 @@ const altText = computed(() => (props.image.alt === '' ? '' : t(props.image.alt)
 
 const isCentered = computed(() => props.anchor === 'bottom-center')
 
+// `cover` uses --hero-min-h rather than a raw viewport unit. The media below is
+// `h-full object-cover`, so its box height follows the CONTENT height — and content
+// height is locale-dependent (a longer EN headline wraps to an extra line). Left on
+// 100dvh, switching language silently rescaled the photograph. The token holds every
+// locale at the same height so the crop is identical. See main.css --hero-min-h.
+// `tall` / `compact` are unaffected: they are viewport fractions with slack above the
+// content, so no locale reaches their floor.
 const sizeClass = computed(() => ({
-  cover: 'min-h-dvh',
+  cover: 'min-h-[var(--hero-min-h)]',
   tall: 'min-h-[78vh]',
   compact: 'min-h-[68vh]'
 }[props.size]))
@@ -91,12 +98,17 @@ const scrimClass = computed(() => {
     class="relative flex overflow-hidden bg-ink-950 text-white"
     :class="[sizeClass, itemsClass]"
   >
+    <!-- `sizes` is NOT 100vw, deliberately — see index.vue for the full derivation. Short
+         version: the box is object-cover and viewport-tall, so HEIGHT is the binding
+         dimension, and a width-only `sizes` under-requests badly on narrow screens (a 390px
+         phone got a 443px-tall source for a 960px-tall box). 1536px selects a variant tall
+         enough; xl+ returns to 100vw where width binds again. -->
     <NuxtImg
       :src="image.path"
       :alt="altText"
       :width="image.width"
       :height="image.height"
-      sizes="sm:100vw md:100vw lg:100vw xl:100vw"
+      sizes="1536px xl:100vw"
       :loading="eager ? 'eager' : 'lazy'"
       :fetchpriority="eager ? 'high' : 'auto'"
       class="hero-media absolute inset-0 h-full w-full object-cover"
