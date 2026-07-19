@@ -1,19 +1,21 @@
 <script setup lang="ts">
-// The homepage hero's 4-up proof band, extracted so it has ONE definition.
+// The homepage hero's 4-up proof band.
 //
-// It exists as a component because it is rendered at two placements — inside the hero on
-// md+, as a band directly below the hero under md — and re-inlining the markup at both
-// sites would be the duplication AppLangToggle was extracted to end.
+// It renders at exactly ONE placement: directly below the hero, on the hero's own ink-950
+// surface, at every breakpoint. It previously had two (inside the hero at lg+, below it
+// under lg), which is the arrangement this comment used to defend.
 //
-// Why two placements at all (this is a layout CONTRACT, not styling): the hero photograph
-// is `absolute inset-0 h-full object-cover`, so the image's box height follows the hero's
-// CONTENT height. Stacked to 4 rows under md this band is 400.8px tall, which pushed the
-// hero to 1277px on an 844px viewport — 1.5x the screen. That made the hero's height, and
-// therefore the photograph's crop, depend on how tall the copy happened to be, which is
-// what made switching langua ge visibly rescale the photo. Out of the hero, the hero's
-// natural height drops to 827.9px and fits beneath the floor in BOTH locales.
+// Keep it OUT of the hero — this is a layout CONTRACT, not styling. The hero photograph is
+// `absolute inset-0 h-full object-cover`, so the image's box height follows the hero's
+// CONTENT height, and this band is content: 138px as a single row at lg+, and 400.8px
+// stacked to 4 rows under sm, where it once pushed the hero to 1277px on an 844px viewport.
+// Any height it contributes inside the hero is height the photograph must absorb, which
+// makes the crop depend on how tall the copy happens to be — and copy height is
+// locale-dependent, so switching language visibly rescaled the photo.
 //
-// Keep it out of the hero under md. Putting it back reintroduces the regression.
+// Putting it back inside the hero reintroduces that regression AND breaks the per-breakpoint
+// --hero-min-h floor, which is sized on the assumption that this band sits outside.
+// tests/e2e/hero.spec.ts (G1/G2) fails if either happens.
 type Metric = { label: string; value: string };
 
 defineProps<{

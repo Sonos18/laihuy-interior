@@ -45,18 +45,27 @@ useSeoMeta({
 
 <template>
   <div>
-    <!-- min-h is --hero-min-h, NOT 100vh: the image below is `h-full object-cover`, so a
-         content-driven height change rescales the photograph. The EN headline takes one
-         more line than VI, which is what made the hero look zoomed after switching
-         language. The token holds both locales at the same height. -->
-    <section class="relative min-h-[var(--hero-min-h)] overflow-hidden bg-ink-950 text-white">
+    <!-- min-h is --hero-min-h-HOME, NOT 100vh and NOT the shared --hero-min-h: the image below
+         is `h-full object-cover`, so a content-driven height change rescales the photograph.
+         The EN headline takes one more line than VI, which is what made the hero look zoomed
+         after switching language. The token holds both locales at the same height.
+
+         Home has its OWN floor because home does not render <AppHero> — it is a bespoke cover
+         (§30.1). The shared token is sized by /gioi-thieu's 839.2px of hero content; home's is
+         709.4px, and it should not pay 130px for copy that is on another page. See main.css. -->
+    <section class="relative min-h-[var(--hero-min-h-home)] overflow-hidden bg-ink-950 text-white">
       <!-- `sizes` is NOT 100vw, deliberately. It describes the box's WIDTH, but this box is
-           object-cover and --hero-min-h (960px) TALL, so height is the binding dimension: the
-           source must be ~960 × 1.807 (master aspect, 2560×1417) ≈ 1735px wide before it stops
-           being upscaled. At 100vw a 390px phone asked for 390px and got the w800 variant —
-           443px tall against a 960px box, a 2.17× vertical upscale on the LCP image.
-           1536px selects w1600 (~91KB vs 31KB) and drops that to ~1.08×. xl+ hands back to
-           100vw, where the viewport is finally the binding dimension. -->
+           object-cover and --hero-min-h-home TALL, so height is the binding dimension: the
+           source must be ~boxH × 1.807 (master aspect, 2560×1417) wide before it stops being
+           upscaled. At 100vw a 390px phone asked for 390px and got the w800 variant — 443px
+           tall against the box, a 2.17× vertical upscale on the LCP image. 1536px selects
+           w1600 (~91KB vs 31KB). xl+ hands back to 100vw, where the viewport is finally the
+           binding dimension.
+
+           The floor is now tiered (944 / 832 / 736px, was a flat 960), so the requirement
+           relaxed rather than tightened — 1536px still over-delivers at every tier and no
+           variant is upscaled. Left as-is: re-tuning it is a media-pipeline change (Appendix
+           D) and would move LCP, which is out of scope for a layout pass. -->
       <NuxtImg
         :src="heroImage.path"
         :alt="t({ vi: 'Thi công nội thất khách sạn Lai Huy Interior', en: 'Lai Huy Interior hotel interior contracting' })"
@@ -75,8 +84,8 @@ useSeoMeta({
 
       <!-- Same token as the section: if these two disagree, the shell drives the section's
            height and the floor stops applying. -->
-      <div class="shell relative z-10 flex min-h-[var(--hero-min-h)] flex-col justify-end pb-12 pt-32 md:pb-18">
-        <div class="max-w-5xl">
+      <div class="shell relative z-10 flex min-h-[var(--hero-min-h-home)] flex-col justify-end pb-10 pt-28 md:pb-12">
+        <div class="max-w-6xl">
           <p
             v-reveal
             class="eyebrow reveal mb-6 text-wood-200"
@@ -85,7 +94,7 @@ useSeoMeta({
           </p>
           <h1
             v-reveal="90"
-            class="reveal text-hero max-w-5xl font-black uppercase text-white"
+            class="reveal text-hero max-w-6xl font-black uppercase text-white"
           >
             {{ t({ vi: 'Sản xuất & thi công nội thất dự án', en: 'Project interior manufacturing & contracting' }) }}
             <span class="mt-3 block text-balance text-xl font-bold normal-case tracking-normal text-wood-200 sm:text-2xl md:text-3xl">
@@ -107,7 +116,7 @@ useSeoMeta({
 
           <div
             v-reveal="300"
-            class="reveal mt-9 flex flex-col gap-3 sm:flex-row"
+            class="reveal mt-8 flex flex-col gap-3 sm:flex-row"
           >
             <NuxtLink
               to="/du-an"
@@ -128,23 +137,25 @@ useSeoMeta({
           </div>
         </div>
 
-        <!-- lg+ ONLY, and the breakpoint is `lg` for a MEASURED reason, not for symmetry with
-             the grid's own `lg:grid-cols-4`. This band is a single row only at lg+. Below it
-             it wraps — 2 rows at sm/md, 4 rows under sm — and each extra row is height the
-             hero's `h-full object-cover` photograph has to absorb. Inside the hero it peaked
-             at 992.6px (834px wide, EN) vs 843.6px (VI), which is the language-switch zoom.
-             Kept out below lg, the hero's natural height never exceeds 937.9px in any locale.
-             Moving this to `md` reintroduces the 768–1023px spike. -->
-        <HeroMetrics
-          :metrics="heroMetrics"
-          class="mt-12 hidden lg:grid"
-        />
       </div>
     </section>
 
-    <!-- The below-lg placement of the band above. Dark surface so it reads as a continuation
-         of the hero rather than a new section, and sits outside the hero's height. -->
-    <section class="bg-ink-950 pb-12 text-white lg:hidden">
+    <!-- The metrics band has ONE placement, at every breakpoint: directly below the hero on the
+         same ink-950 surface, so it still reads as the hero's footer rather than a new section.
+         It used to render inside the hero at lg+ and below it under lg, and that split was the
+         single most expensive thing on the page.
+
+         Why: the hero photograph is `absolute inset-0 h-full object-cover`, so its box height
+         follows the hero's CONTENT height. Inside the hero this band cost 138px at lg+ (48px
+         mt-12 + ~90px row), which pushed hero content to 923.4px (EN, >=1280) against 728.6px
+         at 834px where the band was already outside. That 195px delta is what forced the floor
+         to 60rem, and the floor is global — so every desktop paid for it.
+
+         Out of the hero at every width, hero content no longer varies by ~200px across the lg
+         boundary, which is what lets --hero-min-h drop to a per-breakpoint value (see main.css).
+         This also removes the dual-placement contract HeroMetrics documented: there is now one
+         render site, so the two can no longer disagree. -->
+    <section class="bg-ink-950 pb-12 text-white">
       <div class="shell">
         <HeroMetrics :metrics="heroMetrics" />
       </div>

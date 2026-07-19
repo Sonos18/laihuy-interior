@@ -68,6 +68,34 @@
      prevent. */
   --hero-min-h: max(100svh, 60rem);
 
+  /* Home's cover floor. SEPARATE from --hero-min-h above, and the separation is the point.
+     Home is a bespoke flagship cover (§30.1): it does NOT render <AppHero>, it inlines its
+     own hero section. --hero-min-h is therefore the AppHero token, and its 60rem is set by
+     the tallest content across the SIX shared cover heroes — measured 839.2px on /gioi-thieu
+     at 1280 (vi), not by home at all. Home was paying a 130px floor for another page's copy.
+
+     Same contract as --hero-min-h, same derivation, measured against home only:
+       floor >= max(hero content height) over every width and BOTH locales, + headroom.
+
+     Measured home content (floor neutralised, Chromium, both locales):
+       < 360px   909.9px  (320, en)   -> 59rem = 944px   (+34.1 headroom)
+       360-767   805.1px  (414, en)   -> 52rem = 832px   (+26.9 headroom)
+       >= 768    709.4px  (1280, en)  -> 46rem = 736px   (+26.6 headroom)
+
+     Why it is tiered rather than one global number: the old single token took the worst case
+     across ALL widths, and that maximum occurs at narrow-and-EN (320px), so every desktop
+     inherited a floor derived from a phone. The invariant only ever needed to hold per
+     breakpoint. Tiering it is what lets desktop drop 224px without weakening the guarantee.
+
+     The svh term drops to 78svh at md+ (from 100svh) so the next section is visible at the
+     fold on laptops: at 1440x900 the hero is 736px rather than 900px. Below md it stays
+     100svh — a phone hero that is shorter than the screen reads as broken, not as generous.
+
+     Re-measure if hero copy, --text-hero, or the hero's own padding changes. The metrics band
+     must stay OUTSIDE the hero (see index.vue): inside, it adds 138px at lg+ and these numbers
+     are void. tests/e2e/hero.spec.ts G1/G2 enforce both halves. */
+  --hero-min-h-home: max(100svh, 59rem);
+
   /* ── L1 · Breakpoints (reference; media queries use the literal) ─────── */
   --bp-md: 48rem;              /*  768px                                   */
   --bp-xl: 80rem;              /* 1280px — the chrome breakpoint.
@@ -235,6 +263,15 @@
   --subnav-h: 3.5rem;          /*  56px                                    */
 }
 
+/* Home's cover floor, tier 2 of 3. 22.5rem = 360px: below it the hero headline takes an
+   extra wrap in EN (909.9px at 320 vs 794.1px at 360 — one --text-hero line), and that
+   single wrap is the whole reason tier 1 exists. See --hero-min-h-home for the table. */
+@media (min-width: 22.5rem) {
+  :root {
+    --hero-min-h-home: max(100svh, 52rem);
+  }
+}
+
 /* The responsive half of the rail. Redefining the token (rather than the rule)
    keeps --shell-gutter a single source of truth: `.shell` derives BOTH its
    max-width and its padding from it, so the two can never disagree.
@@ -244,6 +281,10 @@
   :root {
     --shell-gutter: var(--shell-gutter-md);
     --section-py: var(--section-py-md);
+
+    /* Tier 3. The svh term drops to 78 here so the fold stops landing exactly on the hero's
+       bottom edge — that is the change that makes the next section visible on a laptop. */
+    --hero-min-h-home: max(78svh, 46rem);
   }
 }
 
