@@ -1199,6 +1199,39 @@
     margin-top: var(--footer-item-gap);
   }
 
+  /* Locations, promoted out of the index — the same move §10 makes for the
+     masthead, for the same reason: content that does not fit a column should not
+     be forced into one.
+
+     The addresses are the widest strings in the footer. Inside a 395px index
+     column the contact block measured 436px of content against 270px and 191px
+     beside it, so the row was sized by its worst case and 31% of the column band
+     rendered empty, all of it pooled bottom-left. At full width each address sets
+     on ONE line at lg (~616px per cell) instead of 2-3 ragged ones.
+
+     --footer-col-gap, not --footer-meta-gap: this band is still part of the
+     directory, so it reads as the last row of the index rather than a new region.
+     No new tokens — the band borrows the index's own rhythm. */
+  .footer-locations {
+    margin-top: var(--footer-col-gap);
+    display: grid;
+    gap: var(--footer-col-gap);
+  }
+
+  /* Each dt/dd group stacks on the footer's standard intra-column rhythm, the same
+     --footer-item-gap `.footer-list` and `.footer-contact` use. */
+  .footer-locations > div {
+    display: flex;
+    flex-direction: column;
+    gap: var(--footer-item-gap);
+  }
+
+  @media (min-width: 48rem) {
+    .footer-locations {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
   /* §10 — copyright and Facebook, separated BY SPACE ALONE: the second border is
      gone, and this row is no longer fenced off from the index. */
   .footer-meta {

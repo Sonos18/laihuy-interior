@@ -142,25 +142,6 @@ const { t, ta } = useLanguage()
               </a>
             </dd>
 
-            <template
-              v-for="address in company.addresses"
-              :key="t(address.label)"
-            >
-              <dt class="footer-label">
-                {{ t(address.label) }}
-              </dt>
-              <dd>
-                <a
-                  :href="address.mapUrl"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="footer-link"
-                >
-                  {{ t(address.address) }}
-                </a>
-              </dd>
-            </template>
-
             <dt class="footer-label">
               {{ t(uiText.labels.workingHours) }}
             </dt>
@@ -176,6 +157,39 @@ const { t, ta } = useLanguage()
           </dl>
         </div>
       </div>
+
+      <!-- Locations, PROMOTED OUT of the index — the same structural gesture §10 already makes
+           for the masthead, applied to the other content that does not fit a column.
+
+           The two addresses are the widest strings in the footer, and inside a 395px index
+           column they were the tallest thing in it: the contact column measured 436px of content
+           against 270px and 191px beside it, so 31% of the column band rendered empty and all of
+           that void pooled bottom-left. Given the full width they set on ONE line each at lg
+           instead of 2-3 ragged ones, and the contact column drops to ~217px.
+
+           It stays a <dl>: these are still label/value pairs. The wrapper div per pair is
+           permitted inside <dl> and is what lets each dt/dd group act as a single grid cell —
+           without it, dt and dd would become separate grid items and sit side by side. -->
+      <dl class="footer-locations">
+        <div
+          v-for="address in company.addresses"
+          :key="t(address.label)"
+        >
+          <dt class="footer-label">
+            {{ t(address.label) }}
+          </dt>
+          <dd>
+            <a
+              :href="address.mapUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer-link"
+            >
+              {{ t(address.address) }}
+            </a>
+          </dd>
+        </div>
+      </dl>
 
       <!-- §10 — separated by space alone: no border. -->
       <div class="footer-meta">
