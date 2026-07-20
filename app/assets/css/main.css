@@ -31,9 +31,9 @@
      width: the gutter is added to the max-width rather than subtracted from
      the measure, so changing one knob never silently changes the other. That
      coupling is exactly why ADR-001 rejected Option B. */
-  --shell-measure: 80rem;      /* 1280px of CONTENT                        */
-  --shell-gutter: 1.5rem;      /*   24px  < md  — matches today's px-6     */
-  --shell-gutter-md: 2rem;     /*   32px  ≥ md  — matches today's md:px-8  */
+  --shell-measure: 80rem; /* 1280px of CONTENT                        */
+  --shell-gutter: 1.5rem; /*   24px  < md  — matches today's px-6     */
+  --shell-gutter-md: 2rem; /*   32px  ≥ md  — matches today's md:px-8  */
   /* Body vertical rhythm. `padding-block`, so the SPACE BETWEEN two sections is twice
      these numbers — that doubling is the thing to keep in mind when reading them, and it
      is what made the old 112px feel like a gap rather than a breath: 224px between every
@@ -47,8 +47,8 @@
      One token, site-wide, on purpose: a homepage with a different rhythm from /du-an would
      re-create exactly the two-system divergence ADR-001 and the single `.shell` exist to
      prevent (§26.7). Every page moves together or the rhythm is not a system. */
-  --section-py: 4rem;          /*   64px  < md                             */
-  --section-py-md: 5.5rem;     /*   88px  ≥ md                             */
+  --section-py: 4rem; /*   64px  < md                             */
+  --section-py-md: 5.5rem; /*   88px  ≥ md                             */
 
   /* Cover-hero floor. NOT decorative — this is what keeps the hero's crop
      locale-INDEPENDENT, and it is a MEASURED value, not a round number.
@@ -110,22 +110,22 @@
   --hero-min-h-home: max(100svh, 59rem);
 
   /* ── L1 · Breakpoints (reference; media queries use the literal) ─────── */
-  --bp-md: 48rem;              /*  768px                                   */
-  --bp-xl: 80rem;              /* 1280px — the chrome breakpoint.
+  --bp-md: 48rem; /*  768px                                   */
+  --bp-xl: 80rem; /* 1280px — the chrome breakpoint.
                                   `lg` is NOT a chrome breakpoint (§9)     */
 
   /* ── L1 · Foreground on DARK ────────────────────────────────────────── */
   --fg-dark: #fff;
-  --fg-dark-muted: rgb(255 255 255 / 0.72);    /* 10.1:1 on ink-950        */
-  --fg-dark-subtle: rgb(255 255 255 / 0.48);   /*  5.0:1 on ink-950 (§25.2)*/
+  --fg-dark-muted: rgb(255 255 255 / 0.72); /* 10.1:1 on ink-950        */
+  --fg-dark-subtle: rgb(255 255 255 / 0.48); /*  5.0:1 on ink-950 (§25.2)*/
   --rule-dark: rgb(255 255 255 / 0.12);
-  --accent-dark: var(--color-wood-300);        /*  7.8:1 on ink-950        */
+  --accent-dark: var(--color-wood-300); /*  7.8:1 on ink-950        */
 
   /* ── L1 · Foreground on LIGHT ───────────────────────────────────────── */
   --fg-light: var(--color-ink-950);
-  --fg-light-muted: var(--color-ink-600);      /*  7.4:1 on white          */
-  --fg-light-subtle: var(--color-ink-500);     /*  5.4:1 on white (§25.2)  */
-  --rule-light: rgb(216 210 202 / 0.6);        /* ink-200/60               */
+  --fg-light-muted: var(--color-ink-600); /*  7.4:1 on white          */
+  --fg-light-subtle: var(--color-ink-500); /*  5.4:1 on white (§25.2)  */
+  --rule-light: rgb(216 210 202 / 0.6); /* ink-200/60               */
   --accent-light: var(--color-wood-600);
 
   /* ── L1 · Motion ────────────────────────────────────────────────────── */
@@ -139,7 +139,7 @@
   /* ── L1 · Radius / shadow ───────────────────────────────────────────── */
   --radius-pill: 9999px;
   --radius-card: 1rem;
-  --shadow-drawer: 0 0 40px rgb(11 10 9 / 0.28);  /* the ONLY chrome shadow */
+  --shadow-drawer: 0 0 40px rgb(11 10 9 / 0.28); /* the ONLY chrome shadow */
 
   /* ── L1 · Layer contract (§36) ──────────────────────────────────────────
      The COMPLETE hierarchy. No z-index may exist outside this table, and raw
@@ -152,18 +152,18 @@
   --z-hero-content: 10;
   --z-subnav: 30;
   --z-header: 50;
-  --z-drawer-overlay: 60;      /* was z-50 — raised (§36)                   */
-  --z-drawer: 61;              /* was z-50 — raised (§36)                   */
+  --z-drawer-overlay: 60; /* was z-50 — raised (§36)                   */
+  --z-drawer: 61; /* was z-50 — raised (§36)                   */
   --z-lightbox: 80;
-  --z-skiplink: 90;            /* new (§36)                                 */
+  --z-skiplink: 90; /* new (§36)                                 */
 
   /* ── L2 · Header (consumed in Phase 4) ──────────────────────────────── */
-  --header-h: 4.5rem;          /*  72px  < xl                              */
-  --header-h-xl: 5.5rem;       /*  88px  ≥ xl                              */
-  --header-scrim-h: 10rem;     /* 160px                                    */
-  --logo-h-header: 2.5rem;     /*  40px OPTICAL (trimmed) < xl             */
-  --logo-h-header-xl: 3rem;    /*  48px OPTICAL (trimmed) ≥ xl             */
-  --logo-aspect: 2 / 1;        /* measured: 424 × 212                      */
+  --header-h: 4.5rem; /*  72px  < xl                              */
+  --header-h-xl: 5.5rem; /*  88px  ≥ xl                              */
+  --header-scrim-h: 10rem; /* 160px                                    */
+  --logo-h-header: 2.5rem; /*  40px OPTICAL (trimmed) < xl             */
+  --logo-h-header-xl: 3rem; /*  48px OPTICAL (trimmed) ≥ xl             */
+  --logo-aspect: 2 / 1; /* measured: 424 × 212                      */
   /* O3 RESOLUTION (was 1rem) — §16 listed O3 as unresolved and blocking, and
      measurement proved why: the VI NAVIGATION row needs 1421px against 1216px of
      content at 1280, i.e. −205px, where V11 requires +8px.
@@ -188,7 +188,7 @@
      Docs owed (§17 rule 1): §9's desktop figures, §5.2/§32's Phone rows, and O3
      in §16 must all be updated to match. */
   --nav-item-px: 0.5rem;
-  --nav-item-min-h: 2.75rem;   /*  44px — WCAG 2.5.5                       */
+  --nav-item-min-h: 2.75rem; /*  44px — WCAG 2.5.5                       */
   --nav-item-gap: 0.25rem;
   --nav-rule-h: 1.5px;
   --header-group-gap: 2rem;
@@ -204,12 +204,12 @@
     rgb(11 10 9 / var(--header-scrim-a2)) 45%,
     transparent
   );
-  --header-blur-in: 0.05;      /* p at which backdrop-filter engages       */
-  --header-action-in: 0.5;     /* p at which CTA/phone become focusable    */
+  --header-blur-in: 0.05; /* p at which backdrop-filter engages       */
+  --header-action-in: 0.5; /* p at which CTA/phone become focusable    */
 
   /* Runtime — written by useHeaderState AND NOTHING ELSE (§29 R2). */
-  --header-p: 0;               /* 0 … 1                                    */
-  --header-shift: 0px;         /* 0 | calc(-1 * var(--header-h))           */
+  --header-p: 0; /* 0 … 1                                    */
+  --header-shift: 0px; /* 0 | calc(-1 * var(--header-h))           */
 
   /* ── L2 · Header typography (Phase 4) ───────────────────────────────── */
   --type-nav-size: 0.8125rem;
@@ -233,7 +233,7 @@
      surface. R2 forbids a literal `#fff` in the component, so the value enters
      as a token here rather than inline. §29 needs this row added. */
   --drawer-surface: #fff;
-  --drawer-w: 21rem;           /* 336px                                    */
+  --drawer-w: 21rem; /* 336px                                    */
   --drawer-w-max: 88vw;
   --drawer-px: 1.5rem;
   --drawer-item-py: 1.25rem;
@@ -260,14 +260,14 @@
      point, not the number — 112/88 = 1.27x, matching the 144/112 = 1.29x this shipped
      with when --section-py was still 112. When body rhythm changed to 64/88, holding
      144 silently stretched the ratio to 1.64x. Re-derive this if --section-py moves. */
-  --footer-py: 5rem;           /*  80px  < md  — 1.25x --section-py (64)   */
-  --footer-py-md: 7rem;        /* 112px  ≥ md  — 1.27x --section-py (88)   */
+  --footer-py: 1rem; /*  80px  < md  — 1.25x --section-py (64)   */
+  --footer-py-md: 1.25rem; /* 112px  ≥ md  — 1.27x --section-py (88)   */
   /* INSIDE the masthead only: logo -> statement -> action are one group. At 4rem this
      was identical to the block gaps below, so the brand block's own lines were spaced
      like section boundaries — 128px of whitespace inside a single group. */
-  --footer-masthead-gap: 2rem;
+  --footer-masthead-gap: 1rem;
   /* Between blocks, and between columns. One value for "boundary" everywhere. */
-  --footer-col-gap: 3rem;
+  --footer-col-gap: 1rem;
   --footer-meta-gap: 3rem;
   /* SPEC GAP, raised not decided (§0, D.4): §29 tokenises the footer's
      STRUCTURAL rhythm (masthead / column / meta) but not its INTRA-column one —
@@ -277,11 +277,13 @@
      transcribed from the `space-y-3` / `gap-3` this footer already shipped.
      §29 needs this row added. */
   --footer-item-gap: 0.75rem;
-  --logo-h-footer: 3.5rem;     /*  56px OPTICAL  < md                      */
-  --logo-h-footer-md: 4rem;    /*  64px OPTICAL  ≥ md                      */
+  --logo-h-footer: 3.5rem; /*  56px OPTICAL  < md                      */
+  --logo-h-footer-md: 4rem; /*  64px OPTICAL  ≥ md                      */
   --footer-surface: var(--color-ink-950);
   --footer-top-gradient: linear-gradient(
-    to bottom, var(--color-ink-900), var(--color-ink-950) 12.5rem
+    to bottom,
+    var(--color-ink-900),
+    var(--color-ink-950) 12.5rem
   );
   --type-eyebrow-size: 0.75rem;
   --type-eyebrow-weight: 600;
@@ -292,7 +294,7 @@
   --type-meta-sm-leading: 1.6;
 
   /* ── L3 · Project sub-nav (page-owned, header-coupled) ──────────────── */
-  --subnav-h: 3.5rem;          /*  56px                                    */
+  --subnav-h: 3.5rem; /*  56px                                    */
 }
 
 /* Home's cover floor, tier 2 of 3. 22.5rem = 360px: below it the hero headline takes an
@@ -640,7 +642,11 @@
   /* §31.1 — CTA + phone arrive on scroll, once the hero's own CTA has left the
      viewport and the header must take over conversion (§9). */
   .chrome-actions {
-    --actions-in: clamp(0, calc((var(--header-p) - var(--header-action-in)) / 0.5), 1);
+    --actions-in: clamp(
+      0,
+      calc((var(--header-p) - var(--header-action-in)) / 0.5),
+      1
+    );
 
     display: flex;
     align-items: center;
@@ -733,7 +739,11 @@
      a persistent rule AND aria-current, satisfying WCAG 1.4.1. */
   .nav-link:hover,
   .nav-link[aria-current="page"] {
-    color: color-mix(in oklab, var(--fg-dark), var(--fg-light) calc(var(--header-p) * 100%));
+    color: color-mix(
+      in oklab,
+      var(--fg-dark),
+      var(--fg-light) calc(var(--header-p) * 100%)
+    );
   }
 
   /* §8.4 / I6 — hide/reveal is motion and is disabled entirely. Scroll-linked
