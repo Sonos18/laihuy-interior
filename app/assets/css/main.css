@@ -1121,20 +1121,6 @@
     box-shadow: none;
   }
 
-  .footer-textlink {
-    display: inline-flex;
-    align-items: center;
-    font-size: var(--type-action-size);
-    font-weight: var(--type-action-weight);
-    letter-spacing: var(--type-action-track);
-    color: var(--fg-dark);
-    transition: color var(--dur-hover) var(--ease-editorial);
-  }
-
-  .footer-textlink:hover {
-    color: var(--accent-dark);
-  }
-
   /* §10 — THE one hairline, and it now does editorial work: separating the
      finale's cover from its index, rather than fencing the copyright. Two
      borders became one. */

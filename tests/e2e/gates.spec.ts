@@ -37,7 +37,10 @@ const V7_FOOTER = [
   { selector: '.footer-link', prop: 'color', expected: 'rgba(255,255,255,0.72)', token: '--fg-dark-muted' },
   { selector: '.footer-label', prop: 'color', expected: 'rgba(255,255,255,0.48)', token: '--fg-dark-subtle' },
   { selector: '.footer-meta', prop: 'color', expected: 'rgba(255,255,255,0.48)', token: '--fg-dark-subtle' },
-  { selector: '.footer-textlink', prop: 'color', expected: '#ffffff', token: '--fg-dark' },
+  // `.footer-textlink` was here. The masthead's second action — the /nha-xuong text link — was
+  // removed as a duplicate of the .section-cta band above the footer, so the class and its only
+  // consumer are both gone. The row is deleted rather than pointed at another element: --fg-dark
+  // is still asserted, on `.footer-link:hover` behaviour and by the surface rows below.
   { selector: 'footer', prop: 'backgroundColor', expected: INK_950, token: '--footer-surface' }
 ] as const
 

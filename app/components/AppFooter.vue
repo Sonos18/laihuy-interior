@@ -36,18 +36,22 @@ const { t, ta } = useLanguage()
           {{ t(company.positioning) }}
         </p>
 
+        <!-- ONE action, not two. The second was `uiText.cta.factory` -> /nha-xuong, which is the
+             SAME destination and the character-for-character same label as the secondary action
+             in the `.section-cta` band that sits directly above the footer on six of the eight
+             pages — two conversion blocks with identical destinations inside the last ~900px.
+             On the homepage that one string rendered three times.
+
+             It was also self-referential: because this component is static by contract, the
+             link pointed at the current page on /nha-xuong. Removing it is the fix that respects
+             that contract; making it route-aware would breach it (§26.3/§30.2). /nha-xuong
+             remains reachable from the navigation column immediately below. -->
         <div class="footer-actions">
           <NuxtLink
             to="/lien-he"
             class="btn-primary"
           >
             {{ t(uiText.cta.contact) }}
-          </NuxtLink>
-          <NuxtLink
-            to="/nha-xuong"
-            class="footer-textlink"
-          >
-            {{ t(uiText.cta.factory) }}<span aria-hidden="true">&nbsp;&rarr;</span>
           </NuxtLink>
         </div>
       </div>
