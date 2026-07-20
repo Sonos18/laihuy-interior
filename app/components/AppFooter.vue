@@ -55,22 +55,32 @@ const { t, ta } = useLanguage()
       <!-- §10 — 3 equal columns, beneath the ONE hairline. -->
       <div class="footer-index">
         <div>
-          <h2 class="footer-eyebrow">
-            {{ t(uiText.labels.navigation) }}
-          </h2>
-          <ul class="footer-list">
-            <li
-              v-for="link in navLinks"
-              :key="link.to"
+          <!-- The landmark takes its accessible name FROM the visible heading rather than a
+               duplicated aria-label, so the two can never drift apart under translation.
+               Heading levels stay at h2 deliberately: footer column labels at h2 sit alongside
+               the page's content sections, which is what makes them reachable by heading
+               navigation. Demoting them would only make them harder to find. -->
+          <nav aria-labelledby="footer-nav-heading">
+            <h2
+              id="footer-nav-heading"
+              class="footer-eyebrow"
             >
-              <NuxtLink
-                :to="link.to"
-                class="footer-link"
+              {{ t(uiText.labels.navigation) }}
+            </h2>
+            <ul class="footer-list">
+              <li
+                v-for="link in navLinks"
+                :key="link.to"
               >
-                {{ t(link.label) }}
-              </NuxtLink>
-            </li>
-          </ul>
+                <NuxtLink
+                  :to="link.to"
+                  class="footer-link"
+                >
+                  {{ t(link.label) }}
+                </NuxtLink>
+              </li>
+            </ul>
+          </nav>
         </div>
 
         <div>
