@@ -58,7 +58,9 @@ export const uiText = {
     gallery: { vi: 'Gallery dự án', en: 'Project gallery' },
     completedImages: { vi: 'Hình hoàn thiện', en: 'Completed images' },
     relatedProjects: { vi: 'Dự án liên quan', en: 'Related projects' },
-    exploreMore: { vi: 'Khám phá thêm', en: 'Explore more' }
+    exploreMore: { vi: 'Khám phá thêm', en: 'Explore more' },
+    /** Footer copyright, minus the year and company name the component supplies. */
+    rightsReserved: { vi: 'Bảo lưu mọi quyền.', en: 'All rights reserved.' }
   },
   cta: {
     quote24h: { vi: 'Nhận báo giá trong 24h', en: 'Get a quote within 24h' },

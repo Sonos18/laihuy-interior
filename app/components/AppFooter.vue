@@ -166,7 +166,7 @@ const { t, ta } = useLanguage()
       <!-- §10 — separated by space alone: no border. -->
       <div class="footer-meta">
         <p>
-          &copy; {{ new Date().getFullYear() }} Lai Huy Interior. All rights reserved.
+          &copy; {{ new Date().getFullYear() }} {{ company.name }}. {{ t(uiText.labels.rightsReserved) }}
         </p>
         <a
           :href="company.facebook"
