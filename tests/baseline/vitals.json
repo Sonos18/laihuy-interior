@@ -1,82 +1,82 @@
 {
   "home": {
-    "lcp": 6253,
+    "lcp": 5502,
     "cls": 0,
-    "tbt": 23,
-    "perf": 64,
+    "tbt": 53,
+    "perf": 66,
     "noise": {
-      "lcp": 596,
-      "tbt": 33
+      "lcp": 12,
+      "tbt": 52
     }
   },
   "projects": {
-    "lcp": 5587,
+    "lcp": 5350,
     "cls": 0,
-    "tbt": 19,
+    "tbt": 25,
     "perf": 67,
     "noise": {
-      "lcp": 152,
-      "tbt": 28
+      "lcp": 451,
+      "tbt": 14
     }
   },
   "project-detail": {
-    "lcp": 6929,
+    "lcp": 6849,
     "cls": 0,
-    "tbt": 57,
-    "perf": 63,
+    "tbt": 53,
+    "perf": 61,
     "noise": {
-      "lcp": 2110,
-      "tbt": 53
+      "lcp": 198,
+      "tbt": 45
     }
   },
   "factory": {
-    "lcp": 6559,
+    "lcp": 6476,
     "cls": 0,
-    "tbt": 64,
+    "tbt": 69,
     "perf": 62,
     "noise": {
-      "lcp": 1482,
-      "tbt": 57
+      "lcp": 968,
+      "tbt": 180
     }
   },
   "services": {
-    "lcp": 5203,
+    "lcp": 5064,
     "cls": 0,
-    "tbt": 26,
-    "perf": 68,
+    "tbt": 105,
+    "perf": 69,
     "noise": {
-      "lcp": 6,
-      "tbt": 11
+      "lcp": 483,
+      "tbt": 69
     }
   },
   "about": {
-    "lcp": 6408,
+    "lcp": 6254,
     "cls": 0,
-    "tbt": 53,
+    "tbt": 78,
     "perf": 62,
     "noise": {
-      "lcp": 752,
-      "tbt": 6
+      "lcp": 817,
+      "tbt": 81
     }
   },
   "careers": {
-    "lcp": 5204,
+    "lcp": 4907,
     "cls": 0,
-    "tbt": 31,
-    "perf": 68,
+    "tbt": 38,
+    "perf": 69,
     "noise": {
-      "lcp": 155,
-      "tbt": 25
+      "lcp": 906,
+      "tbt": 81
     }
   },
   "contact": {
-    "lcp": 7230,
+    "lcp": 10364,
     "cls": 0,
-    "tbt": 15,
+    "tbt": 84,
     "perf": 64,
     "noise": {
-      "lcp": 299,
-      "tbt": 26
+      "lcp": 106,
+      "tbt": 126
     }
   }
 }
