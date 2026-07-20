@@ -77,13 +77,22 @@ const { t, ta } = useLanguage()
           <h2 class="footer-eyebrow">
             {{ t(uiText.labels.services) }}
           </h2>
+          <!-- These are LINKS, not labels. They previously rendered as `.footer-value` — plain
+               text styled identically to the `.footer-link` list one column to the left, under a
+               matching heading. Five items that look exactly like navigation and do nothing is a
+               dead end, and it left /dich-vu with no internal link from the footer.
+               /dich-vu has no per-service anchors, so all five resolve to the page itself. -->
           <ul class="footer-list">
             <li
               v-for="service in ta(company.footerServices)"
               :key="service"
-              class="footer-value"
             >
-              {{ service }}
+              <NuxtLink
+                to="/dich-vu"
+                class="footer-link"
+              >
+                {{ service }}
+              </NuxtLink>
             </li>
           </ul>
         </div>
