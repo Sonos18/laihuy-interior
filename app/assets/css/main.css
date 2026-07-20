@@ -245,11 +245,30 @@
   --type-drawer-nav-leading: 1.3;
 
   /* ── L2 · Footer (consumed in Phase 6) ──────────────────────────────── */
-  --footer-py: 7rem;           /* 112px  < md                              */
-  --footer-py-md: 9rem;        /* 144px  ≥ md                              */
-  --footer-masthead-gap: 4rem;
+  /* The footer's rhythm is a HIERARCHY, and the levels are what make it scannable —
+     spacing inside a group must read as tighter than spacing between groups, or the
+     eye crosses a gap expecting new information and finds the same thought continued.
+
+       12px  within a pair / list item   --footer-item-gap
+       24px  between contact pairs        (item-gap doubled by `dd + dt`)
+       32px  within the masthead group    --footer-masthead-gap
+       48px  between blocks               --footer-col-gap
+       80/112px  footer -> page           --footer-py / -md
+
+     --footer-py exceeds body spacing DELIBERATELY (§10): the finale should have more
+     air than an ordinary section, which the old py-16 denied it. The multiplier is the
+     point, not the number — 112/88 = 1.27x, matching the 144/112 = 1.29x this shipped
+     with when --section-py was still 112. When body rhythm changed to 64/88, holding
+     144 silently stretched the ratio to 1.64x. Re-derive this if --section-py moves. */
+  --footer-py: 5rem;           /*  80px  < md  — 1.25x --section-py (64)   */
+  --footer-py-md: 7rem;        /* 112px  ≥ md  — 1.27x --section-py (88)   */
+  /* INSIDE the masthead only: logo -> statement -> action are one group. At 4rem this
+     was identical to the block gaps below, so the brand block's own lines were spaced
+     like section boundaries — 128px of whitespace inside a single group. */
+  --footer-masthead-gap: 2rem;
+  /* Between blocks, and between columns. One value for "boundary" everywhere. */
   --footer-col-gap: 3rem;
-  --footer-meta-gap: 4rem;
+  --footer-meta-gap: 3rem;
   /* SPEC GAP, raised not decided (§0, D.4): §29 tokenises the footer's
      STRUCTURAL rhythm (masthead / column / meta) but not its INTRA-column one —
      the space between list items, between contact label/value pairs, and between
@@ -1052,9 +1071,10 @@
     background-color: var(--footer-surface);
     background-image: var(--footer-top-gradient);
     color: var(--fg-dark);
-    /* §10 — --footer-py DELIBERATELY exceeds body spacing (--section-py, 80/112).
+    /* §10 — --footer-py DELIBERATELY exceeds body spacing (--section-py, now 64/88).
        The old py-16 (64px) gave the finale LESS air than an ordinary body
-       section, and that single fact is why it read as a bottom bar.
+       section, and that single fact is why it read as a bottom bar. What matters
+       is the MULTIPLIER (~1.27x), not the literal value — see the token.
        §33.2 — notch safety on the bottom edge. */
     padding-top: var(--footer-py);
     padding-bottom: max(var(--footer-py), env(safe-area-inset-bottom));
@@ -1125,8 +1145,13 @@
      finale's cover from its index, rather than fencing the copyright. Two
      borders became one. */
   .footer-index {
-    margin-top: var(--footer-masthead-gap);
-    padding-top: var(--footer-masthead-gap);
+    /* --footer-col-gap, NOT --footer-masthead-gap: this is a BLOCK boundary, and the
+       masthead token now means "inside the masthead group". Using the group token here
+       is what put 129px of air around a 1px rule (64 above + 65 below) — the single
+       largest empty region in the footer, for the least information. `.footer-locations`
+       already separates on --footer-col-gap, so block spacing is now one value. */
+    margin-top: var(--footer-col-gap);
+    padding-top: var(--footer-col-gap);
     border-top: 1px solid var(--rule-dark);
     display: grid;
     /* Both axes: 48px between the 3 columns at md+, and between the stacked
