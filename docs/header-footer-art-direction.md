@@ -746,12 +746,15 @@ expected act. The phone is not "restored" on mobile; **mobile is where it belong
 
   [positioning statement — --type-lead, max-w-xl, --fg-dark-muted]
 
-  [ Liên hệ tư vấn ]   Xem năng lực nhà xưởng →    ← ONE solid + ONE text link
+  [ Liên hệ tư vấn ]                               ← ONE solid action (see Phase 9)
   ─────────────────────────────────────────────    ← the ONE hairline (--rule-dark)
   ĐIỀU HƯỚNG        DỊCH VỤ         LIÊN HỆ        ← --type-eyebrow, --accent-dark
-  Trang chủ         Sản xuất…       ĐIỆN THOẠI
-  Dự án             Thi công…       0900 000 000
-  …                 …               EMAIL  …
+  Trang chủ         Thiết kế…       ĐIỆN THOẠI
+  Dự án             Sản xuất…       0900 000 000
+  …                 …  (links)      EMAIL / GIỜ LÀM VIỆC
+
+  VĂN PHÒNG GIAO DỊCH          NHÀ XƯỞNG           ← locations band, promoted out (Phase 9)
+  Lô Q-2, đường số 8, …        557E1 - KP2, …
 
   © 2026 Lai Huy Interior                Facebook  ← --fg-dark-subtle, separated by space alone
 ```
@@ -766,6 +769,28 @@ expected act. The phone is not "restored" on mobile; **mobile is where it belong
 | Contact icons | one lucide icon per line | **eyebrow labels** | The icon-per-line list is the template tell |
 | Borders | 2 | **1** | And it now does editorial work — separating the finale's cover from its index — rather than fencing the copyright |
 | CTAs | 2 buttons | 1 solid + 1 text link | The footer closes; it does not re-pitch |
+
+### 10.1 Phase 9 amendments — footer UX pass
+
+Phase 6 shipped the table above. A later UX audit changed four of its outcomes; the rows
+above are kept as the Phase 6 record, and this section supersedes them where they conflict.
+
+| Decision | Phase 6 | Phase 9 | Why |
+|---|---|---|---|
+| CTAs | 1 solid + 1 text link | **1 solid** | The text link was `cta.factory` → `/nha-xuong`: same destination *and* the identical label as the `.section-cta` band directly above the footer on 6 of 8 pages. It also self-linked on `/nha-xuong`, which a static footer cannot avoid. `.footer-textlink` is retired with it |
+| Services column | eyebrow + values | **eyebrow + links** → `/dich-vu` | They rendered as `.footer-value`, styled identically to the `.footer-link` column beside them: 0 of the footer's 14 links were in it. Five items that look like navigation and do nothing |
+| Locations | inside the contact column | **promoted out**, full-width band | Same move as the masthead. The addresses are the widest strings in the footer; in a 395px column the contact block was 436px against 270/191px, so 31% of the column band rendered empty and pooled bottom-left. At full width they set on one line at lg. Index empty area 31% → 13%, footer 1280 → 1210px @1440 |
+| Copyright | literal English | **localised** (`uiText.labels.rightsReserved`) | "All rights reserved." shipped on every Vietnamese page |
+
+Also added: a `<nav aria-labelledby>` landmark around the navigation column, named from its
+visible heading. Heading levels stay at `h2` — footer labels at `h2` are what makes them
+reachable by heading navigation.
+
+Deliberately **not** changed, having been considered and rejected: enlarging the phone number.
+The footer's value layer is uniformly `--type-body-sm`, and that flatness is the premium
+signal; a single enlarged number is a discount-retail gesture and a type exception with no
+reuse. The phone's discoverability problem was caused by burial among five pairs including two
+long addresses — promoting locations out is the structural fix, so the symptom is gone.
 
 **Continuity.** White content meeting `ink-950` is currently a hard cut. A single
 `ink-900 → ink-950` vertical gradient at the footer's top edge makes the dark arrive as
