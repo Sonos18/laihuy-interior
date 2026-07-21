@@ -109,6 +109,37 @@
      are void. tests/e2e/hero.spec.ts G1/G2 enforce both halves. */
   --hero-min-h-home: max(100svh, 59rem);
 
+  /* Internal rhythm of the SHARED hero copy block (<AppHero> only).
+     These three gaps were hand-tuned literals (mb-5 / mt-6 / mt-9) — the only
+     values in the hero system with no derivation behind them, which is how they
+     drifted from home's in the first place. Naming them does not unify them with
+     home: index.vue is a bespoke cover (§22.1 / §30.1) and owns its own rhythm
+     deliberately. It gives the SHARED component one place to change.
+
+     Values are transcribed 1:1 from the classes they replace — this is a
+     tokenisation, not a retune. Changing any of them changes hero content height,
+     which is the input to --hero-min-h above; re-measure the floor and re-run
+     tests/e2e/hero.spec.ts G1/G2 if you do. */
+  --hero-gap-eyebrow: 1.25rem; /* was mb-5 — eyebrow → headline   */
+  --hero-gap-lead: 1.5rem; /* was mt-6 — headline → subtitle */
+  --hero-gap-actions: 2.25rem; /* was mt-9 — copy → CTA row      */
+
+  /* Hero readability contract — the shared-family invariant.
+     The two <AppHero> modes are members of ONE family: they must reach the SAME measured
+     readability target, and may reach it however each photograph requires. This is an
+     OUTCOME, not an opacity — the scrim stops in AppHero.vue are tuned per mode to satisfy
+     it, and verified by measurement at visual QA, never assumed.
+
+       Body / lead      >= 4.5:1   (white on the composited backdrop, WCAG AA normal text)
+       Kicker / meta    >= 4.5:1   (wood-200, 12px — normal text)
+       Headline         >= 3.0:1   (>=24px bold — WCAG AA large text)
+
+     What is deliberately NOT specified here: gradient direction, stop positions, falloff.
+     Those are the image-emphasis lever (§Image prominence) and differ by mode ON PURPOSE —
+     offset opens the subject side, caption keeps its upper frame photographic. The contract
+     governs legibility inside the reading band; it says nothing about the photograph above
+     it. If a brighter photo needs a deeper local floor, that is tuning, not a contract change. */
+
   /* ── L1 · Breakpoints (reference; media queries use the literal) ─────── */
   --bp-md: 48rem; /*  768px                                   */
   --bp-xl: 80rem; /* 1280px — the chrome breakpoint.

@@ -67,12 +67,44 @@ const contentClass = computed(() =>
 
 // The single localized gradient (rendering budget = 1). Full literal class strings so
 // Tailwind's JIT can see them.
+//
+// SHARED-FAMILY SCRIM (docs/hero-art-direction.md §7). The two modes belong to one family:
+// both reach the same readability CONTRACT (main.css "Hero readability contract" —
+// body/kicker >= 4.5:1, headline >= 3:1), and differ only in IMAGE EMPHASIS — how much of
+// the frame above the reading band stays photographic. That difference is the family trait,
+// not an accident, and it lives entirely in the falloff:
+//
+//   offset  (claim-forward)  diagonal to-tr, deep floor through the lower-left copy corner,
+//                            releasing across the subject side. ~40% of the frame stays open.
+//   caption (photo-forward)  vertical to-t, floor HELD through the copy band then a STEEP
+//                            release, so the upper frame stays photograph. Its earlier
+//                            /88→/30-at-50% curve released so early the copy sat on raw photo
+//                            (measured 2.01:1) — the caption band now holds its floor to ~34%
+//                            and clears it by 55%, satisfying the contract while still
+//                            surrendering more of the frame to the image than offset does.
+//
+// The floor OPACITY is shared; the RELEASE POINT is the lever. Stops are literal so Tailwind's
+// JIT emits them. Every value below satisfies the readability contract (main.css "Hero
+// readability contract") — an OUTCOME verified by measurement at QA, not a design rule in itself.
 const scrimClass = computed(() => {
   const warm = props.atmosphere === 'warm'
   if (props.mode === 'caption') {
-    return warm
-      ? 'bg-linear-to-t from-wood-950/88 via-wood-950/30 to-transparent'
-      : 'bg-linear-to-t from-ink-950/88 via-ink-950/30 to-transparent'
+    // Caption keeps its photo-forward identity via a STEEP release (transparent well before the
+    // top), but the floor is HELD through the copy band so the band behind the copy reaches the
+    // same contract as offset. `atmosphere="dark"` is the per-hero DEPTH lever (existing API):
+    // caption pages set it, and the tallest caption copy — project detail's breadcrumb sitting
+    // high in the block over the brightest photo in the set — needs the floor held further up
+    // (46% vs 40%) to clear 4.5:1. Both remain far more photographic than offset (measured
+    // upper-frame luminance ~128 vs ~84); the deeper hold only reaches the copy band, not the top.
+    const dark = props.atmosphere === 'dark'
+    if (warm) {
+      return dark
+        ? 'bg-linear-to-t from-wood-950/92 via-wood-950/82 via-46% to-transparent to-82%'
+        : 'bg-linear-to-t from-wood-950/90 via-wood-950/78 via-40% to-transparent to-76%'
+    }
+    return dark
+      ? 'bg-linear-to-t from-ink-950/92 via-ink-950/82 via-46% to-transparent to-82%'
+      : 'bg-linear-to-t from-ink-950/90 via-ink-950/78 via-40% to-transparent to-76%'
   }
   if (props.anchor === 'center-left') {
     return warm
@@ -86,7 +118,7 @@ const scrimClass = computed(() => {
   }
   // Offset: the copy block (eyebrow → headline → subtitle → CTAs) sits lower-left, so the
   // gradient stays deep through that corner and only then falls away — protecting the small
-  // wood-300 eyebrow on light/warm photography without darkening the whole frame.
+  // wood-200 kicker on light/warm photography without darkening the whole frame.
   return warm
     ? 'bg-linear-to-tr from-wood-950/92 from-15% via-wood-950/55 via-45% to-transparent'
     : 'bg-linear-to-tr from-ink-950/92 from-15% via-ink-950/50 via-45% to-transparent'
@@ -98,11 +130,40 @@ const scrimClass = computed(() => {
     class="relative flex overflow-hidden bg-ink-950 text-white"
     :class="[sizeClass, itemsClass]"
   >
-    <!-- `sizes` is NOT 100vw, deliberately — see index.vue for the full derivation. Short
-         version: the box is object-cover and viewport-tall, so HEIGHT is the binding
-         dimension, and a width-only `sizes` under-requests badly on narrow screens (a 390px
-         phone got a 443px-tall source for a 960px-tall box). 1536px selects a variant tall
-         enough; xl+ returns to 100vw where width binds again. -->
+    <!-- `sizes` is NOT 100vw, deliberately. The box is object-cover and taller than it is
+         wide on most viewports, so HEIGHT is the binding dimension: a width-only `sizes`
+         under-requests badly on narrow screens (a 390px phone would ask for 390px and get
+         w400 for a 960px-tall box). 1536px selects w1600; xl+ returns to 100vw where width
+         binds again.
+
+         DO NOT copy this value from index.vue, and do not assume it is derived there.
+         Home's box floor is --hero-min-h-home (736px at md+); THIS box is --hero-min-h
+         (960px flat) and rises to 100svh whenever the viewport is taller than that. The two
+         geometries differ by up to 224px, so home's derivation does not transfer — that
+         mistaken inheritance is exactly what this comment replaces.
+
+         Derivation for THIS box. No upscaling requires the source to satisfy BOTH axes:
+             requiredW = max(boxW, boxH x aspect)
+         boxH = max(100svh, 960px); hero aspects on this site run 1.316 → 1.806. Worst case:
+             1440x900  → boxH 960  → 960  x 1.806 = 1734px
+             834x1112  → boxH 1112 → 1112 x 1.806 = 2009px
+
+         MEASURED CONSEQUENCE (Chromium, resource pixels — note that img.naturalWidth is
+         density-corrected on a srcset image and will NOT show this):
+             1440 / 1280 / 390 → 2 of 7 heroes upscale, worst 1.084 (project detail)
+             834x1112          → 6 of 7 upscale, worst 1.255
+
+         This is a KNOWN, ACCEPTED limitation, not an oversight. MEDIA_VARIANT_WIDTHS is
+         [400, 800, 1600] plus the ~2560 master, so the only non-upscaling candidate above
+         1600 is the master — which costs 2.07x–2.46x the bytes on the LCP image. Paying that
+         to remove an 8% upscale is a bad trade against the recorded vitals baseline.
+
+         The real fix is a ~2048 variant (covers the 2009px worst case at roughly 1.5x w1600
+         rather than 2.3x). That is a media-pipeline change, frozen by Appendix D. If the
+         ladder ever gains that tier, this `sizes` should be revisited alongside it.
+
+         Do NOT "fix" this by routing through mediaPresets.hero: that preset is 100vw at
+         every breakpoint, which selects w400 on a phone for this height-bound box. -->
     <NuxtImg
       :src="image.path"
       :alt="altText"
@@ -134,7 +195,7 @@ const scrimClass = computed(() => {
           <p
             v-if="topic"
             v-reveal
-            class="eyebrow reveal mb-5 block text-wood-200"
+            class="eyebrow reveal mb-(--hero-gap-eyebrow) block text-wood-200"
           >
             {{ topic }}
           </p>
@@ -158,7 +219,7 @@ const scrimClass = computed(() => {
           <p
             v-if="subtitle"
             v-reveal="150"
-            class="reveal text-lead mt-6 text-white/80"
+            class="reveal text-lead mt-(--hero-gap-lead) text-white/80"
             :class="isCentered ? 'mx-auto max-w-2xl' : 'max-w-2xl'"
           >
             {{ subtitle }}
@@ -167,7 +228,7 @@ const scrimClass = computed(() => {
           <div
             v-if="$slots.actions"
             v-reveal="230"
-            class="reveal mt-9 flex flex-col gap-3 sm:flex-row"
+            class="reveal mt-(--hero-gap-actions) flex flex-col gap-3 sm:flex-row"
             :class="isCentered ? 'sm:justify-center' : ''"
           >
             <slot name="actions" />
