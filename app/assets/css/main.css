@@ -260,14 +260,14 @@
      point, not the number — 112/88 = 1.27x, matching the 144/112 = 1.29x this shipped
      with when --section-py was still 112. When body rhythm changed to 64/88, holding
      144 silently stretched the ratio to 1.64x. Re-derive this if --section-py moves. */
-  --footer-py: 1rem; /*  80px  < md  — 1.25x --section-py (64)   */
-  --footer-py-md: 1.25rem; /* 112px  ≥ md  — 1.27x --section-py (88)   */
+  --footer-py: 5rem; /*  80px  < md  — 1.25x --section-py (64)   */
+  --footer-py-md: 7rem; /* 112px  ≥ md  — 1.27x --section-py (88)   */
   /* INSIDE the masthead only: logo -> statement -> action are one group. At 4rem this
      was identical to the block gaps below, so the brand block's own lines were spaced
      like section boundaries — 128px of whitespace inside a single group. */
-  --footer-masthead-gap: 1rem;
+  --footer-masthead-gap: 2rem;
   /* Between blocks, and between columns. One value for "boundary" everywhere. */
-  --footer-col-gap: 1rem;
+  --footer-col-gap: 3rem;
   --footer-meta-gap: 3rem;
   /* SPEC GAP, raised not decided (§0, D.4): §29 tokenises the footer's
      STRUCTURAL rhythm (masthead / column / meta) but not its INTRA-column one —
