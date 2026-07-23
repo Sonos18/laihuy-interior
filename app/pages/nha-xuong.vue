@@ -642,7 +642,7 @@ useHead({
           <ul class="mt-8 space-y-4">
             <li
               v-for="(item, index) in qualityControl"
-              :key="item"
+              :key="item.vi"
               v-reveal="index * 70"
               class="reveal flex gap-3 border-b border-ink-200 pb-4 text-base font-semibold leading-7 text-ink-800"
             >
@@ -650,7 +650,7 @@ useHead({
                 name="i-lucide-circle-check-big"
                 class="mt-1 h-5 w-5 shrink-0 text-wood-500"
               />
-              <span>{{ item }}</span>
+              <span>{{ t(item) }}</span>
             </li>
           </ul>
         </div>

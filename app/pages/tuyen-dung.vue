@@ -60,10 +60,10 @@ useSeoMeta({
           <div class="mt-8 grid gap-3 md:grid-cols-2">
             <div
               v-for="benefit in careerBenefits"
-              :key="benefit"
+              :key="benefit.vi"
               class="rounded-2xl border border-ink-200 p-4 text-sm font-semibold leading-6 text-ink-700"
             >
-              {{ benefit }}
+              {{ t(benefit) }}
             </div>
           </div>
         </div>

@@ -61,11 +61,15 @@ export type CompanyTestimonial = {
 const buildMapUrl = (address: string) =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`
 
-const representativeOffice
-  = 'Lô Q-2, đường số 8, KCN Long Hậu mở rộng, Ấp 3, Xã Cần Giuộc, Tỉnh Tây Ninh'
+const representativeOffice = {
+  vi: 'Lô Q-2, đường số 8, KCN Long Hậu mở rộng, Ấp 3, Xã Cần Giuộc, Tỉnh Tây Ninh',
+  en: 'Lot Q-2, Road 8, Long Hau Expanded Industrial Park, Hamlet 3, Can Giuoc, Tay Ninh Province'
+} satisfies LocalizedText
 
-const factoryAddress
-  = '557E1 - KP2 - Phường Phú Khương, Tỉnh Vĩnh Long, Việt Nam'
+const factoryAddress = {
+  vi: '557E1 - KP2 - Phường Phú Khương, Tỉnh Vĩnh Long, Việt Nam',
+  en: '557E1, Quarter 2, Phu Khuong Ward, Vinh Long Province, Vietnam'
+} satisfies LocalizedText
 
 export const company = {
   name: 'Lai Huy Interior',
@@ -130,12 +134,13 @@ export const company = {
     {
       label: { vi: 'Văn phòng giao dịch', en: 'Business office' },
       address: representativeOffice,
-      mapUrl: buildMapUrl(representativeOffice)
+      // Map queries stay on the Vietnamese address: that is the string Google Maps resolves.
+      mapUrl: buildMapUrl(representativeOffice.vi)
     },
     {
       label: { vi: 'Nhà xưởng', en: 'Factory' },
       address: factoryAddress,
-      mapUrl: buildMapUrl(factoryAddress)
+      mapUrl: buildMapUrl(factoryAddress.vi)
     }
   ] satisfies AddressEntry[],
   primaryCtas: [

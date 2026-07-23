@@ -334,7 +334,7 @@ useSeoMeta({
               {{ t(capability.label) }}
             </p>
             <p class="mt-3 text-3xl font-black text-ink-950">
-              {{ capability.value }}
+              {{ t(capability.value) }}
             </p>
             <p class="mt-4 text-sm leading-6 text-ink-600">
               {{ t(capability.description) }}

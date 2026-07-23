@@ -17,7 +17,10 @@ export const useLanguage = () => {
     locale.value = value
   }
 
-  const t = (value?: LocalizedText, fallback = '') => {
+  // `| ''` admits the media layer's decorative-image contract (MediaImage.alt: LocalizedText
+  // | ''). A bare NON-empty string is deliberately not accepted: that loophole is how three
+  // data files shipped Vietnamese-only. The string branches below stay as runtime resilience.
+  const t = (value?: LocalizedText | '', fallback = '') => {
     if (!value) {
       return fallback
     }
