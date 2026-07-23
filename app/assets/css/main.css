@@ -109,6 +109,66 @@
      are void. tests/e2e/hero.spec.ts G1/G2 enforce both halves. */
   --hero-min-h-home: max(100svh, 59rem);
 
+  /* Reading zone — WHERE the copy lives inside the hero (<AppHero> only).
+     THE COMPOSITION FIX. The hero SECTION is --hero-min-h tall (>= viewport, for the image
+     and the locale-invariant crop). But the copy must not be anchored to that oversized box:
+     bottom-anchoring on a 960px box inside a 900px screen lands the headline at 68-92% of the
+     viewport — below the fold on a laptop — with 50-78% empty photograph above it. The
+     homepage never has this because its box IS viewport-sized (--hero-min-h-home drops to
+     78svh), so its bottom-anchored copy centres at ~50%. AppHero had no such band.
+
+     This token makes that band explicit and SEPARATE from the section height. The copy is
+     centred inside a --hero-read-h flow child pinned to the TOP of the section, so its centre
+     lands at read-h / 2. 90svh therefore centres the copy at ~45svh — eye level, and a touch
+     higher than home's 50% because internal pages carry more metadata (breadcrumb, chips) that
+     wants room above the fold. The section's remaining height falls BELOW the zone as image
+     (room to breathe, and the scroll affordance).
+
+     max(90svh, rem): the svh term is the eye-level rule; the rem floor guarantees the tallest
+     copy still fits (and stays clear of the header) on short/landscape viewports where 90svh
+     is smaller than the copy. 44rem = 704px clears the tallest measured copy block (~567px)
+     plus its padding. Always <= --hero-min-h (90svh < 100svh, 44rem < 60rem), so the zone can
+     never exceed the section. Re-derive the rem floor if hero copy or --text-hero changes.
+
+     NOT tiered and NOT per-route: one band, every AppHero page, so switching between any two
+     internal pages — or between an internal page and home — shows the same eye-level rhythm. */
+  --hero-read-h: max(90svh, 44rem);
+
+  /* `size="tall"` height — a corporate-register hero (currently /gioi-thieu). Shorter than
+     `cover` (--hero-min-h, which is >= the viewport) so the page's first content section is
+     visible sooner, WITHOUT touching the reading zone: the copy stays centred at ~45svh (eye
+     level) because --hero-read-h is unchanged; only the image canvas shrinks around it.
+
+     It is applied as BOTH min-h and max-h (see AppHero sizeClass). The max-h is load-bearing:
+     the reading zone is a --hero-read-h (90svh) flow child, so without a cap it would force
+     every section to >= 90svh and this variant could never be shorter than `cover`. The cap
+     lets the section hold this height while the reading zone's slack overflows and is clipped
+     by the section's overflow-hidden — the copy sits above the cut, so nothing visible is lost.
+
+     Tiered like the home floor: 85svh on mobile (a phone hero shorter than that reads as
+     broken), 78svh on md+ (the target corporate register — noticeably shorter than `cover`'s
+     100svh+, with the next section at the fold, yet tall enough to hold About's copy at eye
+     level). 78svh, not 72, is the floor of what About can take: it carries the tallest copy on
+     the site (eyebrow + 3-line headline + subtitle + two CTAs), and centred at 45svh that copy
+     bottoms at ~76.5svh — below that the CTAs clip. The 42rem px floor keeps the copy contained
+     on short/landscape viewports where the svh term collapses below the copy's own height. */
+  --hero-h-tall: max(85svh, 42rem);
+
+  /* `size="compact"` height — the utility hero (currently /lien-he). Same min-h + max-h
+     mechanism as --hero-h-tall, and the max-h is just as load-bearing: without it the
+     --hero-read-h flow child inflates the section to >= 90svh and "compact" silently becomes
+     the tallest utility hero on the site (the regression this token fixes). With the cap, the
+     reading zone's slack is clipped by the section's overflow-hidden and the copy keeps its
+     eye-level centre.
+
+     68svh keeps the historic compact fraction (the pre-reading-zone value was 68vh; svh so
+     mobile URL bars cannot re-inflate it). The 34rem floor is derived from measurement, same
+     method as tall: the contact copy block bottoms at ~520px when the reading zone's 44rem
+     floor binds (zone centre 352px + copy 336px / 2) and at ~558px on an 844px phone —
+     34rem = 544px clears the floor-bound worst case by 24px and every measured viewport by
+     >= 16px. Re-derive if the contact hero copy or --text-hero changes. */
+  --hero-h-compact: max(68svh, 34rem);
+
   /* Internal rhythm of the SHARED hero copy block (<AppHero> only).
      These three gaps were hand-tuned literals (mb-5 / mt-6 / mt-9) — the only
      values in the hero system with no derivation behind them, which is how they
@@ -350,6 +410,12 @@
     /* Tier 3. The svh term drops to 78 here so the fold stops landing exactly on the hero's
        bottom edge — that is the change that makes the next section visible on a laptop. */
     --hero-min-h-home: max(78svh, 46rem);
+
+    /* Corporate-register hero drops to 78svh on md+ (see --hero-h-tall) so the About story
+       section clears the fold on a laptop, while the hero still reads as generous. The 43rem
+       floor (vs the mobile 42) buys clip margin at the ~864px-tall laptops where 78svh lands
+       almost exactly on the tall VI copy's bottom edge. */
+    --hero-h-tall: max(78svh, 43rem);
   }
 }
 

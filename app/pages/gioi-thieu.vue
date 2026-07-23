@@ -172,6 +172,7 @@ useHead({
       :special-title="t({ vi: 'chúng tôi giải bài toán triển khai', en: 'we solve the build' })"
       :subtitle="t(company.positioning)"
       :image="heroImage"
+      size="tall"
       focal="50% 40%"
     >
       <template #actions>

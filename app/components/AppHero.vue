@@ -47,15 +47,27 @@ const isCentered = computed(() => props.anchor === 'bottom-center')
 // height is locale-dependent (a longer EN headline wraps to an extra line). Left on
 // 100dvh, switching language silently rescaled the photograph. The token holds every
 // locale at the same height so the crop is identical. See main.css --hero-min-h.
-// `tall` / `compact` are unaffected: they are viewport fractions with slack above the
-// content, so no locale reaches their floor.
+// `tall` and `compact` are BOTH min-h and max-h (--hero-h-tall / --hero-h-compact): the max-h
+// caps the section BELOW the reading zone's --hero-read-h floor, so a shorter hero is possible
+// without moving the copy — the reading zone still centres it at ~45svh and its slack overflows
+// into the section's overflow-hidden. Without the cap the reading zone inflates every section
+// to >= 90svh, which is exactly how `compact` regressed to the tallest utility hero on the
+// site. See main.css --hero-h-tall / --hero-h-compact. Only `cover` keeps the reading zone as
+// its effective floor (it is intentionally >= the viewport). min-h == max-h also makes both
+// variants locale-invariant by construction, which the hero gate (G1/G2) asserts.
 const sizeClass = computed(() => ({
   cover: 'min-h-[var(--hero-min-h)]',
-  tall: 'min-h-[78vh]',
-  compact: 'min-h-[68vh]'
+  tall: 'min-h-[var(--hero-h-tall)] max-h-[var(--hero-h-tall)]',
+  compact: 'min-h-[var(--hero-h-compact)] max-h-[var(--hero-h-compact)]'
 }[props.size]))
 
-const itemsClass = computed(() => (props.anchor === 'center-left' ? 'items-center' : 'items-end'))
+// Vertical placement of the copy INSIDE the reading zone (main.css --hero-read-h). The zone is
+// a viewport-sized band pinned to the TOP of the section; centring the copy in it lands the
+// headline at eye level (~45% of the viewport) on every page, regardless of the section's
+// taller height. This is the composition fix: the reading zone — not the section, and not the
+// `anchor` prop — now owns the vertical axis. `anchor` is left to govern the HORIZONTAL
+// alignment only (via contentClass): `bottom-center` centres the copy, the rest keep it left.
+const readingPlaceClass = 'justify-center'
 
 const contentClass = computed(() =>
   isCentered.value
@@ -68,67 +80,54 @@ const contentClass = computed(() =>
 // The single localized gradient (rendering budget = 1). Full literal class strings so
 // Tailwind's JIT can see them.
 //
-// SHARED-FAMILY SCRIM (docs/hero-art-direction.md §7). The two modes belong to one family:
-// both reach the same readability CONTRACT (main.css "Hero readability contract" —
-// body/kicker >= 4.5:1, headline >= 3:1), and differ only in IMAGE EMPHASIS — how much of
-// the frame above the reading band stays photographic. That difference is the family trait,
-// not an accident, and it lives entirely in the falloff:
+// SHARED-FAMILY SCRIM, RE-ANCHORED TO THE READING ZONE. The copy now sits at eye level (~45%),
+// left-aligned, so the scrim can no longer be bottom-weighted — a bottom-up gradient would
+// leave the mid-frame headline on bright photograph. It is LEFT-weighted (to-r) instead: dark
+// down the copy's left column, releasing across the open right side. That makes legibility
+// VERTICAL-POSITION-INDEPENDENT — the copy is protected wherever content length places it —
+// which is exactly what a reading-zone model needs, and it removes the old headline-height
+// coupling entirely.
 //
-//   offset  (claim-forward)  diagonal to-tr, deep floor through the lower-left copy corner,
-//                            releasing across the subject side. ~40% of the frame stays open.
-//   caption (photo-forward)  vertical to-t, floor HELD through the copy band then a STEEP
-//                            release, so the upper frame stays photograph. Its earlier
-//                            /88→/30-at-50% curve released so early the copy sat on raw photo
-//                            (measured 2.01:1) — the caption band now holds its floor to ~34%
-//                            and clears it by 55%, satisfying the contract while still
-//                            surrendering more of the frame to the image than offset does.
-//
-// The floor OPACITY is shared; the RELEASE POINT is the lever. Stops are literal so Tailwind's
-// JIT emits them. Every value below satisfies the readability contract (main.css "Hero
-// readability contract") — an OUTCOME verified by measurement at QA, not a design rule in itself.
+// The family trait still lives in the falloff = IMAGE EMPHASIS (how much frame stays photo):
+//   offset  (claim-forward)  dark holds across the copy column, releasing late (~88% width).
+//   caption (photo-forward)  releases sooner (~78%), surrendering more of the right to image.
+// `atmosphere="dark"` remains the per-hero depth lever for the brightest caption photos. Every
+// value is an OUTCOME verified against the readability contract (body/kicker >= 4.5:1, headline
+// >= 3:1) by measurement at QA — a rule, not a design choice in itself.
 const scrimClass = computed(() => {
   const warm = props.atmosphere === 'warm'
+  // Horizontally-centred copy (bottom-center) cannot use a left column; it keeps a vertical
+  // wash covering the centred block. Unused by the shipped pages but part of the API.
+  if (props.anchor === 'bottom-center') {
+    return warm
+      ? 'bg-linear-to-t from-wood-950/85 via-wood-950/48 via-55% to-wood-950/12'
+      : 'bg-linear-to-t from-ink-950/85 via-ink-950/48 via-55% to-ink-950/12'
+  }
   if (props.mode === 'caption') {
-    // Caption keeps its photo-forward identity via a STEEP release (transparent well before the
-    // top), but the floor is HELD through the copy band so the band behind the copy reaches the
-    // same contract as offset. `atmosphere="dark"` is the per-hero DEPTH lever (existing API):
-    // caption pages set it, and the tallest caption copy — project detail's breadcrumb sitting
-    // high in the block over the brightest photo in the set — needs the floor held further up
-    // (46% vs 40%) to clear 4.5:1. Both remain far more photographic than offset (measured
-    // upper-frame luminance ~128 vs ~84); the deeper hold only reaches the copy band, not the top.
+    // caption's copy column is narrower (max-w-3xl); it releases sooner so more of the frame
+    // stays photograph. `atmosphere="dark"` deepens the hold for the brightest photos.
     const dark = props.atmosphere === 'dark'
     if (warm) {
       return dark
-        ? 'bg-linear-to-t from-wood-950/92 via-wood-950/82 via-46% to-transparent to-82%'
-        : 'bg-linear-to-t from-wood-950/90 via-wood-950/78 via-40% to-transparent to-76%'
+        ? 'bg-linear-to-r from-wood-950/92 via-wood-950/60 via-48% to-transparent to-84%'
+        : 'bg-linear-to-r from-wood-950/90 via-wood-950/50 via-42% to-transparent to-78%'
     }
     return dark
-      ? 'bg-linear-to-t from-ink-950/92 via-ink-950/82 via-46% to-transparent to-82%'
-      : 'bg-linear-to-t from-ink-950/90 via-ink-950/78 via-40% to-transparent to-76%'
+      ? 'bg-linear-to-r from-ink-950/92 via-ink-950/60 via-48% to-transparent to-84%'
+      : 'bg-linear-to-r from-ink-950/90 via-ink-950/50 via-42% to-transparent to-78%'
   }
-  if (props.anchor === 'center-left') {
-    return warm
-      ? 'bg-linear-to-r from-wood-950/85 via-wood-950/20 to-transparent'
-      : 'bg-linear-to-r from-ink-950/85 via-ink-950/20 to-transparent'
-  }
-  if (props.anchor === 'bottom-center') {
-    return warm
-      ? 'bg-linear-to-t from-wood-950/82 via-wood-950/20 to-transparent'
-      : 'bg-linear-to-t from-ink-950/82 via-ink-950/20 to-transparent'
-  }
-  // Offset: the copy block (eyebrow → headline → subtitle → CTAs) sits lower-left, so the
-  // gradient stays deep through that corner and only then falls away — protecting the small
-  // wood-200 kicker on light/warm photography without darkening the whole frame.
+  // Offset — claim-forward: the dark column holds across the wider max-w-4xl copy, releasing
+  // late across the open subject side.
   return warm
-    ? 'bg-linear-to-tr from-wood-950/92 from-15% via-wood-950/55 via-45% to-transparent'
-    : 'bg-linear-to-tr from-ink-950/92 from-15% via-ink-950/50 via-45% to-transparent'
+    ? 'bg-linear-to-r from-wood-950/94 via-wood-950/62 via-52% to-transparent to-88%'
+    : 'bg-linear-to-r from-ink-950/94 via-ink-950/62 via-52% to-transparent to-88%'
 })
 </script>
 
 <template>
   <section
-    class="relative flex overflow-hidden bg-ink-950 text-white"
-    :class="[sizeClass, itemsClass]"
+    class="relative overflow-hidden bg-ink-950 text-white"
+    :class="sizeClass"
   >
     <!-- `sizes` is NOT 100vw, deliberately. The box is object-cover and taller than it is
          wide on most viewports, so HEIGHT is the binding dimension: a width-only `sizes`
@@ -181,11 +180,15 @@ const scrimClass = computed(() => {
       :class="scrimClass"
     />
 
-    <div class="relative z-10 w-full">
-      <div
-        class="shell"
-        :class="isCentered ? 'py-36 md:py-44' : 'pb-16 pt-36 md:pb-24 md:pt-44'"
-      >
+    <!-- Reading zone: a --hero-read-h band pinned to the TOP of the section, with the copy
+         centred inside it. Because the band is viewport-sized (not the section's taller box),
+         the headline lands at eye level (~45%) on every page. The section's remaining height
+         falls BELOW this band as image — breathing room and the scroll affordance. -->
+    <div
+      class="relative z-10 flex min-h-[var(--hero-read-h)] w-full flex-col"
+      :class="readingPlaceClass"
+    >
+      <div class="shell py-12 md:py-16">
         <div :class="contentClass">
           <slot name="breadcrumb" />
           <slot name="chips" />

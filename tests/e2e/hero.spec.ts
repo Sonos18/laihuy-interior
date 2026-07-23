@@ -62,13 +62,16 @@ const LOCALES = ['vi', 'en'] as const
  * The cover heroes OTHER than home — home is driven separately above, on its own token and its
  * own width matrix.
  *
- * They are here because the shared --hero-min-h governs all six <AppHero size="cover"> pages,
- * and the tallest hero content on the site is NOT home: it is /gioi-thieu at 839.2px (1280, vi)
- * versus home's 709.4px. A gate that only ran against home would have let a shared-floor change
- * silently break the five pages home does not resemble — and that is exactly the trap the
- * homepage work walked into, since home originally inherited a floor sized by /gioi-thieu.
- * /lien-he is excluded: size="compact" is a viewport fraction with slack above its content and
- * is not floor-governed.
+ * They are here because a floor token governs each page's <AppHero>: --hero-min-h for the
+ * five size="cover" pages, --hero-h-tall for /gioi-thieu (size="tall"), --hero-h-compact for
+ * /lien-he (size="compact"). The gate reads each section's own computed min-height, so all
+ * three tokens are enforced by the same assertion; for tall/compact min-h == max-h, so G1
+ * holds by construction and the gate's real work there is G2 (locale-invariant crop). The
+ * tallest hero content on the site is NOT home: it is /gioi-thieu (vi) — which is why its
+ * floor moved to its own token. A gate that only ran against home would have let a
+ * shared-floor change silently break the pages home does not resemble — and that is exactly
+ * the trap the homepage work walked into, since home originally inherited a floor sized by
+ * /gioi-thieu.
  */
 const COVER_PAGES = [
   { name: 'projects', path: '/du-an' },
@@ -76,7 +79,8 @@ const COVER_PAGES = [
   { name: 'factory', path: '/nha-xuong' },
   { name: 'services', path: '/dich-vu' },
   { name: 'about', path: '/gioi-thieu' },
-  { name: 'careers', path: '/tuyen-dung' }
+  { name: 'careers', path: '/tuyen-dung' },
+  { name: 'contact', path: '/lien-he' }
 ] as const
 
 /** Tolerance for sub-pixel layout rounding across engines. The invariant is exactness; this
