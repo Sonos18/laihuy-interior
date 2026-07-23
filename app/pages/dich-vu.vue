@@ -63,8 +63,8 @@ usePageSeo({
   <div>
     <AppHero
       :topic="t({ vi: 'Dịch vụ nội thất B2B', en: 'B2B interior services' })"
-      :title="t({ vi: 'Dịch vụ', en: 'Services' })"
-      :special-title="t({ vi: 'nội thất dự án', en: 'for project interiors' })"
+      :title="t({ vi: 'Một đầu mối, từ', en: 'One partner, from' })"
+      :special-title="t({ vi: 'thiết kế đến thi công', en: 'design to install' })"
       :subtitle="t({ vi: 'Thiết kế, sản xuất tại xưởng và thi công nội thất cho khách sạn 3-5 sao, villa, căn hộ, thương mại và đơn hàng gia công.', en: 'Design, factory production, and contracting for 3-5 star hotels, villas, apartments, commercial spaces, and production-from-drawings orders.' })"
       :image="heroImage"
       atmosphere="warm"

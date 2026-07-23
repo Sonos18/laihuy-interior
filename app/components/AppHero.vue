@@ -18,7 +18,6 @@ type Props = {
   anchor?: Anchor
   /** CSS object-position for focal control, e.g. '50% 40%'. */
   focal?: string
-  size?: 'cover' | 'tall' | 'compact'
   /** LCP hero → eager single fetch. Set false for below-the-fold heroes. */
   eager?: boolean
 }
@@ -32,7 +31,6 @@ const props = withDefaults(defineProps<Props>(), {
   atmosphere: 'neutral',
   anchor: 'bottom-left',
   focal: '50% 50%',
-  size: 'cover',
   eager: true
 })
 
@@ -42,32 +40,23 @@ const altText = computed(() => (props.image.alt === '' ? '' : t(props.image.alt)
 
 const isCentered = computed(() => props.anchor === 'bottom-center')
 
-// `cover` uses --hero-min-h rather than a raw viewport unit. The media below is
-// `h-full object-cover`, so its box height follows the CONTENT height — and content
-// height is locale-dependent (a longer EN headline wraps to an extra line). Left on
-// 100dvh, switching language silently rescaled the photograph. The token holds every
-// locale at the same height so the crop is identical. See main.css --hero-min-h.
-// `tall` and `compact` are BOTH min-h and max-h (--hero-h-tall / --hero-h-compact): the max-h
-// caps the section BELOW the reading zone's --hero-read-h floor, so a shorter hero is possible
-// without moving the copy — the reading zone still centres it at ~45svh and its slack overflows
-// into the section's overflow-hidden. Without the cap the reading zone inflates every section
-// to >= 90svh, which is exactly how `compact` regressed to the tallest utility hero on the
-// site. See main.css --hero-h-tall / --hero-h-compact. Only `cover` keeps the reading zone as
-// its effective floor (it is intentionally >= the viewport). min-h == max-h also makes both
-// variants locale-invariant by construction, which the hero gate (G1/G2) asserts.
-const sizeClass = computed(() => ({
-  cover: 'min-h-[var(--hero-min-h)]',
-  tall: 'min-h-[var(--hero-h-tall)] max-h-[var(--hero-h-tall)]',
-  compact: 'min-h-[var(--hero-h-compact)] max-h-[var(--hero-h-compact)]'
-}[props.size]))
+// Every AppHero page shares the HOMEPAGE hero's height (--hero-min-h-home), so the photograph
+// is exactly as tall on /gioi-thieu, /du-an, /lien-he … as it is on the homepage — home is the
+// single standard. Applied as BOTH min-h and max-h: the copy is bottom-anchored in this box (a
+// full --hero-min-h-home flow child, see template), so the max-h keeps the section from growing
+// past the home height if a locale's copy is unusually tall — it clips into overflow-hidden
+// instead. min-h == max-h also makes the crop locale-invariant by construction, which the hero
+// gate (G1/G2) asserts. See main.css --hero-min-h-home (the shared, tiered floor).
+const sizeClass = 'min-h-[var(--hero-min-h-home)] max-h-[var(--hero-min-h-home)]'
 
-// Vertical placement of the copy INSIDE the reading zone (main.css --hero-read-h). The zone is
-// a viewport-sized band pinned to the TOP of the section; centring the copy in it lands the
-// headline at eye level (~45% of the viewport) on every page, regardless of the section's
-// taller height. This is the composition fix: the reading zone — not the section, and not the
-// `anchor` prop — now owns the vertical axis. `anchor` is left to govern the HORIZONTAL
-// alignment only (via contentClass): `bottom-center` centres the copy, the rest keep it left.
-const readingPlaceClass = 'justify-center'
+// Vertical placement of the copy in the section: BOTTOM-anchored, exactly like the homepage
+// hero (index.vue). Every page's copy block therefore ends at the same baseline — the CTAs land
+// together and taller copy extends upward — so the content position is synchronised across all
+// pages and with home. Centring instead would drift, because each page's copy is a different
+// height, which lands its top and bottom edges at a different place on every page. `anchor` is
+// left to govern the HORIZONTAL alignment only (via contentClass): `bottom-center` centres the
+// copy, the rest keep it left.
+const anchorClass = 'justify-end'
 
 const contentClass = computed(() =>
   isCentered.value
@@ -180,15 +169,15 @@ const scrimClass = computed(() => {
       :class="scrimClass"
     />
 
-    <!-- Reading zone: a --hero-read-h band pinned to the TOP of the section, with the copy
-         centred inside it. Because the band is viewport-sized (not the section's taller box),
-         the headline lands at eye level (~45%) on every page. The section's remaining height
-         falls BELOW this band as image — breathing room and the scroll affordance. -->
+    <!-- Copy is BOTTOM-anchored in the full --hero-min-h-home box, same as the homepage hero,
+         so the block ends at the same baseline (and the CTAs land at the same height) on every
+         page — that is what synchronises the content position across pages. Same pt-28 / pb
+         padding as home. -->
     <div
-      class="relative z-10 flex min-h-[var(--hero-read-h)] w-full flex-col"
-      :class="readingPlaceClass"
+      class="relative z-10 flex min-h-[var(--hero-min-h-home)] w-full flex-col"
+      :class="anchorClass"
     >
-      <div class="shell py-12 md:py-16">
+      <div class="shell pb-10 pt-28 md:pb-12">
         <div :class="contentClass">
           <slot name="breadcrumb" />
           <slot name="chips" />

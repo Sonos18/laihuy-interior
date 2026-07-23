@@ -123,12 +123,11 @@ usePageSeo({
   <div>
     <AppHero
       :topic="t({ vi: 'Liên hệ', en: 'Contact' })"
-      :title="t({ vi: 'Liên hệ tư vấn', en: 'Contact' })"
-      :special-title="t({ vi: 'dự án', en: 'our team' })"
+      :title="t({ vi: 'Bắt đầu dự án', en: 'Start a project' })"
+      :special-title="t({ vi: 'cùng Lai Huy', en: 'with Lai Huy' })"
       :subtitle="t({ vi: 'Gửi bản vẽ, BOQ hoặc thông tin công trình để Lai Huy Interior tư vấn phương án sản xuất và thi công phù hợp.', en: 'Send drawings, BOQ, or project information so Lai Huy Interior can advise on production and contracting solutions.' })"
       :image="heroImage"
       atmosphere="warm"
-      size="compact"
       focal="50% 42%"
     />
 

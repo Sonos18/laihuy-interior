@@ -1,7 +1,7 @@
 import { expect, test } from './fixtures'
 
 /**
- * The hero locale-invariance gate — main.css §"Cover-hero floor" (--hero-min-h).
+ * The hero locale-invariance gate — main.css §"THE hero floor" (--hero-min-h-home).
  *
  * ── Why this file exists ──────────────────────────────────────────────────────────────────
  *
@@ -12,7 +12,7 @@ import { expect, test } from './fixtures'
  *     cover scale = max(boxW / naturalW, boxH / naturalH)
  *
  * any content-driven height change rescales the photograph while the image is HEIGHT-bound.
- * That is the regression --hero-min-h exists to prevent: same image, same src, same object-fit,
+ * That is the regression --hero-min-h-home exists to prevent: same image, same src, same object-fit,
  * same font-size — container height was the only variable, and switching language visibly
  * zoomed the photo (measured 1.0843 → 1.1115 at 1440×900, 1.0695 → 1.1708 at 1366×700).
  *
@@ -23,7 +23,7 @@ import { expect, test } from './fixtures'
  *
  * ── What is asserted ──────────────────────────────────────────────────────────────────────
  *
- * G1 · The floor BINDS: rendered hero height === computed --hero-min-h. If content ever grows
+ * G1 · The floor BINDS: rendered hero height === computed --hero-min-h-home. If content ever grows
  *      past the floor, the floor stops applying and the crop becomes content-driven again.
  *      This is the invariant; G2 is its observable consequence.
  * G2 · The photograph's cover scale is identical in both locales, which is what the user sees.
@@ -45,11 +45,12 @@ const HOME_WIDTHS = [
 ] as const
 
 /**
- * The six AppHero pages share a FLAT floor (--hero-min-h), so they have no boundaries to probe:
- * the only interesting cases are the narrowest width, where content is tallest and the floor is
- * closest to binding, and a desktop width. Every navigation here costs an SSR render of an
- * image-heavy page against a single-threaded Nitro server, so the matrix is kept to what
- * actually discriminates.
+ * The AppHero pages now share the SAME tiered floor as home (--hero-min-h-home), applied as
+ * min-h == max-h. Because the section is capped at the floor, its height equals the floor at
+ * every width by construction — so G1 holds trivially and there are no per-page boundaries to
+ * probe; the narrowest width (content tallest, header clearance tightest) and a desktop width
+ * are enough. Every navigation here costs an SSR render of an image-heavy page against a
+ * single-threaded Nitro server, so the matrix is kept to what actually discriminates.
  */
 const SHARED_WIDTHS = [
   { name: '320', width: 320, height: 844 },
@@ -59,19 +60,15 @@ const SHARED_WIDTHS = [
 const LOCALES = ['vi', 'en'] as const
 
 /**
- * The cover heroes OTHER than home — home is driven separately above, on its own token and its
- * own width matrix.
+ * The AppHero pages — home is driven separately above, on the same token but its own (tiered)
+ * width matrix and its own bottom-anchored copy.
  *
- * They are here because a floor token governs each page's <AppHero>: --hero-min-h for the
- * five size="cover" pages, --hero-h-tall for /gioi-thieu (size="tall"), --hero-h-compact for
- * /lien-he (size="compact"). The gate reads each section's own computed min-height, so all
- * three tokens are enforced by the same assertion; for tall/compact min-h == max-h, so G1
- * holds by construction and the gate's real work there is G2 (locale-invariant crop). The
- * tallest hero content on the site is NOT home: it is /gioi-thieu (vi) — which is why its
- * floor moved to its own token. A gate that only ran against home would have let a
- * shared-floor change silently break the pages home does not resemble — and that is exactly
- * the trap the homepage work walked into, since home originally inherited a floor sized by
- * /gioi-thieu.
+ * Every one of these uses <AppHero>, which applies --hero-min-h-home as min-h AND max-h, so the
+ * photograph is the same height as the homepage's on every page. min-h == max-h means G1 (the
+ * floor binds) holds by construction; the gate's real work here is G2 (the crop is identical in
+ * both locales). They are still enumerated because a change to the shared floor — or to any
+ * page's hero copy — must be proven not to break the pages home does not resemble, which is the
+ * trap the homepage work originally walked into.
  */
 const COVER_PAGES = [
   { name: 'projects', path: '/du-an' },

@@ -55,14 +55,16 @@ usePageSeo({
 
 <template>
   <div>
-    <!-- min-h is --hero-min-h-HOME, NOT 100vh and NOT the shared --hero-min-h: the image below
-         is `h-full object-cover`, so a content-driven height change rescales the photograph.
-         The EN headline takes one more line than VI, which is what made the hero look zoomed
-         after switching language. The token holds both locales at the same height.
+    <!-- min-h is --hero-min-h-HOME, NOT 100vh: the image below is `h-full object-cover`, so a
+         content-driven height change rescales the photograph. The EN headline takes one more
+         line than VI, which is what made the hero look zoomed after switching language. The
+         token holds both locales at the same height.
 
-         Home has its OWN floor because home does not render <AppHero> — it is a bespoke cover
-         (§30.1). The shared token is sized by /gioi-thieu's 839.2px of hero content; home's is
-         709.4px, and it should not pay 130px for copy that is on another page. See main.css. -->
+         This is THE shared hero floor (§30.1): home is a bespoke cover that inlines its own hero,
+         and <AppHero> now adopts the same token, so the photograph is exactly this tall on every
+         page. The floor is measured against home's copy — the tallest, because home's is
+         bottom-anchored while AppHero centres its (shorter) copy in the reading zone. See
+         main.css --hero-min-h-home. -->
     <section class="relative min-h-[var(--hero-min-h-home)] overflow-hidden bg-ink-950 text-white">
       <!-- `sizes` is NOT 100vw, deliberately. It describes the box's WIDTH, but this box is
            object-cover and --hero-min-h-home TALL, so height is the binding dimension: the
@@ -161,7 +163,7 @@ usePageSeo({
          to 60rem, and the floor is global — so every desktop paid for it.
 
          Out of the hero at every width, hero content no longer varies by ~200px across the lg
-         boundary, which is what lets --hero-min-h drop to a per-breakpoint value (see main.css).
+         boundary, which is what lets --hero-min-h-home drop to a per-breakpoint value (see main.css).
          This also removes the dual-placement contract HeroMetrics documented: there is now one
          render site, so the two can no longer disagree. -->
     <section class="bg-ink-950 pb-12 text-white">
