@@ -192,12 +192,12 @@ export const company = {
   seo: {
     home: {
       title: {
-        vi: 'Thi công & sản xuất nội thất khách sạn 3-5 sao | Lai Huy Interior',
-        en: 'Hotel Interior Manufacturing & Contracting | Lai Huy Interior'
+        vi: 'Sản xuất & thi công nội thất khách sạn | Lai Huy Interior',
+        en: 'Hotel Interior Manufacturer & Contractor | Lai Huy Interior'
       },
       description: {
-        vi: 'Lai Huy Interior chuyên thiết kế, sản xuất và thi công nội thất khách sạn, villa, căn hộ và dự án lớn với xưởng sản xuất trực tiếp, kiểm soát chất lượng và thi công toàn quốc.',
-        en: 'Lai Huy Interior provides design, manufacturing, and contracting solutions for hotels, villas, apartments, and large-scale interior projects with direct factory production and quality control.'
+        vi: 'Lai Huy Interior thiết kế, sản xuất và thi công nội thất khách sạn, villa, căn hộ và dự án lớn — xưởng trực tiếp, kiểm soát chất lượng, thi công toàn quốc.',
+        en: 'Lai Huy Interior designs, manufactures and installs interiors for hotels, villas, apartments and large-scale projects — own factory, in-house QC, nationwide.'
       },
       ogImage: brandMedia.bannerHome
     },
@@ -225,8 +225,8 @@ export const company = {
     },
     services: {
       title: {
-        vi: 'Dịch vụ thi công & sản xuất nội thất khách sạn | Lai Huy Interior',
-        en: 'Hotel Interior Manufacturing & Contracting Services | Lai Huy Interior'
+        vi: 'Dịch vụ sản xuất & thi công nội thất | Lai Huy Interior',
+        en: 'Interior Production & Fit-out Services | Lai Huy Interior'
       },
       description: {
         vi: 'Dịch vụ thiết kế, sản xuất tại xưởng, thi công nội thất khách sạn 3-5 sao, villa, căn hộ, thương mại và gia công xuất khẩu.',
@@ -236,7 +236,7 @@ export const company = {
     },
     about: {
       title: {
-        vi: 'Giới thiệu Lai Huy Interior | Xưởng nội thất khách sạn và dự án',
+        vi: 'Giới thiệu Lai Huy | Xưởng nội thất khách sạn & dự án',
         en: 'About Lai Huy Interior | Hotel Interior Factory & Contractor'
       },
       description: {

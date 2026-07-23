@@ -58,8 +58,8 @@ Hiện 3 trang có canonical + JSON-LD, 5 trang chưa. Chuẩn cần đạt cho 
 | 2.4 | `/dich-vu`: canonical + `Service`/`ItemList` | | 1h |
 | 2.5 | `/lien-he`: canonical + `ContactPage` | | 30m |
 | 2.6 | `/tuyen-dung`: canonical + `JobPosting` cho từng vị trí → đủ điều kiện Google Jobs | phụ thuộc 1.3 (địa chỉ chuẩn) | 2h |
-| 2.7 | Review lại toàn bộ title/description trong `company.ts` theo keyword mục tiêu (thi công nội thất khách sạn, nội thất gỗ công nghiệp, xưởng sản xuất nội thất…) — độ dài title ≤ 60 ký tự, description 140–160 | `company.ts` seo block | 0.5d |
-| 2.8 | OG image chuẩn 1200×630 có logo/tagline thay vì ảnh hero thô (ít nhất cho Home) | asset mới | 0.5d |
+| 2.7 | ✅ **Done (2026-07-23)** — rút gọn 4 title bị cắt (home, services, about vi) + nén home description về ≤160; giữ nguyên các mô tả ngắn (không phải lỗi). Tất cả title ≤60, description trong dải hiển thị | `company.ts` seo block | 0.5d |
+| 2.8 | ⏳ **CHỜ ASSET** — OG image 1200×630 có logo/tagline thay ảnh hero thô. Cần file thiết kế branded thật (logo + tagline + layout) + quyết định thương hiệu → chờ business cấp logo/brand, hoặc dựng OG template HTML→screenshot nếu được duyệt. Hiện các trang dùng ảnh hero làm OG (vẫn hợp lệ, chưa tối ưu) | asset mới | 0.5d |
 | 2.9 | Sitemap: thêm `<lastmod>` (lấy từ build date) — optional | `server/routes/sitemap.xml.ts` | 30m |
 
 **Ghi nhận, KHÔNG làm đợt này (technical):** URL-based i18n `/en` + `hreflang`. Chừng nào ngôn ngữ còn là cookie thì nội dung EN không index được — chấp nhận launch VI-first, EN là tiện ích cho khách quốc tế được gửi link trực tiếp. Đây là hạng mục lớn nhất sau launch.
