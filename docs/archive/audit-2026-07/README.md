@@ -1,5 +1,12 @@
 # Production Audit — `laihuy-interior`
 
+> **⚠️ Historical snapshot (2026-07-10). Archived — do not treat as current state.**
+> This audit drove the launch work but is now largely resolved. Most 🔴 Critical and 🟠 High
+> findings below have been fixed since (soft 404, robots/sitemap, canonical + JSON-LD on all 8
+> pages, hero/font/contrast, bilingual data, tap targets, axe gate). For the live status and
+> what remains, see [`docs/launch-plan.md`](../../launch-plan.md) — that is the source of truth.
+> The reports are kept unedited as the evidence trail behind those changes.
+
 **Date:** 2026-07-10 · **Commit:** `6e37820` · **Branch:** `feat/media-supabase-catalog`
 
 A full-repository audit covering architecture, UI/UX, performance, SEO, accessibility, security, code quality, and technical debt.

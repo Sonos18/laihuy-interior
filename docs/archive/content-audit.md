@@ -1,5 +1,10 @@
 # Content Architecture Audit — Lai Huy Interior
 
+> **⚠️ Historical snapshot (2026-07-05). Archived — stale.** Counts here (e.g. "6 projects, 3
+> with media") predate later work: there are now 11 projects, all with media and bilingual copy,
+> and services/factory/careers data is fully translated. For the current content plan see
+> [`docs/launch-plan.md`](../launch-plan.md).
+
 **Date:** 2026-07-05
 **Scope:** Business-content completeness review of the current repository (pages, data, generated media catalog, filesystem). No code changes. No visual redesign.
 **Source of truth:** the repository as it stands. Where business information is absent, this document reports **"Missing business input."** rather than inventing it.

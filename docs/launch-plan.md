@@ -2,7 +2,7 @@
 
 **Ngày lập:** 2026-07-23 · **Phạm vi:** UX/UI, nội dung, SEO, dọn docs. **Không đổi technical** (không backend, không đổi kiến trúc i18n, không đụng media pipeline).
 
-> Tài liệu này thay thế vai trò checklist của `docs/audit/11-prioritized-todo-checklist.md` (10/07) — phần lớn mục Critical trong đó đã xong. Trạng thái bên dưới đã được verify lại trên code ngày 23/07.
+> Tài liệu này thay thế vai trò checklist của `docs/archive/audit-2026-07/11-prioritized-todo-checklist.md` (10/07) — phần lớn mục Critical trong đó đã xong. Trạng thái bên dưới đã được verify lại trên code ngày 23/07.
 
 ---
 
@@ -87,14 +87,14 @@ Hiện có ~8.800 dòng docs, phần lớn là audit/spec đã hoàn thành vai 
 
 | # | Việc | Lý do |
 |---|------|-------|
-| 4.1 | Viết lại `README.md` — hiện vẫn là **Nuxt starter template nguyên bản**. Nội dung: mô tả dự án, lệnh dev/build/test, media pipeline (`pnpm media:*`, `USE_SUPABASE_MEDIA`, `.env`), quy tắc "không sửa tay `catalog.generated.ts`", link docs | Bắt buộc trước khi bàn giao |
-| 4.2 | Tạo `docs/README.md` làm index: mỗi doc 1 dòng — còn hiệu lực hay đã archive | Điều hướng |
-| 4.3 | Archive `docs/audit/` (12 file, snapshot 10/07): chuyển vào `docs/archive/audit-2026-07/`, thêm header "snapshot lịch sử — trạng thái mới xem launch-plan.md". Không sửa nội dung từng file (tốn công, không giá trị) | Đa số mục Critical đã xong; giữ nguyên làm bằng chứng lịch sử |
-| 4.4 | Archive `docs/content-audit.md` (05/07 — nói 6 dự án, giờ là 11) | Stale |
-| 4.5 | Giữ nguyên: `header-footer-art-direction.md`, `hero-art-direction.md` (spec kỹ thuật đang được code tham chiếu §…), `homepage-density.md`, `docs/media-migration/`, `supabase-storage-migration-plan.md` | Còn hiệu lực |
-| 4.6 | Doc nhỏ stale: comment trong `tests/.../hero.spec.ts` còn mô tả About là cover page — sửa comment cho khớp `size="tall"` | Đã flag từ 21/07 |
+| 4.1 | ✅ **Done (2026-07-23)** — `README.md` viết lại: mô tả dự án, stack, setup + env, lệnh dev/build/test/gates, media pipeline (`pnpm media:*`), quy tắc "không sửa tay `catalog.generated.ts`", link docs | Bắt buộc trước khi bàn giao |
+| 4.2 | ✅ **Done (2026-07-23)** — `docs/README.md` index: mục Active vs Archived, mỗi doc 1 dòng | Điều hướng |
+| 4.3 | ✅ **Done (2026-07-23)** — `docs/audit/` → `docs/archive/audit-2026-07/` (git mv, giữ lịch sử); thêm header "historical snapshot → xem launch-plan.md" vào README của archive, không sửa từng report | Đa số mục Critical đã xong; giữ làm bằng chứng lịch sử |
+| 4.4 | ✅ **Done (2026-07-23)** — `content-audit.md` → `docs/archive/`, thêm header stale | Stale |
+| 4.5 | ✅ Giữ nguyên: `header-footer-art-direction.md`, `hero-art-direction.md`, `homepage-density.md`, `docs/media-migration/`, `supabase-storage-migration-plan.md` | Còn hiệu lực |
+| 4.6 | ✅ **Done** (trong đợt hero) — comment COVER_PAGES trong `hero.spec.ts` đã nêu rõ tall (gioi-thieu) + compact (lien-he) | Đã flag từ 21/07 |
 
-Ước lượng Phase 4: ~0.5–1d.
+Phase 4 hoàn tất 2026-07-23.
 
 ---
 

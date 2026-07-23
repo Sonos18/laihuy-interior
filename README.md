@@ -1,60 +1,81 @@
-# Nuxt Starter Template
+# Lai Huy Interior
 
-[![Nuxt UI](https://img.shields.io/badge/Made%20with-Nuxt%20UI-00DC82?logo=nuxt&labelColor=020420)](https://ui.nuxt.com)
+Marketing website for **Lai Huy Interior** — a Vietnamese factory-direct interior manufacturer
+and contractor for hotels, villas, apartments, and large-scale projects. Bilingual (Vietnamese
+default, English), statically prerendered, with a content-addressed media pipeline backed by
+Supabase Storage.
 
-Use this template to get started with [Nuxt UI](https://ui.nuxt.com) quickly.
+**Stack:** Nuxt 4 · Vue 3 · Tailwind CSS v4 · Nuxt UI v4 · `@nuxt/image` (custom Supabase
+provider) · `@nuxt/fonts` (Inter) · TypeScript · Vitest · Playwright (visual regression + axe) ·
+pnpm.
 
-- [Live demo](https://starter-template.nuxt.dev/)
-- [Documentation](https://ui.nuxt.com/docs/getting-started/installation/nuxt)
+## Prerequisites
 
-<a href="https://starter-template.nuxt.dev/" target="_blank">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://ui.nuxt.com/assets/templates/nuxt/starter-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://ui.nuxt.com/assets/templates/nuxt/starter-light.png">
-    <img alt="Nuxt Starter Template" src="https://ui.nuxt.com/assets/templates/nuxt/starter-light.png" width="830" height="466">
-  </picture>
-</a>
-
-> The starter template for Vue is on https://github.com/nuxt-ui-templates/starter-vue.
-
-## Quick Start
-
-```bash [Terminal]
-npm create nuxt@latest -- -t github:nuxt-ui-templates/starter
-```
-
-## Deploy your own
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-name=starter&repository-url=https%3A%2F%2Fgithub.com%2Fnuxt-ui-templates%2Fstarter&demo-image=https%3A%2F%2Fui.nuxt.com%2Fassets%2Ftemplates%2Fnuxt%2Fstarter-dark.png&demo-url=https%3A%2F%2Fstarter-template.nuxt.dev%2F&demo-title=Nuxt%20Starter%20Template&demo-description=A%20minimal%20template%20to%20get%20started%20with%20Nuxt%20UI.)
+- Node.js 20+
+- **pnpm** (this repo pins `pnpm@10` via `packageManager`; use pnpm, not npm)
 
 ## Setup
 
-Make sure to install the dependencies:
-
 ```bash
 pnpm install
+cp .env.example .env   # then fill in the values below
 ```
 
-## Development Server
+### Environment
 
-Start the development server on `http://localhost:3000`:
+| Variable | Purpose |
+|---|---|
+| `NUXT_PUBLIC_SUPABASE_URL` | Supabase project URL. Public — safe in the browser. |
+| `NUXT_PUBLIC_USE_SUPABASE_MEDIA` | `true` = serve images from Supabase Storage; `false` = fall back to `/public`. Production is `true`. |
+| `NUXT_PUBLIC_SITE_URL` | Absolute production origin. Drives `robots.txt`, `sitemap.xml`, canonical and OG URLs. **Set the real domain per deployment** — the default is a placeholder. |
+| `SUPABASE_SERVICE_ROLE_KEY` | **Local media-upload scripts only.** Never commit it, never add it to CI/Vercel env, never prefix with `NUXT_PUBLIC_`. |
+
+## Development
 
 ```bash
-pnpm dev
+pnpm dev        # dev server at http://localhost:3000
+pnpm build      # production build (static prerender + Nitro server)
+pnpm preview    # preview the production build
 ```
 
-## Production
-
-Build the application for production:
+## Quality gates
 
 ```bash
-pnpm build
+pnpm lint         # ESLint (+ --fix to autofix)
+pnpm typecheck    # nuxt typecheck (vue-tsc)
+pnpm test         # Vitest unit tests (media layer)
+pnpm test:vr      # Playwright visual regression, Chromium (compares against baselines)
+pnpm test:gates   # hero geometry + alignment gates
 ```
 
-Locally preview production build:
+Visual-regression baselines are **approval artefacts**: an unexpected diff fails and stays failed
+until a human approves it with `pnpm test:vr:approve` in a commit that contains nothing else. The
+axe-core accessibility gate (`tests/e2e/a11y.spec.ts`) asserts zero WCAG A/AA violations on every
+route. See [`docs/header-footer-art-direction.md`](docs/header-footer-art-direction.md) §14/§41
+for the VR workflow.
+
+## Media pipeline
+
+Images are **content-addressed and immutable**. Business copy (`app/data/`) owns alt text and
+meaning; the generated catalog (`app/media/catalog.generated.ts`) owns paths and dimensions;
+they are joined at the presentation boundary. The full design is documented in
+[`docs/media-migration/`](docs/media-migration/).
 
 ```bash
-pnpm preview
+pnpm media:scan       # scan public/images for source assets
+pnpm media:catalog    # regenerate app/media/catalog.generated.ts from the manifest
+pnpm media:optimize   # generate resized WebP variants
+pnpm media:upload     # upload to Supabase Storage (needs SUPABASE_SERVICE_ROLE_KEY; refuses to run in CI)
+pnpm media:verify     # verify uploaded assets against the manifest
+pnpm lint:media       # guard against hardcoded media paths in source
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+> **Never hand-edit `app/media/catalog.generated.ts`.** It is generated from the manifest by
+> `pnpm media:catalog`; edit the source assets/manifest and regenerate. `public/images/` is
+> gitignored — the assets live in Supabase Storage.
+
+## Documentation
+
+Start with **[`docs/launch-plan.md`](docs/launch-plan.md)** — the current status and remaining
+work. See [`docs/README.md`](docs/README.md) for the full index of engineering specs and
+archived material.
