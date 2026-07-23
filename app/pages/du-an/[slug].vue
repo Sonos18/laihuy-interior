@@ -620,7 +620,7 @@ usePageSeo({
               {{ tab.label }}
               <span
                 class="text-xs font-black"
-                :class="activeGalleryTab === tab.value ? 'text-white/70' : 'text-ink-400'"
+                :class="activeGalleryTab === tab.value ? 'text-white/70' : 'text-ink-500'"
               >{{ tab.count }}</span>
             </button>
           </div>

@@ -447,11 +447,23 @@ usePageSeo({
               {{ t(filter.label) }}
               <span
                 class="text-xs font-black"
-                :class="activeFilter === filter.value ? 'text-white/70' : 'text-ink-400'"
+                :class="activeFilter === filter.value ? 'text-white/70' : 'text-ink-500'"
               >{{ countFor(filter.value) }}</span>
             </button>
           </div>
         </div>
+
+        <!-- Announces the filtered image count to screen readers after each filter change. -->
+        <p
+          class="sr-only"
+          role="status"
+          aria-live="polite"
+        >
+          {{ t({
+            vi: `${filteredImages.length} hình ảnh`,
+            en: `${filteredImages.length} images`
+          }) }}
+        </p>
 
         <Transition
           name="fade"

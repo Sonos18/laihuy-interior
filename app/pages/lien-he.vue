@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { company } from '~/data/company'
-import { siteImages } from '~/data/site-images'
 import { uiText } from '~/data/ui'
 import { projectMedia } from '~/media/catalog.generated'
 import { withAlt } from '~/media/project-media'
@@ -64,7 +63,17 @@ const projectTypes = computed(() => [
   t({ vi: 'Gia công theo bản vẽ / xuất khẩu', en: 'Production from drawings / export' })
 ])
 
+// Keyless Google Maps embed pointed at the factory address (the vi string is what Maps
+// resolves). No API key or backend needed; the iframe lazy-loads below the fold.
+const mapEmbedUrl = computed(() => {
+  const address = t(company.addresses[1]?.address ?? company.addresses[0]!.address)
+  return `https://maps.google.com/maps?q=${encodeURIComponent(address)}&z=15&output=embed`
+})
+
+const submitted = ref(false)
+
 const submitForm = () => {
+  submitted.value = true
   const subject = t({
     vi: `Yêu cầu tư vấn dự án - ${form.projectType || 'Lai Huy Interior'}`,
     en: `Project consultation request - ${form.projectType || 'Lai Huy Interior'}`
@@ -168,12 +177,16 @@ usePageSeo({
           <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
             {{ t({ vi: 'Gửi yêu cầu tư vấn dự án', en: 'Send a project consultation request' }) }}
           </h2>
-          <p class="mt-4 text-sm leading-6 text-ink-600">
+          <p
+            id="form-note"
+            class="mt-4 text-sm leading-6 text-ink-600"
+          >
             {{ t({ vi: 'Biểu mẫu sẽ mở email trên thiết bị của bạn với nội dung đã điền sẵn. Website hiện chưa kết nối backend gửi form tự động.', en: 'This form opens your email app with a prepared message. The website does not use a fake backend submission.' }) }}
           </p>
 
           <form
             class="mt-8 space-y-5"
+            aria-describedby="form-note"
             @submit.prevent="submitForm"
           >
             <div class="grid gap-5 md:grid-cols-2">
@@ -183,6 +196,7 @@ usePageSeo({
                   v-model="form.name"
                   type="text"
                   required
+                  autocomplete="name"
                   class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
                   :placeholder="t({ vi: 'Tên của bạn', en: 'Your name' })"
                 >
@@ -193,6 +207,7 @@ usePageSeo({
                   v-model="form.phone"
                   type="tel"
                   required
+                  autocomplete="tel"
                   class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
                   placeholder="+84..."
                 >
@@ -206,6 +221,7 @@ usePageSeo({
                   v-model="form.email"
                   type="email"
                   required
+                  autocomplete="email"
                   class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
                   placeholder="email@example.com"
                 >
@@ -237,7 +253,7 @@ usePageSeo({
                 v-model="form.message"
                 rows="6"
                 required
-                class="mt-2 w-full resize-none rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
+                class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
                 :placeholder="t({ vi: 'Quy mô, số phòng, vật liệu mong muốn, tiến độ dự kiến...', en: 'Scale, room count, preferred materials, target schedule...' })"
               />
             </label>
@@ -248,6 +264,25 @@ usePageSeo({
             >
               {{ t({ vi: 'Gửi yêu cầu qua email', en: 'Send request by email' }) }}
             </button>
+
+            <!-- Submit opens the mail client rather than posting; announce it, and offer a call
+                 fallback for anyone without a configured mail app. -->
+            <p
+              class="sr-only"
+              role="status"
+              aria-live="polite"
+            >
+              {{ submitted ? t({ vi: 'Đang mở ứng dụng email với nội dung đã điền sẵn.', en: 'Opening your email app with the prepared message.' }) : '' }}
+            </p>
+            <p class="text-center text-sm text-ink-600">
+              {{ t({ vi: 'Không mở được email?', en: 'No email app?' }) }}
+              <a
+                :href="`tel:${company.phone.replaceAll(' ', '')}`"
+                class="font-bold text-wood-600 underline underline-offset-2 hover:text-wood-700"
+              >
+                {{ t({ vi: 'Gọi', en: 'Call' }) }} {{ company.phone }}
+              </a>
+            </p>
           </form>
         </div>
 
@@ -258,22 +293,16 @@ usePageSeo({
           <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
             {{ t({ vi: 'Văn phòng và nhà xưởng', en: 'Office and factory' }) }}
           </h2>
-          <a
-            :href="company.addresses[1]?.mapUrl"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="mt-8 block overflow-hidden rounded-2xl border border-ink-200 bg-white"
-          >
-            <NuxtImg
-              :src="siteImages.mapAddress.path"
-              :alt="t(siteImages.mapAddress.alt)"
-              :width="siteImages.mapAddress.width"
-              :height="siteImages.mapAddress.height"
-              sizes="sm:100vw lg:50vw"
+          <div class="mt-8 overflow-hidden rounded-2xl border border-ink-200 bg-white">
+            <iframe
+              :src="mapEmbedUrl"
+              :title="t({ vi: 'Bản đồ nhà xưởng Lai Huy Interior', en: 'Map to the Lai Huy Interior workshop' })"
+              class="h-80 w-full border-0"
               loading="lazy"
-              class="h-80 w-full object-cover"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen
             />
-          </a>
+          </div>
           <div class="mt-6 space-y-4">
             <a
               v-for="address in company.addresses"

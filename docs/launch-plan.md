@@ -68,18 +68,18 @@ Hiện 3 trang có canonical + JSON-LD, 5 trang chưa. Chuẩn cần đạt cho 
 
 | # | Việc | Ghi chú | Ước lượng |
 |---|------|---------|-----------|
-| 3.1 | Chốt branch hero: commit 4 file dở, chạy `test:gates` + VR, merge | đang dở | 2h |
-| 3.2 | Fix hero compact trang Liên hệ (90svh → compact đúng nghĩa, cùng cơ chế max-h đã dùng cho About) | đã chẩn đoán xong 21/07 | 2h |
-| 3.3 | Verify font weight: rà `font-black` (900) trên ~10 file — xác nhận face 900 có thực sự load qua @nuxt/fonts không; nếu không thì load thêm 900 hoặc hạ về 800/700 | tránh faux-bold | 2h |
-| 3.4 | Rà lại 3 lỗi contrast AA từ audit cũ (`text-white/42`, `text-white/45`, `text-ink-400`) — code đã đổi nhiều, cần đo lại bằng tool thay vì tin audit cũ | | 2h |
-| 3.5 | A11y forms trang Liên hệ: `autocomplete`, `aria-invalid`, `aria-describedby`, thông báo submit `aria-live` | | 2h |
-| 3.6 | `aria-current="page"` cho nav active; `aria-pressed` cho filter dự án; đếm kết quả filter qua `aria-live` | | 1h |
-| 3.7 | Tap targets ≥ 44px (footer links, locale pills) — verify lại sau các đợt refactor header/footer | | 1h |
-| 3.8 | Map trang Liên hệ: thay ảnh tĩnh bằng Google Maps embed iframe (không cần backend, lazy-load) | | 1h |
-| 3.9 | UX form mailto: vì chưa có backend (out of scope), làm rõ hành vi — nút "Gửi qua email" + hiện song song số điện thoại/Zalo, cảnh báo nhẹ nếu không có mail client | `lien-he.vue` | 2h |
-| 3.10 | Trust signals trên Home khi có input từ business (logo khách, testimonial, số dự án) | chờ Phase 1 input | 1d |
-| 3.11 | Xóa dead UI code: `TemplateMenu.vue` (leftover starter, không nơi nào import) | | 15m |
-| 3.12 | Chạy axe-core + keyboard traversal trên 8 route làm gate cuối trước launch | | 0.5d |
+| 3.1 | ✅ **Done** — hero reading-zone đã merge | | 2h |
+| 3.2 | ✅ **Done** — `--hero-h-compact` cap trang Liên hệ, đã merge | | 2h |
+| 3.3 | ✅ **Done (2026-07-23)** — xác nhận Inter chỉ load 400/500/600/700, không có 900 → font-black là faux-bold. Thêm `fonts` config trong nuxt.config load weight 900 (verify: 8 face 900 trong build); subset vietnamese đã sẵn | tránh faux-bold | 2h |
+| 3.4 | ✅ **Done (2026-07-23)** — `text-white/42,/45` đã biến mất từ trước. Sửa `text-ink-400`→`ink-500` ở 2 count badge, và `.eyebrow` `wood-500`→`wood-600` (axe: 4.29–4.31:1 → pass ≥4.5). Verify axe: 0 lỗi contrast thật | | 2h |
+| 3.5 | ✅ **Done (2026-07-23)** — `autocomplete` name/tel/email, `aria-describedby` disclosure, status region `aria-live`, bỏ `resize-none` | | 2h |
+| 3.6 | ✅ **Done (2026-07-23)** — `aria-current` (đã có), thêm `aria-pressed` + vùng `aria-live` đếm kết quả cho filter du-an & gallery nha-xuong | | 1h |
+| 3.7 | ✅ **Done (2026-07-23)** — footer links 17px→29px, footer social 21px→35px (padding + negative margin, layout không đổi). Lang pills đã 44px sẵn. Contact card CTA 20px đạt 2.5.8 qua ngoại lệ spacing (target đơn lẻ) | | 1h |
+| 3.8 | ✅ **Done (2026-07-23)** — Google Maps embed iframe (keyless, lazy-load), thay ảnh tĩnh | | 1h |
+| 3.9 | ✅ **Done (2026-07-23)** — disclosure mailto (đã có) + status `aria-live` khi submit + fallback "Gọi {số}" dưới nút gửi | `lien-he.vue` | 2h |
+| 3.10 | ⏳ **CHỜ INPUT** — trust signals cần logo khách/testimonial/số liệu từ business | chờ Phase 1 input | 1d |
+| 3.11 | ✅ **Done (2026-07-23)** — xóa `TemplateMenu.vue` | | 15m |
+| 3.12 | ✅ **Automated done (2026-07-23)** — `tests/e2e/a11y.spec.ts` (axe-core, WCAG A/AA, 8 route, chỉ Chromium): 0 violation. color-contrast tắt trong gate vì flaky trên gradient hero (verify riêng qua scrim contract + full axe pass). **Follow-up:** keyboard traversal + NVDA/VoiceOver smoke thủ công | | 0.5d |
 
 ## Phase 4 — Làm gọn docs
 

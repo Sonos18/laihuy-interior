@@ -105,11 +105,24 @@ usePageSeo({
                 ? 'border-ink-950 bg-ink-950 text-white'
                 : 'border-ink-200 bg-white text-ink-600 hover:border-wood-500 hover:text-wood-600'
             ]"
+            :aria-pressed="selectedCategory === category.value"
             @click="selectedCategory = category.value"
           >
             {{ t(category.label) }}
           </button>
         </div>
+
+        <!-- Announces the result count to screen readers after each filter change. -->
+        <p
+          class="sr-only"
+          role="status"
+          aria-live="polite"
+        >
+          {{ t({
+            vi: `${filteredProjects.length} dự án`,
+            en: `${filteredProjects.length} projects`
+          }) }}
+        </p>
 
         <div class="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
           <NuxtLink

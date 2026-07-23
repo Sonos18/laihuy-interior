@@ -60,6 +60,17 @@ export default defineNuxtConfig({
     }
   },
 
+  // @nuxt/fonts (pulled in transitively by @nuxt/ui) auto-detects Inter usage but only
+  // downloads the weights it can statically see — 400/500/600/700. The design uses `font-black`
+  // (900) on every hero headline and section title, so without this the browser SYNTHESISES 900
+  // from the 700 face (faux-bold: heavier stems, blurry at large sizes). Declaring the weights
+  // explicitly makes @nuxt/fonts fetch the real 900 face. `normal` only — no italics are used.
+  fonts: {
+    families: [
+      { name: 'Inter', weights: [400, 500, 600, 700, 900], styles: ['normal'] }
+    ]
+  },
+
   // @nuxt/ui defaults this to `components` (its module.mjs), which makes
   // @nuxt/icon's PREPENDED <style> the first declaration of the `components`
   // layer and silently inverts the cascade — preflight then beats every

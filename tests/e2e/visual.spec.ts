@@ -22,7 +22,12 @@ test.describe('rest state — full page', () => {
 
         await expect(page).toHaveScreenshot(`${p.name}-${vp.name}.png`, {
           fullPage: true,
-          maxDiffPixelRatio: 0.02
+          maxDiffPixelRatio: 0.02,
+          // The contact page embeds a live Google Maps iframe whose tiles are external and
+          // change between runs — captured raw it would make this baseline flaky (§41 P8).
+          // Masking paints a stable box over any iframe, so the rest of the page is still
+          // asserted pixel-for-pixel. No-op on the pages that have no iframe.
+          mask: [page.locator('iframe')]
         })
       })
     }
