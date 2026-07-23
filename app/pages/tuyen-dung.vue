@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { careerBenefits, jobs } from '~/data/careers'
+import { careerBenefits, jobs, jobsPostedDate } from '~/data/careers'
 import { company } from '~/data/company'
 import { uiText } from '~/data/ui'
 import { brandMedia, workshopMedia } from '~/media/catalog.generated'
 import { withAlt } from '~/media/project-media'
 
 const { t, ta } = useLanguage()
-const { resolve: mediaUrl } = useMediaUrl()
 
 // Hero: a real production-floor photo, distinct from About/Factory (image ownership,
 // docs/hero-art-direction.md §10, Recruitment · Culture). The workers photo is the
@@ -23,12 +22,35 @@ const heroImage = withAlt(workshopHero, {
 const seoTitle = computed(() => t(company.seo.careers.title))
 const seoDescription = computed(() => t(company.seo.careers.description))
 
-useSeoMeta({
+usePageSeo({
+  path: '/tuyen-dung',
   title: seoTitle,
   description: seoDescription,
-  ogTitle: seoTitle,
-  ogDescription: seoDescription,
-  ogImage: mediaUrl(company.seo.careers.ogImage.path)
+  imagePath: company.seo.careers.ogImage.path,
+  jsonLd: ({ base }) => [
+    buildBreadcrumbLd(base, t, [
+      { name: { vi: 'Trang chủ', en: 'Home' }, path: '/' },
+      { name: { vi: 'Tuyển dụng', en: 'Careers' }, path: '/tuyen-dung' }
+    ]),
+    buildOrganizationLd(base, t),
+    ...jobs.map(job => ({
+      '@context': 'https://schema.org',
+      '@type': 'JobPosting',
+      'title': t(job.title),
+      'description': t(job.description),
+      'datePosted': jobsPostedDate,
+      'employmentType': 'FULL_TIME',
+      'hiringOrganization': { '@id': `${base}#organization` },
+      'jobLocation': {
+        '@type': 'Place',
+        'address': {
+          '@type': 'PostalAddress',
+          'addressLocality': t(job.location),
+          'addressCountry': 'VN'
+        }
+      }
+    }))
+  ]
 })
 </script>
 

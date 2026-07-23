@@ -6,7 +6,6 @@ import { projectMedia } from '~/media/catalog.generated'
 import { withAlt } from '~/media/project-media'
 
 const { t, ta } = useLanguage()
-const { resolve: mediaUrl } = useMediaUrl()
 
 // Hero: a single clear architectural subject (staircase + interior garden) with a
 // usable quiet zone — see docs/hero-art-direction.md §10 (Services · Expertise).
@@ -21,12 +20,42 @@ const heroImage = withAlt(heroAsset, {
 const seoTitle = computed(() => t(company.seo.services.title))
 const seoDescription = computed(() => t(company.seo.services.description))
 
-useSeoMeta({
+usePageSeo({
+  path: '/dich-vu',
   title: seoTitle,
   description: seoDescription,
-  ogTitle: seoTitle,
-  ogDescription: seoDescription,
-  ogImage: mediaUrl(company.seo.services.ogImage.path)
+  imagePath: company.seo.services.ogImage.path,
+  jsonLd: ({ base, canonical }) => [
+    buildBreadcrumbLd(base, t, [
+      { name: { vi: 'Trang chủ', en: 'Home' }, path: '/' },
+      { name: { vi: 'Dịch vụ', en: 'Services' }, path: '/dich-vu' }
+    ]),
+    buildOrganizationLd(base, t),
+    {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      '@id': `${canonical}#services`,
+      'url': canonical,
+      'name': seoTitle.value,
+      'description': seoDescription.value,
+      'mainEntity': {
+        '@type': 'ItemList',
+        'numberOfItems': services.length,
+        'itemListElement': services.map((service, index) => ({
+          '@type': 'ListItem',
+          'position': index + 1,
+          'item': {
+            '@type': 'Service',
+            'name': t(service.title),
+            'description': t(service.description),
+            'serviceType': t(service.title),
+            'provider': { '@id': `${base}#organization` },
+            'areaServed': t({ vi: 'Việt Nam và xuất khẩu', en: 'Vietnam and export' })
+          }
+        }))
+      }
+    }
+  ]
 })
 </script>
 

@@ -6,7 +6,6 @@ import { projectMedia } from '~/media/catalog.generated'
 import { withAlt } from '~/media/project-media'
 
 const { t, ta } = useLanguage()
-const { resolve: mediaUrl } = useMediaUrl()
 
 // Hero: an inviting residential living room — see docs/hero-art-direction.md §10
 // (Contact · Conversation). Compact height, then flows into the contact form.
@@ -86,12 +85,28 @@ const submitForm = () => {
 const seoTitle = computed(() => t(company.seo.contact.title))
 const seoDescription = computed(() => t(company.seo.contact.description))
 
-useSeoMeta({
+usePageSeo({
+  path: '/lien-he',
   title: seoTitle,
   description: seoDescription,
-  ogTitle: seoTitle,
-  ogDescription: seoDescription,
-  ogImage: mediaUrl(company.seo.contact.ogImage.path)
+  imagePath: company.seo.contact.ogImage.path,
+  jsonLd: ({ base, canonical }) => [
+    buildBreadcrumbLd(base, t, [
+      { name: { vi: 'Trang chủ', en: 'Home' }, path: '/' },
+      { name: { vi: 'Liên hệ', en: 'Contact' }, path: '/lien-he' }
+    ]),
+    buildOrganizationLd(base, t),
+    {
+      '@context': 'https://schema.org',
+      '@type': 'ContactPage',
+      '@id': `${canonical}#contact`,
+      'url': canonical,
+      'name': seoTitle.value,
+      'description': seoDescription.value,
+      'about': { '@id': `${base}#organization` },
+      'mainEntity': { '@id': `${base}#organization` }
+    }
+  ]
 })
 </script>
 

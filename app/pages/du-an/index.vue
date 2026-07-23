@@ -9,7 +9,6 @@ import type { LocalizedText } from '~/shared/types/localization'
 import type { Project, ProjectCategory } from '~/shared/types/project'
 
 const { t, ta } = useLanguage()
-const { resolve: mediaUrl } = useMediaUrl()
 
 const heroImage = withAlt(projectMedia['codi-villa-phan-thiet'].cover, '')
 
@@ -46,12 +45,37 @@ const getProjectMetric = (project: Project) =>
 const seoTitle = computed(() => t(company.seo.projects.title))
 const seoDescription = computed(() => t(company.seo.projects.description))
 
-useSeoMeta({
+usePageSeo({
+  path: '/du-an',
   title: seoTitle,
   description: seoDescription,
-  ogTitle: seoTitle,
-  ogDescription: seoDescription,
-  ogImage: mediaUrl(company.seo.projects.ogImage.path)
+  imagePath: company.seo.projects.ogImage.path,
+  jsonLd: ({ base, canonical }) => [
+    buildBreadcrumbLd(base, t, [
+      { name: { vi: 'Trang chủ', en: 'Home' }, path: '/' },
+      { name: { vi: 'Dự án', en: 'Projects' }, path: '/du-an' }
+    ]),
+    buildOrganizationLd(base, t),
+    {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      '@id': `${canonical}#collection`,
+      'url': canonical,
+      'name': seoTitle.value,
+      'description': seoDescription.value,
+      'about': { '@id': `${base}#organization` },
+      'mainEntity': {
+        '@type': 'ItemList',
+        'numberOfItems': projects.length,
+        'itemListElement': projects.map((project, index) => ({
+          '@type': 'ListItem',
+          'position': index + 1,
+          'name': t(project.name),
+          'item': `${base}/du-an/${project.slug}`
+        }))
+      }
+    }
+  ]
 })
 </script>
 

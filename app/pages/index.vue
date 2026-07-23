@@ -12,7 +12,6 @@ import type { MediaAsset } from '~/shared/media/types'
 import type { Project } from '~/shared/types/project'
 
 const { t, ta } = useLanguage()
-const { resolve: mediaUrl } = useMediaUrl()
 
 const heroImage = projectMedia['khach-san-eo-gio'].cover
 
@@ -34,12 +33,23 @@ const heroMetrics = computed(() => [
 const seoTitle = computed(() => t(company.seo.home.title))
 const seoDescription = computed(() => t(company.seo.home.description))
 
-useSeoMeta({
+usePageSeo({
+  path: '/',
   title: seoTitle,
   description: seoDescription,
-  ogTitle: seoTitle,
-  ogDescription: seoDescription,
-  ogImage: mediaUrl(company.seo.home.ogImage.path)
+  imagePath: company.seo.home.ogImage.path,
+  jsonLd: ({ base }) => [
+    buildOrganizationLd(base, t),
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      '@id': `${base}#website`,
+      'url': `${base}/`,
+      'name': company.name,
+      'inLanguage': ['vi', 'en'],
+      'publisher': { '@id': `${base}#organization` }
+    }
+  ]
 })
 </script>
 

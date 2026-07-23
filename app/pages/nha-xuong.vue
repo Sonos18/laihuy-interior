@@ -8,7 +8,6 @@ import type { MediaAsset, MediaImage } from '~/shared/media/types'
 import type { LocalizedText } from '~/shared/types/localization'
 
 const { t } = useLanguage()
-const { resolve: mediaUrl } = useMediaUrl()
 
 // Lookup workshop photos by filename so section assignments stay readable and are
 // not tied to array position. Every value is a real photograph of the Lai Huy
@@ -256,42 +255,27 @@ watch(activeFilter, () => {
 const seoTitle = computed(() => t(company.seo.factory.title))
 const seoDescription = computed(() => t(company.seo.factory.description))
 
-useSeoMeta({
+// Authentic workshop photo for social cards (not the design render used before).
+usePageSeo({
+  path: '/nha-xuong',
   title: seoTitle,
   description: seoDescription,
-  ogTitle: seoTitle,
-  ogDescription: seoDescription,
-  // Authentic workshop photo for social cards (not the design render used before).
-  ogImage: computed(() => mediaUrl(heroImage.path, { width: 1600 }))
-})
-
-const { public: { siteUrl } } = useRuntimeConfig()
-const canonicalUrl = `${String(siteUrl).replace(/\/+$/, '')}/nha-xuong`
-
-const breadcrumbLd = computed(() => JSON.stringify({
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  'itemListElement': [
-    { '@type': 'ListItem', 'position': 1, 'name': t({ vi: 'Trang chủ', en: 'Home' }), 'item': `${String(siteUrl).replace(/\/+$/, '')}/` },
-    { '@type': 'ListItem', 'position': 2, 'name': t({ vi: 'Nhà xưởng', en: 'Factory' }), 'item': canonicalUrl }
-  ]
-}))
-
-const faqLd = computed(() => JSON.stringify({
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  'mainEntity': faqs.map(faq => ({
-    '@type': 'Question',
-    'name': t(faq.question),
-    'acceptedAnswer': { '@type': 'Answer', 'text': t(faq.answer) }
-  }))
-}))
-
-useHead({
-  link: [{ rel: 'canonical', href: canonicalUrl }],
-  script: [
-    { type: 'application/ld+json', innerHTML: breadcrumbLd },
-    { type: 'application/ld+json', innerHTML: faqLd }
+  imagePath: heroImage.path,
+  jsonLd: ({ base }) => [
+    buildBreadcrumbLd(base, t, [
+      { name: { vi: 'Trang chủ', en: 'Home' }, path: '/' },
+      { name: { vi: 'Nhà xưởng', en: 'Factory' }, path: '/nha-xuong' }
+    ]),
+    buildOrganizationLd(base, t),
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      'mainEntity': faqs.map(faq => ({
+        '@type': 'Question',
+        'name': t(faq.question),
+        'acceptedAnswer': { '@type': 'Answer', 'text': t(faq.answer) }
+      }))
+    }
   ]
 })
 </script>

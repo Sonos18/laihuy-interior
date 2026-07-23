@@ -149,6 +149,14 @@ export const jobs: Job[] = [
   }
 ]
 
+/**
+ * Posting date for the JobPosting structured data on /tuyen-dung. Google requires `datePosted`;
+ * these are evergreen recruitment posts, so this reflects "open as of" rather than a per-role
+ * date. UPDATE this when the openings are refreshed (business input) — a stale datePosted makes
+ * Google drop the listing from Google Jobs after ~30 days.
+ */
+export const jobsPostedDate = '2026-07-23'
+
 export const careerBenefits: LocalizedText[] = [
   {
     vi: 'Môi trường sản xuất và thi công nội thất dự án thực tế',

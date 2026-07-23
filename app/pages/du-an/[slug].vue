@@ -205,44 +205,26 @@ const seoDescription = computed(() =>
 )
 const seoKeywords = computed(() => ta(project.seo?.keywords).join(', '))
 
-const { public: { siteUrl } } = useRuntimeConfig()
-const base = String(siteUrl).replace(/\/+$/, '')
-const canonicalUrl = `${base}/du-an/${project.slug}`
-
-useSeoMeta({
+usePageSeo({
+  path: `/du-an/${project.slug}`,
   title: seoTitle,
   description: seoDescription,
   keywords: seoKeywords,
-  ogType: 'article',
   ogTitle: computed(() => `${seoName.value} | Lai Huy Interior`),
-  ogDescription: seoDescription,
-  ogImage: computed(() => mediaUrl(heroImage.value.path, { width: 1600 }))
-})
-
-const structuredData = computed(() => JSON.stringify({
-  '@context': 'https://schema.org',
-  '@graph': [
+  ogType: 'article',
+  imagePath: () => heroImage.value.path,
+  jsonLd: ({ base, canonical }) => [
+    buildBreadcrumbLd(base, t, [
+      { name: { vi: 'Trang chủ', en: 'Home' }, path: '/' },
+      { name: { vi: 'Dự án', en: 'Projects' }, path: '/du-an' },
+      { name: project.name, path: `/du-an/${project.slug}` }
+    ]),
+    buildOrganizationLd(base, t),
     {
-      '@type': 'BreadcrumbList',
-      '@id': `${canonicalUrl}#breadcrumb`,
-      'itemListElement': [
-        { '@type': 'ListItem', 'position': 1, 'name': t({ vi: 'Trang chủ', en: 'Home' }), 'item': `${base}/` },
-        { '@type': 'ListItem', 'position': 2, 'name': t({ vi: 'Dự án', en: 'Projects' }), 'item': `${base}/du-an` },
-        { '@type': 'ListItem', 'position': 3, 'name': t(project.name), 'item': canonicalUrl }
-      ]
-    },
-    {
-      '@type': 'Organization',
-      '@id': `${base}#organization`,
-      'name': 'Lai Huy Interior',
-      'url': `${base}/`,
-      'email': company.email,
-      'telephone': company.phone
-    },
-    {
+      '@context': 'https://schema.org',
       '@type': 'CreativeWork',
-      '@id': `${canonicalUrl}#project`,
-      'url': canonicalUrl,
+      '@id': `${canonical}#project`,
+      'url': canonical,
       'name': t(project.name),
       'description': seoDescription.value,
       'image': allImages.slice(0, 8).map(image => mediaUrl(image.path, { width: 1600 })),
@@ -254,11 +236,6 @@ const structuredData = computed(() => JSON.stringify({
       ...(seoKeywords.value ? { keywords: seoKeywords.value } : {})
     }
   ]
-}))
-
-useHead({
-  link: [{ rel: 'canonical', href: canonicalUrl }],
-  script: [{ type: 'application/ld+json', innerHTML: structuredData }]
 })
 </script>
 

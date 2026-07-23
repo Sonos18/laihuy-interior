@@ -104,50 +104,22 @@ const trustStats: { icon: string, value: LocalizedText, label: LocalizedText }[]
 const seoTitle = computed(() => t(company.seo.about.title))
 const seoDescription = computed(() => t(company.seo.about.description))
 
-const { public: { siteUrl } } = useRuntimeConfig()
-const base = String(siteUrl).replace(/\/+$/, '')
-const canonicalUrl = `${base}/gioi-thieu`
-
-useSeoMeta({
+usePageSeo({
+  path: '/gioi-thieu',
   title: seoTitle,
   description: seoDescription,
-  ogType: 'website',
-  ogTitle: seoTitle,
-  ogDescription: seoDescription,
-  ogImage: mediaUrl(heroImage.path, { width: 1600 })
-})
-
-const structuredData = computed(() => JSON.stringify({
-  '@context': 'https://schema.org',
-  '@graph': [
+  imagePath: heroImage.path,
+  jsonLd: ({ base, canonical }) => [
+    buildBreadcrumbLd(base, t, [
+      { name: { vi: 'Trang chủ', en: 'Home' }, path: '/' },
+      { name: { vi: 'Giới thiệu', en: 'About' }, path: '/gioi-thieu' }
+    ]),
+    buildOrganizationLd(base, t),
     {
-      '@type': 'BreadcrumbList',
-      '@id': `${canonicalUrl}#breadcrumb`,
-      'itemListElement': [
-        { '@type': 'ListItem', 'position': 1, 'name': t({ vi: 'Trang chủ', en: 'Home' }), 'item': `${base}/` },
-        { '@type': 'ListItem', 'position': 2, 'name': t({ vi: 'Giới thiệu', en: 'About' }), 'item': canonicalUrl }
-      ]
-    },
-    {
-      '@type': ['Organization', 'LocalBusiness'],
-      '@id': `${base}#organization`,
-      'name': 'Lai Huy Interior',
-      'url': `${base}/`,
-      'logo': `${base}/logo.png`,
-      'telephone': company.phone,
-      'email': company.email,
-      'sameAs': [company.facebook],
-      'areaServed': t({ vi: 'Việt Nam và xuất khẩu', en: 'Vietnam and export' }),
-      'address': company.addresses.map(address => ({
-        '@type': 'PostalAddress',
-        'name': t(address.label),
-        'streetAddress': t(address.address)
-      }))
-    },
-    {
+      '@context': 'https://schema.org',
       '@type': 'AboutPage',
-      '@id': `${canonicalUrl}#about`,
-      'url': canonicalUrl,
+      '@id': `${canonical}#about`,
+      'url': canonical,
       'name': seoTitle.value,
       'description': seoDescription.value,
       'primaryImageOfPage': mediaUrl(heroImage.path, { width: 1600 }),
@@ -155,11 +127,6 @@ const structuredData = computed(() => JSON.stringify({
       'mainEntity': { '@id': `${base}#organization` }
     }
   ]
-}))
-
-useHead({
-  link: [{ rel: 'canonical', href: canonicalUrl }],
-  script: [{ type: 'application/ld+json', innerHTML: structuredData }]
 })
 </script>
 
