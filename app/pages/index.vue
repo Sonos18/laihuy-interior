@@ -88,11 +88,12 @@ usePageSeo({
         fetchpriority="high"
         class="hero-image hero-media absolute inset-0 h-full w-full object-cover"
       />
-      <!-- Single localized scrim (rendering budget = 1) — full-width bottom-up so the
-           metrics row and CTAs stay legible, lighter toward the top so the photography
-           reads. Home stays a bespoke flagship cover but shares the hero design language
-           (see docs/hero-art-direction.md §10, Home · Inspiration). -->
-      <div class="absolute inset-0 bg-linear-to-t from-wood-950/88 via-wood-950/28 to-transparent" />
+      <!-- Single localized scrim (rendering budget = 1) — full-width bottom-up. It now has to
+           hold the CTAs (mid-section) AND the metrics band (bottom) legible, since the band sits
+           inside the hero over the same photo; darker and held further up than the pre-metrics
+           version, fading to clear photography in the top third. Home-only (see the metrics band
+           below). See docs/hero-art-direction.md §10, Home · Inspiration. -->
+      <div class="absolute inset-0 bg-linear-to-t from-wood-950/90 via-wood-950/60 via-50% to-transparent to-75%" />
 
       <!-- Same token as the section: if these two disagree, the shell drives the section's
            height and the floor stops applying. -->
@@ -149,25 +150,21 @@ usePageSeo({
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- The metrics band has ONE placement, at every breakpoint: directly below the hero on the
-         same ink-950 surface, so it still reads as the hero's footer rather than a new section.
-         It used to render inside the hero at lg+ and below it under lg, and that split was the
-         single most expensive thing on the page.
+      <!-- The metrics band sits INSIDE the hero section, over the same photograph, so the hero
+           image spans the copy AND the metrics as one image-backed block (it used to be a
+           separate solid ink-950 section directly below). Its z-10 keeps it above the scrim.
 
-         Why: the hero photograph is `absolute inset-0 h-full object-cover`, so its box height
-         follows the hero's CONTENT height. Inside the hero this band cost 138px at lg+ (48px
-         mt-12 + ~90px row), which pushed hero content to 923.4px (EN, >=1280) against 728.6px
-         at 834px where the band was already outside. That 195px delta is what forced the floor
-         to 60rem, and the floor is global — so every desktop paid for it.
-
-         Out of the hero at every width, hero content no longer varies by ~200px across the lg
-         boundary, which is what lets --hero-min-h-home drop to a per-breakpoint value (see main.css).
-         This also removes the dual-placement contract HeroMetrics documented: there is now one
-         render site, so the two can no longer disagree. -->
-    <section class="bg-ink-950 pb-12 text-white">
-      <div class="shell">
+           The earlier separation existed because the band's height, rendered INSIDE the copy
+           flow, changed the hero's CONTENT height and so the object-cover crop — and it did so
+           by a locale-dependent ~200px at the lg boundary. This placement avoids that: the band
+           is a sibling of the copy block (not inside it), the copy keeps its own fixed
+           --hero-min-h-home floor, and the band's own height is IDENTICAL in both locales
+           (measured: 170px desktop / 450px mobile, vi == en), so the total section height — and
+           thus the crop — stays locale-invariant. tests/e2e/hero.spec.ts G2 enforces that;
+           G1 (the floor binding the section) no longer applies to home, which now intentionally
+           runs taller than the floor to seat the band. Home-only. -->
+      <div class="shell relative z-10 pb-12">
         <HeroMetrics :metrics="heroMetrics" />
       </div>
     </section>
