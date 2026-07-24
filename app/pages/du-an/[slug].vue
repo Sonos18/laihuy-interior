@@ -13,6 +13,13 @@ import {
 import type { MediaImage } from '~/shared/media/types'
 import type { LocalizedArray, LocalizedText } from '~/shared/types/localization'
 
+// Remount this component on every path change. `project` and everything derived from it are
+// read ONCE from route.params.slug at setup (non-reactive by design — see below), so without a
+// per-path key Vue Router would reuse the instance when navigating between two /du-an/[slug]
+// routes and the page would keep showing the previous project. That path is live: the "Related
+// projects" section links slug → slug. Keying by path re-runs setup (and the 404 guard) cleanly.
+definePageMeta({ key: route => route.path })
+
 const { t, ta } = useLanguage()
 const { resolve: mediaUrl } = useMediaUrl()
 const route = useRoute()
@@ -197,9 +204,10 @@ onMounted(() => {
 
 // --- SEO --------------------------------------------------------------------
 const seoName = computed(() => t(project.seo?.title ?? project.name))
-const seoTitle = computed(() =>
-  `${seoName.value} | ${t({ vi: 'Dự án nội thất', en: 'Interior project' })} | Lai Huy Interior`
-)
+// Two segments only: a third ('Dự án nội thất' / 'Interior project') was filler that pushed
+// longer project names past Google's ~60-char title cut. The project name already carries the
+// topic; the brand suffix stays. This now equals the og:title, so no separate ogTitle is needed.
+const seoTitle = computed(() => `${seoName.value} | Lai Huy Interior`)
 const seoDescription = computed(() =>
   t(project.seo?.description) || t(project.content?.overview) || t(project.shortDescription)
 )
@@ -210,7 +218,6 @@ usePageSeo({
   title: seoTitle,
   description: seoDescription,
   keywords: seoKeywords,
-  ogTitle: computed(() => `${seoName.value} | Lai Huy Interior`),
   ogType: 'article',
   imagePath: () => heroImage.value.path,
   jsonLd: ({ base, canonical }) => [
