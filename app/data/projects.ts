@@ -19,6 +19,16 @@ export const projects: Project[] = [
     year: { vi: '2026', en: '2026' },
     style: { vi: 'Hiện đại', en: 'Modern' },
     scope: { vi: ['Thiết kế', 'Sản xuất', 'Thi công'], en: ['Design', 'Production', 'Construction'] },
+    // Human-readable names for the gallery folder groups (else the tabs show the raw slug).
+    galleryLabels: {
+      'sanh-don': { vi: 'Sảnh đón', en: 'Lobby' },
+      'phong-don-dien-hinh': { vi: 'Phòng đơn điển hình', en: 'Signature single room' },
+      'phong-doi-dien-hinh': { vi: 'Phòng đôi điển hình', en: 'Signature double room' },
+      'phong-studio-01': { vi: 'Phòng studio 1', en: 'Studio room 1' },
+      'phong-studio-02': { vi: 'Phòng studio 2', en: 'Studio room 2' },
+      'can-ho-1-phong-ngu': { vi: 'Căn hộ 1 phòng ngủ', en: 'One-bedroom suite' },
+      'can-ho-3-phong-ngu': { vi: 'Căn hộ 3 phòng ngủ', en: 'Three-bedroom suite' }
+    },
     content: {
       overview: {
         vi: 'Eo Gió là một tổ hợp lưu trú tại Vĩnh Long, tập hợp nhiều loại phòng trong cùng một ngôn ngữ thiết kế: từ phòng đơn, phòng đôi tiêu chuẩn đến studio và căn hộ một, ba phòng ngủ có bếp riêng — tất cả giữ trong bảng màu gỗ sáng, đá tự nhiên và ánh sáng ấm.',
@@ -97,6 +107,13 @@ export const projects: Project[] = [
     year: { vi: '2024', en: '2024' },
     style: { vi: 'Hiện đại', en: 'Modern' },
     scope: { vi: ['Thiết kế'], en: ['Design'] },
+    // Human-readable names for the gallery folder groups (else the tabs show the raw slug).
+    galleryLabels: {
+      'sanh-don': { vi: 'Sảnh đón', en: 'Lobby' },
+      'phong-dien-hinh-1': { vi: 'Phòng điển hình 1', en: 'Signature room 1' },
+      'phong-dien-hinh-2': { vi: 'Phòng điển hình 2', en: 'Signature room 2' },
+      'phong-dien-hinh-3': { vi: 'Phòng điển hình 3', en: 'Signature room 3' }
+    },
     content: {
       overview: {
         vi: 'Codi Boutique là một khách sạn nhỏ, nơi ba loại phòng được đặt cạnh nhau như ba tính cách trong cùng một bảng màu trầm ấm. Tường chia hai tông, sàn gỗ xương cá và những đường vòm mềm định hình cảm giác chung.',

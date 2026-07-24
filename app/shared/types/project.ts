@@ -15,10 +15,6 @@ export type CategoryDefinition = {
  *  its own story and small projects are never padded with empty sections. */
 export type ProjectContent = {
   overview?: LocalizedText
-  /** One-line guiding idea behind the design — rendered as a concept pull-quote. */
-  designConcept?: LocalizedText
-  /** The brief the client set out (distinct from `challenge`, which is the problem). */
-  clientRequirements?: LocalizedText
   challenge?: LocalizedText
   solution?: LocalizedText
   designHighlights?: LocalizedArray
@@ -87,8 +83,6 @@ export type Project = {
   rooms?: LocalizedText
   /** Extra verified headline metrics (workforce, furniture count, …). */
   metrics?: ProjectMetric[]
-  /** Measurable results / key achievements after completion. */
-  projectOutcome?: LocalizedText
   /** Execution phases with optional durations; complements `scope`. */
   timeline?: ProjectTimelinePhase[]
   /** Verified awards or recognitions, if any. */

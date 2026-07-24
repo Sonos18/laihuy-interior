@@ -307,13 +307,6 @@ usePageSeo({
         <p class="mt-5 text-lg leading-8 text-white/80">
           {{ t(project.shortDescription) }}
         </p>
-
-        <p
-          v-if="project.projectOutcome"
-          class="mt-4 border-l-2 border-wood-400 pl-4 text-base font-semibold leading-7 text-white/86"
-        >
-          {{ t(project.projectOutcome) }}
-        </p>
       </template>
 
       <template #actions>
@@ -371,13 +364,12 @@ usePageSeo({
           >
             {{ t(uiText.labels.overview) }}
           </p>
-          <p
-            v-if="project.content?.designConcept"
+          <h2
             v-reveal="80"
-            class="reveal mt-6 text-2xl font-black leading-snug text-ink-950"
+            class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
           >
-            “{{ t(project.content.designConcept) }}”
-          </p>
+            {{ t({ vi: 'Nhìn tổng thể dự án', en: 'The project at a glance' }) }}
+          </h2>
         </div>
         <div class="space-y-6 text-lg leading-9 text-ink-600">
           <p
@@ -385,14 +377,6 @@ usePageSeo({
             class="reveal"
           >
             {{ t(project.content.overview) }}
-          </p>
-          <p
-            v-if="project.content?.clientRequirements"
-            v-reveal="80"
-            class="reveal rounded-2xl border border-ink-200 bg-ink-50 p-6 text-base"
-          >
-            <strong class="text-ink-900">{{ t({ vi: 'Yêu cầu của khách hàng', en: 'Client brief' }) }}:</strong>
-            {{ t(project.content.clientRequirements) }}
           </p>
         </div>
       </div>
