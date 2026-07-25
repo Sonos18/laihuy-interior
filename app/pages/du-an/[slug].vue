@@ -674,8 +674,11 @@ usePageSeo({
               />
             </figure>
             <div class="flex items-start gap-4">
-              <span class="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-wood-500 text-sm font-black text-white">
-                {{ String(index + 1).padStart(2, '0') }}
+              <span class="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-wood-500 text-white">
+                <Icon
+                  name="i-lucide-sparkles"
+                  class="h-4 w-4"
+                />
               </span>
               <p class="text-lg font-semibold leading-8 text-ink-800">
                 {{ step.text }}
