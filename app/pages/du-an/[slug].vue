@@ -388,27 +388,21 @@ usePageSeo({
       id="challenge"
       class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] bg-white"
     >
-      <div class="shell grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
-        <div>
+      <div class="shell">
+        <div class="mx-auto max-w-3xl text-center">
           <p
             v-reveal
             class="eyebrow reveal"
           >
             {{ t(uiText.labels.challenge) }}
           </p>
-          <h2
-            v-reveal="80"
-            class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
+          <p
+            v-reveal="100"
+            class="reveal mt-6 text-2xl font-black leading-snug text-ink-950 md:text-3xl"
           >
-            {{ t({ vi: 'Bài toán đặt ra', en: 'The problem to solve' }) }}
-          </h2>
+            {{ t(project.content.challenge) }}
+          </p>
         </div>
-        <p
-          v-reveal="140"
-          class="reveal text-lg leading-9 text-ink-600"
-        >
-          {{ t(project.content.challenge) }}
-        </p>
       </div>
     </section>
 
