@@ -50,7 +50,10 @@ const beats = computed<Beat[]>(() => {
       class="flex flex-col gap-5 md:flex-row"
       :class="beat.reverse ? 'md:flex-row-reverse' : ''"
     >
-      <div class="w-full md:w-[58%]">
+      <div
+        class="w-full"
+        :class="beat.smalls.length ? 'md:w-[58%]' : 'md:w-full'"
+      >
         <AppGalleryEditorialCell
           :image="beat.large.image"
           :index="beat.large.index"
