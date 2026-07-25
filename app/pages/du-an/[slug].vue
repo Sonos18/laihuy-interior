@@ -170,11 +170,11 @@ const trustStats: { icon: string, value: LocalizedText, label: LocalizedText }[]
 // --- Sticky in-page navigation (only sections that render) ------------------
 const navSections = computed(() => {
   const sections: { id: string, label: LocalizedText }[] = [
-    { id: 'overview', label: { vi: 'Tổng quan', en: 'Overview' } },
-    { id: 'facts', label: { vi: 'Thông tin', en: 'Facts' } }
+    { id: 'overview', label: { vi: 'Tổng quan', en: 'Overview' } }
   ]
   if (project.content?.challenge) sections.push({ id: 'challenge', label: { vi: 'Thách thức', en: 'Challenge' } })
   if (project.content?.solution) sections.push({ id: 'solution', label: { vi: 'Giải pháp', en: 'Solution' } })
+  sections.push({ id: 'facts', label: { vi: 'Thông tin', en: 'Facts' } })
   if (services.length) sections.push({ id: 'services', label: { vi: 'Dịch vụ', en: 'Services' } })
   if (allImages.length) sections.push({ id: 'gallery', label: { vi: 'Hình ảnh', en: 'Gallery' } })
   if (project.content?.experience || highlights.value.length) sections.push({ id: 'experience', label: { vi: 'Trải nghiệm', en: 'Experience' } })
@@ -382,49 +382,7 @@ usePageSeo({
       </div>
     </section>
 
-    <!-- 3 · Project facts ---------------------------------------------------->
-    <section
-      id="facts"
-      class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] bg-ink-50"
-    >
-      <div class="shell">
-        <div class="mb-10 max-w-2xl">
-          <p
-            v-reveal
-            class="eyebrow reveal"
-          >
-            {{ t({ vi: 'Thông tin dự án', en: 'Project facts' }) }}
-          </p>
-          <h2
-            v-reveal="80"
-            class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
-          >
-            {{ t({ vi: 'Những con số đã được xác thực', en: 'The verified essentials' }) }}
-          </h2>
-        </div>
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <article
-            v-for="(fact, index) in facts"
-            :key="t(fact.label)"
-            v-reveal="(index % 3) * 80"
-            class="reveal rounded-2xl border border-ink-200 bg-white p-6 transition-colors hover:border-wood-400"
-          >
-            <Icon
-              :name="fact.icon"
-              class="h-7 w-7 text-wood-500"
-            />
-            <p class="mt-4 text-xl font-black text-ink-950">
-              {{ fact.value }}
-            </p>
-            <p class="mt-1 text-xs font-bold uppercase tracking-[0.16em] text-ink-500">
-              {{ t(fact.label) }}
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4 · Challenge -------------------------------------------------------->
+    <!-- 3 · Challenge -------------------------------------------------------->
     <section
       v-if="project.content?.challenge"
       id="challenge"
@@ -454,7 +412,7 @@ usePageSeo({
       </div>
     </section>
 
-    <!-- 5 · Solution --------------------------------------------------------->
+    <!-- 4 · Solution --------------------------------------------------------->
     <section
       v-if="project.content?.solution"
       id="solution"
@@ -493,6 +451,48 @@ usePageSeo({
             :style="{ aspectRatio: `${leadImage.width} / ${leadImage.height}` }"
             img-class="rounded-2xl"
           />
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 · Project facts ---------------------------------------------------->
+    <section
+      id="facts"
+      class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] bg-ink-50"
+    >
+      <div class="shell">
+        <div class="mb-10 max-w-2xl">
+          <p
+            v-reveal
+            class="eyebrow reveal"
+          >
+            {{ t({ vi: 'Thông tin dự án', en: 'Project facts' }) }}
+          </p>
+          <h2
+            v-reveal="80"
+            class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
+          >
+            {{ t({ vi: 'Những con số đã được xác thực', en: 'The verified essentials' }) }}
+          </h2>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <article
+            v-for="(fact, index) in facts"
+            :key="t(fact.label)"
+            v-reveal="(index % 3) * 80"
+            class="reveal rounded-2xl border border-ink-200 bg-white p-6 transition-colors hover:border-wood-400"
+          >
+            <Icon
+              :name="fact.icon"
+              class="h-7 w-7 text-wood-500"
+            />
+            <p class="mt-4 text-xl font-black text-ink-950">
+              {{ fact.value }}
+            </p>
+            <p class="mt-1 text-xs font-bold uppercase tracking-[0.16em] text-ink-500">
+              {{ t(fact.label) }}
+            </p>
+          </article>
         </div>
       </div>
     </section>
