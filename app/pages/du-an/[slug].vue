@@ -47,6 +47,12 @@ const heroImage = computed<MediaImage>(() =>
 )
 const allImages: MediaImage[] = projectImages(project.mediaId, project.name)
 const leadImage = computed<MediaImage | undefined>(() => allImages[0])
+// A fourth gallery image (if the project has one) gives the Materials section a visual
+// anchor, the same editorial license `leadImage` already uses for Solution — it isn't
+// claimed to depict any one bullet in `content.materials`, just the project's palette.
+const materialsImage = computed<MediaImage | undefined>(() =>
+  allImages.length > 3 ? allImages[3] : undefined
+)
 const galleryGroups = projectGalleryGroups(project.mediaId, project.name)
 const hasGalleryGroups = galleryGroups.length > 0
 
@@ -709,6 +715,18 @@ usePageSeo({
           >
             {{ t({ vi: 'Bảng vật liệu', en: 'The material palette' }) }}
           </h2>
+          <div
+            v-if="materialsImage"
+            v-reveal="120"
+            class="reveal mt-8 overflow-hidden rounded-2xl"
+          >
+            <MediaImage
+              :image="materialsImage"
+              preset="card"
+              class="aspect-[16/10] w-full"
+              img-class="rounded-2xl"
+            />
+          </div>
           <ul class="mt-8 space-y-4">
             <li
               v-for="(material, index) in ta(project.content?.materials)"
