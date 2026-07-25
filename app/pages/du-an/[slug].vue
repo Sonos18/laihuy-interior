@@ -621,7 +621,7 @@ usePageSeo({
           name="fade"
           mode="out-in"
         >
-          <AppGalleryGrid
+          <AppGalleryEditorial
             :key="activeGalleryTab"
             :images="filteredGallery"
             selectable
