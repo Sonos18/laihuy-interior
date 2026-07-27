@@ -303,6 +303,29 @@
   --subnav-h: 3.5rem; /*  56px                                    */
 }
 
+/* Sub-nav chip tap target — WCAG 2.5.5 (44px). The visible pill renders 36px tall
+   (text-sm line box + py-2), which is the one control on the site below the 44px floor
+   the rest of it already meets (--nav-item-min-h).
+
+   Extended by a pseudo-element rather than by padding, because unlike `.footer-link`'s
+   pad-and-cancel these chips carry a VISIBLE background when active — padding would grow
+   the pill itself and the bar with it, which would also put the rendered sub-nav height
+   further out of step with --subnav-h (the token every scroll anchor on the page is
+   derived from). The overlay grows the hit area only: pill unchanged, bar unchanged,
+   token still honest. Chips are spaced horizontally, so the vertical extension cannot
+   create overlapping targets. */
+.subnav-chip {
+  position: relative;
+}
+
+.subnav-chip::after {
+  content: "";
+  position: absolute;
+  /* 36px + 2 × 4px = 44px */
+  inset-block: -4px;
+  inset-inline: 0;
+}
+
 /* Home's cover floor, tier 2 of 3. 22.5rem = 360px: below it the hero headline takes an
    extra wrap in EN (909.9px at 320 vs 794.1px at 360 — one --text-hero line), and that
    single wrap is the whole reason tier 1 exists. See --hero-min-h-home for the table. */
@@ -1395,6 +1418,37 @@
     line-height: 1.7;
   }
 
+  /* MEASURE — the one control for line length (§ reading comfort, 45–75 characters).
+     Measure was previously an accident of whichever `max-w-*` a column happened to inherit,
+     which is how the same 14px body ended up setting 30 characters per line inside a 258px
+     card and 91 inside a 672px column on /nha-xuong — a 3x spread at one type size, and the
+     91 is roughly double the comfortable maximum.
+
+     `ch` is the correct unit here because the constraint IS characters: it tracks the font
+     size, so a paragraph stays inside the band when the type scale moves. `min()` with 100%
+     keeps it a cap rather than a width — narrow columns are unaffected, so applying it is
+     always safe.
+
+     CALIBRATION — `ch` is NOT one character. It is the advance width of "0", a lining figure,
+     which in Inter is materially wider than the average lowercase glyph. Measured on this
+     site's Vietnamese copy, 1ch renders ~1.22 actual characters, so a naive `68ch` sets ~83
+     characters per line — past the cap it was meant to enforce. These values are therefore
+     derived from measurement, not from the target read as a unit:
+
+         56ch → ~68 characters   (body, ≤ 15px)
+         48ch → ~59 characters   (lead, ≥ 16px — larger type, tighter character target)
+
+     tests/e2e/typography.spec.ts T2 asserts the OUTCOME (≤ 75 rendered characters per line),
+     so if the typeface or the type scale changes and this calibration drifts, the gate fails
+     and these numbers get re-derived. Do not tune them by eye. */
+  .measure {
+    max-width: min(100%, 56ch);
+  }
+
+  .measure-lead {
+    max-width: min(100%, 48ch);
+  }
+
   /* Elegant underline animation for inline links. */
   .link-underline {
     background-image: linear-gradient(currentcolor, currentcolor);
@@ -1430,6 +1484,13 @@
   html.reveal-ready .reveal.is-visible {
     opacity: 1;
     transform: none;
+    /* Release the compositor layer once the animation has run. `will-change` above is a
+       PROMISE, not a style: it holds a dedicated layer for the element's whole life unless
+       something takes it back. `.is-visible` overrode opacity and transform but not this, so
+       every revealed element stayed promoted — 50+ permanent layers on the project detail
+       page, for an animation that fires once and never repeats (the observer unobserves on
+       intersect, see plugins/reveal.ts). Memory cost with zero benefit after first paint. */
+    will-change: auto;
   }
 
   /* Gentle one-time zoom-in for the hero image (image reveal). */

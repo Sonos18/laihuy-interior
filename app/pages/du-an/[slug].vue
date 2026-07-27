@@ -345,7 +345,7 @@ usePageSeo({
           v-for="section in navSections"
           :key="section.id"
           :href="`#${section.id}`"
-          class="shrink-0 rounded-full px-4 py-2 text-sm font-bold transition-colors"
+          class="subnav-chip shrink-0 rounded-full px-4 py-2 text-sm font-bold transition-colors"
           :class="activeSection === section.id
             ? 'bg-ink-950 text-white'
             : 'text-ink-500 hover:text-wood-600'"

@@ -696,7 +696,11 @@ usePageSeo({
                 class="h-5 w-5 shrink-0 text-wood-500 transition-transform duration-300 group-open:rotate-45"
               />
             </summary>
-            <p class="pb-5 text-sm leading-7 text-ink-600">
+            <!-- `.measure` caps line length at 68 characters. This answer sits in the 1.2fr
+                 column of a 1280px grid (~696px of content), which at 14px set 91 characters
+                 per line — the longest measure on the site and roughly double the comfortable
+                 maximum. The cap is a max-width, so the card itself is unchanged. -->
+            <p class="measure pb-5 text-sm leading-7 text-ink-600">
               {{ t(faq.answer) }}
             </p>
           </details>

@@ -7,6 +7,7 @@
 // CSS-var write belong to useHeaderState (§2, §26.1, §27). Forbidden knowledge (§26.1): the
 // current route, hero mode/atmosphere/focal, whether a hero exists, any page's DOM, and its own
 // height in pixels — it reads --header-h.
+import { company } from '~/data/company'
 import { navLinks, uiText } from '~/data/ui'
 
 const props = withDefaults(defineProps<{
@@ -128,18 +129,50 @@ watch(() => props.solid, value => setSolid(value))
         </div>
       </div>
 
-      <button
-        type="button"
-        class="chrome-trigger chrome-nav-color xl:hidden"
-        :aria-label="locale === 'vi' ? 'Mở menu' : 'Open menu'"
-        :aria-expanded="drawerOpen"
-        @click="emit('openMenu')"
-      >
-        <Icon
-          name="i-lucide-menu"
-          class="h-6 w-6"
-        />
-      </button>
+      <!-- Below `xl` the header carried a logo and a menu button and nothing else: the entire
+           `.chrome-right` group above is `hidden xl:flex`, so phone and CTA did not exist on
+           phone or tablet. On the longest page (/du-an/[slug], ~25 viewports at 390px) that
+           left roughly 24 viewports with no visible way to make contact — the conversion path
+           existed in code and was switched off for the devices most visitors use.
+
+           A PHONE, not the CTA. Three reasons, in order:
+             1. The CTA's copy and its 206px width are frozen (D.1) as a hard input to the
+                header overflow budget, and changing CTA copy requires a new ADR (D.3). At
+                390px the rail gives 342px of content; logo (80) + group gap (32) + 206 + 44
+                does not fit. A 44px icon does, with ~138px to spare.
+             2. §9 already places the phone at the drawer's foot on the grounds that "tapping a
+                phone number is the natural, expected act" on mobile. This surfaces that same
+                action one tap earlier; it does not introduce a new one.
+             3. It is not gated on scroll. `.chrome-actions` deliberately arrives at p ≥ 0.5
+                because the hero below carries the primary action — correct for desktop, but
+                the point here is PERSISTENCE. `chrome-nav-color` keeps it legible over both
+                the cover and the glass by the same colour-mix the menu trigger uses, so it
+                needs no state gating to stay readable. -->
+      <div class="flex items-center gap-1 xl:hidden">
+        <a
+          :href="`tel:${company.phone.replaceAll(' ', '')}`"
+          class="chrome-trigger chrome-nav-color"
+          :aria-label="locale === 'vi' ? `Gọi ${company.phone}` : `Call ${company.phone}`"
+        >
+          <Icon
+            name="i-lucide-phone"
+            class="h-5 w-5"
+          />
+        </a>
+
+        <button
+          type="button"
+          class="chrome-trigger chrome-nav-color"
+          :aria-label="locale === 'vi' ? 'Mở menu' : 'Open menu'"
+          :aria-expanded="drawerOpen"
+          @click="emit('openMenu')"
+        >
+          <Icon
+            name="i-lucide-menu"
+            class="h-6 w-6"
+          />
+        </button>
+      </div>
     </nav>
   </header>
 </template>

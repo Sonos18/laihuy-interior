@@ -477,7 +477,7 @@ usePageSeo({
           </h2>
           <p
             v-reveal="140"
-            class="reveal mt-4 max-w-2xl text-ink-600"
+            class="measure-lead reveal mt-4 text-ink-600"
           >
             {{ t({ vi: 'Đội ngũ kỹ thuật Lai Huy Interior sẽ rà soát hồ sơ, tư vấn vật liệu, tiến độ sản xuất và phương án triển khai phù hợp với ngân sách và mục tiêu vận hành dự án.', en: 'The Lai Huy Interior technical team will review your documents and advise on materials, production schedule, and a delivery plan that fits your budget and operational goals.' }) }}
           </p>

@@ -80,7 +80,9 @@ usePageSeo({
           <h2 class="mt-4 text-3xl font-black uppercase leading-tight text-ink-950 md:text-5xl">
             {{ t({ vi: 'Một đầu mối cho thiết kế, sản xuất và thi công', en: 'One accountable partner for design, production, and contracting' }) }}
           </h2>
-          <p class="mt-5 text-lg leading-8 text-ink-600">
+          <!-- `.measure-lead` — 18px across the full max-w-3xl (768px) set 89 characters per
+               line. Larger type needs a tighter character cap, not a looser one. -->
+          <p class="measure-lead mt-5 text-lg leading-8 text-ink-600">
             {{ t({ vi: 'Lai Huy Interior làm việc với chủ đầu tư, tổng thầu, kiến trúc sư và đơn vị vận hành để đưa bản vẽ thành sản phẩm thực tế, đúng vật liệu, đúng tiến độ và phù hợp ngân sách dự án.', en: 'Lai Huy Interior works with owners, contractors, architects, and operators to turn drawings into real products with controlled materials, schedule, and project budget.' }) }}
           </p>
         </div>

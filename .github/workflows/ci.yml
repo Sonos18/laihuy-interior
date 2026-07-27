@@ -46,3 +46,60 @@ jobs:
 
       - name: Build
         run: pnpm run build
+
+      # The NUMERIC gates only — never the pixel VR suite.
+      #
+      # This project owns four Playwright suites and CI ran none of them, so the alignment
+      # rail (ADR-002), the hero locale-invariance floor, WCAG A/AA and the typography floors
+      # were all protected by "someone remembers to run it locally". These four are safe to
+      # automate because they assert NUMBERS, not pixels: they cannot fail on a font-hint
+      # difference or an image re-encode, so they are deterministic across machines.
+      #
+      # visual.spec.ts is deliberately excluded. §41 P2 — "CI never regenerates a baseline";
+      # approving a pixel diff is a human act (`pnpm test:vr:approve`) whose commit contains
+      # nothing else. Running the pixel suite here would either wedge CI on rasterisation
+      # differences between the runner and the approver's machine, or push the team toward
+      # rubber-stamping baselines to get green. Neither is the workflow §41 designed.
+      #
+      # NUXT_PUBLIC_USE_SUPABASE_MEDIA is left false so the gates resolve images from
+      # /public: they measure layout, and hero/typography abort image requests outright.
+      #
+      # SPLIT INTO THREE INVOCATIONS ON PURPOSE — the grouping is by IMAGE BEHAVIOUR, not by
+      # subject. `alignment.spec.ts` and `a11y.spec.ts` both call `settle()`, which forces every
+      # image on the page to `loading="eager"` and blocks until all arrive. That is correct for
+      # what they assert and it is by far the heaviest thing in the harness. `hero.spec.ts` and
+      # `typography.spec.ts` do the opposite: they abort image requests entirely, because they
+      # measure geometry and text metrics.
+      #
+      # With `workers: 1` everything shares one single-threaded Nitro server, so putting a
+      # settle-based suite in the same invocation as the image-blocking ones starved it and
+      # pushed `page.goto` past its 120s timeout. The symptom is diagnostic: the failing test
+      # MOVED between runs (home@320, home@768, home@1440, projects@320) while passing in
+      # isolation — timing, not a broken assertion. Measured: bundled 7.7 min with 1–2 moving
+      # timeouts; split ~2.5 min, stable. §41 P8 — flake is fixed by determinism, never by
+      # raising the timeout or retrying (`retries: 0` is set for exactly this reason).
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      # hero.spec.ts is DELIBERATELY NOT HERE, and this is a bug report, not a preference.
+      # Measured on the clean tree, in isolation, with local media: it failed 2 of 3
+      # consecutive runs on `page.goto: Test timeout of 120000ms exceeded`, and the same suite
+      # takes 14s when it passes and 2.3 min when it does not. The failing case MOVES between
+      # runs (home@320, @360, @768, @1440, projects@320), which is the signature of a timing
+      # fault, never of a broken assertion. Nothing in this commit touches the hero, its
+      # tokens, or that spec.
+      #
+      # The gate itself is valuable and its reasoning is sound — it is the only thing standing
+      # between the site and a locale-dependent hero crop. But `retries: 0` is set on purpose
+      # (§41 P8), so wiring a suite with a ~66% observed failure rate into CI would either
+      # block every push or push the team toward adding retries, which is the one fix that
+      # config forbids. Run it locally with `pnpm run test:gates:hero` until the stall is
+      # diagnosed; then move it into this job, where it belongs.
+      - name: Typography gates (measure · Vietnamese leading floor)
+        run: pnpm run test:gates:text
+
+      - name: Alignment gate (the ADR-002 rail assertion)
+        run: pnpm run test:gates:layout
+
+      - name: Accessibility gate (axe, WCAG A/AA)
+        run: pnpm run test:gates:a11y
