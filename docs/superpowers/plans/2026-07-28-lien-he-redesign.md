@@ -1237,9 +1237,24 @@ test.describe('contact form', () => {
 Run: `npx playwright test --project=vr contact-form.spec.ts`
 Expected: 3 passed.
 
-If the `mailto:` route interception does not fire in Chromium, replace that line with
-`await page.addInitScript(() => { Object.defineProperty(window, 'location', { value: { ...window.location, set href(_v) {} } }) })`
-and note the reason in a comment. Do not delete the assertion.
+**Two things this task got wrong on the first attempt, both fixed in the shipped spec:**
+
+1. **No `mailto:` stub is needed.** `page.route` only intercepts http(s), so the planned
+   interception was a no-op — but Chromium has no mail handler registered in this environment,
+   so `window.location.href = 'mailto:…'` is silently ignored and the page survives. The
+   success state is assertable with no stub at all.
+
+2. **The tests must wait for hydration, and `settle()` does not do that.** `settle()` waits for
+   fonts and images; Vue can still be un-hydrated. A `fill()` that lands early writes to the DOM
+   only, and the first render after hydration restores the empty model — the form then submits
+   blank and *every* field reports "required". Worse, a `click()` that lands early is swallowed
+   permanently, so simply awaiting the result afterwards waits forever.
+
+   The fix is `submitEmptyAndWaitForVue(page)`, which **retries** an empty submit until the
+   alert appears, using only the app's public behaviour — no framework internals, no fixed
+   timeout (§41 P8). Every test starts from that all-invalid state, which also makes the second
+   test stronger: it now proves errors CLEAR when the fields are fixed, not just that they
+   appear. Verified deterministic over three consecutive full-file runs.
 
 - [ ] **Step 3: Commit**
 
