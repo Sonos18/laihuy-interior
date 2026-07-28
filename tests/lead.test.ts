@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { validateLead } from '../app/shared/lead/validate'
+import { buildMailtoUrl } from '../app/shared/lead/mailto'
 import type { LeadDraft } from '../app/shared/lead/types'
 
 const valid: LeadDraft = {
@@ -55,5 +56,58 @@ describe('validateLead', () => {
       email: 'emailFormat',
       message: 'required'
     })
+  })
+})
+
+describe('buildMailtoUrl', () => {
+  it('addresses the mail to the given recipient', () => {
+    const url = buildMailtoUrl(valid, 'vi', 'noithatlaihuy@gmail.com')
+
+    expect(url.startsWith('mailto:noithatlaihuy@gmail.com?')).toBe(true)
+  })
+
+  it('puts the project type in the Vietnamese subject', () => {
+    const url = buildMailtoUrl(valid, 'vi', 'to@example.com')
+    // `searchParams.get` decodes for us — decoding a second time throws on a literal `%`.
+    const subject = new URL(url).searchParams.get('subject') ?? ''
+
+    expect(subject).toBe('Yêu cầu tư vấn dự án - Thi công nội thất khách sạn')
+  })
+
+  it('switches the subject to English for the en locale', () => {
+    const url = buildMailtoUrl(valid, 'en', 'to@example.com')
+    // `searchParams.get` decodes for us — decoding a second time throws on a literal `%`.
+    const subject = new URL(url).searchParams.get('subject') ?? ''
+
+    expect(subject).toBe('Project consultation request - Thi công nội thất khách sạn')
+  })
+
+  it('falls back to the company name when no project type is chosen', () => {
+    const url = buildMailtoUrl({ ...valid, projectType: '' }, 'vi', 'to@example.com')
+    // `searchParams.get` decodes for us — decoding a second time throws on a literal `%`.
+    const subject = new URL(url).searchParams.get('subject') ?? ''
+
+    expect(subject).toBe('Yêu cầu tư vấn dự án - Lai Huy Interior')
+  })
+
+  it('lists every field in the body', () => {
+    const url = buildMailtoUrl(valid, 'vi', 'to@example.com')
+    const body = new URL(url).searchParams.get('body') ?? ''
+
+    expect(body).toContain('Họ tên: Nguyen Van A')
+    expect(body).toContain('Email: a@example.com')
+    expect(body).toContain('Điện thoại: +84 903 102 012')
+    expect(body).toContain('Loại dự án: Thi công nội thất khách sạn')
+    expect(body).toContain(valid.message)
+  })
+
+  it('percent-encodes characters that would break the URL', () => {
+    const url = buildMailtoUrl({ ...valid, message: 'Giá & tiến độ? 100%' }, 'vi', 'to@example.com')
+
+    // `&` and `%` are the two characters that would truncate or corrupt the query string.
+    expect(url).toContain('%26')
+    expect(url).toContain('100%25')
+    expect(url).not.toContain('Giá & tiến độ? 100%')
+    expect(new URL(url).searchParams.get('body')).toContain('Giá & tiến độ? 100%')
   })
 })

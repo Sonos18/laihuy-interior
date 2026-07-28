@@ -243,28 +243,31 @@ describe('buildMailtoUrl', () => {
 
   it('puts the project type in the Vietnamese subject', () => {
     const url = buildMailtoUrl(valid, 'vi', 'to@example.com')
-    const subject = decodeURIComponent(new URL(url).searchParams.get('subject') ?? '')
+    // `searchParams.get` decodes for us — decoding a second time throws on a literal `%`.
+    const subject = new URL(url).searchParams.get('subject') ?? ''
 
     expect(subject).toBe('Yêu cầu tư vấn dự án - Thi công nội thất khách sạn')
   })
 
   it('switches the subject to English for the en locale', () => {
     const url = buildMailtoUrl(valid, 'en', 'to@example.com')
-    const subject = decodeURIComponent(new URL(url).searchParams.get('subject') ?? '')
+    // `searchParams.get` decodes for us — decoding a second time throws on a literal `%`.
+    const subject = new URL(url).searchParams.get('subject') ?? ''
 
     expect(subject).toBe('Project consultation request - Thi công nội thất khách sạn')
   })
 
   it('falls back to the company name when no project type is chosen', () => {
     const url = buildMailtoUrl({ ...valid, projectType: '' }, 'vi', 'to@example.com')
-    const subject = decodeURIComponent(new URL(url).searchParams.get('subject') ?? '')
+    // `searchParams.get` decodes for us — decoding a second time throws on a literal `%`.
+    const subject = new URL(url).searchParams.get('subject') ?? ''
 
     expect(subject).toBe('Yêu cầu tư vấn dự án - Lai Huy Interior')
   })
 
   it('lists every field in the body', () => {
     const url = buildMailtoUrl(valid, 'vi', 'to@example.com')
-    const body = decodeURIComponent(new URL(url).searchParams.get('body') ?? '')
+    const body = new URL(url).searchParams.get('body') ?? ''
 
     expect(body).toContain('Họ tên: Nguyen Van A')
     expect(body).toContain('Email: a@example.com')
@@ -276,8 +279,11 @@ describe('buildMailtoUrl', () => {
   it('percent-encodes characters that would break the URL', () => {
     const url = buildMailtoUrl({ ...valid, message: 'Giá & tiến độ? 100%' }, 'vi', 'to@example.com')
 
+    // `&` and `%` are the two characters that would truncate or corrupt the query string.
+    expect(url).toContain('%26')
+    expect(url).toContain('100%25')
     expect(url).not.toContain('Giá & tiến độ? 100%')
-    expect(decodeURIComponent(new URL(url).searchParams.get('body') ?? '')).toContain('Giá & tiến độ? 100%')
+    expect(new URL(url).searchParams.get('body')).toContain('Giá & tiến độ? 100%')
   })
 })
 ```
