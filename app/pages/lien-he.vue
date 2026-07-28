@@ -131,9 +131,171 @@ usePageSeo({
       focal="50% 42%"
     />
 
-    <section class="section-y bg-white">
+    <section class="section-y bg-ink-50">
       <div class="shell">
-        <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div
+          data-testid="contact-primary"
+          class="grid gap-12 lg:grid-cols-[1fr_0.9fr]"
+        >
+          <div class="rounded-2xl border border-ink-200 bg-white p-6 md:p-8">
+            <p class="eyebrow">
+              {{ t(uiText.cta.quote24h) }}
+            </p>
+            <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
+              {{ t({ vi: 'Gửi yêu cầu tư vấn dự án', en: 'Send a project consultation request' }) }}
+            </h2>
+            <p
+              id="form-note"
+              class="mt-4 text-sm leading-6 text-ink-600"
+            >
+              {{ t({ vi: 'Biểu mẫu sẽ mở email trên thiết bị của bạn với nội dung đã điền sẵn. Website hiện chưa kết nối backend gửi form tự động.', en: 'This form opens your email app with a prepared message. The website does not use a fake backend submission.' }) }}
+            </p>
+
+            <form
+              class="mt-8 space-y-5"
+              aria-describedby="form-note"
+              @submit.prevent="submitForm"
+            >
+              <div class="grid gap-5 md:grid-cols-2">
+                <label class="block">
+                  <span class="text-sm font-bold text-ink-800">{{ t({ vi: 'Họ tên', en: 'Name' }) }}</span>
+                  <input
+                    v-model="form.name"
+                    type="text"
+                    required
+                    autocomplete="name"
+                    class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
+                    :placeholder="t({ vi: 'Tên của bạn', en: 'Your name' })"
+                  >
+                </label>
+                <label class="block">
+                  <span class="text-sm font-bold text-ink-800">{{ t(uiText.labels.phone) }}</span>
+                  <input
+                    v-model="form.phone"
+                    type="tel"
+                    required
+                    autocomplete="tel"
+                    class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
+                    placeholder="+84..."
+                  >
+                </label>
+              </div>
+
+              <div class="grid gap-5 md:grid-cols-2">
+                <label class="block">
+                  <span class="text-sm font-bold text-ink-800">{{ t(uiText.labels.email) }}</span>
+                  <input
+                    v-model="form.email"
+                    type="email"
+                    required
+                    autocomplete="email"
+                    class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
+                    placeholder="email@example.com"
+                  >
+                </label>
+                <label class="block">
+                  <span class="text-sm font-bold text-ink-800">{{ t({ vi: 'Loại dự án', en: 'Project type' }) }}</span>
+                  <select
+                    v-model="form.projectType"
+                    required
+                    class="mt-2 w-full rounded-2xl border border-ink-200 bg-white px-4 py-3 outline-none focus:border-wood-500"
+                  >
+                    <option value="">
+                      {{ t({ vi: 'Chọn loại dự án', en: 'Select project type' }) }}
+                    </option>
+                    <option
+                      v-for="type in projectTypes"
+                      :key="type"
+                      :value="type"
+                    >
+                      {{ type }}
+                    </option>
+                  </select>
+                </label>
+              </div>
+
+              <label class="block">
+                <span class="text-sm font-bold text-ink-800">{{ t({ vi: 'Thông tin công trình', en: 'Project information' }) }}</span>
+                <textarea
+                  v-model="form.message"
+                  rows="6"
+                  required
+                  class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
+                  :placeholder="t({ vi: 'Quy mô, số phòng, vật liệu mong muốn, tiến độ dự kiến...', en: 'Scale, room count, preferred materials, target schedule...' })"
+                />
+              </label>
+
+              <button
+                type="submit"
+                class="btn-dark w-full"
+              >
+                {{ t({ vi: 'Gửi yêu cầu qua email', en: 'Send request by email' }) }}
+              </button>
+
+              <!-- Submit opens the mail client rather than posting; announce it, and offer a call
+                   fallback for anyone without a configured mail app. -->
+              <p
+                class="sr-only"
+                role="status"
+                aria-live="polite"
+              >
+                {{ submitted ? t({ vi: 'Đang mở ứng dụng email với nội dung đã điền sẵn.', en: 'Opening your email app with the prepared message.' }) : '' }}
+              </p>
+              <p class="text-center text-sm text-ink-600">
+                {{ t({ vi: 'Không mở được email?', en: 'No email app?' }) }}
+                <a
+                  :href="`tel:${company.phone.replaceAll(' ', '')}`"
+                  class="font-bold text-wood-600 underline underline-offset-2 hover:text-wood-700"
+                >
+                  {{ t({ vi: 'Gọi', en: 'Call' }) }} {{ company.phone }}
+                </a>
+              </p>
+            </form>
+          </div>
+
+          <div>
+            <p class="eyebrow">
+              {{ t({ vi: 'Bản đồ', en: 'Map' }) }}
+            </p>
+            <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
+              {{ t({ vi: 'Văn phòng và nhà xưởng', en: 'Office and factory' }) }}
+            </h2>
+            <div class="mt-8 overflow-hidden rounded-2xl border border-ink-200 bg-white">
+              <iframe
+                :src="mapEmbedUrl"
+                :title="t({ vi: 'Bản đồ nhà xưởng Lai Huy Interior', en: 'Map to the Lai Huy Interior workshop' })"
+                class="h-80 w-full border-0"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                allowfullscreen
+              />
+            </div>
+            <div class="mt-6 space-y-4">
+              <a
+                v-for="address in company.addresses"
+                :key="t(address.label)"
+                :href="address.mapUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block rounded-2xl border border-ink-200 bg-white p-5"
+              >
+                <strong class="text-ink-950">{{ t(address.label) }}</strong>
+                <span class="mt-2 block text-sm leading-6 text-ink-600">
+                  {{ t(address.address) }}
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- The five info cards close the band. 64px / 80px off the form+map block: an
+             intra-band step, deliberately below the --section-py rhythm, because this is
+             not a section boundary. Five equal columns from --bp-xl; below that the long
+             Long Hậu address makes a five-up row too narrow to read (3 + 2 instead). -->
+        <div
+          data-testid="contact-cards"
+          class="mt-16 grid gap-5 md:mt-20 md:grid-cols-3 xl:grid-cols-5"
+        >
           <article
             v-for="card in contactCards"
             :key="card.title"
@@ -163,160 +325,6 @@ usePageSeo({
               {{ card.action }}
             </a>
           </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-y bg-ink-50">
-      <div class="shell grid gap-12 lg:grid-cols-[1fr_0.9fr]">
-        <div class="rounded-2xl border border-ink-200 bg-white p-6 md:p-8">
-          <p class="eyebrow">
-            {{ t(uiText.cta.quote24h) }}
-          </p>
-          <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
-            {{ t({ vi: 'Gửi yêu cầu tư vấn dự án', en: 'Send a project consultation request' }) }}
-          </h2>
-          <p
-            id="form-note"
-            class="mt-4 text-sm leading-6 text-ink-600"
-          >
-            {{ t({ vi: 'Biểu mẫu sẽ mở email trên thiết bị của bạn với nội dung đã điền sẵn. Website hiện chưa kết nối backend gửi form tự động.', en: 'This form opens your email app with a prepared message. The website does not use a fake backend submission.' }) }}
-          </p>
-
-          <form
-            class="mt-8 space-y-5"
-            aria-describedby="form-note"
-            @submit.prevent="submitForm"
-          >
-            <div class="grid gap-5 md:grid-cols-2">
-              <label class="block">
-                <span class="text-sm font-bold text-ink-800">{{ t({ vi: 'Họ tên', en: 'Name' }) }}</span>
-                <input
-                  v-model="form.name"
-                  type="text"
-                  required
-                  autocomplete="name"
-                  class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
-                  :placeholder="t({ vi: 'Tên của bạn', en: 'Your name' })"
-                >
-              </label>
-              <label class="block">
-                <span class="text-sm font-bold text-ink-800">{{ t(uiText.labels.phone) }}</span>
-                <input
-                  v-model="form.phone"
-                  type="tel"
-                  required
-                  autocomplete="tel"
-                  class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
-                  placeholder="+84..."
-                >
-              </label>
-            </div>
-
-            <div class="grid gap-5 md:grid-cols-2">
-              <label class="block">
-                <span class="text-sm font-bold text-ink-800">{{ t(uiText.labels.email) }}</span>
-                <input
-                  v-model="form.email"
-                  type="email"
-                  required
-                  autocomplete="email"
-                  class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
-                  placeholder="email@example.com"
-                >
-              </label>
-              <label class="block">
-                <span class="text-sm font-bold text-ink-800">{{ t({ vi: 'Loại dự án', en: 'Project type' }) }}</span>
-                <select
-                  v-model="form.projectType"
-                  required
-                  class="mt-2 w-full rounded-2xl border border-ink-200 bg-white px-4 py-3 outline-none focus:border-wood-500"
-                >
-                  <option value="">
-                    {{ t({ vi: 'Chọn loại dự án', en: 'Select project type' }) }}
-                  </option>
-                  <option
-                    v-for="type in projectTypes"
-                    :key="type"
-                    :value="type"
-                  >
-                    {{ type }}
-                  </option>
-                </select>
-              </label>
-            </div>
-
-            <label class="block">
-              <span class="text-sm font-bold text-ink-800">{{ t({ vi: 'Thông tin công trình', en: 'Project information' }) }}</span>
-              <textarea
-                v-model="form.message"
-                rows="6"
-                required
-                class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
-                :placeholder="t({ vi: 'Quy mô, số phòng, vật liệu mong muốn, tiến độ dự kiến...', en: 'Scale, room count, preferred materials, target schedule...' })"
-              />
-            </label>
-
-            <button
-              type="submit"
-              class="btn-dark w-full"
-            >
-              {{ t({ vi: 'Gửi yêu cầu qua email', en: 'Send request by email' }) }}
-            </button>
-
-            <!-- Submit opens the mail client rather than posting; announce it, and offer a call
-                 fallback for anyone without a configured mail app. -->
-            <p
-              class="sr-only"
-              role="status"
-              aria-live="polite"
-            >
-              {{ submitted ? t({ vi: 'Đang mở ứng dụng email với nội dung đã điền sẵn.', en: 'Opening your email app with the prepared message.' }) : '' }}
-            </p>
-            <p class="text-center text-sm text-ink-600">
-              {{ t({ vi: 'Không mở được email?', en: 'No email app?' }) }}
-              <a
-                :href="`tel:${company.phone.replaceAll(' ', '')}`"
-                class="font-bold text-wood-600 underline underline-offset-2 hover:text-wood-700"
-              >
-                {{ t({ vi: 'Gọi', en: 'Call' }) }} {{ company.phone }}
-              </a>
-            </p>
-          </form>
-        </div>
-
-        <div>
-          <p class="eyebrow">
-            {{ t({ vi: 'Bản đồ', en: 'Map' }) }}
-          </p>
-          <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
-            {{ t({ vi: 'Văn phòng và nhà xưởng', en: 'Office and factory' }) }}
-          </h2>
-          <div class="mt-8 overflow-hidden rounded-2xl border border-ink-200 bg-white">
-            <iframe
-              :src="mapEmbedUrl"
-              :title="t({ vi: 'Bản đồ nhà xưởng Lai Huy Interior', en: 'Map to the Lai Huy Interior workshop' })"
-              class="h-80 w-full border-0"
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              allowfullscreen
-            />
-          </div>
-          <div class="mt-6 space-y-4">
-            <a
-              v-for="address in company.addresses"
-              :key="t(address.label)"
-              :href="address.mapUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="block rounded-2xl border border-ink-200 bg-white p-5"
-            >
-              <strong class="text-ink-950">{{ t(address.label) }}</strong>
-              <span class="mt-2 block text-sm leading-6 text-ink-600">
-                {{ t(address.address) }}
-              </span>
-            </a>
-          </div>
         </div>
       </div>
     </section>
