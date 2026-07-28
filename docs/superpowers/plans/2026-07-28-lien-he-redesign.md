@@ -134,9 +134,9 @@ export type LeadErrors = Partial<Record<LeadField, LeadErrorCode>>
 
 export type LeadFailureReason = 'network' | 'server' | 'unknown'
 
-export type LeadResult =
-  | { ok: true }
-  | { ok: false, reason: LeadFailureReason }
+// One line, not a multi-line union: @stylistic/operator-linebreak rejects a trailing `=`
+// with the members indented beneath it.
+export type LeadResult = { ok: true } | { ok: false, reason: LeadFailureReason }
 
 /**
  * Where a lead goes. The whole point of this indirection: swapping mailto for a Supabase
