@@ -1352,6 +1352,6 @@ No gaps.
 
 - **2026-07-28, layout B2.** The first version of this plan put phone/email/working-hours in a `position: sticky` rail beside the form, and Band 2 held only the two addresses in two columns. It now has no rail: Band 1 is a single full-measure column, and all five contact facts sit in Band 2's three columns, after the form. Two things improved — the sticky-overflow risk (spec Risk #3) disappeared along with the rail, and the section the user asked about keeps its five facts in one place instead of being split across the page. The "hoặc gọi ngay {phone}" line under the heading still covers the fast-call need the rail was serving.
 
-**Open decision carried forward**
+**Resolved during execution**
 
-Task 6 pins the location photograph to `workshopMedia` `1.webp` (the workshop signage shot, which `nha-xuong.vue` already uses as `facadeImage`). If a different frame reads better in a full-width band, swap the filename — no other change is needed.
+The location photograph was pinned to `1.webp` (the signage shot `nha-xuong.vue` uses as `facadeImage`). Executing Task 6 showed why that is wrong here: `1.webp` is the only **portrait** asset in the workshop set (1771×2552), so at the full shell width it rendered **1844px tall** — a whole viewport of one photograph, which read as a blank band. Swapped to `3.webp` (2560×1581, the wide view of the production hall): correct proportion for a full-width band, and a better proof of capacity than a sign. Alt text updated to match. No other change was needed, as the note predicted.
