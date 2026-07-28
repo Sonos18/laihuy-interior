@@ -255,11 +255,12 @@
      spacing inside a group must read as tighter than spacing between groups, or the
      eye crosses a gap expecting new information and finds the same thought continued.
 
-       12px  within a pair / list item   --footer-item-gap
-       24px  between contact pairs        (item-gap doubled by `dd + dt`)
+        8px  within a pair / list item   --footer-item-gap
+       16px  between contact pairs        (item-gap doubled by `dd + dt`)
        32px  within the masthead group    --footer-masthead-gap
        48px  between blocks               --footer-col-gap
-       80/112px  footer -> page           --footer-py / -md
+       56/72px   page -> footer           --footer-pt / -md
+       80/112px  footer -> page bottom    --footer-py / -md
 
      --footer-py exceeds body spacing DELIBERATELY (§10): the finale should have more
      air than an ordinary section, which the old py-16 denied it. The multiplier is the
@@ -268,6 +269,13 @@
      144 silently stretched the ratio to 1.64x. Re-derive this if --section-py moves. */
   --footer-py: 5rem; /*  80px  < md  — 1.25x --section-py (64)   */
   --footer-py-md: 7rem; /* 112px  ≥ md  — 1.27x --section-py (88)   */
+  /* The TOP edge is not symmetric with the bottom, and should not be: the band above the
+     footer already ends on its own --section-py, so the gap the eye reads there is the SUM
+     of the two, while the bottom pad is the last space on the page and answers to nothing.
+     Matching them spent 112px opening a region whose own first element is a 64px logo.
+     Held BELOW --footer-py so the finale still closes with more air than it opens with. */
+  --footer-pt: 2.5rem; /*  56px  < md  — 0.88x --section-py (64)   */
+  --footer-pt-md: 3.5rem; /*  72px  ≥ md  — 0.82x --section-py (88)   */
   /* INSIDE the masthead only: logo -> statement -> action are one group. At 4rem this
      was identical to the block gaps below, so the brand block's own lines were spaced
      like section boundaries — 128px of whitespace inside a single group. */
@@ -279,10 +287,20 @@
      STRUCTURAL rhythm (masthead / column / meta) but not its INTRA-column one —
      the space between list items, between contact label/value pairs, and between
      the two masthead actions. §10's decision table does not change that rhythm,
-     so the unambiguous reading is "preserve today's value": 0.75rem is
-     transcribed from the `space-y-3` / `gap-3` this footer already shipped.
-     §29 needs this row added. */
-  --footer-item-gap: 0.75rem;
+     so the unambiguous reading was "preserve today's value": 0.75rem, transcribed
+     from the `space-y-3` / `gap-3` this footer already shipped.
+     §29 needs this row added.
+
+     Now 0.5rem. At 0.75rem plus a 1.7 body-sm leading each list row occupied ~36px for
+     one 14px word, so the nav and services columns read as menus with a blank line
+     between every entry rather than as an index. See --type-body-sm-leading (the two
+     move together) and `.footer-link`'s padding, which is capped at half this value. */
+  --footer-item-gap: 0.5rem;
+  /* Eyebrow -> its own list. Deliberately NOT --footer-item-gap: when the two matched at
+     0.5rem, the contact column's wood eyebrow and its first uppercase --footer-label sat
+     20px apart and read as one two-line heading. Held above the item gap so the label
+     still binds to the list below it while staying a level of the hierarchy. */
+  --footer-eyebrow-gap: 0.75rem;
   --logo-h-footer: 3.5rem; /*  56px OPTICAL  < md                      */
   --logo-h-footer-md: 4rem; /*  64px OPTICAL  ≥ md                      */
   --footer-surface: var(--color-ink-950);
@@ -295,7 +313,11 @@
   --type-eyebrow-weight: 600;
   --type-eyebrow-track: 0.22em;
   --type-body-sm-size: 0.875rem;
-  --type-body-sm-leading: 1.7;
+  /* 1.5, not 1.7. This scale step is footer-only (`.footer-link` / `.footer-value`), and
+     it is not running prose: it sets single-line links, a two-line opening-hours value and
+     the wrapped addresses, where 1.7 is a paragraph leading applied to a list. 1.5 x 14px
+     = 21px, still comfortably above the 1.4 floor short lines need. */
+  --type-body-sm-leading: 1.5;
   --type-meta-sm-size: 0.8125rem;
   --type-meta-sm-leading: 1.6;
 
@@ -1114,14 +1136,16 @@
        The old py-16 (64px) gave the finale LESS air than an ordinary body
        section, and that single fact is why it read as a bottom bar. What matters
        is the MULTIPLIER (~1.27x), not the literal value — see the token.
+       The TOP edge takes its own token: the section above the footer contributes its
+       own --section-py, so the visible opening gap is the sum of both. See --footer-pt.
        §33.2 — notch safety on the bottom edge. */
-    padding-top: var(--footer-py);
+    padding-top: var(--footer-pt);
     padding-bottom: max(var(--footer-py), env(safe-area-inset-bottom));
   }
 
   @media (min-width: 48rem) {
     .app-footer {
-      padding-top: var(--footer-py-md);
+      padding-top: var(--footer-pt-md);
       padding-bottom: max(var(--footer-py-md), env(safe-area-inset-bottom));
     }
   }
@@ -1228,7 +1252,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--footer-item-gap);
-    margin-top: var(--footer-item-gap);
+    margin-top: var(--footer-eyebrow-gap);
   }
 
   .footer-link,
@@ -1240,13 +1264,29 @@
 
   .footer-link {
     transition: color var(--dur-hover) var(--ease-editorial);
-    /* Tap target — WCAG 2.5.8 (AA, 24px min). The footer links render at ~17px line-height,
-       below the threshold. This pads the hit area to ~29px and cancels the padding with an
+    /* BLOCK, at fit-content width. As an inline element the link could not set its own row:
+       the height came from the `li`/`dd` STRUT (inherited 16px at normal leading = 24px), so
+       --type-body-sm-leading was decorative on every single-line row and the rows sat 3px
+       taller than the type asked for. Inline padding is also invisible to layout, which put
+       the hit area at 24.8px — passing WCAG 2.5.8 by 0.8px, and only by accident.
+
+       As a block the anchor IS the row: 21px of line-height + 2 x 4px padding = a 29px
+       target, pulled back to 21px of flow by the negative margin. fit-content keeps the
+       target on the words rather than stretching it across the column. */
+    display: block;
+    width: fit-content;
+    /* Tap target — WCAG 2.5.8 (AA, 24px min). The footer links render at 21px line-height,
+       below the threshold. This pads the hit area to 29px and cancels the padding with an
        equal negative margin, so the flow position (and the column's tuned --footer-item-gap
-       rhythm, §10) is unchanged to the pixel — the target grows, the layout does not. Not
-       pushed to 44px (AAA): at this list density the padded boxes would overlap. */
-    padding-block: 0.375rem;
-    margin-block: -0.375rem;
+       rhythm, §10) is unchanged to the pixel — the target grows, the layout does not.
+
+       4px, halved with --footer-item-gap (0.75rem -> 0.5rem): the padding is bounded by
+       HALF the item gap, or consecutive links overlap and a tap near a boundary hits the
+       wrong one. At the 8px gap that ceiling is 4px, which is exactly this value — the
+       targets now meet without overlapping. Raising the padding (or 44px AAA) requires
+       raising the gap by twice as much, which is the density this change removed. */
+    padding-block: 0.25rem;
+    margin-block: -0.25rem;
   }
 
   .footer-link:hover {
