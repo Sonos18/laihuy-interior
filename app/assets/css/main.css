@@ -259,7 +259,7 @@
        16px  between contact pairs        (item-gap doubled by `dd + dt`)
        32px  within the masthead group    --footer-masthead-gap
        48px  between blocks               --footer-col-gap
-       56/72px   page -> footer           --footer-pt / -md
+       40/56px   page -> footer           --footer-pt / -md
        80/112px  footer -> page bottom    --footer-py / -md
 
      --footer-py exceeds body spacing DELIBERATELY (§10): the finale should have more
@@ -274,8 +274,8 @@
      of the two, while the bottom pad is the last space on the page and answers to nothing.
      Matching them spent 112px opening a region whose own first element is a 64px logo.
      Held BELOW --footer-py so the finale still closes with more air than it opens with. */
-  --footer-pt: 2.5rem; /*  56px  < md  — 0.88x --section-py (64)   */
-  --footer-pt-md: 3.5rem; /*  72px  ≥ md  — 0.82x --section-py (88)   */
+  --footer-pt: 2.5rem; /*  40px  < md  — 0.63x --section-py (64)   */
+  --footer-pt-md: 3.5rem; /*  56px  ≥ md  — 0.64x --section-py (88)   */
   /* INSIDE the masthead only: logo -> statement -> action are one group. At 4rem this
      was identical to the block gaps below, so the brand block's own lines were spaced
      like section boundaries — 128px of whitespace inside a single group. */
