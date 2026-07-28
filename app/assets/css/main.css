@@ -321,26 +321,6 @@
   --type-meta-sm-size: 0.8125rem;
   --type-meta-sm-leading: 1.6;
 
-  /* ── L2 · Form controls (consumed by /lien-he) ──────────────────────────── */
-  /* The contact form is the only place the site takes input, and its five controls
-     shipped as the same six utility classes copy-pasted inline five times. One class,
-     one token row.
-
-     NO ERROR COLOUR. §22.1 forbids a component inventing a hue, and an error state is
-     not worth opening the palette for one page: an invalid field is marked by a heavier
-     ink-950 border, a message directly beneath it, and aria-invalid. That satisfies
-     WCAG 1.4.1 (colour is never the sole carrier) by construction rather than by luck. */
-  --field-radius: 0.75rem;
-  --field-px: 1rem;
-  --field-py: 0.75rem;
-  --field-border: var(--color-ink-200);
-  /* wood-600 = --accent-light. wood-500 measures 4.29–4.31:1 on these surfaces and fails
-     the AA floor — the same reason `.eyebrow` is wood-600. */
-  --field-border-focus: var(--color-wood-600);
-  --field-border-error: var(--color-ink-950);
-  --field-border-w: 1px;
-  --field-border-w-error: 2px;
-
   /* ── L3 · Project sub-nav (page-owned, header-coupled) ──────────────── */
   --subnav-h: 3.5rem; /*  56px                                    */
 }
@@ -1433,42 +1413,6 @@
 
   .industrial-card {
     @apply rounded-2xl border border-ink-200 bg-white p-6 transition-colors hover:border-wood-400;
-  }
-
-  .field-group {
-    @apply block;
-  }
-
-  .field-label {
-    @apply mb-2 block text-sm font-bold text-ink-800;
-  }
-
-  .field {
-    width: 100%;
-    border: var(--field-border-w) solid var(--field-border);
-    border-radius: var(--field-radius);
-    padding: var(--field-py) var(--field-px);
-    background-color: #fff;
-    color: var(--color-ink-950);
-    transition: border-color var(--dur-hover) var(--ease-editorial);
-  }
-
-  /* A colour swap alone is not a focus indicator — it disappears for anyone who cannot
-     distinguish the two browns, and it was the previous `outline-none focus:border-wood-500`
-     treatment. The ring is the indicator; the border change is decoration on top of it. */
-  .field:focus-visible {
-    outline: 2px solid var(--field-border-focus);
-    outline-offset: 2px;
-    border-color: var(--field-border-focus);
-  }
-
-  .field[aria-invalid="true"] {
-    border-width: var(--field-border-w-error);
-    border-color: var(--field-border-error);
-  }
-
-  .field-error {
-    @apply mt-2 text-sm font-semibold text-ink-950;
   }
 
   .fade-enter-active,

@@ -75,8 +75,8 @@ Hiện 3 trang có canonical + JSON-LD, 5 trang chưa. Chuẩn cần đạt cho 
 | 3.5 | ✅ **Done (2026-07-23)** — `autocomplete` name/tel/email, `aria-describedby` disclosure, status region `aria-live`, bỏ `resize-none` | | 2h |
 | 3.6 | ✅ **Done (2026-07-23)** — `aria-current` (đã có), thêm `aria-pressed` + vùng `aria-live` đếm kết quả cho filter du-an & gallery nha-xuong | | 1h |
 | 3.7 | ✅ **Done (2026-07-23)** — footer links 17px→29px, footer social 21px→35px (padding + negative margin, layout không đổi). Lang pills đã 44px sẵn. Contact card CTA 20px đạt 2.5.8 qua ngoại lệ spacing (target đơn lẻ) | | 1h |
-| 3.8 | ↩️ **Superseded (2026-07-28)** — iframe Google Maps đã được gỡ khỏi `/lien-he` trong đợt redesign trang liên hệ. Thay bằng ảnh nhà xưởng thật + 2 địa chỉ kèm link "Mở Google Maps". Lý do: embed bên thứ ba nặng, là template tell, và phải mask trong VR suite; ảnh xưởng chứng minh năng lực tốt hơn ô bản đồ. Xem `docs/superpowers/specs/2026-07-28-lien-he-redesign-design.md` | | — |
-| 3.9 | ✅ **Done (2026-07-23)**, mở rộng 2026-07-28 — disclosure mailto + status `aria-live` + fallback "Gọi {số}". Đợt redesign bổ sung: validation song ngữ, `aria-invalid` + `aria-describedby`, focus về field lỗi đầu tiên, trạng thái success/error, và interface `LeadAdapter` để chốt backend sau | `lien-he.vue`, `app/shared/lead/` | 2h |
+| 3.8 | ✅ **Done (2026-07-23)** — Google Maps embed iframe (keyless, lazy-load), thay ảnh tĩnh | | 1h |
+| 3.9 | ✅ **Done (2026-07-23)** — disclosure mailto (đã có) + status `aria-live` khi submit + fallback "Gọi {số}" dưới nút gửi | `lien-he.vue` | 2h |
 | 3.10 | ⏳ **CHỜ INPUT** — trust signals cần logo khách/testimonial/số liệu từ business | chờ Phase 1 input | 1d |
 | 3.11 | ✅ **Done (2026-07-23)** — xóa `TemplateMenu.vue` | | 15m |
 | 3.12 | ✅ **Automated done (2026-07-23)** — `tests/e2e/a11y.spec.ts` (axe-core, WCAG A/AA, 8 route, chỉ Chromium): 0 violation. color-contrast tắt trong gate vì flaky trên gradient hero (verify riêng qua scrim contract + full axe pass). **Follow-up:** keyboard traversal + NVDA/VoiceOver smoke thủ công | | 0.5d |

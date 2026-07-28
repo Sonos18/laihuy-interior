@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { company } from '~/data/company'
 import { uiText } from '~/data/ui'
-import { projectMedia, workshopMedia } from '~/media/catalog.generated'
+import { projectMedia } from '~/media/catalog.generated'
 import { withAlt } from '~/media/project-media'
-import type { MediaAsset } from '~/shared/media/types'
-import type { LeadDraft, LeadField } from '~/shared/lead/types'
 
-const { t, ta, locale } = useLanguage()
+const { t, ta } = useLanguage()
 
 // Hero: an inviting residential living room — see docs/hero-art-direction.md §10
 // (Contact · Conversation). Compact height, then flows into the contact form.
@@ -18,52 +16,44 @@ const heroImage = withAlt(heroAsset, {
   en: 'Living room in the Chi Ly garden villa project'
 })
 
-// A real photograph of the workshop, not a map tile: "we have a factory" is the claim this
-// page has to support, and the building makes it better than a grey embed did. Same
-// filename lookup `nha-xuong.vue` uses, so section assignments are not tied to array order.
-const workshopByFile: Record<string, MediaAsset> = Object.fromEntries(
-  workshopMedia.map(asset => [asset.path.slice(asset.path.lastIndexOf('/') + 1), asset])
-)
-
-// 3.webp, not the 1.webp signage shot `nha-xuong.vue` uses: that frame is the ONLY portrait
-// asset in the workshop set (1771x2552), and at the full shell width it renders 1844px tall —
-// a whole viewport of one photograph. This is the wide view of the production hall (2560x1581),
-// which is both the right proportion for a full-width band and the better proof of capacity.
-const locationImage = withAlt(workshopByFile['3.webp'] as MediaAsset, {
-  vi: 'Toàn cảnh xưởng sản xuất nội thất của Lai Huy Interior',
-  en: 'Wide view of the Lai Huy Interior production hall'
-})
-
-const form = reactive<LeadDraft>({
+const form = reactive({
   name: '',
-  phone: '',
   email: '',
+  phone: '',
   projectType: '',
   message: ''
 })
 
-// One id per field, so every <label for>, aria-describedby and focus() call refers to the
-// same element without hand-written ids that could collide with the header or footer.
-const fieldIds: Record<LeadField, string> = {
-  name: useId(),
-  phone: useId(),
-  email: useId(),
-  projectType: useId(),
-  message: useId()
-}
-
-const errorId = (field: LeadField) => `${fieldIds[field]}-error`
-
-const { status, errors, firstInvalidField, submit, reset } = useLeadSubmission()
-
-// Resolve the error CODE to a sentence here rather than indexing `uiText.form.errors` in
-// the template: vue-tsc does not narrow `errors.name` to a defined key across the `v-if`
-// boundary, so the inline form fails typecheck. One function, five call sites, no cast.
-const errorText = (field: LeadField) => {
-  const code = errors.value[field]
-
-  return code ? t(uiText.form.errors[code]) : ''
-}
+const contactCards = computed(() => [
+  ...company.addresses.map(address => ({
+    icon: 'i-lucide-map-pin',
+    title: t(address.label),
+    lines: [t(address.address)],
+    href: address.mapUrl,
+    action: t(uiText.labels.openMaps)
+  })),
+  {
+    icon: 'i-lucide-phone',
+    title: t(uiText.labels.phone),
+    lines: [company.phone],
+    href: `tel:${company.phone.replaceAll(' ', '')}`,
+    action: t(uiText.labels.callNow)
+  },
+  {
+    icon: 'i-lucide-mail',
+    title: t(uiText.labels.email),
+    lines: [company.email],
+    href: `mailto:${company.email}`,
+    action: t(uiText.labels.sendEmail)
+  },
+  {
+    icon: 'i-lucide-clock',
+    title: t(uiText.labels.workingHours),
+    lines: ta(company.workingHours),
+    href: '',
+    action: ''
+  }
+])
 
 const projectTypes = computed(() => [
   t({ vi: 'Thi công nội thất khách sạn', en: 'Hotel interior contracting' }),
@@ -73,22 +63,32 @@ const projectTypes = computed(() => [
   t({ vi: 'Gia công theo bản vẽ / xuất khẩu', en: 'Production from drawings / export' })
 ])
 
-const telHref = computed(() => `tel:${company.phone.replaceAll(' ', '')}`)
+// Keyless Google Maps embed pointed at the factory address (the vi string is what Maps
+// resolves). No API key or backend needed; the iframe lazy-loads below the fold.
+const mapEmbedUrl = computed(() => {
+  const address = t(company.addresses[1]?.address ?? company.addresses[0]!.address)
+  return `https://maps.google.com/maps?q=${encodeURIComponent(address)}&z=15&output=embed`
+})
 
-const onSubmit = async () => {
-  const outcome = await submit(form, locale.value)
+const submitted = ref(false)
 
-  // Moving focus to the first bad field is what makes the error state usable without a
-  // mouse; the summary alert alone leaves a keyboard user hunting.
-  if (outcome === 'invalid' && firstInvalidField.value) {
-    await nextTick()
-    document.getElementById(fieldIds[firstInvalidField.value])?.focus()
-  }
-}
+const submitForm = () => {
+  submitted.value = true
+  const subject = t({
+    vi: `Yêu cầu tư vấn dự án - ${form.projectType || 'Lai Huy Interior'}`,
+    en: `Project consultation request - ${form.projectType || 'Lai Huy Interior'}`
+  })
+  const body = [
+    `${t({ vi: 'Họ tên', en: 'Name' })}: ${form.name}`,
+    `Email: ${form.email}`,
+    `${t({ vi: 'Điện thoại', en: 'Phone' })}: ${form.phone}`,
+    `${t({ vi: 'Loại dự án', en: 'Project type' })}: ${form.projectType}`,
+    '',
+    `${t({ vi: 'Nội dung', en: 'Message' })}:`,
+    form.message
+  ].join('\n')
 
-const startOver = () => {
-  reset()
-  Object.assign(form, { name: '', phone: '', email: '', projectType: '', message: '' })
+  window.location.href = `mailto:${company.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 }
 
 const seoTitle = computed(() => t(company.seo.contact.title))
@@ -131,162 +131,109 @@ usePageSeo({
       focal="50% 42%"
     />
 
-    <!-- Band 1 — the request. The form is the page: it is the first thing under the hero, it
-         gets the full measure, and it is not wrapped in a card. A white card on a white section
-         is an outline that carries no information; the fields have their own borders and that
-         is the boundary. Contact facts live in Band 2, below — this band is one job only. -->
     <section class="section-y bg-white">
       <div class="shell">
-        <div class="max-w-3xl">
+        <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <article
+            v-for="card in contactCards"
+            :key="card.title"
+            class="industrial-card"
+          >
+            <Icon
+              :name="card.icon"
+              class="h-7 w-7 text-wood-500"
+            />
+            <h2 class="mt-5 text-xl font-black text-ink-950">
+              {{ card.title }}
+            </h2>
+            <p
+              v-for="line in card.lines"
+              :key="line"
+              class="mt-2 text-sm leading-6 text-ink-600"
+            >
+              {{ line }}
+            </p>
+            <a
+              v-if="card.href"
+              :href="card.href"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-5 inline-flex text-sm font-bold text-wood-600"
+            >
+              {{ card.action }}
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-y bg-ink-50">
+      <div class="shell grid gap-12 lg:grid-cols-[1fr_0.9fr]">
+        <div class="rounded-2xl border border-ink-200 bg-white p-6 md:p-8">
           <p class="eyebrow">
             {{ t(uiText.cta.quote24h) }}
           </p>
-          <h2 class="text-section-title mt-4 font-black uppercase text-ink-950">
-            {{ t(uiText.form.heading) }}
+          <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
+            {{ t({ vi: 'Gửi yêu cầu tư vấn dự án', en: 'Send a project consultation request' }) }}
           </h2>
-          <p class="mt-4 max-w-2xl text-base leading-7 text-ink-600">
-            {{ t(uiText.form.intro) }}
-          </p>
-
-          <!-- Band 2 carries the phone number too, but it sits after the whole form. Many
-               visitors would rather call than type; this line puts that one step from the
-               heading at every viewport. -->
-          <p class="mt-3 text-base text-ink-600">
-            {{ t(uiText.form.orCall) }}
-            <a
-              :href="telHref"
-              class="font-bold text-wood-600 underline underline-offset-2 hover:text-wood-700"
-            >{{ company.phone }}</a>
-          </p>
-
-          <!-- SUCCESS — the form is replaced, not merely annotated: leaving a filled form on
-               screen next to a "sent" message invites a second submission. -->
-          <div
-            v-if="status === 'success'"
-            class="mt-10 rounded-2xl border border-ink-200 bg-ink-50 p-6 md:p-8"
-            role="status"
+          <p
+            id="form-note"
+            class="mt-4 text-sm leading-6 text-ink-600"
           >
-            <h3 class="text-xl font-black text-ink-950">
-              {{ t(uiText.form.successHeading) }}
-            </h3>
-            <p class="mt-3 text-sm leading-6 text-ink-600">
-              {{ t(uiText.form.successBody) }}
-            </p>
-            <button
-              type="button"
-              class="btn-outline mt-6"
-              @click="startOver"
-            >
-              {{ t(uiText.form.successReset) }}
-            </button>
-          </div>
+            {{ t({ vi: 'Biểu mẫu sẽ mở email trên thiết bị của bạn với nội dung đã điền sẵn. Website hiện chưa kết nối backend gửi form tự động.', en: 'This form opens your email app with a prepared message. The website does not use a fake backend submission.' }) }}
+          </p>
 
-          <!-- `novalidate`: validation is ours. Without it the browser's own bubble fires
-               first, in the browser's language rather than the site's, and our bilingual
-               messages never render. -->
           <form
-            v-else
-            class="mt-10 space-y-6"
-            novalidate
-            @submit.prevent="onSubmit"
+            class="mt-8 space-y-5"
+            aria-describedby="form-note"
+            @submit.prevent="submitForm"
           >
-            <div
-              v-if="firstInvalidField"
-              class="rounded-2xl border-2 border-ink-950 px-5 py-4 text-sm font-semibold text-ink-950"
-              role="alert"
-            >
-              {{ t(uiText.form.errorSummary) }}
-            </div>
-
-            <div class="grid gap-6 md:grid-cols-2">
-              <div class="field-group">
-                <label
-                  class="field-label"
-                  :for="fieldIds.name"
-                >{{ t(uiText.form.name) }}</label>
+            <div class="grid gap-5 md:grid-cols-2">
+              <label class="block">
+                <span class="text-sm font-bold text-ink-800">{{ t({ vi: 'Họ tên', en: 'Name' }) }}</span>
                 <input
-                  :id="fieldIds.name"
                   v-model="form.name"
                   type="text"
+                  required
                   autocomplete="name"
-                  class="field"
-                  :placeholder="t(uiText.form.namePlaceholder)"
-                  :aria-invalid="errors.name ? 'true' : undefined"
-                  :aria-describedby="errors.name ? errorId('name') : undefined"
+                  class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
+                  :placeholder="t({ vi: 'Tên của bạn', en: 'Your name' })"
                 >
-                <p
-                  v-if="errors.name"
-                  :id="errorId('name')"
-                  class="field-error"
-                >
-                  {{ errorText('name') }}
-                </p>
-              </div>
-
-              <div class="field-group">
-                <label
-                  class="field-label"
-                  :for="fieldIds.phone"
-                >{{ t(uiText.labels.phone) }}</label>
+              </label>
+              <label class="block">
+                <span class="text-sm font-bold text-ink-800">{{ t(uiText.labels.phone) }}</span>
                 <input
-                  :id="fieldIds.phone"
                   v-model="form.phone"
                   type="tel"
+                  required
                   autocomplete="tel"
-                  class="field"
-                  :placeholder="t(uiText.form.phonePlaceholder)"
-                  :aria-invalid="errors.phone ? 'true' : undefined"
-                  :aria-describedby="errors.phone ? errorId('phone') : undefined"
+                  class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
+                  placeholder="+84..."
                 >
-                <p
-                  v-if="errors.phone"
-                  :id="errorId('phone')"
-                  class="field-error"
-                >
-                  {{ errorText('phone') }}
-                </p>
-              </div>
+              </label>
             </div>
 
-            <div class="grid gap-6 md:grid-cols-2">
-              <div class="field-group">
-                <label
-                  class="field-label"
-                  :for="fieldIds.email"
-                >{{ t(uiText.labels.email) }}</label>
+            <div class="grid gap-5 md:grid-cols-2">
+              <label class="block">
+                <span class="text-sm font-bold text-ink-800">{{ t(uiText.labels.email) }}</span>
                 <input
-                  :id="fieldIds.email"
                   v-model="form.email"
                   type="email"
+                  required
                   autocomplete="email"
-                  class="field"
-                  :placeholder="t(uiText.form.emailPlaceholder)"
-                  :aria-invalid="errors.email ? 'true' : undefined"
-                  :aria-describedby="errors.email ? errorId('email') : undefined"
+                  class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
+                  placeholder="email@example.com"
                 >
-                <p
-                  v-if="errors.email"
-                  :id="errorId('email')"
-                  class="field-error"
-                >
-                  {{ errorText('email') }}
-                </p>
-              </div>
-
-              <div class="field-group">
-                <label
-                  class="field-label"
-                  :for="fieldIds.projectType"
-                >{{ t(uiText.form.projectType) }}</label>
+              </label>
+              <label class="block">
+                <span class="text-sm font-bold text-ink-800">{{ t({ vi: 'Loại dự án', en: 'Project type' }) }}</span>
                 <select
-                  :id="fieldIds.projectType"
                   v-model="form.projectType"
-                  class="field"
-                  :aria-invalid="errors.projectType ? 'true' : undefined"
-                  :aria-describedby="errors.projectType ? errorId('projectType') : undefined"
+                  required
+                  class="mt-2 w-full rounded-2xl border border-ink-200 bg-white px-4 py-3 outline-none focus:border-wood-500"
                 >
                   <option value="">
-                    {{ t(uiText.form.projectTypePlaceholder) }}
+                    {{ t({ vi: 'Chọn loại dự án', en: 'Select project type' }) }}
                   </option>
                   <option
                     v-for="type in projectTypes"
@@ -296,184 +243,79 @@ usePageSeo({
                     {{ type }}
                   </option>
                 </select>
-                <p
-                  v-if="errors.projectType"
-                  :id="errorId('projectType')"
-                  class="field-error"
-                >
-                  {{ errorText('projectType') }}
-                </p>
-              </div>
+              </label>
             </div>
 
-            <div class="field-group">
-              <label
-                class="field-label"
-                :for="fieldIds.message"
-              >{{ t(uiText.form.message) }}</label>
+            <label class="block">
+              <span class="text-sm font-bold text-ink-800">{{ t({ vi: 'Thông tin công trình', en: 'Project information' }) }}</span>
               <textarea
-                :id="fieldIds.message"
                 v-model="form.message"
                 rows="6"
-                class="field"
-                :placeholder="t(uiText.form.messagePlaceholder)"
-                :aria-invalid="errors.message ? 'true' : undefined"
-                :aria-describedby="errors.message ? errorId('message') : undefined"
+                required
+                class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
+                :placeholder="t({ vi: 'Quy mô, số phòng, vật liệu mong muốn, tiến độ dự kiến...', en: 'Scale, room count, preferred materials, target schedule...' })"
               />
-              <p
-                v-if="errors.message"
-                :id="errorId('message')"
-                class="field-error"
-              >
-                {{ errorText('message') }}
-              </p>
-            </div>
-
-            <!-- The hero says "gửi bản vẽ, BOQ" and the form has no file input. Rather than
-                 build upload infrastructure for a destination that is not chosen yet, say
-                 where drawings should go. -->
-            <p class="text-sm leading-6 text-ink-600">
-              {{ t(uiText.form.attachmentNote) }}
-              <a
-                :href="`mailto:${company.email}`"
-                class="font-bold text-wood-600 underline underline-offset-2 hover:text-wood-700"
-              >{{ company.email }}</a>
-            </p>
+            </label>
 
             <button
               type="submit"
-              class="btn-dark w-full md:w-auto"
-              :disabled="status === 'submitting'"
+              class="btn-dark w-full"
             >
-              {{ status === 'submitting' ? t(uiText.form.submitting) : t(uiText.form.submit) }}
+              {{ t({ vi: 'Gửi yêu cầu qua email', en: 'Send request by email' }) }}
             </button>
 
-            <div
-              v-if="status === 'error'"
-              class="rounded-2xl border-2 border-ink-950 px-5 py-4"
-              role="alert"
+            <!-- Submit opens the mail client rather than posting; announce it, and offer a call
+                 fallback for anyone without a configured mail app. -->
+            <p
+              class="sr-only"
+              role="status"
+              aria-live="polite"
             >
-              <p class="text-sm font-bold text-ink-950">
-                {{ t(uiText.form.failureHeading) }}
-              </p>
-              <p class="mt-2 text-sm leading-6 text-ink-600">
-                {{ t(uiText.form.failureBody) }}
-                <a
-                  :href="telHref"
-                  class="font-bold text-wood-600 underline underline-offset-2 hover:text-wood-700"
-                >{{ t(uiText.form.call) }} {{ company.phone }}</a>
-              </p>
-            </div>
-
-            <p class="text-sm leading-6 text-ink-600">
-              {{ t(uiText.form.mailtoNote) }}
+              {{ submitted ? t({ vi: 'Đang mở ứng dụng email với nội dung đã điền sẵn.', en: 'Opening your email app with the prepared message.' }) : '' }}
+            </p>
+            <p class="text-center text-sm text-ink-600">
+              {{ t({ vi: 'Không mở được email?', en: 'No email app?' }) }}
+              <a
+                :href="`tel:${company.phone.replaceAll(' ', '')}`"
+                class="font-bold text-wood-600 underline underline-offset-2 hover:text-wood-700"
+              >
+                {{ t({ vi: 'Gọi', en: 'Call' }) }} {{ company.phone }}
+              </a>
             </p>
           </form>
         </div>
-      </div>
-    </section>
 
-    <!-- Band 2 — where we are and how to reach us. Replaces BOTH the five contact cards and
-         the map column. Every fact those cards carried is still here; what changed is that
-         they are grouped by KIND (two locations, one channel column) instead of being five
-         identical boxes in a grid that could never hold five evenly. The two addresses now
-         appear once on this page instead of three times, and the proof that there is a real
-         factory is a photograph of it. -->
-    <section class="section-y bg-ink-50">
-      <div class="shell">
-        <p class="eyebrow">
-          {{ t({ vi: 'Địa điểm', en: 'Locations' }) }}
-        </p>
-        <h2 class="text-section-title mt-4 font-black uppercase text-ink-950">
-          {{ t({ vi: 'Văn phòng và nhà xưởng', en: 'Office and factory' }) }}
-        </h2>
-
-        <!-- Natural aspect ratio via inline style, no crop — the pattern `nha-xuong.vue:322`
-             already uses for this exact photograph. The site does not crop photographs. -->
-        <MediaImage
-          :image="locationImage"
-          preset="full"
-          class="mt-10 w-full"
-          :style="{ aspectRatio: `${locationImage.width} / ${locationImage.height}` }"
-          img-class="rounded-2xl"
-        />
-
-        <!-- Three groups, three columns, no empty cell at any breakpoint. There is no 2-column
-             step on purpose: three groups across two columns re-creates the ragged row this
-             replaces. Below lg they simply stack. -->
-        <div class="mt-10 grid gap-10 lg:grid-cols-3">
-          <dl
-            v-for="address in company.addresses"
-            :key="t(address.label)"
-          >
-            <dt class="eyebrow">
-              {{ t(address.label) }}
-            </dt>
-            <dd class="mt-3 text-base leading-7 text-ink-700">
-              {{ t(address.address) }}
-            </dd>
-            <dd class="mt-3">
-              <a
-                :href="address.mapUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-sm font-bold text-wood-600 underline underline-offset-2 hover:text-wood-700"
-              >
-                {{ t(uiText.labels.openMaps) }}
-              </a>
-            </dd>
-          </dl>
-
-          <!-- The third column: the three facts the phone/email/hours cards used to carry,
-               as label/value pairs. Same vocabulary as the footer's contact column, so the
-               page does not invent a second way to present the same three things — and no
-               icons, which is the idiom main.css:1256 removed from the footer. -->
-          <div>
-            <p class="eyebrow">
-              {{ t(uiText.labels.contact) }}
-            </p>
-            <p class="mt-3 text-base font-bold leading-6 text-ink-950">
-              {{ t(uiText.form.responsePromise) }}
-            </p>
-
-            <dl class="mt-6 space-y-5">
-              <div>
-                <dt class="text-xs font-semibold uppercase tracking-[0.22em] text-ink-500">
-                  {{ t(uiText.labels.phone) }}
-                </dt>
-                <dd class="mt-2">
-                  <a
-                    :href="telHref"
-                    class="text-base font-bold text-ink-950 hover:text-wood-600"
-                  >{{ company.phone }}</a>
-                </dd>
-              </div>
-
-              <div>
-                <dt class="text-xs font-semibold uppercase tracking-[0.22em] text-ink-500">
-                  {{ t(uiText.labels.email) }}
-                </dt>
-                <dd class="mt-2">
-                  <a
-                    :href="`mailto:${company.email}`"
-                    class="break-all text-base text-ink-700 hover:text-wood-600"
-                  >{{ company.email }}</a>
-                </dd>
-              </div>
-
-              <div>
-                <dt class="text-xs font-semibold uppercase tracking-[0.22em] text-ink-500">
-                  {{ t(uiText.labels.workingHours) }}
-                </dt>
-                <dd class="mt-2 text-base text-ink-700">
-                  <span
-                    v-for="line in ta(company.workingHours)"
-                    :key="line"
-                    class="block"
-                  >{{ line }}</span>
-                </dd>
-              </div>
-            </dl>
+        <div>
+          <p class="eyebrow">
+            {{ t({ vi: 'Bản đồ', en: 'Map' }) }}
+          </p>
+          <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
+            {{ t({ vi: 'Văn phòng và nhà xưởng', en: 'Office and factory' }) }}
+          </h2>
+          <div class="mt-8 overflow-hidden rounded-2xl border border-ink-200 bg-white">
+            <iframe
+              :src="mapEmbedUrl"
+              :title="t({ vi: 'Bản đồ nhà xưởng Lai Huy Interior', en: 'Map to the Lai Huy Interior workshop' })"
+              class="h-80 w-full border-0"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen
+            />
+          </div>
+          <div class="mt-6 space-y-4">
+            <a
+              v-for="address in company.addresses"
+              :key="t(address.label)"
+              :href="address.mapUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="block rounded-2xl border border-ink-200 bg-white p-5"
+            >
+              <strong class="text-ink-950">{{ t(address.label) }}</strong>
+              <span class="mt-2 block text-sm leading-6 text-ink-600">
+                {{ t(address.address) }}
+              </span>
+            </a>
           </div>
         </div>
       </div>
