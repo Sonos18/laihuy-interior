@@ -118,12 +118,19 @@ export async function settle(page: Page) {
  *     double rAF is the same device, for the same reason, as the load-bearing one at
  *     useHeaderState.ts:327-329.
  *
- *  3. SETTLEMENT. Anything that writes later — the footer IntersectionObserver (§6.2) — is caught
- *     by requiring two consecutive identical samples. `waitForFunction` polls on rAF, so two equal
- *     readings ARE two consecutive frames.
+ *  3. SETTLEMENT. Two consecutive identical samples of every value the machine writes — scrollY,
+ *     --header-p, data-chrome-state, --header-shift. `waitForFunction` polls on rAF, so two equal
+ *     readings ARE two consecutive frames. This covers the one late writer that moves none of the
+ *     first three: the footer IntersectionObserver's reveal/hide path (§6.2), which writes only
+ *     --header-shift.
  *
- * No production constant is duplicated here: the helper waits for the machine to stop moving
- * rather than predicting where it should stop.
+ * Step 3 is a QUIESCENCE check, not a correctness one, and on its own it would settle happily on
+ * a wrong state — a header frozen in COVER is perfectly stable. It is deliberately ignorant of
+ * what the right answer is, which is why no production constant (P_END_CAP, ACTION_IN) is
+ * duplicated here. Correctness is asserted where it belongs and cannot be self-fulfilling:
+ * step 1 fails loudly if the machine never takes over, and visual.spec.ts asserts
+ * data-chrome-state="nav" before it captures. This helper answers "has it stopped moving?";
+ * the spec answers "did it stop in the right place?".
  */
 export async function scrollTo(page: Page, y: number) {
   await page.waitForFunction(
@@ -147,9 +154,14 @@ export async function scrollTo(page: Page, y: number) {
       const header = document.querySelector('header')
       if (!header) return false
 
+      // --header-shift is read from documentElement, not the header: writeShift() writes it
+      // there deliberately (§22.3 makes it PUBLIC so the sub-nav can move in lockstep). Omitting
+      // it would leave the footer IntersectionObserver's reveal/hide path — the one late writer
+      // that moves neither --header-p nor data-chrome-state — outside this check entirely.
       const sample = `${Math.round(window.scrollY)}:`
         + `${getComputedStyle(header).getPropertyValue('--header-p').trim()}:`
-        + `${header.dataset.chromeState}`
+        + `${header.dataset.chromeState}:`
+        + `${getComputedStyle(document.documentElement).getPropertyValue('--header-shift').trim()}`
 
       const store = window as unknown as { __headerSample?: string }
       const previous = store.__headerSample
