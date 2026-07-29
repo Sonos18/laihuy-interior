@@ -25,7 +25,7 @@
     "test:gates:ci": "pnpm run test:gates:text && pnpm run test:gates:layout && pnpm run test:gates:a11y",
     "test:gates:text": "playwright test --project=vr typography.spec.ts",
     "test:gates:hero": "playwright test --project=vr hero.spec.ts",
-    "test:gates:layout": "playwright test --project=vr alignment.spec.ts",
+    "test:gates:layout": "playwright test --project=vr alignment.spec.ts contact-layout.spec.ts",
     "test:gates:a11y": "playwright test --project=vr a11y.spec.ts",
     "test:gates:all": "playwright test gates.spec.ts alignment.spec.ts",
     "vitals": "node scripts/verify/vitals.mjs",

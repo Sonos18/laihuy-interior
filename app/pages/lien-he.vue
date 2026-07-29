@@ -289,9 +289,10 @@ usePageSeo({
         </div>
 
         <!-- The five info cards close the band. 64px / 80px off the form+map block: an
-             intra-band step, deliberately below the --section-py rhythm, because this is
-             not a section boundary. Five equal columns from --bp-xl; below that the long
-             Long Hậu address makes a five-up row too narrow to read (3 + 2 instead). -->
+             intra-band step, sitting at or just below the --section-py rhythm (64/80 here
+             against 64/88 for --section-py), because this is not a section boundary. Five
+             equal columns from --bp-xl; below that the long Long Hậu address makes a
+             five-up row too narrow to read (3 + 2 instead). -->
         <div
           data-testid="contact-cards"
           class="mt-16 grid gap-5 md:mt-20 md:grid-cols-3 xl:grid-cols-5"
@@ -305,9 +306,9 @@ usePageSeo({
               :name="card.icon"
               class="h-7 w-7 text-wood-500"
             />
-            <h2 class="mt-5 text-xl font-black text-ink-950">
+            <h3 class="mt-5 text-xl font-black text-ink-950">
               {{ card.title }}
-            </h2>
+            </h3>
             <p
               v-for="line in card.lines"
               :key="line"

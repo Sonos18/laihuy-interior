@@ -23,6 +23,7 @@
 
 1. **Cards merge into the `bg-ink-50` band.** The surface behind the cards changes from white to `ink-50`; the cards themselves stay white with their existing border, so they gain definition and now match the white form panel and white map panel that already sit on `ink-50`. The page still ends on `ink-50` into the footer, exactly as today. The alternative — a separate white band — cannot deliver 64–80px without either a hard colour edge directly under the form or a page-local override of the global `.section-y` rhythm.
 2. **Five columns begin at `xl` (1280px), not `lg` (1024px).** At 1440px each card is ~240px wide and at 1280px ~227px (~179px of text after `p-6`), which fits the 78-character Long Hậu office address in about four lines. At 1024px a card would be ~176px (~128px of text), pushing that address to roughly six lines and dragging every card in the row taller. 1280px is also this codebase's declared desktop breakpoint (`--bp-xl`, `main.css:120`, which notes "`lg` is NOT one").
+3. **The three `contact-header-scrolled-*.png` baselines changed too, and that is correct.** `HEADER_CLIP_H = 260` (`tests/e2e/helpers.ts:25`) extends 100px past the 160px scrim (`app/assets/css/main.css:599`), so the scrolled-header clip includes the first sliver of page content at `SCROLLED_Y = 600`. Reordering the sections changed what lands in that sliver. The measured diff was 773 differing pixels, all within y 223..259 — zero in the nav (y 0..88) and zero in the scrim. The header chrome itself is pixel-identical; the three `contact-header-scrolled-*.png` baselines were re-approved (commit `fc1cbac`), with human sign-off.
 
 ## File Structure
 
@@ -32,7 +33,7 @@
 | `tests/e2e/contact-layout.spec.ts` | Create | Geometry gate: DOM order, column counts per viewport, equal widths, 64/80px separation, rail alignment |
 | `tests/e2e/visual.spec.ts-snapshots/contact-{390,768,1440}-{vr,vr-edge,vr-firefox}-win32.png` | Regenerate | Approved visual baselines for the new layout |
 
-Only three `contact-*` full-page baselines per browser change. `contact-header-scrolled-*.png` must **not** change — the edit is entirely below the header strip.
+Only three `contact-*` full-page baselines per browser change. `contact-header-scrolled-*.png` was expected not to change since the edit is entirely below the header strip — that premise turned out to be false; see Decision 3.
 
 ---
 
@@ -342,7 +343,7 @@ Expected: build completes and `.output/server/index.mjs` exists.
 pnpm test:vr
 ```
 
-Expected: `contact @ 390`, `contact @ 768`, `contact @ 1440` fail with a diff. `contact header @ 1440` and all 28 other shots pass.
+Expected: `contact @ 390`, `contact @ 768`, `contact @ 1440` fail with a diff, and the three `contact-header-scrolled-*` shots also fail — see Decision 3 for why that is expected, not a regression.
 
 Two notes so you do not chase ghosts: the header-strip tests at 1440 have a known pre-existing flake in this harness (see commit `109a1c0` and the S214 session record) — if a *non-contact* header strip fails, re-run that single test in isolation before treating it as a regression. And the contact page's Google Maps iframe is masked in `visual.spec.ts:30`, so live map tiles are not part of the comparison.
 
@@ -360,7 +361,7 @@ The `-g "contact @"` filter matches the three full-page tests and excludes `cont
 git status --short tests/e2e/visual.spec.ts-snapshots/
 ```
 
-Expected: nine modified `contact-{390,768,1440}-{vr,vr-edge,vr-firefox}-win32.png`. If `contact-header-scrolled-*.png` appears, the header strip moved — that is a regression, not an approval; investigate before committing.
+Expected: twelve modified files — nine `contact-{390,768,1440}-{vr,vr-edge,vr-firefox}-win32.png` plus the three `contact-header-scrolled-*.png` (see Decision 3: the scrolled-header clip picks up a sliver of the reordered content below the scrim, not a moved header).
 
 - [ ] **Step 5: Re-run the suites clean**
 
@@ -391,4 +392,10 @@ git commit -m "test(vr): approve the /lien-he baselines for the reordered card b
 | 64–80px between the blocks | Task 1 separation tests (64 @ 390, 80 @ 1440) |
 | Same content container as the rest of the page | Task 1 `cards share the page rail` |
 | Card design, icons, text, colours, interactions unchanged | Task 2 Step 3 re-inserts the `<article>` verbatim; `.industrial-card` in `main.css:1414` is not edited |
-| Nothing global changed | `git diff --stat` across the branch touches only `app/pages/lien-he.vue`, `tests/e2e/contact-layout.spec.ts`, and nine PNG baselines |
+| Nothing global changed | `git diff --stat` across the branch touches only `app/pages/lien-he.vue`, `tests/e2e/contact-layout.spec.ts`, and twelve PNG baselines |
+
+## Follow-ups (out of scope, recorded not fixed)
+
+1. **Duplicate addresses.** The two address links under the map (`app/pages/lien-he.vue:273-287`) and cards 1–2 render the same `company.addresses` data ~80px apart in one band. Pre-existing redundancy already noted in `docs/archive/content-audit.md:160`; the reorder made it visible. The human decided to keep both for now.
+2. **Card action links don't align across the five-up row.** `.industrial-card` is not a flex column, so there is no `mt-auto` to pin the action link to the bottom; the tall office card leaves visible dead space in cards 3–5. Fixing it means touching `.industrial-card`, which this plan forbids.
+3. **Header-strip VR flake.** `scrollTo` (`tests/e2e/helpers.ts:98-101`) fires `window.scrollTo` then waits a fixed 250ms with no assertion that the header reached NAVIGATION state, so header-strip captures intermittently record the unscrolled hero frame. Reproduced on `careers header` and `about header` too — it is harness-wide and pre-existing. The durable fix is a `waitForFunction` on the header's resolved state rather than a fixed wait.

@@ -27,8 +27,8 @@ async function rowShape(page: Page): Promise<number[]> {
   }, CARDS)
 }
 
-async function open(page: Page, width: number, height = 900) {
-  await page.setViewportSize({ width, height })
+async function open(page: Page, width: number) {
+  await page.setViewportSize({ width, height: 900 })
   await page.goto('/lien-he', { waitUntil: 'load' })
   await settle(page)
 }
