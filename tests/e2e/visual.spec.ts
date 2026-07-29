@@ -42,6 +42,12 @@ test.describe('scrolled state — header strip', () => {
       await settle(page)
       await scrollTo(page, SCROLLED_Y)
 
+      // The strip is only meaningful in NAVIGATION (§13 I6). Asserting the state BEFORE the
+      // capture is what stops the one failure this shot cannot self-detect: a chrome frozen in
+      // COVER produces a frame that is stable — so the stability retry passes it — and merely
+      // wrong, which `--update-snapshots` would then enshrine as the baseline (§41 P8).
+      await expect(page.locator('header')).toHaveAttribute('data-chrome-state', 'nav')
+
       await expect(page).toHaveScreenshot(`${p.name}-header-scrolled.png`, {
         clip: { x: 0, y: 0, width: 1440, height: HEADER_CLIP_H },
         maxDiffPixelRatio: 0.001

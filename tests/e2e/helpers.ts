@@ -95,7 +95,68 @@ export async function settle(page: Page) {
   await page.waitForTimeout(300)
 }
 
+/**
+ * Drive the page to `y` and WAIT for the header state machine to finish reacting to it.
+ *
+ * Every wait here is an assertion; none is a sleep. The previous implementation fired
+ * `window.scrollTo` and slept 250ms, which asserts nothing — it only hopes the machine has both
+ * hydrated and reacted by the time it returns. That is the shape of defect §41 P8 exists to
+ * outlaw: when the hope is wrong the frame is stable but WRONG (chrome frozen in COVER —
+ * transparent bar, no CTA), so `toHaveScreenshot`'s stability retry cannot see it and
+ * `--update-snapshots` would enshrine it.
+ *
+ * The three steps mirror how the machine actually works:
+ *
+ *  1. HYDRATION. `useHeaderState.register()` is what starts observing scroll, and it deletes the
+ *     `data-chrome` pre-hydration guard at that same moment (§34.2, set by the inline script in
+ *     app.vue). While the attribute is present the chrome is frozen in its SSR state and a scroll
+ *     means nothing to it, so the absence of the attribute is the machine's own "I am driving now".
+ *
+ *  2. REACTION. `onScroll` does no work inline — it schedules a rAF and `update()` writes
+ *     `--header-p` on the next frame. A scroll event is dispatched before that frame's rAF
+ *     callbacks, so awaiting TWO frames guarantees both the event and the write have run. The
+ *     double rAF is the same device, for the same reason, as the load-bearing one at
+ *     useHeaderState.ts:327-329.
+ *
+ *  3. SETTLEMENT. Anything that writes later — the footer IntersectionObserver (§6.2) — is caught
+ *     by requiring two consecutive identical samples. `waitForFunction` polls on rAF, so two equal
+ *     readings ARE two consecutive frames.
+ *
+ * No production constant is duplicated here: the helper waits for the machine to stop moving
+ * rather than predicting where it should stop.
+ */
 export async function scrollTo(page: Page, y: number) {
-  await page.evaluate(scrollY => window.scrollTo(0, scrollY), y)
-  await page.waitForTimeout(250)
+  await page.waitForFunction(
+    () => !document.documentElement.dataset.chrome,
+    undefined,
+    { timeout: 30_000 }
+  )
+
+  await page.evaluate((scrollY) => {
+    // Cleared with the scroll so a sample memoised by an earlier call cannot satisfy step 3.
+    delete (window as unknown as { __headerSample?: string }).__headerSample
+    window.scrollTo(0, scrollY)
+  }, y)
+
+  await page.evaluate(() => new Promise<void>((resolve) => {
+    requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+  }))
+
+  await page.waitForFunction(
+    () => {
+      const header = document.querySelector('header')
+      if (!header) return false
+
+      const sample = `${Math.round(window.scrollY)}:`
+        + `${getComputedStyle(header).getPropertyValue('--header-p').trim()}:`
+        + `${header.dataset.chromeState}`
+
+      const store = window as unknown as { __headerSample?: string }
+      const previous = store.__headerSample
+      store.__headerSample = sample
+      return previous === sample
+    },
+    undefined,
+    { timeout: 30_000 }
+  )
 }
