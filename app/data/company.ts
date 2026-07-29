@@ -189,6 +189,31 @@ export const company = {
       'Project quality control'
     ]
   } satisfies LocalizedArray,
+  /* The footer's trust layer. NOT new claims: every entry is a phrase this company already
+     publishes about itself, lifted verbatim in meaning from `seo.home.description` below
+     ("xưởng trực tiếp, kiểm soát chất lượng, thi công toàn quốc" / "own factory, in-house QC,
+     nationwide") and from `footerServices` above. Discrete strings because a footer strip cannot
+     render a sentence, not because anything here is newly asserted.
+
+     The line that governs this field is the one at the top of this file: fields stay empty until
+     authored with authentic content, never fabricated. A fifth signal — a construction warranty —
+     was requested and deliberately NOT added: nothing in this repository states that such a
+     warranty exists, and a footer is the last place a business should discover it is promising
+     something nobody authored. Add it here only when someone can point at the policy. */
+  trustSignals: {
+    vi: [
+      'Xưởng sản xuất trực tiếp',
+      'Thiết kế & sản xuất đồng bộ',
+      'Kiểm soát chất lượng',
+      'Thi công toàn quốc'
+    ],
+    en: [
+      'Own production factory',
+      'Design and production in-house',
+      'In-house quality control',
+      'Nationwide installation'
+    ]
+  } satisfies LocalizedArray,
   seo: {
     home: {
       title: {
