@@ -796,6 +796,113 @@ long addresses — promoting locations out is the structural fix, so the symptom
 `ink-900 → ink-950` vertical gradient at the footer's top edge makes the dark arrive as
 *depth* rather than a slab. One gradient; the footer's entire motion and rendering budget.
 
+### 10.2 Phase 10 — information architecture, four zones
+
+Phase 9 fixed the footer's *content*. It did not fix the footer's *shape*: the region ended up
+with six things competing to be looked at first, and a reader with no path through a block
+experiences it as length. This section supersedes §10 and §10.1 on **structure only** — palette,
+type scale, the `<dl>` idiom, the one-hairline rule, the zero-shadow rule and the
+purely-presentational component contract (§26.3, §30.2) are unchanged.
+
+**Four zones, one reading order.** Logo → CTA → index → locations → trust → copyright.
+
+| # | Zone | Rule |
+|---|---|---|
+| 1 | **Brand** | Logo, statement, ONE action. **Nothing sits beside it.** No second column, no trust column, no metrics |
+| 2 | **Index** | Navigation · Services · Contact, beneath the one hairline. **Unequal columns** — contact is the anchor |
+| 3 | **Where we are** | The two addresses and the trust strip, bound as ONE region by `--footer-group-gap` |
+| 4 | **Bottom bar** | Copyright, legal (prepared), social — one baseline, left-flush |
+
+| Decision | Phase 9 | Phase 10 | Why |
+|---|---|---|---|
+| Trust signals | right half of the brand band (`.footer-cover`) | **closing strip in zone 3** | The argument for the cover grid was that it cost no height. True, and beside the point: the cost was *attention*. The band the eye reads before deciding whether to keep reading offered it two destinations, so the claim and its evidence competed instead of following one another. Below the addresses the strip confirms them |
+| Index columns | `repeat(3, 1fr)` | **`1fr 0.9fr 1.3fr` at `lg`+**, equal thirds below | Equal cells for unequal content assert that the three columns rank the same — a navigation link carried the authority of the phone number. Applied at `md` it backfires: services drops to 171px, four of five entries wrap, and the band is sized by the *quietest* column (+59px). Hierarchy by width needs width to spend |
+| Navigation list | single file, 7 links | **two sub-columns, every breakpoint** | 268px against 195px and 160px beside it: the least important content in the footer sized the whole band. Column-major fill halves it to ~131px. This is what pays for the trust strip, and it is the honest way to lower navigation's priority — no link loses contrast |
+| Working hours | 14px muted | **14px full-strength** | Completes the contact ladder: 16px white (actionable channels) → 14px white (the context that qualifies them) → 14px muted (everything else). The column reads louder than its neighbours without dimming a single link elsewhere |
+| Locations gap | `--footer-col-gap` (48px) | **`--footer-group-gap` (32px)** | Office and Factory are two items in one statement about where the company physically is. At the block value they read as two unrelated blocks that shared a row |
+| Hairline spacing | 48px / 48px | **48px above / 32px below** | Matched, it put 96px around a 1px rule and left the rule equidistant between two blocks, belonging to neither. A rule belongs to what it introduces |
+| Meta row | two-column grid at `md`+ | **left-flush flex, one baseline** | `space-between` pinned 269px and 60px to opposite ends of a 1360px rail; the grid moved the stranded end to the 50% line and only got the void from 1,031px to 926px. Flush left, the copyright and the social group are one line, and the remaining air falls at the right edge as ordinary ragged-right typography |
+| `--footer-masthead-gap` | masthead only | **renamed `--footer-group-gap`** | Renamed, not repurposed: the value always meant "inside a group". Once a second group existed the prefix documented the first consumer rather than the semantic. Its ratio to `--footer-col-gap` (32:48) is the entire grouping mechanism |
+
+**No location pin icon**, though one would be defensible: §10 removed the icon-per-line contact
+list as *the* template tell, and a lucide glyph here walks straight back into it. The wood
+`.footer-label` above each address already names what it is.
+
+**Measured outcome** (homepage, VI, running build):
+
+| | Phase 9 | Phase 10 | |
+|---|---|---|---|
+| 390 | 1,650px | **1,491px** | **−159px (−10%)** |
+| 768 | 929px | **982px** | +53px |
+| 1440 | 910px | **934px** | +24px |
+
+Desktop and tablet grow, and that is the honest trade rather than a miss. The trust layer was
+living rent-free inside the brand band's void; giving it its own row is what the fragmentation
+fix costs, and the tablet figure carries a second wrapped row the desktop does not. Bought with
+it: **six focal points reduced to four**, one continuous reading order, and a 10% fall on the
+viewport where footer height actually costs the reader scroll. Horizontal overflow is 0 at all
+three widths; the 29px link targets and every measured contrast ratio are unchanged.
+
+### 10.3 Phase 11 — rebuilt to `docs/design/footer-reference.png`
+
+A supplied reference sheet is now the source of truth for footer **structure**. This section
+supersedes §10, §10.1 and §10.2 on layout and information architecture. Unchanged and still
+governing: the palette, the type scale, `--footer-*` spacing tokens, the button style, the
+zero-shadow rule (§12), and the purely-presentational component contract (§26.3, §30.2).
+
+**Four bands, one job each.** The four blocks are the same four Phase 10 named; what changed is
+their *grouping*.
+
+| # | Band | Contents |
+|---|---|---|
+| 1 | **Brand · Navigation · Services · Contact** | 4 columns, vertical hairlines between |
+| 2 | **Addresses** | Office ǀ Factory, 2 columns |
+| 3 | **Trust strip** | 4 equal items, glyph + short label |
+| 4 | **Bottom bar** | Copyright ǀ Facebook (centred) ǀ Legal |
+
+| Decision | Phase 10 | Phase 11 | Why |
+|---|---|---|---|
+| Masthead | its own full-width opening band | **column 1 of band 1** | The single largest height saving. Standalone it added its full height before the index said anything; folded into the grid it is absorbed by the tallest of the three lists beside it and costs nothing |
+| Trust signals | 4th column of the index | **their own band (3)** | The reference's grouping. As a column they competed with navigation and services for the same eyebrow-led reading; as a strip they read as a footnote confirming the addresses above them |
+| Addresses | band 3 | **band 2** | They confirm the company exists before the guarantees claim what it does |
+| Navigation list | two sub-columns, every breakpoint | **single file, 7 links** | Per the reference. The height this costs is exactly what the masthead fold pays for |
+| Contact labels | uppercase `.footer-label` above each value | **wood glyph beside each value** | Reverses §10's "icon-per-line is the template tell". Three channels now occupy three rows instead of six, which is most of what lets the column sit beside the masthead. The caption survives as `.sr-only` text inside the `<dt>`, so AT still hears the field name |
+| Location glyphs | none, deliberately | **36px wood, one per block** | §10.2 rejected a pin because both blocks would have carried the *same* glyph, which is decoration. Bound from `address.icon`, they differ (pin ǀ factory) and carry information |
+| `.footer-label` | subtle field name (48% white) | **retired** → `.footer-place-title` (white/600) | Its consumers were the contact captions the glyphs replaced. The one remaining use was a *heading*, i.e. the opposite of the class's definition. The V7 gate row is deleted with it; `--fg-dark-subtle` is still asserted via `.footer-meta` |
+| Bottom bar | left-flush flex, one baseline | **`1fr auto 1fr` grid** | Facebook is centred *by the rail*, so it holds the centre line whatever the copyright and legal strings measure — including across locales, where they differ by ~40px. Neither `space-between` (far edge) nor the flush-left flex (§10.2) put it anywhere a reader would call the middle |
+| Legal links | prepared, never rendered | **rendered** → `/privacy-policy`, `/terms-of-use` | The pages now exist, so the links are no longer dead. Driven by `legalLinks`; a third document is a data change |
+
+**Band separation is space, not rules.** Probing the reference for horizontal hairlines between
+bands finds only the annotation boxes — the dividers it actually draws are all *vertical*, inside
+each band. The four bands are separated by `--footer-col-gap` alone, which keeps the one-hairline
+restraint of §10 while letting the vertical rules do the grouping.
+
+**`.footer-statement` sets at 1.7 leading, not `--type-body-sm-leading` (1.5).** That token's own
+definition scopes it to `.footer-link` / `.footer-value` — single-line links and short values, not
+running prose. This is the footer's one real paragraph, and at 14px/1.5 it failed the T1
+typography gate on all eight pages: Vietnamese stacks marks above cap height and dots below the
+baseline, so prose ≤15.5px closes from both directions below 1.65.
+
+**Measured outcome** (homepage, VI). Both rows measured by the same method — the run of ink-950
+rows at the foot of the VR baseline — so they are directly comparable:
+
+| | Phase 10 | Phase 11 | |
+|---|---|---|---|
+| 390 | 1,538px | **1,548px** | +10px (+0.7%) |
+| 768 | 936px | **923px** | **−13px (−1.4%)** |
+| 1440 | 920px | **668px** | **−252px (−27%)** |
+
+Desktop is where the fold pays off and it pays off hard. **Mobile is flat, not shorter, and that
+is a real miss against the "do not increase footer height" constraint** — it is the one width
+where the reference's single-file navigation (7 rows where Phase 10 had 4) is not offset by the
+masthead fold, because at 390 nothing shares a row with anything. +10px on a 1,548px block is
+inside noise, and it was left rather than bought back by tightening a gap the rest of the system
+uses; the levers if it ever matters are `.footer-contact`'s 20px row gap and the trust strip's
+32px row gap, worth ~16px together.
+
+Horizontal overflow is 0 at 390 / 768 / 1440, no descendant escapes the rail, all 133 VR
+snapshots and all 10 gates pass, and axe reports 0 WCAG A/AA violations on all eight pages.
+
 ---
 
 ## 11. Accessibility contract
@@ -1565,7 +1672,7 @@ doc update.
 |---|---|
 | **Header** | `--header-h`, `--header-h-xl`, `--header-scrim-h`, `--header-p`, `--header-shift`, `--surface-chrome`, `--surface-chrome-blur`, `--scrim-chrome`, `--nav-item-*`, `--header-group-gap`, `--header-action-gap`, `--logo-h-header*`, `--type-nav`, `--type-lang` |
 | **Drawer** | `--drawer-*` (incl. `--drawer-surface`), `--type-drawer-nav-*`, **`--type-meta`** — the phone moved here in Phase 7 (§16 O3), and its type token with it |
-| **Footer** | `--footer-py*`, `--footer-masthead-gap`, `--footer-col-gap`, `--footer-meta-gap`, `--footer-item-gap`, `--logo-h-footer*`, `--type-body-sm`, `--type-meta-sm` |
+| **Footer** | `--footer-py*`, `--footer-pt*`, `--footer-group-gap` (was `--footer-masthead-gap`, §10.2), `--footer-col-gap`, `--footer-meta-gap`, `--footer-item-gap`, `--footer-eyebrow-gap`, `--footer-label-track`, `--footer-lead-size`, `--logo-h-footer*`, `--type-body-sm`, `--type-meta-sm` |
 | **Hero** | Scrim gradients, focal/anchor. Owned by `hero-art-direction.md`. **Currently expressed as inline Tailwind classes, not tokens** — a known inconsistency, out of scope here, recorded so it is not mistaken for a pattern to copy |
 | **Shared (L1, deliberately)** | `--type-eyebrow`, `--type-action`, `--type-lead`, `--ease-editorial` |
 

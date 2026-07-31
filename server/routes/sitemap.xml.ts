@@ -8,7 +8,9 @@ const STATIC_ROUTES = [
   '/dich-vu',
   '/gioi-thieu',
   '/tuyen-dung',
-  '/lien-he'
+  '/lien-he',
+  '/privacy-policy',
+  '/terms-of-use'
 ]
 
 export default defineEventHandler((event) => {

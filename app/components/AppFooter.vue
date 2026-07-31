@@ -1,16 +1,24 @@
 <script setup lang="ts">
-// Phase 6 — the footer redesign (docs/header-footer-art-direction.md §10).
+// The footer, rebuilt to docs/design/footer-reference.png.
 //
-// The footer is the final page of the magazine, not the bottom of the document (§1). It closes
-// the loop the hero opened: the site begins on ink-950 + wood over photography and ends on
-// ink-950 + wood in type.
+// FOUR BANDS, each with exactly one job:
+//   1. Brand + Navigation + Services + Contact   (4 columns)
+//   2. Office + Factory addresses                (2 columns)
+//   3. Trust strip                               (4 items)
+//   4. Copyright + Facebook + Legal              (3 groups)
+//
+// The previous revision had the same four blocks grouped differently: the masthead owned a
+// full-width band of its own, the trust signals were a fourth column of the index, and the
+// addresses sat in band 3. Folding the masthead into column 1 is what makes the footer shorter —
+// its height is now absorbed by the tallest of the three list columns beside it instead of being
+// added on top of them.
 //
 // PURELY PRESENTATIONAL (§26.3, §30.2). No state, no composable, no lifecycle hooks. Forbidden
-// knowledge: scroll position, header state, route — everything. If this component ever needs
-// state, the requirement is wrong: it is the one component in the system with zero moving
-// parts, and that is a feature to be defended.
+// knowledge: scroll position, header state, route — everything. The `navRows` computation that
+// used to live here is gone with the two-column navigation split, so the component is back to
+// zero logic, which is the contract this file is supposed to hold.
 import { company } from '~/data/company'
-import { navLinks, uiText } from '~/data/ui'
+import { legalLinks, navLinks, uiText } from '~/data/ui'
 
 const { t, ta } = useLanguage()
 </script>
@@ -18,12 +26,16 @@ const { t, ta } = useLanguage()
 <template>
   <footer class="app-footer">
     <div class="shell">
-      <!-- The cover band: the masthead group and the trust layer share one row at md+, which is
-           what keeps the trust layer free. Below md it collapses to a single column and the two
-           stack in reading order — claim, then evidence. -->
-      <div class="footer-cover">
-        <!-- §10 — the masthead is promoted OUT of the grid. -->
-        <div class="footer-masthead">
+      <!-- ── BAND 1 — BRAND · NAVIGATION · SERVICES · CONTACT ──────────────────
+           Four columns, divided by hairlines. Column 1 carries the whole brand statement
+           (logo, positioning, ONE action); columns 2-4 are three lists under wood eyebrows.
+
+           ONE action, not two. The second used to be `uiText.cta.factory` -> /nha-xuong, the
+           character-for-character same label as the secondary action in the `.section-cta` band
+           directly above the footer on six of eight pages. /nha-xuong is reachable from the
+           navigation column immediately to the right. -->
+      <div class="footer-primary">
+        <div class="footer-brand">
           <!-- §35 — below fold, always: lazy + fetchpriority auto. Explicit width/height like
                every other logo in the system (FG-15). -->
           <img
@@ -36,88 +48,58 @@ const { t, ta } = useLanguage()
             class="footer-logo"
           >
 
-          <p class="text-lead footer-statement max-w-xl">
+          <p class="footer-statement">
             {{ t(company.positioning) }}
           </p>
 
-          <!-- ONE action, not two. The second was `uiText.cta.factory` -> /nha-xuong, which is the
-               SAME destination and the character-for-character same label as the secondary action
-               in the `.section-cta` band that sits directly above the footer on six of the eight
-               pages — two conversion blocks with identical destinations inside the last ~900px.
-               On the homepage that one string rendered three times.
-
-               It was also self-referential: because this component is static by contract, the
-               link pointed at the current page on /nha-xuong. Removing it is the fix that respects
-               that contract; making it route-aware would breach it (§26.3/§30.2). /nha-xuong
-               remains reachable from the navigation column immediately below. -->
-          <div class="footer-actions">
-            <NuxtLink
-              to="/lien-he"
-              class="btn-primary"
-            >
-              {{ t(uiText.cta.contact) }}
-            </NuxtLink>
-          </div>
-        </div>
-
-        <!-- The trust layer, and the reason it costs the footer no height: the masthead band was
-             measured leaving the rail 55% empty to the right of a 655px-wide text column. This
-             fills that void rather than adding a band under it — at md+ the two sit side by side,
-             so four new lines of type land inside space the logo group was already reserving.
-
-             Content is bound, never authored here: `company.trustSignals` restates claims the site
-             already publishes (see the comment on that field). A footer that invents credentials is
-             worse than one that omits them. -->
-        <ul class="footer-trust">
-          <li
-            v-for="signal in ta(company.trustSignals)"
-            :key="signal"
+          <NuxtLink
+            to="/lien-he"
+            class="btn-primary footer-cta"
           >
-            {{ signal }}
-          </li>
-        </ul>
-      </div>
-
-      <!-- §10 — 3 equal columns, beneath the ONE hairline. -->
-      <div class="footer-index">
-        <div>
-          <!-- The landmark takes its accessible name FROM the visible heading rather than a
-               duplicated aria-label, so the two can never drift apart under translation.
-               Heading levels stay at h2 deliberately: footer column labels at h2 sit alongside
-               the page's content sections, which is what makes them reachable by heading
-               navigation. Demoting them would only make them harder to find. -->
-          <nav aria-labelledby="footer-nav-heading">
-            <h2
-              id="footer-nav-heading"
-              class="footer-eyebrow"
-            >
-              {{ t(uiText.labels.navigation) }}
-            </h2>
-            <ul class="footer-list">
-              <li
-                v-for="link in navLinks"
-                :key="link.to"
-              >
-                <NuxtLink
-                  :to="link.to"
-                  class="footer-link"
-                >
-                  {{ t(link.label) }}
-                </NuxtLink>
-              </li>
-            </ul>
-          </nav>
+            {{ t(uiText.cta.contact) }}
+          </NuxtLink>
         </div>
 
-        <div>
+        <!-- The landmark takes its accessible name FROM the visible heading rather than a
+             duplicated aria-label, so the two can never drift apart under translation.
+             Heading levels stay at h2 deliberately: footer column labels at h2 sit alongside
+             the page's content sections, which is what makes them reachable by heading
+             navigation. Demoting them would only make them harder to find. -->
+        <nav
+          class="footer-col"
+          aria-labelledby="footer-nav-heading"
+        >
+          <h2
+            id="footer-nav-heading"
+            class="footer-eyebrow"
+          >
+            {{ t(uiText.labels.navigation) }}
+          </h2>
+          <!-- Single file, all seven. The previous revision split these into two sub-columns to
+               buy back height; the reference sets them in one column, and the fold of the
+               masthead into column 1 is what pays for that height now. -->
+          <ul class="footer-list">
+            <li
+              v-for="link in navLinks"
+              :key="link.to"
+            >
+              <NuxtLink
+                :to="link.to"
+                class="footer-link"
+              >
+                {{ t(link.label) }}
+              </NuxtLink>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="footer-col">
           <h2 class="footer-eyebrow">
             {{ t(uiText.labels.services) }}
           </h2>
-          <!-- These are LINKS, not labels. They previously rendered as `.footer-value` — plain
-               text styled identically to the `.footer-link` list one column to the left, under a
-               matching heading. Five items that look exactly like navigation and do nothing is a
-               dead end, and it left /dich-vu with no internal link from the footer.
-               /dich-vu has no per-service anchors, so all five resolve to the page itself. -->
+          <!-- These are LINKS, not labels. Five items that look like navigation and do nothing
+               is a dead end. /dich-vu has no per-service anchors, so all five resolve to the
+               page itself. -->
           <ul class="footer-list">
             <li
               v-for="service in ta(company.footerServices)"
@@ -133,71 +115,107 @@ const { t, ta } = useLanguage()
           </ul>
         </div>
 
-        <div>
+        <div class="footer-col">
           <h2 class="footer-eyebrow">
             {{ t(uiText.labels.contact) }}
           </h2>
-          <!-- §10 — one lucide icon per line becomes an eyebrow LABEL per value. A description
-               list is what this data actually is: label/value pairs. -->
+          <!-- Still a description list — these are label/value pairs — but the label is now
+               carried by a GLYPH plus a screen-reader-only string rather than an uppercase
+               eyebrow above each value, which is what the reference shows and what lets three
+               contact channels occupy three lines instead of six.
+               The visually-hidden text is what keeps this honest: a sighted reader gets the
+               icon, a screen reader still hears "Điện thoại: +84 903 102 012" rather than a
+               bare number with no field name. -->
           <dl class="footer-contact">
-            <dt class="footer-label">
-              {{ t(uiText.labels.phone) }}
-            </dt>
-            <dd>
-              <a
-                :href="`tel:${company.phone.replaceAll(' ', '')}`"
-                class="footer-link"
-              >
-                {{ company.phone }}
-              </a>
-            </dd>
+            <div>
+              <dt>
+                <Icon
+                  name="i-lucide-phone"
+                  class="footer-contact-icon"
+                  aria-hidden="true"
+                />
+                <span class="sr-only">{{ t(uiText.labels.phone) }}</span>
+              </dt>
+              <dd>
+                <a
+                  :href="`tel:${company.phone.replaceAll(' ', '')}`"
+                  class="footer-link footer-link-lead"
+                >
+                  {{ company.phone }}
+                </a>
+              </dd>
+            </div>
 
-            <dt class="footer-label">
-              {{ t(uiText.labels.email) }}
-            </dt>
-            <dd>
-              <a
-                :href="`mailto:${company.email}`"
-                class="footer-link"
-              >
-                {{ company.email }}
-              </a>
-            </dd>
+            <div>
+              <dt>
+                <Icon
+                  name="i-lucide-mail"
+                  class="footer-contact-icon"
+                  aria-hidden="true"
+                />
+                <span class="sr-only">{{ t(uiText.labels.email) }}</span>
+              </dt>
+              <dd>
+                <a
+                  :href="`mailto:${company.email}`"
+                  class="footer-link footer-link-lead"
+                >
+                  {{ company.email }}
+                </a>
+              </dd>
+            </div>
 
-            <dt class="footer-label">
-              {{ t(uiText.labels.workingHours) }}
-            </dt>
-            <dd class="footer-value">
-              <span
-                v-for="line in ta(company.workingHours)"
-                :key="line"
-                class="block"
-              >
-                {{ line }}
-              </span>
-            </dd>
+            <div>
+              <dt>
+                <Icon
+                  name="i-lucide-clock"
+                  class="footer-contact-icon"
+                  aria-hidden="true"
+                />
+                <span class="sr-only">{{ t(uiText.labels.workingHours) }}</span>
+              </dt>
+              <dd class="footer-value">
+                <span
+                  v-for="line in ta(company.workingHours)"
+                  :key="line"
+                  class="block"
+                >
+                  {{ line }}
+                </span>
+              </dd>
+            </div>
           </dl>
         </div>
       </div>
 
-      <!-- Locations, PROMOTED OUT of the index — the same structural gesture §10 already makes
-           for the masthead, applied to the other content that does not fit a column.
+      <!-- ── BAND 2 — WHERE THE COMPANY PHYSICALLY IS ─────────────────────────
+           Two equal halves, divided by one hairline. Each is a large wood glyph beside a title
+           and an address — the icon is the block's only ornament, and it differs per entry
+           (pin / factory, bound from `address.icon`) so it carries information rather than
+           decorating two identical rows.
 
-           The two addresses are the widest strings in the footer, and inside a 395px index
-           column they were the tallest thing in it: the contact column measured 436px of content
-           against 270px and 191px beside it, so 31% of the column band rendered empty and all of
-           that void pooled bottom-left. Given the full width they set on ONE line each at lg
-           instead of 2-3 ragged ones, and the contact column drops to ~217px.
-
-           It stays a <dl>: these are still label/value pairs. The wrapper div per pair is
-           permitted inside <dl> and is what lets each dt/dd group act as a single grid cell —
-           without it, dt and dd would become separate grid items and sit side by side. -->
+           The address is ONE string and stays one string: it wraps to two lines because it is
+           long, not because it has been split into fields. -->
       <dl class="footer-locations">
+        <!-- The wrapper <div> contains ONLY <dt> and <dd>. That is a hard requirement, not a
+             style preference: a <dl> may only directly contain dt/dd groups (optionally wrapped
+             one level deep in a div), and an earlier revision of this band nested the pair
+             inside a second div with the glyph as its sibling — which broke the list into
+             orphaned dt/dd elements and tripped three axe rules (definition-list, dlitem,
+             only-dlitems) on all eight pages.
+             The glyph therefore lives INSIDE the <dt>, where it is phrasing content and legal,
+             and is lifted out of the text flow by absolute positioning so it can still sit
+             centred against the whole two-line block. See `.footer-place-icon`. -->
         <div
           v-for="address in company.addresses"
-          :key="t(address.label)"
+          :key="address.label.vi"
         >
-          <dt class="footer-label">
+          <dt class="footer-place-title">
+            <Icon
+              :name="address.icon"
+              class="footer-place-icon"
+              aria-hidden="true"
+            />
             {{ t(address.label) }}
           </dt>
           <dd>
@@ -213,39 +231,67 @@ const { t, ta } = useLanguage()
         </div>
       </dl>
 
-      <!-- §10 — separated by space alone: no border.
-           Measured before this change: two children, 269px and 60px, inside a 1360px rail — 1,031px
-           of void between them, which is what made the row read as unfinished rather than calm.
-           The right-hand side is now a GROUP, so the two ends balance and the row has somewhere to
-           put legal links when they exist.
+      <!-- ── BAND 3 — TRUST STRIP ─────────────────────────────────────────────
+           Four equal items, glyph + short label, divided by hairlines. No heading, no
+           description, no card, no shadow, no per-item background: four identical quiet cells
+           read as guarantees precisely because nothing frames them.
 
-           No placeholder Privacy/Terms links are rendered: those pages do not exist yet, and a
-           footer full of dead links is a worse failure than a footer missing them. When they are
-           written, add a sibling <ul class="footer-legal"> inside `.footer-meta-end` — the layout
-           already accommodates it and needs no CSS change. -->
+           Content is bound, never authored. `company.trustSignals` restates claims the site
+           already publishes, with the glyphs /gioi-thieu already assigns to them — one claim,
+           one glyph, site-wide. A footer that invents credentials is worse than one that omits
+           them. -->
+      <ul class="footer-trust">
+        <li
+          v-for="signal in company.trustSignals"
+          :key="signal.icon"
+        >
+          <Icon
+            :name="signal.icon"
+            class="footer-trust-icon"
+            aria-hidden="true"
+          />
+          <span>{{ t(signal.label) }}</span>
+        </li>
+      </ul>
+
+      <!-- ── BAND 4 — BOTTOM BAR ──────────────────────────────────────────────
+           Three groups: copyright, Facebook, legal. The middle group is CENTRED on the rail and
+           stays centred at every width — the grid is `1fr auto 1fr`, so the centre cell is
+           positioned by the rail rather than by the width of the two groups flanking it. That
+           is the whole point of the band: earlier revisions put Facebook at the far right edge
+           (`space-between`) where it read as an object marooned in ~1,000px of void. -->
       <div class="footer-meta">
-        <p>
+        <p class="footer-copyright">
           &copy; {{ new Date().getFullYear() }} {{ company.name }}. {{ t(uiText.labels.rightsReserved) }}
         </p>
 
-        <div class="footer-meta-end">
-          <ul class="footer-social">
-            <li>
-              <a
-                :href="company.facebook"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Icon
-                  name="i-simple-icons-facebook"
-                  class="footer-social-icon"
-                  aria-hidden="true"
-                />
-                <span>Facebook</span>
-              </a>
-            </li>
-          </ul>
+        <div class="footer-social">
+          <a
+            :href="company.facebook"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icon
+              name="i-simple-icons-facebook"
+              class="footer-social-icon"
+              aria-hidden="true"
+            />
+            <span>Facebook</span>
+          </a>
         </div>
+
+        <!-- Driven by `legalLinks`, so a third document is a data change and needs no template
+             or CSS work. Both entries resolve to real prerendered routes. -->
+        <ul class="footer-legal">
+          <li
+            v-for="link in legalLinks"
+            :key="link.to"
+          >
+            <NuxtLink :to="link.to">
+              {{ t(link.label) }}
+            </NuxtLink>
+          </li>
+        </ul>
       </div>
     </div>
   </footer>

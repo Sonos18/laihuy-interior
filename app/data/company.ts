@@ -18,6 +18,23 @@ export type AddressEntry = {
   label: LocalizedText
   address: LocalizedText
   mapUrl: string
+  /**
+   * The glyph for footer band 2. Data, not template: the two entries take DIFFERENT icons (a pin
+   * for the office, a factory for the workshop), and the footer previously hardcoded `map-pin`
+   * for both — which made the two blocks visually identical and left the icon saying nothing the
+   * title beside it wasn't already saying.
+   */
+  icon: string
+}
+
+/**
+ * One line of the footer's quality-commitment column: a glyph and a label, and nothing else.
+ * Deliberately NOT `CompanyValue` — that type carries a `description`, and a footer column that
+ * renders a paragraph per item stops being a column.
+ */
+export type TrustSignal = {
+  icon: string
+  label: LocalizedText
 }
 
 // --- Optional About-page content. Every field renders conditionally and stays
@@ -135,12 +152,14 @@ export const company = {
       label: { vi: 'Văn phòng giao dịch', en: 'Business office' },
       address: representativeOffice,
       // Map queries stay on the Vietnamese address: that is the string Google Maps resolves.
-      mapUrl: buildMapUrl(representativeOffice.vi)
+      mapUrl: buildMapUrl(representativeOffice.vi),
+      icon: 'i-lucide-map-pin'
     },
     {
       label: { vi: 'Nhà xưởng', en: 'Factory' },
       address: factoryAddress,
-      mapUrl: buildMapUrl(factoryAddress.vi)
+      mapUrl: buildMapUrl(factoryAddress.vi),
+      icon: 'i-lucide-factory'
     }
   ] satisfies AddressEntry[],
   primaryCtas: [
@@ -199,21 +218,19 @@ export const company = {
      authored with authentic content, never fabricated. A fifth signal — a construction warranty —
      was requested and deliberately NOT added: nothing in this repository states that such a
      warranty exists, and a footer is the last place a business should discover it is promising
-     something nobody authored. Add it here only when someone can point at the policy. */
-  trustSignals: {
-    vi: [
-      'Xưởng sản xuất trực tiếp',
-      'Thiết kế & sản xuất đồng bộ',
-      'Kiểm soát chất lượng',
-      'Thi công toàn quốc'
-    ],
-    en: [
-      'Own production factory',
-      'Design and production in-house',
-      'In-house quality control',
-      'Nationwide installation'
-    ]
-  } satisfies LocalizedArray,
+     something nobody authored. Add it here only when someone can point at the policy.
+
+     The glyphs are REUSED, not chosen: three of the four labels have an exact title match in
+     `differentiators` on /gioi-thieu and take that page's icon verbatim — factory, shield-check,
+     truck. The fourth ('Thiết kế & sản xuất đồng bộ') takes `workflow`, which the same page
+     already uses for 'Thiết kế → thi công'. One claim, one glyph, site-wide: a footer that picks
+     its own iconography for claims the site already illustrates is a second visual vocabulary. */
+  trustSignals: [
+    { icon: 'i-lucide-factory', label: { vi: 'Xưởng sản xuất trực tiếp', en: 'Own production factory' } },
+    { icon: 'i-lucide-workflow', label: { vi: 'Thiết kế & sản xuất đồng bộ', en: 'Design and production in-house' } },
+    { icon: 'i-lucide-shield-check', label: { vi: 'Kiểm soát chất lượng', en: 'In-house quality control' } },
+    { icon: 'i-lucide-truck', label: { vi: 'Thi công toàn quốc', en: 'Nationwide installation' } }
+  ] satisfies TrustSignal[],
   seo: {
     home: {
       title: {
@@ -291,6 +308,33 @@ export const company = {
         en: 'Contact Lai Huy Interior for consultation, quotation, and preliminary BOQ review for hotel, villa, apartment, or commercial interior projects.'
       },
       ogImage: companyMedia.mapAddress
+    },
+    /* The two legal routes. They carry full SEO like every other page rather than being left to
+       the layout defaults — they are linked site-wide from the footer, so they WILL be crawled,
+       and a legal page with no description is the kind of thin result that drags a domain down.
+       Both reuse the company story image: neither document has photography of its own, and
+       inventing a social card for a privacy policy is not worth a bespoke asset. */
+    privacy: {
+      title: {
+        vi: 'Chính sách bảo mật | Lai Huy Interior',
+        en: 'Privacy Policy | Lai Huy Interior'
+      },
+      description: {
+        vi: 'Chính sách bảo mật của Lai Huy Interior: dữ liệu cá nhân chúng tôi thu thập, mục đích sử dụng, thời gian lưu trữ và quyền của bạn đối với dữ liệu.',
+        en: 'The Lai Huy Interior privacy policy: what personal data we collect, why we use it, how long we keep it, and the rights you hold over it.'
+      },
+      ogImage: companyMedia.companyStory
+    },
+    terms: {
+      title: {
+        vi: 'Điều khoản sử dụng | Lai Huy Interior',
+        en: 'Terms of Use | Lai Huy Interior'
+      },
+      description: {
+        vi: 'Điều khoản sử dụng website Lai Huy Interior: phạm vi dịch vụ, quyền sở hữu trí tuệ, giá trị của báo giá tham khảo và giới hạn trách nhiệm.',
+        en: 'Terms of use for the Lai Huy Interior website: scope of services, intellectual property, the status of indicative quotations, and limitation of liability.'
+      },
+      ogImage: companyMedia.companyStory
     }
   } satisfies Record<string, SeoEntry>
 }

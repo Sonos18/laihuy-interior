@@ -35,7 +35,12 @@ const ON_WHITE: [number, number, number] = [255, 255, 255]
 const V7_FOOTER = [
   { selector: '.footer-eyebrow', prop: 'color', expected: WOOD_300, token: '--accent-dark' },
   { selector: '.footer-link', prop: 'color', expected: 'rgba(255,255,255,0.72)', token: '--fg-dark-muted' },
-  { selector: '.footer-label', prop: 'color', expected: 'rgba(255,255,255,0.48)', token: '--fg-dark-subtle' },
+  // `.footer-label` was here, asserting --fg-dark-subtle. The class is retired: it meant "a
+  // subtle FIELD NAME inside a column" and its consumers were the contact column's
+  // ĐIỆN THOẠI / EMAIL / GIỜ LÀM VIỆC captions, which the footer reference replaces with glyphs
+  // (docs/design/footer-reference.png). Same treatment as `.footer-textlink` below — the row is
+  // deleted rather than repointed, because --fg-dark-subtle is still asserted on the very next
+  // row via `.footer-meta`, so the token loses no coverage.
   { selector: '.footer-meta', prop: 'color', expected: 'rgba(255,255,255,0.48)', token: '--fg-dark-subtle' },
   // `.footer-textlink` was here. The masthead's second action — the /nha-xuong text link — was
   // removed as a duplicate of the .section-cta band above the footer, so the class and its only

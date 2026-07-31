@@ -40,7 +40,9 @@ export default defineNuxtConfig({
     '/nha-xuong': { prerender: true },
     '/dich-vu': { prerender: true },
     '/tuyen-dung': { prerender: true },
-    '/lien-he': { prerender: true }
+    '/lien-he': { prerender: true },
+    '/privacy-policy': { prerender: true },
+    '/terms-of-use': { prerender: true }
   },
 
   compatibilityDate: '2025-01-15',

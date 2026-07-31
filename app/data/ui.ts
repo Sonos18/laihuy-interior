@@ -26,6 +26,20 @@ export const navLinks: LocalizedNavLink[] = [
   { label: { vi: 'Liên hệ', en: 'Contact' }, to: '/lien-he' }
 ]
 
+/**
+ * Footer band 4, right group. A LIST, not two hardcoded anchors: the bottom bar's three-group
+ * grid is driven by this array, so adding a third legal document is a data change and needs no
+ * template or CSS work.
+ *
+ * Both routes are real pages (app/pages/privacy-policy.vue, app/pages/terms-of-use.vue). Nothing
+ * may be added here that does not resolve — a legal link that 404s is worse than an absent one,
+ * which is why this array stayed empty until the pages existed.
+ */
+export const legalLinks: LocalizedNavLink[] = [
+  { label: { vi: 'Chính sách bảo mật', en: 'Privacy Policy' }, to: '/privacy-policy' },
+  { label: { vi: 'Điều khoản sử dụng', en: 'Terms of Use' }, to: '/terms-of-use' }
+]
+
 export const uiText = {
   language: {
     vi: 'Tiếng Việt',
@@ -60,7 +74,15 @@ export const uiText = {
     relatedProjects: { vi: 'Dự án liên quan', en: 'Related projects' },
     exploreMore: { vi: 'Khám phá thêm', en: 'Explore more' },
     /** Footer copyright, minus the year and company name the component supplies. */
-    rightsReserved: { vi: 'Bảo lưu mọi quyền.', en: 'All rights reserved.' }
+    rightsReserved: { vi: 'Bảo lưu mọi quyền.', en: 'All rights reserved.' },
+    // --- Legal documents (/privacy-policy, /terms-of-use) ---------------------
+    lastUpdated: { vi: 'Cập nhật lần cuối', en: 'Last updated' },
+    company: { vi: 'Công ty', en: 'Company' },
+    legalContactHeading: { vi: 'Thông tin liên hệ', en: 'Contact information' },
+    legalContactBody: {
+      vi: 'Nếu bạn có câu hỏi hoặc yêu cầu liên quan đến nội dung trang này, vui lòng liên hệ với chúng tôi qua các kênh sau:',
+      en: 'If you have a question or a request relating to this document, please contact us through any of the channels below:'
+    }
   },
   cta: {
     quote24h: { vi: 'Nhận báo giá trong 24h', en: 'Get a quote within 24h' },

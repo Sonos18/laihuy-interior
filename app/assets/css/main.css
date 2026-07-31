@@ -257,7 +257,7 @@
 
         8px  within a pair / list item   --footer-item-gap
        16px  between contact pairs        (item-gap doubled by `dd + dt`)
-       32px  within the masthead group    --footer-masthead-gap
+       32px  within a group               --footer-group-gap
        48px  between blocks               --footer-col-gap
        40/56px   page -> footer           --footer-pt / -md
        80/112px  footer -> page bottom    --footer-py / -md
@@ -283,10 +283,16 @@
      on, which is the asymmetry this token exists to hold. */
   --footer-pt: 2rem; /*  32px  < md  — 0.50x --section-py (64)   */
   --footer-pt-md: 2.5rem; /*  40px  ≥ md  — 0.45x --section-py (88)   */
-  /* INSIDE the masthead only: logo -> statement -> action are one group. At 4rem this
-     was identical to the block gaps below, so the brand block's own lines were spaced
-     like section boundaries — 128px of whitespace inside a single group. */
-  --footer-masthead-gap: 2rem;
+  /* WITHIN one group, wherever a group exists: logo -> statement -> action in the masthead, and
+     the locations row -> the trust strip that confirms it. At 4rem this was identical to the block
+     gaps below, so the brand block's own lines were spaced like section boundaries — 128px of
+     whitespace inside a single group.
+
+     Formerly --footer-masthead-gap. The name was renamed, not repurposed: the value always meant
+     "inside a group", and once a second group existed the masthead prefix was documenting the
+     first consumer rather than the semantic. Its ratio to --footer-col-gap (32:48) is the whole
+     mechanism — a gap that reads as "same thought" against one that reads as "new region". */
+  --footer-group-gap: 2rem;
   /* Between blocks, and between columns. One value for "boundary" everywhere. */
   --footer-col-gap: 3rem;
   --footer-meta-gap: 3rem;
@@ -1167,44 +1173,79 @@
     }
   }
 
-  /* The cover band. Measured, the masthead left the rail 55% empty: 655px of ink in a 1360px
-     rail, with the void pooling right. The trust layer is placed INTO that void rather than in a
-     band of its own, which is why four new lines of type cost the footer no height at md+ — the
-     row is already as tall as the logo group.
+  /* ── BAND 1 — BRAND · NAVIGATION · SERVICES · CONTACT ──────────────────────
+     Four columns, divided by hairlines. The masthead is COLUMN 1, not a band of its own: it
+     used to occupy a full-width opening band, which cost the footer the masthead's entire
+     height before the index had said anything. Folded into the grid, that height is absorbed
+     by the tallest of the three lists beside it and costs nothing.
 
-     `auto` on the second track, not `1fr`: the trust column is set by its longest phrase and must
-     not stretch to half the rail, or it stops reading as a margin note and starts competing with
-     the positioning statement it is there to support. */
-  .footer-cover {
+     Column weights are DELIBERATELY UNEQUAL, measured off the reference: brand and contact take
+     the widest tracks (brand carries a paragraph and a button; contact is the band's anchor and
+     the only column with promoted values), navigation the narrowest because its labels are the
+     shortest strings in the band.
+
+     The dividers are drawn as `border-left` on every column that is not first in its row, with
+     matching padding either side, so the rule sits CENTRED in a 64px gutter rather than flush
+     against the column that follows it. */
+  .footer-primary {
     display: grid;
-    /* Below md the trust layer stacks under the masthead and is still part of the brand claim,
-       so it takes the WITHIN-group gap. --footer-col-gap here would announce a block boundary
-       between a statement and its own supporting evidence, and cost 16px doing it. */
-    gap: var(--footer-masthead-gap);
+    /* Stacked at mobile: four blocks in DOM order, separated by the group gap. No vertical
+       rules — there is no gutter to draw them in. */
+    gap: var(--footer-group-gap);
   }
 
+  /* TABLET (768-1279) — column 1 spans the full first row; columns 2-4 share the second.
+     Four tracks do not fit here: at 768 they measure ~140px each, where every services entry
+     wraps to three lines and the band is sized by the worst of them. */
   @media (min-width: 48rem) {
-    .footer-cover {
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: start;
-      gap: var(--footer-col-gap);
+    .footer-primary {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: var(--footer-group-gap);
+    }
+
+    .footer-brand {
+      grid-column: 1 / -1;
+    }
+
+    /* Children 3 and 4 — i.e. Services and Contact. Navigation is first in row 2 and takes no
+       rule, because a rule at the start of a row fences the band instead of dividing it. */
+    .footer-primary > :nth-child(n + 3) {
+      border-left: 1px solid var(--rule-dark);
+      padding-left: var(--footer-group-gap);
     }
   }
 
-  /* §10 — the masthead is PROMOTED OUT of the grid, which kills the arbitrary
-     [1.3fr_0.8fr_0.9fr_1.2fr] weights. */
-  .footer-masthead {
+  /* DESKTOP (>=1280) — the composition this band is FOR: four columns on one row, all four
+     aligned to the same top edge. */
+  @media (min-width: 80rem) {
+    .footer-primary {
+      /* minmax(0, …) rather than a bare `Nfr`: a grid track's default minimum is `auto`, which
+         is the content's min-content width, so an unbreakable string (the email address) would
+         push its track wider than its share and overflow the rail rather than wrapping. */
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1.4fr);
+    }
+
+    .footer-brand {
+      grid-column: auto;
+    }
+
+    .footer-primary > :not(:first-child) {
+      border-left: 1px solid var(--rule-dark);
+      padding-left: var(--footer-group-gap);
+    }
+  }
+
+  .footer-brand {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--footer-masthead-gap);
+    gap: var(--footer-group-gap);
   }
 
   /* ADR-004 — one lockup site-wide. The footer sits on ink-950, so it takes the
      mono-WHITE derivation; the colour master (1.86:1 — a live WCAG 1.4.11
      failure, and 69KB) leaves the render path here.
-     §10 — 56/64px optical vs today's 34px: equal-or-greater weight to the header
-     signature. The assets are TRIMMED, so the box IS the mark (V16). */
+     The assets are TRIMMED, so the box IS the mark (V16). */
   .footer-logo {
     display: block;
     height: var(--logo-h-footer);
@@ -1218,63 +1259,22 @@
     }
   }
 
+  /* Body-sm, not the old `.text-lead` (18px). The statement now shares a row with three
+     columns instead of owning a band, and at lead size it set the height of the entire band.
+     The max-width matters at TABLET, where this column spans the full rail — without it the
+     paragraph runs the whole 704px and reads as a page of body copy rather than as a caption
+     under a logo. */
+  /* 1.7, NOT --type-body-sm-leading. That token is 1.5 and its own definition says why it may
+     not be used here: it is scoped to `.footer-link` / `.footer-value`, which set single-line
+     links and short values rather than running prose. This is the one real PARAGRAPH in the
+     footer, and the typography gate (T1) enforces the distinction — Vietnamese stacks marks
+     above cap height and dots below the baseline, so prose ≤15.5px closes from both directions
+     below 1.65 leading. Shipping 1.5 here failed T1 on all eight pages. */
   .footer-statement {
-    color: var(--fg-dark-muted);
-  }
-
-  /* The trust layer. Confidence builders, not advertising: they take the footer's quietest type
-     (14px, muted) and earn their attention from POSITION — beside the brand claim — rather than
-     from size or colour. Anything louder here would read as a banner, which is the one thing a
-     premium footer must not do.
-
-     The mobile treatment is a WRAPPED ROW, not a grid, and the difference is measured: in a
-     two-column grid at 390px every one of these phrases wraps to a second line, so four signals
-     cost 92px and the footer grew 153px. Allowed to flow as one wrapped row they repack into the
-     ragged space at the end of each line — the same four signals, ~63px, and the marker squares
-     become separators for free. At md+ they return to a single column beside the masthead. */
-  .footer-trust {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--footer-item-gap) 1.25rem;
+    max-width: 40rem;
     font-size: var(--type-body-sm-size);
-    line-height: var(--type-body-sm-leading);
+    line-height: 1.7;
     color: var(--fg-dark-muted);
-  }
-
-  @media (min-width: 48rem) {
-    .footer-trust {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      gap: var(--footer-item-gap);
-    }
-  }
-
-  /* A 4px wood square, not an icon. §10 removed the icon-per-line contact list as "THE template
-     tell", and re-introducing lucide glyphs here would walk straight back into it. A square is
-     the same architectural vocabulary as the hairline: it marks the line as a claim without
-     drawing a picture, and it carries no additional colour — --accent-dark is already the
-     footer's one accent. */
-  .footer-trust li {
-    display: flex;
-    align-items: baseline;
-    gap: 0.625rem;
-  }
-
-  .footer-trust li::before {
-    content: '';
-    flex: none;
-    width: 0.25rem;
-    height: 0.25rem;
-    background-color: var(--accent-dark);
-  }
-
-  /* §10 — the footer CLOSES; it does not re-pitch. ONE solid + ONE text link,
-     where there were two buttons. */
-  .footer-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--footer-item-gap);
   }
 
   /* §12 / A.4 — the footer carries ZERO shadows. The site-wide CTA ships
@@ -1289,31 +1289,6 @@
     font-weight: var(--type-action-weight);
     letter-spacing: var(--type-action-track);
     box-shadow: none;
-  }
-
-  /* §10 — THE one hairline, and it now does editorial work: separating the
-     finale's cover from its index, rather than fencing the copyright. Two
-     borders became one. */
-  .footer-index {
-    /* --footer-col-gap, NOT --footer-masthead-gap: this is a BLOCK boundary, and the
-       masthead token now means "inside the masthead group". Using the group token here
-       is what put 129px of air around a 1px rule (64 above + 65 below) — the single
-       largest empty region in the footer, for the least information. `.footer-locations`
-       already separates on --footer-col-gap, so block spacing is now one value. */
-    margin-top: var(--footer-col-gap);
-    padding-top: var(--footer-col-gap);
-    border-top: 1px solid var(--rule-dark);
-    display: grid;
-    /* Both axes: 48px between the 3 columns at md+, and between the stacked
-       column blocks on mobile. */
-    gap: var(--footer-col-gap);
-  }
-
-  /* §10 — 3 EQUAL columns, replacing 4 arbitrary fractions. Real rhythm. */
-  @media (min-width: 48rem) {
-    .footer-index {
-      grid-template-columns: repeat(3, 1fr);
-    }
   }
 
   /* §3.3 / §22.2 — --type-eyebrow is DELIBERATELY identical to the hero's
@@ -1332,10 +1307,9 @@
     color: var(--accent-dark);
   }
 
-  /* The eyebrow sits directly ABOVE its column (§10): --footer-col-gap is the
-     gap BETWEEN columns and would float the label off its own list. */
-  .footer-list,
-  .footer-contact {
+  /* The eyebrow sits directly ABOVE its column: --footer-col-gap is the gap BETWEEN columns
+     and would float the label off its own list. */
+  .footer-list {
     display: flex;
     flex-direction: column;
     gap: var(--footer-item-gap);
@@ -1362,16 +1336,11 @@
        target on the words rather than stretching it across the column. */
     display: block;
     width: fit-content;
-    /* Tap target — WCAG 2.5.8 (AA, 24px min). The footer links render at 21px line-height,
-       below the threshold. This pads the hit area to 29px and cancels the padding with an
-       equal negative margin, so the flow position (and the column's tuned --footer-item-gap
-       rhythm, §10) is unchanged to the pixel — the target grows, the layout does not.
-
-       4px, halved with --footer-item-gap (0.75rem -> 0.5rem): the padding is bounded by
-       HALF the item gap, or consecutive links overlap and a tap near a boundary hits the
-       wrong one. At the 8px gap that ceiling is 4px, which is exactly this value — the
-       targets now meet without overlapping. Raising the padding (or 44px AAA) requires
-       raising the gap by twice as much, which is the density this change removed. */
+    /* `fit-content` sizes to the content and will happily exceed the column, so the cap is what
+       actually keeps a long value inside the rail. */
+    max-width: 100%;
+    /* Tap target — WCAG 2.5.8 (AA, 24px min). 4px, bounded by HALF --footer-item-gap, or
+       consecutive links overlap and a tap near a boundary hits the wrong one. */
     padding-block: 0.25rem;
     margin-block: -0.25rem;
   }
@@ -1380,122 +1349,258 @@
     color: var(--fg-dark);
   }
 
-  /* §10 — the icon-per-line contact list was THE template tell. One lucide icon
-     per line becomes an eyebrow LABEL per value. --fg-dark-subtle is the meta
-     colour (§3.1), which keeps the item labels subordinate to the column
-     eyebrows above them.
+  /* The two values the footer exists to surface. Everything in the band would otherwise ship at
+     one weight — phone, email and seven navigation links all 14px / muted — so the eye would
+     have no reason to land on the contact channels first. Promoting only these two (size + full
+     -strength colour) makes the hierarchy: section title -> contact channel -> everything else.
 
-     Weight and tracking now separate it from `.footer-eyebrow` as well: see --footer-label-track.
-     The eyebrow is the section title (wood, 600, 0.22em); the label is a field name inside that
-     section (subtle, 500, 0.12em). Read down the column the two are now unmistakable, which they
-     were not when the only difference was hue. */
-  .footer-label {
-    font-size: var(--type-eyebrow-size);
-    font-weight: 500;
-    letter-spacing: var(--footer-label-track);
-    line-height: 1;
-    text-transform: uppercase;
-    color: var(--fg-dark-subtle);
-  }
-
-  /* The two values the footer exists to surface. Everything in the index shipped at one weight —
-     phone, email and eleven navigation links all 14px / 400 / 72% — so the eye had no reason to
-     land on the contact channels first. Promoting only these two (size + full-strength colour)
-     makes the hierarchy: section title -> contact channel -> everything else.
-
-     Working hours stays at 14px muted deliberately: it is context for the two actionable rows,
-     not a third action, and promoting it would flatten the distinction again. */
-  .footer-contact dd .footer-link,
-  .footer-locations dd .footer-link {
+     Working hours takes the COLOUR promotion but not the size one, which is the third rung and
+     the reason the ladder works: 16px white (the two actionable channels) -> 14px white (the
+     context that qualifies them) -> 14px muted (everything else). */
+  .footer-link-lead,
+  .footer-contact .footer-value {
     color: var(--fg-dark);
   }
 
-  .footer-contact dd .footer-link {
-    font-size: var(--footer-lead-size);
-  }
-
-  /* The addresses take the size promotion only at md+. They are the longest strings in the footer
-     and at 390px they already wrap to four lines each — a 2px size bump there buys no hierarchy
-     (nothing is competing with them in a single-column stack) and costs ~28px of scroll. The
-     full-strength colour above applies at every width, which is the part that actually does the
-     elevating; the size step is reserved for the widths where the addresses share a row. */
-  @media (min-width: 48rem) {
-    .footer-locations dd .footer-link {
+  /* The SIZE promotion is desktop-only; the colour promotion above applies at every width and is
+     the part that actually does the elevating.
+     Measured at 768: the contact column is ~213px there, and `noithatlaihuy@gmail.com` sets at
+     ~205px at 16px — it overflowed the rail. At 14px it fits with room to spare, and nothing is
+     competing with it for attention at a width where the column has no neighbour to its right. */
+  @media (min-width: 80rem) {
+    .footer-link-lead {
       font-size: var(--footer-lead-size);
     }
   }
 
-  .footer-contact dd + dt {
-    margin-top: var(--footer-item-gap);
+  /* An email address has no spaces, so normal wrapping cannot break it and it would keep
+     overflowing however narrow the column gets. `break-word` breaks it ONLY when it cannot
+     otherwise fit, which leaves every other value in the column wrapping normally. */
+  .footer-contact .footer-link {
+    overflow-wrap: break-word;
   }
 
-  /* Locations, promoted out of the index — the same move §10 makes for the
-     masthead, for the same reason: content that does not fit a column should not
-     be forced into one.
+  /* The contact column. Reference: a wood glyph per line in place of the uppercase eyebrow
+     label the previous revision put above each value — three channels now occupy three rows
+     instead of six, which is most of what makes this band fit beside the masthead.
+     The label survives as `.sr-only` text inside the <dt> (see the template): the glyph is
+     `aria-hidden`, so without it a screen reader would read a bare phone number with no field
+     name. */
+  .footer-contact {
+    display: flex;
+    flex-direction: column;
+    /* 20px — wider than --footer-item-gap (8px, which governs items INSIDE one list) and
+       narrower than --footer-group-gap (32px, which separates blocks). Three icon-led rows are
+       neither: at 8px the glyphs stack into a column of noise, at 32px the column outgrows the
+       three beside it. */
+    gap: 1.25rem;
+    margin-top: var(--footer-eyebrow-gap);
+  }
 
-     The addresses are the widest strings in the footer. Inside a 395px index
-     column the contact block measured 436px of content against 270px and 191px
-     beside it, so the row was sized by its worst case and 31% of the column band
-     rendered empty, all of it pooled bottom-left. At full width each address sets
-     on ONE line at lg (~616px per cell) instead of 2-3 ragged ones.
+  .footer-contact > div {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
 
-     --footer-col-gap, not --footer-meta-gap: this band is still part of the
-     directory, so it reads as the last row of the index rather than a new region.
-     No new tokens — the band borrows the index's own rhythm. */
+  .footer-contact dt {
+    display: flex;
+  }
+
+  /* 18px, nudged to the optical centre of the 24px lead line it sits on, so a wrapped value
+     keeps its glyph on the FIRST line rather than centring it against two. */
+  .footer-contact-icon {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex: none;
+    margin-top: 0.1875rem;
+    color: var(--accent-dark);
+  }
+
+  /* ── BAND 2 — WHERE THE COMPANY PHYSICALLY IS ──────────────────────────────
+     Two equal halves, one hairline between them. A large wood glyph leads each block; the
+     title and the address stack beside it.
+
+     The addresses are the widest strings in the footer, which is why they get a band rather
+     than a column: inside a ~250px column they wrap to four ragged lines each. Given half the
+     rail they set on two.
+
+     No card, no border box, no shadow — the divider and the gap are the entire grouping
+     gesture. */
   .footer-locations {
     margin-top: var(--footer-col-gap);
     display: grid;
-    gap: var(--footer-col-gap);
+    gap: var(--footer-group-gap);
   }
 
-  /* Each dt/dd group stacks on the footer's standard intra-column rhythm, the same
-     --footer-item-gap `.footer-list` and `.footer-contact` use. */
+  /* The glyph is absolutely positioned out of this box (it has to live inside the <dt> to keep
+     the <dl> valid — see the template), so the block reserves its column with padding instead:
+     36px of icon + 16px of gap.
+
+     --place-inset is how far the whole lockup (glyph included) is pushed in from the block's
+     left edge. It is 0 for the first block, which starts at the rail, and the divider gap for
+     the second, which starts at a hairline. Driving BOTH the padding and the glyph's `left`
+     from one variable is what keeps them in step: a plain `padding-left` override on the
+     divided block silently won over this rule's 3.25rem and dropped the reservation to 32px,
+     which slid the address underneath its own factory glyph. */
   .footer-locations > div {
+    --place-inset: 0px;
+
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: var(--footer-item-gap);
+    padding-left: calc(var(--place-inset) + 3.25rem);
+  }
+
+  /* The band's only ornament. Wood, per the reference's icon rule — the glyphs are monochrome
+     accent, never multi-colour and never full-strength white.
+
+     NOTE for anyone tempted to thin these strokes: @nuxt/icon runs in CSS mode here (see
+     nuxt.config `icon.cssLayer`), so each glyph is a <span> painted through a mask-image, NOT an
+     inline <svg>. `stroke-width` on this rule is inert — it was tried and removed. Changing the
+     stroke weight means switching the module to `mode: 'svg'`, which is a site-wide decision. */
+  .footer-place-icon,
+  .footer-trust-icon {
+    flex: none;
+    color: var(--accent-dark);
+  }
+
+  /* Centred on the whole two-line block rather than on the title line. Taken out of flow
+     because its DOM position is fixed by the <dl> validity constraint (inside the <dt>), while
+     its VISUAL position belongs to the group — absolute positioning is what lets those two
+     disagree without a wrapper element. */
+  .footer-place-icon {
+    position: absolute;
+    left: var(--place-inset);
+    top: 50%;
+    width: 2.25rem;
+    height: 2.25rem;
+    transform: translateY(-50%);
+  }
+
+  /* The place NAME. Band 2 carries no eyebrow — these titles are its headings — so they take
+     full-strength white and a heavier weight than the address beneath them. The hierarchy
+     inside the block is title (white/600) -> address (muted/400).
+
+     This replaces `.footer-label`, which is retired rather than renamed. That class meant "a
+     subtle FIELD NAME inside a column" and its consumers were the contact column's
+     ĐIỆN THOẠI / EMAIL / GIỜ LÀM VIỆC captions — all of which the reference replaces with
+     glyphs, leaving the class with one consumer whose meaning was the opposite of its
+     definition (a heading, not a field name, and bright rather than subtle). Keeping the old
+     name for a rule that now sets white/600 would have made `--fg-dark-subtle` mean two
+     different things depending on which element you looked at.
+     It keeps --footer-label-track: 0.12em vs the eyebrow's 0.22em is what separates a title in
+     the band from a section title above a column. */
+  .footer-place-title {
+    font-size: var(--type-eyebrow-size);
+    font-weight: 600;
+    letter-spacing: var(--footer-label-track);
+    line-height: 1.25;
+    text-transform: uppercase;
+    color: var(--fg-dark);
   }
 
   @media (min-width: 48rem) {
     .footer-locations {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--footer-group-gap);
+    }
+
+    /* Sets the inset only — the padding is derived from it by the base rule, so the glyph and
+       the text move together and the icon reservation can never be lost. */
+    .footer-locations > :not(:first-child) {
+      --place-inset: var(--footer-group-gap);
+
+      border-left: 1px solid var(--rule-dark);
     }
   }
 
-  /* §10 — copyright and Facebook, separated BY SPACE ALONE: the second border is
-     gone, and this row is no longer fenced off from the index. */
+  /* ── BAND 3 — TRUST STRIP ──────────────────────────────────────────────────
+     Four equal cells, glyph + short label, hairlines between. No heading, no description, no
+     card, no shadow, no per-item background: the four read as guarantees because they are four
+     identical quiet cells, not because anything frames them. All four carry EXACTLY the same
+     weight; there is no first among them.
+
+     TWO PER ROW at mobile (reference), four across from 768 up. */
+  .footer-trust {
+    margin-top: var(--footer-col-gap);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--footer-group-gap);
+  }
+
+  .footer-trust li {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    font-size: var(--type-body-sm-size);
+    line-height: var(--type-body-sm-leading);
+    color: var(--fg-dark-muted);
+  }
+
+  .footer-trust-icon {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  /* Mobile: the rule divides the two cells of each row, so it belongs to the SECOND of each
+     pair. At md the `:not(:first-child)` rule below supersedes it with identical values.
+     20px for the same reason as the md rule — at 390 each cell is ~155px, and divider padding
+     comes straight off the label. */
+  .footer-trust li:nth-child(even) {
+    border-left: 1px solid var(--rule-dark);
+    padding-left: 1.25rem;
+  }
+
+  @media (min-width: 48rem) {
+    .footer-trust {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .footer-trust li:not(:first-child) {
+      border-left: 1px solid var(--rule-dark);
+      /* 20px, not the 32px used elsewhere. Four cells share the rail here, so every pixel of
+         divider padding comes straight off the label: at 32px each cell left ~73px of text
+         width and `Kiểm soát chất lượng` broke across THREE lines, which made the strip taller
+         than the addresses above it. Restored to the standard gap once there is room for it. */
+      padding-left: 1.25rem;
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .footer-trust li:not(:first-child) {
+      padding-left: var(--footer-group-gap);
+    }
+  }
+
+  /* ── BAND 4 — BOTTOM BAR ───────────────────────────────────────────────────
+     Three groups: copyright, Facebook, legal.
+
+     `1fr auto 1fr` is the whole point. The centre cell is positioned by the RAIL, not by the
+     width of the two groups flanking it, so Facebook sits on the exact centre line however long
+     the copyright string or the legal list becomes — including under translation, where the
+     Vietnamese and English copyright differ by ~40px. Two earlier treatments failed here:
+     `space-between` pinned Facebook to the far right edge of a 1360px rail with ~1,000px of
+     nothing beside it, and a two-column grid moved that stranded end to the 50% line.
+
+     Mobile stacks the three, centred, in the order copyright -> Facebook -> legal. */
   .footer-meta {
     margin-top: var(--footer-meta-gap);
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--footer-col-gap);
+    display: grid;
+    gap: var(--footer-group-gap);
+    justify-items: center;
+    text-align: center;
     font-size: var(--type-meta-sm-size);
     line-height: var(--type-meta-sm-leading);
     color: var(--fg-dark-subtle);
   }
 
-  /* At md+ the row adopts `.footer-locations`' two-column grid instead of space-between. Grouping
-     alone was not enough: with one social link and no legal pages yet, a space-between row is a
-     barbell — 269px and 60px pinned to opposite ends of the rail, and the measured void only fell
-     from 1,031px to 926px. On the grid the right-hand group starts on the same vertical as the
-     NHÀ XƯỞNG address directly above it, so the closing row lines up with the band it closes
-     instead of drifting to the far edge. The void halves, and the alignment is what makes the
-     emptiness read as composition rather than as a gap. */
-  @media (min-width: 48rem) {
-    .footer-meta {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      align-items: center;
-    }
-  }
-
   .footer-meta a {
     transition: color var(--dur-hover) var(--ease-editorial);
-    /* Tap target (WCAG 2.5.8) — same non-invasive pad-and-cancel as .footer-link: the meta
-       row's height is set by the copyright text, so padding the link and cancelling it with a
-       negative margin lifts the hit area to ~35px without moving the row. */
+    /* Tap target (WCAG 2.5.8) — the same non-invasive pad-and-cancel as `.footer-link`: the
+       meta row's height is set by the copyright text, so padding the link and cancelling it
+       with a negative margin lifts the hit area to ~35px without moving the row. */
     display: inline-block;
     padding-block: 0.4375rem;
     margin-block: -0.4375rem;
@@ -1505,41 +1610,72 @@
     color: var(--fg-dark);
   }
 
-  /* The right end of the meta row is a GROUP, not a single stranded link. Measured before this
-     change: a 269px copyright and a 60px "Facebook" at opposite ends of a 1360px rail, with
-     1,031px of nothing between them — the row read as unfinished rather than calm. Grouping gives
-     the right end enough mass to answer the left, and gives legal links a home when they exist
-     (add a sibling <ul class="footer-legal"> here; this rule already spaces it). */
-  .footer-meta-end {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--footer-col-gap);
-  }
-
-  .footer-social {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1.5rem;
-  }
-
-  /* Icon + label, so the link reads as a destination rather than as a word in a sentence — the
-     old markup carried no class at all and inherited body styling, which is exactly how it read.
-     The glyph takes currentColor: no brand blue, no filled badge. It brightens with the label on
-     hover through the existing `.footer-meta a:hover`, so the whole control responds as one. */
   .footer-social a {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
   }
 
-  /* 16px — matched to the meta row's own type, not scaled up. An oversized glyph is the fastest
-     way to make a quiet footer look like a social-media banner. */
+  /* 16px — matched to the meta row's own type, not scaled up. The glyph takes currentColor: no
+     brand blue, no filled badge. It brightens with the label on hover through
+     `.footer-meta a:hover`, so the whole control responds as one. An oversized glyph is the
+     fastest way to make a quiet footer look like a social-media banner. */
   .footer-social-icon {
     width: 1rem;
     height: 1rem;
     flex: none;
+  }
+
+  .footer-legal {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  /* Separates two items INSIDE one group, so it stays tighter than --footer-group-gap — at 32px
+     the pair stops reading as a single legal cluster. 12px until there is room for 20: the three
+     groups only just fit on one row at 768 (measured: 704px of rail against ~250px of copyright,
+     ~101px of Facebook and ~274px of legal), and this is one of the two places the slack comes
+     from. See `.footer-social` below for the other. */
+  .footer-legal li + li {
+    border-left: 1px solid var(--rule-dark);
+    margin-left: 0.75rem;
+    padding-left: 0.75rem;
+  }
+
+  @media (min-width: 48rem) {
+    .footer-meta {
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      justify-items: stretch;
+      text-align: start;
+    }
+
+    /* Centred by the RAIL, not by its neighbours: `1fr auto 1fr` makes the two flanking tracks
+       equal, so the middle cell sits on the exact centre line whatever the copyright and legal
+       strings measure — including under translation, where they differ by ~40px. */
+    .footer-social {
+      justify-self: center;
+    }
+
+    .footer-legal {
+      justify-self: end;
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .footer-legal li + li {
+      margin-left: 1.25rem;
+      padding-left: 1.25rem;
+    }
+
+    /* The band's one rule, closing the copyright rather than fencing anything. Desktop only: at
+       768 its 48px of padding was the difference between the legal links sitting on one line and
+       wrapping into the group above them. */
+    .footer-social {
+      border-left: 1px solid var(--rule-dark);
+      padding-left: var(--footer-col-gap);
+    }
   }
 
   /* `.section-shell` (mx-auto max-w-7xl, padding applied outside it by each
