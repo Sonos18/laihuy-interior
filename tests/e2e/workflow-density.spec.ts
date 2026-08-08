@@ -3,7 +3,6 @@ import { expect, test } from './fixtures'
 
 const VIEWPORT_HEIGHT = 900
 const TEST_ORIGIN = process.env.DENSITY_TEST_ORIGIN ?? 'http://localhost:3000'
-const KNOWN_ENGLISH_HYDRATION_ERROR = 'Hydration completed but contains mismatches.'
 const TRANSPARENT_PNG = Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAF/gL+X9j7WQAAAABJRU5ErkJggg==',
   'base64'
@@ -95,8 +94,7 @@ async function prepareContentPage(page: Page, locale: WorkflowLocale, path: stri
   await page.evaluate(() => document.fonts.ready)
 
   return {
-    consoleErrors: consoleErrors.filter(message => message !== KNOWN_ENGLISH_HYDRATION_ERROR),
-    knownConsoleErrors: consoleErrors.filter(message => message === KNOWN_ENGLISH_HYDRATION_ERROR),
+    consoleErrors,
     pageErrors
   }
 }
@@ -121,7 +119,6 @@ for (const locale of ['vi', 'en'] as const) {
     await link.focus()
     await expect(link).toBeFocused()
     expect(errors.consoleErrors).toEqual([])
-    expect(errors.knownConsoleErrors.length).toBeLessThanOrEqual(locale === 'en' ? 1 : 0)
     expect(errors.pageErrors).toEqual([])
   })
 
@@ -137,7 +134,6 @@ for (const locale of ['vi', 'en'] as const) {
     await expect(page.getByText(copy.qcReference, { exact: true })).toHaveCount(1)
     await expect(page.locator('main a[href="/nha-xuong"]')).not.toHaveCount(0)
     expect(errors.consoleErrors).toEqual([])
-    expect(errors.knownConsoleErrors.length).toBeLessThanOrEqual(locale === 'en' ? 1 : 0)
     expect(errors.pageErrors).toEqual([])
   })
 
@@ -149,7 +145,6 @@ for (const locale of ['vi', 'en'] as const) {
     expect(await countExactText(page, 'main li span', copy.qcBullets)).toBe(5)
     await expect(page.locator('#production-workflow')).toHaveCount(0)
     expect(errors.consoleErrors).toEqual([])
-    expect(errors.knownConsoleErrors.length).toBeLessThanOrEqual(locale === 'en' ? 1 : 0)
     expect(errors.pageErrors).toEqual([])
   })
 
@@ -176,7 +171,6 @@ for (const locale of ['vi', 'en'] as const) {
     expect(geometry.sectionTop).toBeGreaterThanOrEqual(geometry.headerBottom - 1)
     expect(geometry.sectionTop - geometry.headerBottom).toBeLessThanOrEqual(24)
     expect(errors.consoleErrors).toEqual([])
-    expect(errors.knownConsoleErrors.length).toBeLessThanOrEqual(locale === 'en' ? 1 : 0)
     expect(errors.pageErrors).toEqual([])
   })
 }

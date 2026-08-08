@@ -3,7 +3,6 @@ import { expect, test } from './fixtures'
 
 const VIEWPORT_HEIGHT = 900
 const TEST_ORIGIN = process.env.DENSITY_TEST_ORIGIN ?? 'http://localhost:3000'
-const KNOWN_ENGLISH_HYDRATION_ERROR = 'Hydration completed but contains mismatches.'
 const TRANSPARENT_PNG = Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAF/gL+X9j7WQAAAABJRU5ErkJggg==',
   'base64'
@@ -59,8 +58,7 @@ async function prepareContentPage(page: Page, locale: 'vi' | 'en', width = 1024)
   await page.evaluate(() => document.fonts.ready)
 
   return {
-    consoleErrors: consoleErrors.filter(message => message !== KNOWN_ENGLISH_HYDRATION_ERROR),
-    knownConsoleErrors: consoleErrors.filter(message => message === KNOWN_ENGLISH_HYDRATION_ERROR),
+    consoleErrors,
     pageErrors
   }
 }
@@ -100,7 +98,6 @@ for (const locale of ['vi', 'en'] as const) {
       }
 
       expect(errors.consoleErrors).toEqual([])
-      expect(errors.knownConsoleErrors.length).toBeLessThanOrEqual(locale === 'en' ? 1 : 0)
       expect(errors.pageErrors).toEqual([])
     })
   }
@@ -128,7 +125,6 @@ for (const locale of ['vi', 'en'] as const) {
     expect(geometry.formTop - geometry.headerBottom).toBeLessThanOrEqual(24)
 
     expect(errors.consoleErrors).toEqual([])
-    expect(errors.knownConsoleErrors.length).toBeLessThanOrEqual(locale === 'en' ? 1 : 0)
     expect(errors.pageErrors).toEqual([])
   })
 
