@@ -65,3 +65,59 @@ export const projectGalleryGroups = (
     images: assets.map(asset => withAlt(asset, alt))
   }))
 }
+
+export const LONG_MEDIA_THRESHOLD = 12
+export const LONG_MEDIA_INLINE_TARGET = 9
+
+export type ProjectMediaFlow = {
+  eligible: MediaImage[]
+  inline: MediaImage[]
+  remaining: MediaImage[]
+  isLongMedia: boolean
+}
+
+const uniqueMediaByPath = (images: readonly MediaImage[]): MediaImage[] => {
+  const paths = new Set<string>()
+  return images.filter((image) => {
+    if (paths.has(image.path)) return false
+    paths.add(image.path)
+    return true
+  })
+}
+
+/**
+ * Derive the project-story gallery without mutating catalog or project data.
+ * Exact identity is the catalog path; distinct paths remain distinct even when
+ * they depict similar scenes or crops.
+ */
+export const buildProjectMediaFlow = (
+  images: readonly MediaImage[],
+  groups: readonly ProjectGalleryGroup[] = []
+): ProjectMediaFlow => {
+  const eligible = uniqueMediaByPath(images)
+  const isLongMedia = eligible.length > LONG_MEDIA_THRESHOLD
+
+  if (!isLongMedia) {
+    return { eligible, inline: eligible, remaining: [], isLongMedia }
+  }
+
+  const eligiblePaths = new Set(eligible.map(image => image.path))
+  const selectedPaths = new Set<string>()
+  const select = (image?: MediaImage) => {
+    if (image && eligiblePaths.has(image.path) && selectedPaths.size < LONG_MEDIA_INLINE_TARGET) {
+      selectedPaths.add(image.path)
+    }
+  }
+
+  select(eligible[0])
+  for (const group of groups) {
+    select(group.images.find(image => eligiblePaths.has(image.path) && !selectedPaths.has(image.path)))
+  }
+  for (const image of eligible) {
+    select(image)
+  }
+
+  const inline = eligible.filter(image => selectedPaths.has(image.path))
+  const remaining = eligible.filter(image => !selectedPaths.has(image.path))
+  return { eligible, inline, remaining, isLongMedia }
+}

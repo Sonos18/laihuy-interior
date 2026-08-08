@@ -99,6 +99,7 @@ export const uiText = {
     projects: { vi: 'Xem dự án tiêu biểu', en: 'View featured projects' },
     contact: { vi: 'Liên hệ tư vấn', en: 'Contact our team' },
     allProjects: { vi: 'Xem tất cả dự án', en: 'View all projects' },
+    allProjectImages: { vi: 'Xem toàn bộ hình ảnh', en: 'View all project images' },
     backToProjects: { vi: 'Quay lại danh sách dự án', en: 'Back to projects' },
     sendCv: { vi: 'Gửi CV qua email', en: 'Send CV by email' }
   },

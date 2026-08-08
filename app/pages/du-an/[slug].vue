@@ -5,6 +5,7 @@ import { projects } from '~/data/projects'
 import { siteImages } from '~/data/site-images'
 import { uiText } from '~/data/ui'
 import {
+  buildProjectMediaFlow,
   projectCoverAsset,
   projectGalleryGroups,
   projectImages,
@@ -55,12 +56,13 @@ const materialsImage = computed<MediaImage | undefined>(() =>
 )
 const galleryGroups = projectGalleryGroups(project.mediaId, project.name)
 const hasGalleryGroups = galleryGroups.length > 0
+const mediaFlow = buildProjectMediaFlow(allImages, galleryGroups)
 
 const prettifySlug = (value: string): string =>
   value.replace(/-/g, ' ').replace(/\b\w/g, char => char.toUpperCase())
 
 const galleryTabs = computed(() => [
-  { value: 'all', label: t({ vi: 'Tất cả', en: 'All' }), count: allImages.length },
+  { value: 'all', label: t({ vi: 'Tất cả', en: 'All' }), count: mediaFlow.eligible.length },
   ...galleryGroups.map(group => ({
     value: group.slug,
     label: project.galleryLabels?.[group.slug]
@@ -73,15 +75,29 @@ const galleryTabs = computed(() => [
 const activeGalleryTab = ref('all')
 const filteredGallery = computed<MediaImage[]>(() => {
   if (!hasGalleryGroups || activeGalleryTab.value === 'all') {
-    return allImages
+    return mediaFlow.inline
   }
-  return galleryGroups.find(group => group.slug === activeGalleryTab.value)?.images ?? allImages
+  const group = galleryGroups.find(group => group.slug === activeGalleryTab.value)
+  return group ? buildProjectMediaFlow(group.images).inline : mediaFlow.inline
 })
 
 const lightboxOpen = ref(false)
 const lightboxIndex = ref(0)
+const lightboxImages = ref<MediaImage[]>([])
 const openLightbox = (index: number) => {
-  lightboxIndex.value = index
+  const selected = filteredGallery.value[index]
+  const images = mediaFlow.isLongMedia && activeGalleryTab.value === 'all'
+    ? mediaFlow.eligible
+    : filteredGallery.value
+  lightboxImages.value = images
+  lightboxIndex.value = selected
+    ? Math.max(0, images.findIndex(image => image.path === selected.path))
+    : 0
+  lightboxOpen.value = true
+}
+const openFullGallery = () => {
+  lightboxImages.value = mediaFlow.eligible
+  lightboxIndex.value = 0
   lightboxOpen.value = true
 }
 watch(activeGalleryTab, () => {
@@ -571,9 +587,12 @@ usePageSeo({
 
     <!-- 7 · Gallery ---------------------------------------------------------->
     <section
-      v-if="allImages.length"
+      v-if="mediaFlow.eligible.length"
       id="gallery"
       class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] bg-ink-50"
+      :data-media-flow="mediaFlow.isLongMedia ? 'long' : 'short'"
+      :data-eligible-media="mediaFlow.eligible.length"
+      :data-inline-media="filteredGallery.length"
     >
       <div class="shell">
         <div class="mb-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
@@ -773,6 +792,27 @@ usePageSeo({
       </div>
     </section>
 
+    <div
+      v-if="mediaFlow.isLongMedia"
+      class="border-b border-ink-200 bg-white py-10"
+      data-project-full-gallery
+    >
+      <div class="shell flex justify-center">
+        <button
+          type="button"
+          class="btn-outline"
+          :aria-label="`${t(uiText.cta.allProjectImages)} (${mediaFlow.remaining.length})`"
+          @click="openFullGallery"
+        >
+          {{ t(uiText.cta.allProjectImages) }}
+          <span
+            aria-hidden="true"
+            class="text-xs font-black text-wood-600"
+          >+{{ mediaFlow.remaining.length }}</span>
+        </button>
+      </div>
+    </div>
+
     <!-- 10 · Testimonial (hidden until authored) ----------------------------->
     <section
       v-if="project.testimonial"
@@ -922,7 +962,7 @@ usePageSeo({
     </section>
 
     <GalleryLightbox
-      :images="filteredGallery"
+      :images="lightboxImages"
       :index="lightboxIndex"
       :open="lightboxOpen"
       @close="lightboxOpen = false"
