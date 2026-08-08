@@ -24,7 +24,10 @@ const ROUTES = [
   '/nha-xuong',
   '/dich-vu',
   '/tuyen-dung',
-  '/lien-he'
+  '/lien-he',
+  // app/error.vue renders the full site shell, so it is held to the same bar as every other
+  // route. Playwright does not fail a navigation on a 404 status, so this scans normally.
+  '/this-route-does-not-exist'
 ] as const
 
 for (const route of ROUTES) {
@@ -35,6 +38,9 @@ for (const route of ROUTES) {
 
     await page.goto(route, { waitUntil: 'networkidle' })
     const { violations } = await new AxeBuilder({ page })
+      // Nuxt injects this custom element only in dev. Its own nested close button violates
+      // axe's rule, but it is not application DOM and is absent from the production build.
+      .exclude('nuxt-error-overlay')
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
       .disableRules(['color-contrast'])
       .analyze()

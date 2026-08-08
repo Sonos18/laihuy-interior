@@ -181,6 +181,40 @@ export const uiText = {
       pending: { vi: 'Đang kiểm tra thông tin trên thiết bị này.', en: 'Reviewing information on this device.' }
     }
   },
+  /**
+   * app/error.vue. Two cases only, because only two are distinguishable to a visitor: the
+   * address is wrong (404) or the site is (everything else). The copy takes the blame in the
+   * 500 case and does not in the 404 case — a visitor who mistyped a URL should not be
+   * apologised to, and a visitor hitting a server fault should not be blamed.
+   */
+  errorPage: {
+    notFound: {
+      code: { vi: '404', en: '404' },
+      eyebrow: { vi: 'Lỗi 404', en: '404 error' },
+      title: {
+        vi: 'Không tìm thấy trang',
+        en: 'Page not found'
+      },
+      body: {
+        vi: 'Đường dẫn có thể đã thay đổi hoặc dự án đã được sắp xếp lại. Bắt đầu lại từ những trang dưới đây.',
+        en: 'The link may have changed, or the project has been reorganised. Pick up again from one of the pages below.'
+      }
+    },
+    serverError: {
+      code: { vi: '500', en: '500' },
+      eyebrow: { vi: 'Lỗi hệ thống', en: 'Something broke' },
+      title: {
+        vi: 'Có lỗi phía chúng tôi',
+        en: 'That one’s on us'
+      },
+      body: {
+        vi: 'Trang không tải được do lỗi hệ thống. Thử tải lại, hoặc gọi trực tiếp nếu bạn đang cần gấp.',
+        en: 'The page failed to load because of a fault on our side. Try again, or call us directly if it’s urgent.'
+      }
+    },
+    retry: { vi: 'Tải lại trang', en: 'Reload the page' },
+    home: { vi: 'Về trang chủ', en: 'Back to home' }
+  },
   projectFacts: {
     category: { vi: 'Hạng mục', en: 'Category' },
     location: { vi: 'Địa điểm', en: 'Location' },
