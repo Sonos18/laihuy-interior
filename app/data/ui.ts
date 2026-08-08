@@ -103,6 +103,84 @@ export const uiText = {
     backToProjects: { vi: 'Quay lại danh sách dự án', en: 'Back to projects' },
     sendCv: { vi: 'Gửi CV qua email', en: 'Send CV by email' }
   },
+  /**
+   * /lien-he form copy. Field labels stay in `labels` where they are shared (phone, email);
+   * everything here is form-specific — placeholders, validation messages, and the local
+   * review states. The form has no transport; its copy must never imply delivery.
+   *
+   * Validation messages say how to complete the local review, not only what went wrong.
+   */
+  contactForm: {
+    eyebrow: { vi: 'Kiểm tra cục bộ', en: 'Local review' },
+    heading: { vi: 'Kiểm tra thông tin công trình', en: 'Review project information' },
+    heroAction: { vi: 'Kiểm tra thông tin công trình', en: 'Review project information' },
+    note: {
+      vi: 'Công cụ này chỉ kiểm tra thông tin trên thiết bị của bạn và không gửi hoặc lưu dữ liệu. Sau khi kiểm tra, hãy gọi điện hoặc gửi email trực tiếp cho Lai Huy.',
+      en: 'This tool only reviews information on your device and does not send or store data. After reviewing it, call or email Lai Huy directly.'
+    },
+    fields: {
+      name: { vi: 'Họ tên', en: 'Name' },
+      projectType: { vi: 'Loại dự án', en: 'Project type' },
+      message: { vi: 'Thông tin công trình', en: 'Project information' }
+    },
+    placeholders: {
+      name: { vi: 'Tên của bạn', en: 'Your name' },
+      email: { vi: 'email@example.com', en: 'email@example.com' },
+      projectType: { vi: 'Chọn loại dự án', en: 'Select project type' },
+      message: {
+        vi: 'Quy mô, số phòng, vật liệu mong muốn, tiến độ dự kiến...',
+        en: 'Scale, room count, preferred materials, target schedule...'
+      }
+    },
+    submit: { vi: 'Kiểm tra thông tin', en: 'Review information' },
+    submitting: { vi: 'Đang kiểm tra trên thiết bị...', en: 'Reviewing on this device...' },
+    required: { vi: 'bắt buộc', en: 'required' },
+    errors: {
+      summary: {
+        vi: 'Vui lòng kiểm tra lại các trường được đánh dấu bên dưới.',
+        en: 'Please check the highlighted fields below.'
+      },
+      name: { vi: 'Nhập họ tên để hoàn tất phần thông tin liên hệ.', en: 'Enter your name to complete the contact details.' },
+      phone: { vi: 'Nhập số điện thoại để hoàn tất phần thông tin liên hệ.', en: 'Enter a phone number to complete the contact details.' },
+      phoneInvalid: {
+        vi: 'Số điện thoại chưa hợp lệ — kiểm tra lại giúp chúng tôi.',
+        en: 'That phone number doesn’t look right — please check it.'
+      },
+      email: { vi: 'Nhập địa chỉ email hợp lệ.', en: 'Enter a valid email address.' },
+      emailInvalid: {
+        vi: 'Email chưa hợp lệ — ví dụ: ten@congty.com',
+        en: 'That email doesn’t look right — for example: name@company.com'
+      },
+      projectType: { vi: 'Chọn loại dự án gần nhất với công trình của bạn.', en: 'Choose the project type closest to yours.' },
+      message: {
+        vi: 'Nhập mô tả ngắn về công trình để kiểm tra thông tin.',
+        en: 'Enter a short project description for the local review.'
+      },
+      messageTooShort: {
+        vi: 'Cho chúng tôi thêm một chút chi tiết (ít nhất 10 ký tự).',
+        en: 'Tell us a little more (at least 10 characters).'
+      }
+    },
+    reviewed: {
+      title: { vi: 'Thông tin đã được kiểm tra trên thiết bị này', en: 'Information checked on this device' },
+      body: {
+        vi: 'Thông tin chưa được gửi cho Lai Huy và không được lưu. Để trao đổi với đội ngũ, vui lòng gọi điện hoặc gửi email trực tiếp.',
+        en: 'The information has not been sent to Lai Huy and was not stored. To contact the team, please call or email directly.'
+      },
+      edit: { vi: 'Sửa thông tin', en: 'Edit information' },
+      reset: { vi: 'Xóa thông tin', en: 'Clear information' }
+    },
+    localError: {
+      title: { vi: 'Chưa thể hoàn tất kiểm tra cục bộ', en: 'The local review could not be completed' },
+      body: {
+        vi: 'Không có dữ liệu nào được gửi hoặc lưu. Bạn có thể thử kiểm tra lại, gọi điện hoặc gửi email trực tiếp.',
+        en: 'No data was sent or stored. You can try the review again, call, or email directly.'
+      }
+    },
+    status: {
+      pending: { vi: 'Đang kiểm tra thông tin trên thiết bị này.', en: 'Reviewing information on this device.' }
+    }
+  },
   projectFacts: {
     category: { vi: 'Hạng mục', en: 'Category' },
     location: { vi: 'Địa điểm', en: 'Location' },

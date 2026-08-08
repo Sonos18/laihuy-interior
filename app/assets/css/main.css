@@ -450,6 +450,17 @@
   --color-wood-900: #2b1a13;
   --color-wood-950: #170d09;
 
+  /* The palette's ONLY non-brand hue, and it exists for one reason: a form error has to
+     read as an error, and ink/wood cannot carry that meaning — a wood-600 message is
+     indistinguishable from the wood-600 links beside it. Three stops, no more: a surface,
+     a boundary, and a text colour. Measured on white: alert-700 = 8.4:1 (WCAG AA normal
+     text), alert-500 = 5.9:1 (clears the 3:1 floor for a non-text boundary). Desaturated
+     toward brick so it sits with wood rather than fighting it. Errors only — never
+     decoration, never a fourth accent. */
+  --color-alert-50: #fdf3f1;
+  --color-alert-500: #b23c2a;
+  --color-alert-700: #8a2e1f;
+
   --animate-fade-in-up: fade-in-up 0.8s ease-out both;
   --animate-fade-in: fade-in 0.6s ease-out both;
 }

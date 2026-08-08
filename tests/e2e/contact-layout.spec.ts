@@ -29,7 +29,13 @@ async function rowShape(page: Page): Promise<number[]> {
 
 async function open(page: Page, width: number) {
   await page.setViewportSize({ width, height: 900 })
+  await page.route('https://maps.google.com/**', async (route) => {
+    await route.fulfill({ status: 200, contentType: 'text/html', body: '<!doctype html><title>Map unavailable in test</title>' })
+  })
   await page.goto('/lien-he', { waitUntil: 'load' })
+  await page.waitForFunction(() => Boolean(
+    (document.querySelector('#__nuxt') as HTMLElement & { __vue_app__?: unknown })?.__vue_app__
+  ))
   await settle(page)
 }
 
@@ -90,4 +96,108 @@ test('the five cards are equal width in the desktop row', async ({ page }) => {
   for (const width of widths) {
     expect(width).toBeCloseTo(widths[0]!, 0)
   }
+})
+
+/**
+ * Local-only form behaviour gate.
+ *
+ * The form is FRONTEND-ONLY: its action validates and reviews data on this device, then directs
+ * the visitor to real phone/email channels. Nothing is transmitted. These assertions protect
+ * validation, focus, pending feedback and the honest local-only result state.
+ */
+async function fillValid(page: Page) {
+  await page.fill('#contact-name', 'Nguyễn Văn A')
+  await page.fill('#contact-phone', '+84 912 345 678')
+  await page.fill('#contact-email', 'a@congty.com')
+  await page.selectOption('#contact-projectType', { index: 1 })
+  await page.fill('#contact-message', 'Khách sạn 40 phòng tại Đà Nẵng, cần báo giá nội thất.')
+}
+
+test('an empty submit blocks, marks every field invalid and focuses the first', async ({ page }) => {
+  await open(page, 1440)
+  await page.click('[data-testid="contact-form"] button[type="submit"]')
+
+  for (const field of ['name', 'phone', 'email', 'projectType', 'message']) {
+    await expect(page.locator(`#contact-${field}`)).toHaveAttribute('aria-invalid', 'true')
+    await expect(page.locator(`#contact-${field}-error`)).toBeVisible()
+  }
+
+  // The form is still on screen — nothing was processed or transmitted.
+  await expect(page.locator('[data-testid="contact-form"]')).toBeVisible()
+  await expect(page.locator('[data-testid="contact-reviewed"]')).toHaveCount(0)
+  await expect(page.locator('#contact-name')).toBeFocused()
+})
+
+test('each error is wired to its field for assistive tech', async ({ page }) => {
+  await open(page, 1440)
+  await page.click('[data-testid="contact-form"] button[type="submit"]')
+
+  await expect(page.locator('#contact-email')).toHaveAttribute('aria-describedby', 'contact-email-error')
+})
+
+test('a malformed email is rejected while the rest of the form is valid', async ({ page }) => {
+  await open(page, 1440)
+  await fillValid(page)
+  await page.fill('#contact-email', 'not-an-email')
+  await page.click('[data-testid="contact-form"] button[type="submit"]')
+
+  await expect(page.locator('#contact-email-error')).toBeVisible()
+  await expect(page.locator('#contact-email')).toBeFocused()
+  await expect(page.locator('[data-testid="contact-reviewed"]')).toHaveCount(0)
+})
+
+test('correcting a field clears its error immediately', async ({ page }) => {
+  await open(page, 1440)
+  await page.click('[data-testid="contact-form"] button[type="submit"]')
+  await expect(page.locator('#contact-name-error')).toBeVisible()
+
+  await page.fill('#contact-name', 'Nguyễn Văn A')
+
+  await expect(page.locator('#contact-name-error')).toHaveCount(0)
+  await expect(page.locator('#contact-name')).not.toHaveAttribute('aria-invalid', 'true')
+})
+
+test('a valid review shows pending, then replaces the form with local-only guidance', async ({ page }) => {
+  await open(page, 1440)
+  await fillValid(page)
+
+  const submit = page.locator('[data-testid="contact-form"] button[type="submit"]')
+  await submit.click()
+
+  // Pending disables the button so the local review cannot start twice.
+  await expect(submit).toBeDisabled()
+
+  const reviewed = page.locator('[data-testid="contact-reviewed"]')
+  await expect(reviewed).toBeVisible()
+  await expect(reviewed).toContainText('Thông tin chưa được gửi cho Lai Huy')
+  await expect(reviewed.locator('a[href^="tel:"]')).toHaveCount(1)
+  await expect(reviewed.locator('a[href^="mailto:"]')).toHaveCount(1)
+  await expect(page.locator('[data-testid="contact-form"]')).toHaveCount(0)
+})
+
+test('editing after local review preserves the entered information', async ({ page }) => {
+  await open(page, 1440)
+  await fillValid(page)
+  await page.click('[data-testid="contact-form"] button[type="submit"]')
+  await expect(page.locator('[data-testid="contact-reviewed"]')).toBeVisible()
+
+  await page.click('[data-testid="contact-edit"]')
+
+  await expect(page.locator('[data-testid="contact-form"]')).toBeVisible()
+  await expect(page.locator('#contact-name')).toHaveValue('Nguyễn Văn A')
+  await expect(page.locator('#contact-message')).toHaveValue('Khách sạn 40 phòng tại Đà Nẵng, cần báo giá nội thất.')
+})
+
+test('clearing after local review returns an empty form', async ({ page }) => {
+  await open(page, 1440)
+  await fillValid(page)
+  await page.click('[data-testid="contact-form"] button[type="submit"]')
+  await expect(page.locator('[data-testid="contact-reviewed"]')).toBeVisible()
+
+  await page.click('[data-testid="contact-reset"]')
+
+  await expect(page.locator('[data-testid="contact-form"]')).toBeVisible()
+  await expect(page.locator('#contact-name')).toHaveValue('')
+  await expect(page.locator('#contact-message')).toHaveValue('')
+  await expect(page.locator('#contact-name-error')).toHaveCount(0)
 })

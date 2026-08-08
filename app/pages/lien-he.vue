@@ -3,6 +3,7 @@ import { company } from '~/data/company'
 import { uiText } from '~/data/ui'
 import { projectMedia } from '~/media/catalog.generated'
 import { withAlt } from '~/media/project-media'
+import type { LocalizedText } from '~/shared/types/localization'
 
 const { t, ta } = useLanguage()
 
@@ -16,10 +17,17 @@ const heroImage = withAlt(heroAsset, {
   en: 'Living room in the Chi Ly garden villa project'
 })
 
-const form = reactive({
+type ContactField = 'name' | 'phone' | 'email' | 'projectType' | 'message'
+type ContactDraft = Record<ContactField, string>
+
+/** Field order is the DOM order — `focusFirstError` walks it to land focus on the topmost
+ *  invalid field, which is the only order a sighted keyboard user expects. */
+const FIELD_ORDER: ContactField[] = ['name', 'phone', 'email', 'projectType', 'message']
+
+const form = reactive<ContactDraft>({
   name: '',
-  email: '',
   phone: '',
+  email: '',
   projectType: '',
   message: ''
 })
@@ -70,26 +78,121 @@ const mapEmbedUrl = computed(() => {
   return `https://maps.google.com/maps?q=${encodeURIComponent(address)}&z=15&output=embed`
 })
 
-const submitted = ref(false)
+// This form is intentionally frontend-only. The delay makes the local processing state
+// perceivable, but no information leaves the browser and nothing is persisted.
+const LOCAL_REVIEW_DELAY_MS = 700
 
-const submitForm = () => {
-  submitted.value = true
-  const subject = t({
-    vi: `Yêu cầu tư vấn dự án - ${form.projectType || 'Lai Huy Interior'}`,
-    en: `Project consultation request - ${form.projectType || 'Lai Huy Interior'}`
-  })
-  const body = [
-    `${t({ vi: 'Họ tên', en: 'Name' })}: ${form.name}`,
-    `Email: ${form.email}`,
-    `${t({ vi: 'Điện thoại', en: 'Phone' })}: ${form.phone}`,
-    `${t({ vi: 'Loại dự án', en: 'Project type' })}: ${form.projectType}`,
-    '',
-    `${t({ vi: 'Nội dung', en: 'Message' })}:`,
-    form.message
-  ].join('\n')
-
-  window.location.href = `mailto:${company.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+const reviewLocally = async (payload: ContactDraft): Promise<void> => {
+  void payload
+  await new Promise(resolve => setTimeout(resolve, LOCAL_REVIEW_DELAY_MS))
 }
+
+type SubmitState = 'idle' | 'pending' | 'reviewed' | 'local-error'
+
+type FieldErrors = Partial<Record<ContactField, LocalizedText>>
+
+const submitState = ref<SubmitState>('idle')
+// Replaced wholesale rather than mutated: `validate` rebuilds the map every run, so a field
+// that has become valid cannot leave a stale message behind.
+const errors = ref<FieldErrors>({})
+const formEl = ref<HTMLFormElement | null>(null)
+
+const fieldId = (field: ContactField) => `contact-${field}`
+const errorId = (field: ContactField) => `contact-${field}-error`
+
+const digitsIn = (value: string) => value.replace(/\D/g, '')
+// Deliberately permissive: it rejects obvious typos, not unusual-but-valid formats. A lead
+// form that argues with a real phone number costs more than one that accepts a bad one.
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+const validate = (): boolean => {
+  const messages = uiText.contactForm.errors
+  const next: FieldErrors = {}
+
+  if (!form.name.trim()) {
+    next.name = messages.name
+  }
+
+  if (!form.phone.trim()) {
+    next.phone = messages.phone
+  } else {
+    const digits = digitsIn(form.phone)
+    if (digits.length < 8 || digits.length > 15) next.phone = messages.phoneInvalid
+  }
+
+  if (!form.email.trim()) {
+    next.email = messages.email
+  } else if (!EMAIL_PATTERN.test(form.email.trim())) {
+    next.email = messages.emailInvalid
+  }
+
+  if (!form.projectType) {
+    next.projectType = messages.projectType
+  }
+
+  if (!form.message.trim()) {
+    next.message = messages.message
+  } else if (form.message.trim().length < 10) {
+    next.message = messages.messageTooShort
+  }
+
+  errors.value = next
+  return FIELD_ORDER.every(field => !next[field])
+}
+
+const focusFirstError = async () => {
+  await nextTick()
+  const first = FIELD_ORDER.find(field => errors.value[field])
+  if (!first) return
+  formEl.value?.querySelector<HTMLElement>(`#${fieldId(first)}`)?.focus()
+}
+
+// Clearing on input rather than on blur: dropping the error the moment a field is corrected
+// removes it while the user is still looking at it. `validate` re-runs over every field on
+// submit, so nothing can be cleared into a false pass.
+const clearError = (field: ContactField) => {
+  if (!errors.value[field]) return
+  const next: FieldErrors = {}
+  for (const key of FIELD_ORDER) {
+    const message = errors.value[key]
+    if (key !== field && message) next[key] = message
+  }
+  errors.value = next
+}
+
+const submitForm = async () => {
+  if (submitState.value === 'pending') return
+
+  if (!validate()) {
+    submitState.value = 'idle'
+    await focusFirstError()
+    return
+  }
+
+  submitState.value = 'pending'
+  try {
+    await reviewLocally({ ...form })
+    submitState.value = 'reviewed'
+  } catch {
+    submitState.value = 'local-error'
+  }
+}
+
+const editForm = async () => {
+  submitState.value = 'idle'
+  await nextTick()
+  formEl.value?.querySelector<HTMLElement>(`#${fieldId('name')}`)?.focus()
+}
+
+const resetForm = () => {
+  for (const field of FIELD_ORDER) {
+    form[field] = ''
+  }
+  errors.value = {}
+  submitState.value = 'idle'
+}
+
+const hasErrors = computed(() => FIELD_ORDER.some(field => errors.value[field]))
 
 const seoTitle = computed(() => t(company.seo.contact.title))
 const seoDescription = computed(() => t(company.seo.contact.description))
@@ -125,11 +228,30 @@ usePageSeo({
       :topic="t({ vi: 'Liên hệ', en: 'Contact' })"
       :title="t({ vi: 'Bắt đầu dự án', en: 'Start a project' })"
       :special-title="t({ vi: 'cùng Lai Huy', en: 'with Lai Huy' })"
-      :subtitle="t({ vi: 'Gửi bản vẽ, BOQ hoặc thông tin công trình để Lai Huy Interior tư vấn phương án sản xuất và thi công phù hợp.', en: 'Send drawings, BOQ, or project information so Lai Huy Interior can advise on production and contracting solutions.' })"
+      :subtitle="t({ vi: 'Kiểm tra thông tin công trình ngay trên thiết bị, sau đó gọi điện hoặc gửi email trực tiếp cho Lai Huy Interior.', en: 'Review project information on your device, then call or email Lai Huy Interior directly.' })"
       :image="heroImage"
       atmosphere="warm"
       focal="50% 42%"
-    />
+    >
+      <template #actions>
+        <a
+          :href="`tel:${company.phone.replaceAll(' ', '')}`"
+          class="btn-primary"
+        >
+          {{ t(uiText.labels.callNow) }}
+          <Icon
+            name="i-lucide-phone"
+            class="h-4 w-4"
+          />
+        </a>
+        <a
+          href="#contact-form"
+          class="btn-secondary"
+        >
+          {{ t(uiText.contactForm.heroAction) }}
+        </a>
+      </template>
+    </AppHero>
 
     <section class="section-y bg-ink-50">
       <div class="shell">
@@ -139,69 +261,194 @@ usePageSeo({
         >
           <div class="rounded-2xl border border-ink-200 bg-white p-6 md:p-8">
             <p class="eyebrow">
-              {{ t(uiText.cta.quote24h) }}
+              {{ t(uiText.contactForm.eyebrow) }}
             </p>
             <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
-              {{ t({ vi: 'Gửi yêu cầu tư vấn dự án', en: 'Send a project consultation request' }) }}
+              {{ t(uiText.contactForm.heading) }}
             </h2>
             <p
               id="form-note"
               class="mt-4 text-sm leading-6 text-ink-600"
             >
-              {{ t({ vi: 'Biểu mẫu sẽ mở email trên thiết bị của bạn với nội dung đã điền sẵn. Website hiện chưa kết nối backend gửi form tự động.', en: 'This form opens your email app with a prepared message. The website does not use a fake backend submission.' }) }}
+              {{ t(uiText.contactForm.note) }}
             </p>
 
+            <!-- The local review replaces the form while preserving its values. Visitors can
+                 edit them or clear them; no data is sent or stored by either action. -->
+            <div
+              v-if="submitState === 'reviewed'"
+              data-testid="contact-reviewed"
+              class="mt-8 rounded-2xl border border-ink-200 bg-ink-50 p-6 md:p-8"
+              role="status"
+              aria-live="polite"
+            >
+              <Icon
+                name="i-lucide-circle-check-big"
+                class="h-10 w-10 text-wood-500"
+              />
+              <h3 class="mt-5 text-2xl font-black text-ink-950">
+                {{ t(uiText.contactForm.reviewed.title) }}
+              </h3>
+              <p class="mt-3 text-sm leading-6 text-ink-600">
+                {{ t(uiText.contactForm.reviewed.body) }}
+              </p>
+              <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+                <a
+                  :href="`tel:${company.phone.replaceAll(' ', '')}`"
+                  class="btn-dark"
+                >
+                  {{ t(uiText.labels.callNow) }} · {{ company.phone }}
+                </a>
+                <a
+                  :href="`mailto:${company.email}`"
+                  class="btn-outline"
+                >
+                  {{ t(uiText.labels.sendEmail) }} · {{ company.email }}
+                </a>
+              </div>
+              <div class="mt-3 flex flex-col gap-3 sm:flex-row">
+                <button
+                  type="button"
+                  class="btn-outline"
+                  data-testid="contact-edit"
+                  @click="editForm"
+                >
+                  {{ t(uiText.contactForm.reviewed.edit) }}
+                </button>
+                <button
+                  type="button"
+                  class="btn-outline"
+                  data-testid="contact-reset"
+                  @click="resetForm"
+                >
+                  {{ t(uiText.contactForm.reviewed.reset) }}
+                </button>
+              </div>
+            </div>
+
             <form
-              class="mt-8 space-y-5"
+              v-else
+              id="contact-form"
+              ref="formEl"
+              data-testid="contact-form"
+              class="mt-8 scroll-mt-[calc(var(--header-h)+1rem)] space-y-5"
               aria-describedby="form-note"
+              novalidate
               @submit.prevent="submitForm"
             >
               <div class="grid gap-5 md:grid-cols-2">
-                <label class="block">
-                  <span class="text-sm font-bold text-ink-800">{{ t({ vi: 'Họ tên', en: 'Name' }) }}</span>
+                <div class="block">
+                  <label
+                    :for="fieldId('name')"
+                    class="text-sm font-bold text-ink-800"
+                  >{{ t(uiText.contactForm.fields.name) }}</label>
                   <input
+                    :id="fieldId('name')"
                     v-model="form.name"
                     type="text"
-                    required
                     autocomplete="name"
-                    class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
-                    :placeholder="t({ vi: 'Tên của bạn', en: 'Your name' })"
+                    :aria-invalid="errors.name ? 'true' : undefined"
+                    :aria-describedby="errors.name ? errorId('name') : undefined"
+                    :class="[
+                      'mt-2 w-full rounded-2xl border px-4 py-3 outline-none transition-colors',
+                      errors.name
+                        ? 'border-alert-500 focus:border-alert-500'
+                        : 'border-ink-200 focus:border-wood-500'
+                    ]"
+                    :placeholder="t(uiText.contactForm.placeholders.name)"
+                    @input="clearError('name')"
                   >
-                </label>
-                <label class="block">
-                  <span class="text-sm font-bold text-ink-800">{{ t(uiText.labels.phone) }}</span>
+                  <p
+                    v-if="errors.name"
+                    :id="errorId('name')"
+                    class="mt-2 text-sm font-semibold text-alert-700"
+                  >
+                    {{ t(errors.name) }}
+                  </p>
+                </div>
+
+                <div class="block">
+                  <label
+                    :for="fieldId('phone')"
+                    class="text-sm font-bold text-ink-800"
+                  >{{ t(uiText.labels.phone) }}</label>
                   <input
+                    :id="fieldId('phone')"
                     v-model="form.phone"
                     type="tel"
-                    required
                     autocomplete="tel"
-                    class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
+                    :aria-invalid="errors.phone ? 'true' : undefined"
+                    :aria-describedby="errors.phone ? errorId('phone') : undefined"
+                    :class="[
+                      'mt-2 w-full rounded-2xl border px-4 py-3 outline-none transition-colors',
+                      errors.phone
+                        ? 'border-alert-500 focus:border-alert-500'
+                        : 'border-ink-200 focus:border-wood-500'
+                    ]"
                     placeholder="+84..."
+                    @input="clearError('phone')"
                   >
-                </label>
+                  <p
+                    v-if="errors.phone"
+                    :id="errorId('phone')"
+                    class="mt-2 text-sm font-semibold text-alert-700"
+                  >
+                    {{ t(errors.phone) }}
+                  </p>
+                </div>
               </div>
 
               <div class="grid gap-5 md:grid-cols-2">
-                <label class="block">
-                  <span class="text-sm font-bold text-ink-800">{{ t(uiText.labels.email) }}</span>
+                <div class="block">
+                  <label
+                    :for="fieldId('email')"
+                    class="text-sm font-bold text-ink-800"
+                  >{{ t(uiText.labels.email) }}</label>
                   <input
+                    :id="fieldId('email')"
                     v-model="form.email"
                     type="email"
-                    required
                     autocomplete="email"
-                    class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
-                    placeholder="email@example.com"
+                    :aria-invalid="errors.email ? 'true' : undefined"
+                    :aria-describedby="errors.email ? errorId('email') : undefined"
+                    :class="[
+                      'mt-2 w-full rounded-2xl border px-4 py-3 outline-none transition-colors',
+                      errors.email
+                        ? 'border-alert-500 focus:border-alert-500'
+                        : 'border-ink-200 focus:border-wood-500'
+                    ]"
+                    :placeholder="t(uiText.contactForm.placeholders.email)"
+                    @input="clearError('email')"
                   >
-                </label>
-                <label class="block">
-                  <span class="text-sm font-bold text-ink-800">{{ t({ vi: 'Loại dự án', en: 'Project type' }) }}</span>
+                  <p
+                    v-if="errors.email"
+                    :id="errorId('email')"
+                    class="mt-2 text-sm font-semibold text-alert-700"
+                  >
+                    {{ t(errors.email) }}
+                  </p>
+                </div>
+
+                <div class="block">
+                  <label
+                    :for="fieldId('projectType')"
+                    class="text-sm font-bold text-ink-800"
+                  >{{ t(uiText.contactForm.fields.projectType) }}</label>
                   <select
+                    :id="fieldId('projectType')"
                     v-model="form.projectType"
-                    required
-                    class="mt-2 w-full rounded-2xl border border-ink-200 bg-white px-4 py-3 outline-none focus:border-wood-500"
+                    :aria-invalid="errors.projectType ? 'true' : undefined"
+                    :aria-describedby="errors.projectType ? errorId('projectType') : undefined"
+                    :class="[
+                      'mt-2 w-full rounded-2xl border bg-white px-4 py-3 outline-none transition-colors',
+                      errors.projectType
+                        ? 'border-alert-500 focus:border-alert-500'
+                        : 'border-ink-200 focus:border-wood-500'
+                    ]"
+                    @change="clearError('projectType')"
                   >
                     <option value="">
-                      {{ t({ vi: 'Chọn loại dự án', en: 'Select project type' }) }}
+                      {{ t(uiText.contactForm.placeholders.projectType) }}
                     </option>
                     <option
                       v-for="type in projectTypes"
@@ -211,44 +458,97 @@ usePageSeo({
                       {{ type }}
                     </option>
                   </select>
-                </label>
+                  <p
+                    v-if="errors.projectType"
+                    :id="errorId('projectType')"
+                    class="mt-2 text-sm font-semibold text-alert-700"
+                  >
+                    {{ t(errors.projectType) }}
+                  </p>
+                </div>
               </div>
 
-              <label class="block">
-                <span class="text-sm font-bold text-ink-800">{{ t({ vi: 'Thông tin công trình', en: 'Project information' }) }}</span>
+              <div class="block">
+                <label
+                  :for="fieldId('message')"
+                  class="text-sm font-bold text-ink-800"
+                >{{ t(uiText.contactForm.fields.message) }}</label>
                 <textarea
+                  :id="fieldId('message')"
                   v-model="form.message"
                   rows="6"
-                  required
-                  class="mt-2 w-full rounded-2xl border border-ink-200 px-4 py-3 outline-none focus:border-wood-500"
-                  :placeholder="t({ vi: 'Quy mô, số phòng, vật liệu mong muốn, tiến độ dự kiến...', en: 'Scale, room count, preferred materials, target schedule...' })"
+                  :aria-invalid="errors.message ? 'true' : undefined"
+                  :aria-describedby="errors.message ? errorId('message') : undefined"
+                  :class="[
+                    'mt-2 w-full rounded-2xl border px-4 py-3 outline-none transition-colors',
+                    errors.message
+                      ? 'border-alert-500 focus:border-alert-500'
+                      : 'border-ink-200 focus:border-wood-500'
+                  ]"
+                  :placeholder="t(uiText.contactForm.placeholders.message)"
+                  @input="clearError('message')"
                 />
-              </label>
+                <p
+                  v-if="errors.message"
+                  :id="errorId('message')"
+                  class="mt-2 text-sm font-semibold text-alert-700"
+                >
+                  {{ t(errors.message) }}
+                </p>
+              </div>
+
+              <!-- A local processing failure leaves every field intact and still sends
+                   nothing. Direct contact links remain available as the real channels. -->
+              <div
+                v-if="submitState === 'local-error'"
+                data-testid="contact-error"
+                class="rounded-2xl border border-alert-500 bg-alert-50 p-5"
+                role="alert"
+              >
+                <p class="text-sm font-black text-alert-700">
+                  {{ t(uiText.contactForm.localError.title) }}
+                </p>
+                <p class="mt-2 text-sm leading-6 text-ink-700">
+                  {{ t(uiText.contactForm.localError.body) }}
+                </p>
+                <a
+                  :href="`tel:${company.phone.replaceAll(' ', '')}`"
+                  class="mt-3 inline-flex text-sm font-bold text-wood-600 underline underline-offset-2 hover:text-wood-700"
+                >
+                  {{ t(uiText.labels.callNow) }} · {{ company.phone }}
+                </a>
+              </div>
 
               <button
                 type="submit"
                 class="btn-dark w-full"
+                :disabled="submitState === 'pending'"
+                :class="submitState === 'pending' ? 'cursor-wait opacity-70' : ''"
               >
-                {{ t({ vi: 'Gửi yêu cầu qua email', en: 'Send request by email' }) }}
+                <Icon
+                  v-if="submitState === 'pending'"
+                  name="i-lucide-loader-circle"
+                  class="h-4 w-4 animate-spin"
+                />
+                {{ submitState === 'pending'
+                  ? t(uiText.contactForm.submitting)
+                  : t(uiText.contactForm.submit) }}
               </button>
 
-              <!-- Submit opens the mail client rather than posting; announce it, and offer a call
-                   fallback for anyone without a configured mail app. -->
+              <!-- One live region for the whole form. Field errors are already announced by
+                   aria-describedby when focus lands on the field, so this carries only what
+                   focus does NOT reach: the in-flight state and the summary. -->
               <p
                 class="sr-only"
                 role="status"
                 aria-live="polite"
               >
-                {{ submitted ? t({ vi: 'Đang mở ứng dụng email với nội dung đã điền sẵn.', en: 'Opening your email app with the prepared message.' }) : '' }}
-              </p>
-              <p class="text-center text-sm text-ink-600">
-                {{ t({ vi: 'Không mở được email?', en: 'No email app?' }) }}
-                <a
-                  :href="`tel:${company.phone.replaceAll(' ', '')}`"
-                  class="font-bold text-wood-600 underline underline-offset-2 hover:text-wood-700"
-                >
-                  {{ t({ vi: 'Gọi', en: 'Call' }) }} {{ company.phone }}
-                </a>
+                <template v-if="submitState === 'pending'">
+                  {{ t(uiText.contactForm.status.pending) }}
+                </template>
+                <template v-else-if="hasErrors">
+                  {{ t(uiText.contactForm.errors.summary) }}
+                </template>
               </p>
             </form>
           </div>
