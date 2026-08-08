@@ -124,7 +124,7 @@ usePageSeo({
           }) }}
         </p>
 
-        <div class="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
           <NuxtLink
             v-for="{ project, cover } in filteredProjects"
             :key="project.slug"
