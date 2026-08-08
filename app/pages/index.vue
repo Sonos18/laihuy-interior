@@ -418,9 +418,7 @@ usePageSeo({
       </div>
     </section>
 
-    <!-- Process last before the CTA: "how do you work" is a question asked once the company is
-         already credible, so it follows the capability proof rather than preceding it. The
-         one dark band in the body also anchors the page just before the conversion block. -->
+    <!-- Compact process summary: the complete workflow is owned by /gioi-thieu. -->
     <section class="section-y bg-ink-950 text-white">
       <div class="shell">
         <div class="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
@@ -437,9 +435,20 @@ usePageSeo({
             >
               {{ t({ vi: 'Từ bản vẽ đến bàn giao công trình', en: 'From drawings to project handover' }) }}
             </h2>
+            <NuxtLink
+              v-reveal="140"
+              to="/gioi-thieu#production-workflow"
+              class="btn-secondary reveal mt-8"
+            >
+              {{ t(uiText.cta.workflow) }}
+              <Icon
+                name="i-lucide-arrow-right"
+                class="h-4 w-4"
+              />
+            </NuxtLink>
           </div>
-          <div class="grid gap-4 md:grid-cols-2">
-            <article
+          <ol class="grid gap-4 md:grid-cols-2">
+            <li
               v-for="(step, index) in productionWorkflow"
               :key="t(step.title)"
               v-reveal="index * 80"
@@ -451,11 +460,8 @@ usePageSeo({
               <h3 class="mt-5 text-xl font-black text-white">
                 {{ t(step.title) }}
               </h3>
-              <p class="mt-3 text-sm leading-6 text-white/62">
-                {{ t(step.description) }}
-              </p>
-            </article>
-          </div>
+            </li>
+          </ol>
         </div>
       </div>
     </section>

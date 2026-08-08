@@ -95,6 +95,7 @@ export const uiText = {
       en: 'Consult hotel interior solutions'
     },
     factory: { vi: 'Xem năng lực nhà xưởng', en: 'View factory capability' },
+    workflow: { vi: 'Xem đầy đủ quy trình triển khai', en: 'View our complete project workflow' },
     projects: { vi: 'Xem dự án tiêu biểu', en: 'View featured projects' },
     contact: { vi: 'Liên hệ tư vấn', en: 'Contact our team' },
     allProjects: { vi: 'Xem tất cả dự án', en: 'View all projects' },

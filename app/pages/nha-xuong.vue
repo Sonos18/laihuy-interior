@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { company } from '~/data/company'
-import { productionWorkflow, qualityControl } from '~/data/factory'
+import { qualityControl } from '~/data/factory'
 import { uiText } from '~/data/ui'
 import { companyMedia, workshopMedia } from '~/media/catalog.generated'
 import { withAlt } from '~/media/project-media'
@@ -365,46 +365,7 @@ usePageSeo({
       </div>
     </section>
 
-    <!-- 3 · Manufacturing process (timeline) --------------------------------->
-    <section class="section-y bg-ink-950 text-white">
-      <div class="shell">
-        <div class="mb-14 max-w-3xl">
-          <p
-            v-reveal
-            class="eyebrow reveal text-wood-300"
-          >
-            {{ t(uiText.labels.productionWorkflow) }}
-          </p>
-          <h2
-            v-reveal="80"
-            class="reveal text-section-title mt-4 font-black uppercase"
-          >
-            {{ t({ vi: 'Từ bản vẽ đến bàn giao công trình', en: 'From drawings to project handover' }) }}
-          </h2>
-        </div>
-
-        <ol class="relative ml-3 border-l border-white/15">
-          <li
-            v-for="(step, index) in productionWorkflow"
-            :key="t(step.title)"
-            v-reveal="index * 90"
-            class="reveal relative pb-10 pl-8 last:pb-0"
-          >
-            <span class="absolute -left-4 flex h-8 w-8 items-center justify-center rounded-full bg-wood-500 text-xs font-black text-white ring-4 ring-ink-950">
-              {{ String(index + 1).padStart(2, '0') }}
-            </span>
-            <h3 class="text-lg font-black text-white">
-              {{ t(step.title) }}
-            </h3>
-            <p class="mt-2 max-w-2xl text-sm leading-6 text-white/62">
-              {{ t(step.description) }}
-            </p>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- 4 · Factory-tour gallery --------------------------------------------->
+    <!-- 3 · Factory-tour gallery --------------------------------------------->
     <section class="section-y bg-ink-50">
       <div class="shell">
         <div class="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
@@ -479,7 +440,7 @@ usePageSeo({
       </div>
     </section>
 
-    <!-- 5 · Equipment & technology (benefit-led) ----------------------------->
+    <!-- 4 · Equipment & technology (benefit-led) ----------------------------->
     <section class="section-y bg-white">
       <div class="shell">
         <div class="mb-12 max-w-3xl">
@@ -532,7 +493,7 @@ usePageSeo({
       </div>
     </section>
 
-    <!-- 6 · Craftsmanship ---------------------------------------------------->
+    <!-- 5 · Craftsmanship ---------------------------------------------------->
     <section class="section-y bg-ink-50">
       <div class="shell grid gap-12 lg:grid-cols-2 lg:items-center">
         <div
@@ -576,7 +537,7 @@ usePageSeo({
       </div>
     </section>
 
-    <!-- 7 · Production capacity ---------------------------------------------->
+    <!-- 6 · Production capacity ---------------------------------------------->
     <section class="section-y bg-ink-950 text-white">
       <div class="shell">
         <div class="mb-12 max-w-3xl">
@@ -619,7 +580,7 @@ usePageSeo({
       </div>
     </section>
 
-    <!-- 8 · Quality control -------------------------------------------------->
+    <!-- 7 · Quality control -------------------------------------------------->
     <section class="section-y bg-white">
       <div class="shell grid gap-12 lg:grid-cols-2 lg:items-center">
         <div>
@@ -665,7 +626,7 @@ usePageSeo({
       </div>
     </section>
 
-    <!-- 9 · FAQ -------------------------------------------------------------->
+    <!-- 8 · FAQ -------------------------------------------------------------->
     <section class="section-y bg-ink-50">
       <div class="shell grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
         <div>
@@ -708,7 +669,7 @@ usePageSeo({
       </div>
     </section>
 
-    <!-- 10 · CTA ------------------------------------------------------------->
+    <!-- 9 · CTA -------------------------------------------------------------->
     <section class="section-cta">
       <div class="shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
         <div>

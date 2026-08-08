@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { company } from '~/data/company'
-import { productionWorkflow, qualityControl } from '~/data/factory'
+import { productionWorkflow } from '~/data/factory'
 import { uiText } from '~/data/ui'
 import { companyMedia, workshopMedia } from '~/media/catalog.generated'
 import { withAlt } from '~/media/project-media'
@@ -31,9 +31,6 @@ const craftImage: MediaImage = {
   ...companyMedia.companyStory,
   alt: { vi: 'Thợ Lai Huy hoàn thiện sản phẩm nội thất', en: 'A Lai Huy craftsman finishing an interior piece' }
 }
-const qualityImage = withAlt(workshopByFile['9.webp'] as MediaAsset, {
-  vi: 'Máy khoan liên kết và dán cạnh trong xưởng', en: 'Boring and edge-banding machine in the workshop'
-})
 const exploreImage = withAlt(workshopByFile['5.webp'] as MediaAsset, {
   vi: 'Khu vực sản xuất nội thất Lai Huy', en: 'Lai Huy interior production area'
 })
@@ -472,7 +469,10 @@ usePageSeo({
     </section>
 
     <!-- 8 · How we work (stepped process) ------------------------------------>
-    <section class="section-y bg-ink-50">
+    <section
+      id="production-workflow"
+      class="section-y scroll-mt-[calc(var(--header-h)+1rem)] bg-ink-50"
+    >
       <div class="shell">
         <div class="mb-12 max-w-2xl">
           <p
@@ -509,53 +509,7 @@ usePageSeo({
       </div>
     </section>
 
-    <!-- 9 · Quality commitment (dark split + checklist) ---------------------->
-    <section class="section-y bg-ink-950 text-white">
-      <div class="shell grid gap-12 lg:grid-cols-2 lg:items-center">
-        <div>
-          <p
-            v-reveal
-            class="eyebrow reveal text-wood-300"
-          >
-            {{ t(uiText.labels.qualityControl) }}
-          </p>
-          <h2
-            v-reveal="80"
-            class="reveal text-section-title mt-4 font-black uppercase"
-          >
-            {{ t({ vi: 'Quy trình giúp dự án không phụ thuộc may rủi', en: 'A process that leaves nothing to chance' }) }}
-          </h2>
-          <ul class="mt-8 space-y-4">
-            <li
-              v-for="(item, index) in qualityControl"
-              :key="item.vi"
-              v-reveal="index * 70"
-              class="reveal flex gap-3 border-b border-white/12 pb-4 text-base font-semibold leading-7 text-white/76"
-            >
-              <Icon
-                name="i-lucide-circle-check-big"
-                class="mt-1 h-5 w-5 shrink-0 text-wood-300"
-              />
-              <span>{{ t(item) }}</span>
-            </li>
-          </ul>
-        </div>
-        <div
-          v-reveal="120"
-          class="reveal overflow-hidden rounded-2xl"
-        >
-          <MediaImage
-            :image="qualityImage"
-            preset="full"
-            class="w-full"
-            :style="{ aspectRatio: `${qualityImage.width} / ${qualityImage.height}` }"
-            img-class="rounded-2xl"
-          />
-        </div>
-      </div>
-    </section>
-
-    <!-- 10 · Why Lai Huy (differentiator cards) ------------------------------>
+    <!-- 9 · Why Lai Huy (differentiator cards) ------------------------------->
     <section class="section-y bg-white">
       <div class="shell">
         <div class="mb-12 max-w-2xl">
@@ -596,7 +550,7 @@ usePageSeo({
       </div>
     </section>
 
-    <!-- 11 · Trust band (stat strip) ----------------------------------------->
+    <!-- 10 · Trust band (stat strip) ----------------------------------------->
     <section class="bg-ink-950 text-white">
       <div class="shell grid gap-4 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div
@@ -620,7 +574,7 @@ usePageSeo({
       </div>
     </section>
 
-    <!-- 12 · People (portrait grid — conditional) ---------------------------->
+    <!-- 11 · People (portrait grid — conditional) ---------------------------->
     <section
       v-if="company.team.length"
       class="section-y bg-ink-50"
@@ -667,7 +621,7 @@ usePageSeo({
       </div>
     </section>
 
-    <!-- 13 · Inside Lai Huy gallery (curated real photos + lightbox) --------->
+    <!-- 12 · Inside Lai Huy gallery (curated real photos + lightbox) --------->
     <section class="section-y bg-white">
       <div class="shell">
         <div class="mb-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
@@ -701,7 +655,7 @@ usePageSeo({
       </div>
     </section>
 
-    <!-- 14 · Explore our work (editorial image + link) ----------------------->
+    <!-- 13 · Explore our work (editorial image + link) ----------------------->
     <section class="section-y bg-ink-50">
       <div class="shell grid gap-10 lg:grid-cols-2 lg:items-center">
         <div
@@ -745,7 +699,7 @@ usePageSeo({
       </div>
     </section>
 
-    <!-- 15 · Testimonials (conditional) -------------------------------------->
+    <!-- 14 · Testimonials (conditional) -------------------------------------->
     <section
       v-if="company.testimonials.length"
       class="section-y bg-white"
@@ -782,7 +736,7 @@ usePageSeo({
       </div>
     </section>
 
-    <!-- 16 · Closing CTA ----------------------------------------------------->
+    <!-- 15 · Closing CTA ----------------------------------------------------->
     <section class="section-cta">
       <div class="shell text-center">
         <p class="eyebrow">
