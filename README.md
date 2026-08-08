@@ -11,7 +11,7 @@ pnpm.
 
 ## Prerequisites
 
-- Node.js 20+
+- Node.js 22.x
 - **pnpm** (this repo pins `pnpm@10` via `packageManager`; use pnpm, not npm)
 
 ## Setup
