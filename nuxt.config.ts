@@ -2,6 +2,8 @@ import process from 'node:process'
 
 const useSupabaseMedia = process.env.NUXT_PUBLIC_USE_SUPABASE_MEDIA === 'true'
 const supabaseUrl = process.env.NUXT_PUBLIC_SUPABASE_URL ?? ''
+const siteUrl = (process.env.NUXT_PUBLIC_SITE_URL?.trim() || 'https://www.noithatlaihuy.vn')
+  .replace(/\/+$/, '')
 
 if (useSupabaseMedia && !supabaseUrl) {
   throw new Error(
@@ -26,10 +28,9 @@ export default defineNuxtConfig({
     public: {
       supabaseUrl: '',
       useSupabaseMedia: false,
-      // Absolute production origin, used for robots.txt + sitemap.xml (and later
-      // canonical/OG URLs). Override per environment with NUXT_PUBLIC_SITE_URL.
-      // TODO: replace the placeholder with the real domain before launch.
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://laihuy-interior.com'
+      // One normalized origin for canonical, Open Graph, JSON-LD, robots and sitemap URLs.
+      // NUXT_PUBLIC_SITE_URL can override it per environment.
+      siteUrl
     }
   },
 
@@ -42,13 +43,18 @@ export default defineNuxtConfig({
     '/tuyen-dung': { prerender: true },
     '/lien-he': { prerender: true },
     '/privacy-policy': { prerender: true },
-    '/terms-of-use': { prerender: true }
+    '/terms-of-use': { prerender: true },
+    '/du-an/codi-villa-hien-dai': {
+      redirect: { to: '/du-an/codi-villa-phan-thiet', statusCode: 301 }
+    }
   },
 
   compatibilityDate: '2025-01-15',
 
   nitro: {
     prerender: {
+      crawlLinks: true,
+      failOnError: true,
       routes: ['/robots.txt', '/sitemap.xml']
     }
   },

@@ -27,7 +27,7 @@ cp .env.example .env   # then fill in the values below
 |---|---|
 | `NUXT_PUBLIC_SUPABASE_URL` | Supabase project URL. Public — safe in the browser. |
 | `NUXT_PUBLIC_USE_SUPABASE_MEDIA` | `true` = serve images from Supabase Storage; `false` = fall back to `/public`. Production is `true`. |
-| `NUXT_PUBLIC_SITE_URL` | Absolute production origin. Drives `robots.txt`, `sitemap.xml`, canonical and OG URLs. **Set the real domain per deployment** — the default is a placeholder. |
+| `NUXT_PUBLIC_SITE_URL` | Absolute production origin. Drives `robots.txt`, `sitemap.xml`, canonical, Open Graph and JSON-LD URLs. Defaults to `https://www.noithatlaihuy.vn`; set the same value explicitly for Vercel Production. Trailing slashes are removed. |
 | `SUPABASE_SERVICE_ROLE_KEY` | **Local media-upload scripts only.** Never commit it, never add it to CI/Vercel env, never prefix with `NUXT_PUBLIC_`. |
 
 ## Development
