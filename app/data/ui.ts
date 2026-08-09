@@ -105,18 +105,19 @@ export const uiText = {
   },
   /**
    * /lien-he form copy. Field labels stay in `labels` where they are shared (phone, email);
-   * everything here is form-specific — placeholders, validation messages, and the local
-   * review states. The form has no transport; its copy must never imply delivery.
+   * everything here is form-specific — placeholders, validation messages, and the future
+   * internal-system submit action. The form has no transport yet; its copy must not imply
+   * that a lead was delivered.
    *
-   * Validation messages say how to complete the local review, not only what went wrong.
+   * Validation messages say how to complete the enquiry, not only what went wrong.
    */
   contactForm: {
-    eyebrow: { vi: 'Kiểm tra cục bộ', en: 'Local review' },
-    heading: { vi: 'Kiểm tra thông tin công trình', en: 'Review project information' },
-    heroAction: { vi: 'Kiểm tra thông tin công trình', en: 'Review project information' },
+    eyebrow: { vi: 'Yêu cầu tư vấn', en: 'Consultation request' },
+    heading: { vi: 'Gửi thông tin công trình', en: 'Share project information' },
+    heroAction: { vi: 'Gửi thông tin công trình', en: 'Share project information' },
     note: {
-      vi: 'Công cụ này chỉ kiểm tra thông tin trên thiết bị của bạn và không gửi hoặc lưu dữ liệu. Sau khi kiểm tra, hãy gọi điện hoặc gửi email trực tiếp cho Lai Huy.',
-      en: 'This tool only reviews information on your device and does not send or store data. After reviewing it, call or email Lai Huy directly.'
+      vi: 'Vui lòng cung cấp thông tin cơ bản để chuẩn bị yêu cầu tư vấn. Chức năng gửi đang được kết nối với hệ thống nội bộ; nếu cần hỗ trợ ngay, hãy gọi điện hoặc gửi email trực tiếp cho Lai Huy.',
+      en: 'Provide the essentials for your consultation request. Submission is being connected to our internal system; for immediate assistance, call or email Lai Huy directly.'
     },
     fields: {
       name: { vi: 'Họ tên', en: 'Name' },
@@ -132,8 +133,7 @@ export const uiText = {
         en: 'Scale, room count, preferred materials, target schedule...'
       }
     },
-    submit: { vi: 'Kiểm tra thông tin', en: 'Review information' },
-    submitting: { vi: 'Đang kiểm tra trên thiết bị...', en: 'Reviewing on this device...' },
+    submit: { vi: 'Gửi yêu cầu tư vấn', en: 'Send consultation request' },
     required: { vi: 'bắt buộc', en: 'required' },
     errors: {
       summary: {
@@ -153,32 +153,13 @@ export const uiText = {
       },
       projectType: { vi: 'Chọn loại dự án gần nhất với công trình của bạn.', en: 'Choose the project type closest to yours.' },
       message: {
-        vi: 'Nhập mô tả ngắn về công trình để kiểm tra thông tin.',
-        en: 'Enter a short project description for the local review.'
+        vi: 'Nhập mô tả ngắn về công trình để hoàn tất yêu cầu tư vấn.',
+        en: 'Enter a short project description to complete the consultation request.'
       },
       messageTooShort: {
         vi: 'Cho chúng tôi thêm một chút chi tiết (ít nhất 10 ký tự).',
         en: 'Tell us a little more (at least 10 characters).'
       }
-    },
-    reviewed: {
-      title: { vi: 'Thông tin đã được kiểm tra trên thiết bị này', en: 'Information checked on this device' },
-      body: {
-        vi: 'Thông tin chưa được gửi cho Lai Huy và không được lưu. Để trao đổi với đội ngũ, vui lòng gọi điện hoặc gửi email trực tiếp.',
-        en: 'The information has not been sent to Lai Huy and was not stored. To contact the team, please call or email directly.'
-      },
-      edit: { vi: 'Sửa thông tin', en: 'Edit information' },
-      reset: { vi: 'Xóa thông tin', en: 'Clear information' }
-    },
-    localError: {
-      title: { vi: 'Chưa thể hoàn tất kiểm tra cục bộ', en: 'The local review could not be completed' },
-      body: {
-        vi: 'Không có dữ liệu nào được gửi hoặc lưu. Bạn có thể thử kiểm tra lại, gọi điện hoặc gửi email trực tiếp.',
-        en: 'No data was sent or stored. You can try the review again, call, or email directly.'
-      }
-    },
-    status: {
-      pending: { vi: 'Đang kiểm tra thông tin trên thiết bị này.', en: 'Reviewing information on this device.' }
     }
   },
   /**

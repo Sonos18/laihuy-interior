@@ -78,20 +78,8 @@ const mapEmbedUrl = computed(() => {
   return `https://maps.google.com/maps?q=${encodeURIComponent(address)}&z=15&output=embed`
 })
 
-// This form is intentionally frontend-only. The delay makes the local processing state
-// perceivable, but no information leaves the browser and nothing is persisted.
-const LOCAL_REVIEW_DELAY_MS = 700
-
-const reviewLocally = async (payload: ContactDraft): Promise<void> => {
-  void payload
-  await new Promise(resolve => setTimeout(resolve, LOCAL_REVIEW_DELAY_MS))
-}
-
-type SubmitState = 'idle' | 'pending' | 'reviewed' | 'local-error'
-
 type FieldErrors = Partial<Record<ContactField, LocalizedText>>
 
-const submitState = ref<SubmitState>('idle')
 // Replaced wholesale rather than mutated: `validate` rebuilds the map every run, so a field
 // that has become valid cannot leave a stale message behind.
 const errors = ref<FieldErrors>({})
@@ -161,35 +149,12 @@ const clearError = (field: ContactField) => {
 }
 
 const submitForm = async () => {
-  if (submitState.value === 'pending') return
-
   if (!validate()) {
-    submitState.value = 'idle'
     await focusFirstError()
     return
   }
 
-  submitState.value = 'pending'
-  try {
-    await reviewLocally({ ...form })
-    submitState.value = 'reviewed'
-  } catch {
-    submitState.value = 'local-error'
-  }
-}
-
-const editForm = async () => {
-  submitState.value = 'idle'
-  await nextTick()
-  formEl.value?.querySelector<HTMLElement>(`#${fieldId('name')}`)?.focus()
-}
-
-const resetForm = () => {
-  for (const field of FIELD_ORDER) {
-    form[field] = ''
-  }
-  errors.value = {}
-  submitState.value = 'idle'
+  console.log('dữ liệu', form)
 }
 
 const hasErrors = computed(() => FIELD_ORDER.some(field => errors.value[field]))
@@ -228,7 +193,7 @@ usePageSeo({
       :topic="t({ vi: 'Liên hệ', en: 'Contact' })"
       :title="t({ vi: 'Bắt đầu dự án', en: 'Start a project' })"
       :special-title="t({ vi: 'cùng Lai Huy', en: 'with Lai Huy' })"
-      :subtitle="t({ vi: 'Kiểm tra thông tin công trình ngay trên thiết bị, sau đó gọi điện hoặc gửi email trực tiếp cho Lai Huy Interior.', en: 'Review project information on your device, then call or email Lai Huy Interior directly.' })"
+      :subtitle="t({ vi: 'Chia sẻ thông tin công trình để Lai Huy chuẩn bị nội dung tư vấn phù hợp với nhu cầu của bạn.', en: 'Share your project information so Lai Huy can prepare consultation around your needs.' })"
       :image="heroImage"
       atmosphere="warm"
       focal="50% 42%"
@@ -273,61 +238,7 @@ usePageSeo({
               {{ t(uiText.contactForm.note) }}
             </p>
 
-            <!-- The local review replaces the form while preserving its values. Visitors can
-                 edit them or clear them; no data is sent or stored by either action. -->
-            <div
-              v-if="submitState === 'reviewed'"
-              data-testid="contact-reviewed"
-              class="mt-8 rounded-2xl border border-ink-200 bg-ink-50 p-6 md:p-8"
-              role="status"
-              aria-live="polite"
-            >
-              <Icon
-                name="i-lucide-circle-check-big"
-                class="h-10 w-10 text-wood-500"
-              />
-              <h3 class="mt-5 text-2xl font-black text-ink-950">
-                {{ t(uiText.contactForm.reviewed.title) }}
-              </h3>
-              <p class="mt-3 text-sm leading-6 text-ink-600">
-                {{ t(uiText.contactForm.reviewed.body) }}
-              </p>
-              <div class="mt-6 flex flex-col gap-3 sm:flex-row">
-                <a
-                  :href="`tel:${company.phone.replaceAll(' ', '')}`"
-                  class="btn-dark"
-                >
-                  {{ t(uiText.labels.callNow) }} · {{ company.phone }}
-                </a>
-                <a
-                  :href="`mailto:${company.email}`"
-                  class="btn-outline"
-                >
-                  {{ t(uiText.labels.sendEmail) }} · {{ company.email }}
-                </a>
-              </div>
-              <div class="mt-3 flex flex-col gap-3 sm:flex-row">
-                <button
-                  type="button"
-                  class="btn-outline"
-                  data-testid="contact-edit"
-                  @click="editForm"
-                >
-                  {{ t(uiText.contactForm.reviewed.edit) }}
-                </button>
-                <button
-                  type="button"
-                  class="btn-outline"
-                  data-testid="contact-reset"
-                  @click="resetForm"
-                >
-                  {{ t(uiText.contactForm.reviewed.reset) }}
-                </button>
-              </div>
-            </div>
-
             <form
-              v-else
               id="contact-form"
               ref="formEl"
               data-testid="contact-form"
@@ -497,56 +408,21 @@ usePageSeo({
                 </p>
               </div>
 
-              <!-- A local processing failure leaves every field intact and still sends
-                   nothing. Direct contact links remain available as the real channels. -->
-              <div
-                v-if="submitState === 'local-error'"
-                data-testid="contact-error"
-                class="rounded-2xl border border-alert-500 bg-alert-50 p-5"
-                role="alert"
-              >
-                <p class="text-sm font-black text-alert-700">
-                  {{ t(uiText.contactForm.localError.title) }}
-                </p>
-                <p class="mt-2 text-sm leading-6 text-ink-700">
-                  {{ t(uiText.contactForm.localError.body) }}
-                </p>
-                <a
-                  :href="`tel:${company.phone.replaceAll(' ', '')}`"
-                  class="mt-3 inline-flex text-sm font-bold text-wood-600 underline underline-offset-2 hover:text-wood-700"
-                >
-                  {{ t(uiText.labels.callNow) }} · {{ company.phone }}
-                </a>
-              </div>
-
               <button
                 type="submit"
                 class="btn-dark w-full"
-                :disabled="submitState === 'pending'"
-                :class="submitState === 'pending' ? 'cursor-wait opacity-70' : ''"
               >
-                <Icon
-                  v-if="submitState === 'pending'"
-                  name="i-lucide-loader-circle"
-                  class="h-4 w-4 animate-spin"
-                />
-                {{ submitState === 'pending'
-                  ? t(uiText.contactForm.submitting)
-                  : t(uiText.contactForm.submit) }}
+                {{ t(uiText.contactForm.submit) }}
               </button>
 
-              <!-- One live region for the whole form. Field errors are already announced by
-                   aria-describedby when focus lands on the field, so this carries only what
-                   focus does NOT reach: the in-flight state and the summary. -->
+              <!-- Field errors are announced by aria-describedby when focus lands on the first
+                   invalid field; this live region also exposes the form-level summary. -->
               <p
                 class="sr-only"
                 role="status"
                 aria-live="polite"
               >
-                <template v-if="submitState === 'pending'">
-                  {{ t(uiText.contactForm.status.pending) }}
-                </template>
-                <template v-else-if="hasErrors">
+                <template v-if="hasErrors">
                   {{ t(uiText.contactForm.errors.summary) }}
                 </template>
               </p>

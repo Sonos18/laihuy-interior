@@ -11,18 +11,14 @@ const TRANSPARENT_PNG = Buffer.from(
 const CONTACT_COPY = {
   vi: {
     call: 'Gọi ngay',
-    form: 'Kiểm tra thông tin công trình',
-    action: 'Kiểm tra thông tin',
-    reviewed: 'Thông tin đã được kiểm tra trên thiết bị này',
-    localOnly: 'Thông tin chưa được gửi cho Lai Huy',
+    form: 'Gửi thông tin công trình',
+    action: 'Gửi yêu cầu tư vấn',
     forbidden: ['Đã nhận yêu cầu', 'sẽ liên hệ', 'phản hồi trong vòng 24 giờ']
   },
   en: {
     call: 'Call now',
-    form: 'Review project information',
-    action: 'Review information',
-    reviewed: 'Information checked on this device',
-    localOnly: 'The information has not been sent to Lai Huy',
+    form: 'Share project information',
+    action: 'Send consultation request',
     forbidden: ['received your request', 'will be in touch', 'within one business day']
   }
 } as const
@@ -61,14 +57,6 @@ async function prepareContentPage(page: Page, locale: 'vi' | 'en', width = 1024)
     consoleErrors,
     pageErrors
   }
-}
-
-async function fillValid(page: Page) {
-  await page.fill('#contact-name', 'Nguyễn Văn A')
-  await page.fill('#contact-phone', '+84 912 345 678')
-  await page.fill('#contact-email', 'a@congty.com')
-  await page.selectOption('#contact-projectType', { index: 1 })
-  await page.fill('#contact-message', 'Khách sạn 40 phòng tại Đà Nẵng, cần trao đổi báo giá nội thất.')
 }
 
 for (const locale of ['vi', 'en'] as const) {
@@ -128,21 +116,12 @@ for (const locale of ['vi', 'en'] as const) {
     expect(errors.pageErrors).toEqual([])
   })
 
-  test(`contact review remains local-only and honest in ${locale}`, async ({ page }) => {
+  test(`contact form exposes the future submit action without delivery claims in ${locale}`, async ({ page }) => {
     await prepareContentPage(page, locale)
     const form = page.getByTestId('contact-form')
     await expect(form.getByRole('button', { name: CONTACT_COPY[locale].action, exact: true })).toBeVisible()
-    await fillValid(page)
-    await form.getByRole('button', { name: CONTACT_COPY[locale].action, exact: true }).click()
-
-    const reviewed = page.getByTestId('contact-reviewed')
-    await expect(reviewed).toBeVisible()
-    await expect(reviewed).toContainText(CONTACT_COPY[locale].reviewed)
-    await expect(reviewed).toContainText(CONTACT_COPY[locale].localOnly)
-    await expect(reviewed.locator('a[href^="tel:"]')).toHaveCount(1)
-    await expect(reviewed.locator('a[href^="mailto:"]')).toHaveCount(1)
     for (const claim of CONTACT_COPY[locale].forbidden) {
-      await expect(reviewed).not.toContainText(claim)
+      await expect(form).not.toContainText(claim)
     }
   })
 }

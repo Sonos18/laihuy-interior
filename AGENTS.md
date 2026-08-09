@@ -151,7 +151,7 @@ For a data/content change, normally run lint, typecheck, and relevant unit tests
 
 ## Contact Form Constraint
 
-The current `/lien-he` submission is frontend-only: it builds a payload, waits approximately 700 ms, and then displays success without sending data. No enquiry is delivered.
+The current `/lien-he` submission is frontend-only: after client-side validation it logs the reactive form draft at the future API integration seam. It does not send, store, or deliver an enquiry and it does not display a success state.
 
 - Never claim that the enquiry was sent, received, stored, or will be answered unless a real transport has been explicitly approved, implemented, and verified.
 - Do not add Supabase writes, email, API routes, databases, or third-party form services without explicit user approval.
@@ -201,7 +201,7 @@ The current `/lien-he` submission is frontend-only: it builds a payload, waits a
 
 ## Known Issues and Caveats
 
-- The contact form simulates success and has no delivery transport.
+- The contact form logs a validated draft at a future API integration seam and has no delivery transport.
 - The default `siteUrl` is a placeholder and deployment configuration is not committed.
 - Some Playwright runs have shown navigation/server-starvation failures; the hero gate is intentionally not in `test:gates:ci` pending diagnosis.
 - A Playwright process may finish assertions but hang during shutdown on Windows. Preserve the non-zero/timeout result in reports.
