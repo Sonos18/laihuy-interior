@@ -22,7 +22,15 @@ export default defineNuxtConfig({
   // layers.css MUST precede main.css: it carries the cascade-layer order
   // statement, which has to be read before Tailwind's own layer blocks. See the
   // comment in that file for the defect it fixes.
-  css: ['~/assets/css/layers.css', '~/assets/css/main.css'],
+  css: [
+    '~/assets/css/layers.css',
+    '@fontsource/inter/400.css',
+    '@fontsource/inter/500.css',
+    '@fontsource/inter/600.css',
+    '@fontsource/inter/700.css',
+    '@fontsource/inter/900.css',
+    '~/assets/css/main.css'
+  ],
 
   runtimeConfig: {
     public: {
@@ -68,14 +76,12 @@ export default defineNuxtConfig({
     }
   },
 
-  // @nuxt/fonts (pulled in transitively by @nuxt/ui) auto-detects Inter usage but only
-  // downloads the weights it can statically see — 400/500/600/700. The design uses `font-black`
-  // (900) on every hero headline and section title, so without this the browser SYNTHESISES 900
-  // from the 700 face (faux-bold: heavier stems, blurry at large sizes). Declaring the weights
-  // explicitly makes @nuxt/fonts fetch the real 900 face. `normal` only — no italics are used.
+  // Inter is imported above from the installed @fontsource package so production builds never
+  // depend on an external font API. Provider lookup stays disabled here; the family declaration
+  // still records every real weight used by the design. `normal` only — no italics are used.
   fonts: {
     families: [
-      { name: 'Inter', weights: [400, 500, 600, 700, 900], styles: ['normal'] }
+      { name: 'Inter', provider: 'none', weights: [400, 500, 600, 700, 900], styles: ['normal'] }
     ]
   },
 

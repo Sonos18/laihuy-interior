@@ -2,6 +2,15 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { projects } from '../app/data/projects'
 
 type NuxtConfigUnderTest = {
+  css: string[]
+  fonts: {
+    families: Array<{
+      name: string
+      provider?: string
+      weights: number[]
+      styles: string[]
+    }>
+  }
   runtimeConfig: {
     public: {
       siteUrl: string
@@ -69,5 +78,25 @@ describe('production deployment config', () => {
     })
     expect(config.routeRules['/du-an/villa-bien']).toBeUndefined()
     expect(config.routeRules['/du-an/khong-gian-van-phong-lai-huy']).toBeUndefined()
+  })
+
+  it('bundles every Inter weight from local package CSS and disables provider lookup', async () => {
+    const config = await loadNuxtConfig()
+
+    expect(config.fonts.families).toEqual([{
+      name: 'Inter',
+      provider: 'none',
+      weights: [400, 500, 600, 700, 900],
+      styles: ['normal']
+    }])
+    expect(config.css).toEqual([
+      '~/assets/css/layers.css',
+      '@fontsource/inter/400.css',
+      '@fontsource/inter/500.css',
+      '@fontsource/inter/600.css',
+      '@fontsource/inter/700.css',
+      '@fontsource/inter/900.css',
+      '~/assets/css/main.css'
+    ])
   })
 })
