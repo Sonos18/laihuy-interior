@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { company } from '~/data/company'
-import { factoryCapabilities, machinery, productionWorkflow } from '~/data/factory'
+import {
+  factoryCapabilities,
+  machineryProcessGroups,
+  machinerySectionContent,
+  productionWorkflow
+} from '~/data/factory'
 import { projects } from '~/data/projects'
 import { services } from '~/data/services'
 import { siteImages } from '~/data/site-images'
@@ -12,6 +17,8 @@ import type { MediaAsset } from '~/shared/media/types'
 import type { Project } from '~/shared/types/project'
 
 const { t, ta } = useLanguage()
+
+const formatMachinerySequence = (index: number) => String(index + 1).padStart(2, '0')
 
 const heroImage = projectMedia['khach-san-eo-gio'].cover
 
@@ -355,22 +362,11 @@ usePageSeo({
              point of the merge: enough air to read as its own movement, not enough to read
              as a different subject. Headings step h2 -> h3 -> h4 so the machinery block is
              SUBORDINATE to the capability claim in the outline, not a peer of it. -->
-        <div class="mt-14 grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
-          <div
-            v-reveal
-            class="reveal group overflow-hidden rounded-2xl"
-          >
-            <NuxtImg
-              :src="siteImages.aboutWorkspace.path"
-              :alt="t(siteImages.aboutWorkspace.alt)"
-              :width="siteImages.aboutWorkspace.width"
-              :height="siteImages.aboutWorkspace.height"
-              sizes="sm:100vw lg:50vw"
-              loading="lazy"
-              class="aspect-[4/3] w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-            />
-          </div>
-          <div>
+        <div
+          data-testid="homepage-machinery"
+          class="mt-14"
+        >
+          <div class="border-l-2 border-wood-500 pl-5 sm:pl-7">
             <p
               v-reveal
               class="eyebrow reveal"
@@ -379,41 +375,95 @@ usePageSeo({
             </p>
             <h3
               v-reveal="80"
-              class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
+              data-testid="homepage-machinery-title"
+              class="reveal text-section-title mt-4 max-w-5xl font-black uppercase text-ink-950"
             >
-              {{ t({ vi: 'Hệ thống máy phục vụ sản xuất nội thất dự án', en: 'Machinery system for project interior manufacturing' }) }}
+              {{ t(machinerySectionContent.titleLead) }}
+              <span class="text-wood-600">{{ t(machinerySectionContent.titleAccent) }}</span>
             </h3>
             <p
               v-reveal="140"
-              class="reveal mt-5 max-w-xl text-base leading-7 text-ink-600"
+              data-testid="homepage-machinery-description"
+              class="measure-lead reveal mt-4 text-base leading-7 text-ink-600"
             >
-              {{ t({ vi: 'Xưởng sản xuất nội thất ứng dụng CNC với quy trình cắt – khoan – dán cạnh – ép hoàn thiện đồng bộ, phục vụ các dự án khách sạn, villa và căn hộ cao cấp.', en: 'A CNC-driven interior workshop with a synchronised cut – drill – edge-band – press finishing process, serving hotel, villa, and premium apartment projects.' }) }}
+              {{ t(machinerySectionContent.description) }}
             </p>
-            <div class="mt-8 grid gap-3 sm:grid-cols-2">
+          </div>
+
+          <div
+            data-testid="homepage-machinery-proof"
+            class="mt-8 grid gap-4 lg:grid-cols-[minmax(0,11fr)_minmax(0,9fr)] lg:items-stretch"
+          >
+            <div
+              v-reveal
+              data-testid="homepage-machinery-image"
+              class="reveal group relative aspect-[4/3] overflow-hidden rounded-2xl md:aspect-video lg:aspect-auto lg:min-h-0"
+            >
+              <MediaImage
+                :image="siteImages.machineryOverview"
+                sizes="sm:100vw md:100vw lg:55vw xl:55vw"
+                class="!absolute inset-0 h-full w-full"
+                img-class="object-center transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+              />
               <div
-                v-for="(item, index) in machinery"
-                :key="t(item.name)"
-                v-reveal="(index % 2) * 80"
-                class="reveal rounded-2xl border border-ink-200 bg-white p-4 transition-colors hover:border-wood-400"
+                data-testid="homepage-machinery-caption"
+                aria-hidden="true"
+                class="absolute inset-x-0 bottom-0 flex flex-col gap-1 bg-ink-950/75 px-4 py-3 text-xs font-bold uppercase tracking-[0.12em] text-white backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between"
               >
-                <h4 class="text-base font-black text-ink-950">
-                  {{ t(item.name) }}
-                </h4>
-                <p class="mt-2 text-sm leading-6 text-ink-600">
-                  {{ t(item.description) }}
-                </p>
+                <span>{{ t(machinerySectionContent.photoCaption) }}</span>
+                <span class="text-wood-200">{{ t(machinerySectionContent.lineCaption) }}</span>
               </div>
             </div>
-          </div>
-        </div>
 
-        <div class="mt-10">
-          <NuxtLink
-            to="/nha-xuong"
-            class="btn-outline"
-          >
-            {{ t(uiText.cta.factory) }}
-          </NuxtLink>
+            <div
+              data-testid="homepage-machinery-groups"
+              class="grid gap-2 sm:gap-3 md:grid-cols-2 lg:h-full lg:grid-rows-2"
+            >
+              <article
+                v-for="(group, index) in machineryProcessGroups"
+                :key="group.id"
+                v-reveal="(index % 2) * 80"
+                data-testid="homepage-machinery-card"
+                class="reveal flex min-h-0 flex-col rounded-2xl border border-ink-200 bg-ink-50 px-4 py-3 transition-colors hover:border-wood-400 sm:p-5"
+              >
+                <span
+                  data-machinery-sequence
+                  aria-hidden="true"
+                  class="text-xs font-black tracking-[0.16em] text-wood-600"
+                >
+                  {{ formatMachinerySequence(index) }}
+                </span>
+                <h4 class="mt-3 text-base font-black text-ink-950">
+                  {{ t(group.title) }}
+                </h4>
+                <p class="mt-2 text-sm leading-6 text-ink-600">
+                  {{ t(group.benefit) }}
+                </p>
+                <p class="mt-auto border-t border-ink-200 pt-4 text-xs font-bold leading-5 text-ink-700">
+                  <template
+                    v-for="(machine, machineIndex) in group.machines"
+                    :key="t(machine)"
+                  >
+                    <span>{{ t(machine) }}</span>
+                    <span
+                      v-if="machineIndex < group.machines.length - 1"
+                      aria-hidden="true"
+                    > · </span>
+                  </template>
+                </p>
+              </article>
+            </div>
+          </div>
+
+          <div class="mt-6 flex justify-start lg:justify-end">
+            <NuxtLink
+              data-testid="homepage-machinery-cta"
+              to="/nha-xuong"
+              class="btn-outline"
+            >
+              {{ t(uiText.cta.factory) }}
+            </NuxtLink>
+          </div>
         </div>
       </div>
     </section>

@@ -6,9 +6,19 @@ export type Capability = {
   description: LocalizedText
 }
 
-export type Machinery = {
-  name: LocalizedText
+export type MachinerySectionContent = {
+  titleLead: LocalizedText
+  titleAccent: LocalizedText
   description: LocalizedText
+  photoCaption: LocalizedText
+  lineCaption: LocalizedText
+}
+
+export type MachineryProcessGroup = {
+  id: string
+  title: LocalizedText
+  benefit: LocalizedText
+  machines: readonly LocalizedText[]
 }
 
 export type ProductionStep = {
@@ -51,55 +61,76 @@ export const factoryCapabilities: Capability[] = [
   }
 ]
 
-export const machinery: Machinery[] = [
+export const machinerySectionContent: MachinerySectionContent = {
+  titleLead: {
+    vi: 'Hệ thống máy phục vụ sản xuất',
+    en: 'Machinery system for'
+  },
+  titleAccent: {
+    vi: 'nội thất dự án',
+    en: 'project interior manufacturing'
+  },
+  description: {
+    vi: 'Xưởng ứng dụng hệ thống máy đồng bộ theo bốn công đoạn chính, giúp kiểm soát độ chính xác, chất lượng bề mặt và tiến độ cho các dự án khách sạn, villa và căn hộ cao cấp.',
+    en: 'The workshop uses a coordinated machinery line across four core stages, controlling precision, surface quality, and schedule for hotel, villa, and premium apartment projects.'
+  },
+  photoCaption: {
+    vi: 'Hình ảnh thực tế tại xưởng',
+    en: 'Real workshop photograph'
+  },
+  lineCaption: {
+    vi: 'Hệ thống máy sản xuất',
+    en: 'Production machinery line'
+  }
+}
+
+export const machineryProcessGroups: readonly MachineryProcessGroup[] = [
   {
-    name: { vi: 'CNC Nesting', en: 'CNC nesting router' },
-    description: {
-      vi: 'Gia công cắt, khoan và tạo hình chi tiết theo hồ sơ kỹ thuật với độ chính xác cao, giúp tối ưu vật liệu và đồng bộ sản xuất nội thất dự án.',
-      en: 'Cuts, bores and shapes components to the technical documents with high precision, optimising material and keeping project production consistent.'
-    }
+    id: 'cutting-shaping',
+    title: { vi: 'Cắt & tạo hình', en: 'Cutting & shaping' },
+    benefit: {
+      vi: 'Cắt và tạo hình chi tiết theo hồ sơ kỹ thuật, tối ưu vật liệu và giữ kích thước đồng nhất.',
+      en: 'Cuts and shapes components to the technical documents, optimising material and dimensional consistency.'
+    },
+    machines: [
+      { vi: 'CNC Nesting', en: 'CNC nesting router' },
+      { vi: 'Cưa bàn trượt', en: 'Sliding table saw' }
+    ]
   },
   {
-    name: { vi: 'Máy khoan liên kết CNC', en: 'CNC boring machine' },
-    description: {
-      vi: 'Gia công lỗ liên kết, cam chốt và phụ kiện với độ chính xác cao, giúp tăng tốc độ lắp ráp và đồng bộ sản phẩm nội thất.',
-      en: 'Machines connector holes, cam locks and hardware positions with high precision, speeding up assembly and keeping products uniform.'
-    }
+    id: 'boring-connections',
+    title: { vi: 'Khoan & liên kết', en: 'Boring & connections' },
+    benefit: {
+      vi: 'Gia công chính xác lỗ liên kết và vị trí phụ kiện, giúp lắp ráp nhanh và đồng bộ.',
+      en: 'Machines connector holes and hardware positions precisely for faster, consistent assembly.'
+    },
+    machines: [
+      { vi: 'Máy khoan liên kết CNC', en: 'CNC boring machine' }
+    ]
   },
   {
-    name: { vi: 'Máy dán cạnh tự động', en: 'Automatic edge bander' },
-    description: {
-      vi: 'Hoàn thiện cạnh ván đồng bộ và chính xác, tăng độ bền, tính thẩm mỹ và độ ổn định cho sản phẩm nội thất.',
-      en: 'Finishes board edges uniformly and precisely, improving the durability, look and stability of every piece.'
-    }
+    id: 'edge-finishing',
+    title: { vi: 'Dán cạnh & hoàn thiện', en: 'Edge banding & finishing' },
+    benefit: {
+      vi: 'Hoàn thiện cạnh ván đồng đều, tăng độ bền, thẩm mỹ và độ ổn định của sản phẩm.',
+      en: 'Finishes board edges uniformly to improve durability, appearance and product stability.'
+    },
+    machines: [
+      { vi: 'Máy dán cạnh tự động', en: 'Automatic edge bander' }
+    ]
   },
   {
-    name: { vi: 'Cưa bàn trượt', en: 'Sliding table saw' },
-    description: {
-      vi: 'Cắt và xử lý chi tiết nội thất theo kích thước kỹ thuật, hỗ trợ gia công linh hoạt cho các hạng mục sản xuất.',
-      en: 'Cuts and processes interior components to technical dimensions, supporting flexible machining across production items.'
-    }
-  },
-  {
-    name: { vi: 'Máy bào cuốn', en: 'Thickness planer' },
-    description: {
-      vi: 'Xử lý độ phẳng và đồng đều bề mặt vật liệu, giúp tăng độ chính xác và chất lượng hoàn thiện trong sản xuất nội thất.',
-      en: 'Levels and evens material surfaces, improving accuracy and finish quality in production.'
-    }
-  },
-  {
-    name: { vi: 'Máy chà nhám thùng', en: 'Wide-belt sander' },
-    description: {
-      vi: 'Kiểm soát độ phẳng và độ mịn bề mặt, đảm bảo chất lượng hoàn thiện đồng đều cho các dự án nội thất quy mô lớn.',
-      en: 'Controls surface flatness and smoothness, ensuring a consistent finish across large-scale interior projects.'
-    }
-  },
-  {
-    name: { vi: 'Máy ép nguội thủy lực', en: 'Hydraulic cold press' },
-    description: {
-      vi: 'Hệ thống ép thủy lực giúp liên kết vật liệu đồng đều, tăng độ ổn định và chất lượng hoàn thiện cho các chi tiết nội thất.',
-      en: 'Bonds material layers evenly under hydraulic pressure, improving the stability and finish of interior components.'
-    }
+    id: 'surface-pressing',
+    title: { vi: 'Xử lý bề mặt & ép', en: 'Surface treatment & pressing' },
+    benefit: {
+      vi: 'Kiểm soát độ phẳng, độ mịn và liên kết vật liệu trước khi chuyển sang hoàn thiện.',
+      en: 'Controls surface flatness, smoothness and material bonding before final finishing.'
+    },
+    machines: [
+      { vi: 'Máy bào cuốn', en: 'Thickness planer' },
+      { vi: 'Máy chà nhám thùng', en: 'Wide-belt sander' },
+      { vi: 'Máy ép nguội thủy lực', en: 'Hydraulic cold press' }
+    ]
   }
 ]
 
