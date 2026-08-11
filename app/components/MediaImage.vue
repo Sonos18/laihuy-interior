@@ -29,7 +29,7 @@ const isLoaded = ref(false)
     <div
       v-if="presetConfig.skeleton"
       :class="[
-        'absolute inset-0 bg-ink-100 animate-pulse transition-opacity duration-500',
+        'absolute inset-0 bg-ink-100 transition-opacity duration-500',
         isLoaded ? 'opacity-0' : 'opacity-100'
       ]"
     />

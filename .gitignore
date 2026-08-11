@@ -36,3 +36,6 @@ test-results/
 
 # Claude worktrees
 .claude/worktrees/
+
+# Superpowers runtime and generated execution evidence
+.superpowers/

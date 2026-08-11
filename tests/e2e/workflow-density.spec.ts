@@ -28,11 +28,10 @@ const WORKFLOW_COPY = {
       'Đội lắp dựng triển khai theo mặt bằng, phối hợp với các bộ môn và xử lý nghiệm thu.'
     ],
     qcBullets: [
-      'Kiểm tra vật liệu đầu vào theo chủng loại, màu sắc và tiêu chuẩn dự án',
-      'Đối chiếu kích thước sau gia công với bản vẽ sản xuất',
-      'Kiểm tra cạnh, bề mặt, phụ kiện và độ hoàn thiện trước đóng gói',
-      'Phân loại hàng theo phòng, tầng hoặc khu vực để kiểm soát tiến độ thi công',
-      'Nghiệm thu sau lắp dựng và ghi nhận hạng mục cần hoàn thiện'
+      'Kiểm tra vật tư đầu vào theo chủng loại, màu sắc và tiêu chuẩn dự án',
+      'Đối chiếu hồ sơ, shop drawing và kích thước gia công',
+      'Kiểm tra cạnh, bề mặt, phụ kiện và độ hoàn thiện trong sản xuất',
+      'Nghiệm thu, phân loại và kiểm tra lần cuối trước giao lắp'
     ],
     qcReference: 'Quy trình QC từ vật tư đầu vào đến nghiệm thu sau lắp dựng.',
     summaryLink: 'Xem đầy đủ quy trình triển khai'
@@ -57,10 +56,9 @@ const WORKFLOW_COPY = {
     ],
     qcBullets: [
       'Incoming materials checked against type, colour and project standards',
-      'Machined dimensions verified against the production drawings',
-      'Edges, surfaces, hardware and finish inspected before packing',
-      'Goods sorted by room, floor or zone to keep installation on schedule',
-      'Post-installation sign-off with a punch list of items to complete'
+      'Documents, shop drawings and machined dimensions cross-checked',
+      'Edges, surfaces, hardware and finish inspected during production',
+      'Final sign-off, sorting and inspection before delivery and installation'
     ],
     qcReference: 'QC from incoming materials through post-installation sign-off.',
     summaryLink: 'View our complete project workflow'
@@ -142,7 +140,7 @@ for (const locale of ['vi', 'en'] as const) {
 
     expect(await countExactText(page, 'main h3', copy.titles)).toBe(0)
     expect(await countExactText(page, 'main p', copy.descriptions)).toBe(0)
-    expect(await countExactText(page, 'main li span', copy.qcBullets)).toBe(5)
+    expect(await countExactText(page, 'main li span', copy.qcBullets)).toBe(4)
     await expect(page.locator('#production-workflow')).toHaveCount(0)
     expect(errors.consoleErrors).toEqual([])
     expect(errors.pageErrors).toEqual([])
