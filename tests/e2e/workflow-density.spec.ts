@@ -1,4 +1,7 @@
 import type { Page } from '@playwright/test'
+import {
+  aboutPageContent
+} from '../../app/data/about'
 import { expect, test } from './fixtures'
 
 const VIEWPORT_HEIGHT = 900
@@ -10,7 +13,7 @@ const TRANSPARENT_PNG = Buffer.from(
 
 const WORKFLOW_COPY = {
   vi: {
-    heading: 'Từ bản vẽ đến bàn giao công trình',
+    heading: aboutPageContent.workflow.title.vi,
     titles: [
       'Tiếp nhận bản vẽ & BOQ',
       'Bóc tách kỹ thuật',
@@ -33,11 +36,11 @@ const WORKFLOW_COPY = {
       'Kiểm tra cạnh, bề mặt, phụ kiện và độ hoàn thiện trong sản xuất',
       'Nghiệm thu, phân loại và kiểm tra lần cuối trước giao lắp'
     ],
-    qcReference: 'Quy trình QC từ vật tư đầu vào đến nghiệm thu sau lắp dựng.',
+    qcReference: aboutPageContent.workflow.description.vi,
     summaryLink: 'Xem đầy đủ quy trình triển khai'
   },
   en: {
-    heading: 'From drawings to project handover',
+    heading: aboutPageContent.workflow.title.en,
     titles: [
       'Drawing & BOQ intake',
       'Technical take-off',
@@ -60,7 +63,7 @@ const WORKFLOW_COPY = {
       'Edges, surfaces, hardware and finish inspected during production',
       'Final sign-off, sorting and inspection before delivery and installation'
     ],
-    qcReference: 'QC from incoming materials through post-installation sign-off.',
+    qcReference: aboutPageContent.workflow.description.en,
     summaryLink: 'View our complete project workflow'
   }
 } as const

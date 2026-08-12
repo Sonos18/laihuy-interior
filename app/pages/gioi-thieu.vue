@@ -1,103 +1,41 @@
 <script setup lang="ts">
+import {
+  aboutMediaAlt,
+  aboutPageContent,
+  aboutProjectSlugs,
+  aboutProofStatIds
+} from '~/data/about'
 import { company } from '~/data/company'
-import { productionWorkflow } from '~/data/factory'
-import { uiText } from '~/data/ui'
-import { companyMedia, workshopMedia } from '~/media/catalog.generated'
-import { withAlt } from '~/media/project-media'
-import type { MediaAsset, MediaImage } from '~/shared/media/types'
-import type { LocalizedText } from '~/shared/types/localization'
+import { factoryStats, productionWorkflow } from '~/data/factory'
+import { projects } from '~/data/projects'
+import { companyMedia } from '~/media/catalog.generated'
+import { requireWorkshopAsset } from '~/media/factory-media'
+import { projectCover, withAlt } from '~/media/project-media'
 
 const { t } = useLanguage()
 const { resolve: mediaUrl } = useMediaUrl()
 
-// Authentic photography only — real workshop + worker photos. Renders
-// (brand/banner-home, company/about-workspace, project covers) are excluded.
-const workshopByFile: Record<string, MediaAsset> = Object.fromEntries(
-  workshopMedia.map(asset => [asset.path.slice(asset.path.lastIndexOf('/') + 1), asset])
-)
-
-const heroImage = withAlt(workshopByFile['3.webp'] as MediaAsset, {
-  vi: 'Toàn cảnh xưởng sản xuất nội thất Lai Huy',
-  en: 'Inside the Lai Huy interior manufacturing workshop'
-})
-const storyImage: MediaImage = {
-  ...companyMedia.companyStory,
-  alt: { vi: 'Đội ngũ thợ Lai Huy đang sản xuất tại xưởng', en: 'Lai Huy craftsmen at work on the production floor' }
-}
-const factoryImage = withAlt(workshopByFile['4.webp'] as MediaAsset, {
-  vi: 'Không gian xưởng sản xuất Lai Huy', en: 'The Lai Huy workshop floor'
-})
-const craftImage: MediaImage = {
-  ...companyMedia.companyStory,
-  alt: { vi: 'Thợ Lai Huy hoàn thiện sản phẩm nội thất', en: 'A Lai Huy craftsman finishing an interior piece' }
-}
-const exploreImage = withAlt(workshopByFile['5.webp'] as MediaAsset, {
-  vi: 'Khu vực sản xuất nội thất Lai Huy', en: 'Lai Huy interior production area'
-})
-
-// Curated "Inside Lai Huy" gallery — a real-photo teaser; the full factory tour
-// lives on /nha-xuong.
-const galleryImages: MediaImage[] = [
-  { ...companyMedia.companyStory, alt: { vi: 'Đội ngũ thợ đang sản xuất', en: 'Craftsmen at work' } },
-  withAlt(workshopByFile['3.webp'] as MediaAsset, { vi: 'Toàn cảnh xưởng sản xuất', en: 'The production hall' }),
-  withAlt(workshopByFile['1.webp'] as MediaAsset, { vi: 'Mặt tiền nhà xưởng Lai Huy', en: 'Lai Huy workshop facade' }),
-  withAlt(workshopByFile['8.webp'] as MediaAsset, { vi: 'Máy CNC nesting đang vận hành', en: 'CNC nesting router on the floor' }),
-  withAlt(workshopByFile['6.webp'] as MediaAsset, { vi: 'Dây chuyền máy CNC và hút bụi', en: 'CNC line with dust extraction' }),
-  withAlt(workshopByFile['4.webp'] as MediaAsset, { vi: 'Không gian xưởng với cửa cuốn mở', en: 'The workshop with the roller door open' })
-]
-
-const lightboxOpen = ref(false)
-const lightboxIndex = ref(0)
-const openLightbox = (index: number) => {
-  lightboxIndex.value = index
-  lightboxOpen.value = true
+const heroImage = withAlt(requireWorkshopAsset('3.webp'), aboutMediaAlt.hero)
+const factoryImages = {
+  main: withAlt(requireWorkshopAsset('4.webp'), aboutMediaAlt.factory),
+  machinery: withAlt(requireWorkshopAsset('8.webp'), aboutMediaAlt.machinery),
+  craft: withAlt(companyMedia.companyStory, aboutMediaAlt.craft)
 }
 
-// --- Immersive factory floating stats (verified, authored bilingually) -------
-const factoryStats: { value: LocalizedText, label: LocalizedText }[] = [
-  { value: { vi: '3.000 m²', en: '3,000 m²' }, label: { vi: 'Xưởng & kho', en: 'Workshop & warehouse' } },
-  { value: { vi: 'Đến 50', en: 'Up to 50' }, label: { vi: 'Phòng / tháng', en: 'Rooms / month' } },
-  { value: { vi: '1 đầu mối', en: 'One partner' }, label: { vi: 'Thiết kế → thi công', en: 'Design → install' } }
-]
+const proofStats = aboutProofStatIds.flatMap((id) => {
+  const stat = factoryStats.find(item => item.id === id)
+  return stat ? [stat] : []
+})
 
-// --- Why Lai Huy — qualitative differentiators -------------------------------
-const differentiators: { icon: string, title: LocalizedText, description: LocalizedText }[] = [
-  {
-    icon: 'i-lucide-factory',
-    title: { vi: 'Xưởng sản xuất trực tiếp', en: 'In-house production' },
-    description: { vi: 'Chủ động 3.000 m² xưởng — kiểm soát vật liệu, tiến độ và chất lượng ngay tại nguồn.', en: 'A directly run 3,000 m² workshop — materials, schedule and quality controlled at the source.' }
-  },
-  {
-    icon: 'i-lucide-hard-hat',
-    title: { vi: 'Đội ngũ tay nghề cao', en: 'Skilled craftsmen' },
-    description: { vi: 'Thợ và kỹ thuật viên giàu kinh nghiệm, quyết định độ hoàn thiện của từng chi tiết.', en: 'Experienced makers and technicians who decide the finish of every detail.' }
-  },
-  {
-    icon: 'i-lucide-truck',
-    title: { vi: 'Thi công toàn quốc', en: 'Nationwide installation' },
-    description: { vi: 'Đội lắp dựng triển khai tại công trình trên khắp cả nước.', en: 'On-site teams that install at project sites across the country.' }
-  },
-  {
-    icon: 'i-lucide-container',
-    title: { vi: 'Gia công & xuất khẩu', en: 'OEM & export' },
-    description: { vi: 'Nhận sản xuất theo bản vẽ kỹ thuật và đơn hàng xuất khẩu.', en: 'Production from technical drawings and export orders.' }
-  },
-  {
-    icon: 'i-lucide-shield-check',
-    title: { vi: 'Kiểm soát chất lượng', en: 'Quality control' },
-    description: { vi: 'Quy trình QC từ vật tư đầu vào đến nghiệm thu sau lắp dựng.', en: 'QC from incoming materials through post-installation sign-off.' }
-  }
-]
+const projectFeatures = aboutProjectSlugs.flatMap((slug) => {
+  const project = projects.find(item => item.slug === slug)
+  if (!project) return []
 
-// --- Verified trust band ----------------------------------------------------
-const trustStats: { icon: string, value: LocalizedText, label: LocalizedText }[] = [
-  { icon: 'i-lucide-warehouse', value: { vi: '3.000 m²', en: '3,000 m²' }, label: { vi: 'Xưởng sản xuất', en: 'Own factory' } },
-  { icon: 'i-lucide-gauge', value: { vi: 'Đến 50', en: 'Up to 50' }, label: { vi: 'Phòng / tháng', en: 'Rooms / month' } },
-  { icon: 'i-lucide-workflow', value: { vi: 'Trọn gói', en: 'End-to-end' }, label: { vi: 'Thiết kế → thi công', en: 'Design → install' } },
-  { icon: 'i-lucide-globe', value: { vi: 'Toàn quốc', en: 'Nationwide' }, label: { vi: 'Giao lắp & xuất khẩu', en: 'Delivery & export' } }
-]
+  const image = projectCover(project.mediaId, project.name, project.coverImage)
+  return image ? [{ project, image }] : []
+})
 
-// --- SEO --------------------------------------------------------------------
+const phoneHref = `tel:${company.phone.replaceAll(' ', '')}`
 const seoTitle = computed(() => t(company.seo.about.title))
 const seoDescription = computed(() => t(company.seo.about.description))
 
@@ -129,648 +67,269 @@ usePageSeo({
 
 <template>
   <div class="bg-white">
-    <!-- 1 · Hero — offset / neutral (docs/hero-art-direction.md §10, About · Trust) -->
-    <AppHero
-      :topic="t({ vi: 'Về Lai Huy Interior', en: 'About Lai Huy Interior' })"
-      :title="t({ vi: 'Không chỉ làm đẹp không gian —', en: 'More than beautiful spaces —' })"
-      :special-title="t({ vi: 'chúng tôi giải bài toán triển khai', en: 'we solve the build' })"
-      :subtitle="t(company.positioning)"
-      :image="heroImage"
-      focal="50% 40%"
-    >
-      <template #actions>
-        <NuxtLink
-          to="/lien-he"
-          class="btn-primary"
-        >
-          {{ t(uiText.cta.contact) }}
-          <Icon
-            name="i-lucide-arrow-right"
-            class="h-4 w-4"
-          />
-        </NuxtLink>
-        <NuxtLink
-          to="/du-an"
-          class="btn-secondary"
-        >
-          {{ t(uiText.cta.allProjects) }}
-        </NuxtLink>
-      </template>
-    </AppHero>
-
-    <!-- 2 · Who we are (split, image left) ----------------------------------->
-    <section class="section-y bg-white">
-      <div class="shell grid gap-12 lg:grid-cols-2 lg:items-center">
-        <div
-          v-reveal
-          class="reveal overflow-hidden rounded-2xl"
-        >
-          <MediaImage
-            :image="storyImage"
-            preset="full"
-            class="w-full"
-            :style="{ aspectRatio: `${storyImage.width} / ${storyImage.height}` }"
-            img-class="rounded-2xl"
-          />
-        </div>
-        <div>
-          <p
-            v-reveal
-            class="eyebrow reveal"
+    <div data-about-chapter="promise">
+      <AppHero
+        data-testid="about-hero"
+        :topic="t(aboutPageContent.hero.topic)"
+        :title="t(aboutPageContent.hero.title)"
+        :special-title="t(aboutPageContent.hero.specialTitle)"
+        :subtitle="t(aboutPageContent.hero.subtitle)"
+        :image="heroImage"
+        focal="50% 40%"
+      >
+        <template #actions>
+          <NuxtLink
+            to="/lien-he"
+            class="btn-primary"
           >
-            {{ t({ vi: 'Chúng tôi là ai', en: 'Who we are' }) }}
-          </p>
-          <h2
-            v-reveal="80"
-            class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
-          >
-            {{ t({ vi: 'Một xưởng nội thất, không chỉ một studio', en: 'A workshop, not just a studio' }) }}
-          </h2>
-          <div class="mt-6 space-y-5 text-lg leading-8 text-ink-600">
-            <p
-              v-reveal="140"
-              class="reveal"
-            >
-              {{ t({ vi: 'Trong ngành nội thất dự án, chủ đầu tư không chỉ mua hình ảnh đẹp. Họ cần năng lực quản lý, tiến độ, chất lượng và một đội ngũ xử lý được thực tế tại công trình.', en: 'In project interiors, owners are not just buying a pretty picture. They need management, schedule, quality — and a team that can handle what actually happens on site.' }) }}
-            </p>
-            <p
-              v-reveal="200"
-              class="reveal"
-            >
-              {{ t(company.shortPositioning) }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3 · Philosophy (centered + value cards) ------------------------------>
-    <section class="section-y bg-ink-50">
-      <div class="shell">
-        <div class="mx-auto mb-12 max-w-2xl text-center">
-          <p
-            v-reveal
-            class="eyebrow reveal"
-          >
-            {{ t({ vi: 'Triết lý làm việc', en: 'Our philosophy' }) }}
-          </p>
-          <h2
-            v-reveal="80"
-            class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
-          >
-            {{ t({ vi: 'Điều Lai Huy tập trung trong từng dự án', en: 'What we focus on, every project' }) }}
-          </h2>
-        </div>
-
-        <div
-          v-if="company.mission || company.vision"
-          class="mx-auto mb-12 grid max-w-4xl gap-4 sm:grid-cols-2"
-        >
-          <div
-            v-if="company.mission"
-            v-reveal
-            class="reveal rounded-2xl border border-ink-200 bg-white p-6"
-          >
-            <p class="eyebrow">
-              {{ t({ vi: 'Sứ mệnh', en: 'Mission' }) }}
-            </p>
-            <p class="mt-3 text-lg leading-8 text-ink-700">
-              {{ t(company.mission) }}
-            </p>
-          </div>
-          <div
-            v-if="company.vision"
-            v-reveal="80"
-            class="reveal rounded-2xl border border-ink-200 bg-white p-6"
-          >
-            <p class="eyebrow">
-              {{ t({ vi: 'Tầm nhìn', en: 'Vision' }) }}
-            </p>
-            <p class="mt-3 text-lg leading-8 text-ink-700">
-              {{ t(company.vision) }}
-            </p>
-          </div>
-        </div>
-
-        <div class="grid gap-5 md:grid-cols-3">
-          <article
-            v-for="(value, index) in company.coreValues"
-            :key="t(value.title)"
-            v-reveal="index * 90"
-            class="industrial-card reveal"
-          >
+            {{ t(aboutPageContent.hero.primaryCta) }}
             <Icon
-              :name="value.icon"
-              class="h-8 w-8 text-wood-500"
+              name="i-lucide-arrow-right"
+              class="h-4 w-4"
+              aria-hidden="true"
             />
-            <h3 class="mt-6 text-xl font-black text-ink-950">
-              {{ t(value.title) }}
-            </h3>
-            <p class="mt-3 text-sm leading-6 text-ink-600">
-              {{ t(value.description) }}
-            </p>
-          </article>
+          </NuxtLink>
+          <NuxtLink
+            to="/du-an"
+            class="btn-secondary"
+          >
+            {{ t(aboutPageContent.hero.secondaryCta) }}
+          </NuxtLink>
+        </template>
+      </AppHero>
+
+      <AboutProofStrip :stats="proofStats" />
+    </div>
+
+    <section
+      data-about-chapter="problem"
+      class="section-y bg-ink-50"
+    >
+      <div class="shell">
+        <p
+          v-reveal
+          class="eyebrow reveal"
+        >
+          {{ t(aboutPageContent.problem.eyebrow) }}
+        </p>
+        <h2
+          v-reveal="80"
+          class="text-section-title reveal mt-4 max-w-4xl font-black uppercase text-ink-950"
+        >
+          {{ t(aboutPageContent.problem.title) }}
+        </h2>
+        <p
+          v-reveal="140"
+          class="measure-lead reveal mt-5 text-ink-600"
+        >
+          {{ t(aboutPageContent.problem.description) }}
+        </p>
+
+        <div class="mt-12 grid gap-10 xl:grid-cols-[0.72fr_1.28fr] xl:gap-16">
+          <p
+            v-reveal
+            class="reveal border-l-2 border-wood-500 pl-6 text-xl font-black leading-8 text-ink-950"
+          >
+            {{ t(aboutPageContent.problem.lead) }}
+          </p>
+          <ol class="border-t border-ink-200">
+            <li
+              v-for="(response, index) in aboutPageContent.problem.responses"
+              :key="response.id"
+              v-reveal="index * 70"
+              class="reveal grid gap-3 border-b border-ink-200 py-6 sm:grid-cols-[3rem_0.8fr_1.2fr] sm:gap-6"
+            >
+              <span class="text-xs font-black tracking-[0.16em] text-wood-600">
+                {{ String(index + 1).padStart(2, '0') }}
+              </span>
+              <h3 class="text-lg font-black text-ink-950">
+                {{ t(response.title) }}
+              </h3>
+              <p class="text-sm leading-6 text-ink-600">
+                {{ t(response.description) }}
+              </p>
+            </li>
+          </ol>
         </div>
       </div>
     </section>
 
-    <!-- 4 · Our journey (timeline — horizontal desktop / vertical mobile) ----->
+    <AboutWorkflowRail
+      :content="aboutPageContent.workflow"
+      :steps="productionWorkflow"
+    />
+
     <section
-      v-if="company.milestones.length"
+      data-about-chapter="factory"
       class="section-y bg-white"
     >
       <div class="shell">
-        <div class="mb-12 max-w-2xl">
-          <p
-            v-reveal
-            class="eyebrow reveal"
-          >
-            {{ t({ vi: 'Hành trình', en: 'Our journey' }) }}
-          </p>
-          <h2
-            v-reveal="80"
-            class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
-          >
-            {{ t({ vi: 'Những dấu mốc của Lai Huy', en: 'The Lai Huy milestones' }) }}
-          </h2>
-        </div>
-        <ol class="grid gap-10 lg:grid-flow-col lg:auto-cols-fr lg:gap-0">
-          <li
-            v-for="(milestone, index) in company.milestones"
-            :key="milestone.year"
-            v-reveal="index * 90"
-            class="reveal relative border-l border-ink-200 pl-8 lg:border-l-0 lg:border-t lg:pl-0 lg:pr-6 lg:pt-8"
-          >
-            <span class="absolute left-0 top-1 h-3 w-3 -translate-x-1/2 rounded-full bg-wood-500 lg:top-0 lg:translate-x-0 lg:-translate-y-1/2" />
-            <p class="text-sm font-black text-wood-600">
-              {{ milestone.year }}
-            </p>
-            <h3 class="mt-2 text-lg font-black text-ink-950">
-              {{ t(milestone.title) }}
-            </h3>
-            <p
-              v-if="milestone.description"
-              class="mt-2 text-sm leading-6 text-ink-600"
-            >
-              {{ t(milestone.description) }}
-            </p>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- 5 · Founder (image-first — conditional) ------------------------------>
-    <section
-      v-if="company.founder"
-      class="section-y bg-ink-50"
-    >
-      <div class="shell grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-        <div
-          v-if="company.founder.portrait"
+        <p
           v-reveal
-          class="reveal overflow-hidden rounded-2xl"
+          class="eyebrow reveal"
         >
-          <NuxtImg
-            :src="company.founder.portrait"
-            :alt="company.founder.name"
-            sizes="sm:100vw lg:45vw"
-            loading="lazy"
-            class="aspect-[4/5] w-full rounded-2xl object-cover"
+          {{ t(aboutPageContent.factory.eyebrow) }}
+        </p>
+        <h2
+          v-reveal="80"
+          class="text-section-title reveal mt-4 max-w-4xl font-black uppercase text-ink-950"
+        >
+          {{ t(aboutPageContent.factory.title) }}
+        </h2>
+        <p
+          v-reveal="140"
+          class="measure-lead reveal mt-5 text-ink-600"
+        >
+          {{ t(aboutPageContent.factory.description) }}
+        </p>
+
+        <div
+          data-testid="about-factory-grid"
+          class="mt-10 grid gap-5 md:grid-cols-[1.15fr_0.85fr]"
+        >
+          <MediaImage
+            :image="factoryImages.main"
+            sizes="sm:100vw md:58vw"
+            class="min-h-72 rounded-2xl md:min-h-full"
+            img-class="object-center"
           />
-        </div>
-        <div>
-          <p
-            v-reveal
-            class="eyebrow reveal"
-          >
-            {{ t({ vi: 'Người sáng lập', en: 'Founder' }) }}
-          </p>
-          <blockquote
-            v-if="company.founder.quote"
-            v-reveal="80"
-            class="reveal mt-4 text-2xl font-black leading-snug text-ink-950 md:text-3xl"
-          >
-            “{{ t(company.founder.quote) }}”
-          </blockquote>
-          <p
-            v-reveal="140"
-            class="reveal mt-6 text-lg leading-8 text-ink-600"
-          >
-            {{ t(company.founder.story) }}
-          </p>
-          <p class="mt-6 text-base font-black text-ink-950">
-            {{ company.founder.name }}
-            <span class="font-semibold text-ink-500">· {{ t(company.founder.role) }}</span>
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 6 · Inside the factory (immersive full-width + floating stats) -------->
-    <section class="relative overflow-hidden bg-ink-950 text-white">
-      <NuxtImg
-        :src="factoryImage.path"
-        :alt="t(factoryImage.alt)"
-        :width="factoryImage.width"
-        :height="factoryImage.height"
-        sizes="sm:100vw md:100vw lg:100vw xl:100vw"
-        loading="lazy"
-        class="absolute inset-0 h-full w-full object-cover"
-      />
-      <div class="absolute inset-0 bg-ink-950/70" />
-      <div class="shell relative z-10 py-24 md:py-32">
-        <div class="max-w-2xl">
-          <p
-            v-reveal
-            class="eyebrow reveal text-wood-300"
-          >
-            {{ t({ vi: 'Nhà xưởng của chúng tôi', en: 'Inside our factory' }) }}
-          </p>
-          <h2
-            v-reveal="80"
-            class="reveal text-section-title mt-4 font-black uppercase"
-          >
-            {{ t({ vi: 'Năng lực thật, kiểm soát tận gốc', en: 'Real capability, controlled at the source' }) }}
-          </h2>
-          <p
-            v-reveal="140"
-            class="reveal mt-5 text-lg leading-8 text-white/76"
-          >
-            {{ t({ vi: 'Toàn bộ được sản xuất tại xưởng trực tiếp của Lai Huy — nơi vật liệu, máy móc và tay nghề cùng nằm dưới một mái nhà.', en: 'Everything is made at Lai Huy’s own workshop — where materials, machinery and craft sit under one roof.' }) }}
-          </p>
-        </div>
-
-        <div class="mt-10 grid gap-4 sm:grid-cols-3 lg:max-w-3xl">
-          <div
-            v-for="(stat, index) in factoryStats"
-            :key="t(stat.label)"
-            v-reveal="index * 90"
-            class="reveal rounded-2xl border border-white/12 bg-white/[0.06] p-6 backdrop-blur-sm"
-          >
-            <p class="text-3xl font-black text-white">
-              {{ t(stat.value) }}
-            </p>
-            <p class="mt-1 text-sm font-bold uppercase tracking-[0.14em] text-wood-200">
-              {{ t(stat.label) }}
-            </p>
+          <div class="grid gap-5">
+            <MediaImage
+              :image="factoryImages.machinery"
+              sizes="sm:100vw md:42vw"
+              class="aspect-[16/10] rounded-2xl"
+              img-class="object-center"
+            />
+            <MediaImage
+              :image="factoryImages.craft"
+              sizes="sm:100vw md:42vw"
+              class="aspect-[16/10] rounded-2xl"
+              img-class="object-center"
+            />
           </div>
         </div>
 
         <NuxtLink
           v-reveal="120"
           to="/nha-xuong"
-          class="btn-primary reveal mt-8"
+          class="btn-dark reveal mt-8"
         >
-          {{ t(uiText.cta.factory) }}
+          {{ t(aboutPageContent.factory.cta) }}
           <Icon
             name="i-lucide-arrow-right"
             class="h-4 w-4"
+            aria-hidden="true"
           />
         </NuxtLink>
       </div>
     </section>
 
-    <!-- 7 · Craftsmanship (split, image right) ------------------------------->
-    <section class="section-y bg-white">
-      <div class="shell grid gap-12 lg:grid-cols-2 lg:items-center">
-        <div>
-          <p
-            v-reveal
-            class="eyebrow reveal"
-          >
-            {{ t({ vi: 'Tay nghề', en: 'Craftsmanship' }) }}
-          </p>
-          <h2
-            v-reveal="80"
-            class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
-          >
-            {{ t({ vi: 'Con người đứng sau từng chi tiết', en: 'The people behind every detail' }) }}
-          </h2>
-          <p
-            v-reveal="140"
-            class="reveal mt-6 text-lg leading-8 text-ink-600"
-          >
-            {{ t({ vi: 'Máy móc tạo ra độ chính xác, nhưng chính đội ngũ thợ và kỹ thuật viên giàu kinh nghiệm mới quyết định độ hoàn thiện cuối cùng — từ ghép nối, xử lý bề mặt đến lắp dựng tại công trình.', en: 'Machines create precision, but it is our experienced makers and technicians who decide the final finish — from joinery and surface work to on-site installation.' }) }}
-          </p>
-        </div>
-        <div
-          v-reveal="120"
-          class="reveal overflow-hidden rounded-2xl"
-        >
-          <MediaImage
-            :image="craftImage"
-            preset="full"
-            class="w-full"
-            :style="{ aspectRatio: `${craftImage.width} / ${craftImage.height}` }"
-            img-class="rounded-2xl"
-          />
-        </div>
-      </div>
-    </section>
-
-    <!-- 8 · How we work (stepped process) ------------------------------------>
     <section
-      id="production-workflow"
-      class="section-y scroll-mt-[calc(var(--header-h)+1rem)] bg-ink-50"
-    >
-      <div class="shell">
-        <div class="mb-12 max-w-2xl">
-          <p
-            v-reveal
-            class="eyebrow reveal"
-          >
-            {{ t(uiText.labels.productionWorkflow) }}
-          </p>
-          <h2
-            v-reveal="80"
-            class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
-          >
-            {{ t({ vi: 'Từ bản vẽ đến bàn giao công trình', en: 'From drawings to project handover' }) }}
-          </h2>
-        </div>
-        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <article
-            v-for="(step, index) in productionWorkflow"
-            :key="t(step.title)"
-            v-reveal="(index % 3) * 80"
-            class="reveal rounded-2xl border border-ink-200 bg-white p-6"
-          >
-            <span class="text-sm font-black text-wood-500">
-              {{ String(index + 1).padStart(2, '0') }}
-            </span>
-            <h3 class="mt-4 text-lg font-black text-ink-950">
-              {{ t(step.title) }}
-            </h3>
-            <p class="mt-2 text-sm leading-6 text-ink-600">
-              {{ t(step.description) }}
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- 9 · Why Lai Huy (differentiator cards) ------------------------------->
-    <section class="section-y bg-white">
-      <div class="shell">
-        <div class="mb-12 max-w-2xl">
-          <p
-            v-reveal
-            class="eyebrow reveal"
-          >
-            {{ t({ vi: 'Vì sao chọn Lai Huy', en: 'Why Lai Huy' }) }}
-          </p>
-          <h2
-            v-reveal="80"
-            class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
-          >
-            {{ t({ vi: 'Những điều làm nên khác biệt', en: 'What sets us apart' }) }}
-          </h2>
-        </div>
-        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <article
-            v-for="(item, index) in differentiators"
-            :key="t(item.title)"
-            v-reveal="(index % 3) * 80"
-            class="reveal flex gap-4 rounded-2xl border border-ink-200 p-6 transition-colors hover:border-wood-400"
-          >
-            <Icon
-              :name="item.icon"
-              class="h-8 w-8 shrink-0 text-wood-500"
-            />
-            <div>
-              <h3 class="text-lg font-black text-ink-950">
-                {{ t(item.title) }}
-              </h3>
-              <p class="mt-2 text-sm leading-6 text-ink-600">
-                {{ t(item.description) }}
-              </p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- 10 · Trust band (stat strip) ----------------------------------------->
-    <section class="bg-ink-950 text-white">
-      <div class="shell grid gap-4 py-14 sm:grid-cols-2 lg:grid-cols-4">
-        <div
-          v-for="stat in trustStats"
-          :key="t(stat.label)"
-          class="flex items-center gap-4"
-        >
-          <Icon
-            :name="stat.icon"
-            class="h-9 w-9 shrink-0 text-wood-300"
-          />
-          <div>
-            <p class="text-xl font-black text-white">
-              {{ t(stat.value) }}
-            </p>
-            <p class="text-xs font-bold uppercase tracking-[0.14em] text-white/55">
-              {{ t(stat.label) }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 11 · People (portrait grid — conditional) ---------------------------->
-    <section
-      v-if="company.team.length"
+      v-if="projectFeatures.length"
+      data-about-chapter="projects"
       class="section-y bg-ink-50"
     >
       <div class="shell">
-        <div class="mb-12 max-w-2xl">
-          <p
-            v-reveal
-            class="eyebrow reveal"
-          >
-            {{ t({ vi: 'Đội ngũ', en: 'Our people' }) }}
-          </p>
-          <h2
-            v-reveal="80"
-            class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
-          >
-            {{ t({ vi: 'Những người làm nên Lai Huy', en: 'The team behind Lai Huy' }) }}
-          </h2>
-        </div>
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <article
-            v-for="(member, index) in company.team"
-            :key="member.name"
-            v-reveal="(index % 4) * 80"
-            class="reveal overflow-hidden rounded-2xl bg-white"
-          >
-            <NuxtImg
-              :src="member.photo"
-              :alt="member.name"
-              sizes="sm:50vw lg:25vw"
-              loading="lazy"
-              class="aspect-[4/5] w-full object-cover"
-            />
-            <div class="border border-t-0 border-ink-200 p-5">
-              <h3 class="text-base font-black text-ink-950">
-                {{ member.name }}
-              </h3>
-              <p class="mt-1 text-sm text-ink-500">
-                {{ t(member.role) }}
-              </p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- 12 · Inside Lai Huy gallery (curated real photos + lightbox) --------->
-    <section class="section-y bg-white">
-      <div class="shell">
-        <div class="mb-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div class="max-w-2xl">
-            <p
-              v-reveal
-              class="eyebrow reveal"
-            >
-              {{ t({ vi: 'Bên trong Lai Huy', en: 'Inside Lai Huy' }) }}
-            </p>
-            <h2
-              v-reveal="80"
-              class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
-            >
-              {{ t({ vi: 'Hình ảnh thật từ xưởng của chúng tôi', en: 'Real photographs from our floor' }) }}
-            </h2>
-          </div>
-          <NuxtLink
-            v-reveal="120"
-            to="/nha-xuong"
-            class="btn-outline reveal w-fit"
-          >
-            {{ t(uiText.cta.factory) }}
-          </NuxtLink>
-        </div>
-        <AppGalleryGrid
-          :images="galleryImages"
-          selectable
-          @select="openLightbox"
-        />
-      </div>
-    </section>
-
-    <!-- 13 · Explore our work (editorial image + link) ----------------------->
-    <section class="section-y bg-ink-50">
-      <div class="shell grid gap-10 lg:grid-cols-2 lg:items-center">
-        <div
+        <p
           v-reveal
-          class="reveal group overflow-hidden rounded-2xl"
+          class="eyebrow reveal"
         >
-          <MediaImage
-            :image="exploreImage"
-            preset="full"
-            class="aspect-[16/10] w-full"
-            img-class="rounded-2xl transition-transform duration-700 ease-out group-hover:scale-105"
+          {{ t(aboutPageContent.projects.eyebrow) }}
+        </p>
+        <h2
+          v-reveal="80"
+          class="text-section-title reveal mt-4 max-w-4xl font-black uppercase text-ink-950"
+        >
+          {{ t(aboutPageContent.projects.title) }}
+        </h2>
+        <p
+          v-reveal="140"
+          class="measure-lead reveal mt-5 text-ink-600"
+        >
+          {{ t(aboutPageContent.projects.description) }}
+        </p>
+
+        <div
+          data-testid="about-project-grid"
+          class="mt-10 grid gap-5"
+          :class="projectFeatures.length > 1 ? 'xl:grid-cols-[3fr_2fr]' : 'grid-cols-1'"
+        >
+          <AboutProjectFeature
+            v-for="(feature, index) in projectFeatures"
+            :key="feature.project.slug"
+            :project="feature.project"
+            :image="feature.image"
+            :labels="aboutPageContent.projects.labels"
+            :emphasis="index === 0 ? 'primary' : 'secondary'"
           />
         </div>
-        <div>
-          <p
-            v-reveal
-            class="eyebrow reveal"
-          >
-            {{ t(uiText.labels.caseStudies) }}
-          </p>
-          <h2
-            v-reveal="80"
-            class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
-          >
-            {{ t({ vi: 'Xem những gì chúng tôi đã làm', en: 'See what we have built' }) }}
-          </h2>
-          <p
-            v-reveal="140"
-            class="reveal mt-5 text-lg leading-8 text-ink-600"
-          >
-            {{ t({ vi: 'Từ khách sạn và villa đến căn hộ và văn phòng — mỗi dự án là một minh chứng cho năng lực sản xuất và thi công của Lai Huy.', en: 'From hotels and villas to apartments and offices — each project is proof of what Lai Huy can produce and build.' }) }}
-          </p>
-          <NuxtLink
-            v-reveal="200"
-            to="/du-an"
-            class="btn-dark reveal mt-8"
-          >
-            {{ t(uiText.cta.allProjects) }}
-          </NuxtLink>
-        </div>
       </div>
     </section>
 
-    <!-- 14 · Testimonials (conditional) -------------------------------------->
     <section
-      v-if="company.testimonials.length"
+      data-about-chapter="fit"
       class="section-y bg-white"
     >
       <div class="shell">
-        <div class="mb-12 max-w-2xl">
-          <p class="eyebrow">
-            {{ t({ vi: 'Khách hàng nói gì', en: 'What clients say' }) }}
-          </p>
-        </div>
-        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <blockquote
-            v-for="(testimonial, index) in company.testimonials"
-            :key="t(testimonial.author)"
-            v-reveal="(index % 3) * 90"
-            class="reveal rounded-2xl border border-ink-200 bg-ink-50 p-6"
+        <p
+          v-reveal
+          class="eyebrow reveal"
+        >
+          {{ t(aboutPageContent.fit.eyebrow) }}
+        </p>
+        <h2
+          v-reveal="80"
+          class="text-section-title reveal mt-4 max-w-4xl font-black uppercase text-ink-950"
+        >
+          {{ t(aboutPageContent.fit.title) }}
+        </h2>
+        <ol class="mt-10 grid border-l border-t border-ink-200 md:grid-cols-3">
+          <li
+            v-for="(item, index) in aboutPageContent.fit.items"
+            :key="t(item)"
+            v-reveal="index * 70"
+            class="reveal border-b border-r border-ink-200 p-6"
           >
-            <Icon
-              name="i-lucide-quote"
-              class="h-7 w-7 text-wood-400"
-            />
-            <p class="mt-4 text-base leading-7 text-ink-800">
-              “{{ t(testimonial.quote) }}”
+            <span class="text-xs font-black tracking-[0.16em] text-wood-600">
+              {{ String(index + 1).padStart(2, '0') }}
+            </span>
+            <p class="mt-5 text-base font-black leading-7 text-ink-950">
+              {{ t(item) }}
             </p>
-            <footer class="mt-5 text-sm font-black text-ink-950">
-              {{ t(testimonial.author) }}
-              <span
-                v-if="testimonial.role"
-                class="font-semibold text-ink-500"
-              >· {{ t(testimonial.role) }}</span>
-            </footer>
-          </blockquote>
-        </div>
+          </li>
+        </ol>
       </div>
     </section>
 
-    <!-- 15 · Closing CTA ----------------------------------------------------->
-    <section class="section-cta">
+    <section
+      data-about-chapter="contact"
+      class="section-y bg-ink-950 text-white"
+    >
       <div class="shell text-center">
-        <p class="eyebrow">
-          {{ t({ vi: 'Bắt đầu cùng Lai Huy', en: 'Start with Lai Huy' }) }}
+        <p class="eyebrow text-wood-200">
+          {{ t(aboutPageContent.contact.eyebrow) }}
         </p>
-        <h2 class="mx-auto mt-4 max-w-3xl text-3xl font-black uppercase leading-tight md:text-5xl">
-          {{ t({ vi: 'Cùng kiến tạo một không gian bền vững', en: 'Let’s build something that lasts' }) }}
+        <h2 class="mx-auto mt-4 max-w-4xl text-3xl font-black uppercase leading-tight md:text-5xl">
+          {{ t(aboutPageContent.contact.title) }}
         </h2>
-        <p class="mx-auto mt-5 max-w-2xl text-lg text-ink-600">
-          {{ t({ vi: 'Gửi bản vẽ hoặc ý tưởng của bạn — đội ngũ Lai Huy sẽ tư vấn phương án sản xuất và thi công phù hợp.', en: 'Send your drawings or ideas — the Lai Huy team will advise on the right production and delivery plan.' }) }}
+        <p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-white/70">
+          {{ t(aboutPageContent.contact.description) }}
         </p>
         <div class="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
           <NuxtLink
             to="/lien-he"
             class="btn-primary"
           >
-            {{ t(uiText.cta.quote24h) }}
+            {{ t(aboutPageContent.contact.primaryCta) }}
           </NuxtLink>
           <a
-            :href="`tel:${company.phone.replaceAll(' ', '')}`"
-            class="btn-outline"
+            :href="phoneHref"
+            class="btn-secondary"
           >
-            {{ company.phone }}
+            {{ t(aboutPageContent.contact.phoneCta) }} · {{ company.phone }}
           </a>
         </div>
       </div>
     </section>
-
-    <GalleryLightbox
-      :images="galleryImages"
-      :index="lightboxIndex"
-      :open="lightboxOpen"
-      @close="lightboxOpen = false"
-      @update:index="lightboxIndex = $event"
-    />
   </div>
 </template>
