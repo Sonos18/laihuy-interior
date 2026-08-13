@@ -21,24 +21,13 @@ import {
   sha256,
   writeManifest
 } from './lib'
-import { selectAssetsByPrefix } from './selection'
+import { parsePathPrefix, selectAssetsByPrefix } from './selection'
 
 const CACHE_CONTROL_SECONDS = '31536000' // 1 year; safe because objects are immutable (A1)
 
 const dryRun = process.argv.includes('--dry-run')
 const audit = process.argv.includes('--audit')
-const pathPrefixArgument = process.argv.find(argument => argument.startsWith('--path-prefix'))
-const pathPrefix = (() => {
-  if (!pathPrefixArgument) return null
-  if (!pathPrefixArgument.startsWith('--path-prefix=')) {
-    throw new Error('path prefix must use --path-prefix=<prefix>')
-  }
-  const prefix = pathPrefixArgument.slice('--path-prefix='.length)
-  if (!prefix) {
-    throw new Error('path prefix must not be empty')
-  }
-  return prefix
-})()
+const pathPrefix = parsePathPrefix(process.argv)
 
 type Plan = 'upload' | 'skip' | 'resume' | 'conflict' | 'missing-build'
 

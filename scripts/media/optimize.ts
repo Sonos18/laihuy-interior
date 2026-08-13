@@ -10,25 +10,14 @@ import { isValidMediaPath } from '../../app/shared/media/validation'
 import type { MediaManifestAsset, MediaManifestVariant } from '../../app/shared/media/types'
 import { variantPath } from '../../app/media/url'
 import { BUILD_DIR, fileExists, readManifest, REPO_ROOT, sha256, writeManifest } from './lib'
-import { selectAssetsByPrefix } from './selection'
+import { parsePathPrefix, selectAssetsByPrefix } from './selection'
 
 const MASTER_MAX_EDGE = 2560
 const WEBP_QUALITY = 80
 
 const dryRun = process.argv.includes('--dry-run')
 const force = process.argv.includes('--force')
-const pathPrefixArgument = process.argv.find(argument => argument.startsWith('--path-prefix'))
-const pathPrefix = (() => {
-  if (!pathPrefixArgument) return null
-  if (!pathPrefixArgument.startsWith('--path-prefix=')) {
-    throw new Error('path prefix must use --path-prefix=<prefix>')
-  }
-  const prefix = pathPrefixArgument.slice('--path-prefix='.length)
-  if (!prefix) {
-    throw new Error('path prefix must not be empty')
-  }
-  return prefix
-})()
+const pathPrefix = parsePathPrefix(process.argv)
 
 type Outcome = 'built' | 'skipped' | 'error'
 

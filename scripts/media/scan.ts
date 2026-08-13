@@ -17,7 +17,7 @@ import sharp from 'sharp'
 import { isValidMediaPath } from '../../app/shared/media/validation'
 import type { MediaManifest, MediaManifestAsset } from '../../app/shared/media/types'
 import { MANIFEST_PATH, readManifest, REPO_ROOT, writeManifest } from './lib'
-import { mergeDiscoveredAssets } from './selection'
+import { assertFullRegenerationCanWrite, mergeDiscoveredAssets } from './selection'
 
 const PUBLIC_IMAGES = join(REPO_ROOT, 'public/images')
 const PROJECTS_DIR = join(PUBLIC_IMAGES, 'projects')
@@ -36,6 +36,7 @@ const LOOSE_ASSETS: Record<string, { path: string, domain: string }> = {
 
 const write = process.argv.includes('--write')
 const merge = process.argv.includes('--merge')
+const legacyDirectoriesPresent = existsSync(PROJECTS_DIR) && existsSync(WORKSHOP_DIR)
 
 const slugifySegment = (value: string): string =>
   value
@@ -141,6 +142,7 @@ const scanProjectTree = async (
 }
 
 const run = async () => {
+  assertFullRegenerationCanWrite({ write, merge, legacyDirectoriesPresent })
   const assets: MediaManifestAsset[] = []
 
   // 1. Client projects (arbitrary gallery nesting)

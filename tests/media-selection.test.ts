@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import type { MediaManifestAsset } from '../app/shared/media/types'
-import { mergeDiscoveredAssets, selectAssetsByPrefix } from '../scripts/media/selection'
+import {
+  assertFullRegenerationCanWrite,
+  mergeDiscoveredAssets,
+  parsePathPrefix,
+  selectAssetsByPrefix
+} from '../scripts/media/selection'
 
 const existing: MediaManifestAsset = {
   path: 'company/about-workspace.webp',
@@ -49,5 +54,42 @@ describe('selectAssetsByPrefix', () => {
   it('returns only assets below the selected storage prefix', () => {
     expect(selectAssetsByPrefix([existing, newAsset], 'company/homepage-material-story/'))
       .toEqual([newAsset])
+  })
+})
+
+describe('assertFullRegenerationCanWrite', () => {
+  it('refuses an unmerged write when the legacy source library is absent', () => {
+    expect(() => assertFullRegenerationCanWrite({
+      write: true,
+      merge: false,
+      legacyDirectoriesPresent: false
+    })).toThrow(/full source library/i)
+  })
+
+  it('allows a merge write when the legacy source library is absent', () => {
+    expect(() => assertFullRegenerationCanWrite({
+      write: true,
+      merge: true,
+      legacyDirectoriesPresent: false
+    })).not.toThrow()
+  })
+})
+
+describe('parsePathPrefix', () => {
+  it('parses exactly one non-empty prefix flag', () => {
+    expect(parsePathPrefix(['--dry-run', '--path-prefix=company/homepage-material-story/']))
+      .toBe('company/homepage-material-story/')
+  })
+
+  it('rejects duplicate prefix flags', () => {
+    expect(() => parsePathPrefix([
+      '--path-prefix=company/homepage-material-story/',
+      '--path-prefix=company/workshop/'
+    ])).toThrow(/exactly once/i)
+  })
+
+  it('rejects malformed prefix flags', () => {
+    expect(() => parsePathPrefix(['--path-prefix=company/homepage-material-story/', '--path-prefix']))
+      .toThrow(/exactly once/i)
   })
 })
