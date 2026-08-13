@@ -10,17 +10,19 @@
 //   public/images/<loose company/brand file>                → company/<file> | brand/<file>
 //
 // Usage: pnpm media:scan [--write]   (omit --write for a dry inspection)
-import { readdirSync, statSync } from 'node:fs'
+import { existsSync, readdirSync, statSync } from 'node:fs'
 import { extname, join } from 'node:path'
 import process from 'node:process'
 import sharp from 'sharp'
 import { isValidMediaPath } from '../../app/shared/media/validation'
 import type { MediaManifest, MediaManifestAsset } from '../../app/shared/media/types'
-import { MANIFEST_PATH, REPO_ROOT, writeManifest } from './lib'
+import { MANIFEST_PATH, readManifest, REPO_ROOT, writeManifest } from './lib'
+import { mergeDiscoveredAssets } from './selection'
 
 const PUBLIC_IMAGES = join(REPO_ROOT, 'public/images')
 const PROJECTS_DIR = join(PUBLIC_IMAGES, 'projects')
 const WORKSHOP_DIR = join(PUBLIC_IMAGES, 'hinh-xuong-lai-huy')
+const HOME_STORY_DIR = join(PUBLIC_IMAGES, 'homepage-material-story')
 const IMAGE_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg', '.webp', '.svg'])
 
 // Loose files directly under public/images that are business assets (not projects).
@@ -33,6 +35,7 @@ const LOOSE_ASSETS: Record<string, { path: string, domain: string }> = {
 }
 
 const write = process.argv.includes('--write')
+const merge = process.argv.includes('--merge')
 
 const slugifySegment = (value: string): string =>
   value
@@ -141,25 +144,29 @@ const run = async () => {
   const assets: MediaManifestAsset[] = []
 
   // 1. Client projects (arbitrary gallery nesting)
-  for (const project of readdirSync(PROJECTS_DIR, { withFileTypes: true }).filter(e => e.isDirectory())) {
-    const slug = slugifySegment(project.name)
-    assets.push(...await scanProjectTree(slug, join(PROJECTS_DIR, project.name), [slug], [project.name]))
+  if (existsSync(PROJECTS_DIR)) {
+    for (const project of readdirSync(PROJECTS_DIR, { withFileTypes: true }).filter(e => e.isDirectory())) {
+      const slug = slugifySegment(project.name)
+      assets.push(...await scanProjectTree(slug, join(PROJECTS_DIR, project.name), [slug], [project.name]))
+    }
   }
 
   // 2. Company workshop gallery (business rule: not a project)
-  for (const file of listImages(WORKSHOP_DIR)) {
-    const normFile = normalizeFilename(file)
-    const dims = await dimensions(join(WORKSHOP_DIR, file))
-    assets.push(asset({
-      storagePath: `company/workshop/${normFile}`,
-      domain: 'company',
-      group: 'workshop',
-      sourceRel: `public/images/hinh-xuong-lai-huy/${file}`,
-      oldPublicPath: `/images/hinh-xuong-lai-huy/${file}`,
-      width: dims.width,
-      height: dims.height,
-      kind: dims.kind
-    }))
+  if (existsSync(WORKSHOP_DIR)) {
+    for (const file of listImages(WORKSHOP_DIR)) {
+      const normFile = normalizeFilename(file)
+      const dims = await dimensions(join(WORKSHOP_DIR, file))
+      assets.push(asset({
+        storagePath: `company/workshop/${normFile}`,
+        domain: 'company',
+        group: 'workshop',
+        sourceRel: `public/images/hinh-xuong-lai-huy/${file}`,
+        oldPublicPath: `/images/hinh-xuong-lai-huy/${file}`,
+        width: dims.width,
+        height: dims.height,
+        kind: dims.kind
+      }))
+    }
   }
 
   // 3. Loose company / brand assets
@@ -184,6 +191,23 @@ const run = async () => {
     }))
   }
 
+  // 4. Homepage material story (optional, so the existing library can stay immutable)
+  if (existsSync(HOME_STORY_DIR)) {
+    for (const file of listImages(HOME_STORY_DIR)) {
+      const dims = await dimensions(join(HOME_STORY_DIR, file))
+      assets.push(asset({
+        storagePath: `company/homepage-material-story/${normalizeFilename(file)}`,
+        domain: 'company',
+        group: 'homepage-material-story',
+        sourceRel: `public/images/homepage-material-story/${file}`,
+        oldPublicPath: `/images/homepage-material-story/${file}`,
+        width: dims.width,
+        height: dims.height,
+        kind: dims.kind
+      }))
+    }
+  }
+
   // Integrity: unique paths + valid grammar
   const seen = new Set<string>()
   const errors: string[] = []
@@ -203,12 +227,13 @@ const run = async () => {
   }
 
   assets.sort((a, b) => a.path.localeCompare(b.path))
+  const manifestAssets = merge ? mergeDiscoveredAssets(readManifest().assets, assets) : assets
 
   const manifest: MediaManifest = {
     schemaVersion: 1,
     bucket: 'media',
     generatedAt: new Date().toISOString(),
-    assets
+    assets: manifestAssets
   }
 
   // Summary

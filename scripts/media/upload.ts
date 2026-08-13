@@ -21,11 +21,24 @@ import {
   sha256,
   writeManifest
 } from './lib'
+import { selectAssetsByPrefix } from './selection'
 
 const CACHE_CONTROL_SECONDS = '31536000' // 1 year; safe because objects are immutable (A1)
 
 const dryRun = process.argv.includes('--dry-run')
 const audit = process.argv.includes('--audit')
+const pathPrefixArgument = process.argv.find(argument => argument.startsWith('--path-prefix'))
+const pathPrefix = (() => {
+  if (!pathPrefixArgument) return null
+  if (!pathPrefixArgument.startsWith('--path-prefix=')) {
+    throw new Error('path prefix must use --path-prefix=<prefix>')
+  }
+  const prefix = pathPrefixArgument.slice('--path-prefix='.length)
+  if (!prefix) {
+    throw new Error('path prefix must not be empty')
+  }
+  return prefix
+})()
 
 type Plan = 'upload' | 'skip' | 'resume' | 'conflict' | 'missing-build'
 
@@ -63,6 +76,11 @@ const listBucketRecursive = async (client: SupabaseClient, prefix = ''): Promise
 }
 
 const run = async () => {
+  if (audit && pathPrefix) {
+    console.error('[media:upload] --audit must use the full manifest and cannot be combined with --path-prefix.')
+    process.exit(1)
+  }
+
   loadEnv()
   if (!dryRun) {
     assertNotCI('upload media')
@@ -82,12 +100,13 @@ const run = async () => {
 
   const client = serviceKey ? createClient(supabaseUrl, serviceKey) : null
   const manifest = readManifest()
+  const assets = selectAssetsByPrefix(manifest.assets, pathPrefix)
   let uploaded = 0
   let skipped = 0
   let resumed = 0
   const problems: string[] = []
 
-  for (const asset of manifest.assets) {
+  for (const asset of assets) {
     if (asset.status === 'skipped' || asset.status === 'superseded') {
       continue
     }
