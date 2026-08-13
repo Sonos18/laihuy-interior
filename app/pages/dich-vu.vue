@@ -1,22 +1,59 @@
 <script setup lang="ts">
 import { company } from '~/data/company'
-import { services } from '~/data/services'
-import { uiText } from '~/data/ui'
+import {
+  serviceCoreIds,
+  serviceProgrammeIds,
+  servicesMediaAlt,
+  servicesPageContent
+} from '~/data/services-page'
+import { services, type Service, type ServiceId } from '~/data/services'
 import { projectMedia } from '~/media/catalog.generated'
+import { requireWorkshopAsset } from '~/media/factory-media'
 import { withAlt } from '~/media/project-media'
 
-const { t, ta } = useLanguage()
+const { t } = useLanguage()
 
-// Hero: a single clear architectural subject (staircase + interior garden) with a
-// usable quiet zone — see docs/hero-art-direction.md §10 (Services · Expertise).
-const heroAsset = projectMedia['codi-boutique-hotel'].images.find(
-  image => image.path.endsWith('/sanh-don/2.webp')
-) ?? projectMedia['codi-boutique-hotel'].cover
-const heroImage = withAlt(heroAsset, {
-  vi: 'Cầu thang và tiểu cảnh trong dự án nội thất Codi',
-  en: 'Staircase and interior garden in the Codi interior project'
+const selectServices = (ids: readonly ServiceId[]): Service[] => ids.flatMap((id) => {
+  const service = services.find(item => item.id === id)
+  return service ? [service] : []
 })
 
+const coreServices = selectServices(serviceCoreIds)
+const programmeServices = selectServices(serviceProgrammeIds)
+
+const codiImages = projectMedia['codi-boutique-hotel'].images
+const requireCodiAsset = (suffix: string) => {
+  const asset = codiImages.find(image => image.path.endsWith(suffix))
+
+  if (!asset) {
+    throw new Error(`Missing Services editorial media asset: ${suffix}`)
+  }
+
+  return asset
+}
+
+// Keep the approved Services hero art direction while moving editorial alt text into app/data.
+const heroAsset = requireCodiAsset('/sanh-don/2.webp')
+const heroImage = withAlt(heroAsset, servicesMediaAlt.hero)
+
+const workshopFactoryAsset = requireWorkshopAsset('4.webp')
+const workshopQualityAsset = requireWorkshopAsset('8.webp')
+
+const coreStageImages = [
+  withAlt(requireCodiAsset('/phong-dien-hinh-1/p3-04.webp'), servicesMediaAlt.design),
+  withAlt(workshopQualityAsset, servicesMediaAlt.quality),
+  withAlt(requireCodiAsset('/phong-dien-hinh-2/p8-01.webp'), servicesMediaAlt.construction)
+] as const
+
+const proofImage = withAlt(workshopFactoryAsset, servicesMediaAlt.factory)
+const evidenceImages = [
+  withAlt(requireCodiAsset('/phong-dien-hinh-2/p8-04.webp'), ''),
+  withAlt(workshopQualityAsset, ''),
+  withAlt(workshopFactoryAsset, ''),
+  withAlt(heroAsset, '')
+]
+
+const phoneHref = `tel:${company.phone.replaceAll(' ', '')}`
 const seoTitle = computed(() => t(company.seo.services.title))
 const seoDescription = computed(() => t(company.seo.services.description))
 
@@ -60,83 +97,262 @@ usePageSeo({
 </script>
 
 <template>
-  <div>
-    <AppHero
-      :topic="t({ vi: 'Dịch vụ nội thất B2B', en: 'B2B interior services' })"
-      :title="t({ vi: 'Một đầu mối, từ', en: 'One partner, from' })"
-      :special-title="t({ vi: 'thiết kế đến thi công', en: 'design to install' })"
-      :subtitle="t({ vi: 'Thiết kế, sản xuất tại xưởng và thi công nội thất cho khách sạn 3-5 sao, villa, căn hộ, thương mại và đơn hàng gia công.', en: 'Design, factory production, and contracting for 3-5 star hotels, villas, apartments, commercial spaces, and production-from-drawings orders.' })"
-      :image="heroImage"
-      atmosphere="warm"
-      focal="55% 45%"
-    />
+  <div class="bg-white">
+    <div data-services-chapter="promise">
+      <AppHero
+        :topic="t(servicesPageContent.hero.topic)"
+        :title="t(servicesPageContent.hero.title)"
+        :special-title="t(servicesPageContent.hero.specialTitle)"
+        :subtitle="t(servicesPageContent.hero.subtitle)"
+        :image="heroImage"
+        atmosphere="warm"
+        focal="55% 45%"
+      >
+        <template #actions>
+          <NuxtLink
+            to="/lien-he"
+            class="btn-primary"
+          >
+            {{ t(servicesPageContent.documents.primaryCta) }}
+            <Icon
+              name="i-lucide-arrow-right"
+              class="h-4 w-4"
+              aria-hidden="true"
+            />
+          </NuxtLink>
+        </template>
+      </AppHero>
+    </div>
 
-    <section class="section-y bg-white">
-      <div class="shell">
-        <div class="mb-12 max-w-3xl">
-          <p class="eyebrow">
-            {{ t({ vi: 'Dịch vụ tích hợp', en: 'Integrated service' }) }}
+    <section
+      data-services-chapter="documents"
+      class="section-y bg-white"
+    >
+      <div
+        data-testid="services-document-layout"
+        class="shell grid grid-cols-1 gap-14 md:grid-cols-2 md:gap-16 xl:gap-24"
+      >
+        <div>
+          <p
+            v-reveal
+            class="eyebrow reveal"
+          >
+            {{ t(servicesPageContent.documents.eyebrow) }}
           </p>
-          <h2 class="mt-4 text-3xl font-black uppercase leading-tight text-ink-950 md:text-5xl">
-            {{ t({ vi: 'Một đầu mối cho thiết kế, sản xuất và thi công', en: 'One accountable partner for design, production, and contracting' }) }}
+          <h2
+            v-reveal="80"
+            class="text-section-title reveal mt-4 max-w-3xl font-black uppercase text-ink-950"
+          >
+            {{ t(servicesPageContent.documents.title) }}
           </h2>
-          <!-- `.measure-lead` — 18px across the full max-w-3xl (768px) set 89 characters per
-               line. Larger type needs a tighter character cap, not a looser one. -->
-          <p class="measure-lead mt-5 text-lg leading-8 text-ink-600">
-            {{ t({ vi: 'Lai Huy Interior làm việc với chủ đầu tư, tổng thầu, kiến trúc sư và đơn vị vận hành để đưa bản vẽ thành sản phẩm thực tế, đúng vật liệu, đúng tiến độ và phù hợp ngân sách dự án.', en: 'Lai Huy Interior works with owners, contractors, architects, and operators to turn drawings into real products with controlled materials, schedule, and project budget.' }) }}
+          <p
+            v-reveal="140"
+            class="measure-lead reveal mt-5 text-ink-600"
+          >
+            {{ t(servicesPageContent.documents.description) }}
           </p>
+
+          <div
+            v-reveal="180"
+            class="reveal mt-9 flex flex-col gap-3 sm:flex-row"
+          >
+            <NuxtLink
+              to="/lien-he"
+              class="btn-dark"
+            >
+              {{ t(servicesPageContent.documents.primaryCta) }}
+              <Icon
+                name="i-lucide-arrow-right"
+                class="h-4 w-4"
+                aria-hidden="true"
+              />
+            </NuxtLink>
+            <NuxtLink
+              to="#delivery-journey"
+              class="btn-outline"
+            >
+              {{ t(servicesPageContent.documents.secondaryCta) }}
+            </NuxtLink>
+          </div>
         </div>
 
-        <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div
+          data-testid="services-document-grid"
+          class="grid border-l border-ink-200 pl-8 md:pl-10 xl:pl-12"
+        >
           <article
-            v-for="service in services"
-            :key="service.id"
-            class="industrial-card"
+            v-for="(item, index) in servicesPageContent.documents.items"
+            :key="item.id"
+            v-reveal="index * 70"
+            class="reveal flex gap-6 border-b border-ink-200 py-7 first:border-t"
           >
-            <Icon
-              :name="service.icon"
-              class="h-8 w-8 text-wood-500"
-            />
-            <h3 class="mt-6 text-2xl font-black text-ink-950">
-              {{ t(service.title) }}
-            </h3>
-            <p class="mt-4 text-sm leading-6 text-ink-600">
-              {{ t(service.description) }}
-            </p>
-            <ul class="mt-6 space-y-3">
-              <li
-                v-for="detail in ta(service.details)"
-                :key="detail"
-                class="flex gap-3 text-sm leading-6 text-ink-700"
-              >
-                <Icon
-                  name="i-lucide-check"
-                  class="mt-1 h-4 w-4 shrink-0 text-wood-500"
-                />
-                {{ detail }}
-              </li>
-            </ul>
+            <span class="pt-1 text-3xl font-black text-ink-200">
+              {{ String(index + 1).padStart(2, '0') }}
+            </span>
+            <div>
+              <h3 class="text-xl font-black uppercase text-ink-950">
+                {{ t(item.title) }}
+              </h3>
+              <p class="mt-3 text-sm leading-6 text-ink-600">
+                {{ t(item.description) }}
+              </p>
+            </div>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="section-y bg-ink-50">
-      <div class="shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+    <ServicesJourneyRail
+      :content="servicesPageContent.journey"
+      :services="coreServices"
+      :images="coreStageImages"
+    />
+
+    <section
+      data-services-chapter="proof"
+      class="section-y overflow-hidden bg-ink-950 text-white"
+    >
+      <div
+        data-testid="services-proof-grid"
+        class="shell grid grid-cols-1 gap-14 md:grid-cols-2 md:items-center md:gap-16 xl:gap-24"
+      >
         <div>
-          <p class="eyebrow">
-            {{ t({ vi: 'Hồ sơ dự án', en: 'Project documents' }) }}
+          <p
+            v-reveal
+            class="eyebrow reveal text-wood-300"
+          >
+            {{ t(servicesPageContent.proof.eyebrow) }}
           </p>
-          <h2 class="mt-4 max-w-3xl text-3xl font-black uppercase text-ink-950 md:text-5xl">
-            {{ t({ vi: 'Có bản vẽ? Hãy gửi để nhận tư vấn phạm vi và BOQ sơ bộ', en: 'Have drawings? Send them for scope review and a preliminary BOQ' }) }}
+          <h2
+            v-reveal="80"
+            class="text-section-title reveal mt-4 max-w-3xl font-black uppercase"
+          >
+            {{ t(servicesPageContent.proof.title) }}
           </h2>
+          <p
+            v-reveal="140"
+            class="mt-5 max-w-2xl text-lg leading-8 text-white/70"
+          >
+            {{ t(servicesPageContent.proof.description) }}
+          </p>
+
+          <div class="mt-10 grid gap-7">
+            <article
+              v-for="(item, index) in servicesPageContent.proof.items"
+              :key="item.id"
+              v-reveal="index * 70"
+              class="reveal border-t border-white/15 pt-6"
+            >
+              <p class="text-xs font-black uppercase tracking-[0.16em] text-wood-200">
+                {{ t(item.label) }}
+              </p>
+              <h3 class="mt-3 text-xl font-black">
+                {{ t(item.title) }}
+              </h3>
+              <p class="mt-3 text-sm leading-6 text-white/70">
+                {{ t(item.description) }}
+              </p>
+            </article>
+          </div>
+
+          <NuxtLink
+            v-reveal="160"
+            to="/nha-xuong"
+            class="btn-secondary reveal mt-9"
+          >
+            {{ t(servicesPageContent.proof.cta) }}
+            <Icon
+              name="i-lucide-arrow-right"
+              class="h-4 w-4"
+              aria-hidden="true"
+            />
+          </NuxtLink>
         </div>
-        <NuxtLink
-          to="/lien-he"
-          class="btn-dark"
+
+        <MediaImage
+          v-reveal="100"
+          :image="proofImage"
+          sizes="sm:100vw md:50vw"
+          class="reveal aspect-[4/5] min-h-[32rem] bg-ink-900"
+          img-class="object-center grayscale opacity-80"
+        />
+      </div>
+    </section>
+
+    <section
+      data-services-chapter="evidence"
+      class="bg-white py-10 md:py-12"
+    >
+      <div
+        data-testid="services-evidence-grid"
+        class="shell grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5"
+      >
+        <MediaImage
+          v-for="(image, index) in evidenceImages"
+          :key="image.path"
+          v-reveal="index * 60"
+          :image="image"
+          sizes="sm:50vw md:25vw"
+          class="reveal aspect-[8/5] bg-ink-50"
+          img-class="object-center"
+        />
+      </div>
+    </section>
+
+    <ServicesProgramList
+      :content="servicesPageContent.programmes"
+      :services="programmeServices"
+      :start-at="4"
+    />
+
+    <section
+      data-services-chapter="contact"
+      class="section-y border-t border-ink-100 bg-white text-ink-950"
+    >
+      <div class="shell grid gap-10 xl:grid-cols-[1.2fr_0.8fr] xl:items-end xl:gap-16">
+        <div>
+          <p
+            v-reveal
+            class="eyebrow reveal"
+          >
+            {{ t(servicesPageContent.contact.eyebrow) }}
+          </p>
+          <h2
+            v-reveal="80"
+            class="text-section-title reveal mt-4 max-w-4xl font-black uppercase"
+          >
+            {{ t(servicesPageContent.contact.title) }}
+          </h2>
+          <p
+            v-reveal="140"
+            class="measure-lead reveal mt-5 text-ink-600"
+          >
+            {{ t(servicesPageContent.contact.description) }}
+          </p>
+        </div>
+
+        <div
+          v-reveal="120"
+          class="reveal flex flex-col gap-3 sm:flex-row xl:justify-end"
         >
-          {{ t(uiText.cta.sendDrawings) }}
-        </NuxtLink>
+          <NuxtLink
+            to="/lien-he"
+            class="btn-dark"
+          >
+            {{ t(servicesPageContent.contact.primaryCta) }}
+            <Icon
+              name="i-lucide-arrow-right"
+              class="h-4 w-4"
+              aria-hidden="true"
+            />
+          </NuxtLink>
+          <a
+            :href="phoneHref"
+            class="btn-outline"
+          >
+            {{ t(servicesPageContent.contact.phoneCta) }} · {{ company.phone }}
+          </a>
+        </div>
       </div>
     </section>
   </div>

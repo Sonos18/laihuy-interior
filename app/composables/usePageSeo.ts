@@ -73,15 +73,17 @@ export const usePageSeo = (options: PageSeoOptions) => {
   })
 
   const jsonLd = options.jsonLd
-  useHead({
+  const structuredHead = computed(() => ({
     link: [{ rel: 'canonical', href: canonical }],
     script: jsonLd
       ? [{
+          key: 'page-structured-data',
           type: 'application/ld+json',
-          innerHTML: computed(() => JSON.stringify(jsonLd({ base, canonical })))
+          innerHTML: JSON.stringify(jsonLd({ base, canonical }))
         }]
       : []
-  })
+  }))
+  useHead(structuredHead)
 
   return { base, canonical }
 }

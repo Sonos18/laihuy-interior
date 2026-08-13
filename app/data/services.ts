@@ -1,7 +1,15 @@
 import type { LocalizedArray, LocalizedText } from '~/shared/types/localization'
 
+export type ServiceId
+  = 'design'
+    | 'factory-production'
+    | 'construction'
+    | 'hotel-interior'
+    | 'commercial-projects'
+    | 'export-oem'
+
 export type Service = {
-  id: string
+  id: ServiceId
   icon: string
   title: LocalizedText
   description: LocalizedText

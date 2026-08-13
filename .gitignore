@@ -39,3 +39,6 @@ test-results/
 
 # Superpowers runtime and generated execution evidence
 .superpowers/
+
+# Superdesign local previews and browser-test evidence
+.superdesign/tmp/
