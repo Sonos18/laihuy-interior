@@ -78,7 +78,7 @@ const layerStyle = (index: number) => {
                 :image="images[stage.id]"
                 sizes="sm:100vw md:70vw xl:72vw"
                 class="absolute inset-0 h-full w-full"
-                :img-class="stage.id === 'material' ? 'scale-[1.34] object-center' : 'object-center'"
+                img-class="object-center"
               />
               <div
                 v-if="stage.id === 'drawing'"

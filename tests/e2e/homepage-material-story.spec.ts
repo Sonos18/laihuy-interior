@@ -117,6 +117,46 @@ for (const width of [390, 767, 768, 1279, 1280, 1440] as const) {
   })
 }
 
+test('HOME-STORY keeps every desktop layer aligned to the shared media frame', async ({ page }) => {
+  const errors = await prepareHome(page, 'vi', 1440, 'no-preference')
+  const story = page.getByTestId('home-material-story')
+  const geometry = await story.evaluate((element) => {
+    const media = element.querySelector<HTMLElement>('.home-material-story__media')
+    if (!media) throw new Error('Missing desktop story media frame')
+
+    const frame = media.getBoundingClientRect()
+    return {
+      frame: { x: frame.x, y: frame.y, width: frame.width, height: frame.height },
+      layers: [...element.querySelectorAll<HTMLElement>('.home-material-story__layer')].map((layer) => {
+        const image = layer.querySelector<HTMLImageElement>('img')
+        if (!image) throw new Error('Missing desktop story layer image')
+        const box = image.getBoundingClientRect()
+        return {
+          id: [...layer.classList]
+            .find(className => className.startsWith('home-material-story__layer--'))
+            ?.replace('home-material-story__layer--', ''),
+          transform: getComputedStyle(image).transform,
+          scale: getComputedStyle(image).scale,
+          box: { x: box.x, y: box.y, width: box.width, height: box.height }
+        }
+      })
+    }
+  })
+
+  expect(geometry.layers).toHaveLength(4)
+  for (const layer of geometry.layers) {
+    expect(layer.transform, `${layer.id} layer transform`).toBe('none')
+    expect(layer.scale, `${layer.id} layer scale`).toBe('none')
+    expect(layer.box.x, `${layer.id} layer x`).toBeCloseTo(geometry.frame.x, 0)
+    expect(layer.box.y, `${layer.id} layer y`).toBeCloseTo(geometry.frame.y, 0)
+    expect(layer.box.width, `${layer.id} layer width`).toBeCloseTo(geometry.frame.width, 0)
+    expect(layer.box.height, `${layer.id} layer height`).toBeCloseTo(geometry.frame.height, 0)
+  }
+
+  expect(errors.consoleErrors).toEqual([])
+  expect(errors.pageErrors).toEqual([])
+})
+
 test('HOME-STORY reduces motion to a normal-flow editorial composition', async ({ page }) => {
   const errors = await prepareHome(page, 'vi', 1440, 'reduce')
   const story = page.getByTestId('home-material-story')
