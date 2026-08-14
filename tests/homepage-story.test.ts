@@ -17,15 +17,19 @@ describe('homepage material story', () => {
     ])
   })
 
-  it('binds each delivery stage to its generated decorative material-story image', () => {
+  it('binds the generated lead-up to the real Eo Gio reception photograph', () => {
     expect(homeMaterialStoryMedia.drawing.path)
-      .toBe('company/homepage-material-story/home-material-01-drawing-v1.webp')
+      .toBe('company/homepage-material-story/home-material-eo-gio-01-drawing-v2.webp')
     expect(homeMaterialStoryMedia.material.path)
-      .toBe('company/homepage-material-story/home-material-02-material-v1.webp')
+      .toBe('company/homepage-material-story/home-material-eo-gio-02-material-v2.webp')
     expect(homeMaterialStoryMedia.factory.path)
-      .toBe('company/homepage-material-story/home-material-03-factory-v1.webp')
-    expect(homeMaterialStoryMedia.space.path)
-      .toBe('company/homepage-material-story/home-material-04-space-v1.webp')
+      .toBe('company/homepage-material-story/home-material-eo-gio-03-factory-v2.webp')
+    expect(homeMaterialStoryMedia.space).toMatchObject({
+      path: 'projects/khach-san-eo-gio/sanh-don/24.webp',
+      width: 2560,
+      height: 1600,
+      alt: ''
+    })
     expect(Object.values(homeMaterialStoryMedia).every(image => image.alt === '')).toBe(true)
   })
 
