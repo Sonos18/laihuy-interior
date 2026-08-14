@@ -121,9 +121,41 @@ test('HOME-STORY reduces motion to a normal-flow editorial composition', async (
   const errors = await prepareHome(page, 'vi', 1440, 'reduce')
   const story = page.getByTestId('home-material-story')
   const stickyPosition = await page.getByTestId('home-story-sticky').evaluate(element => getComputedStyle(element).position)
+  const fallbackGeometry = await story.evaluate((element) => {
+    const stage = element.querySelector<HTMLElement>('.home-material-story__stage')
+    const layeredMedia = element.querySelector<HTMLElement>('.home-material-story__media')
+    const copy = element.querySelector<HTMLElement>('.home-material-story__copy')
+    if (!stage || !layeredMedia || !copy) throw new Error('Missing reduced-motion story structure')
+
+    return {
+      stageDisplay: getComputedStyle(stage).display,
+      layeredMediaDisplay: getComputedStyle(layeredMedia).display,
+      stageWidth: stage.getBoundingClientRect().width,
+      copyWidth: copy.getBoundingClientRect().width
+    }
+  })
+  const frames = story.locator('[data-mobile-frame]')
 
   expect(stickyPosition).not.toBe('sticky')
-  await expect(story.locator('[data-mobile-frame]')).toHaveCount(4)
+  expect(fallbackGeometry.stageDisplay).toBe('block')
+  expect(fallbackGeometry.layeredMediaDisplay).toBe('none')
+  expect(fallbackGeometry.copyWidth).toBeCloseTo(fallbackGeometry.stageWidth, 0)
+  await expect(frames).toHaveCount(4)
+
+  for (const frame of await frames.all()) {
+    const media = frame.locator('.home-material-story__mobile-media')
+    const image = media.locator('img')
+    await expect(media).toBeVisible()
+    await expect(image).toBeVisible()
+
+    const box = await media.evaluate((element) => {
+      const rect = element.getBoundingClientRect()
+      return { width: rect.width, height: rect.height }
+    })
+    expect(box.width).toBeGreaterThan(0)
+    expect(box.height).toBeGreaterThan(0)
+  }
+
   expect(errors.consoleErrors).toEqual([])
   expect(errors.pageErrors).toEqual([])
 })

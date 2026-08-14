@@ -368,4 +368,18 @@ const layerStyle = (index: number) => {
     transition: none !important;
   }
 }
+
+@media (min-width: 768px) and (prefers-reduced-motion: reduce) {
+  .home-material-story__stage {
+    display: block;
+  }
+
+  .home-material-story__media {
+    display: none;
+  }
+
+  .home-material-story__mobile-media {
+    display: block;
+  }
+}
 </style>
