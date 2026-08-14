@@ -20,9 +20,9 @@ const FOLDER_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
 // {name}[-v{N}][-w{width}].{ext} — see docs/media-migration/phase-1-storage-architecture.md §1.3
 const FILENAME_PATTERN
-  = /^([a-z0-9]+(?:-[a-z0-9]+)*?)(?:-v([2-9]\d*))?(?:-w(\d{2,4}))?\.(webp|jpg|png|svg)$/
+  = /^([a-z0-9]+(?:-[a-z0-9]+)*?)(?:-v([1-9]\d*))?(?:-w(\d{2,4}))?\.(webp|jpg|png|svg)$/
 
-const RESERVED_SUFFIX_PATTERN = /-[vw]\d+$/
+const RESERVED_SUFFIX_PATTERN = /-[vw]\d+$|-v-\d+$/
 
 export type ParsedMediaFilename = {
   name: string

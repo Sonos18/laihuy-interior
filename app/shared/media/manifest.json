@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "bucket": "media",
-  "generatedAt": "2026-07-05T09:48:14.335Z",
+  "generatedAt": "2026-08-14T00:05:14.362Z",
   "assets": [
     {
       "path": "brand/banner-home.webp",
@@ -106,6 +106,146 @@
       "supersedes": null,
       "status": "active",
       "uploadedAt": "2026-07-05T09:39:21.332Z",
+      "alt": null
+    },
+    {
+      "path": "company/homepage-material-story/home-material-01-drawing-v1.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "homepage-material-story",
+      "oldPublicPath": "/images/homepage-material-story/home-material-01-drawing-v1.png",
+      "sourceFile": "public/images/homepage-material-story/home-material-01-drawing-v1.png",
+      "sourceChecksum": "sha256:7058ace31b7fd5436d029d2f58eb660e1e0a60ee7b65b55a2ab70a35c6acb2ad",
+      "checksum": "sha256:acddc44d8eb6d32c5d6034788ab263de188bd7960b86eb35a0b413800adf63d8",
+      "width": 1586,
+      "height": 992,
+      "bytes": 90182,
+      "variants": [
+        {
+          "path": "company/homepage-material-story/home-material-01-drawing-v1-w400.webp",
+          "width": 400,
+          "bytes": 3556
+        },
+        {
+          "path": "company/homepage-material-story/home-material-01-drawing-v1-w800.webp",
+          "width": 800,
+          "bytes": 16272
+        },
+        {
+          "path": "company/homepage-material-story/home-material-01-drawing-v1-w1600.webp",
+          "width": 1600,
+          "bytes": 77858
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "company/homepage-material-story/home-material-02-material-v1.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "homepage-material-story",
+      "oldPublicPath": "/images/homepage-material-story/home-material-02-material-v1.png",
+      "sourceFile": "public/images/homepage-material-story/home-material-02-material-v1.png",
+      "sourceChecksum": "sha256:2ebc37a1c706df63fe48d0bd1ea8aa20b031b13fbf3bb428e3a8359adba01e7f",
+      "checksum": "sha256:90d2569a728677cefccde25bdcc75bdf94fe853beb3686dd1320aeedef1b3937",
+      "width": 1586,
+      "height": 992,
+      "bytes": 75960,
+      "variants": [
+        {
+          "path": "company/homepage-material-story/home-material-02-material-v1-w400.webp",
+          "width": 400,
+          "bytes": 5840
+        },
+        {
+          "path": "company/homepage-material-story/home-material-02-material-v1-w800.webp",
+          "width": 800,
+          "bytes": 18606
+        },
+        {
+          "path": "company/homepage-material-story/home-material-02-material-v1-w1600.webp",
+          "width": 1600,
+          "bytes": 65508
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "company/homepage-material-story/home-material-03-factory-v1.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "homepage-material-story",
+      "oldPublicPath": "/images/homepage-material-story/home-material-03-factory-v1.png",
+      "sourceFile": "public/images/homepage-material-story/home-material-03-factory-v1.png",
+      "sourceChecksum": "sha256:8a64901afaa02bce006ed7c13bc5ced6fc06bad8d233d90e5f1a4cd3e1a28fb2",
+      "checksum": "sha256:22249f9840e82708ca9f810339e2b6c6e2884b0adbb6489bdcd274115d8527b2",
+      "width": 1586,
+      "height": 992,
+      "bytes": 53060,
+      "variants": [
+        {
+          "path": "company/homepage-material-story/home-material-03-factory-v1-w400.webp",
+          "width": 400,
+          "bytes": 5506
+        },
+        {
+          "path": "company/homepage-material-story/home-material-03-factory-v1-w800.webp",
+          "width": 800,
+          "bytes": 15440
+        },
+        {
+          "path": "company/homepage-material-story/home-material-03-factory-v1-w1600.webp",
+          "width": 1600,
+          "bytes": 46026
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "company/homepage-material-story/home-material-04-space-v1.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "homepage-material-story",
+      "oldPublicPath": "/images/homepage-material-story/home-material-04-space-v1.png",
+      "sourceFile": "public/images/homepage-material-story/home-material-04-space-v1.png",
+      "sourceChecksum": "sha256:f6a0ef4f32786514a7972a2b752d651139a5ccefc962c5976872acd1505053e8",
+      "checksum": "sha256:74769c79ce479d14ed8ea4e116631feceb215e7e3a5c9f040b74296639216365",
+      "width": 1586,
+      "height": 992,
+      "bytes": 54716,
+      "variants": [
+        {
+          "path": "company/homepage-material-story/home-material-04-space-v1-w400.webp",
+          "width": 400,
+          "bytes": 5430
+        },
+        {
+          "path": "company/homepage-material-story/home-material-04-space-v1-w800.webp",
+          "width": 800,
+          "bytes": 15174
+        },
+        {
+          "path": "company/homepage-material-story/home-material-04-space-v1-w1600.webp",
+          "width": 1600,
+          "bytes": 46106
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
       "alt": null
     },
     {

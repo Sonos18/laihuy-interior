@@ -352,6 +352,10 @@ export const workshopMedia: readonly MediaAsset[] = [
 export const companyMedia = {
   aboutWorkspace: { path: 'company/about-workspace.webp', width: 2048, height: 2560 },
   companyStory: { path: 'company/company-story.webp', width: 900, height: 603 },
+  homeMaterial01DrawingV1: { path: 'company/homepage-material-story/home-material-01-drawing-v1.webp', width: 1586, height: 992 },
+  homeMaterial02MaterialV1: { path: 'company/homepage-material-story/home-material-02-material-v1.webp', width: 1586, height: 992 },
+  homeMaterial03FactoryV1: { path: 'company/homepage-material-story/home-material-03-factory-v1.webp', width: 1586, height: 992 },
+  homeMaterial04SpaceV1: { path: 'company/homepage-material-story/home-material-04-space-v1.webp', width: 1586, height: 992 },
   mapAddress: { path: 'company/map-address.webp', width: 1105, height: 637 }
 } satisfies Record<string, MediaAsset>
 

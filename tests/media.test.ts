@@ -108,6 +108,14 @@ describe('media path validation', () => {
     expect(isValidMediaPath('brand/logo-partner-v3.svg')).toBe(true)
   })
 
+  it('accepts explicit v1 filenames while rejecting invalid version forms', () => {
+    expect(isValidMediaPath('company/homepage-material-story/home-material-01-drawing-v1.webp')).toBe(true)
+    expect(parseMediaFilename('photo-v1.webp')).toMatchObject({ version: 1 })
+    expect(isValidMediaPath('company/homepage-material-story/home-material-01-drawing-v0.webp')).toBe(false)
+    expect(isValidMediaPath('company/homepage-material-story/home-material-01-drawing-v-1.webp')).toBe(false)
+    expect(isValidMediaPath('company/homepage-material-story/home-material-01-drawing-v01.webp')).toBe(false)
+  })
+
   it('rejects malformed paths and retired top-level folders', () => {
     expect(isValidMediaPath('hero/banner-home.webp')).toBe(false)
     expect(isValidMediaPath('unknown-root/photo.webp')).toBe(false)
