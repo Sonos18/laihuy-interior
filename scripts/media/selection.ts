@@ -3,10 +3,23 @@ import type { MediaManifestAsset } from '../../app/shared/media/types'
 export function assertFullRegenerationCanWrite(options: {
   write: boolean
   merge: boolean
-  legacyDirectoriesPresent: boolean
+  existing: readonly MediaManifestAsset[] | null
+  discovered: readonly MediaManifestAsset[]
 }): void {
-  if (options.write && !options.merge && !options.legacyDirectoriesPresent) {
-    throw new Error('full source library is required for an unmerged manifest write')
+  if (!options.write || options.merge || !options.existing) return
+
+  const existingSources = new Set(
+    options.existing.flatMap(asset => asset.sourceFile ? [asset.sourceFile] : [])
+  )
+  const discoveredSources = new Set(
+    options.discovered.flatMap(asset => asset.sourceFile ? [asset.sourceFile] : [])
+  )
+  const missingSources = [...existingSources].filter(sourceFile => !discoveredSources.has(sourceFile))
+  if (missingSources.length > 0) {
+    throw new Error(
+      `incomplete source library: ${missingSources.length} manifest source file(s) were not discovered; `
+      + `refusing unmerged write (first missing: ${missingSources[0]})`
+    )
   }
 }
 

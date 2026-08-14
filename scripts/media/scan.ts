@@ -36,7 +36,6 @@ const LOOSE_ASSETS: Record<string, { path: string, domain: string }> = {
 
 const write = process.argv.includes('--write')
 const merge = process.argv.includes('--merge')
-const legacyDirectoriesPresent = existsSync(PROJECTS_DIR) && existsSync(WORKSHOP_DIR)
 
 const slugifySegment = (value: string): string =>
   value
@@ -142,7 +141,6 @@ const scanProjectTree = async (
 }
 
 const run = async () => {
-  assertFullRegenerationCanWrite({ write, merge, legacyDirectoriesPresent })
   const assets: MediaManifestAsset[] = []
 
   // 1. Client projects (arbitrary gallery nesting)
@@ -229,7 +227,16 @@ const run = async () => {
   }
 
   assets.sort((a, b) => a.path.localeCompare(b.path))
-  const manifestAssets = merge ? mergeDiscoveredAssets(readManifest().assets, assets) : assets
+  const existingManifest = (write || merge) && existsSync(MANIFEST_PATH) ? readManifest() : null
+  assertFullRegenerationCanWrite({
+    write,
+    merge,
+    existing: existingManifest?.assets ?? null,
+    discovered: assets
+  })
+  const manifestAssets = merge
+    ? mergeDiscoveredAssets(existingManifest?.assets ?? [], assets)
+    : assets
 
   const manifest: MediaManifest = {
     schemaVersion: 1,
