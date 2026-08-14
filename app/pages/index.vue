@@ -6,49 +6,18 @@ import {
   machinerySectionContent,
   productionWorkflow
 } from '~/data/factory'
-import { homeCapabilities, homeStoryStages, type HomeStoryStageId } from '~/data/home-page'
+import { homeCapabilities, homeStoryStages } from '~/data/home-page'
 import { projects } from '~/data/projects'
 import { siteImages } from '~/data/site-images'
-import { projectMedia, workshopMedia } from '~/media/catalog.generated'
+import { projectMedia } from '~/media/catalog.generated'
+import { homeMaterialStoryMedia } from '~/media/home-media'
 import { projectCoverAsset } from '~/media/project-media'
-import type { MediaAsset, MediaImage } from '~/shared/media/types'
+import type { MediaAsset } from '~/shared/media/types'
 import type { Project } from '~/shared/types/project'
 
 const { t } = useLanguage()
 
 const heroImage = projectMedia['khach-san-eo-gio'].cover
-const eoGioMedia = projectMedia['khach-san-eo-gio'].images
-
-function requireMedia(asset: MediaAsset | undefined, label: string) {
-  if (!asset) throw new Error(`Missing homepage media asset: ${label}`)
-  return asset
-}
-
-const drawingAsset = requireMedia(
-  eoGioMedia.find(asset => asset.path.endsWith('/sanh-don/21.webp')),
-  'khach-san-eo-gio/sanh-don/21.webp'
-)
-const materialAsset = requireMedia(
-  eoGioMedia.find(asset => asset.path.endsWith('/can-ho-3-phong-ngu/12.webp')),
-  'khach-san-eo-gio/can-ho-3-phong-ngu/12.webp'
-)
-const factoryAsset = requireMedia(
-  workshopMedia.find(asset => asset.path.endsWith('/4.webp')),
-  'company/workshop/4.webp'
-)
-const completedAsset = requireMedia(
-  eoGioMedia.find(asset => asset.path.endsWith('/sanh-don/24.webp')),
-  'khach-san-eo-gio/sanh-don/24.webp'
-)
-
-const decorative = (asset: MediaAsset): MediaImage => ({ ...asset, alt: '' })
-
-const storyImages: Record<HomeStoryStageId, MediaImage> = {
-  drawing: decorative(drawingAsset),
-  material: decorative(materialAsset),
-  factory: decorative(factoryAsset),
-  space: decorative(completedAsset)
-}
 
 const featuredProjects = computed(() =>
   projects
@@ -96,7 +65,7 @@ usePageSeo({
     />
     <HomeMaterialStory
       :stages="homeStoryStages"
-      :images="storyImages"
+      :images="homeMaterialStoryMedia"
     />
     <HomeCapabilities :capabilities="homeCapabilities" />
     <HomeProjectStage :projects="featuredProjects" />

@@ -4,6 +4,7 @@ import {
   homePageContent,
   homeStoryStages
 } from '../app/data/home-page'
+import { homeMaterialStoryMedia } from '../app/media/home-media'
 import { calculateScrollProgress } from '../app/utils/scroll-progress'
 
 describe('homepage material story', () => {
@@ -14,6 +15,18 @@ describe('homepage material story', () => {
       'factory',
       'space'
     ])
+  })
+
+  it('binds each delivery stage to its generated decorative material-story image', () => {
+    expect(homeMaterialStoryMedia.drawing.path)
+      .toBe('company/homepage-material-story/home-material-01-drawing-v1.webp')
+    expect(homeMaterialStoryMedia.material.path)
+      .toBe('company/homepage-material-story/home-material-02-material-v1.webp')
+    expect(homeMaterialStoryMedia.factory.path)
+      .toBe('company/homepage-material-story/home-material-03-factory-v1.webp')
+    expect(homeMaterialStoryMedia.space.path)
+      .toBe('company/homepage-material-story/home-material-04-space-v1.webp')
+    expect(Object.values(homeMaterialStoryMedia).every(image => image.alt === '')).toBe(true)
   })
 
   it('exposes the three accountable capabilities without duplicating services', () => {
