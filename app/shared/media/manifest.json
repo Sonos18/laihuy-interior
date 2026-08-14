@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "bucket": "media",
-  "generatedAt": "2026-08-14T00:05:14.362Z",
+  "generatedAt": "2026-08-14T04:24:12.149Z",
   "assets": [
     {
       "path": "brand/banner-home.webp",
@@ -240,6 +240,111 @@
           "path": "company/homepage-material-story/home-material-04-space-v1-w1600.webp",
           "width": 1600,
           "bytes": 46106
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "company/homepage-material-story/home-material-eo-gio-01-drawing-v2.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "homepage-material-story",
+      "oldPublicPath": "/images/homepage-material-story/home-material-eo-gio-01-drawing-v2.png",
+      "sourceFile": "public/images/homepage-material-story/home-material-eo-gio-01-drawing-v2.png",
+      "sourceChecksum": "sha256:7b8ba5e354266f2840f5bfadb4592bd5e15249dd3b74c28207a9df96f1b0062d",
+      "checksum": "sha256:f273807a19ba90dac7160986210e410c23cd601e185c47b1a3f7fd780e13b9c5",
+      "width": 1586,
+      "height": 992,
+      "bytes": 136100,
+      "variants": [
+        {
+          "path": "company/homepage-material-story/home-material-eo-gio-01-drawing-v2-w400.webp",
+          "width": 400,
+          "bytes": 8622
+        },
+        {
+          "path": "company/homepage-material-story/home-material-eo-gio-01-drawing-v2-w800.webp",
+          "width": 800,
+          "bytes": 31176
+        },
+        {
+          "path": "company/homepage-material-story/home-material-eo-gio-01-drawing-v2-w1600.webp",
+          "width": 1600,
+          "bytes": 130138
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "company/homepage-material-story/home-material-eo-gio-02-material-v2.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "homepage-material-story",
+      "oldPublicPath": "/images/homepage-material-story/home-material-eo-gio-02-material-v2.png",
+      "sourceFile": "public/images/homepage-material-story/home-material-eo-gio-02-material-v2.png",
+      "sourceChecksum": "sha256:a57b5d4edd32366e1a0a89025ce2e5b86384439135cfcd3b6945568e20f4fbc3",
+      "checksum": "sha256:d755ed9fa6378b2e0b2dcbfaa1003c1a493b3efca459305e488b2d6f53c55d86",
+      "width": 1586,
+      "height": 992,
+      "bytes": 118246,
+      "variants": [
+        {
+          "path": "company/homepage-material-story/home-material-eo-gio-02-material-v2-w400.webp",
+          "width": 400,
+          "bytes": 11070
+        },
+        {
+          "path": "company/homepage-material-story/home-material-eo-gio-02-material-v2-w800.webp",
+          "width": 800,
+          "bytes": 33342
+        },
+        {
+          "path": "company/homepage-material-story/home-material-eo-gio-02-material-v2-w1600.webp",
+          "width": 1600,
+          "bytes": 110358
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "planned",
+      "uploadedAt": null,
+      "alt": null
+    },
+    {
+      "path": "company/homepage-material-story/home-material-eo-gio-03-factory-v2.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "homepage-material-story",
+      "oldPublicPath": "/images/homepage-material-story/home-material-eo-gio-03-factory-v2.png",
+      "sourceFile": "public/images/homepage-material-story/home-material-eo-gio-03-factory-v2.png",
+      "sourceChecksum": "sha256:071e1629217fd34b4a26109b7084177c250da41f1f444df48ebdb0c0ce5596ea",
+      "checksum": "sha256:e1b9e9fff736c75a1adec192bd936e228b0fe43b5fdc26ebf19c378407062728",
+      "width": 1586,
+      "height": 992,
+      "bytes": 103214,
+      "variants": [
+        {
+          "path": "company/homepage-material-story/home-material-eo-gio-03-factory-v2-w400.webp",
+          "width": 400,
+          "bytes": 11524
+        },
+        {
+          "path": "company/homepage-material-story/home-material-eo-gio-03-factory-v2-w800.webp",
+          "width": 800,
+          "bytes": 33122
+        },
+        {
+          "path": "company/homepage-material-story/home-material-eo-gio-03-factory-v2-w1600.webp",
+          "width": 1600,
+          "bytes": 92816
         }
       ],
       "version": 1,
