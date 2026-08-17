@@ -63,12 +63,10 @@ for (const locale of ['vi', 'en'] as const) {
     await expect(gallery.locator('img')).toHaveCount(9)
     await expect(page.getByRole('dialog', { name: MEDIA_COPY[locale].viewer })).toHaveCount(0)
 
-    const disclosure = page.getByRole('button', { name: new RegExp(`^${MEDIA_COPY[locale].disclosure}`) })
+    const disclosure = gallery.getByRole('button', { name: new RegExp(`^${MEDIA_COPY[locale].disclosure}`) })
     await expect(disclosure).toHaveCount(1)
     await expect(disclosure).toContainText('21')
-    expect(await page.locator('#materials').evaluate((materials, button) =>
-      Boolean(materials.compareDocumentPosition(button as Node) & Node.DOCUMENT_POSITION_FOLLOWING),
-    await disclosure.elementHandle())).toBe(true)
+    await expect(gallery.locator('[data-project-full-gallery]')).toContainText('21')
 
     await disclosure.focus()
     await expect(disclosure).toBeFocused()

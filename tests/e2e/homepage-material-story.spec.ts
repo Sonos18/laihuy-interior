@@ -10,15 +10,15 @@ const TRANSPARENT_PNG = Buffer.from(
 const COPY = {
   vi: {
     hero: 'Biến hồ sơ kỹ thuật thành không gian hoàn thiện',
-    story: 'Từ hồ sơ kỹ thuật đến không gian hoàn thiện',
-    stages: ['Hồ sơ kỹ thuật', 'Vật liệu & mẫu', 'Sản xuất trực tiếp', 'Không gian hoàn thiện'],
+    story: 'Từ hiện trạng đến không gian hoàn thiện',
+    stages: ['Hiện trạng', 'Hồ sơ kỹ thuật', 'Vật liệu & mẫu', 'Không gian hoàn thiện'],
     capabilities: ['Thiết kế kỹ thuật', 'Sản xuất trực tiếp', 'Thi công & bàn giao'],
     cta: 'Gửi hồ sơ dự án'
   },
   en: {
     hero: 'Turning technical documents into completed spaces',
-    story: 'From technical documentation to completed space',
-    stages: ['Technical documents', 'Materials & samples', 'Direct manufacturing', 'Completed space'],
+    story: 'From existing condition to completed space',
+    stages: ['Existing condition', 'Technical documents', 'Materials & samples', 'Completed space'],
     capabilities: ['Technical design', 'Direct manufacturing', 'Fit-out & handover'],
     cta: 'Send project documents'
   }
@@ -65,6 +65,9 @@ for (const locale of ['vi', 'en'] as const) {
     await expect(story.getByRole('heading', { level: 2, name: copy.story, exact: true })).toHaveCount(1)
     await expect(story.getByTestId('home-story-stage')).toHaveCount(4)
     await expect(story.locator('[data-stage-label]')).toHaveText(copy.stages)
+    expect(await story.locator('[data-stage-id]').evaluateAll(elements =>
+      elements.map(element => element.getAttribute('data-stage-id'))
+    )).toEqual(['existing', 'drawing', 'material', 'space'])
 
     const capabilities = page.getByTestId('home-capabilities')
     await expect(capabilities.getByTestId('home-capability')).toHaveCount(3)

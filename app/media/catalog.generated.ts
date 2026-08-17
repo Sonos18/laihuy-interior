@@ -356,6 +356,7 @@ export const companyMedia = {
   homeMaterial02MaterialV1: { path: 'company/homepage-material-story/home-material-02-material-v1.webp', width: 1586, height: 992 },
   homeMaterial03FactoryV1: { path: 'company/homepage-material-story/home-material-03-factory-v1.webp', width: 1586, height: 992 },
   homeMaterial04SpaceV1: { path: 'company/homepage-material-story/home-material-04-space-v1.webp', width: 1586, height: 992 },
+  homeMaterialEoGio00ExistingV1: { path: 'company/homepage-material-story/home-material-eo-gio-00-existing-v1.webp', width: 1586, height: 992 },
   homeMaterialEoGio01DrawingV2: { path: 'company/homepage-material-story/home-material-eo-gio-01-drawing-v2.webp', width: 1586, height: 992 },
   homeMaterialEoGio02MaterialV2: { path: 'company/homepage-material-story/home-material-eo-gio-02-material-v2.webp', width: 1586, height: 992 },
   homeMaterialEoGio03FactoryV2: { path: 'company/homepage-material-story/home-material-eo-gio-03-factory-v2.webp', width: 1586, height: 992 },

@@ -131,6 +131,9 @@ const onKeydown = (event: KeyboardEvent) => {
   }
 }
 
+const thumbnailScrollBehavior = (): ScrollBehavior =>
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+
 const scrollActiveThumbIntoView = () => {
   if (!import.meta.client) {
     return
@@ -138,7 +141,7 @@ const scrollActiveThumbIntoView = () => {
   nextTick(() => {
     thumbStrip.value
       ?.querySelector<HTMLElement>('[data-active="true"]')
-      ?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' })
+      ?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: thumbnailScrollBehavior() })
   })
 }
 

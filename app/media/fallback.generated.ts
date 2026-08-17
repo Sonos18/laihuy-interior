@@ -18,6 +18,7 @@ export const fallbackEntries: ReadonlyArray<readonly [string, string]> = [
   ['company/homepage-material-story/home-material-02-material-v1.webp', '/images/homepage-material-story/home-material-02-material-v1.png'],
   ['company/homepage-material-story/home-material-03-factory-v1.webp', '/images/homepage-material-story/home-material-03-factory-v1.png'],
   ['company/homepage-material-story/home-material-04-space-v1.webp', '/images/homepage-material-story/home-material-04-space-v1.png'],
+  ['company/homepage-material-story/home-material-eo-gio-00-existing-v1.webp', '/images/homepage-material-story/home-material-eo-gio-00-existing-v1.png'],
   ['company/homepage-material-story/home-material-eo-gio-01-drawing-v2.webp', '/images/homepage-material-story/home-material-eo-gio-01-drawing-v2.png'],
   ['company/homepage-material-story/home-material-eo-gio-02-material-v2.webp', '/images/homepage-material-story/home-material-eo-gio-02-material-v2.png'],
   ['company/homepage-material-story/home-material-eo-gio-03-factory-v2.webp', '/images/homepage-material-story/home-material-eo-gio-03-factory-v2.png'],

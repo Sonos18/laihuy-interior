@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "bucket": "media",
-  "generatedAt": "2026-08-14T04:24:12.149Z",
+  "generatedAt": "2026-08-17T06:15:55.932Z",
   "assets": [
     {
       "path": "brand/banner-home.webp",
@@ -249,6 +249,41 @@
       "alt": null
     },
     {
+      "path": "company/homepage-material-story/home-material-eo-gio-00-existing-v1.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "homepage-material-story",
+      "oldPublicPath": "/images/homepage-material-story/home-material-eo-gio-00-existing-v1.png",
+      "sourceFile": "public/images/homepage-material-story/home-material-eo-gio-00-existing-v1.png",
+      "sourceChecksum": "sha256:031ae58e306238a8f6afc70b0f5a3e47ee535ac66753594b826b86b900079a1c",
+      "checksum": "sha256:5090e679ba196d332695c2a5e7346127723a5c38d03ac1a1f41b27c4cace5277",
+      "width": 1586,
+      "height": 992,
+      "bytes": 81058,
+      "variants": [
+        {
+          "path": "company/homepage-material-story/home-material-eo-gio-00-existing-v1-w400.webp",
+          "width": 400,
+          "bytes": 6684
+        },
+        {
+          "path": "company/homepage-material-story/home-material-eo-gio-00-existing-v1-w800.webp",
+          "width": 800,
+          "bytes": 21046
+        },
+        {
+          "path": "company/homepage-material-story/home-material-eo-gio-00-existing-v1-w1600.webp",
+          "width": 1600,
+          "bytes": 68658
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-08-17T06:15:31.768Z",
+      "alt": null
+    },
+    {
       "path": "company/homepage-material-story/home-material-eo-gio-01-drawing-v2.webp",
       "kind": "raster",
       "category": "company",
@@ -279,8 +314,8 @@
       ],
       "version": 1,
       "supersedes": null,
-      "status": "planned",
-      "uploadedAt": null,
+      "status": "active",
+      "uploadedAt": "2026-08-17T06:15:44.405Z",
       "alt": null
     },
     {
@@ -314,8 +349,8 @@
       ],
       "version": 1,
       "supersedes": null,
-      "status": "planned",
-      "uploadedAt": null,
+      "status": "active",
+      "uploadedAt": "2026-08-17T06:15:55.929Z",
       "alt": null
     },
     {

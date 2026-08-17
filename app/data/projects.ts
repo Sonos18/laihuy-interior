@@ -269,6 +269,14 @@ export const projects: Project[] = [
         vi: 'Nhà vườn Chi Ly là một dinh thự tân cổ điển dành cho gia đình, nơi phào chỉ, đèn chùm và sàn đá được tiết chế để giữ sự trang trọng mà không nặng nề. Các phòng chung theo ngôn ngữ cổ điển, trong khi phòng của các bé lại mở ra một thế giới khác hẳn.',
         en: 'Chi Ly is a neo-classical garden villa for a family, where mouldings, chandeliers and stone floors are measured enough to stay formal without turning heavy. The shared rooms follow a classical language, while the children’s rooms open onto an entirely different world.'
       },
+      challenge: {
+        vi: 'Ngôn ngữ tân cổ điển cần đủ trang trọng cho các không gian chung nhưng không thể áp cùng một sắc thái lên mọi thành viên; bài toán là giữ tổng thể thống nhất trong khi phòng của các bé vẫn có cá tính riêng.',
+        en: 'The neo-classical language needed enough formality for the shared rooms without imposing the same mood on every family member; the priority was to keep one coherent home while giving the children’s rooms identities of their own.'
+      },
+      solution: {
+        vi: 'Phòng khách, bếp và phòng ăn dùng chung một kỷ luật về phào chỉ, trần giật cấp, đá sáng và đồ nội thất dáng cổ điển. Hai phòng trẻ chuyển sang bảng màu xanh và đỏ cùng chủ đề xe đua, nhưng vẫn giữ hệ tủ gọn và nhịp bố cục rõ để không tách khỏi tổng thể.',
+        en: 'The living room, kitchen and dining room share a disciplined use of mouldings, stepped ceilings, pale stone and classically shaped furniture. The two children’s rooms shift to blue and red racing themes while retaining orderly storage and a clear layout, so they remain part of the same home.'
+      },
       designHighlights: {
         vi: [
           'Tường ốp phào chỉ PU và trần giật cấp theo lối cổ điển',
@@ -342,6 +350,22 @@ export const projects: Project[] = [
         vi: 'Bảng vật liệu được thống nhất — gỗ ấm, mảng nan trắng và đá sáng — để nối các phòng bằng ánh nhìn. Gầm thang trở thành góc ăn có tủ rượu, còn phòng ngủ dùng giường bệ nổi hắt sáng để giảm cảm giác nặng.',
         en: 'A single material palette — warm wood, white fluted panels and pale stone — ties the rooms together by sight. The under-stair becomes a dining nook with a wine cabinet, and the bedroom uses a floating, back-lit bed base to lift the weight of the room.'
       },
+      designHighlights: {
+        vi: [
+          'Gầm thang được chuyển thành góc ăn và hệ tủ rượu thay vì diện tích bỏ trống',
+          'Bảng gỗ ấm, đá sáng và nan trắng nối các phòng bằng một nhịp vật liệu chung',
+          'Hệ tủ bám tường giữ lối đi nhà phố gọn và liên tục',
+          'Giường bệ nổi cùng ánh sáng hắt làm nhẹ khối nội thất phòng ngủ',
+          'Kính và các lớp sáng gián tiếp đưa chiều sâu vào những vùng ít ánh sáng tự nhiên'
+        ],
+        en: [
+          'The under-stair zone becomes a dining nook and wine cabinet instead of leftover space',
+          'Warm wood, pale stone and white fluting connect the rooms through one material rhythm',
+          'Wall-hugging storage keeps the townhouse circulation clear and continuous',
+          'A floating bed base and indirect light lift the visual weight of the bedroom',
+          'Glass and layered lighting bring depth to areas with limited natural light'
+        ]
+      },
       materials: {
         vi: [
           'Gỗ công nghiệp MDF phủ Melamine/Laminate tông ấm',
@@ -355,6 +379,10 @@ export const projects: Project[] = [
           'White fluted panelling for a vertical rhythm',
           'Glass and indirect LED lighting'
         ]
+      },
+      experience: {
+        vi: 'Từ khu ăn dưới gầm thang đến phòng ngủ, ngôi nhà được đọc như một mạch liên tục thay vì các phòng rời; gỗ ấm giữ cảm giác gần gũi, còn đá sáng và ánh sáng hắt giúp chiều ngang nhà phố thoáng hơn.',
+        en: 'From the dining nook beneath the stair to the bedroom, the house reads as one continuous sequence rather than a set of separate rooms; warm wood keeps it familiar, while pale stone and indirect light make the townhouse feel more open.'
       }
     },
     seo: {
@@ -385,6 +413,14 @@ export const projects: Project[] = [
         vi: 'Nhà anh Nam là một căn nhà phố hiện đại lấy khoảng thông tầng làm trung tâm, nơi ánh sáng và tầm nhìn được kéo lên theo chiều cao thay vì trải theo chiều ngang.',
         en: 'Anh Nam is a modern townhouse built around a double-height core, where light and sightlines are drawn upward through height rather than spread across the floor.'
       },
+      challenge: {
+        vi: 'Trong mặt bằng nhà phố, chiều sâu và các khối nội thất dễ làm không gian nặng; ưu tiên thiết kế là đưa ánh sáng đi theo khoảng thông tầng và giữ mặt sàn càng liền mạch càng tốt.',
+        en: 'Within a townhouse floorplate, depth and built-in volumes can quickly make the interior feel heavy; the design priority was to carry light through the double-height void and keep the floor plane as continuous as possible.'
+      },
+      solution: {
+        vi: 'Khoảng thông tầng trở thành trục chính, được lọc bằng cầu thang lam thép đen thay cho một khối đặc. Hệ tủ, kệ TV và giường bệ được nhấc khỏi sàn; gỗ ấm, mặt tối và ánh sáng điểm tạo chiều sâu mà không lấp đầy khoảng trống.',
+        en: 'The double-height void becomes the main axis, filtered by a black-steel batten stair instead of a solid enclosure. Cabinetry, media units and bed bases lift from the floor; warm wood, dark surfaces and focused lighting add depth without filling the void.'
+      },
       designHighlights: {
         vi: [
           'Khoảng thông tầng mở nối phòng khách với tầng trên',
@@ -401,6 +437,20 @@ export const projects: Project[] = [
           'A dark-topped kitchen island with metal-trimmed open shelving',
           'Back-lit floating bed bases in the bedrooms',
           'A ring pendant and floor lamp soften a minimal base'
+        ]
+      },
+      materials: {
+        vi: [
+          'Gỗ tông ấm cho hệ tủ, kệ và các bề mặt nội thất chính',
+          'Thép sơn đen cho lam cầu thang và chi tiết kệ mở',
+          'Bề mặt tối cho đảo bếp và các điểm nhấn tương phản',
+          'Ánh sáng hắt cùng đèn trang trí hình học để làm rõ chiều cao'
+        ],
+        en: [
+          'Warm-toned wood across cabinetry, shelving and primary furniture surfaces',
+          'Black-painted steel for the stair battens and open-shelf details',
+          'Dark surfaces on the kitchen island and other contrast points',
+          'Indirect light and geometric feature lighting to articulate the height'
         ]
       },
       experience: {
@@ -436,6 +486,28 @@ export const projects: Project[] = [
         vi: 'Một không gian nghỉ nhỏ 32 m² tại Tà Đùng, nơi vật liệu tự nhiên được để mộc: gỗ thông, tường vữa và khung thép đen, thay cho mọi lớp trang trí thừa.',
         en: 'A compact 32 m² retreat in Ta Dung, where natural materials are left raw — pine, plaster walls and black steel frames standing in for any extra layer of decoration.'
       },
+      challenge: {
+        vi: 'Với 32 m², mỗi lớp trang trí hoặc khối lưu trữ đều có thể thu hẹp cảm giác nghỉ dưỡng; bài toán là chứa đủ chức năng lưu trú mà vẫn giữ được khoảng thở và sự tĩnh tại.',
+        en: 'At 32 m², every decorative layer or storage volume can erode the sense of retreat; the task was to hold the functions of a stay while preserving breathing room and quiet.'
+      },
+      solution: {
+        vi: 'Hệ tủ, kệ và giường bằng gỗ thông được gom sát biên, kết hợp khung thép mở để lưu trữ không trở thành vách đặc. Các đường vòm, tường vữa trung tính và ánh sáng thấp làm mềm cấu trúc nhỏ, giữ vật liệu mộc làm điểm nhấn chính.',
+        en: 'Pine cabinetry, shelving and the bed are gathered along the perimeter, paired with open steel frames so storage never becomes a solid wall. Arched lines, neutral plaster and low lighting soften the compact shell, leaving the raw materials as the primary expression.'
+      },
+      designHighlights: {
+        vi: [
+          'Hệ giường và lưu trữ gỗ thông gom sát biên để giải phóng phần giữa phòng',
+          'Khung thép mở giữ tầm nhìn xuyên qua khu tủ và giá đỡ',
+          'Đường vòm tạo chuyển tiếp mềm trong một mặt bằng nhỏ',
+          'Ánh sáng thấp làm nổi thớ gỗ và bề mặt vữa trung tính'
+        ],
+        en: [
+          'Pine sleeping and storage elements gather at the perimeter to free the centre',
+          'Open steel frames preserve sightlines through wardrobes and racks',
+          'Arched transitions soften the compact plan',
+          'Low lighting brings out the pine grain and neutral plaster surfaces'
+        ]
+      },
       materials: {
         vi: [
           'Gỗ thông tự nhiên cho hệ tủ, kệ và giường',
@@ -449,6 +521,10 @@ export const projects: Project[] = [
           'Neutral micro-plaster wall finishes',
           'A stone top in the bathroom'
         ]
+      },
+      craftsmanship: {
+        vi: 'Trong phạm vi thiết kế và thi công, các mối gặp giữa gỗ thông, khung thép và bề mặt vữa được xử lý như một hệ thống duy nhất; chi tiết được giữ gọn để công năng không làm mất chất mộc của không gian.',
+        en: 'Across the design-and-construction scope, the junctions between pine, steel frames and plaster surfaces are resolved as one system; details stay restrained so function does not dilute the retreat’s raw character.'
       },
       experience: {
         vi: 'Trong một diện tích nhỏ, cảm giác lại rộng và tĩnh; những đường vòm, ánh sáng thấp và bề mặt mộc khiến nơi này giống một chốn lui về hơn là một căn phòng.',
@@ -483,6 +559,14 @@ export const projects: Project[] = [
         vi: 'Một phòng giám đốc 37 m² được cải tạo tại Quận 7, tổ chức đủ ba chức năng — làm việc, tiếp khách nhỏ và nghỉ ngơi — trong một không gian gọn nhưng có chiều sâu và sự chững chạc.',
         en: 'A 37 m² director’s office reworked in District 7, holding three functions — working, small meetings and a place to sit — inside a compact room that still reads deep and composed.'
       },
+      challenge: {
+        vi: 'Ba nhu cầu — làm việc, họp nhỏ và tiếp khách — cùng nằm trong 37 m²; ưu tiên là tạo ranh giới đủ rõ mà không chia căn phòng thành những khoang chật.',
+        en: 'Three needs — focused work, small meetings and receiving guests — share 37 m²; the priority was to make each zone legible without dividing the room into tight compartments.'
+      },
+      solution: {
+        vi: 'Bàn giám đốc giữ trục chính, được bao bởi mảng gỗ ốp và hệ tủ âm để tạo chiều sâu. Bàn họp nhỏ và sofa lùi về hai vùng phụ, trong khi đèn thả tạo hình cùng nền tường tối liên kết cả ba chức năng bằng một sắc thái chững chạc.',
+        en: 'The executive desk holds the main axis, framed by timber panelling and recessed storage to create depth. A small meeting table and sofa occupy two secondary zones, while the sculptural pendant and dark wall planes connect all three functions with one composed tone.'
+      },
       designHighlights: {
         vi: [
           'Gỗ ốp lam và soi chỉ bao quanh khu bàn làm việc',
@@ -499,6 +583,20 @@ export const projects: Project[] = [
           'A recessed bookcase and display shelving',
           'A compact meeting table and a sofa corner facing the city',
           'Dark wall planes as a backdrop for warm light'
+        ]
+      },
+      materials: {
+        vi: [
+          'Gỗ tông ấm cho mảng ốp, lam và hệ tủ âm tường',
+          'Kim loại tối cho chân bàn và các đường viền chi tiết',
+          'Da tông trầm cho ghế làm việc và khu tiếp khách',
+          'Ánh sáng vàng ấm trên các mảng tường tối'
+        ],
+        en: [
+          'Warm timber across wall panelling, battens and recessed storage',
+          'Dark metal for desk legs and fine edge details',
+          'Deep-toned leather for the working and lounge seats',
+          'Warm lighting against the darker wall planes'
         ]
       },
       experience: {
@@ -534,6 +632,10 @@ export const projects: Project[] = [
         vi: 'Một văn phòng 170 m² tại Quận 7 được tổ chức quanh hai cực: một phòng họp kính cho các buổi làm việc tập trung, và các khối bàn mở cho từng phòng ban.',
         en: 'A 170 m² office in District 7 organised around two poles: a glass meeting room for focused sessions, and open desk blocks for each department.'
       },
+      challenge: {
+        vi: 'Phòng họp cần đủ riêng tư cho trao đổi tập trung, trong khi các phòng ban vẫn cần nhìn thấy nhau và cùng chia sẻ một nhận diện; bài toán là phân vùng mà không làm văn phòng 170 m² trở nên khép kín.',
+        en: 'The meeting room needed privacy for focused discussion while departments still needed visual connection and a shared identity; the task was to divide the 170 m² office without making it feel enclosed.'
+      },
       solution: {
         vi: 'Phòng họp đặt sau vách kính để vừa tách âm vừa giữ tầm nhìn, với hệ tủ hồ sơ gỗ và đèn tuyến tính hình học phía trên. Các phòng ban dùng bàn liền dãy và những mảng tường đồ hoạ mang thông điệp của công ty.',
         en: 'The meeting room sits behind glass to separate sound while keeping sightlines, with a wood filing wall and a geometric linear light above. The departments use bench desks and graphic walls that carry the company’s message.'
@@ -555,6 +657,24 @@ export const projects: Project[] = [
           'Carpet flooring and glass partitions dividing lightly',
           'Oak accent panels warming a white base'
         ]
+      },
+      materials: {
+        vi: [
+          'Kính trong cho vách phòng họp và các lớp phân vùng nhẹ',
+          'Gỗ tông sáng cho tủ hồ sơ và các mảng nhấn',
+          'Kim loại đen cho khung, chân bàn và chi tiết đèn',
+          'Thảm sàn hỗ trợ phân vùng và giảm cảm giác cứng'
+        ],
+        en: [
+          'Clear glass for the meeting-room enclosure and light partitions',
+          'Pale timber for filing storage and accent planes',
+          'Black metal across frames, desk legs and lighting details',
+          'Carpet flooring to support zoning and soften the workplace'
+        ]
+      },
+      experience: {
+        vi: 'Từ bàn làm việc, các phòng ban vẫn đọc được nhịp chung của văn phòng; bước vào phòng họp, lớp kính giữ sự tập trung nhưng không cắt đứt ánh sáng và kết nối thị giác với bên ngoài.',
+        en: 'From the workstations, departments still read as part of one office rhythm; inside the meeting room, glass supports focus without cutting off daylight or visual connection to the wider workplace.'
       }
     },
     seo: {
@@ -608,6 +728,28 @@ export const projects: Project[] = [
           'A meeting table and work area fitted into a small floorplate',
           'Carpet and wood holding a warm tone'
         ]
+      },
+      materials: {
+        vi: [
+          'Gỗ tông ấm cho hệ kệ và các bề mặt lưu trữ',
+          'Lam tông than chì cho mảng nền và nhịp đứng',
+          'Khung thép sơn đen tại các vùng mở ra mặt kính',
+          'Thảm sàn cùng cây xanh để làm mềm không gian làm việc'
+        ],
+        en: [
+          'Warm timber for shelving and storage surfaces',
+          'Charcoal fluting for background planes and vertical rhythm',
+          'Black-painted steel frames where the office opens to glazing',
+          'Carpet and planting to soften the workplace'
+        ]
+      },
+      craftsmanship: {
+        vi: 'Trong gói thiết kế, sản xuất và thi công, hệ kệ gỗ tích hợp hốc cây được triển khai như một mô-đun liên tục; các mối nối với lam than chì và khung thép được kiểm soát để mảng lưu trữ vẫn nhẹ trong mặt bằng 70 m².',
+        en: 'Within the design, production and construction scope, the timber shelving and planting niches were delivered as one continuous module; its junctions with charcoal fluting and steel frames were controlled so the storage stayed light within 70 m².'
+      },
+      experience: {
+        vi: 'Cây xanh xuất hiện ngay trong hệ lưu trữ thay vì như lớp trang trí thêm vào; nhờ vậy, nơi làm việc nhỏ vẫn có nhịp thở, còn các mảng gỗ và than chì giữ sự chuyên nghiệp cần thiết.',
+        en: 'Planting sits within the storage rather than as an added decorative layer; the compact workplace gains breathing room, while timber and charcoal planes retain the required professional tone.'
       }
     },
     seo: {
@@ -637,9 +779,41 @@ export const projects: Project[] = [
         vi: 'Nhà xưởng anh Cường là một công trình 320 m² kết hợp sản xuất và văn phòng, nơi khối làm việc được đặt ngay trong không gian nhà xưởng thay vì tách rời khỏi nó.',
         en: 'Anh Cuong is a 320 m² project combining production and office, where the workspace sits inside the warehouse rather than apart from it.'
       },
+      challenge: {
+        vi: 'Khối văn phòng cần đủ sạch, sáng và dễ nhận diện để làm việc tập trung, nhưng vẫn phải ở trong nhịp vận hành của nhà xưởng; ranh giới vì thế cần bảo vệ mà không tách rời.',
+        en: 'The office needed to be clean, bright and legible enough for focused work while remaining inside the warehouse’s operating rhythm; its boundary had to protect without disconnecting.'
+      },
       solution: {
         vi: 'Khu văn phòng được dựng bằng hệ vách panel và kính trên nền sàn terrazzo, giữ sự sạch sẽ và sáng sủa giữa một vỏ công nghiệp. Bàn làm việc chung, hệ kệ gỗ và mảng đồ hoạ thương hiệu tạo một môi trường làm việc rõ ràng ngay cạnh khu sản xuất.',
         en: 'The office is built from panel and glass partitions on a terrazzo floor, keeping it clean and bright inside an industrial shell. Shared desks, oak shelving and brand graphics create a legible workplace right beside production.'
+      },
+      designHighlights: {
+        vi: [
+          'Vách panel và kính tạo một khối văn phòng sáng bên trong vỏ công nghiệp',
+          'Sàn terrazzo đánh dấu vùng làm việc bằng một bề mặt sạch và liền mạch',
+          'Bàn chung cùng hệ kệ gỗ tổ chức công việc mà không làm nặng mặt bằng',
+          'Đồ hoạ thương hiệu giúp khu văn phòng dễ nhận diện từ phía xưởng'
+        ],
+        en: [
+          'Panel and glass partitions form a bright office insert within the industrial shell',
+          'Terrazzo marks the workplace with one clean, continuous floor surface',
+          'Shared desks and oak shelving organise work without weighing down the plan',
+          'Brand graphics make the office legible from the warehouse side'
+        ]
+      },
+      materials: {
+        vi: [
+          'Panel và kính cho hệ vách phân tách văn phòng với khu sản xuất',
+          'Terrazzo cho bề mặt sàn liền mạch và dễ nhận diện',
+          'Gỗ tông sáng cho kệ và các điểm chạm nội thất',
+          'Kim loại tối cùng đồ hoạ thương hiệu trên nền công nghiệp'
+        ],
+        en: [
+          'Panel and glass partitions separating the office from production',
+          'Terrazzo for a continuous and clearly defined floor surface',
+          'Pale timber for shelving and interior touchpoints',
+          'Dark metal and brand graphics against the industrial shell'
+        ]
       },
       craftsmanship: {
         vi: 'Với gói thầu thiết kế và thi công, hệ vách panel, kệ gỗ và khu làm việc được dựng trực tiếp trong nhà xưởng — một phần hoàn thiện đặt cạnh phần thô của công trình.',

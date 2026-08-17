@@ -14,8 +14,8 @@ if (!eoGioReception) {
 }
 
 export const homeMaterialStoryMedia: Record<HomeStoryStageId, MediaImage> = {
+  existing: decorative(companyMedia.homeMaterialEoGio00ExistingV1),
   drawing: decorative(companyMedia.homeMaterialEoGio01DrawingV2),
   material: decorative(companyMedia.homeMaterialEoGio02MaterialV2),
-  factory: decorative(companyMedia.homeMaterialEoGio03FactoryV2),
   space: decorative(eoGioReception)
 }

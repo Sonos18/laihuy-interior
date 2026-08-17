@@ -1,6 +1,6 @@
 import type { LocalizedText } from '~/shared/types/localization'
 
-export type HomeStoryStageId = 'drawing' | 'material' | 'factory' | 'space'
+export type HomeStoryStageId = 'existing' | 'drawing' | 'material' | 'space'
 export type HomeCapabilityId = 'technical' | 'manufacturing' | 'fitout'
 
 export type HomeStoryStage = {
@@ -30,10 +30,10 @@ export const homePageContent = {
   },
   story: {
     eyebrow: { vi: 'Một hành trình, một đầu mối', en: 'One journey, one accountable team' },
-    title: { vi: 'Từ hồ sơ kỹ thuật đến không gian hoàn thiện', en: 'From technical documentation to completed space' },
+    title: { vi: 'Từ hiện trạng đến không gian hoàn thiện', en: 'From existing condition to completed space' },
     description: {
-      vi: 'Mỗi chuyển động trên trang là một bước thật trong cách Lai Huy kiểm soát dự án: làm rõ hồ sơ, chốt vật liệu, sản xuất trực tiếp và hoàn thiện tại công trình.',
-      en: 'Each movement reflects a real control point in Lai Huy’s delivery: clarify documents, confirm materials, manufacture directly, and complete the work on site.'
+      vi: 'Một đầu mối xuyên suốt từ khảo sát hiện trạng, triển khai hồ sơ, chốt vật liệu đến nghiệm thu không gian hoàn thiện.',
+      en: 'One accountable team leads the work from the existing-condition survey through documentation, material approval, and final sign-off.'
     }
   },
   capabilities: {
@@ -72,6 +72,18 @@ export const homePageContent = {
 
 export const homeStoryStages: readonly HomeStoryStage[] = [
   {
+    id: 'existing',
+    label: { vi: 'Hiện trạng', en: 'Existing condition' },
+    title: {
+      vi: 'Đọc đúng mặt bằng trước khi thiết kế',
+      en: 'Read the space before designing'
+    },
+    description: {
+      vi: 'Kích thước, cao độ, kết cấu và các đầu chờ MEP được khảo sát để khóa ràng buộc ngay từ đầu.',
+      en: 'Dimensions, levels, structure, and MEP interfaces are surveyed so site constraints are understood from the outset.'
+    }
+  },
+  {
     id: 'drawing',
     label: { vi: 'Hồ sơ kỹ thuật', en: 'Technical documents' },
     title: { vi: 'Đọc đúng trước khi làm', en: 'Read it right before making' },
@@ -87,15 +99,6 @@ export const homeStoryStages: readonly HomeStoryStage[] = [
     description: {
       vi: 'Màu sắc, vân gỗ, phụ kiện và cấu tạo được đối chiếu trên mẫu trước khi sản xuất số lượng.',
       en: 'Colour, grain, hardware, and construction are checked on samples before volume production.'
-    }
-  },
-  {
-    id: 'factory',
-    label: { vi: 'Sản xuất trực tiếp', en: 'Direct manufacturing' },
-    title: { vi: 'Kiểm soát tại nguồn', en: 'Control at the source' },
-    description: {
-      vi: 'Kích thước, cạnh, bề mặt và tiến độ được kiểm tra liên tục trên dây chuyền xưởng.',
-      en: 'Dimensions, edges, surfaces, and schedule are checked continuously through the workshop line.'
     }
   },
   {
