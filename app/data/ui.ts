@@ -103,6 +103,16 @@ export const uiText = {
     backToProjects: { vi: 'Quay lại danh sách dự án', en: 'Back to projects' },
     sendCv: { vi: 'Gửi CV qua email', en: 'Send CV by email' }
   },
+  galleryCarousel: {
+    region: { vi: 'Bộ sưu tập hình ảnh', en: 'Image gallery' },
+    role: { vi: 'trình chiếu', en: 'carousel' },
+    previous: { vi: 'Ảnh trước', en: 'Previous image' },
+    next: { vi: 'Ảnh tiếp theo', en: 'Next image' },
+    pause: { vi: 'Tạm dừng trình chiếu', en: 'Pause slideshow' },
+    play: { vi: 'Tiếp tục trình chiếu', en: 'Resume slideshow' },
+    enlarge: { vi: 'Phóng to ảnh', en: 'Enlarge image' },
+    image: { vi: 'Ảnh', en: 'Image' }
+  },
   /**
    * /lien-he form copy. Field labels stay in `labels` where they are shared (phone, email);
    * everything here is form-specific — placeholders, validation messages, and the future

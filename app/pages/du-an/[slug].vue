@@ -42,6 +42,9 @@ const leadImage = computed<MediaImage | undefined>(() => allImages[0])
 const galleryGroups = projectGalleryGroups(project.mediaId, project.name)
 const hasGalleryGroups = galleryGroups.length > 0
 const mediaFlow = buildProjectMediaFlow(allImages, galleryGroups)
+const showGalleryFilters = computed(() =>
+  mediaFlow.eligible.length > 10 && hasGalleryGroups
+)
 
 const detail = computed(() => buildProjectDetailViewModel({
   project,
@@ -231,8 +234,9 @@ usePageSeo({
           </div>
 
           <div
-            v-if="hasGalleryGroups"
+            v-if="showGalleryFilters"
             v-reveal="120"
+            data-gallery-filters
             class="reveal flex flex-wrap gap-2"
           >
             <button
@@ -259,10 +263,10 @@ usePageSeo({
           name="fade"
           mode="out-in"
         >
-          <AppGalleryEditorial
-            :key="activeGalleryTab"
+          <AppGalleryCarousel
             :images="filteredGallery"
             selectable
+            :paused="lightboxOpen"
             @select="openLightbox"
           />
         </Transition>
