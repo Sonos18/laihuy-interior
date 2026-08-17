@@ -120,6 +120,24 @@ for (const width of [390, 767, 768, 1279, 1280, 1440] as const) {
   })
 }
 
+for (const width of [768, 1279, 1280, 1440] as const) {
+  test(`HOME-PROJECTS aligns the visible lead and final card footers at ${width}px`, async ({ page }) => {
+    const errors = await prepareHome(page, 'vi', width, 'no-preference')
+    const cards = page.getByTestId('home-projects').locator('[data-project-card]')
+    await expect(cards).toHaveCount(3)
+
+    const footerBottoms = await cards.evaluateAll(elements => [elements[0], elements[2]].map((element) => {
+      const footer = element?.querySelector<HTMLElement>('.home-projects__meta')
+      if (!footer) throw new Error('Missing project card footer')
+      return footer.getBoundingClientRect().bottom
+    }))
+
+    expect(footerBottoms[0]).toBeCloseTo(footerBottoms[1]!, 0)
+    expect(errors.consoleErrors).toEqual([])
+    expect(errors.pageErrors).toEqual([])
+  })
+}
+
 test('HOME-STORY keeps every desktop layer aligned to the shared media frame', async ({ page }) => {
   const errors = await prepareHome(page, 'vi', 1440, 'no-preference')
   const story = page.getByTestId('home-material-story')

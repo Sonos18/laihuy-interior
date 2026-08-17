@@ -176,12 +176,15 @@ const { t, ta } = useLanguage()
   }
 
   .home-projects__card:first-child {
+    display: flex;
+    flex-direction: column;
     grid-row: 1 / 3;
   }
 
   .home-projects__card:first-child .home-projects__media {
-    height: calc(100% - 5.5rem);
-    min-height: 35rem;
+    flex: 1 1 0;
+    height: auto;
+    min-height: 0;
     aspect-ratio: auto;
   }
 
