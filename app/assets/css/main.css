@@ -3,8 +3,36 @@
 
 :root {
   --font-sans: "Inter", "Segoe UI", sans-serif;
+  --font-display: "Outfit", "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-artistic: "Syne", system-ui, -apple-system, sans-serif;
   --color-wood: #6f4f37;
   --color-warm: #b8875a;
+
+  /* ── Quiet Luxury & Architectural Editorial Tokens ─────────────────────────
+     Declared in Phase 1 per redesign-concept-showcase.html specification.
+     Obsidian dark palette with warm bronze accents, silk ivory typography,
+     and architectural hairlines. */
+  --color-obsidian: #0b0a09;
+  --color-surface-dark: #141210;
+  --color-card-dark: #1a1815;
+  --color-bronze-warm: #b8875a;
+  --color-bronze-light: #d4a373;
+  --color-bronze-dark: #8c6239;
+  --color-ivory: #f5f2eb;
+
+  --bg-dark: var(--color-obsidian);
+  --bg-surface: var(--color-surface-dark);
+  --bg-card: var(--color-card-dark);
+  --bronze: var(--color-bronze-warm);
+  --bronze-light: var(--color-bronze-light);
+  --bronze-dark: var(--color-bronze-dark);
+  --text-main: var(--color-ivory);
+  --text-muted: rgb(245 242 235 / 0.65);
+  --text-subtle: rgb(245 242 235 / 0.4);
+
+  --hairline: rgb(255 255 255 / 0.08);
+  --hairline-gold: rgb(184 135 90 / 0.25);
+  --hairline-gold-strong: rgb(184 135 90 / 0.45);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -463,6 +491,18 @@
 
   --animate-fade-in-up: fade-in-up 0.8s ease-out both;
   --animate-fade-in: fade-in 0.6s ease-out both;
+
+  /* ── Quiet Luxury & Architectural Editorial Primitives ──────────────────── */
+  --color-obsidian: #0b0a09;
+  --color-surface-dark: #141210;
+  --color-card-dark: #1a1815;
+  --color-bronze-warm: #b8875a;
+  --color-bronze-light: #d4a373;
+  --color-bronze-dark: #8c6239;
+  --color-ivory: #f5f2eb;
+
+  --font-display: "Outfit", "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-artistic: "Syne", system-ui, -apple-system, sans-serif;
 }
 
 @keyframes fade-in-up {
@@ -1864,6 +1904,164 @@
     }
 
     .hero-image {
+      animation: none;
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+     QUIET LUXURY & ARCHITECTURAL EDITORIAL UTILITIES — Phase 1
+     ───────────────────────────────────────────────────────────────────────────
+     Supporting utilities for the editorial redesign (typography, surface tones,
+     hairline borders, gold accent actions).
+     ═══════════════════════════════════════════════════════════════════════════ */
+
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-artistic {
+    font-family: var(--font-artistic);
+  }
+
+  .hairline-border {
+    border: 1px solid var(--hairline);
+  }
+
+  .hairline-gold-border {
+    border: 1px solid var(--hairline-gold);
+  }
+
+  .hairline-gold-strong-border {
+    border: 1px solid var(--hairline-gold-strong);
+  }
+
+  .bg-dark-obsidian {
+    background-color: var(--bg-dark);
+  }
+
+  .bg-dark-surface {
+    background-color: var(--bg-surface);
+  }
+
+  .bg-dark-card {
+    background-color: var(--bg-card);
+  }
+
+  .btn-solid-gold {
+    background: var(--bronze);
+    color: #0b0a09;
+    padding: 0.875rem 1.75rem;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgb(184 135 90 / 0.25);
+  }
+
+  .btn-solid-gold:hover {
+    background: var(--bronze-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgb(184 135 90 / 0.35);
+  }
+
+  .btn-solid-gold::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 40px;
+    height: 200%;
+    background: rgb(255 255 255 / 0.35);
+    transform: rotate(30deg);
+    transition: all 0.75s ease;
+  }
+
+  .btn-solid-gold:hover::after {
+    left: 140%;
+  }
+
+  .btn-luxury-outline {
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--hairline-gold);
+    padding: 0.875rem 1.75rem;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .btn-luxury-outline:hover {
+    background: var(--bronze);
+    color: #0b0a09;
+    border-color: var(--bronze);
+    box-shadow: 0 4px 15px rgb(184 135 90 / 0.4);
+  }
+
+  .badge-luxury {
+    background: rgb(184 135 90 / 0.12);
+    border: 1px solid rgb(184 135 90 / 0.3);
+    color: var(--bronze-light);
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .metric-pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--bronze);
+    box-shadow: 0 0 8px var(--bronze);
+    animation: pulse-glow 2.5s infinite;
+  }
+
+  .editorial-quote {
+    border-left: 2px solid var(--bronze);
+    padding-left: 1.5rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--text-main);
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 0.4;
+      transform: scale(0.9);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.1);
+      box-shadow: 0 0 12px var(--bronze);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn-solid-gold::after {
+      display: none;
+    }
+
+    .metric-pulse {
       animation: none;
     }
   }

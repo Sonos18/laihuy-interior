@@ -1,21 +1,13 @@
 <script setup lang="ts">
-// The homepage hero's 4-up proof band.
+// The homepage hero's 4-up proof band — redesigned as an architectural floating metrics strip.
 //
-// It renders at exactly ONE placement: directly below the hero, on the hero's own ink-950
-// surface, at every breakpoint. It previously had two (inside the hero at lg+, below it
-// under lg), which is the arrangement this comment used to defend.
+// It renders at exactly ONE placement: directly below the hero copy, inside the hero's own
+// Obsidian surface, at every breakpoint.
 //
-// Keep it OUT of the hero — this is a layout CONTRACT, not styling. The hero photograph is
-// `absolute inset-0 h-full object-cover`, so the image's box height follows the hero's
-// CONTENT height, and this band is content: 138px as a single row at lg+, and 400.8px
-// stacked to 4 rows under sm, where it once pushed the hero to 1277px on an 844px viewport.
-// Any height it contributes inside the hero is height the photograph must absorb, which
-// makes the crop depend on how tall the copy happens to be — and copy height is
-// locale-dependent, so switching language visibly rescaled the photo.
-//
-// Putting it back inside the hero reintroduces that regression AND breaks the per-breakpoint
-// --hero-min-h-home floor, which is sized on the assumption that this band sits outside.
-// tests/e2e/hero.spec.ts (G1/G2) fails if either happens.
+// Keep it OUT of the flex copy container — this is a layout CONTRACT, not styling. The hero
+// photograph is `absolute inset-0 h-full object-cover`, so the image's box height follows the
+// hero's CONTENT height, and this band is content. tests/e2e/hero.spec.ts (G1/G2) asserts locale
+// invariance and requires that metrics band height is consistent across locales.
 type Metric = { label: string, value: string }
 
 defineProps<{
@@ -27,20 +19,42 @@ defineProps<{
 
 <template>
   <div
-    class="grid overflow-hidden rounded-2xl border border-white/12 bg-white/[0.04] backdrop-blur-sm sm:grid-cols-2 lg:grid-cols-4"
+    class="floating-metrics-rail relative overflow-hidden rounded-lg border border-[var(--hairline-gold)] bg-[var(--bg-surface)]/85 p-5 backdrop-blur-xl md:p-6 lg:p-7"
   >
     <div
-      v-for="(metric, index) in metrics"
-      :key="metric.label"
-      v-reveal="(baseDelay ?? 360) + index * 90"
-      class="reveal border-b border-white/10 p-5 sm:border-r lg:border-b-0"
+      class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0"
     >
-      <p class="text-xs uppercase tracking-[0.18em] text-white/70">
-        {{ metric.label }}
-      </p>
-      <p class="mt-2 text-lg font-black text-white md:text-xl">
-        {{ metric.value }}
-      </p>
+      <div
+        v-for="(metric, index) in metrics"
+        :key="metric.label"
+        v-reveal="(baseDelay ?? 320) + index * 80"
+        class="reveal metric-col flex flex-col justify-center lg:px-6 lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0"
+        :class="[
+          index % 2 === 0 ? 'sm:border-r sm:border-[var(--hairline)]' : '',
+          index < metrics.length - 2 ? 'sm:border-b sm:border-[var(--hairline)] sm:pb-6' : '',
+          'lg:border-b-0 lg:pb-0',
+          index < metrics.length - 1 ? 'lg:border-r lg:border-[var(--hairline)]' : ''
+        ]"
+      >
+        <div class="flex items-center gap-2">
+          <span
+            class="metric-pulse shrink-0"
+            aria-hidden="true"
+          />
+          <p class="text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[var(--bronze-light)]">
+            {{ metric.label }}
+          </p>
+        </div>
+        <p class="mt-2 font-display text-2xl font-medium tracking-tight text-white md:text-3xl">
+          {{ metric.value }}
+        </p>
+      </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.floating-metrics-rail {
+  box-shadow: 0 20px 50px -15px rgb(0 0 0 / 0.6);
+}
+</style>

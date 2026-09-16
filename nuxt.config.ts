@@ -13,10 +13,24 @@ if (useSupabaseMedia && !supabaseUrl) {
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+
   modules: ['@nuxt/eslint', '@nuxt/image', '@nuxt/ui'],
 
   devtools: {
     enabled: true
+  },
+
+  app: {
+    head: {
+      link: [
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap'
+        }
+      ]
+    }
   },
 
   // layers.css MUST precede main.css: it carries the cascade-layer order
