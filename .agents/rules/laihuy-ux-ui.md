@@ -25,11 +25,11 @@ All frontend interfaces must visually communicate:
 ## 2. Visual Source of Truth
 
 The interactive showcase prototype:
-`redesign-concept-showcase.html`
+[`docs/design/redesign-concept-showcase.html`](../../docs/design/redesign-concept-showcase.html)
 is the **authoritative visual specification** for the LaiHuy redesign.
 
 ### Conflict Precedence Contract
-1. **Approved Prototype First:** Whenever generic advice or output from global skills (`ui-ux-pro-max`, `redesign-existing-projects`), model defaults, or third-party guidelines conflicts with `redesign-concept-showcase.html`, **the approved prototype strictly prevails**.
+1. **Approved Prototype First:** Whenever generic advice or output from global skills (`ui-ux-pro-max`, `redesign-existing-projects`), model defaults, or third-party guidelines conflicts with `docs/design/redesign-concept-showcase.html`, **the approved prototype strictly prevails**.
 2. **No Silent Art Direction Drift:** Global skills may audit, improve accessibility, refine responsive behavior, or guide Nuxt technical implementation, but they are strictly prohibited from altering the approved art direction, color palette, or typography without explicit user approval.
 
 ---
