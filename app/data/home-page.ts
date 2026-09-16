@@ -43,7 +43,12 @@ export const homePageContent = {
   projects: {
     eyebrow: { vi: 'Công trình tiêu biểu', en: 'Selected work' },
     title: { vi: 'Không gian đã đi qua toàn bộ quy trình', en: 'Spaces delivered through the complete process' },
-    allCta: { vi: 'Xem toàn bộ dự án', en: 'View all projects' }
+    allCta: { vi: 'Xem toàn bộ dự án', en: 'View all projects' },
+    locationLabel: { vi: 'Địa điểm', en: 'Location' },
+    scopeLabel: { vi: 'Phạm vi', en: 'Scope' },
+    materialsLabel: { vi: 'Vật liệu chính', en: 'Materials' },
+    heroCta: { vi: 'Xem chi tiết case study', en: 'View case study' },
+    cardCta: { vi: 'Xem chi tiết', en: 'View details' }
   },
   factory: {
     eyebrow: { vi: 'Năng lực sản xuất trực tiếp', en: 'Direct production capability' },

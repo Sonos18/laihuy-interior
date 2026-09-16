@@ -106,16 +106,16 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
                 class="home-projects__specs mt-6 grid grid-cols-2 gap-4 border-t border-[var(--hairline)] pt-5 sm:grid-cols-3"
               >
                 <div v-if="heroProject.project.location">
-                  <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-[var(--text-subtle)]">
-                    {{ t({ vi: 'Địa điểm', en: 'Location' }) }}
+                  <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-[var(--text-muted)]">
+                    {{ t(homePageContent.projects.locationLabel) }}
                   </p>
                   <p class="mt-1 text-xs font-medium text-[var(--color-ivory)] lg:text-sm">
                     {{ t(heroProject.project.location) }}
                   </p>
                 </div>
                 <div v-if="ta(heroProject.project.scope).length">
-                  <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-[var(--text-subtle)]">
-                    {{ t({ vi: 'Phạm vi', en: 'Scope' }) }}
+                  <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-[var(--text-muted)]">
+                    {{ t(homePageContent.projects.scopeLabel) }}
                   </p>
                   <p class="mt-1 text-xs font-medium text-[var(--color-ivory)] lg:text-sm">
                     {{ ta(heroProject.project.scope).slice(0, 3).join(' · ') }}
@@ -125,8 +125,8 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
                   v-if="ta(heroProject.project.content?.materials).length"
                   class="col-span-2 sm:col-span-1"
                 >
-                  <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-[var(--text-subtle)]">
-                    {{ t({ vi: 'Vật liệu chính', en: 'Materials' }) }}
+                  <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-[var(--text-muted)]">
+                    {{ t(homePageContent.projects.materialsLabel) }}
                   </p>
                   <p class="mt-1 text-xs font-medium text-[var(--color-ivory)] lg:text-sm truncate">
                     {{ ta(heroProject.project.content?.materials)[0] }}
@@ -138,9 +138,9 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
             <!-- Footer / Meta row -->
             <div class="home-projects__meta mt-6 flex items-center justify-between border-t border-[var(--hairline)] pt-4">
               <span class="text-xs font-semibold uppercase tracking-[0.08em] text-[var(--bronze-light)] transition-colors duration-300 group-hover:text-white">
-                {{ t({ vi: 'Xem chi tiết case study', en: 'View case study' }) }}
+                {{ t(homePageContent.projects.heroCta) }}
               </span>
-              <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[var(--hairline-gold)] text-[var(--bronze-light)] transition-all duration-300 group-hover:border-[var(--bronze)] group-hover:bg-[var(--bronze)] group-hover:text-[#0b0a09]">
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[var(--hairline-gold)] text-[var(--bronze-light)] transition-all duration-300 group-hover:border-[var(--bronze)] group-hover:bg-[var(--bronze)] group-hover:text-[var(--color-obsidian)]">
                 <Icon
                   name="i-lucide-arrow-right"
                   class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
@@ -188,14 +188,14 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
                 {{ t(categoryDefinitions[project.category].label) }}
                 <span
                   v-if="project.area"
-                  class="text-[var(--text-subtle)]"
+                  class="text-[var(--text-muted)]"
                 >
                   · {{ t(project.area) }}
                 </span>
               </p>
-              <h4 class="home-projects__title-satellite font-display mt-1.5 text-lg font-medium tracking-tight text-white lg:text-xl">
+              <h3 class="home-projects__title-satellite font-display mt-1.5 text-lg font-medium tracking-tight text-white lg:text-xl">
                 {{ t(project.name) }}
-              </h4>
+              </h3>
               <p class="mt-2 line-clamp-2 text-xs leading-relaxed text-[var(--text-muted)] lg:text-sm">
                 {{ t(project.shortDescription) }}
               </p>
@@ -204,9 +204,9 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
             <!-- Footer / Meta row -->
             <div class="home-projects__meta mt-4 flex items-center justify-between border-t border-[var(--hairline)] pt-3.5">
               <span class="text-xs font-semibold uppercase tracking-[0.08em] text-[var(--bronze-light)] transition-colors duration-300 group-hover:text-white">
-                {{ t({ vi: 'Xem chi tiết', en: 'View details' }) }}
+                {{ t(homePageContent.projects.cardCta) }}
               </span>
-              <span class="inline-flex h-7 w-7 items-center justify-center rounded-full border border-[var(--hairline-gold)] text-[var(--bronze-light)] transition-all duration-300 group-hover:border-[var(--bronze)] group-hover:bg-[var(--bronze)] group-hover:text-[#0b0a09]">
+              <span class="inline-flex h-7 w-7 items-center justify-center rounded-full border border-[var(--hairline-gold)] text-[var(--bronze-light)] transition-all duration-300 group-hover:border-[var(--bronze)] group-hover:bg-[var(--bronze)] group-hover:text-[var(--color-obsidian)]">
                 <Icon
                   name="i-lucide-arrow-right"
                   class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
@@ -263,7 +263,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
   position: absolute;
   top: 1rem;
   left: 1rem;
-  background: rgba(11, 10, 9, 0.82);
+  background: color-mix(in srgb, var(--color-obsidian) 82%, transparent);
   border: 1px solid var(--hairline-gold);
   color: var(--bronze-light);
   font-size: 0.68rem;
@@ -282,11 +282,11 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
   position: absolute;
   top: 1rem;
   right: 1rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-muted);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.14em;
-  background: rgba(11, 10, 9, 0.65);
+  background: color-mix(in srgb, var(--color-obsidian) 65%, transparent);
   padding: 2px 8px;
   border-radius: 4px;
   z-index: 2;
