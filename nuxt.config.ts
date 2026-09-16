@@ -20,19 +20,6 @@ export default defineNuxtConfig({
     enabled: true
   },
 
-  app: {
-    head: {
-      link: [
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap'
-        }
-      ]
-    }
-  },
-
   // layers.css MUST precede main.css: it carries the cascade-layer order
   // statement, which has to be read before Tailwind's own layer blocks. See the
   // comment in that file for the defect it fixes.
@@ -43,6 +30,16 @@ export default defineNuxtConfig({
     '@fontsource/inter/600.css',
     '@fontsource/inter/700.css',
     '@fontsource/inter/900.css',
+    '@fontsource/outfit/300.css',
+    '@fontsource/outfit/400.css',
+    '@fontsource/outfit/500.css',
+    '@fontsource/outfit/600.css',
+    '@fontsource/outfit/700.css',
+    '@fontsource/syne/400.css',
+    '@fontsource/syne/500.css',
+    '@fontsource/syne/600.css',
+    '@fontsource/syne/700.css',
+    '@fontsource/syne/800.css',
     '~/assets/css/main.css'
   ],
 
@@ -90,12 +87,14 @@ export default defineNuxtConfig({
     }
   },
 
-  // Inter is imported above from the installed @fontsource package so production builds never
+  // Fonts are imported above from installed @fontsource packages so production builds never
   // depend on an external font API. Provider lookup stays disabled here; the family declaration
   // still records every real weight used by the design. `normal` only — no italics are used.
   fonts: {
     families: [
-      { name: 'Inter', provider: 'none', weights: [400, 500, 600, 700, 900], styles: ['normal'] }
+      { name: 'Inter', provider: 'none', weights: [400, 500, 600, 700, 900], styles: ['normal'] },
+      { name: 'Outfit', provider: 'none', weights: [300, 400, 500, 600, 700], styles: ['normal'] },
+      { name: 'Syne', provider: 'none', weights: [400, 500, 600, 700, 800], styles: ['normal'] }
     ]
   },
 

@@ -2,6 +2,11 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { projects } from '../app/data/projects'
 
 type NuxtConfigUnderTest = {
+  app?: {
+    head?: {
+      link?: Array<Record<string, unknown>>
+    }
+  }
   css: string[]
   fonts: {
     families: Array<{
@@ -80,15 +85,29 @@ describe('production deployment config', () => {
     expect(config.routeRules['/du-an/khong-gian-van-phong-lai-huy']).toBeUndefined()
   })
 
-  it('bundles every Inter weight from local package CSS and disables provider lookup', async () => {
+  it('bundles every Inter, Outfit, and Syne weight from local package CSS and disables provider lookup', async () => {
     const config = await loadNuxtConfig()
 
-    expect(config.fonts.families).toEqual([{
-      name: 'Inter',
-      provider: 'none',
-      weights: [400, 500, 600, 700, 900],
-      styles: ['normal']
-    }])
+    expect(config.fonts.families).toEqual([
+      {
+        name: 'Inter',
+        provider: 'none',
+        weights: [400, 500, 600, 700, 900],
+        styles: ['normal']
+      },
+      {
+        name: 'Outfit',
+        provider: 'none',
+        weights: [300, 400, 500, 600, 700],
+        styles: ['normal']
+      },
+      {
+        name: 'Syne',
+        provider: 'none',
+        weights: [400, 500, 600, 700, 800],
+        styles: ['normal']
+      }
+    ])
     expect(config.css).toEqual([
       '~/assets/css/layers.css',
       '@fontsource/inter/400.css',
@@ -96,7 +115,27 @@ describe('production deployment config', () => {
       '@fontsource/inter/600.css',
       '@fontsource/inter/700.css',
       '@fontsource/inter/900.css',
+      '@fontsource/outfit/300.css',
+      '@fontsource/outfit/400.css',
+      '@fontsource/outfit/500.css',
+      '@fontsource/outfit/600.css',
+      '@fontsource/outfit/700.css',
+      '@fontsource/syne/400.css',
+      '@fontsource/syne/500.css',
+      '@fontsource/syne/600.css',
+      '@fontsource/syne/700.css',
+      '@fontsource/syne/800.css',
       '~/assets/css/main.css'
     ])
+  })
+
+  it('does not load external runtime font stylesheets from Google Fonts', async () => {
+    const config = await loadNuxtConfig()
+    const links = config.app?.head?.link ?? []
+    const externalFontLinks = links.filter((link) => {
+      const href = typeof link.href === 'string' ? link.href : ''
+      return href.includes('fonts.googleapis.com') || href.includes('fonts.gstatic.com')
+    })
+    expect(externalFontLinks).toEqual([])
   })
 })

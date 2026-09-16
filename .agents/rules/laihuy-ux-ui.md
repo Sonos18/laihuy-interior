@@ -25,7 +25,7 @@ All frontend interfaces must visually communicate:
 ## 2. Visual Source of Truth
 
 The interactive showcase prototype:
-[`redesign-concept-showcase.html`](file:///d:/work/LaiHuy/redesign-concept-showcase.html)
+`redesign-concept-showcase.html`
 is the **authoritative visual specification** for the LaiHuy redesign.
 
 ### Conflict Precedence Contract
@@ -50,7 +50,9 @@ Use the tokens declared in `app/assets/css/main.css`:
 
 ### Layout & Composition
 - **Editorial Asymmetry:** Prefer balanced asymmetric grids, intentional image scale variations, and editorial breathing room over monotonous symmetric boxes.
-- **Above the Fold Discipline:** Keep hero copy restrained (Kicker + Headline + Floating Architectural Metrics Strip). Eliminate repetitive copy above the fold.
+- **Above the Fold Discipline:** Hero visual and content hierarchy strictly follows:
+  **Kicker → Headline → Sublead → B2B CTA row → Floating Metrics Rail**.
+  Keep hero copy restrained and eliminate redundant legacy accent copy or repetitive tagline blocks above the fold.
 - **Factory & Craftsmanship Proof:** Present workshop scale through crisp metric strips, technical capability badges, and structured QC workflows rather than repetitive card walls.
 
 ### Motion & Micro-Interactions

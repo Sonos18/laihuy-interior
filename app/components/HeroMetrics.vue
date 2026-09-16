@@ -19,7 +19,7 @@ defineProps<{
 
 <template>
   <div
-    class="floating-metrics-rail relative overflow-hidden rounded-lg border border-[var(--hairline-gold)] bg-[var(--bg-surface)]/85 p-5 backdrop-blur-xl md:p-6 lg:p-7"
+    class="floating-metrics-rail relative overflow-hidden rounded-sm border border-[var(--hairline-gold)] bg-[var(--color-surface-dark)] p-5 md:p-6 lg:p-7"
   >
     <div
       class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0"
@@ -52,9 +52,3 @@ defineProps<{
     </div>
   </div>
 </template>
-
-<style scoped>
-.floating-metrics-rail {
-  box-shadow: 0 20px 50px -15px rgb(0 0 0 / 0.6);
-}
-</style>
