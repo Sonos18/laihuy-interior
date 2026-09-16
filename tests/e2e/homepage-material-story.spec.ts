@@ -74,8 +74,8 @@ for (const locale of ['vi', 'en'] as const) {
     await expect(capabilities.locator('h3')).toHaveText(copy.capabilities)
 
     await expect(page.getByTestId('home-projects').locator('a[data-project-card]')).toHaveCount(3)
-    await expect(page.getByTestId('homepage-machinery').getByTestId('homepage-machinery-card')).toHaveCount(4)
-    await expect(page.getByTestId('home-process').getByTestId('home-process-step')).toHaveCount(6)
+    await expect(page.getByTestId('homepage-machinery').getByTestId('homepage-machinery-pillar')).toHaveCount(3)
+    await expect(page.locator('[data-testid="home-process"]')).toHaveCount(0)
 
     const ctaLinks = page.getByTestId('home-project-cta').getByRole('link', { name: copy.cta, exact: true })
     await expect(ctaLinks).toHaveCount(1)
