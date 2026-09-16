@@ -183,11 +183,14 @@ Demonstrate real production capacity and coordinated machinery.
 
 **Rendered Heading Source:**
 `content.titleLead + content.titleAccent`
-(Preserves the existing localized machinery heading, e.g. "Hệ thống máy móc & thiết bị xưởng" / "Machinery & Equipment")
+(Preserves the existing localized machinery heading exactly from `machinerySectionContent`:
+- `content.titleLead`: VI: "Hệ thống máy phục vụ sản xuất" / EN: "Machinery system for"
+- `content.titleAccent`: VI: "nội thất dự án" / EN: "project interior manufacturing"
+Combined rendered heading: "Hệ thống máy phục vụ sản xuất nội thất dự án" / "Machinery system for project interior manufacturing")
 
 **Supporting Evidence:**
-- Verified 3,000 m² factory footprint evidence (where appropriate)
-- Verified production capacity (up to 50 rooms/month, where appropriate)
+- Verified 3,000 m² factory footprint evidence (`capabilities[0]`)
+- Verified production capacity (`capabilities[1]`)
 - `machinerySectionContent` (`content`)
 - All four `machineryProcessGroups` (`groups`):
   1. Cắt & tạo hình (`cutting-shaping`)
@@ -212,13 +215,19 @@ The UI may condense/group machine evidence into an elegant editorial summary, bu
 Connect production to controlled delivery, project team coordination, and on-site execution.
 
 **Rendered Heading Source:**
-`capabilities[2].label` ("Đội ngũ triển khai dự án" / "Project delivery team")
+`capabilities[2].label` (VI: "Đội ngũ triển khai dự án" / EN: "Project delivery team")
 
 **Supporting Evidence & Capabilities:**
-- Existing `capabilities[2]` from `factoryCapabilities`:
-  - Label: `capabilities[2].label` ("Đội ngũ triển khai dự án" / "Project delivery team")
-  - Value / Subtitle: `capabilities[2].value` ("Thiết kế / sản xuất / thi công" / "Design / production / contracting")
-  - Description: `capabilities[2].description` ("Phối hợp liền mạch từ xưởng đến công trình; kiểm soát chất lượng qua từng chặng gia công, nghiệm thu và lắp đặt." / "Seamless handoff from workshop to site; quality-controlled across machining, inspection, and on-site fitting.")
+- Existing `capabilities[2]` from `factoryCapabilities` (quoted exactly from source):
+  - Label (`capabilities[2].label`):
+    - VI: "Đội ngũ triển khai dự án"
+    - EN: "Project delivery team"
+  - Value / Subtitle (`capabilities[2].value`):
+    - VI: "Sản xuất, thiết kế và thi công"
+    - EN: "Design, production & contracting"
+  - Description (`capabilities[2].description`):
+    - VI: "Phối hợp xuyên suốt từ bóc tách bản vẽ, sản xuất, kiểm soát chất lượng đến thi công thực tế tại công trình."
+    - EN: "End-to-end coordination from drawing take-off and production through quality control to on-site installation."
 - Existing complementary `productionWorkflow` steps:
   - Step 3: Điều phối dự án (`steps[2]` — title & description)
   - Step 5: QC trước khi giao hàng (`steps[4]` — title & description)
@@ -391,9 +400,12 @@ The updated test must still prove:
 Responsive contract:
 The test must retain coverage for all eight existing viewport widths: `[390, 767, 768, 1023, 1024, 1279, 1280, 1440]`.
 
-- `390px` / `767px` (Mobile): Pillars stack vertically. Single-column editorial composition, no horizontal overflow.
-- `768px` / `1023px` (Tablet / Pre-Desktop): Verify tablet mode intentionally; do not require 3 columns if content fit demands stacking. `1023px` must remain covered and verified as the critical boundary immediately preceding desktop transition.
-- `1024px` / `1279px` / `1280px` / `1440px` (Desktop / Wide): Verify desktop Trinity geometry (3 columns at >=1024px unless a verified breakpoint demands a different boundary; verify 1279/1280 transition and 1440 measure).
+The approved Phase 2C contract is:
+- `390px` / `767px`: Stacked layout. Pillars stack vertically. Single-column editorial composition, no horizontal overflow.
+- `768px` / `1023px`: Tablet / pre-desktop layout. Verify tablet mode intentionally; do not require 3 columns if content fit demands stacking. `1023px` must remain covered and verified as the critical boundary immediately preceding desktop transition.
+- `1024px` / `1279px` / `1280px` / `1440px`: Three-column Trinity layout. Verify desktop Trinity geometry (3 columns at >=1024px; verify 1279/1280 transition and 1440 measure).
+
+If implementation discovers a genuine reason this cannot work, it must STOP and request design approval rather than silently changing the breakpoint.
 
 ### `tests/homepage-machinery.test.ts`
 
