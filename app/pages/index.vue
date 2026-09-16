@@ -74,8 +74,8 @@ usePageSeo({
       :groups="machineryProcessGroups"
       :content="machinerySectionContent"
       :image="siteImages.machineryOverview"
+      :steps="productionWorkflow"
     />
-    <HomeProcessRail :steps="productionWorkflow" />
     <HomeProjectCta />
   </div>
 </template>
