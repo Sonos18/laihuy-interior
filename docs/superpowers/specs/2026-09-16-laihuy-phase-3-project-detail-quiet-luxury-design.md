@@ -3,7 +3,7 @@
 ## 1. Status & Authority
 
 - **Phase Status**: Phase 1 (Design Tokens & Core Styling), Phase 2A (Homepage Hero + Metrics), Phase 2B (Project Showcase), and Phase 2C (Factory Trinity) are merged into `main`.
-- **Phase 3 Status**: **DESIGN REVIEW CANDIDATE / IMPLEMENTATION NOT STARTED (P3-0A)**.
+- **Phase 3 Status**: **DESIGN APPROVED / IMPLEMENTATION NOT STARTED (P3-0A COMPLETE)**.
 - **Integration Base SHA**: `67092ec79f77af0d4700cb2a07ff85399b41a1ec` (`origin/main`).
 - **Target Branch**: `feat/laihuy-redesign-phase-3`.
 
