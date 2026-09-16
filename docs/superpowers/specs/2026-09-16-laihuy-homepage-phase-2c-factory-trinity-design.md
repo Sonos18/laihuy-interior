@@ -139,39 +139,57 @@ Factory Proof (HomeFactoryProof)
 │   └── Real Workshop Caption (content.photoCaption & content.lineCaption)
 │
 ├── Craft & Precision Trinity (3 Architectural Columns)
-│   ├── Pillar 01: Technical Preparation (Kỹ thuật & Bóc tách)
-│   ├── Pillar 02: Direct Manufacturing (Dây chuyền sản xuất đồng bộ)
-│   └── Pillar 03: Quality & Delivery (Kiểm soát QC & Thi công bàn giao)
+│   ├── Pillar 01: Technical Preparation (Design label; rendered title: steps[1].title)
+│   ├── Pillar 02: Direct Manufacturing (Design label; rendered title: content.titleLead + content.titleAccent)
+│   └── Pillar 03: Quality & Delivery (Design label; rendered title: capabilities[2].label)
 │
 └── Workshop CTA (/nha-xuong)
 ```
 
 Do NOT preserve four equal machinery cards as the final homepage layout. The four machinery groups remain data/evidence inside the Manufacturing pillar.
 
-## 8. Pillar Mapping
+## 8. Pillar Mapping & Copy Architecture
 
-### Pillar 01 — Technical Preparation
+### Pillar Copy Architecture Rule
+The names "Technical Preparation", "Direct Manufacturing", and "Quality & Delivery" are **conceptual design labels** defining architectural grouping and editorial hierarchy, NOT literal hardcoded UI strings.
+
+Per `AGENTS.md`, all UI and business copy must reside in typed `app/data` sources. Because Phase 2C explicitly does NOT modify `app/data/factory.ts` or `app/data/home-page.ts`, `HomeFactoryProof.vue` must NOT introduce inline:
+```ts
+t({ vi: "...", en: "..." })
+```
+for new user-visible pillar titles or labels.
+
+Instead, all rendered pillar headings and supporting evidence strictly reuse existing localized properties passed via props (`content`, `capabilities`, `steps`, `groups`).
+
+### Pillar 01 — Conceptual Group: Technical Preparation
 
 **Purpose:**
 Show that manufacturing begins with controlled technical preparation, not only workshop machinery.
 
-**Data & Evidence Used:**
+**Rendered Heading Source:**
+`steps[1].title` ("Bóc tách kỹ thuật" / "Technical take-off")
+
+**Supporting Evidence & Workflow Steps:**
 Existing `productionWorkflow` steps 1 and 2:
-- Step 1: Tiếp nhận bản vẽ & BOQ (`productionWorkflow[0]`)
-- Step 2: Bóc tách kỹ thuật (`productionWorkflow[1]`)
+- Step 1: Tiếp nhận bản vẽ & BOQ (`steps[0]` — title & description)
+- Step 2: Bóc tách kỹ thuật (`steps[1]` — description)
 
 No invented claims.
 
-### Pillar 02 — Direct Manufacturing
+### Pillar 02 — Conceptual Group: Direct Manufacturing
 
 **Purpose:**
 Demonstrate real production capacity and coordinated machinery.
 
-**Data & Evidence Used:**
-- Verified 3,000 m² factory footprint evidence
-- Verified production capacity (up to 50 rooms/month)
-- `machinerySectionContent`
-- All four `machineryProcessGroups`:
+**Rendered Heading Source:**
+`content.titleLead + content.titleAccent`
+(Preserves the existing localized machinery heading, e.g. "Hệ thống máy móc & thiết bị xưởng" / "Machinery & Equipment")
+
+**Supporting Evidence:**
+- Verified 3,000 m² factory footprint evidence (where appropriate)
+- Verified production capacity (up to 50 rooms/month, where appropriate)
+- `machinerySectionContent` (`content`)
+- All four `machineryProcessGroups` (`groups`):
   1. Cắt & tạo hình (`cutting-shaping`)
   2. Khoan & liên kết (`boring-connections`)
   3. Dán cạnh & hoàn thiện (`edge-finishing`)
@@ -184,22 +202,30 @@ Demonstrate real production capacity and coordinated machinery.
   - Máy bào cuốn
   - Máy chà nhám thùng
   - Máy ép nguội thủy lực
-- Real factory image (`siteImages.machineryOverview`)
+- Real factory image (`image`: `siteImages.machineryOverview`)
 
 The UI may condense/group machine evidence into an elegant editorial summary, but must not silently remove the underlying production evidence from the homepage content.
 
-### Pillar 03 — Quality & Delivery
+### Pillar 03 — Conceptual Group: Quality & Delivery
 
 **Purpose:**
-Connect production to controlled delivery and on-site execution.
+Connect production to controlled delivery, project team coordination, and on-site execution.
 
-**Data & Evidence Used:**
-Existing `productionWorkflow` steps 3, 5, and 6:
-- Step 3: Điều phối dự án (`productionWorkflow[2]`)
-- Step 5: QC trước khi giao hàng (`productionWorkflow[4]`)
-- Step 6: Thi công tại công trình (`productionWorkflow[5]`)
+**Rendered Heading Source:**
+`capabilities[2].label` ("Đội ngũ triển khai dự án" / "Project delivery team")
+
+**Supporting Evidence & Capabilities:**
+- Existing `capabilities[2]` from `factoryCapabilities`:
+  - Label: `capabilities[2].label` ("Đội ngũ triển khai dự án" / "Project delivery team")
+  - Value / Subtitle: `capabilities[2].value` ("Thiết kế / sản xuất / thi công" / "Design / production / contracting")
+  - Description: `capabilities[2].description` ("Phối hợp liền mạch từ xưởng đến công trình; kiểm soát chất lượng qua từng chặng gia công, nghiệm thu và lắp đặt." / "Seamless handoff from workshop to site; quality-controlled across machining, inspection, and on-site fitting.")
+- Existing complementary `productionWorkflow` steps:
+  - Step 3: Điều phối dự án (`steps[2]` — title & description)
+  - Step 5: QC trước khi giao hàng (`steps[4]` — title & description)
+  - Step 6: Thi công tại công trình (`steps[5]` — title & description)
 
 Do not invent warranty or support promises.
+Do not require `capabilities[3]` ("Markets") to appear in the Trinity; the compact metrics rail intentionally prioritizes the two strong quantitative metrics (`capabilities[0]` footprint and `capabilities[1]` capacity).
 
 ## 9. Visual Direction
 
@@ -232,7 +258,9 @@ The three pillars should read as architectural evidence columns, primarily separ
 
 ## 10. Responsive Design
 
-### ~390px (Mobile)
+The responsive design contract covers all eight canonical viewport widths: `[390, 767, 768, 1023, 1024, 1279, 1280, 1440]`.
+
+### 390px / 767px (Mobile / Stacked)
 
 **Order:**
 1. Intro header (Eyebrow, H2, description)
@@ -250,36 +278,31 @@ The three pillars should read as architectural evidence columns, primarily separ
 - Minimum comfortable touch target (>= 44px) for interactive elements
 - No desktop layout mechanically forced onto mobile
 
-### ~768px (Tablet)
+### 768px / 1023px (Tablet / Pre-Desktop)
 
 - Proof metrics may use a two-column grid.
 - Factory image remains broad.
 - Trinity layout should be chosen based on real Vietnamese and English text fit.
 - Do NOT force 3 columns if typography becomes cramped. Stacked or 2+1 tablet editorial layout is acceptable and preferred over poor readability.
 - Verify immediately around the 767px / 768px boundary.
+- **1023px boundary**: Must remain covered and verified as the critical upper tablet boundary immediately before the >=1024px desktop Trinity transition.
 
-### >=1024px (Desktop)
+### 1024px / 1279px / 1280px / 1440px (Desktop / Wide Trinity)
 
 - Full three-column Trinity grid (`grid-template-columns: repeat(3, minmax(0, 1fr))`).
 - Columns share an intentional top alignment and vertical rhythm.
 - Restrained vertical separators / bronze hairlines.
 - Factory image remains visually significant and well-scaled.
 - No boxed SaaS-card appearance.
-
-### ~1440px (Wide Desktop)
-
-- Content remains bounded by existing shell / 80rem measure.
-- Generous architectural margins and negative space.
-- Proof image + Trinity create a strong but restrained section.
-- Total homepage density must be visibly lower than the old FactoryProof + HomeProcessRail composition.
-- Verify 1279px / 1280px boundaries where layout transitions apply.
+- **1279px / 1280px boundaries**: Verify transitions where wide breakpoint styling applies.
+- **~1440px**: Content remains bounded by existing shell / 80rem measure, generous architectural margins and negative space, total homepage density visibly lower than the old FactoryProof + HomeProcessRail composition.
 
 ## 11. Accessibility
 
 Maintain or improve:
 - One clear section `<h2>` for Factory Proof.
 - Semantic heading hierarchy inside the three pillars (`<h3>` for pillar titles).
-- Meaningful factory image alt text matching production language (`copy.imageAlt`).
+- Meaningful factory image alt text matching the localized production source of truth (`siteImages.machineryOverview.alt`, passed via `image.alt`). The E2E test `COPY.imageAlt` value merely mirrors this production source of truth.
 - Decorative sequence numbers (`01`, `02`, `03`) marked `aria-hidden="true"`.
 - Keyboard-focusable `/nha-xuong` CTA with visible `:focus-visible` ring.
 - Sufficient contrast for small metadata (using `var(--text-muted)` >= 4.5:1 WCAG AA).
@@ -356,19 +379,21 @@ Replace the old "4 visual machinery cards" geometry contract with the new Factor
 
 The updated test must still prove:
 - Vietnamese and English content rendering.
-- Real factory image exists with correct `src` and descriptive `alt`.
+- Real factory image exists with correct `src` and descriptive `alt` verified against the production source of truth (`siteImages.machineryOverview.alt`, mirrored by E2E `COPY.imageAlt`).
 - Factory CTA points to `/nha-xuong`.
 - Exactly 3 Trinity pillars rendered.
 - All four machinery process groups remain represented.
 - All seven machine names remain represented.
-- Technical-preparation evidence is represented (from `productionWorkflow`).
-- QC and delivery evidence is represented (from `productionWorkflow`).
+- Technical-preparation evidence is represented (from `productionWorkflow` steps 1 & 2).
+- Project delivery team proof and QC/delivery evidence are represented (from `capabilities[2]` and `productionWorkflow` steps 3, 5, 6).
 - No horizontal overflow across all test viewports.
 
 Responsive contract:
-- `390px` / `767px`: Pillars stack vertically.
-- `768px`: Verify tablet mode intentionally; do not require 3 columns if content fit demands stacking.
-- `1024px` / `1279px` / `1280px` / `1440px`: Verify desktop Trinity geometry (3 columns at >=1024px).
+The test must retain coverage for all eight existing viewport widths: `[390, 767, 768, 1023, 1024, 1279, 1280, 1440]`.
+
+- `390px` / `767px` (Mobile): Pillars stack vertically. Single-column editorial composition, no horizontal overflow.
+- `768px` / `1023px` (Tablet / Pre-Desktop): Verify tablet mode intentionally; do not require 3 columns if content fit demands stacking. `1023px` must remain covered and verified as the critical boundary immediately preceding desktop transition.
+- `1024px` / `1279px` / `1280px` / `1440px` (Desktop / Wide): Verify desktop Trinity geometry (3 columns at >=1024px unless a verified breakpoint demands a different boundary; verify 1279/1280 transition and 1440 measure).
 
 ### `tests/homepage-machinery.test.ts`
 
@@ -436,11 +461,11 @@ Phase 2C will be acceptable only when:
 3. Factory Proof is presented as exactly three architectural evidence pillars.
 4. All four machinery groups remain represented.
 5. All seven existing machines remain represented.
-6. Existing technical and workflow evidence is preserved through the Trinity.
+6. Existing technical, workflow, and project delivery team evidence (`capabilities[2]`) is preserved through the Trinity without requiring new hardcoded UI strings or data file changes.
 7. No unsupported prototype claims enter production.
 8. Homepage density is materially reduced.
 9. Vietnamese and English locales remain fully functional.
-10. Responsive layout is intentional at mobile, tablet, and desktop boundaries.
+10. Responsive layout is intentional across all eight canonical viewport boundaries (`390, 767, 768, 1023, 1024, 1279, 1280, 1440`).
 11. No horizontal overflow at any supported viewport.
 12. Existing project and homepage sections outside Phase 2C are unchanged.
 13. Tests reflect the new approved contract rather than the superseded old composition.
