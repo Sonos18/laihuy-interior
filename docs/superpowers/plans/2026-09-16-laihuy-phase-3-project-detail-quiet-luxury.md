@@ -56,8 +56,8 @@ All layout and visual reflow behaviors are verified against the **8 canonical vi
 | **767 px** | Mobile Max | 2 columns | Vertical stacked | Horizontal scroll, no overflow | VI, EN | `khach-san-eo-gio` |
 | **768 px** | Tablet Portrait | 3 columns | Horizontal grid (5 cols) | Inline / horizontal | VI, EN | `khach-san-eo-gio` |
 | **1023 px** | Tablet Max | 3 columns | Horizontal grid (5 cols) | Inline / horizontal | VI, EN | `khach-san-eo-gio` |
-| **1024 px** | Small Desktop | 5 columns | Horizontal grid (5 cols) | Inline horizontal | VI, EN | `khach-san-eo-gio` |
-| **1279 px** | Desktop Interm. | 5 columns | Horizontal grid (5 cols) | Inline horizontal | VI, EN | `khach-san-eo-gio` |
+| **1024 px** | Small Desktop | 3 columns | Horizontal grid (5 cols) | Inline horizontal | VI, EN | `khach-san-eo-gio` |
+| **1279 px** | Desktop Interm. | 3 columns | Horizontal grid (5 cols) | Inline horizontal | VI, EN | `khach-san-eo-gio` |
 | **1280 px** | Desktop Standard | 5 columns | Horizontal grid (5 cols) | Inline horizontal | VI, EN | `khach-san-eo-gio`, `nha-vuon-chily`, `nha-xuong-anh-cuong` |
 | **1440 px** | Desktop Large | 5 columns | Horizontal grid (5 cols) | Inline horizontal | VI, EN | `khach-san-eo-gio` |
 
@@ -83,11 +83,22 @@ All layout and visual reflow behaviors are verified against the **8 canonical vi
 
 - [ ] **Step 1: Create test file with harness helpers**  
   Initialize `tests/e2e/project-detail-phase3-visual.spec.ts` importing `test` and `expect` from `./fixtures`. Implement `openProject(page, locale, path, width, height)` with image mocks and font readiness check.
-- [ ] **Step 2: Write failing test for Hero facts rail geometry and tokens**  
-  Add test `P3-1-HERO-01: facts rail reflows to 2 cols on mobile, 3 cols on tablet, and 5 cols on desktop`:
-  - Viewports 390 & 767 assert `grid-template-columns` count is 2.
-  - Viewports 768 & 1023 assert `grid-template-columns` count is 3.
-  - Viewports 1024, 1280 & 1440 assert `grid-template-columns` count is 5.
+- [ ] **Step 2: Write failing test for Hero facts rail geometry and tokens across all 8 viewports**
+  Add test `P3-1-HERO-01: facts rail reflows across all 8 canonical viewports`:
+  Encode the exact test matrix:
+  ```ts
+  const PHASE3_VIEWPORTS = [
+    { width: 390, height: 844, facts: 2 },
+    { width: 767, height: 900, facts: 2 },
+    { width: 768, height: 1024, facts: 3 },
+    { width: 1023, height: 900, facts: 3 },
+    { width: 1024, height: 900, facts: 3 },
+    { width: 1279, height: 900, facts: 3 },
+    { width: 1280, height: 900, facts: 5 },
+    { width: 1440, height: 900, facts: 5 }
+  ] as const
+  ```
+  - For each viewport in `PHASE3_VIEWPORTS`, assert `grid-template-columns` count matches `viewport.facts` (< 768px: 2 columns, 768px through 1279px: 3 columns, >= 1280px: 5 columns).
   - Assert `[data-project-facts]` uses obsidian background (`--color-obsidian` / `rgb(11, 10, 9)`).
   - Assert fact borders use hairline tokens (`--hairline` / `--hairline-gold`).
   - Assert category chip has uppercase tracking and bronze kicker styling (`--bronze-light`).
@@ -117,7 +128,7 @@ All layout and visual reflow behaviors are verified against the **8 canonical vi
   - In `#chips` slot, style verified status with `border border-[var(--hairline)] text-[var(--color-ivory)]`.
   - In `#meta` slot, ensure description uses `text-[var(--text-muted)] leading-relaxed`.
   - In `[data-project-facts]`, replace `bg-ink-950` with `bg-[var(--color-obsidian)] border-y border-[var(--hairline)] text-[var(--color-ivory)]`.
-  - In `[data-project-fact]`, replace `border-white/12` with `border-[var(--hairline)]`. Update grid layout: `grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5`. Update labels to `text-[var(--text-subtle)]` and values to `text-[var(--color-ivory)]`.
+  - In `[data-project-fact]`, replace `border-white/12` with `border-[var(--hairline)]`. Retain the committed breakpoint grid on `<dl>`: `grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5` (do NOT introduce `lg:grid-cols-5`). Update labels to `text-[var(--text-subtle)]` and values to `text-[var(--color-ivory)]`.
 - [ ] **Step 2: Refine Sticky Subnav in `app/pages/du-an/[slug].vue`**  
   - Update `nav[data-project-subnav]` classes:
     `sticky z-30 border-b border-[var(--hairline-gold)] bg-[var(--color-obsidian)]/92 backdrop-blur-md text-[var(--color-ivory)]`.

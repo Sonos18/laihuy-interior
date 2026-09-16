@@ -124,7 +124,7 @@ Do **NOT** blanket-convert every section to dark mode. The page follows an expli
   - Category rendered as a refined bronze kicker tag (`text-xs uppercase tracking-[0.16em] text-[var(--bronze-light)]`).
   - Project title in `Outfit` font-display with Raw Silk Ivory rendering (`text-[var(--color-ivory)]`).
   - Short description in muted ivory with comfortable leading (`text-[var(--text-muted)] leading-relaxed`).
-  - **Floating Architectural Specs Rail**: Styled as an integrated specs bar (matching View 03 `.detail-specs-rail`) directly under the hero summary. Maximum 5 columns (area, year/completion, style, scope, location). Separated by vertical semantic hairlines (`border-[var(--hairline)]` / `border-[var(--hairline-gold)]`). No standalone floating white cards.
+  - **Floating Architectural Specs Rail**: Styled as an integrated specs bar (matching View 03 `.detail-specs-rail`) directly under the hero summary. Maximum 5 columns (area, year/completion, style, scope, location). Preserves the committed breakpoint contract: `< 768px`: 2 columns, `768px` through `1279px`: 3 columns, `>= 1280px`: 5 columns (`grid-cols-2 md:grid-cols-3 xl:grid-cols-5`). Separated by vertical semantic hairlines (`border-[var(--hairline)]` / `border-[var(--hairline-gold)]`). No standalone floating white cards.
   - Component styling should use semantic tokens (e.g. `text-[var(--color-ivory)]`, `text-[var(--text-muted)]`, `border-[var(--hairline)]`).
 - **Rule**: Do NOT modify `AppHero.vue` to contain project-specific branching; `ProjectHeroFacts.vue` wraps and composes it cleanly.
 
@@ -257,7 +257,7 @@ All Phase 3 implementations must be validated across the **8 canonical review vi
 ### Responsive Rules
 - Both **VI** and **EN** locales must be tested.
 - **Zero horizontal scroll**: `document.documentElement.scrollWidth <= window.innerWidth`.
-- **Hero specs rail**: Reflows from 2 columns on mobile, to 3 columns on tablet, to 4–5 columns on desktop.
+- **Hero specs rail**: Preserves the committed breakpoint contract: 2 columns on mobile (< 768px), 3 columns on tablet/small desktop (768px through 1279px), and 5 columns on desktop (>= 1280px) via `grid-cols-2 md:grid-cols-3 xl:grid-cols-5`.
 - **Delivery timeline**: Stacks vertically on mobile with clean hairline dividers; expands to horizontal pipeline at `>= 768px`.
 - **Subnav**: Horizontally scrollable without layout breakage on mobile.
 - Representative test fixtures:
