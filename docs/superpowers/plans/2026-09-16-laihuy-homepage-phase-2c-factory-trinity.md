@@ -6,9 +6,9 @@
 > Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Redesign the homepage Factory Proof section into a concise, three-pillar "Craft & Precision Trinity" and remove the duplicate six-step `HomeProcessRail` from the homepage composition, lowering density while preserving all verified operational and machinery evidence.  
-**Architecture:** Vue 3 / Nuxt 4 single-component architectural restructuring with typed data flow (`productionWorkflow` passed via props), semantic heading hierarchy (`h2` section lead, `h3` pillar titles), and a responsive Quiet Luxury editorial layout (`stacked` on mobile, `tablet` on 768–1023px, `3-column grid` on >=1024px).  
+**Architecture:** Vue 3 / Nuxt 4 single-component architectural restructuring with typed data flow (`productionWorkflow` passed via props), semantic heading hierarchy (`h2` section lead, `h3` pillar titles), and a responsive Quiet Luxury editorial layout (`stacked` on mobile and tablet < 1024px, `3-column grid` on desktop >= 1024px).  
 **Tech Stack:** Nuxt 4, Vue 3, TypeScript, Tailwind CSS v4, Playwright E2E, Vitest.  
-**Spec:** [docs/superpowers/specs/2026-09-16-laihuy-homepage-phase-2c-factory-trinity-design.md](file:///d:/work/LaiHuy/laihuy-interior/docs/superpowers/specs/2026-09-16-laihuy-homepage-phase-2c-factory-trinity-design.md)  
+**Spec:** [docs/superpowers/specs/2026-09-16-laihuy-homepage-phase-2c-factory-trinity-design.md](../specs/2026-09-16-laihuy-homepage-phase-2c-factory-trinity-design.md)  
 
 ---
 
@@ -27,7 +27,7 @@
    - Stage ONLY explicitly named files per task.
 
 2. **Locked Implementation Scope**:
-   Modifications are authorized to **EXACTLY** these four files:
+   Modifications are authorized to **EXACTLY** these four unique files across the entire phase:
    - `app/components/HomeFactoryProof.vue`
    - `app/pages/index.vue`
    - `tests/e2e/homepage-material-story.spec.ts`
@@ -62,10 +62,9 @@
 
 5. **Locked Responsive Geometry Contract**:
    Retain all 8 canonical test viewports: `[390, 767, 768, 1023, 1024, 1279, 1280, 1440]`.
-   - `390px / 767px`: Stacked layout (pillars stack vertically; single-column editorial composition; no horizontal overflow).
-   - `768px / 1023px`: Tablet / pre-desktop layout (retains `1023px` critical upper tablet boundary immediately preceding desktop transition).
-   - `1024px / 1279px / 1280px / 1440px`: Exactly three Trinity columns (`repeat(3, minmax(0, 1fr))`).
-   - If implementation discovers a genuine technical obstacle to this breakpoint, it must STOP and request design approval rather than silently changing the breakpoint.
+   - `390px`, `767px`, `768px`, `1023px` (< 1024px): Stacked Trinity layout. Pillars 1, 2, 3 stack vertically sharing the same left boundary (`left[0] ≈ left[1] ≈ left[2]`) with descending vertical positions (`pillar[1].top > pillar[0].bottom` and `pillar[2].top > pillar[1].bottom`).
+   - `1024px`, `1279px`, `1280px`, `1440px` (>= 1024px): Exactly three Trinity columns (`grid-template-columns: repeat(3, minmax(0, 1fr))`). All three pillar tops align within 2px tolerance, and left coordinates strictly ascend (`left[0] < left[1] < left[2]`).
+   - All 8 viewports: `documentWidth <= viewportWidth` (strictly no horizontal overflow).
 
 ---
 
@@ -74,7 +73,7 @@
 ### Task 1: Red Contract — Factory Trinity E2E Test
 
 **Primary File:** `tests/e2e/homepage-machinery-density.spec.ts`  
-**Commit Target:** Part of `feat(laihuy): build homepage factory trinity` (combined with Task 2)
+**Commit Target:** None (Verification only; committed together with implementation in Task 2)
 
 - [ ] **Step 1.1: Preflight inspection**
   Verify the current branch and working tree safety:
@@ -146,37 +145,49 @@
     - Assert `section.getByTestId('homepage-machinery-pillar')` has count `3`.
     - Assert pillar titles match `copy.pillars` (rendered as `h3`).
     - Assert all seven machines in `copy.machines` are present in Pillar 02.
-    - Assert technical preparation evidence (`copy.pillarEvidence.pillar1`) is present.
-    - Assert quality/delivery evidence (`copy.pillarEvidence.pillar3`) is present.
+    - Assert technical preparation evidence (`copy.pillarEvidence.pillar1`) is present in Pillar 01.
+    - Assert quality/delivery evidence (`copy.pillarEvidence.pillar3`) is present in Pillar 03.
     - Assert factory image exists with localized `copy.imageAlt` and valid source.
     - Assert `/nha-xuong` CTA exists and is keyboard focusable.
     - Assert `[data-machinery-sequence]` elements have count `3` and `aria-hidden="true"`.
-  - Update `MACHINERY-LAYOUT` test:
+  - Update `MACHINERY-LAYOUT` test with concrete geometry assertions:
     - Query `pillars: Array.from(element.querySelectorAll<HTMLElement>('[data-testid="homepage-machinery-pillar"]'))`.
     - Assert `geometry.pillars` has length `3`.
-    - At `width < 768` (390px, 767px):
-      - Pillars stack vertically: `geometry.pillars[1].top > geometry.pillars[0].bottom` and `geometry.pillars[2].top > geometry.pillars[1].bottom`.
-    - At `768 <= width < 1024` (768px, 1023px):
-      - Verify tablet geometry (stacked or 2+1; columns are not forced into 3 cramped columns; no horizontal overflow).
+    - In all 8 widths (`390`, `767`, `768`, `1023`, `1024`, `1279`, `1280`, `1440`):
+      - `expect(geometry.documentWidth).toBeLessThanOrEqual(geometry.viewportWidth)` (no horizontal overflow).
+    - At `width < 1024` (390px, 767px, 768px, 1023px):
+      - Stacked Trinity contract:
+        ```ts
+        for (let i = 1; i < geometry.pillars.length; i += 1) {
+          expect(Math.abs(geometry.pillars[i].left - geometry.pillars[0].left)).toBeLessThanOrEqual(2)
+          expect(geometry.pillars[i].top).toBeGreaterThan(geometry.pillars[i - 1].bottom - 1)
+        }
+        ```
     - At `width >= 1024` (1024px, 1279px, 1280px, 1440px):
-      - Verify 3 columns: `Math.abs(geometry.pillars[0].top - geometry.pillars[1].top) <= 2` and `Math.abs(geometry.pillars[1].top - geometry.pillars[2].top) <= 2`.
-      - Left positions strictly ascending: `pillars[0].left < pillars[1].left < pillars[2].left`.
-    - In all widths: `geometry.documentWidth <= geometry.viewportWidth` (no horizontal overflow).
+      - 3-column Trinity contract:
+        ```ts
+        expect(Math.abs(geometry.pillars[0].top - geometry.pillars[1].top)).toBeLessThanOrEqual(2)
+        expect(Math.abs(geometry.pillars[1].top - geometry.pillars[2].top)).toBeLessThanOrEqual(2)
+        expect(geometry.pillars[0].left).toBeLessThan(geometry.pillars[1].left)
+        expect(geometry.pillars[1].left).toBeLessThan(geometry.pillars[2].left)
+        ```
 
-- [ ] **Step 1.2: Run TDD Red check**
-  Execute the test suite and confirm it fails because the component has not yet been updated:
+- [ ] **Step 1.3: Run TDD Red check**
+  Execute the test suite and confirm it fails for the expected behavior gap:
   ```bash
   pnpm exec playwright test --project=vr tests/e2e/homepage-machinery-density.spec.ts
   ```
-  Expected failure: `locator('[data-testid="homepage-machinery-pillar"]').toHaveCount(3)` fails with count 0 (still renders 4 `homepage-machinery-card`s).
+  Expected failure: `locator('[data-testid="homepage-machinery-pillar"]').toHaveCount(3)` fails with count 0 (component still renders 4 obsolete cards).
 
 ---
 
-### Task 2: Implement HomeFactoryProof Trinity
+### Task 2: Implement HomeFactoryProof Trinity & Wire Data Flow
 
-**Primary File:** `app/components/HomeFactoryProof.vue`  
-**Test File:** `tests/e2e/homepage-machinery-density.spec.ts`  
-**Commit Target:** `feat(laihuy): build homepage factory trinity` (Task 1 + Task 2)
+**Primary Files:**
+- `app/components/HomeFactoryProof.vue`
+- `app/pages/index.vue`
+- `tests/e2e/homepage-machinery-density.spec.ts`  
+**Commit Target:** `feat(laihuy): build homepage factory trinity`
 
 - [ ] **Step 2.1: Preflight inspection**
   ```bash
@@ -202,7 +213,6 @@
     }>()
 
     const { t } = useLanguage()
-    const sequence = (index: number) => String(index + 1).padStart(2, '0')
 
     const pillar1Title = computed(() => (props.steps?.[1] ? t(props.steps[1].title) : ''))
     const pillar2TitleLead = computed(() => t(props.content.titleLead))
@@ -293,7 +303,7 @@
               <div
                 data-testid="homepage-machinery-caption"
                 aria-hidden="true"
-                class="absolute inset-x-0 bottom-0 flex flex-wrap justify-between gap-4 bg-gradient-to-t from-[rgba(11,10,9,0.9)] via-[rgba(11,10,9,0.6)] to-transparent px-6 py-4 text-xs uppercase tracking-[0.14em] text-[var(--color-ivory)]"
+                class="home-factory__caption"
               >
                 <span>{{ t(content.photoCaption) }}</span>
                 <span class="text-[var(--bronze-light)]">{{ t(content.lineCaption) }}</span>
@@ -475,7 +485,7 @@
       </section>
     </template>
     ```
-  - **Scoped CSS**:
+  - **Scoped CSS (using semantic tokens and color-mix, zero raw RGB/HEX)**:
     ```vue
     <style scoped>
     .home-factory {
@@ -492,6 +502,22 @@
       line-height: 0.98;
       letter-spacing: -0.06em;
     }
+    .home-factory__caption {
+      position: absolute;
+      inset-inline: 0;
+      bottom: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1rem;
+      background: color-mix(in srgb, var(--color-obsidian) 85%, transparent);
+      padding: 0.85rem 1.25rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-ivory);
+    }
     @media (min-width: 1024px) {
       .home-factory__intro {
         grid-template-columns: minmax(0, 1.15fr) minmax(20rem, 0.85fr);
@@ -507,25 +533,40 @@
     </style>
     ```
 
-- [ ] **Step 2.3: Run TDD Green check**
+- [ ] **Step 2.3: Wire `:steps="productionWorkflow"` in `app/pages/index.vue`**
+  In `app/pages/index.vue`, pass the data prop to `HomeFactoryProof`:
+  ```vue
+  <HomeFactoryProof
+    :capabilities="factoryCapabilities"
+    :groups="machineryProcessGroups"
+    :content="machinerySectionContent"
+    :image="siteImages.machineryOverview"
+    :steps="productionWorkflow"
+  />
+  <HomeProcessRail :steps="productionWorkflow" />
+  <HomeProjectCta />
+  ```
+  *Crucial: Do NOT remove `<HomeProcessRail>` yet during Task 2. Retaining it temporarily ensures `index.vue` continues rendering both sections until Task 3 runs its RED cycle.*
+
+- [ ] **Step 2.4: Run TDD Green check**
   Execute the focused machinery test suite:
   ```bash
   pnpm exec playwright test --project=vr tests/e2e/homepage-machinery-density.spec.ts
   ```
-  Verify all tests across all eight viewports (`390`, `767`, `768`, `1023`, `1024`, `1279`, `1280`, `1440`) pass cleanly.
+  Verify all tests across all eight viewports (`390`, `767`, `768`, `1023`, `1024`, `1279`, `1280`, `1440`) pass GREEN.
 
-- [ ] **Step 2.4: Stage and commit Task 1 + Task 2**
+- [ ] **Step 2.5: Stage and commit Task 2**
   ```bash
   git status --short
-  git add app/components/HomeFactoryProof.vue tests/e2e/homepage-machinery-density.spec.ts
+  git add app/components/HomeFactoryProof.vue app/pages/index.vue tests/e2e/homepage-machinery-density.spec.ts
   git diff --cached --name-only
   git commit -m "feat(laihuy): build homepage factory trinity"
   ```
-  Verify that the commit contains ONLY these two files and that all unrelated dirty files remain untouched.
+  Verify that the commit contains EXACTLY these three files and that all 6 unrelated dirty files remain untouched.
 
 ---
 
-### Task 3: Homepage Composition & Contract
+### Task 3: Homepage Composition & Process Rail Removal
 
 **Primary Files:**
 - `tests/e2e/homepage-material-story.spec.ts`
@@ -545,7 +586,7 @@
     await expect(page.getByTestId('homepage-machinery').getByTestId('homepage-machinery-card')).toHaveCount(4)
     await expect(page.getByTestId('home-process').getByTestId('home-process-step')).toHaveCount(6)
     ```
-  - Update to assert 3 Trinity pillars and 0 `[data-testid="home-process"]` sections:
+  - Update to assert 3 Trinity pillars and zero `[data-testid="home-process"]` sections:
     ```ts
     await expect(page.getByTestId('homepage-machinery').getByTestId('homepage-machinery-pillar')).toHaveCount(3)
     await expect(page.locator('[data-testid="home-process"]')).toHaveCount(0)
@@ -558,20 +599,10 @@
   ```
   Expected failure: `page.locator('[data-testid="home-process"]')` fails because `app/pages/index.vue` still renders `HomeProcessRail` (count is 1, expected 0).
 
-- [ ] **Step 3.4: Update `app/pages/index.vue` (TDD Green)**
+- [ ] **Step 3.4: Remove `HomeProcessRail` from `app/pages/index.vue` (TDD Green)**
   In `app/pages/index.vue`:
-  - Pass `:steps="productionWorkflow"` to `HomeFactoryProof`:
-    ```vue
-    <HomeFactoryProof
-      :capabilities="factoryCapabilities"
-      :groups="machineryProcessGroups"
-      :content="machinerySectionContent"
-      :image="siteImages.machineryOverview"
-      :steps="productionWorkflow"
-    />
-    ```
-  - Remove `<HomeProcessRail :steps="productionWorkflow" />` from the template.
-  - Retain `import { ..., productionWorkflow } from '~/data/factory'` on line 7 because `HomeFactoryProof` now consumes `productionWorkflow`.
+  - Remove only `<HomeProcessRail :steps="productionWorkflow" />` from the template.
+  - Retain `import { ..., productionWorkflow } from '~/data/factory'` on line 7 because `HomeFactoryProof` consumes `productionWorkflow`.
   - Do NOT modify or delete `app/components/HomeProcessRail.vue`.
 
 - [ ] **Step 3.5: Run TDD Green check**
@@ -579,7 +610,7 @@
   ```bash
   pnpm exec playwright test --project=vr tests/e2e/homepage-material-story.spec.ts
   ```
-  Verify all assertions pass cleanly.
+  Verify all assertions pass GREEN.
 
 - [ ] **Step 3.6: Stage and commit Task 3**
   ```bash
@@ -588,14 +619,14 @@
   git diff --cached --name-only
   git commit -m "refactor(laihuy): remove duplicate homepage process rail"
   ```
-  Verify that the commit contains ONLY these two files and that all unrelated dirty files remain untouched.
+  Verify that the commit contains EXACTLY these two files and that all unrelated dirty files remain untouched.
 
 ---
 
 ### Task 4: Cross-Check & Final Verification
 
 **Primary Files:** None (Verification only)  
-**Goal:** Verify entire test suite, gates, accessibility, and spec acceptance criteria without introducing new feature scope.
+**Goal:** Verify entire test suite, gates, accessibility, canonical data integrity, visual presentation, and spec acceptance criteria without introducing new feature scope.
 
 - [ ] **Step 4.1: Preflight inspection**
   ```bash
@@ -603,11 +634,13 @@
   ```
   Confirm clean status relative to the 6 preserved files.
 
-- [ ] **Step 4.2: Run full unit test suite**
+- [ ] **Step 4.2: Run full unit test suite & explicit canonical machinery Vitest**
+  Execute both the broad test suite and the focused canonical data contract test:
   ```bash
   pnpm test
+  pnpm exec vitest run tests/homepage-machinery.test.ts
   ```
-  Specifically confirm `tests/homepage-machinery.test.ts` passes, verifying that canonical factory data is intact.
+  Both must exit 0, confirming that all unit tests pass and `app/data/factory.ts` (4 process groups, 7 machines, bilingual copy) remains completely untouched.
 
 - [ ] **Step 4.3: Run typecheck and linters**
   ```bash
@@ -630,24 +663,38 @@
   ```
   Confirm 100% passing across all viewports and locales.
 
-- [ ] **Step 4.6: Audit against Spec Acceptance Criteria**
-  Verify each criterion from Section 17 of the approved spec:
-  1. [x] Homepage no longer renders `HomeProcessRail`.
-  2. [x] `HomeProcessRail.vue` remains untouched in the repository.
-  3. [x] Factory Proof is presented as exactly three architectural evidence pillars.
-  4. [x] All four machinery groups remain represented.
-  5. [x] All seven existing machines remain represented.
-  6. [x] Existing technical, workflow, and project delivery team evidence (`capabilities[2]`) is preserved without new hardcoded UI strings or data changes.
-  7. [x] No unsupported prototype claims enter production.
-  8. [x] Homepage density is materially reduced.
-  9. [x] Vietnamese and English locales remain fully functional.
-  10. [x] Responsive layout is intentional across all eight canonical viewport boundaries (`390, 767, 768, 1023, 1024, 1279, 1280, 1440`).
-  11. [x] No horizontal overflow at any supported viewport.
-  12. [x] Existing project and homepage sections outside Phase 2C are unchanged.
-  13. [x] Tests reflect the new approved contract rather than the superseded old composition.
-  14. [x] Independent remote code review occurs before merge.
+- [ ] **Step 4.6: Visual verification check**
+  Inspect the live rendering of the homepage across the four key viewports (`390px`, `768px`, `1024px`, `1440px`):
+  - Factory photograph crop & semantic caption legibility over the image.
+  - Proof metrics hierarchy (3,000 m² footprint and 50 rooms/month capacity).
+  - Trinity hierarchy (3 architectural pillars with sequence numbers 01, 02, 03 and h3 headings).
+  - Vietnamese text wrapping and line breaks.
+  - English text wrapping and line breaks.
+  - Single-column stacked Trinity on mobile/tablet (< 1024px) vs 3-column layout on desktop (>= 1024px).
+  - Zero horizontal overflow across all tested viewports.
+  - Section aesthetic: restrained Quiet Luxury hairlines, zero heavy SaaS cards, zero neon/glassmorphism.
+  - Homepage section height/density is visibly reduced with `HomeProcessRail` removed.
+  - Seamless, intentional transition into `HomeProjectCta`.
+  *(Note: Do NOT update visual baselines merely to hide a mismatch. Evidence/screenshots remain local).*
 
-- [ ] **Step 4.7: Inspect git diff from main base**
+- [ ] **Step 4.7: Audit against Spec Acceptance Criteria**
+  Verify and check off each criterion from Section 17 of the approved spec:
+  - [ ] 1. Homepage no longer renders `HomeProcessRail`.
+  - [ ] 2. `HomeProcessRail.vue` remains untouched in the repository.
+  - [ ] 3. Factory Proof is presented as exactly three architectural evidence pillars.
+  - [ ] 4. All four machinery groups remain represented.
+  - [ ] 5. All seven existing machines remain represented.
+  - [ ] 6. Existing technical, workflow, and project delivery team evidence (`capabilities[2]`) is preserved without new hardcoded UI strings or data changes.
+  - [ ] 7. No unsupported prototype claims enter production.
+  - [ ] 8. Homepage density is materially reduced.
+  - [ ] 9. Vietnamese and English locales remain fully functional.
+  - [ ] 10. Responsive layout is intentional across all eight canonical viewport boundaries (`390, 767, 768, 1023, 1024, 1279, 1280, 1440`).
+  - [ ] 11. No horizontal overflow at any supported viewport.
+  - [ ] 12. Existing project and homepage sections outside Phase 2C are unchanged.
+  - [ ] 13. Tests reflect the new approved contract rather than the superseded old composition.
+  - [ ] 14. Independent remote code review occurs before merge.
+
+- [ ] **Step 4.8: Inspect git diff from main base**
   ```bash
   git diff 431fa47252eceddb0793b3daee7874dec37fff7a...HEAD --stat
   ```
