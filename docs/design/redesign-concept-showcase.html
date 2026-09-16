@@ -1,0 +1,2245 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bản Thiết Kế Redesign Lai Huy Interior — Luxury Editorial Concept</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0B0A09;
+      --bg-surface: #141210;
+      --bg-card: #1A1815;
+      --bronze: #B8875A;
+      --bronze-light: #D4A373;
+      --bronze-dark: #8C6239;
+      --text-main: #F5F2EB;
+      --text-muted: rgba(245, 242, 235, 0.65);
+      --text-subtle: rgba(245, 242, 235, 0.4);
+      --hairline: rgba(255, 255, 255, 0.08);
+      --hairline-gold: rgba(184, 135, 90, 0.25);
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 16px;
+      --font-display: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Presentation Shell & Navigation */
+    .showcase-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 10, 9, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--hairline-gold);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark span.logo-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .brand-mark span.badge-concept {
+      background: rgba(184, 135, 90, 0.15);
+      border: 1px solid var(--bronze);
+      color: var(--bronze-light);
+      font-size: 0.72rem;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 6px;
+      background: var(--bg-surface);
+      padding: 4px;
+      border-radius: 9999px;
+      border: 1px solid var(--hairline);
+    }
+
+    .nav-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 8px 18px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .nav-tab-btn:hover {
+      color: var(--text-main);
+    }
+
+    .nav-tab-btn.active {
+      background: var(--bronze);
+      color: #0B0A09;
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(184, 135, 90, 0.35);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 6rem;
+    }
+
+    .view-section {
+      display: none;
+      animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .view-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Section Intro Header */
+    .intro-header {
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--hairline);
+      padding-bottom: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .intro-header .title-group h2 {
+      font-family: var(--font-display);
+      font-size: 2.25rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+    }
+
+    .intro-header .title-group p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 700px;
+    }
+
+    .tag-meta {
+      font-size: 0.8rem;
+      color: var(--bronze-light);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    /* Frame Canvas Container */
+    .preview-canvas {
+      background: var(--bg-surface);
+      border: 1px solid var(--hairline-gold);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .canvas-bar {
+      background: #0E0D0C;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .browser-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .browser-url {
+      font-size: 0.75rem;
+      color: var(--text-subtle);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 3px 20px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* =======================================================
+       1. HERO & FOLD MOCKUP
+       ======================================================= */
+    .mock-site-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 3.5rem;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(180deg, rgba(11, 10, 9, 0.8) 0%, transparent 100%);
+    }
+
+    .mock-logo {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      letter-spacing: 0.2em;
+      color: #FFF;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mock-logo svg {
+      width: 24px;
+      height: 24px;
+      fill: var(--bronze);
+    }
+
+    .mock-nav {
+      display: flex;
+      gap: 2.25rem;
+      list-style: none;
+    }
+
+    .mock-nav a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .mock-nav a:hover, .mock-nav a.active {
+      color: var(--bronze-light);
+    }
+
+    .mock-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .mock-lang-btn {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      letter-spacing: 0.08em;
+    }
+    .mock-lang-btn span.active {
+      color: #FFF;
+      font-weight: 600;
+    }
+
+    .btn-luxury-outline {
+      border: 1px solid var(--bronze);
+      color: var(--bronze-light);
+      background: rgba(184, 135, 90, 0.08);
+      padding: 10px 22px;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn-luxury-outline:hover {
+      background: var(--bronze);
+      color: #0B0A09;
+      box-shadow: 0 4px 15px rgba(184, 135, 90, 0.4);
+    }
+
+    .hero-canvas-inner {
+      position: relative;
+      min-height: 760px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 3.5rem 3.5rem;
+      overflow: hidden;
+    }
+
+    .hero-bg-layer {
+      position: absolute;
+      inset: -6%;
+      width: 112%;
+      height: 112%;
+      background: url('./laihuy-interior/public/images/projects/khach-san-eo-gio/3.webp') center/cover no-repeat;
+      animation: kenBurns 22s ease-in-out infinite alternate;
+      z-index: 1;
+      pointer-events: none;
+      transform-origin: center center;
+    }
+
+    .hero-overlay-layer {
+      position: absolute;
+      inset: 0;
+      background: 
+        linear-gradient(90deg, rgba(11, 10, 9, 0.94) 0%, rgba(11, 10, 9, 0.65) 45%, rgba(11, 10, 9, 0.35) 100%),
+        linear-gradient(0deg, rgba(11, 10, 9, 0.98) 0%, rgba(11, 10, 9, 0.4) 45%, transparent 100%);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .hero-content-block {
+      max-width: 860px;
+      margin-bottom: 3.5rem;
+      position: relative;
+      z-index: 5;
+    }
+
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.78rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--bronze-light);
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-kicker::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--bronze);
+    }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: 4rem;
+      line-height: 1.08;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: #FFF;
+      margin-bottom: 1.25rem;
+      text-wrap: balance;
+    }
+
+    .hero-headline em {
+      font-style: italic;
+      color: var(--bronze-light);
+      font-weight: 400;
+    }
+
+    .hero-sublead {
+      font-size: 1.15rem;
+      line-height: 1.6;
+      color: rgba(245, 242, 235, 0.85);
+      max-width: 620px;
+      margin-bottom: 2rem;
+      font-weight: 300;
+    }
+
+    .hero-action-row {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .btn-solid-gold {
+      background: var(--bronze);
+      color: #0B0A09;
+      padding: 14px 28px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-solid-gold:hover {
+      background: var(--bronze-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(184, 135, 90, 0.35);
+    }
+
+    .btn-ghost-link {
+      color: #FFF;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .btn-ghost-link:hover {
+      color: var(--bronze-light);
+    }
+
+    /* Redesigned Floating Metrics Strip */
+    .floating-metrics-rail {
+      position: relative;
+      z-index: 5;
+      background: rgba(20, 18, 16, 0.75);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--hairline-gold);
+      border-radius: var(--radius-md);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 1.5rem 2rem;
+      gap: 2rem;
+    }
+
+    .metric-col {
+      border-right: 1px solid var(--hairline);
+      padding-right: 1.5rem;
+    }
+
+    .metric-col:last-child {
+      border-right: none;
+      padding-right: 0;
+    }
+
+    .metric-val {
+      font-family: var(--font-display);
+      font-size: 1.85rem;
+      font-weight: 500;
+      color: #FFF;
+      line-height: 1.1;
+      margin-bottom: 4px;
+      letter-spacing: -0.01em;
+    }
+
+    .metric-lbl {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bronze-light);
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .metric-desc {
+      font-size: 0.78rem;
+      color: var(--text-subtle);
+    }
+
+    /* =======================================================
+       2. EDITORIAL SHOWCASE MOCKUP
+       ======================================================= */
+    .mock-section {
+      padding: 4.5rem 3.5rem;
+      background: var(--bg-surface);
+    }
+
+    .section-eyebrow {
+      font-size: 0.78rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--bronze);
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .section-header-split {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3.5rem;
+    }
+
+    .section-headline {
+      font-family: var(--font-display);
+      font-size: 2.75rem;
+      font-weight: 400;
+      color: var(--text-main);
+      line-height: 1.2;
+      max-width: 650px;
+    }
+
+    .section-headline span {
+      font-style: italic;
+      color: var(--bronze-light);
+    }
+
+    /* Asymmetric Editorial Grid */
+    .showcase-editorial-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 2.5rem;
+      align-items: stretch;
+    }
+
+    .project-feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: border-color 0.3s ease;
+    }
+
+    .project-feature-card:hover {
+      border-color: var(--hairline-gold);
+    }
+
+    .project-img-box {
+      height: 440px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .project-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .project-feature-card:hover .project-img-box img {
+      transform: scale(1.03);
+    }
+
+    .project-tag-pill {
+      position: absolute;
+      top: 1.25rem;
+      left: 1.25rem;
+      background: rgba(11, 10, 9, 0.75);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--hairline-gold);
+      color: var(--bronze-light);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 9999px;
+    }
+
+    .project-info-body {
+      padding: 2.25rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .project-title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 500;
+      color: #FFF;
+      margin-bottom: 0.75rem;
+    }
+
+    .project-excerpt {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+      margin-bottom: 1.75rem;
+      font-weight: 300;
+    }
+
+    .project-specs-row {
+      display: flex;
+      gap: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--hairline);
+    }
+
+    .spec-item .spec-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+      margin-bottom: 4px;
+    }
+
+    .spec-item .spec-value {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .secondary-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .project-card-compact {
+      background: var(--bg-card);
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      height: 100%;
+      transition: border-color 0.3s ease;
+    }
+
+    .project-card-compact:hover {
+      border-color: var(--hairline-gold);
+    }
+
+    .compact-img-box {
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .compact-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .compact-info-body {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .compact-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: #FFF;
+      margin-bottom: 0.5rem;
+    }
+
+    .compact-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      font-weight: 300;
+    }
+
+    /* =======================================================
+       3. FACTORY & CRAFTSMANSHIP TRINITY
+       ======================================================= */
+    .factory-trinity-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-top: 2.5rem;
+    }
+
+    .trinity-card {
+      background: linear-gradient(180deg, var(--bg-card) 0%, rgba(20, 18, 16, 0.4) 100%);
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-md);
+      padding: 2.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .trinity-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--bronze), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .trinity-card:hover::before {
+      opacity: 1;
+    }
+
+    .trinity-num {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      color: var(--bronze);
+      font-style: italic;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .trinity-title {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: #FFF;
+      margin-bottom: 1rem;
+      line-height: 1.25;
+    }
+
+    .trinity-text {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+    }
+
+    .trinity-features {
+      list-style: none;
+      border-top: 1px solid var(--hairline);
+      padding-top: 1.25rem;
+    }
+
+    .trinity-features li {
+      font-size: 0.82rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .trinity-features li::before {
+      content: '✦';
+      color: var(--bronze);
+      font-size: 0.65rem;
+    }
+
+    /* =======================================================
+       4. BEFORE VS AFTER COMPARISON TABLE
+       ======================================================= */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+
+    .compare-panel {
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      position: relative;
+    }
+
+    .compare-panel.before {
+      background: #141010;
+      border: 1px solid rgba(239, 68, 68, 0.25);
+    }
+
+    .compare-panel.after {
+      background: #0E1310;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .compare-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      margin-bottom: 1.5rem;
+    }
+
+    .compare-panel.before .compare-badge {
+      background: rgba(239, 68, 68, 0.2);
+      color: #F87171;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+
+    .compare-panel.after .compare-badge {
+      background: rgba(34, 197, 94, 0.2);
+      color: #4ADE80;
+      border: 1px solid rgba(34, 197, 94, 0.4);
+    }
+
+    .compare-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .compare-list li {
+      display: flex;
+      gap: 12px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .compare-list li strong {
+      display: block;
+      color: #FFF;
+      font-size: 0.95rem;
+      margin-bottom: 2px;
+    }
+
+    .compare-list li span {
+      color: var(--text-muted);
+    }
+
+    .icon-cross {
+      color: #F87171;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .icon-check {
+      color: #4ADE80;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    /* Details Tab */
+    .specs-board {
+      background: var(--bg-card);
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-md);
+      padding: 2.5rem;
+      margin-top: 2rem;
+    }
+
+    .specs-title {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: #FFF;
+      margin-bottom: 1.5rem;
+    }
+
+    .token-preview-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .color-swatch {
+      height: 90px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--hairline);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    /* Footer Action */
+    .action-banner {
+      margin-top: 4rem;
+      background: linear-gradient(135deg, #1C1713 0%, #0B0A09 100%);
+      border: 1px solid var(--hairline-gold);
+      border-radius: var(--radius-md);
+      padding: 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .action-banner h3 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: #FFF;
+      margin-bottom: 0.5rem;
+    }
+
+    .action-banner p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    /* =======================================================
+       PROJECT DETAIL (CASE STUDY EDITORIAL) STYLES
+       ======================================================= */
+    .detail-masthead {
+      position: relative;
+      min-height: 580px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 3.5rem 3rem;
+      background: 
+        linear-gradient(180deg, rgba(11, 10, 9, 0.4) 0%, rgba(11, 10, 9, 0.85) 75%, #0B0A09 100%),
+        url('./laihuy-interior/public/images/projects/khach-san-eo-gio/3.webp') center/cover no-repeat;
+    }
+
+    .detail-header-meta {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .detail-category-badge {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--bronze-light);
+      background: rgba(184, 135, 90, 0.15);
+      border: 1px solid var(--hairline-gold);
+      padding: 4px 14px;
+      border-radius: 9999px;
+      font-weight: 600;
+    }
+
+    .detail-location-text {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .detail-main-title {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      font-weight: 400;
+      color: #FFF;
+      line-height: 1.12;
+      margin-bottom: 1.25rem;
+      max-width: 900px;
+    }
+
+    .detail-main-title span {
+      font-style: italic;
+      color: var(--bronze-light);
+    }
+
+    .detail-lead-summary {
+      color: rgba(245, 242, 235, 0.85);
+      font-size: 1.05rem;
+      line-height: 1.65;
+      max-width: 760px;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+    }
+
+    /* Floating Architectural Metadata Rail */
+    .detail-specs-rail {
+      background: rgba(20, 18, 16, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--hairline-gold);
+      border-radius: var(--radius-md);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 1.5rem 2rem;
+      gap: 1.5rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .detail-spec-col {
+      border-right: 1px solid var(--hairline);
+      padding-right: 1.5rem;
+    }
+
+    .detail-spec-col:last-child {
+      border-right: none;
+      padding-right: 0;
+    }
+
+    .detail-spec-kicker {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--bronze-light);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .detail-spec-val {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #FFF;
+      margin-bottom: 2px;
+    }
+
+    .detail-spec-sub {
+      font-size: 0.76rem;
+      color: var(--text-subtle);
+    }
+
+    /* Narrative Spread */
+    .case-study-content-wrap {
+      padding: 4.5rem 3.5rem;
+      background: var(--bg-surface);
+    }
+
+    .narrative-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 4rem;
+      margin-bottom: 4.5rem;
+      align-items: start;
+    }
+
+    .narrative-col-main h3 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 400;
+      color: #FFF;
+      margin-bottom: 1.25rem;
+      line-height: 1.3;
+    }
+
+    .narrative-col-main p {
+      color: var(--text-muted);
+      font-size: 0.96rem;
+      line-height: 1.75;
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+    }
+
+    .architectural-quote {
+      background: var(--bg-card);
+      border-left: 2px solid var(--bronze);
+      padding: 1.75rem 2rem;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin: 2rem 0;
+    }
+
+    .architectural-quote p {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--text-main);
+      line-height: 1.6;
+      margin-bottom: 0.75rem !important;
+    }
+
+    .architectural-quote cite {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bronze-light);
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    .narrative-col-side {
+      background: var(--bg-card);
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+    }
+
+    .side-block-title {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--bronze-light);
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .scope-list-check {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .scope-list-check li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.86rem;
+      color: var(--text-main);
+      line-height: 1.4;
+    }
+
+    .scope-list-check li svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--bronze);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Editorial Gallery Spread */
+    .editorial-gallery-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 2rem;
+      border-top: 1px solid var(--hairline);
+      padding-top: 3.5rem;
+    }
+
+    .gallery-spread-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .spread-hero-frame {
+      height: 480px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .spread-hero-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .spread-hero-frame:hover img {
+      transform: scale(1.02);
+    }
+
+    .spread-diptych {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      gap: 1.5rem;
+      height: 480px;
+    }
+
+    .spread-small-frame {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .spread-small-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .spread-small-frame:hover img {
+      transform: scale(1.02);
+    }
+
+    .lightbox-trigger-card {
+      background: linear-gradient(135deg, rgba(20, 18, 16, 0.9) 0%, rgba(11, 10, 9, 0.9) 100%);
+      border: 1px dashed var(--bronze);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.75rem 2.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .lightbox-trigger-card:hover {
+      background: rgba(184, 135, 90, 0.12);
+      border-style: solid;
+    }
+
+    /* Tactile Materials Strip */
+    .materials-board-section {
+      margin-top: 4.5rem;
+      padding-top: 3.5rem;
+      border-top: 1px solid var(--hairline);
+    }
+
+    .materials-sample-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .material-sample-card {
+      background: var(--bg-card);
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      transition: border-color 0.3s ease;
+    }
+
+    .material-sample-card:hover {
+      border-color: var(--hairline-gold);
+    }
+
+    .sample-swatch-box {
+      height: 110px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 1rem;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      padding: 10px;
+    }
+
+    .sample-name {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: #FFF;
+      margin-bottom: 4px;
+    }
+
+    .sample-origin {
+      font-size: 0.72rem;
+      color: var(--bronze-light);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .sample-spec {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    /* Detail B2B Action Banner */
+    .detail-cta-bar {
+      margin-top: 4.5rem;
+      background: linear-gradient(135deg, #241D17 0%, #14110E 100%);
+      border: 1px solid var(--bronze);
+      border-radius: var(--radius-md);
+      padding: 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    /* =======================================================
+       LUXURY ANIMATION SYSTEM & LIGHTBOX MODAL
+       ======================================================= */
+    @keyframes kenBurns {
+      0% { transform: scale(1) translate(0, 0); }
+      50% { transform: scale(1.05) translate(-1%, -0.5%); }
+      100% { transform: scale(1) translate(0, 0); }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 rgba(184, 135, 90, 0); }
+      50% { box-shadow: 0 0 25px rgba(184, 135, 90, 0.3); }
+    }
+
+    /* Staggered Reveal Elements */
+    .reveal-item {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      z-index: 5;
+    }
+
+    .reveal-item.is-revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .delay-1 { transition-delay: 0.12s; }
+    .delay-2 { transition-delay: 0.28s; }
+    .delay-3 { transition-delay: 0.44s; }
+    .delay-4 { transition-delay: 0.60s; }
+
+    /* Hover Micro-interactions */
+    .btn-solid-gold {
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(184, 135, 90, 0.25);
+    }
+
+    .btn-solid-gold::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(60deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+      transform: rotate(25deg);
+      transition: all 0.75s ease;
+    }
+
+    .btn-solid-gold:hover::after {
+      left: 140%;
+    }
+
+    .floating-metrics-rail {
+      animation: pulseGlow 6s infinite ease-in-out;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .floating-metrics-rail:hover {
+      transform: translateY(-3px);
+      border-color: rgba(212, 163, 115, 0.6);
+    }
+
+    .metric-col {
+      transition: transform 0.25s ease;
+    }
+
+    .metric-col:hover {
+      transform: translateY(-2px);
+    }
+
+    .project-feature-card, .project-card-compact, .trinity-card, .material-sample-card {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.4s ease;
+    }
+
+    .project-feature-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+    }
+
+    .project-card-compact:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.6);
+    }
+
+    .trinity-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px -15px rgba(184, 135, 90, 0.15);
+    }
+
+    .material-sample-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 25px -8px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Lightbox Modal CSS */
+    .lightbox-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(11, 10, 9, 0.94);
+      backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    .lightbox-modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox-dialog {
+      position: relative;
+      max-width: 1100px;
+      width: 90%;
+      background: var(--bg-surface);
+      border: 1px solid var(--hairline-gold);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9);
+      transform: scale(0.95);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .lightbox-modal-overlay.open .lightbox-dialog {
+      transform: scale(1);
+    }
+
+    .lightbox-body {
+      position: relative;
+      height: 600px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-body img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transition: opacity 0.25s ease;
+    }
+
+    .lightbox-close-btn {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      z-index: 10;
+      background: rgba(20, 18, 16, 0.8);
+      border: 1px solid var(--hairline);
+      color: #FFF;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lightbox-close-btn:hover {
+      background: var(--bronze);
+      color: #0B0A09;
+    }
+
+    .lightbox-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(20, 18, 16, 0.7);
+      border: 1px solid var(--hairline);
+      color: #FFF;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    .lightbox-nav-btn:hover {
+      background: var(--bronze);
+      color: #0B0A09;
+    }
+
+    .lightbox-nav-btn.prev { left: 1.5rem; }
+    .lightbox-nav-btn.next { right: 1.5rem; }
+
+    .lightbox-footer-bar {
+      padding: 1.25rem 2rem;
+      background: var(--bg-card);
+      border-top: 1px solid var(--hairline);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Controller Bar -->
+  <header class="showcase-header">
+    <div class="brand-mark">
+      <img src="./laihuy-interior/public/logo-mono-white.png" alt="Lai Huy Interior" style="height: 32px; width: auto; object-fit: contain;">
+      <span class="badge-concept">LUXURY EDITORIAL CONCEPT</span>
+    </div>
+
+    <nav class="nav-tabs">
+      <button class="nav-tab-btn active" onclick="switchView('hero')">1. Hero & First Fold</button>
+      <button class="nav-tab-btn" onclick="switchView('showcase')">2. Showcase Dự Án</button>
+      <button class="nav-tab-btn" onclick="switchView('detail')">3. Chi Tiết Dự Án</button>
+      <button class="nav-tab-btn" onclick="switchView('trinity')">4. Năng Lực Xưởng</button>
+      <button class="nav-tab-btn" onclick="switchView('comparison')">5. So Sánh Before / After</button>
+      <button class="nav-tab-btn" onclick="switchView('system')">6. Design Tokens & Phê Duyệt</button>
+    </nav>
+  </header>
+
+  <!-- Font Synchronization Controller Toolbar -->
+  <div style="background: rgba(20, 18, 16, 0.95); border-bottom: 1px solid var(--hairline-gold); padding: 0.65rem 2rem; display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; position: sticky; top: 68px; z-index: 99; backdrop-filter: blur(12px);">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span style="color: var(--bronze-light); font-weight: 700; letter-spacing: 0.08em; display: flex; align-items: center; gap: 6px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
+        ĐỒNG BỘ FONT VỚI LOGO LAI HUY:
+      </span>
+      <span style="color: var(--text-muted);">Bấm để chuyển đổi font chữ trực tiếp trên toàn trang:</span>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <button id="btn-font-outfit" onclick="changeFont('Outfit')" style="background: var(--bronze); color: #0B0A09; border: none; padding: 5px 14px; border-radius: 9999px; font-weight: 700; font-size: 0.76rem; cursor: pointer; transition: all 0.2s;">
+        1. Outfit (Khuyên dùng · Chuẩn nét 'interior' & bo tròn mềm)
+      </button>
+      <button id="btn-font-syne" onclick="changeFont('Syne')" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--hairline); padding: 5px 14px; border-radius: 9999px; font-weight: 500; font-size: 0.76rem; cursor: pointer; transition: all 0.2s;">
+        2. Syne (Uốn lượn điêu khắc · Giống nét chữ 'LAI HUY')
+      </button>
+      <button id="btn-font-plus" onclick="changeFont('Plus Jakarta Sans')" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--hairline); padding: 5px 14px; border-radius: 9999px; font-weight: 500; font-size: 0.76rem; cursor: pointer; transition: all 0.2s;">
+        3. Plus Jakarta Sans (Hiện đại · Tinh tế)
+      </button>
+    </div>
+  </div>
+
+  <main class="container">
+
+    <!-- ================================================================= -->
+    <!-- VIEW 1: HERO & FIRST FOLD REDESIGN -->
+    <!-- ================================================================= -->
+    <section id="view-hero" class="view-section active">
+      <div class="intro-header">
+        <div class="title-group">
+          <span class="tag-meta">Bản vẽ thiết kế 01 / First Impression</span>
+          <h2>Hero & Màn Hình Đầu Tiên (First Fold)</h2>
+          <p>Loại bỏ sự ngột ngạt của 7 tầng chữ chồng lấn. Tôn vinh không gian kiến trúc khách sạn cao cấp, khẳng định vị thế tổng thầu sản xuất trực tiếp với dải số liệu kiến trúc mạ vàng sang trọng.</p>
+        </div>
+      </div>
+
+      <div class="preview-canvas">
+        <div class="canvas-bar">
+          <div class="browser-dots">
+            <div class="browser-dot"></div>
+            <div class="browser-dot"></div>
+            <div class="browser-dot"></div>
+          </div>
+          <div class="browser-url">https://www.noithatlaihuy.vn/ — Luxury Editorial Viewport (1440 × 900)</div>
+          <div style="font-size: 0.75rem; color: var(--bronze-light)">DESKTOP RESOLVED</div>
+        </div>
+
+        <div style="position: relative; background: #0B0A09;">
+          <!-- Mockup Navigation -->
+          <nav class="mock-site-header">
+            <div class="mock-logo">
+              <img src="./laihuy-interior/public/logo-mono-white.png" alt="Lai Huy Interior" style="height: 38px; width: auto; object-fit: contain;">
+            </div>
+
+            <ul class="mock-nav">
+              <li><a href="#" class="active">Trang Chủ</a></li>
+              <li><a href="#">Dự Án</a></li>
+              <li><a href="#">Nhà Xưởng</a></li>
+              <li><a href="#">Dịch Vụ</a></li>
+              <li><a href="#">Giới Thiệu</a></li>
+              <li><a href="#">Liên Hệ</a></li>
+            </ul>
+
+            <div class="mock-header-actions">
+              <div class="mock-lang-btn"><span class="active">VI</span> &nbsp;|&nbsp; <span>EN</span></div>
+              <a href="#" class="btn-luxury-outline">
+                Tư vấn B2B
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+              </a>
+            </div>
+          </nav>
+
+          <!-- Hero Canvas Content -->
+          <div class="hero-canvas-inner">
+            <div class="hero-content-block">
+              <div class="hero-kicker">NHÀ THẦU SẢN XUẤT & THI CÔNG NỘI THẤT DỰ ÁN</div>
+              <h1 class="hero-headline">
+                Kiến tạo không gian nội thất <em>chuẩn mực</em> cho khách sạn & villa.
+              </h1>
+              <p class="hero-sublead">
+                Gia công trực tiếp từ 3.000m² hệ thống nhà xưởng Tây Ninh & Vĩnh Long. Kiểm soát tuyệt đối vật liệu, tiến độ bóc tách BOQ và chất lượng hoàn thiện đồng bộ.
+              </p>
+
+              <div class="hero-action-row">
+                <a href="#" class="btn-solid-gold">
+                  Xem dự án tiêu biểu
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <a href="#" class="btn-ghost-link">
+                  <span>Tải Hồ Sơ Năng Lực (PDF)</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Floating Metrics Strip -->
+            <div class="floating-metrics-rail">
+              <div class="metric-col">
+                <div class="metric-val">3.000 m²</div>
+                <div class="metric-lbl">XƯỞNG SẢN XUẤT</div>
+                <div class="metric-desc">Tây Ninh & Vĩnh Long</div>
+              </div>
+              <div class="metric-col">
+                <div class="metric-val">50 phòng/tháng</div>
+                <div class="metric-lbl">CÔNG SUẤT DỰ ÁN</div>
+                <div class="metric-desc">Đồng bộ chuẩn khách sạn 4-5 sao</div>
+              </div>
+              <div class="metric-col">
+                <div class="metric-val">0.2 mm</div>
+                <div class="metric-lbl">ĐỘ CHÍNH XÁC CNC</div>
+                <div class="metric-desc">Dây chuyền Nesting tự động</div>
+              </div>
+              <div class="metric-col">
+                <div class="metric-val">24 Giờ</div>
+                <div class="metric-lbl">BÓC TÁCH BOQ</div>
+                <div class="metric-desc">Phản hồi báo giá kỹ thuật</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- VIEW 2: SHOWCASE DỰ ÁN (EDITORIAL ASYMMETRIC GRID) -->
+    <!-- ================================================================= -->
+    <section id="view-showcase" class="view-section">
+      <div class="intro-header">
+        <div class="title-group">
+          <span class="tag-meta">Bản vẽ thiết kế 02 / Editorial Showcase</span>
+          <h2>Khu Vực Trưng Bày Dự Án Tiêu Biểu</h2>
+          <p>Thay thế 3 thẻ hộp trắng đơn điệu bằng bố cục dạng tạp chí kiến trúc (Asymmetric Showcase). Tạo nhịp điệu thị giác với một công trình tâm điểm và các góc nhìn chất liệu tinh tế.</p>
+        </div>
+      </div>
+
+      <div class="preview-canvas">
+        <div class="mock-section">
+          <div class="section-header-split">
+            <div>
+              <span class="section-eyebrow">PORTFOLIO DỰ ÁN ĐÃ THỰC HIỆN</span>
+              <h2 class="section-headline">Những công trình được định hình bởi <span>tay nghề chế tác</span>.</h2>
+            </div>
+            <a href="#" class="btn-luxury-outline">Xem tất cả 11 dự án →</a>
+          </div>
+
+          <div class="showcase-editorial-grid">
+            <!-- Main Hero Project -->
+            <div class="project-feature-card">
+              <div class="project-img-box">
+                <img src="./laihuy-interior/public/images/projects/khach-san-eo-gio/3.webp" alt="Khách sạn Eo Gió">
+                <span class="project-tag-pill">HOSPITALITY · 1.670 M²</span>
+              </div>
+              <div class="project-info-body">
+                <div>
+                  <h3 class="project-title">Tổ hợp Khách sạn Căn hộ Dịch vụ Eo Gió</h3>
+                  <p class="project-excerpt">
+                    Triển khai trọn gói nội thất 50 phòng nghỉ và sảnh đón. Điểm nhấn là hệ vách gỗ sáng uốn cong tinh xảo, đá tự nhiên và khung thép sơn tĩnh điện mảnh tạo cảm giác thoáng đạt.
+                  </p>
+                </div>
+                <div class="project-specs-row">
+                  <div class="spec-item">
+                    <div class="spec-label">ĐỊA ĐIỂM</div>
+                    <div class="spec-value">TP. Vĩnh Long</div>
+                  </div>
+                  <div class="spec-item">
+                    <div class="spec-label">PHẠM VI</div>
+                    <div class="spec-value">Thiết kế & Sản xuất trọn gói</div>
+                  </div>
+                  <div class="spec-item">
+                    <div class="spec-label">VẬT LIỆU CHÍNH</div>
+                    <div class="spec-value">Gỗ An Cường · Khung thép · Đá tự nhiên</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Secondary Projects Stack -->
+            <div class="secondary-stack">
+              <div class="project-card-compact">
+                <div class="compact-img-box">
+                  <img src="./laihuy-interior/public/images/projects/codi-boutique-hotel/phong-dien-hinh-1/p3-03.webp" alt="Codi Boutique Hotel">
+                </div>
+                <div class="compact-info-body">
+                  <div>
+                    <span style="font-size:0.7rem; color:var(--bronze-light); letter-spacing:0.1em; text-transform:uppercase;">BOUTIQUE HOTEL · 556 M²</span>
+                    <h4 class="compact-title">Codi Boutique Hotel</h4>
+                    <p class="compact-desc">
+                      Gia công 3 loại phòng ngủ đặc trưng với các mảng vòm mềm mại, tông màu đất ấm mang lại trải nghiệm nghỉ dưỡng dịu nhẹ.
+                    </p>
+                  </div>
+                  <div style="font-size:0.8rem; color:var(--text-main); font-weight:600;">Xem chi tiết case study →</div>
+                </div>
+              </div>
+
+              <div class="project-card-compact">
+                <div class="compact-img-box">
+                  <img src="./laihuy-interior/public/images/projects/codi-villa-phan-thiet/1.webp" alt="Codi Villa Phan Thiết">
+                </div>
+                <div class="compact-info-body">
+                  <div>
+                    <span style="font-size:0.7rem; color:var(--bronze-light); letter-spacing:0.1em; text-transform:uppercase;">LUXURY VILLA · 4 CĂN</span>
+                    <h4 class="compact-title">Codi Villa Phan Thiết</h4>
+                    <p class="compact-desc">
+                      Phong cách Industrial Modern ven biển. Bê tông mài, khung thép đen và điểm nhấn đỏ đất nung tạo nên cá tính kiến trúc vững chãi.
+                    </p>
+                  </div>
+                  <div style="font-size:0.8rem; color:var(--text-main); font-weight:600;">Xem chi tiết case study →</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- VIEW 3: CHI TIẾT DỰ ÁN (CASE STUDY EDITORIAL) -->
+    <!-- ================================================================= -->
+    <section id="view-detail" class="view-section">
+      <div class="intro-header">
+        <div class="title-group">
+          <span class="tag-meta">Bản vẽ thiết kế 03 / Architectural Case Study</span>
+          <h2>Trang Chi Tiết Dự Án (Case Study Editorial)</h2>
+          <p>Nâng cấp trang dự án từ "bộ sưu tập ảnh cuộn dài mệt mỏi" thành một Hồ sơ kiến trúc cao cấp: Bảng thông số kỹ thuật đắt giá, Câu chuyện xử lý vật liệu & kỹ thuật mộng vòm, Bộ sưu tập ảnh phong cách Tạp chí và Bảng mẫu vật liệu kèm phễu chuyển đổi B2B.</p>
+        </div>
+      </div>
+
+      <div class="preview-canvas">
+        <div class="canvas-bar">
+          <div class="browser-dots">
+            <div class="browser-dot"></div>
+            <div class="browser-dot"></div>
+            <div class="browser-dot"></div>
+          </div>
+          <div class="browser-url">https://www.noithatlaihuy.vn/du-an/khach-san-eo-gio — Case Study Editorial Viewport (1440 × 900)</div>
+          <div style="font-size: 0.75rem; color: var(--bronze-light)">CASE STUDY RESOLVED</div>
+        </div>
+
+        <div style="position: relative; background: #0B0A09;">
+          <!-- Case Study Top Masthead -->
+          <div class="detail-masthead">
+            <div class="detail-header-meta">
+              <span class="detail-category-badge">HOSPITALITY · BOUTIQUE HOTEL</span>
+              <span class="detail-location-text">TP. Vĩnh Long, Việt Nam · Hoàn thành 2024</span>
+            </div>
+
+            <h1 class="detail-main-title">
+              Tổ Hợp Khách Sạn Căn Hộ Dịch Vụ <span>Eo Gió</span>.
+            </h1>
+
+            <p class="detail-lead-summary">
+              Triển khai trọn gói giải pháp sản xuất đồ gỗ liền tường, hệ vách ốp cong bán kính R600 không đường nối và lắp dựng hoàn thiện 50 phòng lưu trú cao cấp đạt chuẩn vận hành.
+            </p>
+
+            <!-- Floating Architectural Specs Rail -->
+            <div class="detail-specs-rail">
+              <div class="detail-spec-col">
+                <div class="detail-spec-kicker">QUY MÔ CÔNG TRÌNH</div>
+                <div class="detail-spec-val">1.670 m²</div>
+                <div class="detail-spec-sub">50 phòng suite & sảnh đón</div>
+              </div>
+              <div class="detail-spec-col">
+                <div class="detail-spec-kicker">TIẾN ĐỘ THI CÔNG</div>
+                <div class="detail-spec-val">65 Ngày</div>
+                <div class="detail-spec-sub">45 ngày xưởng + 20 ngày lắp đặt</div>
+              </div>
+              <div class="detail-spec-col">
+                <div class="detail-spec-kicker">PHẠM VI THỰC HIỆN</div>
+                <div class="detail-spec-val">Trọn Gói</div>
+                <div class="detail-spec-sub">Bóc tách BOQ, gia công & lắp dựng</div>
+              </div>
+              <div class="detail-spec-col">
+                <div class="detail-spec-kicker">VẬT LIỆU CHỦ ĐẠO</div>
+                <div class="detail-spec-val">Gỗ Sồi & Marble</div>
+                <div class="detail-spec-sub">MDF chống ẩm An Cường lõi xanh</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Narrative Spread & Engineering Story -->
+          <div class="case-study-content-wrap">
+            <div class="narrative-grid">
+              <div class="narrative-col-main">
+                <span class="section-eyebrow">CÂU CHUYỆN THI CÔNG & GIẢI PHÁP</span>
+                <h3>Nghệ thuật uốn cong vách gỗ & Thách thức bóc tách vật tư</h3>
+                <p>
+                  Khách sạn Eo Gió tọa lạc tại vị trí đón gió sông Tiền, đòi hỏi mọi giải pháp nội thất gỗ công nghiệp phải có tính kháng ẩm vượt trội và độ ổn định cơ học cao. Đội ngũ kỹ sư của Lai Huy đã áp dụng công nghệ dán cạnh kháng ẩm keo PUR kết hợp cốt ván chống ẩm chuyên dụng.
+                </p>
+
+                <div class="architectural-quote">
+                  <p>
+                    "Yêu cầu khắt khe nhất của dự án là các hệ vách vòm gỗ uốn cong liên tục bán kính R600 không nhìn thấy mối ghép, đồng thời phải hoàn thành và kiểm định toàn bộ 50 phòng trong 65 ngày để kịp lễ khai trương."
+                  </p>
+                  <cite>— KS. Nguyễn Hồng Sơn, Giám Đốc Sản Xuất Lai Huy Interior</cite>
+                </div>
+
+                <p>
+                  Tất cả các chi tiết giường bọc nệm, tủ áo kịch trần cánh kính và bàn trà đều được sản xuất thử nghiệm trên 1 phòng mẫu (Mockup Room) tại nhà xưởng Tây Ninh để Chủ đầu tư trực tiếp nghiệm thu bề mặt trước khi sản xuất hàng loạt.
+                </p>
+              </div>
+
+              <!-- Scope & Deliverables Sidebar -->
+              <div class="narrative-col-side">
+                <span class="side-block-title">DANH MỤC HẠNG MỤC SẢN XUẤT</span>
+                <ul class="scope-list-check">
+                  <li>
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span>50 bộ giường ngủ bọc nệm nỉ Bỉ cao cấp tích hợp táp đầu giường cảm ứng</span>
+                  </li>
+                  <li>
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span>Hệ tủ áo khung nhôm định hình xước mờ cao kịch trần 2.8m</span>
+                  </li>
+                  <li>
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span>Vách gỗ ốp tường uốn lượn xử lý sơn dầu mờ giữ nguyên vân gỗ sồi</span>
+                  </li>
+                  <li>
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span>Bàn làm việc, kệ TV và minibar ốp đá tự nhiên Marble Volakas</span>
+                  </li>
+                  <li>
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <span>Hệ cửa chính chống cháy 60 phút hoàn thiện veneer đồng màu</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Curated Editorial Gallery Spread -->
+            <div class="editorial-gallery-heading">
+              <div>
+                <span class="section-eyebrow">BỘ SƯU TẬP KHÔNG GIAN THỰC TẾ</span>
+                <h2 class="section-headline" style="font-size: 2.25rem;">Góc nhìn <span>hoàn thiện</span> công trình.</h2>
+              </div>
+              <div style="font-size:0.85rem; color:var(--bronze-light); letter-spacing:0.05em; font-weight:600;">
+                TIÊU BIỂU 3 / 24 ẢNH CHỤP THẬT
+              </div>
+            </div>
+
+            <div class="gallery-spread-grid">
+              <div class="spread-hero-frame">
+                <img src="./laihuy-interior/public/images/projects/khach-san-eo-gio/3.webp" alt="Không gian phòng khách và bếp suite">
+                <span class="project-tag-pill" style="top:1rem; left:1rem;">KHÔNG GIAN SUITE CAO CẤP</span>
+              </div>
+
+              <div class="spread-diptych">
+                <div class="spread-small-frame">
+                  <img src="./laihuy-interior/public/images/projects/codi-boutique-hotel/phong-dien-hinh-1/p3-03.webp" alt="Phòng ngủ điển hình">
+                  <span class="project-tag-pill" style="top:1rem; left:1rem;">PHÒNG NGỦ ĐÔI DIỆN HÌNH</span>
+                </div>
+                <div class="spread-small-frame">
+                  <img src="./laihuy-interior/public/images/projects/cai-tao-nha-quan-8/3.webp" alt="Chi tiết bàn ăn và vách ngăn">
+                  <span class="project-tag-pill" style="top:1rem; left:1rem;">CHI TIẾT VÁCH NĂNG & ÁNH SÁNG</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lightbox Trigger -->
+            <div class="lightbox-trigger-card" onclick="alert('Đang mở Lightbox toàn màn hình duyệt 24 góc chụp của dự án Eo Gió!')">
+              <div style="display:flex; align-items:center; gap: 1.25rem;">
+                <div style="width:48px; height:48px; border-radius:50%; background:rgba(184,135,90,0.2); display:flex; align-items:center; justify-content:center;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#B8875A" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                </div>
+                <div>
+                  <div style="font-family:var(--font-display); font-size:1.25rem; color:#FFF; font-weight:500;">
+                    Khám phá trọn bộ 24 góc ảnh thực tế công trình
+                  </div>
+                  <div style="font-size:0.82rem; color:var(--text-muted);">
+                    Bao gồm sảnh đón, phòng Suite, phòng đơn, chi tiết khớp mộng gỗ và tủ áo
+                  </div>
+                </div>
+              </div>
+              <span class="btn-luxury-outline" style="pointer-events:none;">
+                Mở Lightbox Toàn Màn Hình
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+              </span>
+            </div>
+
+            <!-- Tactile Materials Strip -->
+            <div class="materials-board-section">
+              <span class="section-eyebrow">BẢNG VẬT LIỆU CHẾ TÁC (MATERIAL BOARD)</span>
+              <h2 class="section-headline" style="font-size: 2.25rem;">Những chất liệu định hình <span>đẳng cấp</span> công trình.</h2>
+
+              <div class="materials-sample-grid">
+                <div class="material-sample-card">
+                  <div class="sample-swatch-box" style="background: linear-gradient(135deg, #7C5C43 0%, #4D3421 100%);">
+                    <span style="font-size:0.7rem; color:#FFF; background:rgba(0,0,0,0.5); padding:2px 6px; border-radius:3px;">SAMPLE 01</span>
+                  </div>
+                  <div class="sample-origin">GỖ TỰ NHIÊN</div>
+                  <div class="sample-name">Gỗ Sồi Trắng Bắc Mỹ</div>
+                  <div class="sample-spec">Sấy ổn định ẩm <12%, hoàn thiện sơn lau dầu mờ giữ sớ gỗ tự nhiên, chống cong vênh.</div>
+                </div>
+
+                <div class="material-sample-card">
+                  <div class="sample-swatch-box" style="background: linear-gradient(135deg, #2E5B4B 0%, #1A352B 100%);">
+                    <span style="font-size:0.7rem; color:#FFF; background:rgba(0,0,0,0.5); padding:2px 6px; border-radius:3px;">SAMPLE 02</span>
+                  </div>
+                  <div class="sample-origin">VÁN CÔNG NGHIỆP</div>
+                  <div class="sample-name">MDF Chống Ẩm Lõi Xanh</div>
+                  <div class="sample-spec">Cốt ván An Cường tiêu chuẩn E1, phủ Melamine vân vải nẹp chỉ dán cạnh keo kháng ẩm PUR.</div>
+                </div>
+
+                <div class="material-sample-card">
+                  <div class="sample-swatch-box" style="background: linear-gradient(135deg, #E0DDD8 0%, #B8B3AB 100%); color:#000;">
+                    <span style="font-size:0.7rem; color:#FFF; background:rgba(0,0,0,0.7); padding:2px 6px; border-radius:3px;">SAMPLE 03</span>
+                  </div>
+                  <div class="sample-origin">ĐÁ TỰ NHIÊN</div>
+                  <div class="sample-name">Marble Volakas Trắng</div>
+                  <div class="sample-spec">Nhập khẩu Hy Lạp, vân mây xám khói, gia công xử lý chống thấm 5 lớp cho mặt bàn & minibar.</div>
+                </div>
+
+                <div class="material-sample-card">
+                  <div class="sample-swatch-box" style="background: linear-gradient(135deg, #2C2C2C 0%, #141414 100%);">
+                    <span style="font-size:0.7rem; color:#FFF; background:rgba(0,0,0,0.5); padding:2px 6px; border-radius:3px;">SAMPLE 04</span>
+                  </div>
+                  <div class="sample-origin">KIM LOẠI NỘI THẤT</div>
+                  <div class="sample-name">Khung Thép Sơn Tĩnh Điện</div>
+                  <div class="sample-spec">Bề mặt bắn cát xử lý mịn, sơn tĩnh điện màu đen mờ chống xước, chịu môi trường biển.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- B2B Conversion Action Bar -->
+            <div class="detail-cta-bar">
+              <div>
+                <span class="section-eyebrow" style="color:var(--bronze-light);">DÀNH CHO CHỦ ĐẦU TƯ & TỔNG THẦU</span>
+                <h3 style="font-family:var(--font-display); font-size:1.85rem; color:#FFF; margin: 0.5rem 0 0.75rem;">
+                  Bạn đang chuẩn bị dự án khách sạn hoặc công trình tương tự?
+                </h3>
+                <p style="color:var(--text-muted); font-size:0.92rem; max-width:650px;">
+                  Lai Huy sẵn sàng cung cấp bộ hồ sơ bóc tách kỹ thuật mẫu của dự án Eo Gió, hoặc tư vấn dự toán chi phí trong 24 giờ cho bản vẽ của bạn.
+                </p>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <a href="#" class="btn-solid-gold" style="white-space:nowrap;">
+                  Tải Hồ Sơ Bản Vẽ & BOQ Mẫu (PDF)
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+                </a>
+                <a href="#" class="btn-luxury-outline" style="white-space:nowrap; justify-content:center;">
+                  Nhận Báo Giá Dự Án Trong 24h →
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- VIEW 4: NĂNG LỰC NHÀ XƯỞNG (THE CRAFT TRINITY) -->
+    <!-- ================================================================= -->
+    <section id="view-trinity" class="view-section">
+      <div class="intro-header">
+        <div class="title-group">
+          <span class="tag-meta">Bản vẽ thiết kế 04 / Factory & Scale</span>
+          <h2>Năng Lực Nhà Xưởng (The Craft & Precision Trinity)</h2>
+          <p>Dẹp bỏ danh sách 7 ô máy móc rời rạc và bức ảnh tủ áo lạc quẻ. Thay thế bằng 3 trụ cột chứng minh năng lực thật của Lai Huy đối với các Chủ đầu tư và Tổng thầu.</p>
+        </div>
+      </div>
+
+      <div class="preview-canvas">
+        <div class="mock-section" style="background: #0E0D0C;">
+          <div style="text-align: center; max-width: 750px; margin: 0 auto 3rem;">
+            <span class="section-eyebrow">BẢO CHỨNG TỪ GỐC NHÀ MÁY</span>
+            <h2 class="section-headline" style="max-width: 100%; font-size: 2.5rem;">
+              Không chỉ là bản vẽ — Chúng tôi sở hữu <span>dây chuyền sản xuất thật</span>.
+            </h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 1rem;">
+              Hệ thống xưởng sản xuất 3.000m² tại Tây Ninh và Vĩnh Long giúp loại bỏ khâu trung gian, tối ưu 15–20% ngân sách và đảm bảo 100% tiến độ bàn giao cho dự án quy mô lớn.
+            </p>
+          </div>
+
+          <div class="factory-trinity-grid">
+            <div class="trinity-card">
+              <span class="trinity-num">01 / KỸ THUẬT</span>
+              <h3 class="trinity-title">Bóc tách chuẩn xác & Tối ưu hóa BOQ</h3>
+              <p class="trinity-text">
+                Chuyển hóa concept kiến trúc thành hồ sơ Shopdrawing chi tiết từng milimet, tính toán đường cắt ván CNC để tiết kiệm vật tư và giảm giá thành sản xuất.
+              </p>
+              <ul class="trinity-features">
+                <li>Phần mềm bóc tách vật tư tự động</li>
+                <li>Dựng phòng mẫu (Mockup Room) đối soát</li>
+                <li>Cam kết vật liệu chuẩn An Cường / Ba Thanh</li>
+              </ul>
+            </div>
+
+            <div class="trinity-card">
+              <span class="trinity-num">02 / CÔNG NGHỆ</span>
+              <h3 class="trinity-title">Dây chuyền CNC Nesting & Hoàn thiện</h3>
+              <p class="trinity-text">
+                Máy móc đồng bộ từ cắt Nesting, dán cạnh tự động kháng ẩm PUR, máy khoan cam liên kết đến phòng sơn sấy áp suất dương không bám bụi.
+              </p>
+              <ul class="trinity-features">
+                <li>Sai số ghép mộng dưới 0.2mm</li>
+                <li>Chống bong tróc cạnh nẹp trong môi trường biển</li>
+                <li>Bề mặt sơn phủ đồng đều 100% các căn hộ</li>
+              </ul>
+            </div>
+
+            <div class="trinity-card">
+              <span class="trinity-num">03 / KIỂM SOÁT</span>
+              <h3 class="trinity-title">Quy trình QC & Lắp dựng tại công trường</h3>
+              <p class="trinity-text">
+                Từng module nội thất được lắp thử nghiệm tại xưởng trước khi đóng gói xốp màng chống trầy. Đội ngũ giám sát trực tiếp tại dự án hỗ trợ 24/7.
+              </p>
+              <ul class="trinity-features">
+                <li>Đánh số module theo sơ đồ mặt bằng</li>
+                <li>Nghiệm thu nội bộ 3 bước trước bàn giao</li>
+                <li>Bảo hành bảo trì 24 tháng cho dự án</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- VIEW 4: SO SÁNH BEFORE VS AFTER -->
+    <!-- ================================================================= -->
+    <section id="view-comparison" class="view-section">
+      <div class="intro-header">
+        <div class="title-group">
+          <span class="tag-meta">Đối chiếu chất lượng / Evolution Analysis</span>
+          <h2>So Sánh Trực Quan: Hiện Tại vs. Redesign Mới</h2>
+          <p>Phân tích cụ thể các điểm nghẽn của phiên bản cũ và cách thức giải quyết triệt để trong bản thiết kế Luxury Editorial.</p>
+        </div>
+      </div>
+
+      <div class="comparison-grid">
+        <!-- Before Panel -->
+        <div class="compare-panel before">
+          <span class="compare-badge">Hiện Tại (Current Codebase)</span>
+          <ul class="compare-list">
+            <li>
+              <span class="icon-cross">✕</span>
+              <div>
+                <strong>Hero chật chội, nhồi nhét 7 tầng chữ</strong>
+                <span>Cả Eyebrow, H1 khổng lồ, subtitle, cam kết, mô tả, nút bấm và dải thẻ che lấp toàn bộ hình ảnh kiến trúc.</span>
+              </div>
+            </li>
+            <li>
+              <span class="icon-cross">✕</span>
+              <div>
+                <strong>Lạm dụng thẻ hộp (Boxy Cards) khắp nơi</strong>
+                <span>Hàng loạt thẻ viền xám mỏng bo góc 16px tạo cảm giác như giao diện web phần mềm, mất đi sự đắt giá của nội thất.</span>
+              </div>
+            </li>
+            <li>
+              <span class="icon-cross">✕</span>
+              <div>
+                <strong>Quy trình 6 bước lặp lại trên 3 trang khác nhau</strong>
+                <span>Khối quy trình xuất hiện y hệt ở Trang chủ, Giới thiệu và Nhà xưởng gây bội thực thông tin cho người đọc.</span>
+              </div>
+            </li>
+            <li>
+              <span class="icon-cross">✕</span>
+              <div>
+                <strong>Màn hình đầu (Fold) trang Dự án và Liên hệ trống rỗng</strong>
+                <span>Khách vào trang Dự án không thấy dự án nào, vào trang Liên hệ không thấy số hotline hay form điền.</span>
+              </div>
+            </li>
+            <li>
+              <span class="icon-cross">✕</span>
+              <div>
+                <strong>Thiếu các đòn bẩy chuyển đổi B2B mạnh mẽ</strong>
+                <span>Chỉ có nút mở mailto thông thường, thiếu nút tải Hồ sơ năng lực PDF, tải Catalog hay gửi bản vẽ bóc tách BOQ.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- After Panel -->
+        <div class="compare-panel after">
+          <span class="compare-badge">Redesign Mới (Luxury Editorial)</span>
+          <ul class="compare-list">
+            <li>
+              <span class="icon-check">✓</span>
+              <div>
+                <strong>Hero thoáng đãng, sang trọng chuẩn quốc tế</strong>
+                <span>Typography phân cấp tinh tế (Playfair + Plus Jakarta Sans), hình ảnh công trình được thở và tỏa sáng tối đa.</span>
+              </div>
+            </li>
+            <li>
+              <span class="icon-check">✓</span>
+              <div>
+                <strong>Bố cục Asymmetric Editorial phá cách</strong>
+                <span>Xóa bỏ khung viền cứng nhắc, thay bằng khoảng thở âm bản, đường hairline mạ vàng mờ và dải số liệu kiến trúc.</span>
+              </div>
+            </li>
+            <li>
+              <span class="icon-check">✓</span>
+              <div>
+                <strong>Gom thông tin về trang đích chính xác (Canonical Flow)</strong>
+                <span>Trang chủ chỉ giữ tóm tắt năng lực cốt lõi; quy trình chi tiết dồn về Giới thiệu; thông số máy móc dồn về Nhà xưởng.</span>
+              </div>
+            </li>
+            <li>
+              <span class="icon-check">✓</span>
+              <div>
+                <strong>Above-the-fold Actionable</strong>
+                <span>Trang Dự án hé lộ ngay công trình nổi bật; Trang Liên hệ đưa thông tin văn phòng, hotline và form lên ngay màn hình 1.</span>
+              </div>
+            </li>
+            <li>
+              <span class="icon-check">✓</span>
+              <div>
+                <strong>Hệ thống phễu khách hàng B2B chuyên nghiệp</strong>
+                <span>Nút Tải Profile Năng Lực PDF, Form tiếp nhận file CAD/BOQ, cam kết báo giá trong 24h tạo niềm tin tuyệt đối.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- VIEW 5: DESIGN TOKENS & APPROVAL -->
+    <!-- ================================================================= -->
+    <section id="view-system" class="view-section">
+      <div class="intro-header">
+        <div class="title-group">
+          <span class="tag-meta">Hệ thống kỹ thuật / Design System Spec</span>
+          <h2>Design Tokens & Kế Hoạch Triển Khai Mã Nguồn</h2>
+          <p>Các thông số màu sắc, kiểu chữ và cách thức cập nhật an toàn vào mã nguồn Nuxt 4 của dự án.</p>
+        </div>
+      </div>
+
+      <div class="specs-board">
+        <h3 class="specs-title">1. Đối Chiếu Bảng Màu: Có Khác Bảng Màu Cũ Không?</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
+          <strong style="color: var(--bronze-light);">Câu trả lời là KHÔNG KHÁC VỀ BẢN CHẤT:</strong> Toàn bộ mã màu trong bản thiết kế này được kế thừa chính xác 100% từ hệ thống token màu gốc của dự án trong <code>design-tokens.md</code> và <code>main.css</code>. Điểm khác biệt duy nhất là <strong>Cách phân bổ & tỷ lệ ứng dụng</strong>.
+        </p>
+
+        <div class="token-preview-row">
+          <div class="color-swatch" style="background: #0B0A09; color: #FFF;">
+            <div>#0B0A09</div>
+            <div style="font-weight:400; color:rgba(255,255,255,0.6)">Chính là token: --color-ink-950</div>
+          </div>
+          <div class="color-swatch" style="background: #141210; color: #FFF;">
+            <div>#141210</div>
+            <div style="font-weight:400; color:rgba(255,255,255,0.6)">Chính là token: --color-ink-900</div>
+          </div>
+          <div class="color-swatch" style="background: #B8875A; color: #000;">
+            <div>#B8875A</div>
+            <div style="font-weight:400; color:rgba(0,0,0,0.7)">Chính là token: --color-wood-400</div>
+          </div>
+          <div class="color-swatch" style="background: #F5F2EB; color: #000;">
+            <div>#F5F2EB</div>
+            <div style="font-weight:400; color:rgba(0,0,0,0.7)">Êm mắt hơn: --color-ink-50 (#F7F7F5)</div>
+          </div>
+        </div>
+
+        <div style="background: rgba(184, 135, 90, 0.08); border: 1px solid var(--hairline-gold); padding: 1.25rem 1.75rem; border-radius: 8px; margin-bottom: 2.5rem; font-size: 0.9rem; line-height: 1.6;">
+          <strong style="color: #FFF;">Vì sao trông lại sang hơn hẳn bản cũ?</strong><br>
+          Ở bản cũ, website dùng quá nhiều nền trắng tinh <code>#FFFFFF</code> xen kẽ các mảng đen cộc lốc khiến hình ảnh nội thất bị chìm và giao diện trông cứng nhắc. Bản redesign chuyển sang phong cách <strong>Dark Warm Luxury đồng nhất</strong>, dùng chính nền đen than <code>#0B0A09</code> của dự án làm phông nền chính, giúp màu gỗ óc chó, đá tự nhiên và ánh kim loại trong ảnh công trình của Lai Huy bừng sáng rực rỡ.
+        </div>
+
+        <h3 class="specs-title" style="margin-top: 2rem;">2. Đồng Bộ Font Chữ Hoàn Toàn Với Logo Lai Huy</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
+          Quan sát trực tiếp Logo thương hiệu của Lai Huy Interior:
+        </p>
+
+        <div style="display: grid; grid-template-columns: 280px 1fr; gap: 2rem; align-items: center; background: var(--bg-surface); padding: 2rem; border-radius: 8px; border: 1px solid var(--hairline); margin-bottom: 2rem;">
+          <div style="text-align: center; padding: 1.5rem; background: #000; border-radius: 8px; border: 1px solid var(--hairline-gold);">
+            <img src="./laihuy-interior/public/logo-mono-white.png" alt="Lai Huy Interior Logo" style="max-width: 100%; height: auto;">
+          </div>
+          <div>
+            <h4 style="font-size: 1.15rem; color: #FFF; margin-bottom: 0.5rem; font-family: var(--font-display);">
+              Đặc trưng hình học của Logo:
+            </h4>
+            <ul style="list-style: none; font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; display: flex; flex-direction: column; gap: 8px;">
+              <li>✦ <strong>Chữ "LAI HUY":</strong> Nét chữ hình học bo tròn mềm (Rounded Geometric), nét gạch ngang của chữ A và chữ H uốn lượn mềm mại như thớ gỗ và ngọn lửa.</li>
+              <li>✦ <strong>Chữ "interior":</strong> Chữ không chân (Geometric Sans-serif) hiện đại, nét đều (monolinear), khoảng cách chữ rộng (expanded tracking) thanh thoát.</li>
+              <li>✦ <strong>Giải pháp đồng bộ:</strong> Loại bỏ hoàn toàn font có chân cổ điển. Thay bằng font <strong>Outfit</strong> (khuyên dùng) hoặc <strong>Syne</strong> có cấu trúc hình học bo tròn mềm đồng điệu 100% với Logo!</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+          <div style="background: var(--bg-surface); padding: 1.5rem; border-radius: 6px; border: 1px solid var(--hairline);">
+            <div style="color: var(--bronze-light); font-size: 0.8rem; font-weight: 700; margin-bottom: 8px;">LỰA CHỌN 1: FONT OUTFIT (KHUYÊN DÙNG)</div>
+            <div style="font-family: 'Outfit', sans-serif; font-size: 1.85rem; color: #FFF; margin-bottom: 8px; font-weight: 600;">Lai Huy Interior — Khách Sạn & Villa</div>
+            <p style="color: var(--text-muted); font-size: 0.85rem;">
+              Cùng hệ Geometric Sans với chữ "interior", các góc bo nhẹ nhàng ăn khớp hoàn hảo với các góc lượn của chữ "LAI HUY".
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface); padding: 1.5rem; border-radius: 6px; border: 1px solid var(--hairline);">
+            <div style="color: var(--bronze-light); font-size: 0.8rem; font-weight: 700; margin-bottom: 8px;">LỰA CHỌN 2: FONT SYNE (NGHỆ THUẬT KIẾN TRÚC)</div>
+            <div style="font-family: 'Syne', sans-serif; font-size: 1.85rem; color: #FFF; margin-bottom: 8px; font-weight: 700;">Lai Huy Interior — Khách Sạn & Villa</div>
+            <p style="color: var(--text-muted); font-size: 0.85rem;">
+              Nét chữ điêu khắc nghệ thuật, các điểm tiếp giáp uốn lượn phá cách tương đồng với gạch ngang chữ A và H trong logo.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Approval Action Box -->
+      <div class="action-banner">
+        <div>
+          <h3>Anh Sơn đã sẵn sàng duyệt bản thiết kế này chưa?</h3>
+          <p>Nếu anh đã ưng ý với ngôn ngữ thiết kế mới, tôi sẽ tiến hành code từng bước vào dự án theo đúng kế hoạch triển khai.</p>
+        </div>
+        <div style="display:flex; gap: 1rem;">
+          <button onclick="alert('Bản thiết kế đã sẵn sàng triển khai! Hãy nhắn xác nhận trong khung chat để AI bắt đầu.')" class="btn-solid-gold" style="cursor:pointer; border:none;">
+            Duyệt & Bắt Đầu Triển Khai
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function switchView(tabId) {
+      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-tab-btn').forEach(el => el.classList.remove('active'));
+
+      const target = document.getElementById('view-' + tabId);
+      if (target) {
+        target.classList.add('active');
+      }
+
+      event.target.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function changeFont(fontName) {
+      document.documentElement.style.setProperty('--font-display', `'${fontName}', sans-serif`);
+      
+      const btns = [
+        { id: 'btn-font-outfit', name: 'Outfit' },
+        { id: 'btn-font-syne', name: 'Syne' },
+        { id: 'btn-font-plus', name: 'Plus Jakarta Sans' }
+      ];
+      
+      btns.forEach(b => {
+        const el = document.getElementById(b.id);
+        if (el) {
+          if (b.name === fontName) {
+            el.style.background = 'var(--bronze)';
+            el.style.color = '#0B0A09';
+            el.style.fontWeight = '700';
+            el.style.border = 'none';
+          } else {
+            el.style.background = 'var(--bg-card)';
+            el.style.color = 'var(--text-main)';
+            el.style.fontWeight = '500';
+            el.style.border = '1px solid var(--hairline)';
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

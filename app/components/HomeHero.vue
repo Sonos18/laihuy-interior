@@ -15,7 +15,7 @@ const { t } = useLanguage()
 <template>
   <section
     data-testid="home-hero"
-    class="home-hero relative min-h-[var(--hero-min-h-home)] overflow-hidden bg-ink-950 text-white"
+    class="home-hero relative min-h-[var(--hero-min-h-home)] overflow-hidden bg-[var(--bg-dark)] text-[var(--text-main)]"
   >
     <NuxtImg
       :src="image.path"
@@ -27,56 +27,49 @@ const { t } = useLanguage()
       fetchpriority="high"
       class="hero-image hero-media absolute inset-0 h-full w-full object-cover"
     />
-    <div class="home-hero__wash absolute inset-0" />
     <div
-      class="home-hero__grid absolute inset-0"
+      class="home-hero__wash pointer-events-none absolute inset-0"
       aria-hidden="true"
     />
 
-    <div class="shell relative z-10 flex min-h-[var(--hero-min-h-home)] flex-col justify-end pb-10 pt-28 md:pb-12">
+    <div class="shell relative z-10 flex min-h-[var(--hero-min-h-home)] flex-col justify-end pb-8 pt-28 md:pb-10">
       <div class="home-hero__copy">
         <p
           v-reveal
-          class="eyebrow reveal text-wood-200"
+          class="hero-kicker reveal"
         >
           {{ t(homePageContent.hero.eyebrow) }}
         </p>
         <h1
           v-reveal="80"
-          class="home-hero__title reveal mt-6 text-white"
+          class="home-hero__title reveal font-display text-white"
         >
           {{ t(homePageContent.hero.title) }}
         </h1>
         <p
-          v-reveal="140"
-          class="home-hero__accent reveal mt-5 text-wood-200"
-        >
-          {{ t(homePageContent.hero.accent) }}
-        </p>
-        <p
-          v-reveal="200"
-          class="reveal mt-5 max-w-2xl text-base leading-7 text-white/72 md:text-lg"
+          v-reveal="160"
+          class="home-hero__sublead reveal mt-5 max-w-2xl text-base leading-relaxed text-white/80 md:text-lg"
         >
           {{ t(homePageContent.hero.description) }}
         </p>
 
         <div
-          v-reveal="260"
-          class="reveal mt-8 flex flex-col gap-3 sm:flex-row"
+          v-reveal="240"
+          class="reveal mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
         >
           <NuxtLink
             to="/du-an"
-            class="btn-primary group"
+            class="btn-solid-gold group"
           >
             {{ t(homePageContent.hero.primaryCta) }}
             <Icon
               name="i-lucide-arrow-up-right"
-              class="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              class="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
             />
           </NuxtLink>
           <NuxtLink
             to="/lien-he"
-            class="btn-secondary"
+            class="btn-luxury-outline"
           >
             {{ t(homePageContent.hero.secondaryCta) }}
           </NuxtLink>
@@ -84,49 +77,77 @@ const { t } = useLanguage()
       </div>
     </div>
 
-    <div class="shell relative z-10 pb-12">
+    <div class="shell relative z-10 pb-10 md:pb-12">
       <HeroMetrics :metrics="metrics" />
     </div>
   </section>
 </template>
 
 <style scoped>
-.home-hero__wash {
-  background:
-    linear-gradient(90deg, rgb(11 10 9 / 0.88) 0%, rgb(23 13 9 / 0.56) 45%, transparent 78%),
-    linear-gradient(0deg, rgb(11 10 9 / 0.9) 0%, transparent 58%);
+.hero-image {
+  transform-origin: center center;
+  animation: kenBurnsHero 26s ease-in-out infinite alternate;
 }
 
-.home-hero__grid {
-  opacity: 0.22;
-  background-image:
-    linear-gradient(90deg, transparent calc(50% - 0.5px), rgb(255 255 255 / 0.15) 50%, transparent calc(50% + 0.5px)),
-    linear-gradient(transparent calc(50% - 0.5px), rgb(255 255 255 / 0.1) 50%, transparent calc(50% + 0.5px));
-  background-size: 25vw 100%, 100% 25vh;
+@keyframes kenBurnsHero {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-image {
+    animation: none;
+  }
+}
+
+.home-hero__wash {
+  background:
+    linear-gradient(90deg, rgb(11 10 9 / 0.94) 0%, rgb(11 10 9 / 0.65) 45%, rgb(11 10 9 / 0.35) 100%),
+    linear-gradient(0deg, rgb(11 10 9 / 0.96) 0%, rgb(11 10 9 / 0.4) 45%, transparent 100%);
 }
 
 .home-hero__copy {
-  max-width: 71rem;
+  max-width: 68rem;
+}
+
+.hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze-light);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.hero-kicker::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--bronze);
+  flex-shrink: 0;
 }
 
 .home-hero__title {
-  max-width: 67rem;
-  font-size: clamp(3rem, 7.2vw, 7.75rem);
+  max-width: 64rem;
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
   font-weight: 500;
-  line-height: 0.93;
-  letter-spacing: -0.065em;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
   text-wrap: balance;
-}
-
-.home-hero__accent {
-  font-size: clamp(1rem, 2vw, 1.45rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
 }
 
 @media (max-width: 767px) {
   .home-hero__title {
-    letter-spacing: -0.052em;
+    font-size: clamp(2.15rem, 8vw, 3rem);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
   }
 }
 </style>

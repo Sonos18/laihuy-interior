@@ -13,6 +13,7 @@ if (useSupabaseMedia && !supabaseUrl) {
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+
   modules: ['@nuxt/eslint', '@nuxt/image', '@nuxt/ui'],
 
   devtools: {
@@ -29,6 +30,16 @@ export default defineNuxtConfig({
     '@fontsource/inter/600.css',
     '@fontsource/inter/700.css',
     '@fontsource/inter/900.css',
+    '@fontsource/outfit/300.css',
+    '@fontsource/outfit/400.css',
+    '@fontsource/outfit/500.css',
+    '@fontsource/outfit/600.css',
+    '@fontsource/outfit/700.css',
+    '@fontsource/syne/400.css',
+    '@fontsource/syne/500.css',
+    '@fontsource/syne/600.css',
+    '@fontsource/syne/700.css',
+    '@fontsource/syne/800.css',
     '~/assets/css/main.css'
   ],
 
@@ -76,12 +87,14 @@ export default defineNuxtConfig({
     }
   },
 
-  // Inter is imported above from the installed @fontsource package so production builds never
+  // Fonts are imported above from installed @fontsource packages so production builds never
   // depend on an external font API. Provider lookup stays disabled here; the family declaration
   // still records every real weight used by the design. `normal` only — no italics are used.
   fonts: {
     families: [
-      { name: 'Inter', provider: 'none', weights: [400, 500, 600, 700, 900], styles: ['normal'] }
+      { name: 'Inter', provider: 'none', weights: [400, 500, 600, 700, 900], styles: ['normal'] },
+      { name: 'Outfit', provider: 'none', weights: [300, 400, 500, 600, 700], styles: ['normal'] },
+      { name: 'Syne', provider: 'none', weights: [400, 500, 600, 700, 800], styles: ['normal'] }
     ]
   },
 
