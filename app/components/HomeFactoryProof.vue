@@ -65,9 +65,9 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
           <dd class="mt-2 text-2xl font-medium tracking-tight text-[var(--color-ivory)] md:text-3xl">
             {{ t(metricFootprint.value) }}
           </dd>
-          <p class="mt-1 text-sm text-[var(--text-muted)]">
+          <dd class="mt-1 text-sm text-[var(--text-muted)]">
             {{ t(metricFootprint.description) }}
-          </p>
+          </dd>
         </div>
         <div
           v-if="metricCapacity"
@@ -79,9 +79,9 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
           <dd class="mt-2 text-2xl font-medium tracking-tight text-[var(--color-ivory)] md:text-3xl">
             {{ t(metricCapacity.value) }}
           </dd>
-          <p class="mt-1 text-sm text-[var(--text-muted)]">
+          <dd class="mt-1 text-sm text-[var(--text-muted)]">
             {{ t(metricCapacity.description) }}
-          </p>
+          </dd>
         </div>
       </dl>
 
