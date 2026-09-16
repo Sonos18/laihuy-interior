@@ -74,30 +74,37 @@ Anchors appear dynamically if and only if the corresponding chapter has content.
 ### Aesthetic Direction: High-End Architectural Editorial & Quiet Luxury
 The visual treatment elevates `/du-an/[slug]` from an ordinary white-background presentation into a prestigious architectural case study monograph.
 
-### Color Tokens (declared in `app/assets/css/main.css`)
+### Color & Surface Tokens (declared in `app/assets/css/main.css`)
 - **Dark Obsidian Surfaces**: Deep Obsidian (`--color-obsidian: #0b0a09`), Elevated Dark Surface (`--color-surface-dark: #141210`), Card Surface (`--color-card-dark: #1a1815`).
 - **Warm Bronze Accents**: Warm Bronze (`--color-bronze-warm: #b8875a`), Light Bronze (`--color-bronze-light: #d4a373`), Deep Bronze (`--color-bronze-dark: #8c6239`), semantic aliases `--bronze`, `--bronze-light`.
-- **Raw Silk Surfaces & Typography**: Raw Silk Editorial Light Surface (`--color-raw-silk: #fcfbf9`), Raw Silk Ivory (`--color-ivory: #f5f2eb`), Muted Text (`var(--text-muted)`), Subtle Text (`var(--text-muted-dark)`).
-- **Hairlines**: Restrained translucent hairlines (`--hairline: rgba(255, 255, 255, 0.08)`), Gold/Bronze hairlines (`--hairline-gold: rgba(184, 135, 90, 0.25)`), and warm dark hairlines on light surfaces.
+- **Text on Dark Surfaces**: Raw Silk Ivory typography (`--color-ivory: #f5f2eb`), Muted Text (`--text-muted`), Subtle Text (`--text-subtle`).
+- **Light Editorial Surfaces & Foreground**: LIGHT / existing editorial light surface using the current `bg-white` / `bg-ink-50` surface system, paired with existing light foreground/rule tokens:
+  - `--fg-light`
+  - `--fg-light-muted`
+  - `--fg-light-subtle`
+  - `--rule-light`
+  - `--accent-light`
+  No new light-surface palette or token is introduced by Phase 3.
+- **Hairlines**: Restrained translucent hairlines (`--hairline: rgb(255 255 255 / 0.08)`), Gold/Bronze hairlines (`--hairline-gold: rgb(184 135 90 / 0.25)`), and existing light rule hairlines (`--rule-light`).
 
 ### Explicit Editorial Pacing (Dark vs Light Rhythm)
 Do **NOT** blanket-convert every section to dark mode. The page follows an explicit, intentional alternating editorial rhythm:
 
 1. **Hero + Facts** — **DARK / Obsidian** (`--color-obsidian`) with floating architectural specs rail.
-2. **Sticky Subnav** — **DARK / Obsidian** (`rgba(11, 10, 9, 0.92)`) with hairline gold border and bronze active states.
-3. **Story** — **LIGHT / Raw Silk editorial surface** (warm light editorial background, elegant typography, generous whitespace).
+2. **Sticky Subnav** — **DARK / Obsidian** (e.g. `color-mix(in srgb, var(--color-obsidian) 92%, transparent)`) with hairline gold border and bronze active states.
+3. **Story** — **LIGHT / existing editorial light surface** (`bg-white` / `bg-ink-50` with `--fg-light` typography and generous negative space).
 4. **Gallery** — **DARK / Obsidian** (deep cinematic frame for high-resolution project photography with minimal chrome).
-5. **Delivery Proof** — **LIGHT / Raw Silk editorial surface** (crisp architectural engineering feel, semantic hairlines).
+5. **Delivery Proof** — **LIGHT / existing editorial light surface** (`bg-white` / `bg-ink-50` with crisp architectural engineering feel and `--rule-light` / semantic hairlines).
 6. **Material Story** — **DARK / elevated Obsidian** (`--color-surface-dark` / `--color-obsidian`, tactile material board depth).
-7. **Related Work** — **LIGHT / Raw Silk editorial surface** (warm editorial preview cards, subordinate scale).
+7. **Related Work** — **LIGHT / existing editorial light surface** (`bg-white` / `bg-ink-50` with warm editorial preview cards, subordinate scale).
 8. **Conversion Finale** — **DARK / Obsidian** (`--color-obsidian` with bronze B2B conversion bar).
 
 ### Pacing Rules
-- Light does **NOT** mean generic white SaaS cards; use warm Raw Silk / existing semantic light surfaces.
-- Dark does **NOT** mean pure `#000`.
+- Light chapters use the existing repository light surface system (`bg-white` / `bg-ink-50`) paired with existing light foreground tokens (`--fg-light`, `--fg-light-muted`, `--fg-light-subtle`). Light does **NOT** mean generic SaaS card walls.
+- Dark chapters use the existing Quiet Luxury tokens (`--color-obsidian`, `--color-surface-dark`, `--color-card-dark`, `--color-ivory`, `--text-muted`, `--text-subtle`, `--bronze`, `--bronze-light`). Dark does **NOT** mean pure `#000`.
 - Transitions between light and dark chapters must be intentional, deliberate, and seamless.
 - Preserve Quiet Luxury continuity throughout both light and dark passages using bronze accents, typography (`font-display`, `Outfit`), and refined hairlines.
-- Do not introduce a new palette.
+- No new CSS tokens are introduced.
 
 ### Strict Visual Anti-Patterns
 - **No** repetitive card walls (`p-6 border rounded-2xl`).
@@ -125,13 +132,14 @@ Do **NOT** blanket-convert every section to dark mode. The page follows an expli
 - **Surface**: DARK / Obsidian.
 - **Composition**: Sticky navigation anchor bar below hero facts.
 - **Visual Target**:
-  - Obsidian surface (`background: rgba(11, 10, 9, 0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--hairline-gold)`).
+  - Obsidian surface (`background: color-mix(in srgb, var(--color-obsidian) 92%, transparent); backdrop-filter: blur(16px); border-bottom: 1px solid var(--hairline-gold)`).
   - Chip links in muted ivory (`text-[var(--text-muted)] text-sm font-medium`), transitioning to active state with subtle bronze pill backing (`bg-[var(--bronze)] text-[var(--color-obsidian)] font-semibold`) or bronze hairline underline.
   - Mobile: Smooth horizontal scrolling with zero viewport overflow.
 - **Rule**: Zero scroll-jacking, zero forced smooth-scrolling that overrides user OS preferences.
 
 ### 5.3 Story Chapter (`ProjectStoryChapter.vue`)
-- **Surface**: LIGHT / Raw Silk editorial surface.
+- **Surface**: LIGHT / existing editorial light surface (`bg-white` / `bg-ink-50`).
+- **Foreground**: Existing light tokens (`--fg-light`, `--fg-light-muted`, `--fg-light-subtle`).
 - **Composition**: Overview, Challenge, and Solution rendered as one continuous editorial narrative.
 - **Copy & Narrative Contract**:
   - Preserve the current localized UI labels and copy.
@@ -141,7 +149,7 @@ Do **NOT** blanket-convert every section to dark mode. The page follows an expli
 - **Visual Target**:
   - Balanced asymmetric grid: narrative column accompanied by transition lead photography.
   - Generous negative space between beats.
-  - Challenge section may receive stronger visual emphasis using existing text (e.g. refined typography weight, subtle left hairline framing, or distinct background tint).
+  - Challenge section may receive stronger visual emphasis using existing text (e.g. refined typography weight, subtle left hairline framing via `--rule-light`, or distinct background tint via `bg-ink-50`).
   - Do **NOT** introduce a fabricated Story quote, callout pull-quote, or highlight-statement data contract. Current `ProjectStoryChapter` has no quote data contract; do not duplicate or rewrite story text into an invented quote. Optional testimonial remains only where current data already supports it in `ProjectMaterialStory`.
 
 ### 5.4 Curated Gallery (`section#gallery`)
@@ -157,7 +165,8 @@ Do **NOT** blanket-convert every section to dark mode. The page follows an expli
 - **Rule**: Retain `AppGalleryCarousel.vue`. Do NOT attempt to reintroduce `AppGalleryEditorial.vue`. Do NOT change gallery interaction architecture in Phase 3.
 
 ### 5.5 Delivery Proof (`ProjectDeliveryProof.vue`)
-- **Surface**: LIGHT / Raw Silk editorial surface.
+- **Surface**: LIGHT / existing editorial light surface (`bg-white` / `bg-ink-50`).
+- **Foreground & Rules**: Existing light tokens (`--fg-light`, `--fg-light-muted`, `--rule-light`, `--accent-light`).
 - **Composition**: Verified scope list, timeline phases, and scope-safe execution proofs.
 - **Copy & Scope Contract**:
   - Preserve current localized UI labels.
@@ -166,11 +175,12 @@ Do **NOT** blanket-convert every section to dark mode. The page follows an expli
   - Visual implementation must not introduce wording that implies manufacturing or construction for design-only projects.
 - **Visual Target**:
   - Scope list styled as crisp architectural specifications with bronze accents.
-  - Delivery phases rendered along a horizontal timeline rail (vertical on mobile) connected with subtle hairlines.
+  - Delivery phases rendered along a horizontal timeline rail (vertical on mobile) connected with subtle `--rule-light` dividers.
   - Execution proof cards (`direct-factory`, `quality`, `craft`) framed in clean architectural surfaces with top hairline bronze accents (`border-t-2 border-[var(--bronze)]`).
 
 ### 5.6 Material Story (`ProjectMaterialStory.vue`)
 - **Surface**: DARK / elevated Obsidian (`--color-surface-dark` / `--color-obsidian`).
+- **Foreground**: Existing tokens on dark (`--color-ivory`, `--text-muted`, `--text-subtle`, `--bronze`, `--bronze-light`).
 - **Composition**: Experience, Design Highlights, Materials, Craftsmanship, and optional testimonial.
 - **Copy & Data Contract**:
   - Preserve current localized UI labels; do **NOT** mandate replacement strings.
@@ -186,7 +196,8 @@ Do **NOT** blanket-convert every section to dark mode. The page follows an expli
   - Do NOT render fake color gradient boxes claiming to be specific real materials unless the project's actual photographs or verified data explicitly substantiate them. Neutral architectural frames using real project photography are preferred.
 
 ### 5.7 Related Work (`ProjectRelatedProjects.vue`)
-- **Surface**: LIGHT / Raw Silk editorial surface.
+- **Surface**: LIGHT / existing editorial light surface (`bg-white` / `bg-ink-50`).
+- **Foreground**: Existing light tokens (`--fg-light`, `--fg-light-muted`).
 - **Composition**: Up to 3 related project cards ranked by view-model.
 - **Visual Target**:
   - Architectural case study preview cards on refined light surfaces.
@@ -195,7 +206,7 @@ Do **NOT** blanket-convert every section to dark mode. The page follows an expli
   - Clear hierarchy between image, metadata, and CTA.
 
 ### 5.8 Conversion Finale (`ProjectConversionFinale.vue`)
-- **Surface**: DARK / Obsidian.
+- **Surface**: DARK / Obsidian (`--color-obsidian`).
 - **Composition**: Trust statistics and contact call-to-action.
 - **Visual Target**:
   - High-authority B2B conversion bar matching View 03 (`.detail-cta-bar`).
@@ -260,7 +271,7 @@ All Phase 3 implementations must be validated across the **8 canonical review vi
 
 1. **Accessibility Standards**:
    - WCAG 2.1 Level AA compliance across `/du-an/[slug]`.
-   - Contrast ratio floor: Minimum 4.5:1 for body copy and 3:1 for large display text against dark obsidian surfaces (`--color-ivory` on `--color-obsidian` exceeds 14:1) and light surfaces.
+   - Contrast ratio floor: Minimum 4.5:1 for body copy and 3:1 for large display text against dark obsidian surfaces (`--color-ivory` on `--color-obsidian` exceeds 14:1) and light surfaces (`--fg-light` on white exceeds 12:1, `--fg-light-muted` on white exceeds 7:1).
    - Fully accessible keyboard navigation and visible focus rings (`focus-visible:ring-2 ring-[var(--bronze)]`).
    - Semantic heading hierarchy: Single `h1` in hero, `h2` per chapter, `h3` for subsection beats.
    - Screen-reader labels on sequence indicators (`aria-hidden="true"` on numerical counters, meaningful text on buttons).
@@ -285,11 +296,11 @@ Phase 3 is structured into documentation gates and sequential implementation che
   - **Scope**: Upgrade `ProjectHeroFacts.vue` and the subnav in `app/pages/du-an/[slug].vue` to Quiet Luxury Obsidian, Raw Silk Ivory typography, and floating specs rail.
   - **Verification**: Dedicated Playwright tests in `tests/e2e/project-detail-phase3-visual.spec.ts` across 8 viewports.
 - **P3-2: Story + Curated Gallery**
-  - **Scope**: Modernize `ProjectStoryChapter.vue` on the Light Raw Silk editorial surface and refine gallery chrome in `section#gallery` (Dark Obsidian) while preserving `AppGalleryCarousel.vue`.
+  - **Scope**: Modernize `ProjectStoryChapter.vue` on the existing editorial light surface (`bg-white` / `bg-ink-50`) and refine gallery chrome in `section#gallery` (Dark Obsidian) while preserving `AppGalleryCarousel.vue`.
   - **Verification**: Playwright visual and density tests.
 - **P3-3: Delivery Proof + Material Story**
-  - **Scope**: Modernize `ProjectDeliveryProof.vue` on the Light Raw Silk surface (hairline timeline, execution cards) and `ProjectMaterialStory.vue` on elevated Obsidian (tactile material board formatting, verified data only).
+  - **Scope**: Modernize `ProjectDeliveryProof.vue` on the existing editorial light surface (`bg-white` / `bg-ink-50`) with hairline timeline and execution cards, and `ProjectMaterialStory.vue` on elevated Obsidian (tactile material board formatting, verified data only).
   - **Verification**: Playwright scope-safety and layout tests across rich and design-only projects.
 - **P3-4: Related Work + Conversion Finale + Full Verification**
-  - **Scope**: Modernize `ProjectRelatedProjects.vue` (Light Raw Silk) and `ProjectConversionFinale.vue` (Dark Obsidian B2B conversion bar, gold button, real contact actions only).
+  - **Scope**: Modernize `ProjectRelatedProjects.vue` on the existing editorial light surface (`bg-white` / `bg-ink-50`) and `ProjectConversionFinale.vue` (Dark Obsidian B2B conversion bar, gold button, real contact actions only).
   - **Verification**: Complete test pass (`pnpm test`, `tests/project-content-spine.test.ts`, `tests/project-detail-view-model.test.ts`, `pnpm test:gates:a11y` 9/9, `pnpm test:gates:layout`, focused visual Playwright, media lint, and diff audit).
