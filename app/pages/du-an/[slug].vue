@@ -181,7 +181,7 @@ usePageSeo({
 
     <nav
       data-project-subnav
-      class="subnav-anchor sticky z-30 border-b border-ink-200 bg-white/95 backdrop-blur-md"
+      class="subnav-anchor sticky z-30 border-b border-[var(--hairline-gold)] bg-[color-mix(in_srgb,var(--color-obsidian)_92%,transparent)] text-[var(--color-ivory)] backdrop-blur-md"
       :aria-label="t({ vi: 'Mục lục dự án', en: 'Case study sections' })"
     >
       <div class="shell flex gap-1 overflow-x-auto py-3">
@@ -191,8 +191,8 @@ usePageSeo({
           :href="`#${section.id}`"
           class="subnav-chip shrink-0 rounded-full px-4 py-2 text-sm font-bold transition-colors motion-reduce:transition-none"
           :class="activeSection === section.id
-            ? 'bg-ink-950 text-white'
-            : 'text-ink-500 hover:text-wood-600'"
+            ? 'bg-[var(--bronze)] text-[var(--color-obsidian)]'
+            : 'text-[var(--text-muted)] hover:text-[var(--color-ivory)]'"
           :aria-current="activeSection === section.id ? 'location' : undefined"
         >
           {{ section.label }}

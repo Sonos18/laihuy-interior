@@ -44,16 +44,16 @@ const { t } = useLanguage()
 
       <template #chips>
         <div class="mb-5 flex flex-wrap items-center gap-3">
-          <span class="rounded-full bg-wood-500 px-3 py-1.5 text-xs font-black uppercase tracking-[0.16em] text-white">
+          <span class="inline-flex items-center rounded-full border border-[var(--hairline-gold)] px-3 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-[var(--bronze-light)]">
             {{ category }}
           </span>
           <span
             v-if="status"
-            class="inline-flex items-center gap-1.5 rounded-full border border-white/25 px-3 py-1.5 text-xs font-bold text-white/86"
+            class="inline-flex items-center gap-1.5 rounded-full border border-[var(--hairline)] px-3 py-1.5 text-xs font-medium text-[var(--color-ivory)]"
           >
             <Icon
               name="i-lucide-circle-check-big"
-              class="h-3.5 w-3.5 text-wood-300"
+              class="h-3.5 w-3.5 text-[var(--bronze-light)]"
             />
             {{ status }}
           </span>
@@ -61,7 +61,7 @@ const { t } = useLanguage()
       </template>
 
       <template #meta>
-        <p class="mt-5 max-w-2xl text-lg leading-8 text-white/80">
+        <p class="mt-5 max-w-2xl text-lg leading-8 text-[var(--text-muted)]">
           {{ description }}
         </p>
       </template>
@@ -88,7 +88,7 @@ const { t } = useLanguage()
 
     <div
       data-project-facts
-      class="border-y border-white/12 bg-ink-950 text-white"
+      class="border-y border-[var(--hairline)] bg-[var(--color-obsidian)] text-[var(--color-ivory)]"
     >
       <div class="shell">
         <dl class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
@@ -97,17 +97,17 @@ const { t } = useLanguage()
             :key="fact.key"
             data-project-fact
             :data-fact-key="fact.key"
-            class="border-b border-r border-white/12 px-4 py-6 md:px-6"
+            class="border-b border-r border-[var(--hairline)] px-4 py-6 md:px-6"
             :class="facts.length % 2 === 1 && index === facts.length - 1 ? 'col-span-2 md:col-span-1' : ''"
           >
-            <dt class="flex items-center gap-2 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-white/52">
+            <dt class="flex items-center gap-2 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-[var(--text-subtle)]">
               <Icon
                 :name="fact.icon"
-                class="h-4 w-4 text-wood-300"
+                class="h-4 w-4 text-[var(--bronze-light)]"
               />
               {{ fact.label }}
             </dt>
-            <dd class="mt-3 text-base font-black leading-snug text-white">
+            <dd class="mt-3 text-base font-black leading-snug text-[var(--color-ivory)]">
               {{ fact.value }}
             </dd>
           </div>
