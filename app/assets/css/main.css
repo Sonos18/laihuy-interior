@@ -10,7 +10,7 @@
 
   /* ── Quiet Luxury & Architectural Editorial Tokens ─────────────────────────
      Declared in Phase 1 per redesign-concept-showcase.html specification.
-     Obsidian dark palette with warm bronze accents, silk ivory typography,
+     Warm Graphite dark palette with warm bronze accents, silk ivory typography,
      and architectural hairlines. */
   --color-obsidian: #171412;
   --color-surface-dark: #201b18;
@@ -150,10 +150,10 @@
 
   /* ── L1 · Foreground on DARK ────────────────────────────────────────── */
   --fg-dark: #fff;
-  --fg-dark-muted: rgb(255 255 255 / 0.72); /* 10.1:1 on ink-950        */
+  --fg-dark-muted: rgb(255 255 255 / 0.72); /*  9.8:1 on ink-950        */
   --fg-dark-subtle: rgb(255 255 255 / 0.48); /*  5.0:1 on ink-950 (§25.2)*/
   --rule-dark: rgb(255 255 255 / 0.12);
-  --accent-dark: var(--color-wood-300); /*  7.8:1 on ink-950        */
+  --accent-dark: var(--color-wood-300); /*  7.3:1 on ink-950        */
 
   /* ── L1 · Foreground on LIGHT ───────────────────────────────────────── */
   --fg-light: var(--color-ink-950);

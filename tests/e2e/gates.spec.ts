@@ -15,14 +15,14 @@ import { settle } from './helpers'
  */
 
 /** L0 primitives, transcribed from `@theme` in main.css — the values §29 resolves to. */
-const INK_950 = '#0b0a09'
+const INK_950 = '#171412'
 const INK_600 = '#5d5349'
 const INK_500 = '#74685d'
 const WOOD_300 = '#c59b75'
 const WOOD_600 = '#7c5032'
 
 /** Every composite is taken over the footer's own surface. */
-const ON_INK_950: [number, number, number] = [11, 10, 9]
+const ON_INK_950: [number, number, number] = [23, 20, 18]
 const ON_WHITE: [number, number, number] = [255, 255, 255]
 
 /**

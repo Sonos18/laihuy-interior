@@ -56,9 +56,9 @@ const VARIANTS: readonly Variant[] = [
   },
   {
     file: 'public/logo-mono-ink.png',
-    // main.css @theme --color-ink-950: #0b0a09
-    fill: { r: 0x0b, g: 0x0a, b: 0x09 },
-    token: '#0b0a09 (--color-ink-950)'
+    // main.css @theme --color-ink-950: #171412
+    fill: { r: 0x17, g: 0x14, b: 0x12 },
+    token: '#171412 (--color-ink-950)'
   }
 ]
 
