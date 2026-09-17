@@ -325,3 +325,296 @@ for (const locale of ['vi', 'en'] as const) {
     })
   }
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Checkpoint P3-2: Story + Curated Gallery
+// ─────────────────────────────────────────────────────────────────────────────
+
+for (const locale of ['vi', 'en'] as const) {
+  for (const viewport of PHASE3_VIEWPORTS) {
+    test(`P3-2-STORY-01 surface rhythm ${locale} @ ${viewport.width}`, async ({ page }) => {
+      await openProject(
+        page,
+        locale,
+        '/du-an/khach-san-eo-gio',
+        viewport.width,
+        viewport.height
+      )
+
+      const story = page.locator('section#story')
+      await expect(story).toBeVisible()
+
+      // Section surface resolves to light editorial (bg-white: rgb(255, 255, 255))
+      const storyBg = await story.evaluate(el => getComputedStyle(el).backgroundColor)
+      expect(['rgb(255, 255, 255)', 'rgba(255, 255, 255, 1)']).toContain(storyBg)
+
+      // Zero horizontal scroll overflow
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)
+      ).toBe(true)
+    })
+
+    test(`P3-2-GALLERY-01 dark obsidian rhythm ${locale} @ ${viewport.width}`, async ({ page }) => {
+      await openProject(
+        page,
+        locale,
+        '/du-an/khach-san-eo-gio',
+        viewport.width,
+        viewport.height
+      )
+
+      const gallery = page.locator('section#gallery')
+      await expect(gallery).toBeVisible()
+
+      // Section surface resolves to obsidian (var(--color-obsidian): rgb(11, 10, 9))
+      const { actualBg, expectedObsidian } = await gallery.evaluate((el) => {
+        const probe = document.createElement('div')
+        probe.style.backgroundColor = 'var(--color-obsidian)'
+        document.body.appendChild(probe)
+        const expectedObsidian = getComputedStyle(probe).backgroundColor
+        probe.remove()
+        return {
+          actualBg: getComputedStyle(el).backgroundColor,
+          expectedObsidian
+        }
+      })
+      expect(actualBg).toBe(expectedObsidian)
+
+      // Zero horizontal scroll overflow
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)
+      ).toBe(true)
+    })
+  }
+
+  test(`P3-2-STORY-02 quiet luxury styles ${locale}`, async ({ page }) => {
+    await openProject(
+      page,
+      locale,
+      '/du-an/khach-san-eo-gio',
+      1280,
+      900
+    )
+
+    const story = page.locator('section#story')
+    await expect(story).toBeVisible()
+
+    // Eyebrow uses wood/bronze tone (text-wood-600)
+    const eyebrowColor = await story.locator('.eyebrow').evaluate(el => getComputedStyle(el).color)
+    const probeWood = await page.evaluate(() => {
+      const probe = document.createElement('div')
+      probe.className = 'text-wood-600'
+      document.body.appendChild(probe)
+      const color = getComputedStyle(probe).color
+      probe.remove()
+      return color
+    })
+    expect(eyebrowColor).toBe(probeWood)
+
+    // Heading uses ink-950
+    const headingColor = await story.locator('h2').evaluate(el => getComputedStyle(el).color)
+    const probeInk = await page.evaluate(() => {
+      const probe = document.createElement('div')
+      probe.className = 'text-ink-950'
+      document.body.appendChild(probe)
+      const color = getComputedStyle(probe).color
+      probe.remove()
+      return color
+    })
+    expect(headingColor).toBe(probeInk)
+
+    // Challenge beat has prominent emphasis (border-l-2 with var(--bronze))
+    const challengeStyle = await story.locator('[data-story-beat="challenge"]').evaluate((el) => {
+      const style = getComputedStyle(el)
+      const probe = document.createElement('div')
+      probe.style.borderColor = 'var(--bronze)'
+      document.body.appendChild(probe)
+      const expectedBorder = getComputedStyle(probe).borderColor
+      probe.remove()
+      return {
+        borderColor: style.borderLeftColor,
+        borderLeftWidth: parseFloat(style.borderLeftWidth) || 0,
+        expectedBorder
+      }
+    })
+    expect(challengeStyle.borderLeftWidth).toBeGreaterThanOrEqual(2)
+    expect(challengeStyle.borderColor).toBe(challengeStyle.expectedBorder)
+
+    // No quote pullquote or blockquote in story
+    expect(await story.locator('blockquote').count()).toBe(0)
+    expect(await story.locator('[data-story-quote]').count()).toBe(0)
+  })
+
+  test(`P3-2-GALLERY-02 quiet luxury chrome ${locale}`, async ({ page }) => {
+    await openProject(
+      page,
+      locale,
+      '/du-an/khach-san-eo-gio',
+      1280,
+      900
+    )
+
+    const gallery = page.locator('section#gallery')
+    await expect(gallery).toBeVisible()
+
+    // Eyebrow resolves to var(--bronze-light)
+    const { actualEyebrow, expectedBronzeLight } = await gallery.evaluate((el) => {
+      const eyebrow = el.querySelector('p.eyebrow, p.reveal')
+      const probe = document.createElement('div')
+      probe.style.color = 'var(--bronze-light)'
+      document.body.appendChild(probe)
+      const expectedBronzeLight = getComputedStyle(probe).color
+      probe.remove()
+      return {
+        actualEyebrow: eyebrow ? getComputedStyle(eyebrow).color : '',
+        expectedBronzeLight
+      }
+    })
+    expect(actualEyebrow).toBe(expectedBronzeLight)
+
+    // Heading resolves to var(--color-ivory)
+    const { actualHeading, expectedIvory } = await gallery.evaluate((el) => {
+      const h2 = el.querySelector('h2')
+      const probe = document.createElement('div')
+      probe.style.color = 'var(--color-ivory)'
+      document.body.appendChild(probe)
+      const expectedIvory = getComputedStyle(probe).color
+      probe.remove()
+      return {
+        actualHeading: h2 ? getComputedStyle(h2).color : '',
+        expectedIvory
+      }
+    })
+    expect(actualHeading).toBe(expectedIvory)
+
+    // Filter tabs styling: active tab uses var(--bronze) background, obsidian text; inactive uses hairline border and text-muted
+    const filterTabs = gallery.locator('[data-gallery-filters] button')
+    if (await filterTabs.count() > 0) {
+      const activeTab = gallery.locator('[data-gallery-filters] button[aria-pressed="true"]')
+      const inactiveTab = gallery.locator('[data-gallery-filters] button[aria-pressed="false"]').first()
+
+      const activeStyles = await activeTab.evaluate((el) => {
+        const probeBg = document.createElement('div')
+        probeBg.style.backgroundColor = 'var(--bronze)'
+        document.body.appendChild(probeBg)
+        const expectedBg = getComputedStyle(probeBg).backgroundColor
+        probeBg.remove()
+
+        const probeColor = document.createElement('div')
+        probeColor.style.color = 'var(--color-obsidian)'
+        document.body.appendChild(probeColor)
+        const expectedColor = getComputedStyle(probeColor).color
+        probeColor.remove()
+
+        const style = getComputedStyle(el)
+        return {
+          bg: style.backgroundColor,
+          color: style.color,
+          expectedBg,
+          expectedColor
+        }
+      })
+      expect(activeStyles.bg).toBe(activeStyles.expectedBg)
+      expect(activeStyles.color).toBe(activeStyles.expectedColor)
+
+      if (await inactiveTab.count() > 0) {
+        const inactiveStyles = await inactiveTab.evaluate((el) => {
+          const probeBorder = document.createElement('div')
+          probeBorder.style.borderColor = 'var(--hairline)'
+          document.body.appendChild(probeBorder)
+          const expectedBorder = getComputedStyle(probeBorder).borderColor
+          probeBorder.remove()
+
+          const probeColor = document.createElement('div')
+          probeColor.style.color = 'var(--text-muted)'
+          document.body.appendChild(probeColor)
+          const expectedColor = getComputedStyle(probeColor).color
+          probeColor.remove()
+
+          const style = getComputedStyle(el)
+          return {
+            borderColor: style.borderColor,
+            color: style.color,
+            expectedBorder,
+            expectedColor
+          }
+        })
+        expect(inactiveStyles.borderColor).toBe(inactiveStyles.expectedBorder)
+        expect(inactiveStyles.color).toBe(inactiveStyles.expectedColor)
+      }
+    }
+
+    // Long-media disclosure button: bronze outline styling
+    const disclosureBtn = gallery.locator('[data-project-full-gallery] button')
+    if (await disclosureBtn.count() > 0) {
+      const btnStyles = await disclosureBtn.evaluate((el) => {
+        const probeBorder = document.createElement('div')
+        probeBorder.style.borderColor = 'var(--bronze)'
+        document.body.appendChild(probeBorder)
+        const expectedBorder = getComputedStyle(probeBorder).borderColor
+        probeBorder.remove()
+
+        const probeColor = document.createElement('div')
+        probeColor.style.color = 'var(--bronze-light)'
+        document.body.appendChild(probeColor)
+        const expectedColor = getComputedStyle(probeColor).color
+        probeColor.remove()
+
+        const style = getComputedStyle(el)
+        return {
+          borderColor: style.borderColor,
+          color: style.color,
+          expectedBorder,
+          expectedColor
+        }
+      })
+      expect(btnStyles.borderColor).toBe(btnStyles.expectedBorder)
+      expect(btnStyles.color).toBe(btnStyles.expectedColor)
+    }
+
+    // AppGalleryCarousel track is visible
+    const carousel = gallery.locator('[data-gallery-carousel]')
+    await expect(carousel).toBeVisible()
+  })
+}
+
+test('P3-2-GALLERY-03 sparse project with short media flow renders without filter tabs', async ({ page }) => {
+  await openProject(
+    page,
+    'vi',
+    '/du-an/nha-xuong-anh-cuong',
+    1280,
+    900
+  )
+
+  const gallery = page.locator('section#gallery')
+  await expect(gallery).toBeVisible()
+  await expect(gallery).toHaveAttribute('data-media-flow', 'short')
+  expect(await page.locator('[data-gallery-filters]').count()).toBe(0)
+  expect(await page.locator('[data-project-full-gallery]').count()).toBe(0)
+})
+
+test('P3-2-GALLERY-04 rich project gallery interactions', async ({ page }) => {
+  await openProject(
+    page,
+    'vi',
+    '/du-an/khach-san-eo-gio',
+    1280,
+    900
+  )
+
+  const filterTabs = page.locator('[data-gallery-filters] button')
+  const tabCount = await filterTabs.count()
+  if (tabCount > 1) {
+    const secondTab = filterTabs.nth(1)
+    await secondTab.click()
+    await expect(secondTab).toHaveAttribute('aria-pressed', 'true')
+  }
+
+  const disclosureBtn = page.locator('[data-project-full-gallery] button')
+  if (await disclosureBtn.count() > 0) {
+    await disclosureBtn.click()
+    const dialog = page.locator('div[role="dialog"]')
+    await expect(dialog).toBeVisible()
+  }
+})

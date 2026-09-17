@@ -51,7 +51,7 @@ const { t } = useLanguage()
           <article
             v-if="challenge"
             data-story-beat="challenge"
-            class="border-l-2 border-wood-500 pl-6"
+            class="border-l-2 border-[var(--bronze)] pl-6 bg-ink-50/50 py-4 rounded-r-lg"
           >
             <p class="text-xs font-black uppercase tracking-[0.16em] text-wood-600">
               02 · {{ t({ vi: 'Bài toán', en: 'Challenge' }) }}
