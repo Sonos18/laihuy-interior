@@ -707,3 +707,473 @@ for (const width of [390, 1280] as const) {
     }
   })
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Checkpoint P3-3: Delivery Proof + Material Story
+// ─────────────────────────────────────────────────────────────────────────────
+
+for (const locale of ['vi', 'en'] as const) {
+  for (const viewport of PHASE3_VIEWPORTS) {
+    test(`P3-3-DELIVERY-01 responsive timeline ${locale} @ ${viewport.width}`, async ({ page }) => {
+      await openProject(
+        page,
+        locale,
+        '/du-an/khach-san-eo-gio',
+        viewport.width,
+        viewport.height
+      )
+
+      const delivery = page.locator('section#delivery')
+      await expect(delivery).toBeVisible()
+
+      // Light editorial surface (bg-white: rgb(255, 255, 255) or bg-ink-50: rgb(247, 247, 245))
+      const deliveryBg = await delivery.evaluate(el => getComputedStyle(el).backgroundColor)
+      expect(['rgb(255, 255, 255)', 'rgba(255, 255, 255, 1)', 'rgb(247, 247, 245)']).toContain(deliveryBg)
+
+      // Timeline column reflow (1 column for <768px, 5 columns for >=768px)
+      const cols = await gridColumnCount(page, '[data-delivery-timeline]')
+      if (viewport.width < 768) {
+        expect(cols).toBe(1)
+      } else {
+        expect(cols).toBe(5)
+      }
+
+      // Zero horizontal scroll overflow
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)
+      ).toBe(true)
+    })
+
+    test(`P3-3-MATERIAL-01 surface rhythm ${locale} @ ${viewport.width}`, async ({ page }) => {
+      await openProject(
+        page,
+        locale,
+        '/du-an/khach-san-eo-gio',
+        viewport.width,
+        viewport.height
+      )
+
+      const materials = page.locator('section#materials')
+      await expect(materials).toBeVisible()
+
+      // Dark elevated Obsidian surface (var(--color-surface-dark): rgb(20, 18, 16))
+      const { actualBg, expectedSurfaceDark } = await materials.evaluate((el) => {
+        const probeDark = document.createElement('div')
+        probeDark.style.backgroundColor = 'var(--color-surface-dark)'
+        document.body.appendChild(probeDark)
+        const expectedSurfaceDark = getComputedStyle(probeDark).backgroundColor
+        probeDark.remove()
+
+        return {
+          actualBg: getComputedStyle(el).backgroundColor,
+          expectedSurfaceDark
+        }
+      })
+      expect(actualBg).toBe(expectedSurfaceDark)
+
+      // Zero horizontal scroll overflow
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)
+      ).toBe(true)
+    })
+  }
+
+  for (const width of [390, 1280] as const) {
+    test(`P3-3-DELIVERY-02 visual contract ${locale} @ ${width}`, async ({ page }) => {
+      await openProject(
+        page,
+        locale,
+        '/du-an/khach-san-eo-gio',
+        width,
+        width === 390 ? 844 : 900
+      )
+
+      const delivery = page.locator('section#delivery')
+      await expect(delivery).toBeVisible()
+
+      // Eyebrow uses light accent system (var(--accent-light))
+      const { actualEyebrow, expectedAccent } = await delivery.evaluate((el) => {
+        const eyebrow = el.querySelector('p.eyebrow, p.reveal')
+        const probe = document.createElement('div')
+        probe.style.color = 'var(--accent-light)'
+        document.body.appendChild(probe)
+        const expectedAccent = getComputedStyle(probe).color
+        probe.remove()
+        return {
+          actualEyebrow: eyebrow ? getComputedStyle(eyebrow).color : '',
+          expectedAccent
+        }
+      })
+      expect(actualEyebrow).toBe(expectedAccent)
+
+      // Heading uses light foreground (var(--fg-light))
+      const { actualHeading, expectedFg } = await delivery.evaluate((el) => {
+        const h2 = el.querySelector('h2')
+        const probe = document.createElement('div')
+        probe.style.color = 'var(--fg-light)'
+        document.body.appendChild(probe)
+        const expectedFg = getComputedStyle(probe).color
+        probe.remove()
+        return {
+          actualHeading: h2 ? getComputedStyle(h2).color : '',
+          expectedFg
+        }
+      })
+      expect(actualHeading).toBe(expectedFg)
+
+      // Scope rail uses semantic light rules: border uses var(--rule-light)
+      const { scopeBorderTop, scopeItemBorderRight, expectedRuleLight } = await delivery.evaluate((el) => {
+        const scopeUl = el.querySelector('ul')
+        const scopeLi = el.querySelector('li[data-scope-key]')
+        const probe = document.createElement('div')
+        probe.style.borderColor = 'var(--rule-light)'
+        document.body.appendChild(probe)
+        const expectedRuleLight = getComputedStyle(probe).borderColor
+        probe.remove()
+        return {
+          scopeBorderTop: scopeUl ? getComputedStyle(scopeUl).borderTopColor : '',
+          scopeItemBorderRight: scopeLi ? getComputedStyle(scopeLi).borderRightColor : '',
+          expectedRuleLight
+        }
+      })
+      expect(scopeBorderTop).toBe(expectedRuleLight)
+      expect(scopeItemBorderRight).toBe(expectedRuleLight)
+
+      // Scope icons use accent (var(--accent-light))
+      const { actualScopeIcon, expectedScopeIcon } = await delivery.evaluate((el) => {
+        const icon = el.querySelector('li[data-scope-key] svg, li[data-scope-key] span')
+        const probe = document.createElement('div')
+        probe.style.color = 'var(--accent-light)'
+        document.body.appendChild(probe)
+        const expectedScopeIcon = getComputedStyle(probe).color
+        probe.remove()
+        return {
+          actualScopeIcon: icon ? getComputedStyle(icon).color : '',
+          expectedScopeIcon
+        }
+      })
+      expect(actualScopeIcon).toBe(expectedScopeIcon)
+
+      // Timeline dividers use semantic light rule (var(--rule-light))
+      const { timelineBorder, expectedTimelineRule } = await delivery.evaluate((el) => {
+        const phaseLi = el.querySelector('[data-delivery-timeline] li')
+        const probe = document.createElement('div')
+        probe.style.borderColor = 'var(--rule-light)'
+        document.body.appendChild(probe)
+        const expectedTimelineRule = getComputedStyle(probe).borderColor
+        probe.remove()
+        return {
+          timelineBorder: phaseLi ? (getComputedStyle(phaseLi).borderTopColor || getComputedStyle(phaseLi).borderLeftColor) : '',
+          expectedTimelineRule
+        }
+      })
+      expect(timelineBorder).toBe(expectedTimelineRule)
+
+      // Phase numbers use accent (var(--accent-light))
+      const { actualPhaseNum, expectedPhaseNum } = await delivery.evaluate((el) => {
+        const num = el.querySelector('[data-delivery-timeline] li span')
+        const probe = document.createElement('div')
+        probe.style.color = 'var(--accent-light)'
+        document.body.appendChild(probe)
+        const expectedPhaseNum = getComputedStyle(probe).color
+        probe.remove()
+        return {
+          actualPhaseNum: num ? getComputedStyle(num).color : '',
+          expectedPhaseNum
+        }
+      })
+      expect(actualPhaseNum).toBe(expectedPhaseNum)
+
+      // Execution proof blocks use restrained bronze top rule
+      const proofArticles = delivery.locator('[data-execution-proof]')
+      const proofCount = await proofArticles.count()
+      expect(proofCount).toBe(3)
+
+      const firstProof = proofArticles.first()
+      const proofMetrics = await firstProof.evaluate((el) => {
+        const style = getComputedStyle(el)
+        const probeBronze = document.createElement('div')
+        probeBronze.style.borderColor = 'var(--bronze)'
+        document.body.appendChild(probeBronze)
+        const expectedBronze = getComputedStyle(probeBronze).borderColor
+        probeBronze.remove()
+
+        return {
+          borderTopColor: style.borderTopColor,
+          borderTopWidth: parseFloat(style.borderTopWidth) || 0,
+          boxShadow: style.boxShadow,
+          expectedBronze
+        }
+      })
+      expect(proofMetrics.borderTopWidth).toBeGreaterThanOrEqual(2)
+      expect(proofMetrics.borderTopColor).toBe(proofMetrics.expectedBronze)
+      expect(proofMetrics.boxShadow === 'none' || !proofMetrics.boxShadow.includes('50px')).toBe(true)
+    })
+
+    test(`P3-3-DELIVERY-03 scope safety ${locale} @ ${width}`, async ({ page }) => {
+      // Rich fixture: /du-an/khach-san-eo-gio
+      await openProject(
+        page,
+        locale,
+        '/du-an/khach-san-eo-gio',
+        width,
+        width === 390 ? 844 : 900
+      )
+
+      const richDelivery = page.locator('section#delivery')
+      await expect(richDelivery).toBeVisible()
+
+      // Scope items contain design, production, installation
+      const scopeTexts = await richDelivery.locator('li[data-scope-key]').allTextContents()
+      const combinedScope = scopeTexts.join(' ')
+      if (locale === 'vi') {
+        expect(combinedScope).toContain('Thiết kế')
+        expect(combinedScope).toContain('Sản xuất')
+        expect(combinedScope).toContain('Thi công')
+      } else {
+        expect(combinedScope).toContain('Design')
+        expect(combinedScope).toContain('Production')
+        expect(combinedScope).toContain('Installation')
+      }
+
+      // Rich fixture has exactly 3 execution proofs
+      expect(await richDelivery.locator('[data-execution-proof]').count()).toBe(3)
+
+      // Design-only fixture: /du-an/nha-vuon-chily
+      await openProject(
+        page,
+        locale,
+        '/du-an/nha-vuon-chily',
+        width,
+        width === 390 ? 844 : 900
+      )
+
+      const designDelivery = page.locator('section#delivery')
+      await expect(designDelivery).toBeVisible()
+
+      // Design scope is visible
+      const designScopeTexts = await designDelivery.locator('li[data-scope-key]').allTextContents()
+      const designCombinedScope = designScopeTexts.join(' ')
+      if (locale === 'vi') {
+        expect(designCombinedScope).toContain('Thiết kế')
+      } else {
+        expect(designCombinedScope).toContain('Design')
+      }
+
+      // Design-only fixture has strictly 0 execution proofs
+      expect(await designDelivery.locator('[data-execution-proof]').count()).toBe(0)
+
+      // No manufacturing proof, no craft proof, no factory claims
+      expect(await designDelivery.locator('[data-execution-proof="direct-factory"]').count()).toBe(0)
+      expect(await designDelivery.locator('[data-execution-proof="craft"]').count()).toBe(0)
+      expect(await designDelivery.locator('[data-execution-proof="quality"]').count()).toBe(0)
+
+      const deliverySectionText = (await designDelivery.textContent()) || ''
+      expect(deliverySectionText).not.toMatch(/nhà xưởng|direct factory|xưởng sản xuất/i)
+    })
+
+    test(`P3-3-MATERIAL-02 visual contract ${locale} @ ${width}`, async ({ page }) => {
+      await openProject(
+        page,
+        locale,
+        '/du-an/khach-san-eo-gio',
+        width,
+        width === 390 ? 844 : 900
+      )
+
+      const materials = page.locator('section#materials')
+      await expect(materials).toBeVisible()
+
+      // Eyebrow resolves to bronze-light
+      const { actualEyebrow, expectedBronzeLight } = await materials.evaluate((el) => {
+        const eyebrow = el.querySelector('p.eyebrow, p.reveal')
+        const probe = document.createElement('div')
+        probe.style.color = 'var(--bronze-light)'
+        document.body.appendChild(probe)
+        const expectedBronzeLight = getComputedStyle(probe).color
+        probe.remove()
+        return {
+          actualEyebrow: eyebrow ? getComputedStyle(eyebrow).color : '',
+          expectedBronzeLight
+        }
+      })
+      expect(actualEyebrow).toBe(expectedBronzeLight)
+
+      // Title resolves to ivory
+      const { actualTitle, expectedIvory } = await materials.evaluate((el) => {
+        const h2 = el.querySelector('h2')
+        const probe = document.createElement('div')
+        probe.style.color = 'var(--color-ivory)'
+        document.body.appendChild(probe)
+        const expectedIvory = getComputedStyle(probe).color
+        probe.remove()
+        return {
+          actualTitle: h2 ? getComputedStyle(h2).color : '',
+          expectedIvory
+        }
+      })
+      expect(actualTitle).toBe(expectedIvory)
+
+      // Experience copy uses muted dark-surface text (var(--text-muted))
+      const { actualExp, expectedMuted } = await materials.evaluate((el) => {
+        const p = el.querySelector('[data-material-layout] > p')
+        const probe = document.createElement('div')
+        probe.style.color = 'var(--text-muted)'
+        document.body.appendChild(probe)
+        const expectedMuted = getComputedStyle(probe).color
+        probe.remove()
+        return {
+          actualExp: p ? getComputedStyle(p).color : '',
+          expectedMuted
+        }
+      })
+      expect(actualExp).toBe(expectedMuted)
+
+      // Highlights use bronze numbering and hairline dividers
+      const highlightsList = materials.locator('ul').first()
+      const highlightStyles = await highlightsList.evaluate((el) => {
+        const num = el.querySelector('span')
+        const probeBronze = document.createElement('div')
+        probeBronze.style.color = 'var(--bronze-light)'
+        document.body.appendChild(probeBronze)
+        const expectedBronze = getComputedStyle(probeBronze).color
+        probeBronze.remove()
+
+        const probeHairline = document.createElement('div')
+        probeHairline.style.borderColor = 'var(--hairline)'
+        document.body.appendChild(probeHairline)
+        const expectedHairline = getComputedStyle(probeHairline).borderColor
+        probeHairline.remove()
+
+        return {
+          numColor: num ? getComputedStyle(num).color : '',
+          borderColor: getComputedStyle(el).borderTopColor,
+          expectedBronze,
+          expectedHairline
+        }
+      })
+      expect(highlightStyles.numColor).toBe(highlightStyles.expectedBronze)
+      expect(highlightStyles.borderColor).toBe(highlightStyles.expectedHairline)
+
+      // Material list separators use hairline, icons use bronze-light, copy uses text-muted
+      const matList = materials.locator('ul').nth(1)
+      const matStyles = await matList.evaluate((el) => {
+        const icon = el.querySelector('svg, span')
+        const textLi = el.querySelector('li')
+        const probeBronze = document.createElement('div')
+        probeBronze.style.color = 'var(--bronze-light)'
+        document.body.appendChild(probeBronze)
+        const expectedBronze = getComputedStyle(probeBronze).color
+        probeBronze.remove()
+
+        const probeHairline = document.createElement('div')
+        probeHairline.style.borderColor = 'var(--hairline)'
+        document.body.appendChild(probeHairline)
+        const expectedHairline = getComputedStyle(probeHairline).borderColor
+        probeHairline.remove()
+
+        const probeMuted = document.createElement('div')
+        probeMuted.style.color = 'var(--text-muted)'
+        document.body.appendChild(probeMuted)
+        const expectedMuted = getComputedStyle(probeMuted).color
+        probeMuted.remove()
+
+        return {
+          iconColor: icon ? getComputedStyle(icon).color : '',
+          borderColor: getComputedStyle(el).borderTopColor,
+          textColor: textLi ? getComputedStyle(textLi).color : '',
+          expectedBronze,
+          expectedHairline,
+          expectedMuted
+        }
+      })
+      expect(matStyles.iconColor).toBe(matStyles.expectedBronze)
+      expect(matStyles.borderColor).toBe(matStyles.expectedHairline)
+      expect(matStyles.textColor).toBe(matStyles.expectedMuted)
+
+      // Craftsmanship block uses semantic hairline and text-muted
+      const craftBlock = materials.locator('div.border-t').first()
+      if (await craftBlock.count() > 0) {
+        const craftStyles = await craftBlock.evaluate((el) => {
+          const p = el.querySelector('p.measure-lead')
+          const probeHairline = document.createElement('div')
+          probeHairline.style.borderColor = 'var(--hairline)'
+          document.body.appendChild(probeHairline)
+          const expectedHairline = getComputedStyle(probeHairline).borderColor
+          probeHairline.remove()
+
+          const probeMuted = document.createElement('div')
+          probeMuted.style.color = 'var(--text-muted)'
+          document.body.appendChild(probeMuted)
+          const expectedMuted = getComputedStyle(probeMuted).color
+          probeMuted.remove()
+
+          return {
+            borderColor: getComputedStyle(el).borderTopColor,
+            textColor: p ? getComputedStyle(p).color : '',
+            expectedHairline,
+            expectedMuted
+          }
+        })
+        expect(craftStyles.borderColor).toBe(craftStyles.expectedHairline)
+        expect(craftStyles.textColor).toBe(craftStyles.expectedMuted)
+      }
+
+      // Testimonial styling uses dark semantic tokens (when present)
+      const quoteFigure = materials.locator('figure:has(blockquote)')
+      if (await quoteFigure.count() > 0) {
+        const quoteStyles = await quoteFigure.evaluate((el) => {
+          const icon = el.querySelector('svg, span')
+          const bq = el.querySelector('blockquote')
+          const figcaption = el.querySelector('figcaption')
+
+          const probeBronze = document.createElement('div')
+          probeBronze.style.color = 'var(--bronze-light)'
+          document.body.appendChild(probeBronze)
+          const expectedBronze = getComputedStyle(probeBronze).color
+          probeBronze.remove()
+
+          const probeIvory = document.createElement('div')
+          probeIvory.style.color = 'var(--color-ivory)'
+          document.body.appendChild(probeIvory)
+          const expectedIvory = getComputedStyle(probeIvory).color
+          probeIvory.remove()
+
+          const probeSubtle = document.createElement('div')
+          probeSubtle.style.color = 'var(--text-subtle)'
+          document.body.appendChild(probeSubtle)
+          const expectedSubtle = getComputedStyle(probeSubtle).color
+          probeSubtle.remove()
+
+          const probeHairline = document.createElement('div')
+          probeHairline.style.borderColor = 'var(--hairline)'
+          document.body.appendChild(probeHairline)
+          const expectedHairline = getComputedStyle(probeHairline).borderColor
+          probeHairline.remove()
+
+          return {
+            iconColor: icon ? getComputedStyle(icon).color : '',
+            bqColor: bq ? getComputedStyle(bq).color : '',
+            captionColor: figcaption ? getComputedStyle(figcaption).color : '',
+            borderColor: getComputedStyle(el).borderTopColor,
+            expectedBronze,
+            expectedIvory,
+            expectedSubtle,
+            expectedHairline
+          }
+        })
+        expect(quoteStyles.iconColor).toBe(quoteStyles.expectedBronze)
+        expect(quoteStyles.bqColor).toBe(quoteStyles.expectedIvory)
+        expect(quoteStyles.captionColor).toBe(quoteStyles.expectedSubtle)
+        expect(quoteStyles.borderColor).toBe(quoteStyles.expectedHairline)
+      }
+
+      // Real media images remain present
+      expect(await materials.locator('img').count()).toBeGreaterThanOrEqual(1)
+
+      // Explicitly assert absence of fabricated visual swatches
+      expect(await materials.locator('[data-material-swatch]').count()).toBe(0)
+      expect(await materials.locator('.swatch, [class*="swatch"]').count()).toBe(0)
+    })
+  }
+}
