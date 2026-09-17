@@ -86,32 +86,34 @@ const { t } = useLanguage()
       </template>
     </AppHero>
 
-    <div class="shell py-6 md:py-8">
-      <div
-        data-project-facts
-        class="relative overflow-hidden rounded-sm border border-[var(--hairline-gold)] bg-[var(--color-obsidian)] text-[var(--color-ivory)]"
-      >
-        <dl class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
-          <div
-            v-for="(fact, index) in facts"
-            :key="fact.key"
-            data-project-fact
-            :data-fact-key="fact.key"
-            class="border-b border-r border-[var(--hairline)] px-4 py-6 md:px-6"
-            :class="facts.length % 2 === 1 && index === facts.length - 1 ? 'col-span-2 md:col-span-1' : ''"
-          >
-            <dt class="flex items-center gap-2 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-[var(--text-subtle)]">
-              <Icon
-                :name="fact.icon"
-                class="h-4 w-4 text-[var(--bronze-light)]"
-              />
-              {{ fact.label }}
-            </dt>
-            <dd class="mt-3 text-base font-black leading-snug text-[var(--color-ivory)]">
-              {{ fact.value }}
-            </dd>
-          </div>
-        </dl>
+    <div class="bg-[var(--color-obsidian)]">
+      <div class="shell py-6 md:py-8">
+        <div
+          data-project-facts
+          class="relative overflow-hidden rounded-sm border border-[var(--hairline-gold)] bg-[var(--color-surface-dark)] text-[var(--color-ivory)]"
+        >
+          <dl class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
+            <div
+              v-for="(fact, index) in facts"
+              :key="fact.key"
+              data-project-fact
+              :data-fact-key="fact.key"
+              class="border-b border-r border-[var(--hairline)] px-4 py-6 md:px-6"
+              :class="facts.length % 2 === 1 && index === facts.length - 1 ? 'col-span-2 md:col-span-1' : ''"
+            >
+              <dt class="flex items-center gap-2 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-[var(--text-subtle)]">
+                <Icon
+                  :name="fact.icon"
+                  class="h-4 w-4 text-[var(--bronze-light)]"
+                />
+                {{ fact.label }}
+              </dt>
+              <dd class="mt-3 text-base font-black leading-snug text-[var(--color-ivory)]">
+                {{ fact.value }}
+              </dd>
+            </div>
+          </dl>
+        </div>
       </div>
     </div>
   </div>

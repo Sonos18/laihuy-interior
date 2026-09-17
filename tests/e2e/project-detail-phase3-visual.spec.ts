@@ -103,18 +103,54 @@ for (const locale of ['vi', 'en'] as const) {
       900
     )
 
-    // Facts rail computed background resolves to the existing Obsidian token
-    const { actualBg, expectedBg } = await page.evaluate(() => {
-      const el = document.querySelector('[data-project-facts]')
-      const actualBg = el ? getComputedStyle(el).backgroundColor : ''
-      const probe = document.createElement('div')
-      probe.style.backgroundColor = 'var(--color-obsidian)'
-      document.body.appendChild(probe)
-      const expectedBg = getComputedStyle(probe).backgroundColor
-      probe.remove()
-      return { actualBg, expectedBg }
+    // The immediate facts-rail zone surrounding [data-project-facts] resolves to the dark masthead surface (var(--color-obsidian))
+    const { zoneBg, expectedObsidian, stripColor, actualRailBg, expectedRailBg } = await page.evaluate(() => {
+      const rail = document.querySelector('[data-project-facts]')
+      const zone = rail?.closest('[data-project-facts-zone]') || (rail?.parentElement?.classList.contains('shell') ? rail.parentElement.parentElement : null)
+
+      const probeObsidian = document.createElement('div')
+      probeObsidian.style.backgroundColor = 'var(--color-obsidian)'
+      document.body.appendChild(probeObsidian)
+      const expectedObsidian = getComputedStyle(probeObsidian).backgroundColor
+      probeObsidian.remove()
+
+      const probeSurface = document.createElement('div')
+      probeSurface.style.backgroundColor = 'var(--color-surface-dark)'
+      document.body.appendChild(probeSurface)
+      const expectedRailBg = getComputedStyle(probeSurface).backgroundColor
+      probeSurface.remove()
+
+      // Sample seam point directly between AppHero and facts rail (8px above the rail)
+      let stripColor = ''
+      if (rail) {
+        const rect = rail.getBoundingClientRect()
+        const el = document.elementFromPoint(rect.left + 24, rect.top - 8)
+        let cur: HTMLElement | null = el as HTMLElement
+        while (cur && cur !== document.documentElement) {
+          const bg = getComputedStyle(cur).backgroundColor
+          if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
+            stripColor = bg
+            break
+          }
+          cur = cur.parentElement
+        }
+      }
+
+      return {
+        zoneBg: zone ? getComputedStyle(zone).backgroundColor : '',
+        expectedObsidian,
+        stripColor,
+        actualRailBg: rail ? getComputedStyle(rail).backgroundColor : '',
+        expectedRailBg
+      }
     })
-    expect(actualBg).toBe(expectedBg)
+
+    // Immediate facts-rail zone resolves to dark masthead surface
+    expect(zoneBg).toBe(expectedObsidian)
+    // No white/light strip between AppHero and facts rail
+    expect(stripColor).toBe(expectedObsidian)
+    // Rail surface resolves to elevated dark surface
+    expect(actualRailBg).toBe(expectedRailBg)
 
     // Architectural specs rail: shell-bounded, hairline-gold border, compact radius, no heavy shadow
     const railMetrics = await page.evaluate(() => {
