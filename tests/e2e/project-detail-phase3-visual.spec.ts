@@ -348,6 +348,13 @@ for (const locale of ['vi', 'en'] as const) {
       const storyBg = await story.evaluate(el => getComputedStyle(el).backgroundColor)
       expect(['rgb(255, 255, 255)', 'rgba(255, 255, 255, 1)']).toContain(storyBg)
 
+      if (viewport.width === 390) {
+        expect(await gridColumnCount(page, '[data-story-layout]')).toBe(1)
+      }
+      if (viewport.width === 1280) {
+        expect(await gridColumnCount(page, '[data-story-layout]')).toBe(2)
+      }
+
       // Zero horizontal scroll overflow
       expect(
         await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)
@@ -398,6 +405,9 @@ for (const locale of ['vi', 'en'] as const) {
 
     const story = page.locator('section#story')
     await expect(story).toBeVisible()
+
+    // Story grid columns at 1280 resolves to 2 columns
+    expect(await gridColumnCount(page, '[data-story-layout]')).toBe(2)
 
     // Eyebrow uses wood/bronze tone (text-wood-600)
     const eyebrowColor = await story.locator('.eyebrow').evaluate(el => getComputedStyle(el).color)
@@ -575,46 +585,125 @@ for (const locale of ['vi', 'en'] as const) {
     // AppGalleryCarousel track is visible
     const carousel = gallery.locator('[data-gallery-carousel]')
     await expect(carousel).toBeVisible()
+
+    // Carousel counter contrast & token compliance on dark Obsidian surface
+    const counter = carousel.locator('p[aria-live="polite"]')
+    await expect(counter).toBeVisible()
+
+    const counterEvaluation = await counter.evaluate((el) => {
+      const computed = getComputedStyle(el)
+      const color = computed.color
+
+      // Create probes for approved dark tokens
+      const probeTokens = [
+        '--color-ivory',
+        '--text-muted',
+        '--text-subtle',
+        '--bronze',
+        '--bronze-light',
+        '--hairline',
+        '--hairline-gold'
+      ]
+      const approvedColors = probeTokens.map((token) => {
+        const p = document.createElement('div')
+        p.style.color = `var(${token})`
+        document.body.appendChild(p)
+        const c = getComputedStyle(p).color
+        p.remove()
+        return c
+      })
+
+      // Probe legacy text-ink-700
+      const probeInk = document.createElement('div')
+      probeInk.className = 'text-ink-700'
+      document.body.appendChild(probeInk)
+      const legacyInk700 = getComputedStyle(probeInk).color
+      probeInk.remove()
+
+      return {
+        color,
+        approvedColors,
+        legacyInk700
+      }
+    })
+
+    // Contrast is not legacy text-ink-700
+    expect(counterEvaluation.color).not.toBe(counterEvaluation.legacyInk700)
+    // Computed text color resolves to an approved dark-surface text token
+    expect(counterEvaluation.approvedColors).toContain(counterEvaluation.color)
+
+    // Control buttons remain visible
+    const prevBtn = carousel.getByRole('button', { name: /trước|previous/i })
+    await expect(prevBtn).toBeVisible()
+    const nextBtn = carousel.getByRole('button', { name: /tiếp theo|next/i })
+    await expect(nextBtn).toBeVisible()
   })
 }
 
-test('P3-2-GALLERY-03 sparse project with short media flow renders without filter tabs', async ({ page }) => {
-  await openProject(
-    page,
-    'vi',
-    '/du-an/nha-xuong-anh-cuong',
-    1280,
-    900
-  )
+for (const width of [390, 1280] as const) {
+  test(`P3-2-GALLERY-03 sparse project with short media flow @ ${width}`, async ({ page }) => {
+    await openProject(
+      page,
+      'vi',
+      '/du-an/nha-xuong-anh-cuong',
+      width,
+      width === 390 ? 844 : 900
+    )
 
-  const gallery = page.locator('section#gallery')
-  await expect(gallery).toBeVisible()
-  await expect(gallery).toHaveAttribute('data-media-flow', 'short')
-  expect(await page.locator('[data-gallery-filters]').count()).toBe(0)
-  expect(await page.locator('[data-project-full-gallery]').count()).toBe(0)
-})
+    const gallery = page.locator('section#gallery')
+    await expect(gallery).toBeVisible()
+    await expect(gallery).toHaveAttribute('data-media-flow', 'short')
+    expect(await page.locator('[data-gallery-filters]').count()).toBe(0)
+    expect(await page.locator('[data-project-full-gallery]').count()).toBe(0)
 
-test('P3-2-GALLERY-04 rich project gallery interactions', async ({ page }) => {
-  await openProject(
-    page,
-    'vi',
-    '/du-an/khach-san-eo-gio',
-    1280,
-    900
-  )
+    const carousel = gallery.locator('[data-gallery-carousel]')
+    await expect(carousel).toBeVisible()
 
-  const filterTabs = page.locator('[data-gallery-filters] button')
-  const tabCount = await filterTabs.count()
-  if (tabCount > 1) {
-    const secondTab = filterTabs.nth(1)
-    await secondTab.click()
-    await expect(secondTab).toHaveAttribute('aria-pressed', 'true')
-  }
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)
+    ).toBe(true)
+  })
 
-  const disclosureBtn = page.locator('[data-project-full-gallery] button')
-  if (await disclosureBtn.count() > 0) {
-    await disclosureBtn.click()
-    const dialog = page.locator('div[role="dialog"]')
-    await expect(dialog).toBeVisible()
-  }
-})
+  test(`P3-2-GALLERY-04 rich project gallery interactions @ ${width}`, async ({ page }) => {
+    await openProject(
+      page,
+      'vi',
+      '/du-an/khach-san-eo-gio',
+      width,
+      width === 390 ? 844 : 900
+    )
+
+    const carousel = page.locator('[data-gallery-carousel]')
+    await expect(carousel).toBeVisible()
+
+    // Next changes active index
+    await expect(carousel).toHaveAttribute('data-gallery-active-index', '0')
+    const nextBtn = carousel.getByRole('button', { name: /tiếp theo|next/i })
+    await expect(nextBtn).toBeVisible()
+    await nextBtn.click()
+    await expect(carousel).toHaveAttribute('data-gallery-active-index', '1')
+
+    // Previous restores / changes index appropriately
+    const prevBtn = carousel.getByRole('button', { name: /trước|previous/i })
+    await expect(prevBtn).toBeVisible()
+    await prevBtn.click()
+    await expect(carousel).toHaveAttribute('data-gallery-active-index', '0')
+
+    // Filters still work where available
+    const filterTabs = page.locator('[data-gallery-filters] button')
+    const tabCount = await filterTabs.count()
+    if (tabCount > 1) {
+      const secondTab = filterTabs.nth(1)
+      await secondTab.click()
+      await expect(secondTab).toHaveAttribute('aria-pressed', 'true')
+    }
+
+    // Full-gallery disclosure opens lightbox
+    const disclosureBtn = page.locator('[data-project-full-gallery] button')
+    if (await disclosureBtn.count() > 0) {
+      await disclosureBtn.click()
+      const dialog = page.locator('div[role="dialog"]')
+      await expect(dialog).toBeVisible()
+    }
+  })
+}

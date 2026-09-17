@@ -267,6 +267,7 @@ usePageSeo({
             :images="filteredGallery"
             selectable
             :paused="lightboxOpen"
+            tone="dark"
             @select="openLightbox"
           />
         </Transition>
