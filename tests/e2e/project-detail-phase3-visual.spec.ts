@@ -116,6 +116,39 @@ for (const locale of ['vi', 'en'] as const) {
     })
     expect(actualBg).toBe(expectedBg)
 
+    // Architectural specs rail: shell-bounded, hairline-gold border, compact radius, no heavy shadow
+    const railMetrics = await page.evaluate(() => {
+      const rail = document.querySelector('[data-project-facts]')
+      if (!rail) return null
+      const rect = rail.getBoundingClientRect()
+      const style = getComputedStyle(rail)
+
+      const probeGold = document.createElement('div')
+      probeGold.style.borderColor = 'var(--hairline-gold)'
+      document.body.appendChild(probeGold)
+      const expectedGold = getComputedStyle(probeGold).borderColor
+      probeGold.remove()
+
+      return {
+        width: rect.width,
+        windowWidth: window.innerWidth,
+        borderColor: style.borderColor || style.borderTopColor,
+        expectedGold,
+        borderRadius: parseFloat(style.borderRadius) || 0,
+        boxShadow: style.boxShadow
+      }
+    })
+
+    expect(railMetrics).not.toBeNull()
+    // Shell-bounded rather than full viewport width
+    expect(railMetrics!.width).toBeLessThan(railMetrics!.windowWidth)
+    // Outer rail uses hairline-gold
+    expect(railMetrics!.borderColor).toBe(railMetrics!.expectedGold)
+    // Compact non-zero radius
+    expect(railMetrics!.borderRadius).toBeGreaterThan(0)
+    // Tactile depth without heavy shadow
+    expect(railMetrics!.boxShadow === 'none' || !railMetrics!.boxShadow.includes('50px')).toBe(true)
+
     // Facts dividers resolve to existing architectural hairline color
     const { actualBorder, expectedBorder } = await page.evaluate(() => {
       const factEl = document.querySelector('[data-project-fact]')
@@ -178,6 +211,13 @@ for (const locale of ['vi', 'en'] as const) {
     })
     expect(actualNavBg).toBe(expectedNavBg)
 
+    // Backdrop blur must resolve to 16px (backdrop-blur-lg)
+    const backdropFilter = await page.evaluate(() => {
+      const nav = document.querySelector('nav[data-project-subnav]')
+      return nav ? (getComputedStyle(nav).backdropFilter || '') : ''
+    })
+    expect(backdropFilter).toContain('16px')
+
     // --hairline-gold bottom divider
     const { actualBorderBottom, expectedBorderBottom } = await page.evaluate(() => {
       const nav = document.querySelector('nav[data-project-subnav]')
@@ -191,11 +231,12 @@ for (const locale of ['vi', 'en'] as const) {
     })
     expect(actualBorderBottom).toBe(expectedBorderBottom)
 
-    // Bronze active state (bg-bronze, text-obsidian)
-    const { actualActiveBg, actualActiveColor, expectedActiveBg, expectedActiveColor } = await page.evaluate(() => {
+    // Bronze active state (bg-bronze, text-obsidian, font-semibold: 600)
+    const { actualActiveBg, actualActiveColor, expectedActiveBg, expectedActiveColor, activeFontWeight } = await page.evaluate(() => {
       const active = document.querySelector('nav[data-project-subnav] a[aria-current="location"]')
       const actualActiveBg = active ? getComputedStyle(active).backgroundColor : ''
       const actualActiveColor = active ? getComputedStyle(active).color : ''
+      const activeFontWeight = active ? getComputedStyle(active).fontWeight : ''
       const probe = document.createElement('div')
       probe.style.backgroundColor = 'var(--bronze)'
       probe.style.color = 'var(--color-obsidian)'
@@ -203,23 +244,26 @@ for (const locale of ['vi', 'en'] as const) {
       const expectedActiveBg = getComputedStyle(probe).backgroundColor
       const expectedActiveColor = getComputedStyle(probe).color
       probe.remove()
-      return { actualActiveBg, actualActiveColor, expectedActiveBg, expectedActiveColor }
+      return { actualActiveBg, actualActiveColor, expectedActiveBg, expectedActiveColor, activeFontWeight }
     })
     expect(actualActiveBg).toBe(expectedActiveBg)
     expect(actualActiveColor).toBe(expectedActiveColor)
+    expect(activeFontWeight).toBe('600')
 
-    // Inactive text remains readable (var(--text-muted))
-    const { actualInactiveColor, expectedInactiveColor } = await page.evaluate(() => {
+    // Inactive text remains readable (var(--text-muted), font-medium: 500)
+    const { actualInactiveColor, expectedInactiveColor, inactiveFontWeight } = await page.evaluate(() => {
       const inactive = document.querySelector('nav[data-project-subnav] a:not([aria-current="location"])')
       const actualInactiveColor = inactive ? getComputedStyle(inactive).color : ''
+      const inactiveFontWeight = inactive ? getComputedStyle(inactive).fontWeight : ''
       const probe = document.createElement('div')
       probe.style.color = 'var(--text-muted)'
       document.body.appendChild(probe)
       const expectedInactiveColor = getComputedStyle(probe).color
       probe.remove()
-      return { actualInactiveColor, expectedInactiveColor }
+      return { actualInactiveColor, expectedInactiveColor, inactiveFontWeight }
     })
     expect(actualInactiveColor).toBe(expectedInactiveColor)
+    expect(inactiveFontWeight).toBe('500')
   })
 
   for (const width of [390, 767] as const) {

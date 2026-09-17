@@ -86,11 +86,11 @@ const { t } = useLanguage()
       </template>
     </AppHero>
 
-    <div
-      data-project-facts
-      class="border-y border-[var(--hairline)] bg-[var(--color-obsidian)] text-[var(--color-ivory)]"
-    >
-      <div class="shell">
+    <div class="shell py-6 md:py-8">
+      <div
+        data-project-facts
+        class="relative overflow-hidden rounded-sm border border-[var(--hairline-gold)] bg-[var(--color-obsidian)] text-[var(--color-ivory)]"
+      >
         <dl class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
           <div
             v-for="(fact, index) in facts"
