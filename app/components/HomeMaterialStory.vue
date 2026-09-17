@@ -300,7 +300,7 @@ const layerStyle = (index: number) => {
   .home-material-story__media-shade {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, transparent 58%, rgb(11 10 9 / 0.38));
+    background: linear-gradient(90deg, transparent 58%, rgb(23 20 18 / 0.38));
   }
 
   .home-material-story__measure {

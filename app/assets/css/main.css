@@ -234,8 +234,8 @@
   --header-scrim-a2: 0.18;
   --scrim-chrome: linear-gradient(
     to bottom,
-    rgb(11 10 9 / var(--header-scrim-a1)),
-    rgb(11 10 9 / var(--header-scrim-a2)) 45%,
+    rgb(23 20 18 / var(--header-scrim-a1)),
+    rgb(23 20 18 / var(--header-scrim-a2)) 45%,
     transparent
   );
   --header-blur-in: 0.05; /* p at which backdrop-filter engages       */

@@ -247,7 +247,7 @@ test('services uses the approved wood programme hover and bright closing transit
   expect(await contact.evaluate(element => getComputedStyle(element).backgroundColor))
     .toBe('rgb(255, 255, 255)')
   expect(await page.locator('footer').evaluate(element => getComputedStyle(element).backgroundColor))
-    .toBe('rgb(11, 10, 9)')
+    .toBe('rgb(23, 20, 18)')
 })
 
 test('services localizes structured data in English', async ({ page }) => {

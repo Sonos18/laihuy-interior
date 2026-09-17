@@ -373,7 +373,7 @@ for (const locale of ['vi', 'en'] as const) {
       const gallery = page.locator('section#gallery')
       await expect(gallery).toBeVisible()
 
-      // Section surface resolves to obsidian (var(--color-obsidian): rgb(11, 10, 9))
+      // Section surface resolves to Warm Graphite Primary Dark (var(--color-obsidian))
       const { actualBg, expectedObsidian } = await gallery.evaluate((el) => {
         const probe = document.createElement('div')
         probe.style.backgroundColor = 'var(--color-obsidian)'
@@ -1226,7 +1226,7 @@ for (const locale of ['vi', 'en'] as const) {
       const finale = page.locator('section[data-project-chapter="finale"]')
       await expect(finale).toBeVisible()
 
-      // Dark Obsidian surface (var(--color-obsidian): rgb(11, 10, 9))
+      // Warm Graphite Primary Dark surface (var(--color-obsidian))
       const { actualBg, expectedObsidian } = await finale.evaluate((el) => {
         const probe = document.createElement('div')
         probe.style.backgroundColor = 'var(--color-obsidian)'
