@@ -13,13 +13,15 @@ type Props = {
   selectable?: boolean
   autoplayMs?: number
   paused?: boolean
+  tone?: 'light' | 'dark'
 }
 
 const props = withDefaults(defineProps<Props>(), {
   preset: 'gallery',
   selectable: false,
   autoplayMs: 5000,
-  paused: false
+  paused: false,
+  tone: 'light'
 })
 
 const emit = defineEmits<{
@@ -227,7 +229,8 @@ onBeforeUnmount(() => {
       </button>
 
       <p
-        class="min-w-20 text-center text-sm font-black tabular-nums text-ink-700"
+        class="min-w-20 text-center text-sm font-black tabular-nums"
+        :class="tone === 'dark' ? 'text-[var(--text-muted)]' : 'text-ink-700'"
         aria-live="polite"
       >
         {{ activeIndex + 1 }} / {{ images.length }}

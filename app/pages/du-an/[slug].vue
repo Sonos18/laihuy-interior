@@ -181,7 +181,7 @@ usePageSeo({
 
     <nav
       data-project-subnav
-      class="subnav-anchor sticky z-30 border-b border-ink-200 bg-white/95 backdrop-blur-md"
+      class="subnav-anchor sticky z-30 border-b border-[var(--hairline-gold)] bg-[color-mix(in_srgb,var(--color-obsidian)_92%,transparent)] text-[var(--color-ivory)] backdrop-blur-lg"
       :aria-label="t({ vi: 'Mục lục dự án', en: 'Case study sections' })"
     >
       <div class="shell flex gap-1 overflow-x-auto py-3">
@@ -189,10 +189,10 @@ usePageSeo({
           v-for="section in detail.navSections"
           :key="section.id"
           :href="`#${section.id}`"
-          class="subnav-chip shrink-0 rounded-full px-4 py-2 text-sm font-bold transition-colors motion-reduce:transition-none"
+          class="subnav-chip shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors motion-reduce:transition-none"
           :class="activeSection === section.id
-            ? 'bg-ink-950 text-white'
-            : 'text-ink-500 hover:text-wood-600'"
+            ? 'bg-[var(--bronze)] text-[var(--color-obsidian)] font-semibold'
+            : 'text-[var(--text-muted)] hover:text-[var(--color-ivory)]'"
           :aria-current="activeSection === section.id ? 'location' : undefined"
         >
           {{ section.label }}
@@ -211,7 +211,7 @@ usePageSeo({
       v-if="mediaFlow.eligible.length"
       id="gallery"
       data-project-chapter="gallery"
-      class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] bg-ink-50"
+      class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] bg-[var(--color-obsidian)] text-[var(--color-ivory)]"
       :data-media-flow="mediaFlow.isLongMedia ? 'long' : 'short'"
       :data-eligible-media="mediaFlow.eligible.length"
       :data-inline-media="filteredGallery.length"
@@ -221,13 +221,13 @@ usePageSeo({
           <div class="max-w-2xl">
             <p
               v-reveal
-              class="eyebrow reveal"
+              class="eyebrow reveal !text-[var(--bronze-light)]"
             >
               {{ t(uiText.labels.completedImages) }}
             </p>
             <h2
               v-reveal="80"
-              class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
+              class="reveal text-section-title mt-4 font-black uppercase text-[var(--color-ivory)]"
             >
               {{ t(uiText.labels.gallery) }}
             </h2>
@@ -245,15 +245,15 @@ usePageSeo({
               type="button"
               class="inline-flex items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-bold transition-colors"
               :class="activeGalleryTab === tab.value
-                ? 'border-ink-950 bg-ink-950 text-white'
-                : 'border-ink-200 bg-white text-ink-600 hover:border-wood-500 hover:text-wood-600'"
+                ? 'border-[var(--hairline-gold)] bg-[var(--bronze)] text-[var(--color-obsidian)] font-semibold'
+                : 'border-[var(--hairline)] bg-white/5 text-[var(--text-muted)] hover:border-[var(--bronze)] hover:text-[var(--color-ivory)]'"
               :aria-pressed="activeGalleryTab === tab.value"
               @click="activeGalleryTab = tab.value"
             >
               {{ tab.label }}
               <span
                 class="text-xs font-black"
-                :class="activeGalleryTab === tab.value ? 'text-white/70' : 'text-ink-500'"
+                :class="activeGalleryTab === tab.value ? 'text-[var(--color-obsidian)]/80 font-bold' : 'text-[var(--text-subtle)] font-bold'"
               >{{ tab.count }}</span>
             </button>
           </div>
@@ -267,6 +267,7 @@ usePageSeo({
             :images="filteredGallery"
             selectable
             :paused="lightboxOpen"
+            tone="dark"
             @select="openLightbox"
           />
         </Transition>
@@ -274,18 +275,18 @@ usePageSeo({
         <div
           v-if="mediaFlow.isLongMedia"
           data-project-full-gallery
-          class="mt-10 flex justify-center border-t border-ink-200 pt-8"
+          class="mt-10 flex justify-center border-t border-[var(--hairline)] pt-8"
         >
           <button
             type="button"
-            class="btn-outline"
+            class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--bronze)] px-7 py-3.5 text-sm font-bold text-[var(--bronze-light)] transition-all duration-300 hover:bg-[var(--bronze)] hover:text-[var(--color-obsidian)]"
             :aria-label="`${t(uiText.cta.allProjectImages)} (${mediaFlow.remaining.length})`"
             @click="openFullGallery"
           >
             {{ t(uiText.cta.allProjectImages) }}
             <span
               aria-hidden="true"
-              class="text-xs font-black text-wood-600"
+              class="text-xs font-black text-current"
             >
               +{{ mediaFlow.remaining.length }}
             </span>

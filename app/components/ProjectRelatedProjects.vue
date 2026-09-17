@@ -19,13 +19,13 @@ const { t } = useLanguage()
         <div>
           <p
             v-reveal
-            class="eyebrow reveal"
+            class="eyebrow reveal !text-[var(--accent-light)]"
           >
             {{ t(uiText.labels.exploreMore) }}
           </p>
           <h2
             v-reveal="80"
-            class="reveal text-section-title mt-4 font-black uppercase text-ink-950"
+            class="reveal text-section-title mt-4 font-black uppercase text-[var(--fg-light)]"
           >
             {{ t(uiText.labels.relatedProjects) }}
           </h2>
@@ -57,14 +57,14 @@ const { t } = useLanguage()
               :height="cover.height"
               sizes="sm:100vw md:33vw"
               loading="lazy"
-              class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transform-none motion-reduce:transition-none"
+              class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02] motion-reduce:transform-none motion-reduce:transition-none"
             />
           </div>
-          <div :class="['border border-ink-200 p-5', cover ? 'border-t-0' : '']">
-            <span class="text-xs font-bold uppercase tracking-[0.16em] text-wood-600">
+          <div :class="['border border-[var(--rule-light)] p-5 hover:border-[var(--bronze)] transition-colors', cover ? 'border-t-0' : '']">
+            <span class="text-xs font-bold uppercase tracking-[0.16em] text-[var(--accent-light)]">
               {{ t(categoryDefinitions[item.category].label) }}
             </span>
-            <h3 class="mt-3 text-xl font-black text-ink-950">{{ t(item.name) }}</h3>
+            <h3 class="mt-3 text-xl font-black text-[var(--fg-light)]">{{ t(item.name) }}</h3>
           </div>
         </NuxtLink>
       </div>
