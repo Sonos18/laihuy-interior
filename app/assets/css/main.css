@@ -10,11 +10,11 @@
 
   /* ── Quiet Luxury & Architectural Editorial Tokens ─────────────────────────
      Declared in Phase 1 per redesign-concept-showcase.html specification.
-     Obsidian dark palette with warm bronze accents, silk ivory typography,
+     Warm Graphite dark palette with warm bronze accents, silk ivory typography,
      and architectural hairlines. */
-  --color-obsidian: #0b0a09;
-  --color-surface-dark: #141210;
-  --color-card-dark: #1a1815;
+  --color-obsidian: #171412;
+  --color-surface-dark: #201b18;
+  --color-card-dark: #29221e;
   --color-bronze-warm: #b8875a;
   --color-bronze-light: #d4a373;
   --color-bronze-dark: #8c6239;
@@ -150,10 +150,10 @@
 
   /* ── L1 · Foreground on DARK ────────────────────────────────────────── */
   --fg-dark: #fff;
-  --fg-dark-muted: rgb(255 255 255 / 0.72); /* 10.1:1 on ink-950        */
+  --fg-dark-muted: rgb(255 255 255 / 0.72); /*  9.8:1 on ink-950        */
   --fg-dark-subtle: rgb(255 255 255 / 0.48); /*  5.0:1 on ink-950 (§25.2)*/
   --rule-dark: rgb(255 255 255 / 0.12);
-  --accent-dark: var(--color-wood-300); /*  7.8:1 on ink-950        */
+  --accent-dark: var(--color-wood-300); /*  7.3:1 on ink-950        */
 
   /* ── L1 · Foreground on LIGHT ───────────────────────────────────────── */
   --fg-light: var(--color-ink-950);
@@ -234,8 +234,8 @@
   --header-scrim-a2: 0.18;
   --scrim-chrome: linear-gradient(
     to bottom,
-    rgb(11 10 9 / var(--header-scrim-a1)),
-    rgb(11 10 9 / var(--header-scrim-a2)) 45%,
+    rgb(23 20 18 / var(--header-scrim-a1)),
+    rgb(23 20 18 / var(--header-scrim-a2)) 45%,
     transparent
   );
   --header-blur-in: 0.05; /* p at which backdrop-filter engages       */
@@ -464,7 +464,7 @@
   --color-ink-700: #463e37;
   --color-ink-800: #2d2925;
   --color-ink-900: #181614;
-  --color-ink-950: #0b0a09;
+  --color-ink-950: #171412;
 
   --color-wood-50: #faf6f0;
   --color-wood-100: #f0e3d4;
@@ -493,9 +493,9 @@
   --animate-fade-in: fade-in 0.6s ease-out both;
 
   /* ── Quiet Luxury & Architectural Editorial Primitives ──────────────────── */
-  --color-obsidian: #0b0a09;
-  --color-surface-dark: #141210;
-  --color-card-dark: #1a1815;
+  --color-obsidian: #171412;
+  --color-surface-dark: #201b18;
+  --color-card-dark: #29221e;
   --color-bronze-warm: #b8875a;
   --color-bronze-light: #d4a373;
   --color-bronze-dark: #8c6239;
@@ -1949,7 +1949,7 @@
 
   .btn-solid-gold {
     background: var(--bronze);
-    color: #0b0a09;
+    color: var(--color-obsidian);
     padding: 0.875rem 1.75rem;
     border-radius: 9999px;
     font-size: 0.85rem;
@@ -2007,7 +2007,7 @@
 
   .btn-luxury-outline:hover {
     background: var(--bronze);
-    color: #0b0a09;
+    color: var(--color-obsidian);
     border-color: var(--bronze);
     box-shadow: 0 4px 15px rgb(184 135 90 / 0.4);
   }

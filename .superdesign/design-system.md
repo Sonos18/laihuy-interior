@@ -13,7 +13,7 @@ Precise, architectural, quiet, premium, and grounded in real manufacturing capab
 
 ## Color
 
-- Ink: `#0b0a09` for footer and one controlled proof chapter.
+- Ink: `#171412` for footer and one controlled proof chapter.
 - Paper: `#ffffff`.
 - Warm paper: `#f7f7f5`.
 - Wood accent: existing wood token scale from `main.css`.
@@ -39,7 +39,7 @@ Precise, architectural, quiet, premium, and grounded in real manufacturing capab
 
 ## Hard constraints
 
-- The section immediately before the footer must not use `#0b0a09`; use white or warm paper so the footer reads as a distinct closing layer.
+- The section immediately before the footer must not use `#171412`; use white or warm paper so the footer reads as a distinct closing layer.
 - Preserve all existing factual claims and bilingual content meaning.
 - The CTA may invite the user to send drawings through contact channels, but must not present a functional upload or successful submission state.
 - Keep the shared header/footer identity and generated media approach.
