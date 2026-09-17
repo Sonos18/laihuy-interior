@@ -860,7 +860,7 @@
 
     .token-preview-row {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 1.5rem;
       margin-bottom: 2.5rem;
     }
@@ -2115,9 +2115,9 @@
       </div>
 
       <div class="specs-board">
-        <h3 class="specs-title">1. Đối Chiếu Bảng Màu: Có Khác Bảng Màu Cũ Không?</h3>
+        <h3 class="specs-title">1. Đối Chiếu Bảng Màu: Bước Tiến Hóa Warm Graphite</h3>
         <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
-          <strong style="color: var(--bronze-light);">Câu trả lời là KHÔNG KHÁC VỀ BẢN CHẤT:</strong> Toàn bộ mã màu trong bản thiết kế này được kế thừa chính xác 100% từ hệ thống token màu gốc của dự án trong <code>design-tokens.md</code> và <code>main.css</code>. Điểm khác biệt duy nhất là <strong>Cách phân bổ & tỷ lệ ứng dụng</strong>.
+          <strong style="color: var(--bronze-light);">Warm Graphite là bước tiến hóa chính thức được phê duyệt</strong> để thay thế cho hệ màu tối Obsidian trước đây. Hệ màu trung tính tối chuyển đổi từ <code>#0B0A09 / #141210 / #1A1815</code> sang <code>#171412 / #201B18 / #29221E</code>, trong khi bản sắc Bronze và Ivory nguyên bản được bảo tồn nguyên vẹn. Sự thay đổi này làm dịu độ tương phản gắt của nền gần như đen tuyệt đối, mang lại chiều sâu vật liệu kiến trúc ấm áp hơn mà vẫn giữ trọn vẹn định hướng nghệ thuật Quiet Luxury.
         </p>
 
         <div class="token-preview-row">
@@ -2128,6 +2128,10 @@
           <div class="color-swatch" style="background: #201B18; color: #FFF;">
             <div>#201B18</div>
             <div style="font-weight:400; color:rgba(255,255,255,0.6)">Chính là token: --color-surface-dark</div>
+          </div>
+          <div class="color-swatch" style="background: #29221E; color: #FFF;">
+            <div>#29221E</div>
+            <div style="font-weight:400; color:rgba(255,255,255,0.6)">Chính là token: --color-card-dark</div>
           </div>
           <div class="color-swatch" style="background: #B8875A; color: #000;">
             <div>#B8875A</div>
