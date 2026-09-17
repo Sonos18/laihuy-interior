@@ -1177,3 +1177,383 @@ for (const locale of ['vi', 'en'] as const) {
     })
   }
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Checkpoint P3-4: Related Work + Conversion Finale + Full Verification
+// ─────────────────────────────────────────────────────────────────────────────
+
+for (const locale of ['vi', 'en'] as const) {
+  for (const viewport of PHASE3_VIEWPORTS) {
+    test(`P3-4-RELATED-01 responsive surface and reflow ${locale} @ ${viewport.width}`, async ({ page }) => {
+      await openProject(
+        page,
+        locale,
+        '/du-an/khach-san-eo-gio',
+        viewport.width,
+        viewport.height
+      )
+
+      const related = page.locator('section[data-project-chapter="related"]')
+      await expect(related).toBeVisible()
+
+      // Light editorial surface (bg-ink-50: rgb(247, 247, 245) or bg-white: rgb(255, 255, 255))
+      const bg = await related.evaluate(el => getComputedStyle(el).backgroundColor)
+      expect(['rgb(247, 247, 245)', 'rgb(255, 255, 255)', 'rgba(255, 255, 255, 1)']).toContain(bg)
+
+      // Responsive reflow geometry (1 col for mobile <768px, 3 col for desktop >=768px)
+      const cols = await gridColumnCount(page, 'section[data-project-chapter="related"] div.grid')
+      if (viewport.width < 768) {
+        expect(cols).toBe(1)
+      } else {
+        expect(cols).toBe(3)
+      }
+
+      // Zero horizontal scroll overflow
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)
+      ).toBe(true)
+    })
+
+    test(`P3-4-FINALE-01 surface and layout ${locale} @ ${viewport.width}`, async ({ page }) => {
+      await openProject(
+        page,
+        locale,
+        '/du-an/khach-san-eo-gio',
+        viewport.width,
+        viewport.height
+      )
+
+      const finale = page.locator('section[data-project-chapter="finale"]')
+      await expect(finale).toBeVisible()
+
+      // Dark Obsidian surface (var(--color-obsidian): rgb(11, 10, 9))
+      const { actualBg, expectedObsidian } = await finale.evaluate((el) => {
+        const probe = document.createElement('div')
+        probe.style.backgroundColor = 'var(--color-obsidian)'
+        document.body.appendChild(probe)
+        const expectedObsidian = getComputedStyle(probe).backgroundColor
+        probe.remove()
+        return {
+          actualBg: getComputedStyle(el).backgroundColor,
+          expectedObsidian
+        }
+      })
+      expect(actualBg).toBe(expectedObsidian)
+
+      // Zero horizontal scroll overflow
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)
+      ).toBe(true)
+    })
+  }
+
+  for (const width of [390, 1280] as const) {
+    test(`P3-4-RELATED-02 visual contract and links ${locale} @ ${width}`, async ({ page }) => {
+      await openProject(
+        page,
+        locale,
+        '/du-an/khach-san-eo-gio',
+        width,
+        width === 390 ? 844 : 900
+      )
+
+      const related = page.locator('section[data-project-chapter="related"]')
+      await expect(related).toBeVisible()
+
+      // Card count > 0 and <= 3
+      const cards = related.locator('a[href^="/du-an/"]')
+      const count = await cards.count()
+      expect(count).toBeGreaterThan(0)
+      expect(count).toBeLessThanOrEqual(3)
+
+      // All links point to /du-an/<slug> and no self-links
+      for (let i = 0; i < count; i++) {
+        const href = await cards.nth(i).getAttribute('href')
+        expect(href).toMatch(/^\/du-an\/[a-z0-9-]+$/)
+        expect(href).not.toBe('/du-an/khach-san-eo-gio')
+      }
+
+      // Card border uses --rule-light
+      const { cardBorder, expectedRuleLight } = await related.evaluate((el) => {
+        const borderEl = el.querySelector('a > div.border, a > div[class*="border-"]')
+        const probe = document.createElement('div')
+        probe.style.borderColor = 'var(--rule-light)'
+        document.body.appendChild(probe)
+        const expectedRuleLight = getComputedStyle(probe).borderColor
+        probe.remove()
+        return {
+          cardBorder: borderEl ? getComputedStyle(borderEl).borderBottomColor : '',
+          expectedRuleLight
+        }
+      })
+      expect(cardBorder).toBe(expectedRuleLight)
+
+      // Category uses --accent-light
+      const { catColor, expectedAccent } = await related.evaluate((el) => {
+        const catEl = el.querySelector('span.tracking-\\[0\\.16em\\]')
+        const probe = document.createElement('div')
+        probe.style.color = 'var(--accent-light)'
+        document.body.appendChild(probe)
+        const expectedAccent = getComputedStyle(probe).color
+        probe.remove()
+        return {
+          catColor: catEl ? getComputedStyle(catEl).color : '',
+          expectedAccent
+        }
+      })
+      expect(catColor).toBe(expectedAccent)
+
+      // Title uses --fg-light
+      const { titleColor, expectedFg } = await related.evaluate((el) => {
+        const h3 = el.querySelector('h3')
+        const probe = document.createElement('div')
+        probe.style.color = 'var(--fg-light)'
+        document.body.appendChild(probe)
+        const expectedFg = getComputedStyle(probe).color
+        probe.remove()
+        return {
+          titleColor: h3 ? getComputedStyle(h3).color : '',
+          expectedFg
+        }
+      })
+      expect(titleColor).toBe(expectedFg)
+
+      // Eyebrow uses --accent-light
+      const { eyebrowColor, expectedAccentLight } = await related.evaluate((el) => {
+        const eyebrow = el.querySelector('p.eyebrow, p.reveal')
+        const probe = document.createElement('div')
+        probe.style.color = 'var(--accent-light)'
+        document.body.appendChild(probe)
+        const expectedAccentLight = getComputedStyle(probe).color
+        probe.remove()
+        return {
+          eyebrowColor: eyebrow ? getComputedStyle(eyebrow).color : '',
+          expectedAccentLight
+        }
+      })
+      expect(eyebrowColor).toBe(expectedAccentLight)
+
+      // Heading H2 uses --fg-light
+      const { h2Color, expectedFgLight } = await related.evaluate((el) => {
+        const h2 = el.querySelector('h2')
+        const probe = document.createElement('div')
+        probe.style.color = 'var(--fg-light)'
+        document.body.appendChild(probe)
+        const expectedFgLight = getComputedStyle(probe).color
+        probe.remove()
+        return {
+          h2Color: h2 ? getComputedStyle(h2).color : '',
+          expectedFgLight
+        }
+      })
+      expect(h2Color).toBe(expectedFgLight)
+
+      // Real cover image remains present
+      expect(await related.locator('img').count()).toBeGreaterThan(0)
+    })
+
+    test(`P3-4-RELATED-03 hover motion contract ${locale} @ ${width}`, async ({ page }) => {
+      await openProject(
+        page,
+        locale,
+        '/du-an/khach-san-eo-gio',
+        width,
+        width === 390 ? 844 : 900
+      )
+
+      const related = page.locator('section[data-project-chapter="related"]')
+      await expect(related).toBeVisible()
+
+      // Motion contract: scale-105 forbidden, scale-[1.02] required, motion-reduce preserved
+      const imgClasses = await related.evaluate((el) => {
+        const img = el.querySelector('img')
+        return img ? img.className : ''
+      })
+      expect(imgClasses).not.toContain('group-hover:scale-105')
+      expect(imgClasses).toContain('group-hover:scale-[1.02]')
+      expect(imgClasses).toContain('motion-reduce:transform-none')
+    })
+
+    test(`P3-4-FINALE-02 visual contract and CTAs ${locale} @ ${width}`, async ({ page }) => {
+      await openProject(
+        page,
+        locale,
+        '/du-an/khach-san-eo-gio',
+        width,
+        width === 390 ? 844 : 900
+      )
+
+      const finale = page.locator('section[data-project-chapter="finale"]')
+      await expect(finale).toBeVisible()
+
+      // Heading resolves to ivory
+      const { h2Color, expectedIvory } = await finale.evaluate((el) => {
+        const h2 = el.querySelector('h2')
+        const probe = document.createElement('div')
+        probe.style.color = 'var(--color-ivory)'
+        document.body.appendChild(probe)
+        const expectedIvory = getComputedStyle(probe).color
+        probe.remove()
+        return {
+          h2Color: h2 ? getComputedStyle(h2).color : '',
+          expectedIvory
+        }
+      })
+      expect(h2Color).toBe(expectedIvory)
+
+      // Description resolves to text-muted
+      const { pColor, expectedMuted } = await finale.evaluate((el) => {
+        const p = el.querySelector('p')
+        const probe = document.createElement('div')
+        probe.style.color = 'var(--text-muted)'
+        document.body.appendChild(probe)
+        const expectedMuted = getComputedStyle(probe).color
+        probe.remove()
+        return {
+          pColor: p ? getComputedStyle(p).color : '',
+          expectedMuted
+        }
+      })
+      expect(pColor).toBe(expectedMuted)
+
+      // /lien-he CTA exists with primary bronze styling
+      const contactCta = finale.locator('a[href="/lien-he"]')
+      await expect(contactCta).toBeVisible()
+      const ctaStyles = await contactCta.evaluate((el) => {
+        const probeBronze = document.createElement('div')
+        probeBronze.style.backgroundColor = 'var(--bronze)'
+        document.body.appendChild(probeBronze)
+        const expectedBg = getComputedStyle(probeBronze).backgroundColor
+        probeBronze.remove()
+
+        const probeObsidian = document.createElement('div')
+        probeObsidian.style.color = 'var(--color-obsidian)'
+        document.body.appendChild(probeObsidian)
+        const expectedText = getComputedStyle(probeObsidian).color
+        probeObsidian.remove()
+
+        return {
+          bg: getComputedStyle(el).backgroundColor,
+          color: getComputedStyle(el).color,
+          expectedBg,
+          expectedText
+        }
+      })
+      expect(ctaStyles.bg).toBe(ctaStyles.expectedBg)
+      expect(ctaStyles.color).toBe(ctaStyles.expectedText)
+
+      // Exactly one valid telephone CTA using tel:
+      const phoneCtas = finale.locator('a[href^="tel:"]')
+      expect(await phoneCtas.count()).toBe(1)
+      const phoneCta = phoneCtas.first()
+      await expect(phoneCta).toBeVisible()
+
+      // Phone CTA border and color
+      const phoneStyles = await phoneCta.evaluate((el) => {
+        const probeGold = document.createElement('div')
+        probeGold.style.borderColor = 'var(--hairline-gold)'
+        document.body.appendChild(probeGold)
+        const expectedBorder = getComputedStyle(probeGold).borderColor
+        probeGold.remove()
+
+        const probeBronzeLight = document.createElement('div')
+        probeBronzeLight.style.color = 'var(--bronze-light)'
+        document.body.appendChild(probeBronzeLight)
+        const expectedColor = getComputedStyle(probeBronzeLight).color
+        probeBronzeLight.remove()
+
+        return {
+          borderColor: getComputedStyle(el).borderColor,
+          color: getComputedStyle(el).color,
+          expectedBorder,
+          expectedColor
+        }
+      })
+      expect(phoneStyles.borderColor).toBe(phoneStyles.expectedBorder)
+      expect(phoneStyles.color).toBe(phoneStyles.expectedColor)
+
+      // Prohibited: no .pdf links, no download action, no BOQ/download lead magnet
+      expect(await finale.locator('a[href$=".pdf"]').count()).toBe(0)
+      expect(await finale.locator('a[download]').count()).toBe(0)
+      expect(await finale.locator('text=/boq|download|tải về|tải xuống|brochure/i').count()).toBe(0)
+    })
+
+    test(`P3-4-FINALE-03 factory stats contract ${locale} @ ${width}`, async ({ page }) => {
+      await openProject(
+        page,
+        locale,
+        '/du-an/khach-san-eo-gio',
+        width,
+        width === 390 ? 844 : 900
+      )
+
+      const finale = page.locator('section[data-project-chapter="finale"]')
+      await expect(finale).toBeVisible()
+
+      // Stats rail has border-b border-[var(--hairline)]
+      const statsUl = finale.locator('ul')
+      const statsStyles = await statsUl.evaluate((el) => {
+        const probe = document.createElement('div')
+        probe.style.borderColor = 'var(--hairline)'
+        document.body.appendChild(probe)
+        const expectedBorder = getComputedStyle(probe).borderColor
+        probe.remove()
+        return {
+          borderBottomColor: getComputedStyle(el).borderBottomColor,
+          expectedBorder
+        }
+      })
+      expect(statsStyles.borderBottomColor).toBe(statsStyles.expectedBorder)
+
+      // Rendered stat count matches supplied factory stats (>=3)
+      const statLis = statsUl.locator('li')
+      const statCount = await statLis.count()
+      expect(statCount).toBeGreaterThanOrEqual(3)
+
+      // Stat icon uses bronze-light
+      const { iconColor, expectedBronzeLight } = await statLis.first().evaluate((el) => {
+        const icon = el.querySelector('svg, span')
+        const probe = document.createElement('div')
+        probe.style.color = 'var(--bronze-light)'
+        document.body.appendChild(probe)
+        const expectedBronzeLight = getComputedStyle(probe).color
+        probe.remove()
+        return {
+          iconColor: icon ? getComputedStyle(icon).color : '',
+          expectedBronzeLight
+        }
+      })
+      expect(iconColor).toBe(expectedBronzeLight)
+
+      // Stat value uses ivory
+      const { valColor, expectedIvory } = await statLis.first().evaluate((el) => {
+        const val = el.querySelector('span.text-xl')
+        const probe = document.createElement('div')
+        probe.style.color = 'var(--color-ivory)'
+        document.body.appendChild(probe)
+        const expectedIvory = getComputedStyle(probe).color
+        probe.remove()
+        return {
+          valColor: val ? getComputedStyle(val).color : '',
+          expectedIvory
+        }
+      })
+      expect(valColor).toBe(expectedIvory)
+
+      // Stat label uses text-subtle
+      const { labelColor, expectedSubtle } = await statLis.first().evaluate((el) => {
+        const label = el.querySelector('span.text-xs')
+        const probe = document.createElement('div')
+        probe.style.color = 'var(--text-subtle)'
+        document.body.appendChild(probe)
+        const expectedSubtle = getComputedStyle(probe).color
+        probe.remove()
+        return {
+          labelColor: label ? getComputedStyle(label).color : '',
+          expectedSubtle
+        }
+      })
+      expect(labelColor).toBe(expectedSubtle)
+    })
+  }
+}
