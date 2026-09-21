@@ -43,7 +43,7 @@ const layerStyle = (index: number) => {
     data-testid="home-material-story"
     :data-enhanced="isEnhanced ? 'true' : 'false'"
     :style="{ '--story-progress': progress.toFixed(4) }"
-    class="home-material-story bg-ink-950 text-white"
+    class="home-material-story bg-white text-ink-950"
   >
     <div
       data-testid="home-story-sticky"
@@ -51,13 +51,13 @@ const layerStyle = (index: number) => {
     >
       <div class="shell home-material-story__shell">
         <div class="home-material-story__heading">
-          <p class="eyebrow text-wood-300">
+          <p class="eyebrow home-eyebrow-text text-wood-600">
             {{ t(homePageContent.story.eyebrow) }}
           </p>
-          <h2 class="home-material-story__title mt-4">
+          <h2 class="home-material-story__title home-section-heading mt-4 text-ink-950">
             {{ t(homePageContent.story.title) }}
           </h2>
-          <p class="mt-5 max-w-2xl text-sm leading-6 text-white/62 md:text-base md:leading-7">
+          <p class="home-material-story__intro-desc home-lead-text mt-5 max-w-2xl text-ink-600">
             {{ t(homePageContent.story.description) }}
           </p>
         </div>
@@ -121,18 +121,18 @@ const layerStyle = (index: number) => {
               <div class="home-material-story__copy-body">
                 <div class="flex items-center gap-4">
                   <span
-                    class="home-material-story__number"
+                    class="home-material-story__number home-meta-text"
                     aria-hidden="true"
                   >{{ String(index + 1).padStart(2, '0') }}</span>
                   <span
                     data-stage-label
-                    class="home-material-story__label"
+                    class="home-material-story__label home-meta-text"
                   >{{ t(stage.label) }}</span>
                 </div>
-                <h3 class="mt-5 text-2xl font-semibold tracking-[-0.035em] text-white md:text-3xl">
+                <h3 class="home-material-story__stage-title home-card-heading mt-5 font-semibold text-ink-950">
                   {{ t(stage.title) }}
                 </h3>
-                <p class="mt-4 text-sm leading-6 text-white/64">
+                <p class="home-material-story__stage-desc mt-4 text-sm leading-[1.7] text-ink-600 md:text-base">
                   {{ t(stage.description) }}
                 </p>
               </div>
@@ -159,11 +159,7 @@ const layerStyle = (index: number) => {
 
 .home-material-story__title {
   max-width: 64rem;
-  font-size: clamp(2.35rem, 5vw, 5.8rem);
   font-weight: 500;
-  line-height: 0.98;
-  letter-spacing: -0.06em;
-  text-wrap: balance;
 }
 
 .home-material-story__stage {
@@ -180,7 +176,7 @@ const layerStyle = (index: number) => {
 }
 
 .home-material-story__copy-item {
-  border-top: 1px solid rgb(255 255 255 / 0.16);
+  border-top: 1px solid var(--color-ink-200);
   padding-top: 1rem;
 }
 
@@ -191,18 +187,18 @@ const layerStyle = (index: number) => {
 
 .home-material-story__number,
 .home-material-story__label {
-  font-size: 0.69rem;
-  font-weight: 800;
+  font-size: 0.72rem;
+  font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
 .home-material-story__number {
-  color: var(--color-wood-300);
+  color: var(--color-wood-600);
 }
 
 .home-material-story__label {
-  color: rgb(255 255 255 / 0.7);
+  color: var(--color-ink-600);
 }
 
 @media (min-width: 768px) {
@@ -255,7 +251,8 @@ const layerStyle = (index: number) => {
     display: block;
     min-height: 0;
     overflow: hidden;
-    background: var(--color-ink-900);
+    background: var(--color-ink-100);
+    box-shadow: inset 0 0 0 1px var(--color-ink-200);
   }
 
   .home-material-story__layer {
@@ -300,7 +297,7 @@ const layerStyle = (index: number) => {
   .home-material-story__media-shade {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, transparent 58%, rgb(11 10 9 / 0.38));
+    background: linear-gradient(90deg, transparent 65%, rgb(0 0 0 / 0.12));
   }
 
   .home-material-story__measure {
@@ -310,16 +307,17 @@ const layerStyle = (index: number) => {
     bottom: 0.8rem;
     display: flex;
     justify-content: space-between;
-    color: rgb(255 255 255 / 0.58);
+    color: var(--color-ink-700);
     font-size: 0.64rem;
     font-weight: 800;
     letter-spacing: 0.18em;
+    text-shadow: 0 1px 2px rgb(255 255 255 / 0.8);
   }
 
   .home-material-story__copy {
     position: relative;
     min-height: 16rem;
-    border-top: 1px solid rgb(255 255 255 / 0.18);
+    border-top: 1px solid var(--color-ink-200);
   }
 
   .home-material-story[data-enhanced="true"] .home-material-story__copy-item {

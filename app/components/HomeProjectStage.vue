@@ -17,7 +17,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
 <template>
   <section
     data-testid="home-projects"
-    class="home-projects bg-[var(--color-obsidian)] text-[var(--color-ivory)]"
+    class="home-projects bg-[#fcfbf9] text-ink-950"
   >
     <div class="shell">
       <!-- Section Header -->
@@ -25,13 +25,13 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
         <div class="max-w-2xl">
           <p
             v-reveal
-            class="reveal text-[0.75rem] font-semibold uppercase tracking-[0.2em] text-[var(--bronze-light)]"
+            class="reveal home-eyebrow-text text-wood-600"
           >
             {{ t(homePageContent.projects.eyebrow) }}
           </p>
           <h2
             v-reveal="80"
-            class="home-projects__title reveal font-display mt-3 text-3xl font-medium tracking-tight text-white sm:text-4xl lg:text-5xl"
+            class="home-projects__title home-section-heading reveal font-display mt-3 text-ink-950"
           >
             {{ t(homePageContent.projects.title) }}
           </h2>
@@ -39,7 +39,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
         <NuxtLink
           v-reveal="140"
           to="/du-an"
-          class="btn-luxury-outline reveal group shrink-0"
+          class="btn-outline reveal group shrink-0 border-ink-300 text-ink-900 hover:border-ink-950 hover:bg-ink-950 hover:text-white"
         >
           <span>{{ t(homePageContent.projects.allCta) }}</span>
           <Icon
@@ -89,35 +89,35 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
                   class="metric-pulse shrink-0"
                   aria-hidden="true"
                 />
-                <span class="text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-[var(--bronze-light)]">
+                <span class="home-meta-text font-semibold uppercase tracking-[0.14em] text-wood-700">
                   {{ t(categoryDefinitions[heroProject.project.category].label) }}
                 </span>
               </div>
-              <h3 class="home-projects__title-hero font-display mt-2 text-2xl font-medium tracking-tight text-white lg:text-3xl">
+              <h3 class="home-projects__title-hero font-display mt-2 text-xl font-medium tracking-tight text-ink-950 md:text-2xl lg:text-[1.625rem]">
                 {{ t(heroProject.project.name) }}
               </h3>
-              <p class="home-projects__excerpt mt-3 text-sm leading-relaxed text-[var(--text-muted)] lg:text-[0.92rem]">
+              <p class="home-projects__excerpt mt-3 text-sm leading-[1.7] text-ink-600 lg:text-[0.92rem]">
                 {{ t(heroProject.project.shortDescription) }}
               </p>
 
               <!-- Editorial specs row -->
               <div
                 v-if="heroProject.project.location || ta(heroProject.project.scope).length || ta(heroProject.project.content?.materials).length"
-                class="home-projects__specs mt-6 grid grid-cols-2 gap-4 border-t border-[var(--hairline)] pt-5 sm:grid-cols-3"
+                class="home-projects__specs mt-6 grid grid-cols-2 gap-4 border-t border-ink-200/80 pt-5 sm:grid-cols-3"
               >
                 <div v-if="heroProject.project.location">
-                  <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-[var(--text-muted)]">
+                  <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-ink-500">
                     {{ t(homePageContent.projects.locationLabel) }}
                   </p>
-                  <p class="mt-1 text-xs font-medium text-[var(--color-ivory)] lg:text-sm">
+                  <p class="mt-1 text-xs font-medium leading-[1.7] text-ink-900 lg:text-sm">
                     {{ t(heroProject.project.location) }}
                   </p>
                 </div>
                 <div v-if="ta(heroProject.project.scope).length">
-                  <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-[var(--text-muted)]">
+                  <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-ink-500">
                     {{ t(homePageContent.projects.scopeLabel) }}
                   </p>
-                  <p class="mt-1 text-xs font-medium text-[var(--color-ivory)] lg:text-sm">
+                  <p class="mt-1 text-xs font-medium leading-[1.7] text-ink-900 lg:text-sm">
                     {{ ta(heroProject.project.scope).slice(0, 3).join(' · ') }}
                   </p>
                 </div>
@@ -125,10 +125,10 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
                   v-if="ta(heroProject.project.content?.materials).length"
                   class="col-span-2 sm:col-span-1"
                 >
-                  <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-[var(--text-muted)]">
+                  <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-ink-500">
                     {{ t(homePageContent.projects.materialsLabel) }}
                   </p>
-                  <p class="mt-1 text-xs font-medium text-[var(--color-ivory)] lg:text-sm truncate">
+                  <p class="mt-1 text-xs font-medium leading-[1.7] text-ink-900 lg:text-sm truncate">
                     {{ ta(heroProject.project.content?.materials)[0] }}
                   </p>
                 </div>
@@ -136,11 +136,11 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
             </div>
 
             <!-- Footer / Meta row -->
-            <div class="home-projects__meta mt-6 flex items-center justify-between border-t border-[var(--hairline)] pt-4">
-              <span class="text-xs font-semibold uppercase tracking-[0.08em] text-[var(--bronze-light)] transition-colors duration-300 group-hover:text-white">
+            <div class="home-projects__meta mt-6 flex items-center justify-between border-t border-ink-200/80 pt-4">
+              <span class="text-xs font-semibold uppercase tracking-[0.08em] text-wood-700 transition-colors duration-300 group-hover:text-wood-950">
                 {{ t(homePageContent.projects.heroCta) }}
               </span>
-              <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[var(--hairline-gold)] text-[var(--bronze-light)] transition-all duration-300 group-hover:border-[var(--bronze)] group-hover:bg-[var(--bronze)] group-hover:text-[var(--color-obsidian)]">
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-wood-300 text-wood-700 transition-all duration-300 group-hover:border-wood-600 group-hover:bg-wood-600 group-hover:text-white">
                 <Icon
                   name="i-lucide-arrow-right"
                   class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
@@ -184,29 +184,29 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
 
           <div class="home-projects__body home-projects__body--satellite">
             <div>
-              <p class="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[var(--bronze-light)]">
+              <p class="home-meta-text font-semibold uppercase tracking-[0.14em] text-wood-700">
                 {{ t(categoryDefinitions[project.category].label) }}
                 <span
                   v-if="project.area"
-                  class="text-[var(--text-muted)]"
+                  class="text-ink-500 font-normal"
                 >
                   · {{ t(project.area) }}
                 </span>
               </p>
-              <h3 class="home-projects__title-satellite font-display mt-1.5 text-lg font-medium tracking-tight text-white lg:text-xl">
+              <h3 class="home-projects__title-satellite font-display mt-1.5 text-lg font-medium tracking-tight text-ink-950 lg:text-xl">
                 {{ t(project.name) }}
               </h3>
-              <p class="mt-2 line-clamp-2 text-xs leading-relaxed text-[var(--text-muted)] lg:text-sm">
+              <p class="mt-2 line-clamp-2 text-xs leading-[1.7] text-ink-600 lg:text-sm">
                 {{ t(project.shortDescription) }}
               </p>
             </div>
 
             <!-- Footer / Meta row -->
-            <div class="home-projects__meta mt-4 flex items-center justify-between border-t border-[var(--hairline)] pt-3.5">
-              <span class="text-xs font-semibold uppercase tracking-[0.08em] text-[var(--bronze-light)] transition-colors duration-300 group-hover:text-white">
+            <div class="home-projects__meta mt-4 flex items-center justify-between border-t border-ink-200/80 pt-3.5">
+              <span class="text-xs font-semibold uppercase tracking-[0.08em] text-wood-700 transition-colors duration-300 group-hover:text-wood-950">
                 {{ t(homePageContent.projects.cardCta) }}
               </span>
-              <span class="inline-flex h-7 w-7 items-center justify-center rounded-full border border-[var(--hairline-gold)] text-[var(--bronze-light)] transition-all duration-300 group-hover:border-[var(--bronze)] group-hover:bg-[var(--bronze)] group-hover:text-[var(--color-obsidian)]">
+              <span class="inline-flex h-7 w-7 items-center justify-center rounded-full border border-wood-300 text-wood-700 transition-all duration-300 group-hover:border-wood-600 group-hover:bg-wood-600 group-hover:text-white">
                 <Icon
                   name="i-lucide-arrow-right"
                   class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
@@ -233,39 +233,39 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
 
 .home-projects__title {
   max-width: 61rem;
-  line-height: 1.08;
-  letter-spacing: -0.04em;
-  text-wrap: balance;
 }
 
 .home-projects__card {
   position: relative;
-  background: var(--bg-card);
-  border: 1px solid var(--hairline);
+  background: #ffffff;
+  border: 1px solid var(--color-ink-200);
   border-radius: 4px;
   overflow: hidden;
-  transition: border-color 0.3s ease, transform 0.3s ease;
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   outline-offset: 4px;
+  box-shadow: 0 2px 8px rgb(11 10 9 / 0.04);
 }
 
 .home-projects__card:hover,
 .home-projects__card:focus-visible {
-  border-color: var(--hairline-gold-strong);
+  border-color: var(--color-ink-400);
+  box-shadow: 0 8px 24px rgb(11 10 9 / 0.08);
 }
 
 .home-projects__media {
   position: relative;
   overflow: hidden;
-  background: var(--color-surface-dark);
+  background: var(--color-ink-100);
 }
 
 .home-projects__tag-pill {
   position: absolute;
   top: 1rem;
   left: 1rem;
-  background: color-mix(in srgb, var(--color-obsidian) 82%, transparent);
-  border: 1px solid var(--hairline-gold);
-  color: var(--bronze-light);
+  background: color-mix(in srgb, #ffffff 88%, transparent);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgb(216 210 202 / 0.8);
+  color: var(--color-ink-900);
   font-size: 0.68rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -282,11 +282,13 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
   position: absolute;
   top: 1rem;
   right: 1rem;
-  color: var(--text-muted);
+  color: var(--color-wood-700);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.14em;
-  background: color-mix(in srgb, var(--color-obsidian) 65%, transparent);
+  background: color-mix(in srgb, #ffffff 88%, transparent);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgb(216 210 202 / 0.8);
   padding: 2px 8px;
   border-radius: 4px;
   z-index: 2;

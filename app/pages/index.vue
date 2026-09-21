@@ -58,7 +58,7 @@ usePageSeo({
 </script>
 
 <template>
-  <div>
+  <div class="home-page">
     <HomeHero
       :image="heroImage"
       :metrics="heroMetrics"

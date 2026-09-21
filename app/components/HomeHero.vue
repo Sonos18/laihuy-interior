@@ -36,19 +36,19 @@ const { t } = useLanguage()
       <div class="home-hero__copy">
         <p
           v-reveal
-          class="hero-kicker reveal"
+          class="hero-kicker home-eyebrow-text reveal"
         >
           {{ t(homePageContent.hero.eyebrow) }}
         </p>
         <h1
           v-reveal="80"
-          class="home-hero__title reveal font-display text-white"
+          class="home-hero__title home-display-title reveal font-display text-white"
         >
           {{ t(homePageContent.hero.title) }}
         </h1>
         <p
           v-reveal="160"
-          class="home-hero__sublead reveal mt-5 max-w-2xl text-base leading-relaxed text-white/80 md:text-lg"
+          class="home-hero__sublead home-lead-text reveal mt-5 max-w-2xl text-white/80"
         >
           {{ t(homePageContent.hero.description) }}
         </p>
@@ -118,11 +118,7 @@ const { t } = useLanguage()
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  font-size: 0.78rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
   color: var(--bronze-light);
-  font-weight: 600;
   margin-bottom: 0.5rem;
 }
 
@@ -136,18 +132,6 @@ const { t } = useLanguage()
 
 .home-hero__title {
   max-width: 64rem;
-  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
   font-weight: 500;
-  line-height: 1.08;
-  letter-spacing: -0.025em;
-  text-wrap: balance;
-}
-
-@media (max-width: 767px) {
-  .home-hero__title {
-    font-size: clamp(2.15rem, 8vw, 3rem);
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-  }
 }
 </style>

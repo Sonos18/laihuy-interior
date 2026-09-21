@@ -2065,4 +2065,85 @@
       animation: none;
     }
   }
+
+  /* ── HOMEPAGE TYPOGRAPHY SYSTEM ──────────────────────────────────────────
+     Approved semantic scale for the homepage (/):
+       Display / Hero H1:  52-72px desktop / 36-44px mobile, line-height 0.98-1.06
+       Section H2:         40-48px desktop / 30-36px mobile, line-height 1.08-1.15
+       Lead / Intro:       18-20px desktop / 16-18px mobile, line-height 1.6-1.7
+       Card / Step H3:     22-26px desktop / 20-22px mobile, line-height 1.18-1.3
+       Nested H4:          17-18px desktop / 16-18px mobile, line-height 1.3-1.4
+       Body:               16px desktop / 15-16px mobile, line-height 1.6-1.75
+       Eyebrow:            12-13px desktop / 12px mobile, line-height 1.3
+       Meta / Index:       12-14px
+       Statistic values:   28-36px desktop / 24-30px mobile
+     Scoped strictly to .home-page to guarantee zero side-effects on other routes. */
+  .home-page {
+    --home-display: clamp(2.25rem, 1.75rem + 2.8vw, 4.5rem);
+    --home-display-lh: 1.04;
+    --home-section-title: clamp(1.875rem, 1.4rem + 1.8vw, 3rem);
+    --home-section-title-lh: 1.12;
+    --home-lead: clamp(1rem, 0.95rem + 0.35vw, 1.1875rem);
+    --home-lead-lh: 1.65;
+    --home-card-title: clamp(1.25rem, 1.15rem + 0.5vw, 1.5625rem);
+    --home-card-title-lh: 1.24;
+    --home-nested-title: clamp(1rem, 0.96rem + 0.25vw, 1.125rem);
+    --home-nested-title-lh: 1.35;
+    --home-body: 1rem;
+    --home-body-lh: 1.7;
+    --home-eyebrow: 0.75rem;
+    --home-eyebrow-lh: 1.3;
+    --home-meta: 0.8125rem;
+    --home-meta-lh: 1.4;
+    --home-stat: clamp(1.5rem, 1.3rem + 1vw, 2.125rem);
+    --home-stat-lh: 1.15;
+  }
+
+  .home-display-title {
+    font-size: var(--home-display);
+    line-height: var(--home-display-lh);
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  .home-section-heading {
+    font-size: var(--home-section-title);
+    line-height: var(--home-section-title-lh);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .home-lead-text {
+    font-size: var(--home-lead);
+    line-height: var(--home-lead-lh);
+  }
+
+  .home-card-heading {
+    font-size: var(--home-card-title);
+    line-height: var(--home-card-title-lh);
+    letter-spacing: -0.02em;
+  }
+
+  .home-nested-heading {
+    font-size: var(--home-nested-title);
+    line-height: var(--home-nested-title-lh);
+  }
+
+  .home-eyebrow-text {
+    font-size: var(--home-eyebrow);
+    line-height: var(--home-eyebrow-lh);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .home-meta-text {
+    font-size: var(--home-meta);
+    line-height: var(--home-meta-lh);
+  }
+
+  .home-stat-value {
+    font-size: var(--home-stat);
+    line-height: var(--home-stat-lh);
+  }
 }
