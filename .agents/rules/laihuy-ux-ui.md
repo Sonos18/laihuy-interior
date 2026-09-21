@@ -38,7 +38,7 @@ is the **authoritative visual specification** for the LaiHuy redesign.
 
 ### Palette & Tokens
 Use the tokens declared in `app/assets/css/main.css`:
-- **Surfaces:** Deep Obsidian (`--color-obsidian: #0b0a09`), Elevated Surface (`--color-surface-dark: #141210`), Card Surface (`--color-card-dark: #1a1815`).
+- **Surfaces:** Warm Graphite Primary Dark (`--color-obsidian: #171412`), Elevated Surface (`--color-surface-dark: #201b18`), Card Surface (`--color-card-dark: #29221e`).
 - **Accents:** Warm Bronze (`--color-bronze-warm: #b8875a`), Light Bronze (`--color-bronze-light: #d4a373`), Deep Bronze (`--color-bronze-dark: #8c6239`).
 - **Typography:** Raw Silk Ivory (`--color-ivory: #f5f2eb`), Muted Ivory (`rgba(245, 242, 235, 0.65)`), Subtle Text (`rgba(245, 242, 235, 0.4)`).
 - **Hairlines:** Restrained translucent borders (`--hairline: rgba(255, 255, 255, 0.08)`), Bronze hairlines (`--hairline-gold: rgba(184, 135, 90, 0.25)`).

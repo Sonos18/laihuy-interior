@@ -106,8 +106,8 @@ const { t } = useLanguage()
 
 .home-hero__wash {
   background:
-    linear-gradient(90deg, rgb(11 10 9 / 0.94) 0%, rgb(11 10 9 / 0.65) 45%, rgb(11 10 9 / 0.35) 100%),
-    linear-gradient(0deg, rgb(11 10 9 / 0.96) 0%, rgb(11 10 9 / 0.4) 45%, transparent 100%);
+    linear-gradient(90deg, rgb(23 20 18 / 0.94) 0%, rgb(23 20 18 / 0.65) 45%, rgb(23 20 18 / 0.35) 100%),
+    linear-gradient(0deg, rgb(23 20 18 / 0.96) 0%, rgb(23 20 18 / 0.4) 45%, transparent 100%);
 }
 
 .home-hero__copy {
