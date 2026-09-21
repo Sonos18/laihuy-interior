@@ -41,11 +41,11 @@ defineProps<{
             class="metric-pulse shrink-0"
             aria-hidden="true"
           />
-          <p class="text-[0.72rem] font-semibold uppercase tracking-[0.14em] text-[var(--bronze-light)]">
+          <p class="home-eyebrow-text text-[var(--bronze-light)]">
             {{ metric.label }}
           </p>
         </div>
-        <p class="mt-2 font-display text-2xl font-medium tracking-tight text-white md:text-3xl">
+        <p class="home-stat-value mt-2 font-display font-medium tracking-tight text-white">
           {{ metric.value }}
         </p>
       </div>

@@ -8,19 +8,19 @@ const { t } = useLanguage()
 <template>
   <section
     data-testid="home-capabilities"
-    class="home-capabilities bg-wood-50 text-ink-950"
+    class="home-capabilities bg-ink-950 text-white"
   >
     <div class="shell">
       <div class="home-capabilities__intro">
         <p
           v-reveal
-          class="eyebrow reveal"
+          class="eyebrow home-eyebrow-text reveal text-[var(--bronze-light)]"
         >
           {{ t(homePageContent.capabilities.eyebrow) }}
         </p>
         <h2
           v-reveal="80"
-          class="home-capabilities__title reveal mt-4"
+          class="home-capabilities__title home-section-heading reveal mt-4 text-white"
         >
           {{ t(homePageContent.capabilities.title) }}
         </h2>
@@ -35,13 +35,13 @@ const { t } = useLanguage()
           class="home-capabilities__item reveal"
         >
           <span
-            class="home-capabilities__number"
+            class="home-capabilities__number home-meta-text"
             aria-hidden="true"
           >{{ String(index + 1).padStart(2, '0') }}</span>
-          <h3 class="mt-10 text-2xl font-semibold tracking-[-0.035em] md:text-3xl">
+          <h3 class="home-capabilities__item-title home-card-heading mt-10 font-semibold text-white">
             {{ t(capability.title) }}
           </h3>
-          <p class="mt-4 text-sm leading-6 text-ink-600">
+          <p class="home-capabilities__item-desc mt-4 text-sm leading-[1.7] text-white/70 md:text-base">
             {{ t(capability.description) }}
           </p>
         </li>
@@ -62,10 +62,7 @@ const { t } = useLanguage()
 
 .home-capabilities__title {
   max-width: 58rem;
-  font-size: clamp(2.4rem, 5vw, 5.6rem);
   font-weight: 500;
-  line-height: 0.98;
-  letter-spacing: -0.06em;
 }
 
 .home-capabilities__list {
@@ -74,14 +71,13 @@ const { t } = useLanguage()
 
 .home-capabilities__item {
   min-height: 18rem;
-  border-top: 1px solid var(--color-ink-300);
+  border-top: 1px solid rgb(255 255 255 / 0.15);
   padding: 1rem 0 2rem;
 }
 
 .home-capabilities__number {
-  color: var(--color-wood-600);
-  font-size: 0.7rem;
-  font-weight: 900;
+  color: var(--bronze-light);
+  font-weight: 700;
   letter-spacing: 0.16em;
 }
 
@@ -100,6 +96,6 @@ const { t } = useLanguage()
   }
 
   .home-capabilities__item:first-child { padding-left: 0; }
-  .home-capabilities__item + .home-capabilities__item { border-left: 1px solid var(--color-ink-300); }
+  .home-capabilities__item + .home-capabilities__item { border-left: 1px solid rgb(255 255 255 / 0.15); }
 }
 </style>

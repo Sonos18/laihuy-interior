@@ -17,7 +17,7 @@ export default defineNuxtConfig({
   modules: ['@nuxt/eslint', '@nuxt/image', '@nuxt/ui'],
 
   devtools: {
-    enabled: true
+    enabled: false
   },
 
   // layers.css MUST precede main.css: it carries the cascade-layer order

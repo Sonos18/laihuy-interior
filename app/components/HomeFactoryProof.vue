@@ -34,20 +34,20 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
         <div>
           <p
             v-reveal
-            class="eyebrow reveal"
+            class="eyebrow home-eyebrow-text reveal text-[var(--bronze-light)]"
           >
             {{ t(homePageContent.factory.eyebrow) }}
           </p>
           <h2
             v-reveal="80"
-            class="home-factory__title reveal mt-4 font-display"
+            class="home-factory__title home-section-heading reveal mt-4 font-display text-white"
           >
             {{ t(homePageContent.factory.title) }}
           </h2>
         </div>
         <p
           v-reveal="140"
-          class="reveal max-w-2xl text-base leading-7 text-[var(--text-muted)]"
+          class="home-lead-text reveal max-w-2xl text-[var(--text-muted)]"
         >
           {{ t(homePageContent.factory.description) }}
         </p>
@@ -59,13 +59,13 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
           v-if="metricFootprint"
           class="home-factory__metric"
         >
-          <dt class="text-xs uppercase tracking-[0.16em] text-[var(--bronze)]">
+          <dt class="home-eyebrow-text uppercase text-[var(--bronze)]">
             {{ t(metricFootprint.label) }}
           </dt>
-          <dd class="mt-2 text-2xl font-medium tracking-tight text-[var(--color-ivory)] md:text-3xl">
+          <dd class="home-stat-value mt-2 font-display font-medium tracking-tight text-[var(--color-ivory)]">
             {{ t(metricFootprint.value) }}
           </dd>
-          <dd class="mt-1 text-sm text-[var(--text-muted)]">
+          <dd class="mt-1 text-sm leading-[1.75] text-[var(--text-muted)]">
             {{ t(metricFootprint.description) }}
           </dd>
         </div>
@@ -73,13 +73,13 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
           v-if="metricCapacity"
           class="home-factory__metric sm:border-l sm:border-[var(--hairline)] sm:pl-6"
         >
-          <dt class="text-xs uppercase tracking-[0.16em] text-[var(--bronze)]">
+          <dt class="home-eyebrow-text uppercase text-[var(--bronze)]">
             {{ t(metricCapacity.label) }}
           </dt>
-          <dd class="mt-2 text-2xl font-medium tracking-tight text-[var(--color-ivory)] md:text-3xl">
+          <dd class="home-stat-value mt-2 font-display font-medium tracking-tight text-[var(--color-ivory)]">
             {{ t(metricCapacity.value) }}
           </dd>
-          <dd class="mt-1 text-sm text-[var(--text-muted)]">
+          <dd class="mt-1 text-sm leading-[1.75] text-[var(--text-muted)]">
             {{ t(metricCapacity.description) }}
           </dd>
         </div>
@@ -121,17 +121,17 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
           <span
             data-machinery-sequence
             aria-hidden="true"
-            class="text-xs font-semibold tracking-[0.2em] text-[var(--bronze)]"
+            class="home-meta-text font-semibold tracking-[0.2em] text-[var(--bronze)]"
           >01</span>
           <h3
             data-testid="homepage-machinery-pillar-title"
-            class="mt-4 font-display text-xl font-medium tracking-tight text-[var(--color-ivory)] md:text-2xl"
+            class="home-card-heading mt-4 font-display font-medium tracking-tight text-[var(--color-ivory)]"
           >
             {{ pillar1Title }}
           </h3>
           <p
             v-if="steps?.[1]"
-            class="mt-3 text-sm leading-relaxed text-[var(--text-muted)]"
+            class="mt-3 text-sm leading-[1.75] text-[var(--text-muted)]"
           >
             {{ t(steps[1].description) }}
           </p>
@@ -141,10 +141,10 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
             v-if="steps?.[0]"
             class="mt-6 border-t border-[var(--hairline)] pt-4"
           >
-            <h4 class="text-xs font-semibold text-[var(--color-ivory)]">
+            <h4 class="home-nested-heading font-semibold text-[var(--color-ivory)]">
               {{ t(steps[0].title) }}
             </h4>
-            <p class="mt-1 text-xs leading-normal text-[var(--text-muted)]">
+            <p class="mt-1 text-xs leading-[1.75] text-[var(--text-muted)]">
               {{ t(steps[0].description) }}
             </p>
           </div>
@@ -158,17 +158,17 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
           <span
             data-machinery-sequence
             aria-hidden="true"
-            class="text-xs font-semibold tracking-[0.2em] text-[var(--bronze)]"
+            class="home-meta-text font-semibold tracking-[0.2em] text-[var(--bronze)]"
           >02</span>
           <h3
             data-testid="homepage-machinery-pillar-title"
-            class="mt-4 font-display text-xl font-medium tracking-tight text-[var(--color-ivory)] md:text-2xl"
+            class="home-card-heading mt-4 font-display font-medium tracking-tight text-[var(--color-ivory)]"
           >
             {{ pillar2TitleLead }} <span class="text-[var(--bronze)]">{{ pillar2TitleAccent }}</span>
           </h3>
           <p
             data-testid="homepage-machinery-description"
-            class="mt-3 text-sm leading-relaxed text-[var(--text-muted)]"
+            class="mt-3 text-sm leading-[1.75] text-[var(--text-muted)]"
           >
             {{ t(content.description) }}
           </p>
@@ -180,13 +180,13 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
               :key="group.id"
               class="text-xs"
             >
-              <h4 class="font-semibold text-[var(--color-ivory)]">
+              <h4 class="home-nested-heading font-semibold text-[var(--color-ivory)]">
                 {{ t(group.title) }}
               </h4>
-              <p class="mt-1 text-[var(--text-muted)]">
+              <p class="mt-1 text-xs leading-[1.75] text-[var(--text-muted)]">
                 {{ t(group.benefit) }}
               </p>
-              <p class="mt-1 text-[0.7rem] text-[var(--bronze-light)]">
+              <p class="mt-1 text-[0.7rem] leading-[1.75] text-[var(--bronze-light)]">
                 <template
                   v-for="(machine, mIdx) in group.machines"
                   :key="t(machine)"
@@ -209,11 +209,11 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
           <span
             data-machinery-sequence
             aria-hidden="true"
-            class="text-xs font-semibold tracking-[0.2em] text-[var(--bronze)]"
+            class="home-meta-text font-semibold tracking-[0.2em] text-[var(--bronze)]"
           >03</span>
           <h3
             data-testid="homepage-machinery-pillar-title"
-            class="mt-4 font-display text-xl font-medium tracking-tight text-[var(--color-ivory)] md:text-2xl"
+            class="home-card-heading mt-4 font-display font-medium tracking-tight text-[var(--color-ivory)]"
           >
             {{ pillar3Title }}
           </h3>
@@ -221,10 +221,10 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
             v-if="capabilityDelivery"
             class="mt-3"
           >
-            <p class="text-sm font-medium text-[var(--bronze-light)]">
+            <p class="text-sm font-medium leading-[1.75] text-[var(--bronze-light)]">
               {{ t(capabilityDelivery.value) }}
             </p>
-            <p class="mt-1 text-sm leading-relaxed text-[var(--text-muted)]">
+            <p class="mt-1 text-sm leading-[1.75] text-[var(--text-muted)]">
               {{ t(capabilityDelivery.description) }}
             </p>
           </div>
@@ -235,10 +235,10 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
               v-if="steps?.[2]"
               class="text-xs"
             >
-              <h4 class="font-semibold text-[var(--color-ivory)]">
+              <h4 class="home-nested-heading font-semibold text-[var(--color-ivory)]">
                 {{ t(steps[2].title) }}
               </h4>
-              <p class="mt-1 text-[var(--text-muted)]">
+              <p class="mt-1 text-xs leading-[1.75] text-[var(--text-muted)]">
                 {{ t(steps[2].description) }}
               </p>
             </div>
@@ -246,10 +246,10 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
               v-if="steps?.[4]"
               class="text-xs"
             >
-              <h4 class="font-semibold text-[var(--color-ivory)]">
+              <h4 class="home-nested-heading font-semibold text-[var(--color-ivory)]">
                 {{ t(steps[4].title) }}
               </h4>
-              <p class="mt-1 text-[var(--text-muted)]">
+              <p class="mt-1 text-xs leading-[1.75] text-[var(--text-muted)]">
                 {{ t(steps[4].description) }}
               </p>
             </div>
@@ -257,10 +257,10 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
               v-if="steps?.[5]"
               class="text-xs"
             >
-              <h4 class="font-semibold text-[var(--color-ivory)]">
+              <h4 class="home-nested-heading font-semibold text-[var(--color-ivory)]">
                 {{ t(steps[5].title) }}
               </h4>
-              <p class="mt-1 text-[var(--text-muted)]">
+              <p class="mt-1 text-xs leading-[1.75] text-[var(--text-muted)]">
                 {{ t(steps[5].description) }}
               </p>
             </div>
@@ -292,10 +292,7 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
 }
 .home-factory__title {
   max-width: 55rem;
-  font-size: clamp(2.4rem, 5vw, 5.5rem);
   font-weight: 500;
-  line-height: 0.98;
-  letter-spacing: -0.06em;
 }
 .home-factory__caption {
   position: absolute;
