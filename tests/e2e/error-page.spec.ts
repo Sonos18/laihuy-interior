@@ -1,5 +1,6 @@
 import { expect, test } from './fixtures'
 import { settle } from './helpers'
+import { APP_ORIGIN } from './origin'
 
 /**
  * app/error.vue contract.
@@ -61,7 +62,7 @@ test('an unknown project slug lands on the same designed page, not the built-in 
 
 test('copy follows the locale cookie rather than defaulting to English', async ({ page, context }) => {
   await context.addCookies([
-    { name: 'lai-huy-locale', value: 'vi', url: 'http://localhost:3000' }
+    { name: 'lai-huy-locale', value: 'vi', url: APP_ORIGIN }
   ])
   await page.goto(MISSING_ROUTE, { waitUntil: 'load' })
   await settle(page)
@@ -69,7 +70,7 @@ test('copy follows the locale cookie rather than defaulting to English', async (
 
   await context.clearCookies()
   await context.addCookies([
-    { name: 'lai-huy-locale', value: 'en', url: 'http://localhost:3000' }
+    { name: 'lai-huy-locale', value: 'en', url: APP_ORIGIN }
   ])
   await page.goto(MISSING_ROUTE, { waitUntil: 'load' })
   await settle(page)

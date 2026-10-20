@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test'
+import { APP_ORIGIN, APP_PORT } from './tests/e2e/origin'
 
 /**
  * Visual-regression + gate harness.
@@ -9,6 +10,8 @@ import { defineConfig, devices } from '@playwright/test'
  */
 export default defineConfig({
   testDir: './tests/e2e',
+  // Proves the server on APP_PORT is this app before any test runs (see global-setup.ts).
+  globalSetup: './tests/e2e/global-setup.ts',
   fullyParallel: true,
   forbidOnly: true,
   // Retries are banned: a flaky VR suite is a broken VR suite (§41 P8). Determinism comes
@@ -38,7 +41,7 @@ export default defineConfig({
 
   // §14: every capture is deterministic — motion disabled, reduced-motion emulated.
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: APP_ORIGIN,
     reducedMotion: 'reduce'
   },
 
@@ -93,7 +96,9 @@ export default defineConfig({
 
   webServer: {
     command: 'node .output/server/index.mjs',
-    url: 'http://localhost:3000',
+    url: APP_ORIGIN,
+    // Nitro's node server listens on PORT; PLAYWRIGHT_PORT moves the whole harness off :3000.
+    env: { PORT: String(APP_PORT) },
     reuseExistingServer: true,
     timeout: 120_000
   }

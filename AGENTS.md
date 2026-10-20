@@ -107,6 +107,7 @@ pnpm test:vr
 pnpm test:vr:all
 ```
 
+- `PLAYWRIGHT_PORT` (default `3000`) sets the harness origin, the `PORT` the webServer starts with, and the origin specs use; `DENSITY_TEST_ORIGIN`/`PROJECT_DETAIL_TEST_ORIGIN` still override per spec. Use a free port (e.g. `$env:PLAYWRIGHT_PORT=3100`) when another app holds 3000; `tests/e2e/global-setup.ts` fails the run if the server on the port is not this app.
 - `test:gates:ci` runs text, layout/contact, and accessibility suites sequentially on Chromium. It does not run the hero gate, the pixel visual suite, or all browsers.
 - `test:gates` runs numeric gate and alignment specs on Chromium; it is not the complete gate set.
 - `test:vr` runs the Chromium visual project. `test:vr:all` runs all configured browser projects and is expensive.

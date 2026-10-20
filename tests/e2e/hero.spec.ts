@@ -1,4 +1,5 @@
 import { expect, test } from './fixtures'
+import { APP_ORIGIN } from './origin'
 
 /**
  * The hero locale-invariance gate — main.css §"THE hero floor" (--hero-min-h-home).
@@ -153,7 +154,7 @@ async function gotoIn(page: import('@playwright/test').Page, path: string, local
   // BEFORE navigation: SSR reads it to pick which copy is rendered, and a post-load switch
   // would measure a client-patched DOM instead of the delivered page.
   await page.context().addCookies([
-    { name: 'lai-huy-locale', value: locale, url: 'http://localhost:3000' }
+    { name: 'lai-huy-locale', value: locale, url: APP_ORIGIN }
   ])
   // `domcontentloaded`, NOT `load`: `load` blocks on every subresource on the page, including
   // the dozens of below-the-fold Supabase-hosted images this gate never looks at. That wait —
