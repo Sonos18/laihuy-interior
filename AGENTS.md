@@ -30,7 +30,7 @@ Routes currently include `/`, `/gioi-thieu`, `/du-an`, `/du-an/[slug]`, `/nha-xu
 - Images use `@nuxt/image` plus a generated media catalog and optional public Supabase Storage URLs.
 - Tests use Vitest `4.1.9`, Playwright `1.61.1`, and `@axe-core/playwright` `4.12.1`.
 - `pnpm@10.29.3` is authoritative (`packageManager` and `pnpm-lock.yaml`). Do not use npm or yarn to change dependencies.
-- The README requires Node 20 or newer; CI uses Node 22. Prefer Node 22 for CI parity. Do not assume behavior observed only on another Node major is portable.
+- `package.json` engines, `.nvmrc`, the README, and CI all pin Node 24. Use Node 24 for CI parity. Do not assume behavior observed only on another Node major is portable.
 
 ## Repository Map
 
@@ -171,7 +171,7 @@ The current `/lien-he` submission is frontend-only: after client-side validation
 - Do not raise timeouts or add retries merely to hide Playwright server starvation or navigation failures. Isolate and diagnose the failing layer.
 - The shared visual sweep currently covers selected routes at `390`, `768`, and `1440` widths; this does not replace breakpoint-boundary testing or all dynamic project shapes.
 - Browser tests can depend on remote Supabase images and Google Maps. Record whether external resources were enabled, blocked, or unavailable.
-- CI uses Ubuntu and Node 22, then runs lint, media literal guard, media catalog drift detection, unit tests, typecheck, build, Playwright Chromium install, and selected text/layout/accessibility gates. Local success on Windows is useful but not identical to CI.
+- CI uses Ubuntu and Node 24, then runs lint, media literal guard, media catalog drift detection, unit tests, typecheck, build, Playwright Chromium install, and selected text/layout/accessibility gates. Local success on Windows is useful but not identical to CI.
 - Do not run every expensive browser suite by default. Select the smallest suite that exercises the changed contract and broaden coverage for shared or high-risk behavior.
 
 ## Generated and Restricted Files
