@@ -7,7 +7,7 @@ always_on: true
 
 ## 1. Brand Positioning & Identity
 
-Lai Huy Interior is an established, high-capacity interior manufacturing and construction contractor specializing in high-end hospitality (5-star hotels, luxury resorts) and premium residential villas.
+Lai Huy Interior is an established, high-capacity interior manufacturing and construction contractor specializing in hospitality (3–5 star hotels and resorts), premium villas and apartments, and commercial projects. Product truth lives in [`PRODUCT.md`](../../PRODUCT.md).
 
 All frontend interfaces must visually communicate:
 - Direct manufacturing capability and workshop craftsmanship (CNC precision, joinery, QC rigor)
@@ -24,29 +24,36 @@ All frontend interfaces must visually communicate:
 
 ## 2. Visual Source of Truth
 
-The interactive showcase prototype:
-[`docs/design/redesign-concept-showcase.html`](../../docs/design/redesign-concept-showcase.html)
-is the **authoritative visual specification** for the LaiHuy redesign.
+[`DESIGN.md`](../../DESIGN.md) is the **authoritative visual specification** (palette, surfaces, typography, shapes, components, motion), with its machine-readable sidecar `.impeccable/design.json` and the tokens in `app/assets/css/main.css`.
+
+The interactive prototype [`docs/design/redesign-concept-showcase.html`](../../docs/design/redesign-concept-showcase.html) remains a reference for composition and motion only. Its fully dark obsidian canvas was superseded on 2026-10-20 by the owner's decision for a continuous warm-light canvas.
 
 ### Conflict Precedence Contract
-1. **Approved Prototype First:** Whenever generic advice or output from global skills (`ui-ux-pro-max`, `redesign-existing-projects`), model defaults, or third-party guidelines conflicts with `docs/design/redesign-concept-showcase.html`, **the approved prototype strictly prevails**.
-2. **No Silent Art Direction Drift:** Global skills may audit, improve accessibility, refine responsive behavior, or guide Nuxt technical implementation, but they are strictly prohibited from altering the approved art direction, color palette, or typography without explicit user approval.
+1. **DESIGN.md First:** Whenever skill output, model defaults, third-party guidelines or the prototype conflict with `DESIGN.md`, **`DESIGN.md` prevails**. Only a direct instruction from the owner ranks above it.
+2. **No Silent Art Direction Drift:** Skills may audit, improve accessibility, refine responsive behavior, or guide Nuxt technical implementation, but they must not alter the approved art direction, color palette, or typography without explicit owner approval. An approved change is recorded in `DESIGN.md` first, then implemented.
+3. **Converge, don't spread:** The "Drift" section of `DESIGN.md` lists incumbent code that does not match yet. Fix it inside the section being worked on; do not restyle unrelated routes to chase it.
 
 ---
 
-## 3. Approved Visual Direction (Quiet Luxury & Architectural Editorial)
+## 3. Approved Visual Direction ("The Quiet Workshop")
 
-### Palette & Tokens
-Use the tokens declared in `app/assets/css/main.css`:
-- **Surfaces:** Deep Obsidian (`--color-obsidian: #0b0a09`), Elevated Surface (`--color-surface-dark: #141210`), Card Surface (`--color-card-dark: #1a1815`).
-- **Accents:** Warm Bronze (`--color-bronze-warm: #b8875a`), Light Bronze (`--color-bronze-light: #d4a373`), Deep Bronze (`--color-bronze-dark: #8c6239`).
-- **Typography:** Raw Silk Ivory (`--color-ivory: #f5f2eb`), Muted Ivory (`rgba(245, 242, 235, 0.65)`), Subtle Text (`rgba(245, 242, 235, 0.4)`).
-- **Hairlines:** Restrained translucent borders (`--hairline: rgba(255, 255, 255, 0.08)`), Bronze hairlines (`--hairline-gold: rgba(184, 135, 90, 0.25)`).
+Summary only; exact values, named rules and component specs are in `DESIGN.md`.
+
+### Palette & Surfaces
+- **Canvas:** one continuous warm-light surface: Linen (`wood-50` #faf6f0), Raw Silk (`--color-ivory` #f5f2eb) and Sawdust (`wood-100` #f0e3d4), with Paper White (#ffffff) for cards, forms and inputs. Step between sections by tone and hairlines, never by switching to dark.
+- **Dark:** Obsidian (`ink-950` #0b0a09) only behind the photographic hero (as a scrim) and in the footer. A dark band in the middle of a page is drift.
+- **Accent:** Workshop Bronze (`wood-400` #b8875a) is the single accent: primary action, eyebrow rules, active markers. Polished Bronze (#d4a373) for hover. On light surfaces a bronze button carries a 1px Deep Timber (`wood-600` #7c5032) border for 3:1 edge contrast.
+- **Text:** Charcoal Ink (`ink-900`) primary, Walnut Grey (`ink-600`) secondary, Dust Grey (`ink-500`) for captions only (never on Sawdust). Accent text in Deep Timber.
+- **Hairlines:** Plaster Line (`ink-200` at 60%) on light surfaces; bronze hairline (`--hairline-gold`) for metric frames.
 
 ### Typography System
-- **Display & Headings:** `Outfit` (geometric elegance aligned with brand mark) and `Syne` (artistic, sculptural accents for editorial highlights).
-- **Body & Captions:** `Inter` / `Plus Jakarta Sans` for optical clarity at small sizes.
-- **Rule:** Do not introduce unrelated display or serif fonts without explicit PO approval. Avoid shouting in continuous uppercase; employ deliberate typographic scale and case hierarchy.
+- **Display & Headings:** `Outfit` weight 500, sentence case.
+- **Body, labels, nav, buttons:** `Inter`. Prose keeps line-height ≥ 1.65 for Vietnamese diacritics.
+- **Rule:** Do not introduce other display or serif fonts without explicit owner approval (`Syne` is loaded but unused). Uppercase is limited to short eyebrows and nav items; headings in continuous uppercase or weight 900 are drift.
+
+### Shape & Depth
+- 4px edges for anything that holds content (cards, images, metric frames, form panels, inputs); full pills for anything pressed (buttons, chips, controls).
+- Flat at rest; a slight shadow only on hover or focus, and the drawer's single shadow.
 
 ### Layout & Composition
 - **Editorial Asymmetry:** Prefer balanced asymmetric grids, intentional image scale variations, and editorial breathing room over monotonous symmetric boxes.
@@ -57,24 +64,24 @@ Use the tokens declared in `app/assets/css/main.css`:
 
 ### Motion & Micro-Interactions
 - **Tone:** Slow, cinematic, purposeful, and quiet.
-- **Approved:** Gentle Ken Burns zoom on featured architectural imagery, subtle bronze light sweep on primary CTA buttons, soft metric glow, and clean scroll reveals.
+- **Approved:** Gentle Ken Burns zoom on featured architectural imagery, subtle bronze light sweep on the primary CTA, a soft pulsing metric dot, and clean scroll reveals on the editorial curve (`cubic-bezier(0.22, 0.61, 0.36, 1)`).
 - **Forbidden:** Bouncing animations, rapid spring physics, loud gradients, excessive parallax, or constant looping distractions.
+- **Always:** every reveal, zoom, sweep and pulse is disabled under `prefers-reduced-motion`.
 
 ---
 
 ## 4. Skill Routing & Roles
 
-In accordance with the Global Frontend Skill Router:
-- **`redesign-existing-projects`** is the **DESIGN AUTHORITY** for existing pages. Follow its `Scan -> Diagnose -> Fix` sequence to upgrade aesthetics while protecting existing markup structure and behavior.
-- **`ui-ux-pro-max`** acts as a **TECHNICAL SPECIALIST** for Nuxt/Vue component architecture, Tailwind CSS 4 token integration, Nuxt UI patterns, accessibility audits, and responsive breakpoint troubleshooting.
+Design skills are installed at project level in `.claude/skills/`. Their roles, precedence and the per-section workflow are defined in [`CLAUDE.md`](../../CLAUDE.md) ("Design skills — phân vai"): `impeccable` leads design within `DESIGN.md`, `high-end-visual-design` adds polish only on request, `emil-design-eng` owns motion, `web-design-guidelines` audits, and `webapp-testing` verifies in a real browser. Earlier references to `redesign-existing-projects` and `ui-ux-pro-max` are retired.
 
 ---
 
 ## 5. Anti-Generic-UI Guardrails
 
 Actively reject and remove:
+- Alternating light and dark section bands
 - Repetitive `p-6 border rounded-2xl` card grids
-- Glassmorphism overlays and heavy frosted blurs where solid dark surfaces provide better hierarchy
+- Glassmorphism panels and heavy frosted blurs (the scrolled header's 16px glass is the one sanctioned blur)
 - Neon accents, multi-color gradient text, and saturated badges
 - Pointless pills, badges, or tag clouds that crowd the view
 - Deep drop-shadows that conflict with clean architectural hairlines

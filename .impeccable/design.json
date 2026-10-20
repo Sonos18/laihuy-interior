@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-20T00:00:00+07:00",
+  "title": "Design System: Lai Huy Interior",
+  "extensions": {
+    "colorMeta": {
+      "bronze": { "role": "primary", "displayName": "Workshop Bronze", "canonical": "#b8875a", "tonalRamp": ["#2b1a13", "#442b1e", "#603e29", "#7c5032", "#9b6a43", "#b8875a", "#ddc4aa", "#f0e3d4"] },
+      "bronze-light": { "role": "primary", "displayName": "Polished Bronze", "canonical": "#d4a373", "tonalRamp": ["#3a2716", "#5a3d22", "#7d5631", "#a37244", "#c08b5a", "#d4a373", "#e6c7a4", "#f5e6d4"] },
+      "timber-deep": { "role": "secondary", "displayName": "Deep Timber", "canonical": "#7c5032", "tonalRamp": ["#170d09", "#2b1a13", "#442b1e", "#603e29", "#7c5032", "#9b6a43", "#c59b75", "#faf6f0"] },
+      "timber-mid": { "role": "secondary", "displayName": "Mid Timber", "canonical": "#9b6a43", "tonalRamp": ["#170d09", "#2b1a13", "#442b1e", "#603e29", "#7c5032", "#9b6a43", "#c59b75", "#faf6f0"] },
+      "linen": { "role": "neutral", "displayName": "Linen", "canonical": "#faf6f0", "tonalRamp": ["#170d09", "#442b1e", "#7c5032", "#b8875a", "#ddc4aa", "#f0e3d4", "#f5f2eb", "#faf6f0"] },
+      "raw-silk": { "role": "neutral", "displayName": "Raw Silk", "canonical": "#f5f2eb", "tonalRamp": ["#0b0a09", "#2d2925", "#5d5349", "#958777", "#bcb3a7", "#d8d2ca", "#ece9e4", "#f5f2eb"] },
+      "sawdust": { "role": "neutral", "displayName": "Sawdust", "canonical": "#f0e3d4", "tonalRamp": ["#170d09", "#442b1e", "#7c5032", "#b8875a", "#c59b75", "#ddc4aa", "#f0e3d4", "#faf6f0"] },
+      "paper-white": { "role": "neutral", "displayName": "Paper White", "canonical": "#ffffff", "tonalRamp": ["#0b0a09", "#2d2925", "#5d5349", "#958777", "#d8d2ca", "#ece9e4", "#f7f7f5", "#ffffff"] },
+      "obsidian": { "role": "neutral", "displayName": "Obsidian", "canonical": "#0b0a09", "tonalRamp": ["#0b0a09", "#181614", "#2d2925", "#463e37", "#5d5349", "#74685d", "#958777", "#bcb3a7"] },
+      "charcoal-ink": { "role": "neutral", "displayName": "Charcoal Ink", "canonical": "#181614", "tonalRamp": ["#0b0a09", "#181614", "#2d2925", "#463e37", "#5d5349", "#74685d", "#958777", "#bcb3a7"] },
+      "walnut-grey": { "role": "neutral", "displayName": "Walnut Grey", "canonical": "#5d5349", "tonalRamp": ["#181614", "#2d2925", "#463e37", "#5d5349", "#74685d", "#958777", "#bcb3a7", "#d8d2ca"] },
+      "dust-grey": { "role": "neutral", "displayName": "Dust Grey", "canonical": "#74685d", "tonalRamp": ["#181614", "#2d2925", "#463e37", "#5d5349", "#74685d", "#958777", "#bcb3a7", "#d8d2ca"] },
+      "plaster-line": { "role": "neutral", "displayName": "Plaster Line", "canonical": "#d8d2ca", "tonalRamp": ["#463e37", "#5d5349", "#74685d", "#958777", "#bcb3a7", "#d8d2ca", "#ece9e4", "#f7f7f5"] },
+      "kiln-red": { "role": "error", "displayName": "Kiln Red", "canonical": "#b23c2a", "tonalRamp": ["#3a120c", "#5e1d13", "#8a2e1f", "#b23c2a", "#cf6b5a", "#e29c90", "#f2cdc6", "#fdf3f1"] },
+      "kiln-red-deep": { "role": "error", "displayName": "Deep Kiln Red", "canonical": "#8a2e1f", "tonalRamp": ["#3a120c", "#5e1d13", "#8a2e1f", "#b23c2a", "#cf6b5a", "#e29c90", "#f2cdc6", "#fdf3f1"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Home hero headline only." },
+      "headline": { "displayName": "Headline", "purpose": "Section headings on every page." },
+      "title": { "displayName": "Title", "purpose": "Card and pillar headings." },
+      "stat": { "displayName": "Stat", "purpose": "Metric values in hero metrics and factory stats." },
+      "lead": { "displayName": "Lead", "purpose": "Section introductions, 48ch measure." },
+      "body": { "displayName": "Body", "purpose": "Running text, 56ch measure, line-height never below 1.65." },
+      "label": { "displayName": "Label", "purpose": "Eyebrows and kickers; uppercase, short." },
+      "nav": { "displayName": "Nav", "purpose": "Header navigation items." },
+      "action": { "displayName": "Action", "purpose": "Button and chip labels, sentence case." }
+    },
+    "shadows": [
+      { "name": "rest-lift", "value": "0 2px 8px rgb(11 10 9 / 0.04)", "purpose": "Project cards at rest." },
+      { "name": "hover-lift", "value": "0 8px 24px rgb(11 10 9 / 0.08)", "purpose": "Project cards on hover or focus." },
+      { "name": "drawer", "value": "0 0 40px rgb(11 10 9 / 0.28)", "purpose": "Mobile drawer only; the one chrome shadow." }
+    ],
+    "motion": [
+      { "name": "ease-editorial", "value": "cubic-bezier(0.22, 0.61, 0.36, 1)", "purpose": "Default easing for hover, state and reveal." },
+      { "name": "ease-exit", "value": "cubic-bezier(0.4, 0, 1, 1)", "purpose": "Drawer and overlay exits." },
+      { "name": "dur-hover", "value": "240ms", "purpose": "Hover color and border changes." },
+      { "name": "dur-state", "value": "400ms", "purpose": "Header state, nav underline, larger state changes." },
+      { "name": "dur-drawer", "value": "300ms", "purpose": "Drawer slide." },
+      { "name": "dur-reveal", "value": "700ms", "purpose": "Scroll reveal: 24px rise plus fade." }
+    ],
+    "breakpoints": [
+      { "name": "xs", "value": "360px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single bronze action per view, sentence case, with a timber edge on light surfaces.",
+      "html": "<button class=\"ds-btn-primary\">Nhận báo giá trong 24h</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 14px 28px; border-radius: 9999px; border: 1px solid var(--color-wood-600, #7c5032); background: var(--color-wood-400, #b8875a); color: var(--color-ink-950, #0b0a09); font-family: Inter, 'Segoe UI', sans-serif; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.01em; cursor: pointer; transition: background-color 240ms cubic-bezier(0.22, 0.61, 0.36, 1); } .ds-btn-primary:hover { background: #d4a373; } .ds-btn-primary:focus-visible { outline: 2px solid var(--color-wood-500, #9b6a43); outline-offset: 2px; } .ds-btn-primary:active { background: var(--color-wood-500, #9b6a43); }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary action beside a primary; fills charcoal on hover.",
+      "html": "<button class=\"ds-btn-outline\">Xem năng lực nhà xưởng</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 14px 28px; border-radius: 9999px; border: 1px solid var(--color-ink-300, #bcb3a7); background: transparent; color: var(--color-ink-900, #181614); font-family: Inter, 'Segoe UI', sans-serif; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.01em; cursor: pointer; transition: background-color 240ms cubic-bezier(0.22, 0.61, 0.36, 1), color 240ms cubic-bezier(0.22, 0.61, 0.36, 1); } .ds-btn-outline:hover { background: var(--color-ink-900, #181614); color: var(--color-wood-50, #faf6f0); } .ds-btn-outline:focus-visible { outline: 2px solid var(--color-wood-500, #9b6a43); outline-offset: 2px; }"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Project category filter; active state fills charcoal.",
+      "html": "<div class=\"ds-chip-row\"><button class=\"ds-chip ds-chip-active\" aria-pressed=\"true\">Tất cả</button><button class=\"ds-chip\" aria-pressed=\"false\">Khách sạn</button><button class=\"ds-chip\" aria-pressed=\"false\">Villa</button></div>",
+      "css": ".ds-chip-row { display: flex; gap: 8px; flex-wrap: wrap; } .ds-chip { padding: 12px 20px; border-radius: 9999px; border: 1px solid var(--color-ink-200, #d8d2ca); background: transparent; color: var(--color-ink-600, #5d5349); font-family: Inter, 'Segoe UI', sans-serif; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: border-color 240ms cubic-bezier(0.22, 0.61, 0.36, 1), color 240ms cubic-bezier(0.22, 0.61, 0.36, 1); } .ds-chip:hover { border-color: var(--color-wood-500, #9b6a43); color: var(--color-wood-600, #7c5032); } .ds-chip:focus-visible { outline: 2px solid var(--color-wood-500, #9b6a43); outline-offset: 2px; } .ds-chip-active, .ds-chip-active:hover { background: var(--color-ink-900, #181614); border-color: var(--color-ink-900, #181614); color: var(--color-wood-50, #faf6f0); }"
+    },
+    {
+      "name": "Project Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Paper-white case study card with a 4px edge, hairline border and a slight lift on hover.",
+      "html": "<article class=\"ds-card\" tabindex=\"0\"><div class=\"ds-card-media\"></div><div class=\"ds-card-body\"><p class=\"ds-card-eyebrow\">Khách sạn · Vĩnh Long</p><h3 class=\"ds-card-title\">Khách sạn Eo Gió</h3><p class=\"ds-card-text\">Thiết kế, sản xuất và thi công trọn gói.</p></div></article>",
+      "css": ".ds-card { max-width: 360px; background: #ffffff; border: 1px solid var(--color-ink-200, #d8d2ca); border-radius: 4px; overflow: hidden; box-shadow: 0 2px 8px rgb(11 10 9 / 0.04); transition: box-shadow 300ms cubic-bezier(0.22, 0.61, 0.36, 1), border-color 300ms cubic-bezier(0.22, 0.61, 0.36, 1); } .ds-card:hover, .ds-card:focus-visible { border-color: var(--color-ink-400, #958777); box-shadow: 0 8px 24px rgb(11 10 9 / 0.08); outline: none; } .ds-card:focus-visible { outline: 2px solid var(--color-wood-500, #9b6a43); outline-offset: 2px; } .ds-card-media { aspect-ratio: 16 / 10; background: var(--color-wood-100, #f0e3d4); } .ds-card-body { padding: 24px; } .ds-card-eyebrow { margin: 0 0 8px; font-family: Inter, 'Segoe UI', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-wood-600, #7c5032); } .ds-card-title { margin: 0 0 8px; font-family: Outfit, 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 1.5rem; font-weight: 500; line-height: 1.24; letter-spacing: -0.02em; color: var(--color-ink-900, #181614); } .ds-card-text { margin: 0; font-family: Inter, 'Segoe UI', sans-serif; font-size: 1rem; line-height: 1.7; color: var(--color-ink-600, #5d5349); }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Contact form field with a visible timber focus ring and a fix-it error message.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">Số điện thoại</span><input class=\"ds-input\" type=\"tel\" placeholder=\"0903 102 012\" /></label>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 8px; max-width: 360px; } .ds-field-label { font-family: Inter, 'Segoe UI', sans-serif; font-size: 0.875rem; font-weight: 700; color: var(--color-ink-800, #2d2925); } .ds-input { min-height: 50px; padding: 12px 16px; border: 1px solid var(--color-ink-200, #d8d2ca); border-radius: 4px; background: #ffffff; color: var(--color-ink-900, #181614); font-family: Inter, 'Segoe UI', sans-serif; font-size: 1rem; transition: border-color 240ms cubic-bezier(0.22, 0.61, 0.36, 1); } .ds-input:hover { border-color: var(--color-ink-300, #bcb3a7); } .ds-input:focus-visible { border-color: var(--color-wood-500, #9b6a43); outline: 2px solid var(--color-wood-500, #9b6a43); outline-offset: 2px; } .ds-input[aria-invalid=\"true\"] { border-color: var(--color-alert-500, #b23c2a); }"
+    },
+    {
+      "name": "Header Navigation",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "Scrolled header on white glass with uppercase nav items and a scaling underline for the current page.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Chính\"><a class=\"ds-nav-item\" href=\"#\" aria-current=\"page\">Dự án</a><a class=\"ds-nav-item\" href=\"#\">Nhà xưởng</a><a class=\"ds-nav-item\" href=\"#\">Dịch vụ</a><a class=\"ds-nav-item\" href=\"#\">Liên hệ</a></nav>",
+      "css": ".ds-nav { display: flex; gap: 4px; align-items: center; padding: 0 16px; min-height: 72px; background: rgb(255 255 255 / 0.92); border-bottom: 1px solid rgb(216 210 202 / 0.6); } .ds-nav-item { position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 0 8px; font-family: Inter, 'Segoe UI', sans-serif; font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.12em; line-height: 1; text-transform: uppercase; text-decoration: none; color: var(--color-ink-600, #5d5349); transition: color 240ms cubic-bezier(0.22, 0.61, 0.36, 1); } .ds-nav-item::after { content: ''; position: absolute; left: 8px; right: 8px; bottom: 10px; height: 1.5px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform 400ms cubic-bezier(0.22, 0.61, 0.36, 1); } .ds-nav-item:hover, .ds-nav-item[aria-current=\"page\"] { color: var(--color-ink-950, #0b0a09); } .ds-nav-item:hover::after, .ds-nav-item[aria-current=\"page\"]::after { transform: scaleX(1); } .ds-nav-item:focus-visible { outline: 2px solid var(--color-wood-500, #9b6a43); outline-offset: 2px; }"
+    },
+    {
+      "name": "Hero Metrics Strip",
+      "kind": "custom",
+      "refersTo": "hero-metrics",
+      "description": "Four-up factory metrics framed in a bronze hairline with Outfit stat values.",
+      "html": "<dl class=\"ds-metrics\"><div class=\"ds-metric\"><dt>Nhà xưởng</dt><dd>3.000 m²</dd></div><div class=\"ds-metric\"><dt>Năng lực</dt><dd>~50 phòng/tháng</dd></div><div class=\"ds-metric\"><dt>Phạm vi</dt><dd>Trọn gói</dd></div><div class=\"ds-metric\"><dt>Lắp đặt</dt><dd>Toàn quốc</dd></div></dl>",
+      "css": ".ds-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; border: 1px solid rgb(184 135 90 / 0.25); border-radius: 4px; background: var(--color-wood-50, #faf6f0); } .ds-metric { padding: 20px; border-left: 1px solid rgb(184 135 90 / 0.25); } .ds-metric:first-child { border-left: 0; } .ds-metric dt { margin: 0 0 8px; font-family: Inter, 'Segoe UI', sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-wood-600, #7c5032); } .ds-metric dd { margin: 0; font-family: Outfit, 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 1.75rem; font-weight: 500; line-height: 1.15; color: var(--color-ink-900, #181614); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Workshop",
+    "overview": "Lai Huy's interface behaves like a well-run workshop at midday: warm light on linen and sawn timber, tools put away, the work itself on display. Capability is shown, not announced. Photography of real rooms and the factory carries the drama; the interface stays calm, warm and exact around it, the way a finished cabinet face is calm because the joinery behind it is precise.\n\nThe page reads as one continuous warm-light surface. Darkness is reserved for two places only: the photographic hero, where an obsidian scrim lets copy sit on the image, and the footer, which closes the page. Sections are separated by small steps in warm tone (linen, raw silk, sawdust) and by hairlines, never by flipping between light and dark. Components feel warm and tactile, like a finished timber surface: soft bronze, gently eased edges, generous padding, nothing glossy.\n\nThe system rejects consumer furniture e-commerce, boilerplate construction templates, SaaS product pages and generic AI landing pages. It also rejects alternating light and dark section bands, which the owner found jarring.",
+    "keyCharacteristics": [
+      "One continuous warm-light canvas; dark only for the photo hero and the footer.",
+      "Outfit at weight 500 for display and headings, Inter for reading; sentence case throughout.",
+      "Bronze is the single accent: the primary action, eyebrow rules, active markers.",
+      "Flat surfaces separated by tone and hairlines; shadow only as a response to interaction.",
+      "4px edges for anything that holds content, pills for anything you press.",
+      "Slow, editorial motion that always yields to `prefers-reduced-motion`."
+    ],
+    "rules": [
+      { "name": "The One Accent Rule", "body": "Bronze is the only accent hue. No second brand color, no gradients between accents, no saturated badges.", "section": "colors" },
+      { "name": "The Warm Light Rule", "body": "Body sections sit on linen, raw silk or sawdust. Obsidian surfaces appear only behind the hero photograph and in the footer; a dark band in the middle of a page is drift.", "section": "colors" },
+      { "name": "The Bronze Edge Rule", "body": "On light surfaces a bronze-filled button carries a 1px Deep Timber border: bronze alone reaches only about 2.9:1 against linen, under the 3:1 non-text contrast floor.", "section": "colors" },
+      { "name": "The Vietnamese Leading Rule", "body": "Any prose at body size or smaller keeps line-height at 1.65 or more; tone marks need the room. This is enforced by the typography gate (T1).", "section": "typography" },
+      { "name": "The Sentence Case Rule", "body": "Headings and buttons are sentence case. Uppercase is limited to short labels and nav; a heading in continuous uppercase or weight 900 is drift.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "Surfaces are flat at rest. A shadow appears only on hover, focus or for floating chrome; glows and deep drop shadows are drift.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep every body section on Linen, Raw Silk or Sawdust, and step between them by tone, not by switching to dark.",
+      "Do use Workshop Bronze for the primary action and give it a 1px Deep Timber border on light surfaces.",
+      "Do set headings in Outfit 500, sentence case, and keep prose at line-height 1.65 or more.",
+      "Do use the 4px edge for content containers and pills for controls.",
+      "Do separate content with Plaster Line hairlines at 60% before reaching for a shadow.",
+      "Do move with the editorial curve (`cubic-bezier(0.22, 0.61, 0.36, 1)`), 240ms for hover and 400ms for state, and disable reveal, zoom, Ken Burns, sheen and pulse under `prefers-reduced-motion`."
+    ],
+    "donts": [
+      "Don't alternate light and dark section bands; obsidian appears only behind the hero photograph and in the footer.",
+      "Don't set headings in Inter 900 or continuous uppercase.",
+      "Don't use 16px card or input radii; they belong to the retired interior-page system.",
+      "Don't add a second accent hue, gradient text, neon, saturated badges, glassmorphism panels or deep drop shadows.",
+      "Don't use bouncing or spring motion, constant looping distractions or heavy parallax.",
+      "Don't hardcode hex values in components; use the palette tokens."
+    ]
+  }
+}
