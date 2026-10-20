@@ -27,6 +27,9 @@ test('reloads the persisted English locale without hydration mismatches or stale
   await expect(page.locator('html')).toHaveAttribute('lang', 'en')
   await expect(page.getByRole('heading', { level: 1, name: 'Codi Villa, Phan Thiet' })).toBeVisible()
   await expect(page.getByRole('button', { name: 'Open menu' })).toBeVisible()
-  await expect(page.getByRole('button', { name: 'Enlarge image' })).toHaveCount(9)
+  // The spotlight carousel exposes "Enlarge" on the active slide only; its English name proves
+  // the gallery labels hydrated in the persisted locale rather than the Vietnamese SSR default.
+  await expect(page.getByRole('button', { name: /^Enlarge image · Image 1 \/ \d+$/ })).toHaveCount(1)
+  await expect(page.getByRole('button', { name: /Phóng to ảnh/ })).toHaveCount(0)
   expect(consoleErrors).not.toContain('Hydration completed but contains mismatches.')
 })

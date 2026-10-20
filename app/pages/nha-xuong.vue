@@ -33,15 +33,7 @@ usePageSeo({
       { name: { vi: 'Nhà xưởng', en: 'Factory' }, path: '/nha-xuong' }
     ]),
     buildOrganizationLd(base, t),
-    {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      'mainEntity': factoryFaqs.map(faq => ({
-        '@type': 'Question',
-        'name': t(faq.question),
-        'acceptedAnswer': { '@type': 'Answer', 'text': t(faq.answer) }
-      }))
-    }
+    buildBilingualFaqPageLd(factoryFaqs)
   ]
 })
 </script>

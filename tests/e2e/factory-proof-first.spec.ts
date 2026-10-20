@@ -329,9 +329,8 @@ for (const locale of ['vi', 'en'] as const) {
 
     expect(visibleFaqs).toEqual(copy[locale].faqs)
 
-    // This route has one Vietnamese canonical/prerendered document. English is a client-only
-    // preference on the same URL, so its visual content is covered above while indexable schema
-    // remains locked to the canonical Vietnamese source output.
+    // Locale is a cookie preference on one URL, so the FAQPage schema must not follow it: every
+    // render carries both languages, each question and answer tagged with its own inLanguage.
     const structuredFaqs = await page.locator('script[type="application/ld+json"]').evaluateAll((scripts) => {
       const entries = scripts.flatMap((script) => {
         try {
@@ -342,12 +341,21 @@ for (const locale of ['vi', 'en'] as const) {
         }
       })
       const faq = entries.find(entry => entry?.['@type'] === 'FAQPage')
-      return faq?.mainEntity?.map((item: { name?: unknown, acceptedAnswer?: { text?: unknown } }) => ({
+      type StructuredQuestion = {
+        inLanguage?: unknown
+        name?: unknown
+        acceptedAnswer?: { inLanguage?: unknown, text?: unknown }
+      }
+      return faq?.mainEntity?.map((item: StructuredQuestion) => ({
+        inLanguage: typeof item.inLanguage === 'string' ? item.inLanguage : '',
+        answerLanguage: typeof item.acceptedAnswer?.inLanguage === 'string' ? item.acceptedAnswer.inLanguage : '',
         question: typeof item.name === 'string' ? item.name : '',
         answer: typeof item.acceptedAnswer?.text === 'string' ? item.acceptedAnswer.text : ''
       })) ?? []
     })
 
-    expect(structuredFaqs).toEqual(copy.vi.faqs)
+    const tagged = (language: 'vi' | 'en') =>
+      copy[language].faqs.map(faq => ({ inLanguage: language, answerLanguage: language, ...faq }))
+    expect(structuredFaqs).toEqual([...tagged('vi'), ...tagged('en')])
   })
 }

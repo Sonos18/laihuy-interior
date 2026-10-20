@@ -36,8 +36,7 @@ const WORKFLOW_COPY = {
       'Kiểm tra cạnh, bề mặt, phụ kiện và độ hoàn thiện trong sản xuất',
       'Nghiệm thu, phân loại và kiểm tra lần cuối trước giao lắp'
     ],
-    qcReference: aboutPageContent.workflow.description.vi,
-    summaryLink: 'Xem đầy đủ quy trình triển khai'
+    qcReference: aboutPageContent.workflow.description.vi
   },
   en: {
     heading: aboutPageContent.workflow.title.en,
@@ -63,8 +62,7 @@ const WORKFLOW_COPY = {
       'Edges, surfaces, hardware and finish inspected during production',
       'Final sign-off, sorting and inspection before delivery and installation'
     ],
-    qcReference: aboutPageContent.workflow.description.en,
-    summaryLink: 'View our complete project workflow'
+    qcReference: aboutPageContent.workflow.description.en
   }
 } as const
 
@@ -108,17 +106,14 @@ async function countExactText(page: Page, selector: string, expected: readonly s
 for (const locale of ['vi', 'en'] as const) {
   const copy = WORKFLOW_COPY[locale]
 
-  test(`DENS-WORKFLOW-01 home is a compact linked workflow summary in ${locale}`, async ({ page }) => {
+  // Phase 2C replaced the linked home summary (HomeProcessRail) with HomeFactoryProof, which
+  // shows workflow steps inline. What still holds: about owns the anchored workflow section and
+  // factory owns the full QC list, so home repeats neither.
+  test(`DENS-WORKFLOW-01 home owns neither the workflow anchor nor the QC list in ${locale}`, async ({ page }) => {
     const errors = await prepareContentPage(page, locale, '/')
 
-    expect(await countExactText(page, 'main h3', copy.titles)).toBe(6)
-    expect(await countExactText(page, 'main p', copy.descriptions)).toBe(0)
     expect(await countExactText(page, 'main li span', copy.qcBullets)).toBe(0)
-
-    const link = page.getByRole('link', { name: copy.summaryLink, exact: true })
-    await expect(link).toHaveAttribute('href', '/gioi-thieu#production-workflow')
-    await link.focus()
-    await expect(link).toBeFocused()
+    await expect(page.locator('#production-workflow')).toHaveCount(0)
     expect(errors.consoleErrors).toEqual([])
     expect(errors.pageErrors).toEqual([])
   })
@@ -149,11 +144,8 @@ for (const locale of ['vi', 'en'] as const) {
     expect(errors.pageErrors).toEqual([])
   })
 
-  test(`DENS-WORKFLOW-01 canonical link clears sticky chrome in ${locale}`, async ({ page }) => {
-    const errors = await prepareContentPage(page, locale, '/', 390)
-    const link = page.getByRole('link', { name: copy.summaryLink, exact: true })
-    expect(await link.count()).toBe(1)
-    await link.click()
+  test(`DENS-WORKFLOW-01 workflow anchor clears sticky chrome in ${locale}`, async ({ page }) => {
+    const errors = await prepareContentPage(page, locale, '/gioi-thieu#production-workflow', 390)
 
     await expect(page).toHaveURL(/\/gioi-thieu#production-workflow$/)
     await expect(page.locator('html')).toHaveAttribute('lang', locale)

@@ -1,7 +1,7 @@
 import type { MaybeRefOrGetter } from 'vue'
 import { company } from '~/data/company'
 import type { MediaPath } from '~/shared/media/types'
-import type { LocalizedText } from '~/shared/types/localization'
+import type { Locale, LocalizedText } from '~/shared/types/localization'
 
 /** One JSON-LD node. Callers build the shape; the composable only stringifies + injects it. */
 export type JsonLdNode = Record<string, unknown>
@@ -102,6 +102,27 @@ export const buildBreadcrumbLd = (
     'name': t(crumb.name),
     'item': crumb.path === '/' ? `${base}/` : `${base}${crumb.path}`
   }))
+})
+
+const STRUCTURED_DATA_LOCALES: readonly Locale[] = ['vi', 'en']
+
+/**
+ * A FAQPage node carrying every question in BOTH languages, each tagged with `inLanguage`.
+ * Locale is a cookie preference on one URL, so following the active locale would make the
+ * indexable output depend on a cookie a crawler never sends. One node (not one per locale)
+ * avoids duplicate-FAQPage warnings in structured-data validators.
+ */
+export const buildBilingualFaqPageLd = (
+  faqs: readonly { question: LocalizedText, answer: LocalizedText }[]
+): JsonLdNode => ({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  'mainEntity': STRUCTURED_DATA_LOCALES.flatMap(locale => faqs.map(faq => ({
+    '@type': 'Question',
+    'inLanguage': locale,
+    'name': faq.question[locale],
+    'acceptedAnswer': { '@type': 'Answer', 'inLanguage': locale, 'text': faq.answer[locale] }
+  })))
 })
 
 /**
