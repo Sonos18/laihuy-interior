@@ -261,7 +261,7 @@ usePageSeo({
                     :aria-invalid="errors.name ? 'true' : undefined"
                     :aria-describedby="errors.name ? errorId('name') : undefined"
                     :class="[
-                      'mt-2 w-full rounded-2xl border px-4 py-3 outline-none transition-colors',
+                      'mt-2 w-full rounded-2xl border px-4 py-3 transition-colors',
                       errors.name
                         ? 'border-alert-500 focus:border-alert-500'
                         : 'border-ink-200 focus:border-wood-500'
@@ -291,7 +291,7 @@ usePageSeo({
                     :aria-invalid="errors.phone ? 'true' : undefined"
                     :aria-describedby="errors.phone ? errorId('phone') : undefined"
                     :class="[
-                      'mt-2 w-full rounded-2xl border px-4 py-3 outline-none transition-colors',
+                      'mt-2 w-full rounded-2xl border px-4 py-3 transition-colors',
                       errors.phone
                         ? 'border-alert-500 focus:border-alert-500'
                         : 'border-ink-200 focus:border-wood-500'
@@ -323,7 +323,7 @@ usePageSeo({
                     :aria-invalid="errors.email ? 'true' : undefined"
                     :aria-describedby="errors.email ? errorId('email') : undefined"
                     :class="[
-                      'mt-2 w-full rounded-2xl border px-4 py-3 outline-none transition-colors',
+                      'mt-2 w-full rounded-2xl border px-4 py-3 transition-colors',
                       errors.email
                         ? 'border-alert-500 focus:border-alert-500'
                         : 'border-ink-200 focus:border-wood-500'
@@ -351,7 +351,7 @@ usePageSeo({
                     :aria-invalid="errors.projectType ? 'true' : undefined"
                     :aria-describedby="errors.projectType ? errorId('projectType') : undefined"
                     :class="[
-                      'mt-2 w-full rounded-2xl border bg-white px-4 py-3 outline-none transition-colors',
+                      'mt-2 w-full rounded-2xl border bg-white px-4 py-3 transition-colors',
                       errors.projectType
                         ? 'border-alert-500 focus:border-alert-500'
                         : 'border-ink-200 focus:border-wood-500'
@@ -391,7 +391,7 @@ usePageSeo({
                   :aria-invalid="errors.message ? 'true' : undefined"
                   :aria-describedby="errors.message ? errorId('message') : undefined"
                   :class="[
-                    'mt-2 w-full rounded-2xl border px-4 py-3 outline-none transition-colors',
+                    'mt-2 w-full rounded-2xl border px-4 py-3 transition-colors',
                     errors.message
                       ? 'border-alert-500 focus:border-alert-500'
                       : 'border-ink-200 focus:border-wood-500'

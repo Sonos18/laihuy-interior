@@ -174,6 +174,8 @@
   --radius-pill: 9999px;
   --radius-card: 1rem;
   --shadow-drawer: 0 0 40px rgb(11 10 9 / 0.28); /* the ONLY chrome shadow */
+  --shadow-rest: 0 2px 8px rgb(11 10 9 / 0.04); /* DESIGN.md "Rest lift" — cards at rest */
+  --shadow-hover: 0 8px 24px rgb(11 10 9 / 0.08); /* DESIGN.md "Hover lift" — card hover/focus */
 
   /* ── L1 · Layer contract (§36) ──────────────────────────────────────────
      The COMPLETE hierarchy. No z-index may exist outside this table, and raw
@@ -784,16 +786,12 @@
      --nav-item-px). --type-meta now belongs to the drawer's phone; §22.2 files it
      under Header and owes an update. */
 
-  /* §12 / A.4 — chrome carries ZERO shadows outside the drawer. The site-wide CTA
-     ships `shadow-sm`, so it is suppressed here rather than re-implemented: D.1
-     freezes the CTA copy *and* its 206px width as a hard input to the header's
-     overflow budget (§6.4), and a bespoke chrome CTA would fork that geometry. */
-  .app-header .btn-primary {
+  /* The header CTA is the shared bronze primary (DESIGN.md "Buttons"), shortened to the
+     chrome's 44px control height so it sits on the nav row. Its width is an input to the
+     header overflow budget (§6.4); tests/e2e/gates.spec.ts V11 measures it. */
+  .app-header .btn-bronze {
     min-height: var(--nav-item-min-h);
-    font-size: var(--type-action-size);
-    font-weight: var(--type-action-weight);
-    letter-spacing: var(--type-action-track);
-    box-shadow: none;
+    padding-block: 0.75rem;
   }
 
   /* §33.5 — 44×44 minimum. */
@@ -1326,20 +1324,6 @@
     font-size: var(--type-body-sm-size);
     line-height: 1.7;
     color: var(--fg-dark-muted);
-  }
-
-  /* §12 / A.4 — the footer carries ZERO shadows. The site-wide CTA ships
-     shadow-sm + hover:shadow-md, so both are suppressed here rather than the CTA
-     being re-implemented: D.1 freezes the CTA copy AND its 206px width, and a
-     bespoke footer CTA would fork that geometry. The :hover selector needs the
-     extra specificity to beat `.btn-primary:hover`, which is declared later in
-     this layer. */
-  .app-footer .btn-primary,
-  .app-footer .btn-primary:hover {
-    font-size: var(--type-action-size);
-    font-weight: var(--type-action-weight);
-    letter-spacing: var(--type-action-track);
-    box-shadow: none;
   }
 
   /* §3.3 / §22.2 — --type-eyebrow is DELIBERATELY identical to the hero's
@@ -1947,69 +1931,116 @@
     background-color: var(--bg-card);
   }
 
-  .btn-solid-gold {
-    background: var(--bronze);
-    color: #0b0a09;
-    padding: 0.875rem 1.75rem;
-    border-radius: 9999px;
-    font-size: 0.85rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-weight: 600;
-    text-decoration: none;
+  /* PRIMARY ACTION — DESIGN.md "Buttons". The one bronze, sentence-case action used by the
+     home hero, the header, the footer and the home closing CTA. Flat at rest (Flat-By-Default
+     Rule): no glow and no lift; hover warms the fill and runs one slow sheen.
+
+     The 1px Deep Timber edge is the Bronze Edge Rule: bronze alone is ~2.9:1 against linen,
+     under the 3:1 non-text floor, so on light surfaces the border carries the shape. On the
+     obsidian hero and footer bronze already clears 3:1, so `--on-dark` matches the border to
+     the fill instead of dropping it, which keeps the box identical in both contexts. */
+  .btn-bronze {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.625rem;
-    transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgb(184 135 90 / 0.25);
+    min-height: 3rem;
+    padding: 0.875rem 1.75rem;
+    border: 1px solid var(--accent-light);
+    border-radius: var(--radius-pill);
+    background: var(--bronze);
+    color: var(--color-ink-950);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    white-space: nowrap;
+    touch-action: manipulation;
+    transition:
+      background-color var(--dur-hover) var(--ease-editorial),
+      border-color var(--dur-hover) var(--ease-editorial),
+      transform 160ms var(--ease-editorial);
   }
 
-  .btn-solid-gold:hover {
+  .btn-bronze--on-dark {
+    border-color: var(--bronze);
+  }
+
+  .btn-bronze:hover {
     background: var(--bronze-light);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgb(184 135 90 / 0.35);
   }
 
-  .btn-solid-gold::after {
+  .btn-bronze--on-dark:hover {
+    border-color: var(--bronze-light);
+  }
+
+  .btn-bronze:active {
+    transform: scale(0.97);
+  }
+
+  /* The sheen sits under the label (z-index -1 inside the isolated button) and travels on
+     transform only, so it never repaints the text. Pointer devices only: on touch, :hover
+     sticks after a tap and the sheen would replay on every scroll-back. */
+  .btn-bronze::after {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -60%;
-    width: 40px;
-    height: 200%;
-    background: rgb(255 255 255 / 0.35);
-    transform: rotate(30deg);
-    transition: all 0.75s ease;
+    inset-block: -50%;
+    left: 0;
+    z-index: -1;
+    width: 2.5rem;
+    background: rgb(255 255 255 / 0.28);
+    transform: translateX(-4rem) rotate(30deg);
+    pointer-events: none;
   }
 
-  .btn-solid-gold:hover::after {
-    left: 140%;
+  @media (hover: hover) and (pointer: fine) {
+    .btn-bronze:hover::after {
+      transform: translateX(22rem) rotate(30deg);
+      transition: transform 900ms var(--ease-editorial);
+    }
   }
 
+  /* Secondary action on the dark hero — DESIGN.md "Outline … On the dark hero it uses a bronze
+     hairline and Raw Silk text". Same geometry and type as `.btn-bronze` so the pair reads as
+     one set; hover inverts to Raw Silk, the dark-surface mirror of the light outline's
+     Charcoal fill. */
   .btn-luxury-outline {
-    background: transparent;
-    color: var(--text-main);
-    border: 1px solid var(--hairline-gold);
-    padding: 0.875rem 1.75rem;
-    border-radius: 9999px;
-    font-size: 0.85rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-weight: 600;
-    text-decoration: none;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.625rem;
-    transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+    min-height: 3rem;
+    padding: 0.875rem 1.75rem;
+    border: 1px solid var(--hairline-gold-strong);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--text-main);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    white-space: nowrap;
+    touch-action: manipulation;
+    transition:
+      background-color var(--dur-hover) var(--ease-editorial),
+      border-color var(--dur-hover) var(--ease-editorial),
+      color var(--dur-hover) var(--ease-editorial),
+      transform 160ms var(--ease-editorial);
   }
 
   .btn-luxury-outline:hover {
-    background: var(--bronze);
-    color: #0b0a09;
-    border-color: var(--bronze);
-    box-shadow: 0 4px 15px rgb(184 135 90 / 0.4);
+    border-color: var(--color-ivory);
+    background: var(--color-ivory);
+    color: var(--color-ink-950);
+  }
+
+  .btn-luxury-outline:active {
+    transform: scale(0.97);
   }
 
   .badge-luxury {
@@ -2057,8 +2088,13 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .btn-solid-gold::after {
+    .btn-bronze::after {
       display: none;
+    }
+
+    .btn-bronze:active,
+    .btn-luxury-outline:active {
+      transform: none;
     }
 
     .metric-pulse {

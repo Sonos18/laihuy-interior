@@ -38,7 +38,7 @@ const { t } = useLanguage()
       >
         <NuxtLink
           to="/lien-he"
-          class="btn-primary"
+          class="btn-bronze"
         >{{ t(homePageContent.cta.primaryCta) }}</NuxtLink>
         <NuxtLink
           to="/nha-xuong"

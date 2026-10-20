@@ -17,7 +17,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
 <template>
   <section
     data-testid="home-projects"
-    class="home-projects bg-[#fcfbf9] text-ink-950"
+    class="home-projects bg-wood-50 text-ink-950"
   >
     <div class="shell">
       <!-- Section Header -->
@@ -237,19 +237,19 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
 
 .home-projects__card {
   position: relative;
-  background: #ffffff;
+  background: var(--color-white);
   border: 1px solid var(--color-ink-200);
   border-radius: 4px;
   overflow: hidden;
   transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   outline-offset: 4px;
-  box-shadow: 0 2px 8px rgb(11 10 9 / 0.04);
+  box-shadow: var(--shadow-rest);
 }
 
 .home-projects__card:hover,
 .home-projects__card:focus-visible {
   border-color: var(--color-ink-400);
-  box-shadow: 0 8px 24px rgb(11 10 9 / 0.08);
+  box-shadow: var(--shadow-hover);
 }
 
 .home-projects__media {
@@ -262,9 +262,9 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
   position: absolute;
   top: 1rem;
   left: 1rem;
-  background: color-mix(in srgb, #ffffff 88%, transparent);
+  background: color-mix(in srgb, var(--color-white) 88%, transparent);
   backdrop-filter: blur(8px);
-  border: 1px solid rgb(216 210 202 / 0.8);
+  border: 1px solid color-mix(in srgb, var(--color-ink-200) 80%, transparent);
   color: var(--color-ink-900);
   font-size: 0.68rem;
   letter-spacing: 0.1em;
@@ -286,9 +286,9 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.14em;
-  background: color-mix(in srgb, #ffffff 88%, transparent);
+  background: color-mix(in srgb, var(--color-white) 88%, transparent);
   backdrop-filter: blur(8px);
-  border: 1px solid rgb(216 210 202 / 0.8);
+  border: 1px solid color-mix(in srgb, var(--color-ink-200) 80%, transparent);
   padding: 2px 8px;
   border-radius: 4px;
   z-index: 2;

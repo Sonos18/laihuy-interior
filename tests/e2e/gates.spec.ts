@@ -193,7 +193,7 @@ for (const width of [1280, 1440] as const) {
       const style = document.createElement('style')
       style.textContent = `
         .chrome-nav, .chrome-right, .chrome-logo { flex-shrink: 0 !important; }
-        .nav-link, .chrome-phone, .app-header .btn-primary { white-space: nowrap !important; flex-shrink: 0 !important; }
+        .nav-link, .chrome-phone, .app-header .btn-bronze { white-space: nowrap !important; flex-shrink: 0 !important; }
       `
       document.head.appendChild(style)
 
@@ -211,7 +211,7 @@ for (const width of [1280, 1440] as const) {
       return {
         lang: w('.lang-toggle'),
         nav: w('.chrome-nav'),
-        cta: w('.app-header .btn-primary'),
+        cta: w('.app-header .btn-bronze'),
         // 0 by design after the O3 resolution — the phone lives in the drawer now. Kept in the
         // measurement so a future contributor who re-adds it sees exactly what it costs.
         phone: w('.chrome-phone'),

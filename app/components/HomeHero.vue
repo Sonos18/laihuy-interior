@@ -59,7 +59,7 @@ const { t } = useLanguage()
         >
           <NuxtLink
             to="/du-an"
-            class="btn-solid-gold group"
+            class="btn-bronze btn-bronze--on-dark group"
           >
             {{ t(homePageContent.hero.primaryCta) }}
             <Icon

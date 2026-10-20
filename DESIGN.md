@@ -282,8 +282,7 @@ This document records the target chosen with the owner. These parts of the curre
 
 - Dark mid-page bands: HomeCapabilities and HomeFactoryProof (home), the services and about dark sections, and most of `/du-an/[slug]` (facts, gallery, material story, finale) sit on obsidian or ink-950.
 - Interior pages use the older type system (Inter 900 uppercase `.text-hero` and `.text-section-title`) and 16px radii on cards, forms and inputs.
-- The home hero CTA (`.btn-solid-gold`) is uppercase with 0.08em tracking and a glow shadow; header and footer CTAs use the wood `.btn-primary`. Both should converge on the bronze sentence-case primary.
+- Interior pages (services, about, factory, careers, contact, projects index, project detail, error) still use the wood `.btn-primary` for their primary action; the home hero, the header, the footer and the home closing CTA already use the bronze sentence-case `.btn-bronze`. The shared `.btn-outline` is still Inter 700 rather than the Action type (600).
 - Some home h2 headings render in Inter instead of Outfit (Capabilities, Material Story, Project CTA).
-- Form fields use `outline-none`, which removes the site-wide focus ring.
-- Raw hex values in components (`#fcfbf9`, `#ffffff`, `#0b0a09`), duplicate token declarations (obsidian/bronze/ivory in both `:root` and `@theme`), unused legacy tokens (`--color-wood`, `--color-warm`, `--radius-*`), the unused Syne font, and Nuxt UI `primary: 'amber'` with no Nuxt UI components rendered.
+- Duplicate token declarations (obsidian/bronze/ivory in both `:root` and `@theme`), unused legacy tokens (`--color-wood`, `--color-warm`, `--radius-*`), the unused Syne font, and Nuxt UI `primary: 'amber'` with no Nuxt UI components rendered.
 - `docs/design/redesign-concept-showcase.html` still renders a fully dark obsidian world; it remains a composition and motion reference only, and the owner's 2026-10-20 decision for a continuous warm-light canvas supersedes its surfaces. (`.agents/rules/laihuy-ux-ui.md` was aligned with this document on the same date.)

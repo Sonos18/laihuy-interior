@@ -122,7 +122,7 @@ watch(() => props.solid, value => setSolid(value))
         >
           <NuxtLink
             to="/lien-he"
-            class="btn-primary"
+            class="btn-bronze"
           >
             {{ t(uiText.cta.quote24h) }}
           </NuxtLink>
