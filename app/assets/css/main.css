@@ -1854,14 +1854,17 @@
   }
 
   /* Scroll-reveal — default (no-JS / SSR) state is fully visible.
-     The hidden state only applies once the client adds `reveal-ready`.
+     The hidden state is opt-in per element: plugins/reveal.ts adds `reveal-hidden` only to
+     elements that are not already painted in the viewport during hydration, so content the
+     server rendered above the fold never blinks to 0 and replays. Elements that mount later
+     (client-side navigation) are new and unpainted, so they are hidden and animate.
 
      A keyframe, not a transition, on purpose. `.reveal` declares no `transition`, `transform` or
      `will-change`, so the element's own hover transitions (card lift, image zoom, colour) are
      untouched and never inherit the stagger delay. `backwards` fill (not `both`) hands the
      element back to its own styles the moment the rise ends, so hover transforms work right
      after. The stagger arrives as `--reveal-delay` from plugins/reveal.ts (clamped to 320ms). */
-  html.reveal-ready .reveal:not(.is-visible) {
+  html.reveal-ready .reveal.reveal-hidden {
     opacity: 0;
   }
 
@@ -1889,7 +1892,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    html.reveal-ready .reveal:not(.is-visible) {
+    html.reveal-ready .reveal.reveal-hidden {
       opacity: 1;
     }
 

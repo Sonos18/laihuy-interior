@@ -18,6 +18,34 @@ const VIEWPORT_MOBILE = { width: 390, height: 844 }
 /** Deep Timber (`--accent-light`, wood-600) — the Bronze Edge Rule border on light surfaces. */
 const DEEP_TIMBER = 'rgb(124, 80, 50)'
 
+/**
+ * True once Nuxt has finished hydrating the server-rendered page. Assertions about client-added
+ * state (`reveal-hidden`, `is-pending`) are meaningless before this: the SSR markup carries none
+ * of it, so a check made earlier would pass for the wrong reason.
+ */
+async function waitForHydration(page: Page): Promise<void> {
+  await page.waitForFunction(() => {
+    const nuxt = (window as unknown as { useNuxtApp?: () => { isHydrating?: boolean } }).useNuxtApp
+    return typeof nuxt === 'function' && nuxt().isHydrating === false
+  })
+}
+
+/**
+ * Holds every image request until `release()` is called, so a test decides when the photographs
+ * arrive instead of racing a fixed delay against hydration.
+ */
+async function holdImages(page: Page): Promise<{ release: () => void }> {
+  let release!: () => void
+  const gate = new Promise<void>((resolve) => {
+    release = resolve
+  })
+  await page.route('**/*', async (route) => {
+    if (route.request().resourceType() === 'image') await gate
+    await route.continue().catch(() => undefined)
+  })
+  return { release }
+}
+
 test.describe('motion contract', () => {
   test.beforeEach(async ({ page }) => {
     await page.setViewportSize(VIEWPORT_DESKTOP)
@@ -26,12 +54,14 @@ test.describe('motion contract', () => {
 
   test('MOTION-01 reveal uses a keyframe and a custom-property delay', async ({ page }) => {
     await page.goto(url('/'), { waitUntil: 'load' })
+    await waitForHydration(page)
     await expect(page.locator('html')).toHaveClass(/reveal-ready/)
 
     const results = await page.evaluate(async () => {
       const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
       const out: Array<{
         label: string
+        hydratedInView: boolean
         isVisible: boolean
         inlineTransitionDelay: string
         animationName: string
@@ -40,10 +70,13 @@ test.describe('motion contract', () => {
 
       for (const el of Array.from(document.querySelectorAll<HTMLElement>('main .reveal'))) {
         if (el.getClientRects().length === 0) continue
+        // Painted by the server and in view at hydration: neither hidden nor animated.
+        const hydratedInView = !el.classList.contains('reveal-hidden') && !el.classList.contains('is-visible')
         el.scrollIntoView({ block: 'center' })
-        for (let i = 0; i < 60 && !el.classList.contains('is-visible'); i++) await wait(50)
+        for (let i = 0; i < 60 && el.classList.contains('reveal-hidden'); i++) await wait(50)
         out.push({
           label: `${el.tagName.toLowerCase()}.${el.className.toString().split(/\s+/).slice(0, 3).join('.')}`,
+          hydratedInView,
           isVisible: el.classList.contains('is-visible'),
           inlineTransitionDelay: el.style.transitionDelay,
           animationName: getComputedStyle(el).animationName,
@@ -53,10 +86,17 @@ test.describe('motion contract', () => {
       return out
     })
 
-    expect(results.length).toBeGreaterThan(5)
+    const animated = results.filter(r => !r.hydratedInView)
+    expect(animated.length).toBeGreaterThan(5)
+    expect(results.some(r => r.hydratedInView), 'the hero copy stays visible through hydration').toBe(true)
+
     for (const r of results) {
-      expect(r.isVisible, `${r.label} never became visible`).toBe(true)
       expect(r.inlineTransitionDelay, `${r.label} must not use style.transitionDelay`).toBe('')
+      if (r.hydratedInView) {
+        expect(r.animationName, `${r.label} (in view at hydration) must not animate`).toBe('none')
+        continue
+      }
+      expect(r.isVisible, `${r.label} never became visible`).toBe(true)
       expect(r.animationName, `${r.label} animation`).toBe('reveal-rise')
       if (r.revealDelay !== '') {
         // The directive clamps every bound delay to 320ms.
@@ -68,9 +108,10 @@ test.describe('motion contract', () => {
 
   test('MOTION-02 no hover lag after reveal', async ({ page }) => {
     await page.goto(url('/'), { waitUntil: 'load' })
+    await waitForHydration(page)
     const card = page.locator('.home-projects__card--hero').first()
     await card.scrollIntoViewIfNeeded()
-    await expect(card).toHaveClass(/is-visible/)
+    await expect(card).not.toHaveClass(/reveal-hidden/)
 
     await expect
       .poll(() => card.evaluate(el => el.getAnimations().every(a => a.playState === 'finished')))
@@ -142,15 +183,11 @@ test.describe('motion contract', () => {
 
   for (const path of ['/', '/gioi-thieu']) {
     test(`MOTION-05 late hero image fades and settles from the moment it appears (${path})`, async ({ page }) => {
-      await page.route('**/*', async (route) => {
-        if (route.request().resourceType() === 'image') {
-          await new Promise(resolve => setTimeout(resolve, 1500))
-        }
-        await route.continue()
-      })
+      const images = await holdImages(page)
 
       await page.goto(url(path), { waitUntil: 'domcontentloaded' })
       const hero = page.locator('img.hero-image').first()
+      // The plugin marks the image once hydration runs; the images are still held back.
       await expect(hero).toHaveClass(/is-pending/)
 
       const pending = await hero.evaluate((el) => {
@@ -160,19 +197,38 @@ test.describe('motion contract', () => {
       expect(pending.opacity).toBe('0')
       expect(pending.animationName).toBe('none')
 
+      // Record, at the instant the class is removed, whether the settle animation has started
+      // and where it is. Reading it "later" would only prove the animation exists.
+      await hero.evaluate((el) => {
+        const w = window as unknown as { __heroRelease?: { currentTime: number | null, count: number } }
+        new MutationObserver((_records, observer) => {
+          if (el.classList.contains('is-pending')) return
+          const keyframed = el.getAnimations().filter(a => a instanceof CSSAnimation)
+          w.__heroRelease = {
+            count: keyframed.length,
+            currentTime: keyframed[0] ? Number(keyframed[0].currentTime) : null
+          }
+          observer.disconnect()
+        }).observe(el, { attributes: true, attributeFilter: ['class'] })
+      })
+
+      images.release()
+
       await expect(hero).not.toHaveClass(/is-pending/, { timeout: 10_000 })
       const settled = await hero.evaluate((el) => {
         const keyframed = el.getAnimations().filter(a => a instanceof CSSAnimation)
         return {
           transitionDuration: getComputedStyle(el).transitionDuration,
           count: keyframed.length,
-          currentTime: keyframed[0] ? Number(keyframed[0].currentTime) : null
+          currentTime: keyframed[0] ? Number(keyframed[0].currentTime) : null,
+          atRelease: (window as unknown as { __heroRelease?: { currentTime: number | null, count: number } }).__heroRelease
         }
       })
       expect(settled.transitionDuration.split(',').map(v => v.trim())).toContain('0.36s')
-      expect(settled.count, 'the settle animation starts when the pending mark is removed').toBeGreaterThan(0)
-      expect(settled.currentTime).not.toBeNull()
-      expect(settled.currentTime as number).toBeLessThan(1600)
+      expect(settled.count, 'the settle animation runs after the pending mark is removed').toBeGreaterThan(0)
+      expect(settled.atRelease?.count, 'the settle animation exists the moment the class is removed').toBeGreaterThan(0)
+      expect(settled.atRelease?.currentTime as number).toBeLessThan(100)
+      expect(settled.currentTime as number).toBeLessThan(500)
     })
   }
 
@@ -213,14 +269,11 @@ test.describe('motion contract', () => {
 
   test('MOTION-07 reduced motion', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.route('**/*', async (route) => {
-      if (route.request().resourceType() === 'image') {
-        await new Promise(resolve => setTimeout(resolve, 800))
-      }
-      await route.continue()
-    })
+    const images = await holdImages(page)
     await page.goto(url('/'), { waitUntil: 'domcontentloaded' })
-    await page.waitForSelector('img.hero-image', { state: 'attached' })
+    // The assertions below are about what the client did (or did not) add, so the app must have
+    // booted first; the images are still held back, so a pending mark would be visible here.
+    await waitForHydration(page)
 
     expect(await page.evaluate(() => document.documentElement.classList.contains('reveal-ready'))).toBe(false)
 
@@ -228,19 +281,25 @@ test.describe('motion contract', () => {
       const hero = document.querySelector<HTMLElement>('img.hero-image')
       if (!hero) throw new Error('no hero image')
       return {
+        heroComplete: hero.complete,
         heroAnimation: getComputedStyle(hero).animationName,
         heroPending: hero.classList.contains('is-pending'),
+        hiddenClass: document.querySelectorAll('.reveal-hidden').length,
         hidden: Array.from(document.querySelectorAll<HTMLElement>('main .reveal'))
           .filter(el => getComputedStyle(el).opacity !== '1').length
       }
     })
+    images.release()
+    expect(state.heroComplete, 'the image is still held back, so a pending mark could have appeared').toBe(false)
     expect(state.heroAnimation).toBe('none')
     expect(state.heroPending).toBe(false)
+    expect(state.hiddenClass).toBe(0)
     expect(state.hidden).toBe(0)
   })
 
   test('MOTION-08 services rows reveal', async ({ page }) => {
     await page.goto(url('/dich-vu'), { waitUntil: 'load' })
+    await waitForHydration(page)
     const rows = page.getByTestId('services-programme')
     const count = await rows.count()
     expect(count).toBeGreaterThan(0)
@@ -249,7 +308,7 @@ test.describe('motion contract', () => {
       const row = rows.nth(i)
       await expect(row).toHaveClass(/\breveal\b/)
       await row.scrollIntoViewIfNeeded()
-      await expect(row).toHaveClass(/is-visible/)
+      await expect(row).not.toHaveClass(/reveal-hidden/)
     }
     await expect
       .poll(() => rows.evaluateAll(els => els.every(el => getComputedStyle(el).opacity === '1')))
@@ -264,6 +323,36 @@ test.describe('motion contract', () => {
     const cta = page.locator('.app-drawer a.btn-bronze')
     await expect(cta).toHaveCount(1)
     expect(await cta.evaluate(el => getComputedStyle(el).borderTopColor)).toBe(DEEP_TIMBER)
+  })
+
+  test('MOTION-10 no blink on hydration', async ({ page }) => {
+    // Sampler from the first frame: the server-rendered hero heading must never drop below
+    // full opacity while the client boots, reveal-ready lands and the observers attach.
+    await page.addInitScript(() => {
+      const w = window as unknown as { __minHeroOpacity: number, __heroSamples: number }
+      w.__minHeroOpacity = 1
+      w.__heroSamples = 0
+      const sample = () => {
+        const h1 = document.querySelector('main h1')
+        if (h1) {
+          w.__heroSamples += 1
+          w.__minHeroOpacity = Math.min(w.__minHeroOpacity, Number(getComputedStyle(h1).opacity))
+        }
+        requestAnimationFrame(sample)
+      }
+      requestAnimationFrame(sample)
+    })
+
+    await page.goto(url('/'), { waitUntil: 'load' })
+    await waitForHydration(page)
+    await page.waitForTimeout(1500)
+
+    const { min, samples } = await page.evaluate(() => {
+      const w = window as unknown as { __minHeroOpacity: number, __heroSamples: number }
+      return { min: w.__minHeroOpacity, samples: w.__heroSamples }
+    })
+    expect(samples, 'the sampler saw the hero heading').toBeGreaterThan(10)
+    expect(min).toBe(1)
   })
 })
 

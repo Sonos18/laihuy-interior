@@ -2,16 +2,28 @@
 //
 // Registered universally so SSR can resolve the directive; all DOM work runs only in the
 // browser (mounted never fires on the server). SSR renders content visible, then the client adds
-// `reveal-ready` to <html> so the hidden state only applies when JS + motion are available.
-// Reduced motion skips everything here and the page stays fully visible and static.
+// `reveal-ready` to <html>. Reduced motion skips everything here and the page stays fully
+// visible and static.
 //
 // The reveal itself is a CSS keyframe (`reveal-rise`, main.css), not a transition: the directive
-// only publishes the stagger as the `--reveal-delay` custom property and flips `.is-visible`.
-// It never writes `style.transitionDelay`, which would outlive the reveal and lag every later
-// hover transition on the same element.
+// only publishes the stagger as the `--reveal-delay` custom property and flips `.reveal-hidden`
+// off and `.is-visible` on. It never writes `style.transitionDelay`, which would outlive the
+// reveal and lag every later hover transition on the same element.
+//
+// Content the server already painted inside the viewport is left alone during hydration: hiding
+// it now would blink it to 0 and replay it. Everything else is hidden and revealed on scroll.
 
 /** Longest stagger a reveal may wait; later items in a long list all share it. */
 const MAX_REVEAL_DELAY_MS = 320
+
+function isInViewport(el: HTMLElement): boolean {
+  const rect = el.getBoundingClientRect()
+
+  return rect.bottom > 0
+    && rect.right > 0
+    && rect.top < window.innerHeight
+    && rect.left < window.innerWidth
+}
 
 export default defineNuxtPlugin((nuxtApp) => {
   let observer: IntersectionObserver | null = null
@@ -26,6 +38,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         (entries) => {
           for (const entry of entries) {
             if (entry.isIntersecting) {
+              entry.target.classList.remove('reveal-hidden')
               entry.target.classList.add('is-visible')
               observer?.unobserve(entry.target)
             }
@@ -44,10 +57,16 @@ export default defineNuxtPlugin((nuxtApp) => {
             continue
           }
 
-          const release = () => img.classList.remove('is-pending')
+          // One controller per image: whichever of load/error fires first removes both listeners.
+          const listeners = new AbortController()
+          const release = () => {
+            img.classList.remove('is-pending')
+            listeners.abort()
+          }
+
           img.classList.add('is-pending')
-          img.addEventListener('load', release, { once: true })
-          img.addEventListener('error', release, { once: true })
+          img.addEventListener('load', release, { signal: listeners.signal })
+          img.addEventListener('error', release, { signal: listeners.signal })
         }
       }
 
@@ -61,6 +80,13 @@ export default defineNuxtPlugin((nuxtApp) => {
       if (!observer) {
         return
       }
+
+      // Painted by the server and in view right now: leave it visible, never observe it.
+      if (nuxtApp.isHydrating && isInViewport(el)) {
+        return
+      }
+
+      el.classList.add('reveal-hidden')
 
       const delay = typeof binding.value === 'number' ? binding.value : 0
 
