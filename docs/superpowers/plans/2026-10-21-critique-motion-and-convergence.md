@@ -58,7 +58,7 @@
 - Modify: `app/components/HeroMetrics.vue` (remove pulse span, retune delays)
 - Modify: `app/components/ServicesProgramList.vue` (add `v-reveal` rows)
 - Modify: `app/components/AppDrawer.vue` (CTA `btn-dark` → `btn-bronze`; icon button transitions)
-- Modify: `app/components/AppHeader.vue`, `app/components/GalleryLightbox.vue`, `app/components/AppGalleryGrid.vue`, `app/components/AppGalleryCarousel.vue` (only `transition-all` → explicit properties on icon buttons/overlays)
+- Modify: `app/components/AppHeader.vue`, `app/components/GalleryLightbox.vue` (only `transition-all` → explicit properties on icon buttons/overlays). The gallery components belong to Task 6.
 - Modify (only if an assertion encodes retired motion): `tests/e2e/hero.spec.ts`, `tests/e2e/image-loading-motion.spec.ts`
 - Create: `tests/e2e/motion-contract.spec.ts`
 
@@ -86,7 +86,7 @@
 - [ ] **Step 2:** `pnpm build` then `pnpm exec playwright test --project=vr motion-contract.spec.ts` → expect failures in MOTION-01..06, 08, 09 (MOTION-07 may already pass).
 - [ ] **Step 3: Rewrite `app/plugins/reveal.ts`** to the Interfaces above (directive sets `--reveal-delay`, clamp 320; hero pending marking on `app:mounted` and `page:finish`; all DOM work client-only; reduced motion skips both).
 - [ ] **Step 4: Edit `main.css`:** tokens; reveal block and its reduced-motion block (keep `.reveal` visible and `animation: none` under reduce); `.hero-image` + `hero-zoom` 1.04 + pending rule; delete `.metric-pulse`, `pulse-glow` and its reduced-motion rule; delete `.btn-bronze::after` + hover rule + its reduced-motion rule and drop `overflow:hidden`/`isolation` from `.btn-bronze` if nothing else needs them; nav-link underline `--dur-hover`; `.drawer-panel-leave-active` and `.drawer-overlay-leave-active` use `--dur-drawer-exit` (`--ease-exit` for the panel, linear for the overlay); `@apply` buttons replace `transition-all duration-300` with `transition-[background-color,border-color,color,box-shadow] duration-[240ms] ease-[var(--ease-editorial)]` (or the equivalent plain `transition:` declaration).
-- [ ] **Step 5: Components:** `HeroMetrics.vue` remove the pulse span and keep label alignment; default delay `(baseDelay ?? 200) + index * 40` and check any caller passing `baseDelay` keeps the last metric ≤320. `ServicesProgramList.vue` rows get `v-reveal="index * 70"` + `class="reveal"`. `AppDrawer.vue` CTA → `btn-bronze` (light surface: no `--on-dark`, so the Deep Timber border applies). Replace `transition-all` in `AppHeader.vue`, `AppDrawer.vue`, `GalleryLightbox.vue`, `AppGalleryGrid.vue`, `AppGalleryCarousel.vue` with the properties that actually change.
+- [ ] **Step 5: Components:** `HeroMetrics.vue` remove the pulse span and keep label alignment; default delay `(baseDelay ?? 200) + index * 40` and check any caller passing `baseDelay` keeps the last metric ≤320. `ServicesProgramList.vue` rows get `v-reveal="index * 70"` + `class="reveal"`. `AppDrawer.vue` CTA → `btn-bronze` (light surface: no `--on-dark`, so the Deep Timber border applies). Replace `transition-all` in `AppHeader.vue`, `AppDrawer.vue`, `GalleryLightbox.vue` with the properties that actually change.
 - [ ] **Step 6:** Rebuild, run `motion-contract.spec.ts`, `hero.spec.ts`, `image-loading-motion.spec.ts`, `gates.spec.ts`, `services-delivery-journey.spec.ts` → all pass. Update `hero.spec.ts` / `image-loading-motion.spec.ts` only where an assertion encodes the retired motion (record which in the commit body).
 - [ ] **Step 7:** `pnpm lint`, `pnpm typecheck` → exit 0. Commit `feat(motion): keyframe reveal, one-shot hero settle, drop pulse and sheen`.
 - [ ] **Step 8:** High-risk review (shared plugin used by every page): `reviewer` (opus) on this task's diff.
@@ -109,7 +109,7 @@
   - `HMS-swap-sequenced`: with the story enhanced (`[data-enhanced="true"]`), an inactive `.home-material-story__copy-item` has computed `transitionDuration` starting `0.12s` and `transitionDelay` `0s`; the `.is-active` item has `transitionDuration` `0.24s` and `transitionDelay` `0.12s`.
   - `HMS-no-will-change`: every `.home-material-story__layer` computed `willChange === 'auto'`.
   - `HMS-swap-reduced`: under reduced motion the copy items have `transitionDuration` `0s` (or the static reduced layout renders and no `.is-active` swap runs).
-  - `HOME-no-pulse`: `/` has no `.metric-pulse` element and the home hero image has no scoped animation named `kenBurnsHero` (`getComputedStyle(img).animationName !== 'kenBurnsHero'`).
+  - `HOME-no-pulse`: `.home-projects` contains no `.metric-pulse` element (the hero metrics pulse is Task 2's, covered by MOTION-03 after integration) and the home hero image has no scoped animation named `kenBurnsHero` (`getComputedStyle(img).animationName !== 'kenBurnsHero'`).
 - [ ] **Step 2:** `pnpm build`; run the spec → new tests fail.
 - [ ] **Step 3:** Implement: inactive item `transition: opacity 120ms var(--ease-exit), transform 120ms var(--ease-exit)` with `transform: translateY(-0.25rem)` when leaving; active item `transition: opacity 240ms var(--ease-editorial) 120ms, transform 240ms var(--ease-editorial) 120ms`; reduced-motion block sets `transition: none`. Remove `will-change` from `.home-material-story__layer` (if the wipe visibly janks at 4× CPU throttle, scope it to the in-view state and comment why). HomeHero/HomeProjectStage edits per Files.
 - [ ] **Step 4:** Rebuild; run `homepage-material-story.spec.ts` → pass. `pnpm lint` → exit 0.
@@ -169,6 +169,8 @@
 **Files:**
 - Modify: `app/pages/du-an/[slug].vue` (subnav, gallery section, CTA classes, `transition-all`)
 - Modify: `app/components/ProjectHeroFacts.vue`, `ProjectStoryChapter.vue`, `ProjectMaterialStory.vue`, `ProjectDeliveryProof.vue`, `ProjectRelatedProjects.vue`, `ProjectConversionFinale.vue`
+- Modify: `app/components/AppGalleryCarouselSlide.vue` (`rounded-2xl` at ~L36, L43 → 4px), `app/components/AppGalleryGrid.vue` (~L43 radius → 4px; `transition-all` → explicit), `app/components/AppGalleryCarousel.vue` (`transition-all` → explicit). These are shared: record every other route that renders them for before/after screenshots in Task 7.
+- Leave `AboutProjectFeature`, `FactoryProcessProof`, `FactoryVisitCta`, `GalleryLightbox` radii alone (follow-ups).
 - Modify: `DESIGN.md` Drift section only (after Task 1 is merged into this worktree's base)
 - Modify: `tests/e2e/project-detail-phase3-visual.spec.ts`, `tests/e2e/project-detail-editorial.spec.ts`
 - **Not** `main.css`: use existing classes (`.btn-bronze`, `.btn-outline`, `.home-section-heading`, `.home-card-heading`, `.eyebrow`, `.shell`, `section-y`) and Tailwind utilities with tokens. If a shared rule is truly needed, stop and report it.
@@ -198,6 +200,6 @@
 - [ ] **Step 1:** Merge stream branches into `claude/charming-bun-a20cbc` in order Task 2 → home stream → Task 6 (`--no-ff`, merge commits `merge: …`); resolve conflicts (expected none: file sets are disjoint).
 - [ ] **Step 2 (parallel):** `verifier` runs `pnpm lint`, `pnpm lint:media`, `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm test:gates:ci`, `pnpm test:gates:hero`, and the specs `motion-contract`, `home-layout`, `homepage-material-story`, `homepage-machinery-density`, `project-detail-phase3-visual`, `project-detail-editorial`, `services-delivery-journey`; then `pnpm test:vr` to produce diffs (expected red; never approve). `reviewer` (opus) reviews the whole branch against the spec and this plan.
 - [ ] **Step 3:** `web-design-guidelines` audit of changed surfaces; fix high-severity findings in one fix wave (send back to the owning implementer); scoped re-review (sonnet) and targeted verifier re-run.
-- [ ] **Step 4:** `webapp-testing`: confirm port 3100 serves this app; screenshots at 375/768/1440, vi and en, of `/`, `/du-an/khach-san-eo-gio`, the sparse project, `/dich-vu`; boundary shots at 767/768 and 1279/1280 for `/` and the case study; one reduced-motion pass; console has no errors.
+- [ ] **Step 4:** `webapp-testing`: confirm port 3100 serves this app; screenshots at 375/768/1440, vi and en, of `/`, `/du-an/khach-san-eo-gio`, the sparse project, `/dich-vu`; before/after shots (before = `main`) of every other route rendering the shared gallery components; boundary shots at 767/768 and 1279/1280 for `/` and the case study; one reduced-motion pass; console has no errors.
 - [ ] **Step 5:** Re-run `impeccable critique` on the same target and compare with 25/36.
 - [ ] **Step 6:** Report to the parent session: exact command exits, VR diff list awaiting the owner's approval, screenshots, removed home blocks, critique delta, follow-ups (other interior pages' drift, header 1440 balance, footer length, reveal replay, contact transport). Do not push, merge to `main`, or approve baselines.
