@@ -229,7 +229,7 @@ onBeforeUnmount(() => {
       </button>
 
       <p
-        class="min-w-20 text-center text-sm font-black tabular-nums"
+        class="min-w-20 text-center text-sm font-semibold tabular-nums"
         :class="tone === 'dark' ? 'text-[var(--text-muted)]' : 'text-ink-700'"
         aria-live="polite"
       >

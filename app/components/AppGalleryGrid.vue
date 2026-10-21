@@ -40,7 +40,7 @@ const { t } = useLanguage()
         : undefined"
       @click="props.selectable && emit('select', index)"
     >
-      <div class="relative h-full w-full overflow-hidden rounded-2xl">
+      <div class="relative h-full w-full overflow-hidden rounded-[4px]">
         <MediaImage
           :image="image"
           :preset="props.preset"
@@ -51,7 +51,7 @@ const { t } = useLanguage()
         />
         <div
           v-if="props.selectable"
-          class="pointer-events-none absolute inset-0 flex items-center justify-center bg-ink-950/0 opacity-0 transition-all duration-300 group-hover:bg-ink-950/25 group-hover:opacity-100"
+          class="pointer-events-none absolute inset-0 flex items-center justify-center bg-ink-950/0 opacity-0 transition-[background-color,opacity] duration-300 group-hover:bg-ink-950/25 group-hover:opacity-100"
         >
           <span class="rounded-full bg-white/90 p-3 text-ink-950 shadow-lg">
             <Icon

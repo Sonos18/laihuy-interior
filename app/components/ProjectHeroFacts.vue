@@ -86,11 +86,14 @@ const { t } = useLanguage()
       </template>
     </AppHero>
 
-    <div class="bg-[var(--color-obsidian)]">
+    <div
+      data-project-facts-zone
+      class="bg-[var(--color-ivory)]"
+    >
       <div class="shell py-6 md:py-8">
         <div
           data-project-facts
-          class="relative overflow-hidden rounded-sm border border-[var(--hairline-gold)] bg-[var(--color-surface-dark)] text-[var(--color-ivory)]"
+          class="relative overflow-hidden rounded-[4px] border border-ink-200 bg-white text-ink-950"
         >
           <dl class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
             <div
@@ -98,17 +101,17 @@ const { t } = useLanguage()
               :key="fact.key"
               data-project-fact
               :data-fact-key="fact.key"
-              class="border-b border-r border-[var(--hairline)] px-4 py-6 md:px-6"
+              class="border-b border-r border-[var(--rule-light)] px-4 py-6 md:px-6"
               :class="facts.length % 2 === 1 && index === facts.length - 1 ? 'col-span-2 md:col-span-1' : ''"
             >
-              <dt class="flex items-center gap-2 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-[var(--text-subtle)]">
+              <dt class="home-eyebrow-text flex items-center gap-2 text-ink-600">
                 <Icon
                   :name="fact.icon"
-                  class="h-4 w-4 text-[var(--bronze-light)]"
+                  class="h-4 w-4 text-wood-600"
                 />
                 {{ fact.label }}
               </dt>
-              <dd class="mt-3 text-base font-black leading-snug text-[var(--color-ivory)]">
+              <dd class="home-card-heading mt-3 text-ink-900">
                 {{ fact.value }}
               </dd>
             </div>

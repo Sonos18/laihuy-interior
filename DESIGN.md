@@ -302,8 +302,8 @@ A centered 16:10 slide with its neighbours scaled to about 0.7 and dimmed; slide
 
 This document records the target chosen with the owner. These parts of the current implementation do not yet match it and should converge section by section:
 
-- Dark mid-page bands: the services and about dark sections, and most of `/du-an/[slug]` (facts, gallery, material story, finale) sit on obsidian or ink-950.
-- Interior page section titles still use the older type system (Inter 900 uppercase `.text-section-title`), and cards, forms and inputs use 16px radii. Interior hero headlines already use Display.
-- Interior pages (services, about, factory, careers, contact, projects index, project detail, error) still use the wood `.btn-primary` for their primary action outside the hero; the heroes on every page, the header, the footer and the home closing CTA already use the bronze sentence-case `.btn-bronze`. The shared `.btn-outline` is still Inter 700 rather than the Action type (600).
+- Dark mid-page bands: the services and about dark sections sit on obsidian or ink-950.
+- Interior page section titles (outside the project detail) still use the older type system (Inter 900 uppercase `.text-section-title`), and cards, forms and inputs use 16px radii. Interior hero headlines already use Display.
+- Interior pages (services, about, factory, careers, contact, projects index, error) still use the wood `.btn-primary` for their primary action outside the hero; the heroes on every page, the header, the footer and the home closing CTA already use the bronze sentence-case `.btn-bronze`. The shared `.btn-outline` is still Inter 700 rather than the Action type (600).
 - Duplicate token declarations (obsidian/bronze/ivory in both `:root` and `@theme`), unused legacy tokens (`--color-wood`, `--color-warm`, `--radius-*`), the unused Syne font, and Nuxt UI `primary: 'amber'` with no Nuxt UI components rendered.
 - `docs/design/redesign-concept-showcase.html` still renders a fully dark obsidian world; it remains a composition and motion reference only, and the owner's 2026-10-20 decision for a continuous warm-light canvas supersedes its surfaces. (`.agents/rules/laihuy-ux-ui.md` was aligned with this document on the same date.)

@@ -95,7 +95,7 @@ for (const locale of ['vi', 'en'] as const) {
     })
   }
 
-  test(`P3-1-HERO-02 quiet luxury styles ${locale}`, async ({ page }) => {
+  test(`P3-1-HERO-02 warm facts rail ${locale}`, async ({ page }) => {
     await openProject(
       page,
       locale,
@@ -104,24 +104,19 @@ for (const locale of ['vi', 'en'] as const) {
       900
     )
 
-    // The immediate facts-rail zone surrounding [data-project-facts] resolves to the dark masthead surface (var(--color-obsidian))
-    const { zoneBg, expectedObsidian, stripColor, actualRailBg, expectedRailBg } = await page.evaluate(() => {
+    // The facts zone sits on Raw Silk (var(--color-ivory)) and the rail itself on Paper White:
+    // warm light below the hero photograph, never an obsidian band.
+    const { zoneBg, expectedRawSilk, stripColor, actualRailBg } = await page.evaluate(() => {
       const rail = document.querySelector('[data-project-facts]')
-      const zone = rail?.closest('[data-project-facts-zone]') || (rail?.parentElement?.classList.contains('shell') ? rail.parentElement.parentElement : null)
+      const zone = rail?.closest('[data-project-facts-zone]') ?? null
 
-      const probeObsidian = document.createElement('div')
-      probeObsidian.style.backgroundColor = 'var(--color-obsidian)'
-      document.body.appendChild(probeObsidian)
-      const expectedObsidian = getComputedStyle(probeObsidian).backgroundColor
-      probeObsidian.remove()
+      const probe = document.createElement('div')
+      probe.style.backgroundColor = 'var(--color-ivory)'
+      document.body.appendChild(probe)
+      const expectedRawSilk = getComputedStyle(probe).backgroundColor
+      probe.remove()
 
-      const probeSurface = document.createElement('div')
-      probeSurface.style.backgroundColor = 'var(--color-surface-dark)'
-      document.body.appendChild(probeSurface)
-      const expectedRailBg = getComputedStyle(probeSurface).backgroundColor
-      probeSurface.remove()
-
-      // Sample seam point directly between AppHero and facts rail (8px above the rail)
+      // Sample the seam directly between AppHero and the facts rail (8px above the rail)
       let stripColor = ''
       if (rail) {
         const rect = rail.getBoundingClientRect()
@@ -139,67 +134,62 @@ for (const locale of ['vi', 'en'] as const) {
 
       return {
         zoneBg: zone ? getComputedStyle(zone).backgroundColor : '',
-        expectedObsidian,
+        expectedRawSilk,
         stripColor,
-        actualRailBg: rail ? getComputedStyle(rail).backgroundColor : '',
-        expectedRailBg
+        actualRailBg: rail ? getComputedStyle(rail).backgroundColor : ''
       }
     })
 
-    // Immediate facts-rail zone resolves to dark masthead surface
-    expect(zoneBg).toBe(expectedObsidian)
-    // No white/light strip between AppHero and facts rail
-    expect(stripColor).toBe(expectedObsidian)
-    // Rail surface resolves to elevated dark surface
-    expect(actualRailBg).toBe(expectedRailBg)
+    expect(zoneBg).toBe(expectedRawSilk)
+    expect(stripColor).toBe(expectedRawSilk)
+    expect(actualRailBg).toBe('rgb(255, 255, 255)')
 
-    // Architectural specs rail: shell-bounded, hairline-gold border, compact radius, no heavy shadow
+    // Specs rail: shell-bounded, Plaster Line hairline, 4px edge, flat at rest
     const railMetrics = await page.evaluate(() => {
       const rail = document.querySelector('[data-project-facts]')
       if (!rail) return null
       const rect = rail.getBoundingClientRect()
       const style = getComputedStyle(rail)
 
-      const probeGold = document.createElement('div')
-      probeGold.style.borderColor = 'var(--hairline-gold)'
-      document.body.appendChild(probeGold)
-      const expectedGold = getComputedStyle(probeGold).borderColor
-      probeGold.remove()
-
       return {
         width: rect.width,
         windowWidth: window.innerWidth,
-        borderColor: style.borderColor || style.borderTopColor,
-        expectedGold,
-        borderRadius: parseFloat(style.borderRadius) || 0,
+        borderColor: style.borderTopColor,
+        borderRadius: parseFloat(style.borderTopLeftRadius) || 0,
         boxShadow: style.boxShadow
       }
     })
 
     expect(railMetrics).not.toBeNull()
-    // Shell-bounded rather than full viewport width
     expect(railMetrics!.width).toBeLessThan(railMetrics!.windowWidth)
-    // Outer rail uses hairline-gold
-    expect(railMetrics!.borderColor).toBe(railMetrics!.expectedGold)
-    // Compact non-zero radius
-    expect(railMetrics!.borderRadius).toBeGreaterThan(0)
-    // Tactile depth without heavy shadow
-    expect(railMetrics!.boxShadow === 'none' || !railMetrics!.boxShadow.includes('50px')).toBe(true)
+    // Plaster Line #d8d2ca
+    expect(railMetrics!.borderColor).toBe('rgb(216, 210, 202)')
+    expect(railMetrics!.borderRadius).toBe(4)
+    expect(railMetrics!.boxShadow).toBe('none')
 
-    // Facts dividers resolve to existing architectural hairline color
+    // Fact dividers resolve to the light-surface hairline (--rule-light)
     const { actualBorder, expectedBorder } = await page.evaluate(() => {
       const factEl = document.querySelector('[data-project-fact]')
-      const actualBorder = factEl ? getComputedStyle(factEl).borderColor : ''
+      const actualBorder = factEl ? getComputedStyle(factEl).borderBottomColor : ''
       const probe = document.createElement('div')
-      probe.style.borderColor = 'var(--hairline)'
+      probe.style.borderBottomColor = 'var(--rule-light)'
       document.body.appendChild(probe)
-      const expectedBorder = getComputedStyle(probe).borderColor
+      const expectedBorder = getComputedStyle(probe).borderBottomColor
       probe.remove()
       return { actualBorder, expectedBorder }
     })
     expect(actualBorder).toBe(expectedBorder)
 
-    // Category treatment is visually bronze/kicker-like
+    // Fact values are Charcoal Ink Title-role type, never weight 900
+    const value = await page.locator('[data-project-fact] dd').first().evaluate((el) => {
+      const style = getComputedStyle(el)
+      return { color: style.color, weight: style.fontWeight, family: style.fontFamily }
+    })
+    expect(value.color).toBe('rgb(24, 22, 20)')
+    expect(value.weight).toBe('500')
+    expect(value.family).toContain('Outfit')
+
+    // Category treatment on the dark hero stays bronze/kicker-like
     const { actualColor, expectedColor } = await page.evaluate(() => {
       const categoryEl = document.querySelector('[data-project-chapter="hero"] span.uppercase')
       const actualColor = categoryEl ? getComputedStyle(categoryEl).color : ''
@@ -213,7 +203,7 @@ for (const locale of ['vi', 'en'] as const) {
     expect(actualColor).toBe(expectedColor)
   })
 
-  test(`P3-1-SUBNAV-01 quiet luxury contract ${locale}`, async ({ page }) => {
+  test(`P3-1-SUBNAV-01 light glass contract ${locale}`, async ({ page }) => {
     await openProject(
       page,
       locale,
@@ -235,12 +225,12 @@ for (const locale of ['vi', 'en'] as const) {
     const activeLink = subnav.locator('a[aria-current="location"]')
     await expect(activeLink).toHaveAttribute('href', '#story')
 
-    // Dark translucent Obsidian backdrop
+    // Light glass: white at 92% (--surface-chrome), the same fill as the scrolled header
     const { actualNavBg, expectedNavBg } = await page.evaluate(() => {
       const nav = document.querySelector('nav[data-project-subnav]')
       const actualNavBg = nav ? getComputedStyle(nav).backgroundColor : ''
       const probe = document.createElement('div')
-      probe.style.backgroundColor = 'color-mix(in srgb, var(--color-obsidian) 92%, transparent)'
+      probe.style.backgroundColor = 'var(--surface-chrome)'
       document.body.appendChild(probe)
       const expectedNavBg = getComputedStyle(probe).backgroundColor
       probe.remove()
@@ -255,12 +245,12 @@ for (const locale of ['vi', 'en'] as const) {
     })
     expect(backdropFilter).toContain('16px')
 
-    // --hairline-gold bottom divider
+    // Plaster hairline bottom divider (--rule-light)
     const { actualBorderBottom, expectedBorderBottom } = await page.evaluate(() => {
       const nav = document.querySelector('nav[data-project-subnav]')
       const actualBorderBottom = nav ? getComputedStyle(nav).borderBottomColor : ''
       const probe = document.createElement('div')
-      probe.style.borderBottomColor = 'var(--hairline-gold)'
+      probe.style.borderBottomColor = 'var(--rule-light)'
       document.body.appendChild(probe)
       const expectedBorderBottom = getComputedStyle(probe).borderBottomColor
       probe.remove()
@@ -268,39 +258,16 @@ for (const locale of ['vi', 'en'] as const) {
     })
     expect(actualBorderBottom).toBe(expectedBorderBottom)
 
-    // Bronze active state (bg-bronze, text-obsidian, font-semibold: 600)
-    const { actualActiveBg, actualActiveColor, expectedActiveBg, expectedActiveColor, activeFontWeight } = await page.evaluate(() => {
-      const active = document.querySelector('nav[data-project-subnav] a[aria-current="location"]')
-      const actualActiveBg = active ? getComputedStyle(active).backgroundColor : ''
-      const actualActiveColor = active ? getComputedStyle(active).color : ''
-      const activeFontWeight = active ? getComputedStyle(active).fontWeight : ''
-      const probe = document.createElement('div')
-      probe.style.backgroundColor = 'var(--bronze)'
-      probe.style.color = 'var(--color-obsidian)'
-      document.body.appendChild(probe)
-      const expectedActiveBg = getComputedStyle(probe).backgroundColor
-      const expectedActiveColor = getComputedStyle(probe).color
-      probe.remove()
-      return { actualActiveBg, actualActiveColor, expectedActiveBg, expectedActiveColor, activeFontWeight }
+    // Chips use the Action type (600) in both states; the colors are pinned by PD-WARM-06
+    const weights = await page.evaluate(() => {
+      const read = (el: Element | null) => (el ? getComputedStyle(el).fontWeight : '')
+      return {
+        active: read(document.querySelector('nav[data-project-subnav] a[aria-current="location"]')),
+        inactive: read(document.querySelector('nav[data-project-subnav] a:not([aria-current="location"])'))
+      }
     })
-    expect(actualActiveBg).toBe(expectedActiveBg)
-    expect(actualActiveColor).toBe(expectedActiveColor)
-    expect(activeFontWeight).toBe('600')
-
-    // Inactive text remains readable (var(--text-muted), font-medium: 500)
-    const { actualInactiveColor, expectedInactiveColor, inactiveFontWeight } = await page.evaluate(() => {
-      const inactive = document.querySelector('nav[data-project-subnav] a:not([aria-current="location"])')
-      const actualInactiveColor = inactive ? getComputedStyle(inactive).color : ''
-      const inactiveFontWeight = inactive ? getComputedStyle(inactive).fontWeight : ''
-      const probe = document.createElement('div')
-      probe.style.color = 'var(--text-muted)'
-      document.body.appendChild(probe)
-      const expectedInactiveColor = getComputedStyle(probe).color
-      probe.remove()
-      return { actualInactiveColor, expectedInactiveColor, inactiveFontWeight }
-    })
-    expect(actualInactiveColor).toBe(expectedInactiveColor)
-    expect(inactiveFontWeight).toBe('500')
+    expect(weights.active).toBe('600')
+    expect(weights.inactive).toBe('600')
   })
 
   for (const width of [390, 767] as const) {
@@ -345,9 +312,9 @@ for (const locale of ['vi', 'en'] as const) {
       const story = page.locator('section#story')
       await expect(story).toBeVisible()
 
-      // Section surface resolves to light editorial (bg-white: rgb(255, 255, 255))
+      // Section surface resolves to Linen (bg-wood-50: rgb(250, 246, 240))
       const storyBg = await story.evaluate(el => getComputedStyle(el).backgroundColor)
-      expect(['rgb(255, 255, 255)', 'rgba(255, 255, 255, 1)']).toContain(storyBg)
+      expect(storyBg).toBe('rgb(250, 246, 240)')
 
       if (viewport.width === 390) {
         expect(await gridColumnCount(page, '[data-story-layout]')).toBe(1)
@@ -362,7 +329,7 @@ for (const locale of ['vi', 'en'] as const) {
       ).toBe(true)
     })
 
-    test(`P3-2-GALLERY-01 dark obsidian rhythm ${locale} @ ${viewport.width}`, async ({ page }) => {
+    test(`P3-2-GALLERY-01 raw silk rhythm ${locale} @ ${viewport.width}`, async ({ page }) => {
       await openProject(
         page,
         locale,
@@ -374,19 +341,19 @@ for (const locale of ['vi', 'en'] as const) {
       const gallery = page.locator('section#gallery')
       await expect(gallery).toBeVisible()
 
-      // Section surface resolves to obsidian (var(--color-obsidian): rgb(11, 10, 9))
-      const { actualBg, expectedObsidian } = await gallery.evaluate((el) => {
+      // Section surface resolves to Raw Silk (var(--color-ivory): rgb(245, 242, 235))
+      const { actualBg, expectedRawSilk } = await gallery.evaluate((el) => {
         const probe = document.createElement('div')
-        probe.style.backgroundColor = 'var(--color-obsidian)'
+        probe.style.backgroundColor = 'var(--color-ivory)'
         document.body.appendChild(probe)
-        const expectedObsidian = getComputedStyle(probe).backgroundColor
+        const expectedRawSilk = getComputedStyle(probe).backgroundColor
         probe.remove()
         return {
           actualBg: getComputedStyle(el).backgroundColor,
-          expectedObsidian
+          expectedRawSilk
         }
       })
-      expect(actualBg).toBe(expectedObsidian)
+      expect(actualBg).toBe(expectedRawSilk)
 
       // Zero horizontal scroll overflow
       expect(
@@ -434,29 +401,27 @@ for (const locale of ['vi', 'en'] as const) {
     })
     expect(headingColor).toBe(probeInk)
 
-    // Challenge beat has prominent emphasis (border-l-2 with var(--bronze))
+    // Challenge beat is set apart by type and a full Plaster hairline above it, never a side tab
     const challengeStyle = await story.locator('[data-story-beat="challenge"]').evaluate((el) => {
       const style = getComputedStyle(el)
-      const probe = document.createElement('div')
-      probe.style.borderColor = 'var(--bronze)'
-      document.body.appendChild(probe)
-      const expectedBorder = getComputedStyle(probe).borderColor
-      probe.remove()
       return {
-        borderColor: style.borderLeftColor,
-        borderLeftWidth: parseFloat(style.borderLeftWidth) || 0,
-        expectedBorder
+        borderLeftWidth: style.borderLeftWidth,
+        borderTopWidth: style.borderTopWidth,
+        borderTopColor: style.borderTopColor,
+        statementWeight: getComputedStyle(el.querySelector('p:nth-of-type(2)')!).fontWeight
       }
     })
-    expect(challengeStyle.borderLeftWidth).toBeGreaterThanOrEqual(2)
-    expect(challengeStyle.borderColor).toBe(challengeStyle.expectedBorder)
+    expect(challengeStyle.borderLeftWidth).toBe('0px')
+    expect(challengeStyle.borderTopWidth).toBe('1px')
+    expect(challengeStyle.borderTopColor).toBe('rgb(216, 210, 202)')
+    expect(challengeStyle.statementWeight).toBe('500')
 
     // No quote pullquote or blockquote in story
     expect(await story.locator('blockquote').count()).toBe(0)
     expect(await story.locator('[data-story-quote]').count()).toBe(0)
   })
 
-  test(`P3-2-GALLERY-02 quiet luxury chrome ${locale}`, async ({ page }) => {
+  test(`P3-2-GALLERY-02 warm light chrome ${locale}`, async ({ page }) => {
     await openProject(
       page,
       locale,
@@ -468,176 +433,82 @@ for (const locale of ['vi', 'en'] as const) {
     const gallery = page.locator('section#gallery')
     await expect(gallery).toBeVisible()
 
-    // Eyebrow resolves to var(--bronze-light)
-    const { actualEyebrow, expectedBronzeLight } = await gallery.evaluate((el) => {
-      const eyebrow = el.querySelector('p.eyebrow, p.reveal')
-      const probe = document.createElement('div')
-      probe.style.color = 'var(--bronze-light)'
-      document.body.appendChild(probe)
-      const expectedBronzeLight = getComputedStyle(probe).color
-      probe.remove()
-      return {
-        actualEyebrow: eyebrow ? getComputedStyle(eyebrow).color : '',
-        expectedBronzeLight
-      }
-    })
-    expect(actualEyebrow).toBe(expectedBronzeLight)
+    const resolveToken = (token: string, property: 'color' | 'borderColor' | 'backgroundColor') =>
+      page.evaluate(([tokenName, prop]) => {
+        const probe = document.createElement('div')
+        probe.style.setProperty(prop === 'color' ? 'color' : prop === 'borderColor' ? 'border-color' : 'background-color', `var(${tokenName})`)
+        document.body.appendChild(probe)
+        const value = getComputedStyle(probe)[prop as 'color']
+        probe.remove()
+        return value
+      }, [token, property] as const)
 
-    // Heading resolves to var(--color-ivory)
-    const { actualHeading, expectedIvory } = await gallery.evaluate((el) => {
-      const h2 = el.querySelector('h2')
-      const probe = document.createElement('div')
-      probe.style.color = 'var(--color-ivory)'
-      document.body.appendChild(probe)
-      const expectedIvory = getComputedStyle(probe).color
-      probe.remove()
-      return {
-        actualHeading: h2 ? getComputedStyle(h2).color : '',
-        expectedIvory
-      }
-    })
-    expect(actualHeading).toBe(expectedIvory)
+    // Eyebrow resolves to the light-surface accent (Deep Timber)
+    const eyebrow = await gallery.locator('p.eyebrow').evaluate(el => getComputedStyle(el).color)
+    expect(eyebrow).toBe(await resolveToken('--accent-light', 'color'))
 
-    // Filter tabs styling: active tab uses var(--bronze) background, obsidian text; inactive uses hairline border and text-muted
+    // Heading resolves to Charcoal Ink
+    const heading = await gallery.locator('h2').evaluate(el => getComputedStyle(el).color)
+    expect(heading).toBe(await resolveToken('--fg-light', 'color'))
+
+    // Filter tabs: active is Charcoal Ink with Linen text; idle is a Plaster border with Walnut Grey text
     const filterTabs = gallery.locator('[data-gallery-filters] button')
     if (await filterTabs.count() > 0) {
-      const activeTab = gallery.locator('[data-gallery-filters] button[aria-pressed="true"]')
-      const inactiveTab = gallery.locator('[data-gallery-filters] button[aria-pressed="false"]').first()
-
-      const activeStyles = await activeTab.evaluate((el) => {
-        const probeBg = document.createElement('div')
-        probeBg.style.backgroundColor = 'var(--bronze)'
-        document.body.appendChild(probeBg)
-        const expectedBg = getComputedStyle(probeBg).backgroundColor
-        probeBg.remove()
-
-        const probeColor = document.createElement('div')
-        probeColor.style.color = 'var(--color-obsidian)'
-        document.body.appendChild(probeColor)
-        const expectedColor = getComputedStyle(probeColor).color
-        probeColor.remove()
-
+      const active = await gallery.locator('[data-gallery-filters] button[aria-pressed="true"]').evaluate((el) => {
         const style = getComputedStyle(el)
-        return {
-          bg: style.backgroundColor,
-          color: style.color,
-          expectedBg,
-          expectedColor
-        }
+        return { bg: style.backgroundColor, color: style.color }
       })
-      expect(activeStyles.bg).toBe(activeStyles.expectedBg)
-      expect(activeStyles.color).toBe(activeStyles.expectedColor)
+      expect(active.bg).toBe('rgb(24, 22, 20)')
+      expect(active.color).toBe('rgb(250, 246, 240)')
 
+      const inactiveTab = gallery.locator('[data-gallery-filters] button[aria-pressed="false"]').first()
       if (await inactiveTab.count() > 0) {
-        const inactiveStyles = await inactiveTab.evaluate((el) => {
-          const probeBorder = document.createElement('div')
-          probeBorder.style.borderColor = 'var(--hairline)'
-          document.body.appendChild(probeBorder)
-          const expectedBorder = getComputedStyle(probeBorder).borderColor
-          probeBorder.remove()
-
-          const probeColor = document.createElement('div')
-          probeColor.style.color = 'var(--text-muted)'
-          document.body.appendChild(probeColor)
-          const expectedColor = getComputedStyle(probeColor).color
-          probeColor.remove()
-
+        const inactive = await inactiveTab.evaluate((el) => {
           const style = getComputedStyle(el)
-          return {
-            borderColor: style.borderColor,
-            color: style.color,
-            expectedBorder,
-            expectedColor
-          }
+          return { border: style.borderTopColor, color: style.color }
         })
-        expect(inactiveStyles.borderColor).toBe(inactiveStyles.expectedBorder)
-        expect(inactiveStyles.color).toBe(inactiveStyles.expectedColor)
+        expect(inactive.border).toBe('rgb(216, 210, 202)')
+        expect(inactive.color).toBe('rgb(93, 83, 73)')
       }
     }
 
-    // Long-media disclosure button: bronze outline styling
+    // Long-media disclosure is the light outline secondary action: a pill in Charcoal Ink
     const disclosureBtn = gallery.locator('[data-project-full-gallery] button')
     if (await disclosureBtn.count() > 0) {
-      const btnStyles = await disclosureBtn.evaluate((el) => {
-        const probeBorder = document.createElement('div')
-        probeBorder.style.borderColor = 'var(--bronze)'
-        document.body.appendChild(probeBorder)
-        const expectedBorder = getComputedStyle(probeBorder).borderColor
-        probeBorder.remove()
-
-        const probeColor = document.createElement('div')
-        probeColor.style.color = 'var(--bronze-light)'
-        document.body.appendChild(probeColor)
-        const expectedColor = getComputedStyle(probeColor).color
-        probeColor.remove()
-
+      const btn = await disclosureBtn.evaluate((el) => {
         const style = getComputedStyle(el)
-        return {
-          borderColor: style.borderColor,
-          color: style.color,
-          expectedBorder,
-          expectedColor
-        }
+        return { color: style.color, radius: parseFloat(style.borderTopLeftRadius) }
       })
-      expect(btnStyles.borderColor).toBe(btnStyles.expectedBorder)
-      expect(btnStyles.color).toBe(btnStyles.expectedColor)
+      expect(btn.color).toBe('rgb(24, 22, 20)')
+      expect(btn.radius).toBeGreaterThanOrEqual(9000)
     }
 
     // AppGalleryCarousel track is visible
     const carousel = gallery.locator('[data-gallery-carousel]')
     await expect(carousel).toBeVisible()
 
-    // Carousel counter contrast & token compliance on dark Obsidian surface
+    // Carousel counter is light-tone (ink-700) at weight 600, not 900
     const counter = carousel.locator('p[aria-live="polite"]')
     await expect(counter).toBeVisible()
-
-    const counterEvaluation = await counter.evaluate((el) => {
-      const computed = getComputedStyle(el)
-      const color = computed.color
-
-      // Create probes for approved dark tokens
-      const probeTokens = [
-        '--color-ivory',
-        '--text-muted',
-        '--text-subtle',
-        '--bronze',
-        '--bronze-light',
-        '--hairline',
-        '--hairline-gold'
-      ]
-      const approvedColors = probeTokens.map((token) => {
-        const p = document.createElement('div')
-        p.style.color = `var(${token})`
-        document.body.appendChild(p)
-        const c = getComputedStyle(p).color
-        p.remove()
-        return c
-      })
-
-      // Probe legacy text-ink-700
-      const probeInk = document.createElement('div')
-      probeInk.className = 'text-ink-700'
-      document.body.appendChild(probeInk)
-      const legacyInk700 = getComputedStyle(probeInk).color
-      probeInk.remove()
-
-      return {
-        color,
-        approvedColors,
-        legacyInk700
-      }
+    const counterStyle = await counter.evaluate((el) => {
+      const style = getComputedStyle(el)
+      return { color: style.color, weight: style.fontWeight }
     })
+    expect(counterStyle.color).toBe(await resolveToken('--color-ink-700', 'color'))
+    expect(counterStyle.weight).toBe('600')
 
-    // Contrast is not legacy text-ink-700
-    expect(counterEvaluation.color).not.toBe(counterEvaluation.legacyInk700)
-    // Computed text color resolves to an approved dark-surface text token
-    expect(counterEvaluation.approvedColors).toContain(counterEvaluation.color)
-
-    // Control buttons remain visible
+    // Carousel controls stay visible, pill-shaped and keyboard-focusable with a visible ring
     const prevBtn = carousel.getByRole('button', { name: /trước|previous/i })
     await expect(prevBtn).toBeVisible()
     const nextBtn = carousel.getByRole('button', { name: /tiếp theo|next/i })
     await expect(nextBtn).toBeVisible()
+    await prevBtn.focus()
+    const ring = await prevBtn.evaluate((el) => {
+      const style = getComputedStyle(el)
+      return { width: parseFloat(style.outlineWidth), style: style.outlineStyle }
+    })
+    expect(ring.style).not.toBe('none')
+    expect(ring.width).toBeGreaterThanOrEqual(2)
   })
 }
 
@@ -727,9 +598,9 @@ for (const locale of ['vi', 'en'] as const) {
       const delivery = page.locator('section#delivery')
       await expect(delivery).toBeVisible()
 
-      // Light editorial surface (bg-white: rgb(255, 255, 255) or bg-ink-50: rgb(247, 247, 245))
+      // Linen surface (bg-wood-50: rgb(250, 246, 240))
       const deliveryBg = await delivery.evaluate(el => getComputedStyle(el).backgroundColor)
-      expect(['rgb(255, 255, 255)', 'rgba(255, 255, 255, 1)', 'rgb(247, 247, 245)']).toContain(deliveryBg)
+      expect(deliveryBg).toBe('rgb(250, 246, 240)')
 
       // Timeline column reflow (1 column for <768px, 5 columns for >=768px)
       const cols = await gridColumnCount(page, '[data-delivery-timeline]')
@@ -757,20 +628,20 @@ for (const locale of ['vi', 'en'] as const) {
       const materials = page.locator('section#materials')
       await expect(materials).toBeVisible()
 
-      // Dark elevated Obsidian surface (var(--color-surface-dark): rgb(20, 18, 16))
-      const { actualBg, expectedSurfaceDark } = await materials.evaluate((el) => {
-        const probeDark = document.createElement('div')
-        probeDark.style.backgroundColor = 'var(--color-surface-dark)'
-        document.body.appendChild(probeDark)
-        const expectedSurfaceDark = getComputedStyle(probeDark).backgroundColor
-        probeDark.remove()
+      // Raw Silk surface (var(--color-ivory): rgb(245, 242, 235))
+      const { actualBg, expectedRawSilk } = await materials.evaluate((el) => {
+        const probeSurface = document.createElement('div')
+        probeSurface.style.backgroundColor = 'var(--color-ivory)'
+        document.body.appendChild(probeSurface)
+        const expectedRawSilk = getComputedStyle(probeSurface).backgroundColor
+        probeSurface.remove()
 
         return {
           actualBg: getComputedStyle(el).backgroundColor,
-          expectedSurfaceDark
+          expectedRawSilk
         }
       })
-      expect(actualBg).toBe(expectedSurfaceDark)
+      expect(actualBg).toBe(expectedRawSilk)
 
       // Zero horizontal scroll overflow
       expect(
@@ -985,11 +856,11 @@ for (const locale of ['vi', 'en'] as const) {
       const materials = page.locator('section#materials')
       await expect(materials).toBeVisible()
 
-      // Eyebrow resolves to bronze-light
+      // Eyebrow resolves to the light-surface accent
       const { actualEyebrow, expectedBronzeLight } = await materials.evaluate((el) => {
         const eyebrow = el.querySelector('p.eyebrow, p.reveal')
         const probe = document.createElement('div')
-        probe.style.color = 'var(--bronze-light)'
+        probe.style.color = 'var(--accent-light)'
         document.body.appendChild(probe)
         const expectedBronzeLight = getComputedStyle(probe).color
         probe.remove()
@@ -1000,11 +871,11 @@ for (const locale of ['vi', 'en'] as const) {
       })
       expect(actualEyebrow).toBe(expectedBronzeLight)
 
-      // Title resolves to ivory
+      // Title resolves to Charcoal Ink
       const { actualTitle, expectedIvory } = await materials.evaluate((el) => {
         const h2 = el.querySelector('h2')
         const probe = document.createElement('div')
-        probe.style.color = 'var(--color-ivory)'
+        probe.style.color = 'var(--fg-light)'
         document.body.appendChild(probe)
         const expectedIvory = getComputedStyle(probe).color
         probe.remove()
@@ -1015,11 +886,11 @@ for (const locale of ['vi', 'en'] as const) {
       })
       expect(actualTitle).toBe(expectedIvory)
 
-      // Experience copy uses muted dark-surface text (var(--text-muted))
+      // Experience copy uses Walnut Grey (var(--fg-light-muted))
       const { actualExp, expectedMuted } = await materials.evaluate((el) => {
         const p = el.querySelector('[data-material-layout] > p')
         const probe = document.createElement('div')
-        probe.style.color = 'var(--text-muted)'
+        probe.style.color = 'var(--fg-light-muted)'
         document.body.appendChild(probe)
         const expectedMuted = getComputedStyle(probe).color
         probe.remove()
@@ -1035,13 +906,13 @@ for (const locale of ['vi', 'en'] as const) {
       const highlightStyles = await highlightsList.evaluate((el) => {
         const num = el.querySelector('span')
         const probeBronze = document.createElement('div')
-        probeBronze.style.color = 'var(--bronze-light)'
+        probeBronze.style.color = 'var(--accent-light)'
         document.body.appendChild(probeBronze)
         const expectedBronze = getComputedStyle(probeBronze).color
         probeBronze.remove()
 
         const probeHairline = document.createElement('div')
-        probeHairline.style.borderColor = 'var(--hairline)'
+        probeHairline.style.borderColor = 'var(--rule-light)'
         document.body.appendChild(probeHairline)
         const expectedHairline = getComputedStyle(probeHairline).borderColor
         probeHairline.remove()
@@ -1062,19 +933,19 @@ for (const locale of ['vi', 'en'] as const) {
         const icon = el.querySelector('svg, span')
         const textLi = el.querySelector('li')
         const probeBronze = document.createElement('div')
-        probeBronze.style.color = 'var(--bronze-light)'
+        probeBronze.style.color = 'var(--accent-light)'
         document.body.appendChild(probeBronze)
         const expectedBronze = getComputedStyle(probeBronze).color
         probeBronze.remove()
 
         const probeHairline = document.createElement('div')
-        probeHairline.style.borderColor = 'var(--hairline)'
+        probeHairline.style.borderColor = 'var(--rule-light)'
         document.body.appendChild(probeHairline)
         const expectedHairline = getComputedStyle(probeHairline).borderColor
         probeHairline.remove()
 
         const probeMuted = document.createElement('div')
-        probeMuted.style.color = 'var(--text-muted)'
+        probeMuted.style.color = 'var(--fg-light-muted)'
         document.body.appendChild(probeMuted)
         const expectedMuted = getComputedStyle(probeMuted).color
         probeMuted.remove()
@@ -1098,13 +969,13 @@ for (const locale of ['vi', 'en'] as const) {
         const craftStyles = await craftBlock.evaluate((el) => {
           const p = el.querySelector('p.measure-lead')
           const probeHairline = document.createElement('div')
-          probeHairline.style.borderColor = 'var(--hairline)'
+          probeHairline.style.borderColor = 'var(--rule-light)'
           document.body.appendChild(probeHairline)
           const expectedHairline = getComputedStyle(probeHairline).borderColor
           probeHairline.remove()
 
           const probeMuted = document.createElement('div')
-          probeMuted.style.color = 'var(--text-muted)'
+          probeMuted.style.color = 'var(--fg-light-muted)'
           document.body.appendChild(probeMuted)
           const expectedMuted = getComputedStyle(probeMuted).color
           probeMuted.remove()
@@ -1120,7 +991,7 @@ for (const locale of ['vi', 'en'] as const) {
         expect(craftStyles.textColor).toBe(craftStyles.expectedMuted)
       }
 
-      // Testimonial styling uses dark semantic tokens (when present)
+      // Testimonial styling uses light semantic tokens (when present)
       const quoteFigure = materials.locator('figure:has(blockquote)')
       if (await quoteFigure.count() > 0) {
         const quoteStyles = await quoteFigure.evaluate((el) => {
@@ -1129,25 +1000,25 @@ for (const locale of ['vi', 'en'] as const) {
           const figcaption = el.querySelector('figcaption')
 
           const probeBronze = document.createElement('div')
-          probeBronze.style.color = 'var(--bronze-light)'
+          probeBronze.style.color = 'var(--accent-light)'
           document.body.appendChild(probeBronze)
           const expectedBronze = getComputedStyle(probeBronze).color
           probeBronze.remove()
 
           const probeIvory = document.createElement('div')
-          probeIvory.style.color = 'var(--color-ivory)'
+          probeIvory.style.color = 'var(--fg-light)'
           document.body.appendChild(probeIvory)
           const expectedIvory = getComputedStyle(probeIvory).color
           probeIvory.remove()
 
           const probeSubtle = document.createElement('div')
-          probeSubtle.style.color = 'var(--text-subtle)'
+          probeSubtle.style.color = 'var(--fg-light-muted)'
           document.body.appendChild(probeSubtle)
           const expectedSubtle = getComputedStyle(probeSubtle).color
           probeSubtle.remove()
 
           const probeHairline = document.createElement('div')
-          probeHairline.style.borderColor = 'var(--hairline)'
+          probeHairline.style.borderColor = 'var(--rule-light)'
           document.body.appendChild(probeHairline)
           const expectedHairline = getComputedStyle(probeHairline).borderColor
           probeHairline.remove()
@@ -1197,9 +1068,9 @@ for (const locale of ['vi', 'en'] as const) {
       const related = page.locator('section[data-project-chapter="related"]')
       await expect(related).toBeVisible()
 
-      // Light editorial surface (bg-ink-50: rgb(247, 247, 245) or bg-white: rgb(255, 255, 255))
+      // Linen surface (bg-wood-50: rgb(250, 246, 240))
       const bg = await related.evaluate(el => getComputedStyle(el).backgroundColor)
-      expect(['rgb(247, 247, 245)', 'rgb(255, 255, 255)', 'rgba(255, 255, 255, 1)']).toContain(bg)
+      expect(bg).toBe('rgb(250, 246, 240)')
 
       // Responsive reflow geometry (1 col for mobile <768px, 3 col for desktop >=768px)
       const cols = await gridColumnCount(page, 'section[data-project-chapter="related"] div.grid')
@@ -1227,19 +1098,19 @@ for (const locale of ['vi', 'en'] as const) {
       const finale = page.locator('section[data-project-chapter="finale"]')
       await expect(finale).toBeVisible()
 
-      // Dark Obsidian surface (var(--color-obsidian): rgb(11, 10, 9))
-      const { actualBg, expectedObsidian } = await finale.evaluate((el) => {
+      // Raw Silk surface (var(--color-ivory): rgb(245, 242, 235))
+      const { actualBg, expectedRawSilk } = await finale.evaluate((el) => {
         const probe = document.createElement('div')
-        probe.style.backgroundColor = 'var(--color-obsidian)'
+        probe.style.backgroundColor = 'var(--color-ivory)'
         document.body.appendChild(probe)
-        const expectedObsidian = getComputedStyle(probe).backgroundColor
+        const expectedRawSilk = getComputedStyle(probe).backgroundColor
         probe.remove()
         return {
           actualBg: getComputedStyle(el).backgroundColor,
-          expectedObsidian
+          expectedRawSilk
         }
       })
-      expect(actualBg).toBe(expectedObsidian)
+      expect(actualBg).toBe(expectedRawSilk)
 
       // Zero horizontal scroll overflow
       expect(
@@ -1274,24 +1145,23 @@ for (const locale of ['vi', 'en'] as const) {
         expect(href).not.toBe('/du-an/khach-san-eo-gio')
       }
 
-      // Card border uses --rule-light
-      const { cardBorder, expectedRuleLight } = await related.evaluate((el) => {
-        const borderEl = el.querySelector('a > div.border, a > div[class*="border-"]')
-        const probe = document.createElement('div')
-        probe.style.borderColor = 'var(--rule-light)'
-        document.body.appendChild(probe)
-        const expectedRuleLight = getComputedStyle(probe).borderColor
-        probe.remove()
+      // Card is a 4px Paper White frame with a Plaster Line border
+      const card = await related.evaluate((el) => {
+        const link = el.querySelector('a[href^="/du-an/"]')
+        const style = link ? getComputedStyle(link) : null
         return {
-          cardBorder: borderEl ? getComputedStyle(borderEl).borderBottomColor : '',
-          expectedRuleLight
+          border: style?.borderBottomColor ?? '',
+          radius: style ? parseFloat(style.borderTopLeftRadius) : -1,
+          bg: style?.backgroundColor ?? ''
         }
       })
-      expect(cardBorder).toBe(expectedRuleLight)
+      expect(card.border).toBe('rgb(216, 210, 202)')
+      expect(card.radius).toBe(4)
+      expect(card.bg).toBe('rgb(255, 255, 255)')
 
       // Category uses --accent-light
       const { catColor, expectedAccent } = await related.evaluate((el) => {
-        const catEl = el.querySelector('span.tracking-\\[0\\.16em\\]')
+        const catEl = el.querySelector('span.home-eyebrow-text')
         const probe = document.createElement('div')
         probe.style.color = 'var(--accent-light)'
         document.body.appendChild(probe)
@@ -1387,35 +1257,35 @@ for (const locale of ['vi', 'en'] as const) {
       const finale = page.locator('section[data-project-chapter="finale"]')
       await expect(finale).toBeVisible()
 
-      // Heading resolves to ivory
-      const { h2Color, expectedIvory } = await finale.evaluate((el) => {
+      // Heading resolves to Charcoal Ink
+      const { h2Color, expectedInk } = await finale.evaluate((el) => {
         const h2 = el.querySelector('h2')
         const probe = document.createElement('div')
-        probe.style.color = 'var(--color-ivory)'
+        probe.style.color = 'var(--fg-light)'
         document.body.appendChild(probe)
-        const expectedIvory = getComputedStyle(probe).color
+        const expectedInk = getComputedStyle(probe).color
         probe.remove()
         return {
           h2Color: h2 ? getComputedStyle(h2).color : '',
-          expectedIvory
+          expectedInk
         }
       })
-      expect(h2Color).toBe(expectedIvory)
+      expect(h2Color).toBe(expectedInk)
 
-      // Description resolves to text-muted
-      const { pColor, expectedMuted } = await finale.evaluate((el) => {
+      // Description resolves to Walnut Grey
+      const { pColor, expectedWalnut } = await finale.evaluate((el) => {
         const p = el.querySelector('p')
         const probe = document.createElement('div')
-        probe.style.color = 'var(--text-muted)'
+        probe.style.color = 'var(--fg-light-muted)'
         document.body.appendChild(probe)
-        const expectedMuted = getComputedStyle(probe).color
+        const expectedWalnut = getComputedStyle(probe).color
         probe.remove()
         return {
           pColor: p ? getComputedStyle(p).color : '',
-          expectedMuted
+          expectedWalnut
         }
       })
-      expect(pColor).toBe(expectedMuted)
+      expect(pColor).toBe(expectedWalnut)
 
       // /lien-he CTA exists with primary bronze styling
       const contactCta = finale.locator('a[href="/lien-he"]')
@@ -1449,29 +1319,13 @@ for (const locale of ['vi', 'en'] as const) {
       const phoneCta = phoneCtas.first()
       await expect(phoneCta).toBeVisible()
 
-      // Phone CTA border and color
+      // Phone CTA is the light outline secondary action: Charcoal Ink text on a pill
       const phoneStyles = await phoneCta.evaluate((el) => {
-        const probeGold = document.createElement('div')
-        probeGold.style.borderColor = 'var(--hairline-gold)'
-        document.body.appendChild(probeGold)
-        const expectedBorder = getComputedStyle(probeGold).borderColor
-        probeGold.remove()
-
-        const probeBronzeLight = document.createElement('div')
-        probeBronzeLight.style.color = 'var(--bronze-light)'
-        document.body.appendChild(probeBronzeLight)
-        const expectedColor = getComputedStyle(probeBronzeLight).color
-        probeBronzeLight.remove()
-
-        return {
-          borderColor: getComputedStyle(el).borderColor,
-          color: getComputedStyle(el).color,
-          expectedBorder,
-          expectedColor
-        }
+        const style = getComputedStyle(el)
+        return { color: style.color, radius: parseFloat(style.borderTopLeftRadius) }
       })
-      expect(phoneStyles.borderColor).toBe(phoneStyles.expectedBorder)
-      expect(phoneStyles.color).toBe(phoneStyles.expectedColor)
+      expect(phoneStyles.color).toBe('rgb(24, 22, 20)')
+      expect(phoneStyles.radius).toBeGreaterThanOrEqual(9000)
 
       // Prohibited: no .pdf links, no download action, no BOQ/download lead magnet
       expect(await finale.locator('a[href$=".pdf"]').count()).toBe(0)
@@ -1491,11 +1345,11 @@ for (const locale of ['vi', 'en'] as const) {
       const finale = page.locator('section[data-project-chapter="finale"]')
       await expect(finale).toBeVisible()
 
-      // Stats rail has border-b border-[var(--hairline)]
+      // Stats rail has border-b border-[var(--rule-light)]
       const statsUl = finale.locator('ul')
       const statsStyles = await statsUl.evaluate((el) => {
         const probe = document.createElement('div')
-        probe.style.borderColor = 'var(--hairline)'
+        probe.style.borderColor = 'var(--rule-light)'
         document.body.appendChild(probe)
         const expectedBorder = getComputedStyle(probe).borderColor
         probe.remove()
@@ -1511,50 +1365,283 @@ for (const locale of ['vi', 'en'] as const) {
       const statCount = await statLis.count()
       expect(statCount).toBeGreaterThanOrEqual(3)
 
-      // Stat icon uses bronze-light
-      const { iconColor, expectedBronzeLight } = await statLis.first().evaluate((el) => {
+      // Stat icon uses the light-surface accent
+      const { iconColor, expectedAccent } = await statLis.first().evaluate((el) => {
         const icon = el.querySelector('svg, span')
         const probe = document.createElement('div')
-        probe.style.color = 'var(--bronze-light)'
+        probe.style.color = 'var(--accent-light)'
         document.body.appendChild(probe)
-        const expectedBronzeLight = getComputedStyle(probe).color
+        const expectedAccent = getComputedStyle(probe).color
         probe.remove()
         return {
           iconColor: icon ? getComputedStyle(icon).color : '',
-          expectedBronzeLight
+          expectedAccent
         }
       })
-      expect(iconColor).toBe(expectedBronzeLight)
+      expect(iconColor).toBe(expectedAccent)
 
-      // Stat value uses ivory
-      const { valColor, expectedIvory } = await statLis.first().evaluate((el) => {
-        const val = el.querySelector('span.text-xl')
+      // Stat value uses Charcoal Ink in the Title role
+      const { valColor, expectedInk } = await statLis.first().evaluate((el) => {
+        const val = el.querySelector('span.home-card-heading')
         const probe = document.createElement('div')
-        probe.style.color = 'var(--color-ivory)'
+        probe.style.color = 'var(--fg-light)'
         document.body.appendChild(probe)
-        const expectedIvory = getComputedStyle(probe).color
+        const expectedInk = getComputedStyle(probe).color
         probe.remove()
         return {
           valColor: val ? getComputedStyle(val).color : '',
-          expectedIvory
+          expectedInk
         }
       })
-      expect(valColor).toBe(expectedIvory)
+      expect(valColor).toBe(expectedInk)
 
-      // Stat label uses text-subtle
-      const { labelColor, expectedSubtle } = await statLis.first().evaluate((el) => {
-        const label = el.querySelector('span.text-xs')
+      // Stat label uses Walnut Grey
+      const { labelColor, expectedWalnut } = await statLis.first().evaluate((el) => {
+        const label = el.querySelector('span.home-eyebrow-text')
         const probe = document.createElement('div')
-        probe.style.color = 'var(--text-subtle)'
+        probe.style.color = 'var(--fg-light-muted)'
         document.body.appendChild(probe)
-        const expectedSubtle = getComputedStyle(probe).color
+        const expectedWalnut = getComputedStyle(probe).color
         probe.remove()
         return {
           labelColor: label ? getComputedStyle(label).color : '',
-          expectedSubtle
+          expectedWalnut
         }
       })
-      expect(labelColor).toBe(expectedSubtle)
+      expect(labelColor).toBe(expectedWalnut)
     })
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PD-WARM: the case study sits on the warm-light canvas (DESIGN.md, Warm Light Rule).
+// Obsidian lives behind the hero photograph and in the footer only.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const WARM_SLUGS = ['khach-san-eo-gio', 'nha-xuong-anh-cuong'] as const
+const WARM_WIDTHS = [768, 1440] as const
+
+const LINEN = 'rgb(250, 246, 240)'
+const CHARCOAL_INK = 'rgb(24, 22, 20)'
+const WALNUT_GREY = 'rgb(93, 83, 73)'
+
+/**
+ * In-page colour helpers, installed once per page. `resolveBackground` walks up the tree and
+ * composites translucent layers (the light-glass sub-nav is white at 92%) until an opaque one
+ * is found; Chrome may report `color-mix()` fills as `color(srgb …)`, so both forms are parsed.
+ */
+type Rgb = [number, number, number]
+type WarmHelpers = {
+  resolveBackground: (el: Element) => Rgb
+  luminance: (rgb: Rgb) => number
+  contrast: (a: Rgb, b: Rgb) => number
+  parse: (value: string) => Rgb | null
+}
+
+async function installWarmHelpers(page: Page) {
+  await page.evaluate(() => {
+    const parse = (value: string): [number, number, number, number] | null => {
+      const rgb = value.match(/^rgba?\(([^)]+)\)$/)
+      if (rgb) {
+        const p = rgb[1]!.split(/[,/\s]+/).filter(Boolean).map(Number)
+        return [p[0]!, p[1]!, p[2]!, p[3] ?? 1]
+      }
+      const srgb = value.match(/^color\(srgb ([^)]+)\)$/)
+      if (srgb) {
+        const p = srgb[1]!.split(/[\s/]+/).filter(Boolean).map(Number)
+        return [p[0]! * 255, p[1]! * 255, p[2]! * 255, p[3] ?? 1]
+      }
+      return null
+    }
+    const resolveBackground = (el: Element): Rgb => {
+      const layers: [number, number, number, number][] = []
+      let current: Element | null = el
+      while (current) {
+        const layer = parse(getComputedStyle(current).backgroundColor)
+        if (layer && layer[3] > 0) {
+          layers.push(layer)
+          if (layer[3] === 1) break
+        }
+        current = current.parentElement
+      }
+      let result: Rgb = [255, 255, 255]
+      for (const [r, g, b, a] of layers.reverse()) {
+        result = [r * a + result[0] * (1 - a), g * a + result[1] * (1 - a), b * a + result[2] * (1 - a)]
+      }
+      return result
+    }
+    const channel = (c: number) => {
+      const v = c / 255
+      return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)
+    }
+    const luminance = ([r, g, b]: Rgb) =>
+      0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b)
+    const contrast = (a: Rgb, b: Rgb) => {
+      const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x) as [number, number]
+      return (hi + 0.05) / (lo + 0.05)
+    }
+    ;(window as unknown as { __warm: WarmHelpers }).__warm = {
+      resolveBackground,
+      luminance,
+      contrast,
+      parse: (value: string) => {
+        const p = parse(value)
+        return p ? [p[0], p[1], p[2]] : null
+      }
+    }
+  })
+}
+
+for (const locale of ['vi', 'en'] as const) {
+  for (const slug of WARM_SLUGS) {
+    for (const width of WARM_WIDTHS) {
+      const tag = `${slug} ${locale} @ ${width}`
+
+      test(`PD-WARM-01 no dark band ${tag}`, async ({ page }) => {
+        await openProject(page, locale, `/du-an/${slug}`, width, 900)
+        await installWarmHelpers(page)
+
+        const surfaces = await page.evaluate(() => {
+          const warm = (window as unknown as { __warm: WarmHelpers }).__warm
+          const targets = [
+            ...document.querySelectorAll('main [data-project-chapter]:not([data-project-chapter="hero"])'),
+            ...document.querySelectorAll('[data-project-facts-zone]'),
+            ...document.querySelectorAll('nav[data-project-subnav]')
+          ]
+          return targets.map(el => ({
+            name: el.getAttribute('data-project-chapter') ?? (el.hasAttribute('data-project-facts-zone') ? 'facts-zone' : 'subnav'),
+            luminance: warm.luminance(warm.resolveBackground(el))
+          }))
+        })
+
+        // facts zone, subnav, then story, gallery, delivery, materials, related and finale
+        expect(surfaces.length).toBe(8)
+        for (const surface of surfaces) {
+          expect(surface.luminance, `${surface.name} background is a dark band`).toBeGreaterThanOrEqual(0.8)
+        }
+      })
+
+      test(`PD-WARM-02 headings ${tag}`, async ({ page }) => {
+        await openProject(page, locale, `/du-an/${slug}`, width, 900)
+
+        const result = await page.evaluate(() => {
+          const outside = (el: Element) => !el.closest('.app-hero') && !el.closest('[role="dialog"]')
+          const headings = [...document.querySelectorAll('main h2')].filter(outside).map((el) => {
+            const style = getComputedStyle(el)
+            return {
+              text: (el.textContent ?? '').trim().slice(0, 40),
+              weight: style.fontWeight,
+              transform: style.textTransform,
+              family: style.fontFamily
+            }
+          })
+          const heavy = [...document.querySelectorAll('main *')]
+            .filter(outside)
+            .filter(el => getComputedStyle(el).fontWeight === '900')
+            .map(el => `${el.tagName.toLowerCase()}: ${(el.textContent ?? '').trim().slice(0, 30)}`)
+          return { headings, heavy }
+        })
+
+        expect(result.headings.length).toBeGreaterThanOrEqual(4)
+        for (const heading of result.headings) {
+          expect(heading.weight, heading.text).toBe('500')
+          expect(heading.transform, heading.text).toBe('none')
+          expect(heading.family, heading.text).toContain('Outfit')
+        }
+        expect(result.heavy).toEqual([])
+      })
+
+      test(`PD-WARM-03 radii ${tag}`, async ({ page }) => {
+        await openProject(page, locale, `/du-an/${slug}`, width, 900)
+
+        const offenders = await page.evaluate(() => {
+          const corners = [
+            'borderTopLeftRadius',
+            'borderTopRightRadius',
+            'borderBottomRightRadius',
+            'borderBottomLeftRadius'
+          ] as const
+          const found: string[] = []
+          for (const el of document.querySelectorAll('main *')) {
+            if (el.closest('.app-hero') || el.closest('[role="dialog"]')) continue
+            const style = getComputedStyle(el)
+            for (const corner of corners) {
+              const raw = style[corner]
+              const value = parseFloat(raw)
+              const pill = raw.endsWith('%') ? value >= 50 : value >= 9000
+              if (!pill && value > 4) {
+                found.push(`${el.tagName.toLowerCase()}.${String(el.className).slice(0, 60)} ${corner}=${raw}`)
+              }
+            }
+          }
+          return found
+        })
+
+        expect(offenders).toEqual([])
+      })
+
+      test(`PD-WARM-04 facts ${tag}`, async ({ page }) => {
+        await openProject(page, locale, `/du-an/${slug}`, width, 900)
+        await installWarmHelpers(page)
+
+        const labels = await page.evaluate(() => {
+          const warm = (window as unknown as { __warm: WarmHelpers }).__warm
+          return [...document.querySelectorAll('[data-project-facts] dt')].map((el) => {
+            const style = getComputedStyle(el)
+            const color = warm.parse(style.color)
+            return {
+              text: (el.textContent ?? '').trim(),
+              size: parseFloat(style.fontSize),
+              contrast: color ? warm.contrast(color, warm.resolveBackground(el)) : 0
+            }
+          })
+        })
+
+        expect(labels.length).toBeGreaterThan(0)
+        for (const label of labels) {
+          expect(label.size, label.text).toBeGreaterThanOrEqual(12)
+          expect(label.contrast, label.text).toBeGreaterThanOrEqual(4.5)
+        }
+      })
+
+      test(`PD-WARM-05 no side-tab ${tag}`, async ({ page }) => {
+        await openProject(page, locale, `/du-an/${slug}`, width, 900)
+
+        const beat = page.locator('[data-story-beat="challenge"]')
+        await expect(beat).toHaveCount(1)
+        const style = await beat.evaluate((el) => {
+          const computed = getComputedStyle(el)
+          return {
+            borderLeftWidth: computed.borderLeftWidth,
+            radius: parseFloat(computed.borderTopLeftRadius) || 0
+          }
+        })
+        expect(style.borderLeftWidth).toBe('0px')
+        expect(style.radius).toBeLessThanOrEqual(4)
+      })
+
+      test(`PD-WARM-06 chips ${tag}`, async ({ page }) => {
+        await openProject(page, locale, `/du-an/${slug}`, width, 900)
+
+        const chips = await page.evaluate(() => {
+          const read = (el: Element) => {
+            const style = getComputedStyle(el)
+            return { background: style.backgroundColor, color: style.color }
+          }
+          const nav = document.querySelector('nav[data-project-subnav]')!
+          return {
+            active: read(nav.querySelector('a[aria-current="location"]')!),
+            idle: [...nav.querySelectorAll('a:not([aria-current="location"])')].map(read)
+          }
+        })
+
+        expect(chips.active.background).toBe(CHARCOAL_INK)
+        expect(chips.active.color).toBe(LINEN)
+        expect(chips.idle.length).toBeGreaterThan(0)
+        for (const chip of chips.idle) {
+          expect(chip.color).toBe(WALNUT_GREY)
+        }
+      })
+    }
   }
 }
