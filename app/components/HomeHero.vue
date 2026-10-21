@@ -84,10 +84,15 @@ const { t } = useLanguage()
 </template>
 
 <style scoped>
+/* Scrim: the photograph carries the hero, so the wash is only as dark as the copy needs.
+   The floor layer (peak 0.8) covers the copy and metrics and fades out above them; the side
+   layer (0.4 at the copy edge, 0.1 on the far side) keeps the upper right of the photograph
+   open. Copy contrast is measured, not assumed: white text against the lightest sampled pixel
+   (see the Task 4 commit body). */
 .home-hero__wash {
   background:
-    linear-gradient(90deg, rgb(11 10 9 / 0.94) 0%, rgb(11 10 9 / 0.65) 45%, rgb(11 10 9 / 0.35) 100%),
-    linear-gradient(0deg, rgb(11 10 9 / 0.96) 0%, rgb(11 10 9 / 0.4) 45%, transparent 100%);
+    linear-gradient(90deg, rgb(11 10 9 / 0.4) 0%, rgb(11 10 9 / 0.25) 50%, rgb(11 10 9 / 0.1) 100%),
+    linear-gradient(0deg, rgb(11 10 9 / 0.8) 0%, rgb(11 10 9 / 0.8) 64%, transparent 90%);
 }
 
 .home-hero__copy {

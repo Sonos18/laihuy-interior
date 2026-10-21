@@ -83,19 +83,13 @@ const { t } = useLanguage()
 }
 
 @media (min-width: 768px) {
-  .home-capabilities__intro {
-    grid-template-columns: minmax(10rem, 0.35fr) minmax(0, 1fr);
-    align-items: start;
-  }
-
   .home-capabilities__list {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  /* The shared floor keeps the three columns' rules the same length. Stacked below md there is
-     nothing to align with, so the floor only left an empty half-screen under each item. */
+  /* The grid stretches the three items to the tallest, so their rules already share one length
+     without a min-height floor (which only left an empty block under each item). */
   .home-capabilities__item {
-    min-height: 18rem;
     padding-inline: clamp(1rem, 2.5vw, 2.25rem);
   }
 

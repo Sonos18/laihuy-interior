@@ -163,7 +163,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
               loading="lazy"
               class="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.03] group-focus-visible:scale-[1.03]"
             />
-            <div class="home-projects__tag-pill sm:hidden lg:inline-flex">
+            <div class="home-projects__tag-pill sm:hidden">
               <span>{{ t(categoryDefinitions[project.category].label) }}</span>
               <template v-if="project.area">
                 <span class="opacity-40">·</span>
@@ -321,7 +321,10 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
   .home-projects__grid {
     display: grid;
     grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-    grid-template-rows: repeat(2, minmax(0, 1fr));
+    /* Rows follow their content. The lead spans both, so its 16:10 image sets the pair's height
+       and the satellites stretch to share it; forcing two equal 1fr rows squashed the lead image
+       into a strip. */
+    grid-template-rows: auto auto;
     gap: 1.5rem;
     align-items: stretch;
   }
@@ -333,15 +336,9 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
     flex-direction: column;
   }
 
-  .home-projects__card--hero .home-projects__media {
-    flex: 1 1 0;
-    height: auto;
-    min-height: 200px;
-    aspect-ratio: auto;
-  }
-
+  /* The lead image keeps the 16:10 frame from .home-projects__media--hero at every width. */
   .home-projects__card--hero .home-projects__body {
-    flex: 0 0 auto;
+    flex: 1 1 auto;
   }
 
   .home-projects__card--satellite:nth-of-type(2) {
@@ -380,7 +377,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
 
   .home-projects__card--satellite {
     display: grid;
-    grid-template-columns: 180px minmax(0, 1fr);
+    grid-template-columns: 42% minmax(0, 1fr);
   }
 
   .home-projects__card--satellite .home-projects__media {
