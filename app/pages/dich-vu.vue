@@ -111,7 +111,7 @@ usePageSeo({
         <template #actions>
           <NuxtLink
             to="/lien-he"
-            class="btn-primary"
+            class="btn-bronze btn-bronze--on-dark"
           >
             {{ t(servicesPageContent.documents.primaryCta) }}
             <Icon

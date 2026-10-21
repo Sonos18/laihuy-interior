@@ -80,7 +80,7 @@ usePageSeo({
         <template #actions>
           <NuxtLink
             to="/lien-he"
-            class="btn-primary"
+            class="btn-bronze btn-bronze--on-dark"
           >
             {{ t(aboutPageContent.hero.primaryCta) }}
             <Icon
@@ -91,7 +91,7 @@ usePageSeo({
           </NuxtLink>
           <NuxtLink
             to="/du-an"
-            class="btn-secondary"
+            class="btn-luxury-outline"
           >
             {{ t(aboutPageContent.hero.secondaryCta) }}
           </NuxtLink>

@@ -201,7 +201,7 @@ usePageSeo({
       <template #actions>
         <a
           :href="`tel:${company.phone.replaceAll(' ', '')}`"
-          class="btn-primary"
+          class="btn-bronze btn-bronze--on-dark"
         >
           {{ t(uiText.labels.callNow) }}
           <Icon
@@ -211,7 +211,7 @@ usePageSeo({
         </a>
         <a
           href="#contact-form"
-          class="btn-secondary"
+          class="btn-luxury-outline"
         >
           {{ t(uiText.contactForm.heroAction) }}
         </a>

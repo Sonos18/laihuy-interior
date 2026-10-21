@@ -1,8 +1,9 @@
 <script setup lang="ts">
 // Unified immersive hero — see docs/hero-art-direction.md for the design system.
 // `mode` is DERIVED (image quality gate + composition + content density), not a
-// free style choice. Rendering budget: exactly one localized gradient (the scrim),
-// no stacked overlays; glass belongs in the #aside slot only, never behind text.
+// free style choice. Rendering budget: one localized gradient (the scrim), plus a
+// bottom wash below lg; no other overlays. Glass belongs in the #aside slot
+// only, never behind text.
 import type { MediaImage } from '~/shared/media/types'
 
 type Anchor = 'bottom-left' | 'bottom-center' | 'center-left'
@@ -63,10 +64,10 @@ const contentClass = computed(() =>
     ? 'mx-auto max-w-3xl text-center'
     : props.mode === 'caption'
       ? 'max-w-3xl'
-      : 'max-w-4xl'
+      : 'max-w-5xl'
 )
 
-// The single localized gradient (rendering budget = 1). Full literal class strings so
+// The localized gradient (see the rendering budget above). Full literal class strings so
 // Tailwind's JIT can see them.
 //
 // SHARED-FAMILY SCRIM, RE-ANCHORED TO THE READING ZONE. The copy now sits at eye level (~45%),
@@ -105,17 +106,30 @@ const scrimClass = computed(() => {
       ? 'bg-linear-to-r from-ink-950/92 via-ink-950/60 via-48% to-transparent to-84%'
       : 'bg-linear-to-r from-ink-950/90 via-ink-950/50 via-42% to-transparent to-78%'
   }
-  // Offset — claim-forward: the dark column holds across the wider max-w-4xl copy, releasing
-  // late across the open subject side.
+  // Offset — claim-forward: the dark column holds across the wider max-w-5xl copy (64rem, the
+  // home headline cap), releasing late across the open subject side.
   return warm
     ? 'bg-linear-to-r from-wood-950/94 via-wood-950/62 via-52% to-transparent to-88%'
     : 'bg-linear-to-r from-ink-950/94 via-ink-950/62 via-52% to-transparent to-88%'
+})
+
+// Below lg the copy spans most of the width (the lead reaches ~92% at 768px), so the
+// left-weighted scrim releases under the end of every line and bright photography shows
+// through (kicker measured ~3:1 on /gioi-thieu at 375px). A bottom-up wash under the
+// bottom-anchored copy closes that gap, the same pairing HomeHero uses. From lg the copy
+// sits inside the left column, which alone holds the contract. bottom-center already uses a
+// vertical wash.
+const bottomWashClass = computed(() => {
+  if (props.anchor === 'bottom-center') return ''
+  return props.atmosphere === 'warm'
+    ? 'bg-linear-to-t from-wood-950/90 via-wood-950/60 via-50% to-transparent to-80%'
+    : 'bg-linear-to-t from-ink-950/90 via-ink-950/60 via-50% to-transparent to-80%'
 })
 </script>
 
 <template>
   <section
-    class="relative overflow-hidden bg-ink-950 text-white"
+    class="app-hero relative overflow-hidden bg-ink-950 text-white"
     :class="sizeClass"
   >
     <!-- `sizes` is NOT 100vw, deliberately. The box is object-cover and taller than it is
@@ -168,6 +182,11 @@ const scrimClass = computed(() => {
       class="absolute inset-0"
       :class="scrimClass"
     />
+    <div
+      v-if="bottomWashClass"
+      class="absolute inset-0 lg:hidden"
+      :class="bottomWashClass"
+    />
 
     <!-- Copy is BOTTOM-anchored in the full --hero-min-h-home box, same as the homepage hero,
          so the block ends at the same baseline (and the CTAs land at the same height) on every
@@ -182,12 +201,12 @@ const scrimClass = computed(() => {
           <slot name="breadcrumb" />
           <slot name="chips" />
 
-          <!-- wood-200 (not wood-300): the small, wide-tracked kicker must clear WCAG AA
-               (4.5:1) over warm/light photography — measured 5.84:1 vs 3.87:1. -->
+          <!-- Kicker, headline, lead and CTA spacing mirror HomeHero (shared .hero-kicker and
+               .home-* text utilities in main.css). -->
           <p
             v-if="topic"
             v-reveal
-            class="eyebrow reveal mb-(--hero-gap-eyebrow) block text-wood-200"
+            class="hero-kicker home-eyebrow-text reveal"
           >
             {{ topic }}
           </p>
@@ -195,13 +214,10 @@ const scrimClass = computed(() => {
           <h1
             v-if="title"
             v-reveal="80"
-            class="reveal text-hero font-black uppercase text-white"
+            class="home-display-title reveal max-w-5xl font-display font-medium text-white"
           >
             {{ title }}
-            <span
-              v-if="specialTitle"
-              class="text-wood-300"
-            >
+            <span v-if="specialTitle">
               {{ specialTitle }}
             </span>
           </h1>
@@ -211,7 +227,7 @@ const scrimClass = computed(() => {
           <p
             v-if="subtitle"
             v-reveal="150"
-            class="reveal text-lead mt-(--hero-gap-lead) text-white/80"
+            class="home-lead-text reveal mt-5 text-white/80"
             :class="isCentered ? 'mx-auto max-w-2xl' : 'max-w-2xl'"
           >
             {{ subtitle }}
@@ -220,7 +236,7 @@ const scrimClass = computed(() => {
           <div
             v-if="$slots.actions"
             v-reveal="230"
-            class="reveal mt-(--hero-gap-actions) flex flex-col gap-3 sm:flex-row"
+            class="reveal mt-8 flex flex-col gap-3 sm:flex-row"
             :class="isCentered ? 'sm:justify-center' : ''"
           >
             <slot name="actions" />

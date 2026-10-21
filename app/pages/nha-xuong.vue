@@ -53,7 +53,7 @@ usePageSeo({
         <a
           data-testid="factory-hero-phone"
           :href="factoryPhoneHref"
-          class="btn-primary"
+          class="btn-bronze btn-bronze--on-dark"
         >
           {{ t(factoryPageContent.hero.primaryCta) }}
           <Icon
@@ -63,7 +63,7 @@ usePageSeo({
         </a>
         <a
           href="#factory-capability"
-          class="btn-secondary"
+          class="btn-luxury-outline"
         >
           {{ t(factoryPageContent.hero.secondaryCta) }}
         </a>

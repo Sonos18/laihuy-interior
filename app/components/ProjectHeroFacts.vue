@@ -61,7 +61,7 @@ const { t } = useLanguage()
       </template>
 
       <template #meta>
-        <p class="mt-5 max-w-2xl text-lg leading-8 text-[var(--text-muted)]">
+        <p class="home-lead-text mt-5 max-w-2xl text-white/80">
           {{ description }}
         </p>
       </template>
@@ -69,7 +69,7 @@ const { t } = useLanguage()
       <template #actions>
         <NuxtLink
           to="/lien-he"
-          class="btn-primary"
+          class="btn-bronze btn-bronze--on-dark"
         >
           {{ t(uiText.cta.contact) }}
           <Icon
@@ -79,7 +79,7 @@ const { t } = useLanguage()
         </NuxtLink>
         <NuxtLink
           to="/du-an"
-          class="btn-secondary"
+          class="btn-luxury-outline"
         >
           {{ t(uiText.cta.allProjects) }}
         </NuxtLink>

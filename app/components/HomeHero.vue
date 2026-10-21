@@ -114,22 +114,6 @@ const { t } = useLanguage()
   max-width: 68rem;
 }
 
-.hero-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--bronze-light);
-  margin-bottom: 0.5rem;
-}
-
-.hero-kicker::before {
-  content: '';
-  width: 20px;
-  height: 1px;
-  background: var(--bronze);
-  flex-shrink: 0;
-}
-
 .home-hero__title {
   max-width: 64rem;
   font-weight: 500;
