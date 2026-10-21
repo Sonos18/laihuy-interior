@@ -297,7 +297,7 @@ onUnmounted(() => {
             :key="image.path"
             type="button"
             :data-active="i === index"
-            class="relative h-12 w-16 shrink-0 overflow-hidden rounded-md ring-2 transition-all md:h-14 md:w-20"
+            class="relative h-12 w-16 shrink-0 overflow-hidden rounded-md ring-2 transition-[opacity,box-shadow] duration-[240ms] ease-[var(--ease-editorial)] md:h-14 md:w-20"
             :class="i === index ? 'ring-wood-400 opacity-100' : 'ring-transparent opacity-55 hover:opacity-90'"
             :aria-label="t({ vi: `Ảnh ${i + 1}`, en: `Image ${i + 1}` })"
             :aria-current="i === index ? 'true' : undefined"
