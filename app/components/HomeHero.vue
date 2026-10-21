@@ -87,8 +87,10 @@ const { t } = useLanguage()
 /* Scrim: the photograph carries the hero, so the wash is only as dark as the copy needs.
    The floor layer (peak 0.8) covers the copy and metrics and fades out above them; the side
    layer (0.4 at the copy edge, 0.1 on the far side) keeps the upper right of the photograph
-   open. Copy contrast is measured, not assumed: white text against the lightest sampled pixel
-   (see the Task 4 commit body). */
+   open. Copy contrast is measured, not assumed: against the real Supabase hero photograph, with
+   the wash applied and the text hidden, the lightest pixel behind each line of copy gives
+   (min over 375/768/1440, vi and en) eyebrow 6.4:1 (need 4.5), h1 12.9:1 (need 3), sublead 9.0:1
+   (need 4.5); the metric strip sits on solid obsidian (8.3:1 labels, 18.7:1 values). */
 .home-hero__wash {
   background:
     linear-gradient(90deg, rgb(11 10 9 / 0.4) 0%, rgb(11 10 9 / 0.25) 50%, rgb(11 10 9 / 0.1) 100%),
