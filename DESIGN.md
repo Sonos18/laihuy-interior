@@ -280,7 +280,7 @@ A centered 16:10 slide with its neighbours scaled to about 0.7 and dimmed; slide
 
 This document records the target chosen with the owner. These parts of the current implementation do not yet match it and should converge section by section:
 
-- Dark mid-page bands: HomeFactoryProof (home), the services and about dark sections, and most of `/du-an/[slug]` (facts, gallery, material story, finale) sit on obsidian or ink-950.
+- Dark mid-page bands: the services and about dark sections, and most of `/du-an/[slug]` (facts, gallery, material story, finale) sit on obsidian or ink-950.
 - Interior pages use the older type system (Inter 900 uppercase `.text-hero` and `.text-section-title`) and 16px radii on cards, forms and inputs.
 - Interior pages (services, about, factory, careers, contact, projects index, project detail, error) still use the wood `.btn-primary` for their primary action; the home hero, the header, the footer and the home closing CTA already use the bronze sentence-case `.btn-bronze`. The shared `.btn-outline` is still Inter 700 rather than the Action type (600).
 - Some home h2 headings render in Inter instead of Outfit (Capabilities, Material Story, Project CTA).
