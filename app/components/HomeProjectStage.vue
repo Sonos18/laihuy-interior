@@ -31,7 +31,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
           </p>
           <h2
             v-reveal="80"
-            class="home-projects__title home-section-heading reveal font-display mt-3 text-ink-950"
+            class="home-projects__title home-section-heading reveal mt-3 text-ink-950"
           >
             {{ t(homePageContent.projects.title) }}
           </h2>

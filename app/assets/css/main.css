@@ -2142,7 +2142,11 @@
     text-wrap: balance;
   }
 
+  /* DESIGN.md "Headline": every home h2 is Outfit 500. The family and weight live here, not on
+     each component, so a section cannot fall back to the inherited Inter or the h2's UA bold. */
   .home-section-heading {
+    font-family: var(--font-display);
+    font-weight: 500;
     font-size: var(--home-section-title);
     line-height: var(--home-section-title-lh);
     letter-spacing: -0.02em;

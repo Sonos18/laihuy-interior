@@ -40,7 +40,7 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
           </p>
           <h2
             v-reveal="80"
-            class="home-factory__title home-section-heading reveal mt-4 font-display text-ink-950"
+            class="home-factory__title home-section-heading reveal mt-4 text-ink-950"
           >
             {{ t(homePageContent.factory.title) }}
           </h2>
@@ -294,7 +294,6 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
 }
 .home-factory__title {
   max-width: 55rem;
-  font-weight: 500;
 }
 .home-factory__caption {
   position: absolute;

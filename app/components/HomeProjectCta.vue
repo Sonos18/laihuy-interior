@@ -63,7 +63,7 @@ const { t } = useLanguage()
 .home-project-cta { position: relative; overflow: hidden; }
 .home-project-cta::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0.3; background-image: linear-gradient(90deg, transparent calc(25% - 0.5px), var(--color-wood-200) 25%, transparent calc(25% + 0.5px)); background-size: 25% 100%; }
 .home-project-cta__grid { position: relative; display: grid; gap: 3rem; }
-.home-project-cta__title { max-width: 58rem; font-weight: 500; }
+.home-project-cta__title { max-width: 58rem; }
 .home-project-cta__actions { display: flex; flex-direction: column; align-items: flex-start; gap: 0.75rem; }
 .home-project-cta__direct { display: grid; gap: 0.6rem; margin-top: 1rem; font-size: 0.82rem; font-weight: 700; color: var(--color-ink-600); }
 .home-project-cta__direct a { display: inline-flex; align-items: center; gap: 0.6rem; }

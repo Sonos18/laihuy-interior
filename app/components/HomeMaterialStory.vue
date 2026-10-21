@@ -159,7 +159,6 @@ const layerStyle = (index: number) => {
 
 .home-material-story__title {
   max-width: 64rem;
-  font-weight: 500;
 }
 
 .home-material-story__stage {

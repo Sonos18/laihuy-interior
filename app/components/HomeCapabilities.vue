@@ -65,7 +65,6 @@ const { t } = useLanguage()
 
 .home-capabilities__title {
   max-width: 58rem;
-  font-weight: 500;
 }
 
 .home-capabilities__list {
