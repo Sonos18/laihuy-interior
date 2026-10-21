@@ -97,7 +97,7 @@ export default defineConfig({
   webServer: {
     command: 'node .output/server/index.mjs',
     url: APP_ORIGIN,
-    // Nitro's node server listens on PORT; PLAYWRIGHT_PORT moves the whole harness off :3000.
+    // Nitro's node server listens on PORT; PLAYWRIGHT_PORT (default 3001) moves the whole harness.
     env: { PORT: String(APP_PORT) },
     reuseExistingServer: true,
     timeout: 120_000

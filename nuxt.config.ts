@@ -68,6 +68,12 @@ export default defineNuxtConfig({
     }
   },
 
+  // Pinned off :3000, which every other `nuxt dev` on this machine grabs by default. The
+  // Playwright harness defaults to the same port (tests/e2e/origin.ts).
+  devServer: {
+    port: 3001
+  },
+
   compatibilityDate: '2025-01-15',
 
   nitro: {

@@ -33,7 +33,7 @@ cp .env.example .env   # then fill in the values below
 ## Development
 
 ```bash
-pnpm dev        # dev server at http://localhost:3000
+pnpm dev        # dev server at http://localhost:3001
 pnpm build      # production build (static prerender + Nitro server)
 pnpm preview    # preview the production build
 ```
@@ -49,7 +49,7 @@ pnpm test:gates   # hero geometry + alignment gates
 ```
 
 Playwright runs the production build (`pnpm build` first) on `http://localhost:<PLAYWRIGHT_PORT>`
-(default `3000`) and reuses a server already listening there. If another app holds the port, run
+(default `3001`, the same port `pnpm dev` and `pnpm preview` use) and reuses a server already listening there. If another app holds the port, run
 with a free one (`PLAYWRIGHT_PORT=3100 pnpm test:gates:ci`); the global setup aborts the run when
 the server on that port is not Lai Huy Interior.
 

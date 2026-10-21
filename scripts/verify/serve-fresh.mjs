@@ -18,13 +18,29 @@
 import { spawn, spawnSync } from 'node:child_process'
 import { setTimeout as sleep } from 'node:timers/promises'
 
-const BASE = 'http://localhost:3000'
+// Same port as `pnpm dev`, `pnpm preview` and the Playwright harness (tests/e2e/origin.ts).
+const PORT = process.env.PLAYWRIGHT_PORT || '3001'
+const BASE = `http://localhost:${PORT}`
 const skipBuild = process.argv.includes('--no-build')
 
-/** Free port 3000 regardless of who owns it — a stray `nuxt dev` binds it just as happily. */
-function killPort3000() {
+/**
+ * Free the port, but only from this app. A stray Lai Huy `nuxt dev` or prod server is stopped;
+ * anything else listening there (another project's dev server) is left alone and the run
+ * aborts, because stopping someone else's process is never this script's call.
+ */
+async function freePort() {
+  let html
+  try {
+    html = await (await fetch(BASE, { signal: AbortSignal.timeout(5_000) })).text()
+  } catch {
+    return // nothing answering
+  }
+  if (!/<title[^>]*>[^<]*Lai Huy Interior/i.test(html)) {
+    console.error(`✗ port ${PORT} is held by another app; stop it or set PLAYWRIGHT_PORT to a free port`)
+    process.exit(1)
+  }
   const ps = [
-    '$c = Get-NetTCPConnection -LocalPort 3000 -State Listen -ErrorAction SilentlyContinue;',
+    `$c = Get-NetTCPConnection -LocalPort ${PORT} -State Listen -ErrorAction SilentlyContinue;`,
     'if ($c) { $c | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue } }'
   ].join(' ')
   spawnSync('powershell', ['-NoProfile', '-Command', ps], { stdio: 'ignore' })
@@ -42,8 +58,8 @@ async function waitFor(url, timeoutMs = 60_000) {
   throw new Error(`timed out waiting for ${url}`)
 }
 
-console.log('· freeing port 3000')
-killPort3000()
+console.log(`· freeing port ${PORT}`)
+await freePort()
 await sleep(1500)
 
 if (!skipBuild) {
@@ -53,7 +69,11 @@ if (!skipBuild) {
 }
 
 console.log('· starting server')
-const server = spawn('node', ['.output/server/index.mjs'], { detached: true, stdio: 'ignore' })
+const server = spawn('node', ['.output/server/index.mjs'], {
+  detached: true,
+  stdio: 'ignore',
+  env: { ...process.env, PORT }
+})
 server.unref()
 
 const html = await (await waitFor(BASE)).text()

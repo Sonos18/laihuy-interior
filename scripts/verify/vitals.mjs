@@ -21,7 +21,8 @@ import process from 'node:process'
 import * as chromeLauncher from 'chrome-launcher'
 import lighthouse from 'lighthouse'
 
-const ORIGIN = 'http://localhost:3000'
+// Same port as `pnpm dev`, `pnpm preview` and the Playwright harness (tests/e2e/origin.ts).
+const ORIGIN = `http://localhost:${process.env.PLAYWRIGHT_PORT || '3001'}`
 const RUNS = 5
 const BASELINE = path.join('tests', 'baseline', 'vitals.json')
 
