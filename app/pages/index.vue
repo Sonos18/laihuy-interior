@@ -2,7 +2,6 @@
 import { company } from '~/data/company'
 import {
   factoryCapabilities,
-  machineryProcessGroups,
   machinerySectionContent,
   productionWorkflow
 } from '~/data/factory'
@@ -71,7 +70,6 @@ usePageSeo({
     <HomeProjectStage :projects="featuredProjects" />
     <HomeFactoryProof
       :capabilities="factoryCapabilities"
-      :groups="machineryProcessGroups"
       :content="machinerySectionContent"
       :image="siteImages.machineryOverview"
       :steps="productionWorkflow"

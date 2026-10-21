@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import {
+  factoryCapabilities,
   machineryProcessGroups,
-  machinerySectionContent
+  machinerySectionContent,
+  productionWorkflow
 } from '../app/data/factory'
 
 const EXPECTED_IDS = [
@@ -32,7 +34,9 @@ const EXPECTED_MACHINES = {
   ]
 } as const
 
-describe('homepage machinery content', () => {
+// The machinery groups and machine lists are rendered by /nha-xuong. The home page no longer
+// shows them: each of its three factory pillars is one fact plus one supporting line.
+describe('factory machinery content', () => {
   it('defines the approved four production stages in order', () => {
     expect(machineryProcessGroups.map(group => group.id)).toEqual(EXPECTED_IDS)
     expect(machineryProcessGroups).toHaveLength(4)
@@ -45,6 +49,23 @@ describe('homepage machinery content', () => {
 
     expect(machineNames).toEqual(EXPECTED_MACHINES[locale])
     expect(new Set(machineNames).size).toBe(7)
+  })
+
+  it.each(['vi', 'en'] as const)('provides the strings behind the three home pillars in %s', (locale) => {
+    const pillarSources = [
+      productionWorkflow[1]?.title,
+      productionWorkflow[1]?.description,
+      machinerySectionContent.titleLead,
+      machinerySectionContent.titleAccent,
+      machinerySectionContent.description,
+      factoryCapabilities[2]?.label,
+      factoryCapabilities[2]?.description
+    ]
+
+    expect(pillarSources).toHaveLength(7)
+    for (const source of pillarSources) {
+      expect(source?.[locale]).toBeTruthy()
+    }
   })
 
   it.each(['vi', 'en'] as const)('provides complete intro and caption copy in %s', (locale) => {

@@ -58,11 +58,6 @@ export const homePageContent = {
       en: 'An own factory, coordinated machinery, and technical teams keep materials, dimensions, finishes, and schedule under continuous control.'
     }
   },
-  process: {
-    eyebrow: { vi: 'Phương pháp triển khai', en: 'Delivery method' },
-    title: { vi: 'Sáu điểm kiểm soát từ hồ sơ đến nghiệm thu', en: 'Six control points from documents to sign-off' },
-    cta: { vi: 'Xem đầy đủ quy trình triển khai', en: 'View our complete project workflow' }
-  },
   cta: {
     eyebrow: { vi: 'Bắt đầu bằng hồ sơ của bạn', en: 'Start with your project documents' },
     title: { vi: 'Gửi bản vẽ để cùng làm rõ vật liệu, tiến độ và phạm vi thi công', en: 'Send your drawings to clarify materials, schedule, and contracting scope' },
