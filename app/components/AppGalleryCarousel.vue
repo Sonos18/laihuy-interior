@@ -13,15 +13,13 @@ type Props = {
   selectable?: boolean
   autoplayMs?: number
   paused?: boolean
-  tone?: 'light' | 'dark'
 }
 
 const props = withDefaults(defineProps<Props>(), {
   preset: 'gallery',
   selectable: false,
   autoplayMs: 5000,
-  paused: false,
-  tone: 'light'
+  paused: false
 })
 
 const emit = defineEmits<{
@@ -229,8 +227,7 @@ onBeforeUnmount(() => {
       </button>
 
       <p
-        class="min-w-20 text-center text-sm font-semibold tabular-nums"
-        :class="tone === 'dark' ? 'text-[var(--text-muted)]' : 'text-ink-700'"
+        class="min-w-20 text-center text-sm font-semibold tabular-nums text-ink-700"
         aria-live="polite"
       >
         {{ activeIndex + 1 }} / {{ images.length }}
@@ -277,8 +274,7 @@ onBeforeUnmount(() => {
   transform: translate(-50%, -50%) scale(0.62);
   transition:
     transform 650ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 450ms ease,
-    box-shadow 450ms ease;
+    opacity 450ms ease;
 }
 
 .gallery-carousel-slide[data-gallery-position='active'] {
@@ -286,7 +282,6 @@ onBeforeUnmount(() => {
   opacity: 1;
   pointer-events: auto;
   transform: translate(-50%, -50%) scale(1);
-  box-shadow: 0 1.5rem 4rem rgb(20 18 16 / 18%);
 }
 
 .gallery-carousel-slide[data-gallery-position='previous'] {

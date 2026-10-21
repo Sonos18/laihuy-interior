@@ -16,6 +16,9 @@
 /** Longest stagger a reveal may wait; later items in a long list all share it. */
 const MAX_REVEAL_DELAY_MS = 320
 
+/** How long a hero photograph may stay hidden while its bytes are in flight. */
+const PENDING_HERO_TIMEOUT_MS = 3000
+
 function isInViewport(el: HTMLElement): boolean {
   const rect = el.getBoundingClientRect()
 
@@ -50,21 +53,27 @@ export default defineNuxtPlugin((nuxtApp) => {
       // A hero photograph that has no decoded data yet is held at opacity 0 (`.is-pending`) so
       // it fades in and starts its settle the moment it appears, instead of the settle running
       // unseen while the bytes are still in flight. An image that is complete, or already
-      // partially decoded, is never touched: a painted LCP frame must not be hidden.
+      // partially decoded, is never touched: a painted LCP frame must not be hidden. A photograph
+      // that neither loads nor errors within PENDING_HERO_TIMEOUT_MS is released anyway, so a
+      // stalled request can never leave the hero blank.
       const markPendingHeroes = () => {
         for (const img of document.querySelectorAll<HTMLImageElement>('img.hero-image')) {
           if (img.complete || img.naturalWidth !== 0 || img.classList.contains('is-pending')) {
             continue
           }
 
-          // One controller per image: whichever of load/error fires first removes both listeners.
+          // One controller per image: whichever of load/error/timeout fires first releases the
+          // mark, removes both listeners and clears the timer.
           const listeners = new AbortController()
+          let timer = 0
           const release = () => {
+            window.clearTimeout(timer)
             img.classList.remove('is-pending')
             listeners.abort()
           }
 
           img.classList.add('is-pending')
+          timer = window.setTimeout(release, PENDING_HERO_TIMEOUT_MS)
           img.addEventListener('load', release, { signal: listeners.signal })
           img.addEventListener('error', release, { signal: listeners.signal })
         }

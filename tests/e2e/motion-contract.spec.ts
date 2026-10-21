@@ -232,6 +232,25 @@ test.describe('motion contract', () => {
     })
   }
 
+  test('MOTION-05b a hero image that never arrives is released after 3s', async ({ page }) => {
+    const images = await holdImages(page)
+
+    try {
+      await page.goto(url('/'), { waitUntil: 'domcontentloaded' })
+      const hero = page.locator('img.hero-image').first()
+      await expect(hero).toHaveClass(/is-pending/)
+
+      // The request is held forever: only the timeout can release the mark.
+      await expect(hero).not.toHaveClass(/is-pending/, { timeout: 3500 })
+      await expect.poll(
+        () => hero.evaluate(el => getComputedStyle(el).opacity),
+        { timeout: 2000 }
+      ).toBe('1')
+    } finally {
+      images.release()
+    }
+  })
+
   test('MOTION-06 chrome timing', async ({ page }) => {
     await page.goto(url('/'), { waitUntil: 'load' })
 

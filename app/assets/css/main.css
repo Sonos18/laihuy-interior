@@ -151,7 +151,7 @@
   --ease-editorial: cubic-bezier(0.22, 0.61, 0.36, 1);
   --ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --dur-hover: 240ms;
-  --dur-state: 280ms; /* chrome only: header, subnav anchor, nav and drawer underlines */
+  --dur-state: 280ms; /* chrome only: header, subnav anchor and drawer underline (the nav-link underline uses --dur-hover) */
   --dur-drawer: 300ms;
   --dur-drawer-exit: 200ms; /* closing is quicker than opening */
   --dur-reveal: 600ms;
@@ -1747,7 +1747,7 @@
   }
 
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-ink-300 px-7 py-3.5 text-sm font-bold text-ink-900 transition-[background-color,border-color,color,box-shadow] duration-[240ms] ease-[var(--ease-editorial)] hover:border-ink-950 hover:bg-ink-950 hover:text-white;
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-ink-300 px-7 py-3.5 text-sm font-semibold text-ink-900 transition-[background-color,border-color,color,box-shadow] duration-[240ms] ease-[var(--ease-editorial)] hover:border-ink-950 hover:bg-ink-950 hover:text-white;
   }
 
   .metric-card {
@@ -2073,8 +2073,9 @@
        Eyebrow:            12-13px desktop / 12px mobile, line-height 1.3
        Meta / Index:       12-14px
        Statistic values:   28-36px desktop / 24-30px mobile
-     The scale tokens are scoped to .home-page and to the shared interior hero (.app-hero), so the
-     hero typography is one system on every page while nothing else on other routes changes. */
+     The scale tokens are scoped to .home-page (the homepage and the case study, which reuses
+     these classes) and to the shared interior hero (.app-hero), so the type is one system on
+     those surfaces while nothing else on other routes changes. */
   .home-page,
   .app-hero {
     --home-display: clamp(2.25rem, 1.75rem + 2.8vw, 4.5rem);

@@ -51,7 +51,7 @@ const { t } = useLanguage()
 </template>
 
 <style scoped>
-/* Raw Silk: one tone step from the white material story above and the linen project stage
+/* Raw Silk: one tone step from the Linen material story above and the linen project stage
    below (DESIGN.md Warm Light Rule). Hairlines mark both seams, where the step alone is quiet. */
 .home-capabilities {
   padding-block: var(--section-py);

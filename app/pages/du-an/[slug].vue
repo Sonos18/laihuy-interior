@@ -245,7 +245,7 @@ usePageSeo({
               v-for="tab in galleryTabs"
               :key="tab.value"
               type="button"
-              class="inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition-colors duration-[var(--dur-hover)] ease-[var(--ease-editorial)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wood-500 motion-reduce:transition-none"
+              class="inline-flex items-center gap-2 min-h-11 rounded-full border px-5 py-2.5 text-sm font-semibold transition-colors duration-[var(--dur-hover)] ease-[var(--ease-editorial)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wood-500 motion-reduce:transition-none"
               :class="activeGalleryTab === tab.value
                 ? 'border-ink-900 bg-ink-900 text-wood-50'
                 : 'border-ink-200 text-ink-600 hover:border-wood-500 hover:text-wood-600'"

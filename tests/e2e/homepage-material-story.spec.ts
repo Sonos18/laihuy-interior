@@ -307,7 +307,7 @@ test('HOME-no-pulse has no pulse dot in the projects section and no Ken Burns lo
   const animationName = await page.getByTestId('home-hero').locator('img.hero-image').evaluate(
     image => getComputedStyle(image).animationName
   )
-  expect(animationName).not.toBe('kenBurnsHero')
+  expect(animationName).toBe('hero-zoom')
 })
 
 test('HMS-linen sits on Linen, not white', async ({ page }) => {
