@@ -84,26 +84,6 @@ const { t } = useLanguage()
 </template>
 
 <style scoped>
-.hero-image {
-  transform-origin: center center;
-  animation: kenBurnsHero 26s ease-in-out infinite alternate;
-}
-
-@keyframes kenBurnsHero {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1.05);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-image {
-    animation: none;
-  }
-}
-
 .home-hero__wash {
   background:
     linear-gradient(90deg, rgb(11 10 9 / 0.94) 0%, rgb(11 10 9 / 0.65) 45%, rgb(11 10 9 / 0.35) 100%),

@@ -257,7 +257,6 @@ const layerStyle = (index: number) => {
   .home-material-story__layer {
     position: absolute;
     inset: 0;
-    will-change: clip-path, opacity;
   }
 
   .home-material-story__layer--drawing :deep(img) {
@@ -323,13 +322,17 @@ const layerStyle = (index: number) => {
     position: absolute;
     inset: 0;
     opacity: 0;
-    transform: translateY(1rem);
-    transition: opacity 220ms ease, transform 360ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform: translateY(-0.25rem);
+    /* Sequenced swap: the outgoing copy leaves first (120ms, exit curve), then the incoming
+       copy enters (240ms, editorial curve, delayed by the 120ms exit), so the two are never
+       visible together. */
+    transition: opacity 120ms var(--ease-exit), transform 120ms var(--ease-exit);
   }
 
   .home-material-story[data-enhanced="true"] .home-material-story__copy-item.is-active {
     opacity: 1;
     transform: translateY(0);
+    transition: opacity 240ms var(--ease-editorial) 120ms, transform 240ms var(--ease-editorial) 120ms;
   }
 
   .home-material-story__copy-item {

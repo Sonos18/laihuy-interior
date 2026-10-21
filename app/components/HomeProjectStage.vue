@@ -84,15 +84,9 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
 
           <div class="home-projects__body home-projects__body--hero">
             <div>
-              <div class="flex items-center gap-2">
-                <span
-                  class="metric-pulse shrink-0"
-                  aria-hidden="true"
-                />
-                <span class="home-meta-text font-semibold uppercase tracking-[0.14em] text-wood-700">
-                  {{ t(categoryDefinitions[heroProject.project.category].label) }}
-                </span>
-              </div>
+              <p class="home-meta-text font-semibold uppercase tracking-[0.14em] text-wood-700">
+                {{ t(categoryDefinitions[heroProject.project.category].label) }}
+              </p>
               <h3 class="home-projects__title-hero font-display mt-2 text-xl font-medium tracking-tight text-ink-950 md:text-2xl lg:text-[1.625rem]">
                 {{ t(heroProject.project.name) }}
               </h3>
@@ -140,7 +134,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
               <span class="text-xs font-semibold uppercase tracking-[0.08em] text-wood-700 transition-colors duration-300 group-hover:text-wood-950">
                 {{ t(homePageContent.projects.heroCta) }}
               </span>
-              <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-wood-300 text-wood-700 transition-all duration-300 group-hover:border-wood-600 group-hover:bg-wood-600 group-hover:text-white">
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-wood-300 text-wood-700 transition-[background-color,border-color,color] duration-[240ms] ease-[var(--ease-editorial)] group-hover:border-wood-600 group-hover:bg-wood-600 group-hover:text-white">
                 <Icon
                   name="i-lucide-arrow-right"
                   class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
@@ -206,7 +200,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
               <span class="text-xs font-semibold uppercase tracking-[0.08em] text-wood-700 transition-colors duration-300 group-hover:text-wood-950">
                 {{ t(homePageContent.projects.cardCta) }}
               </span>
-              <span class="inline-flex h-7 w-7 items-center justify-center rounded-full border border-wood-300 text-wood-700 transition-all duration-300 group-hover:border-wood-600 group-hover:bg-wood-600 group-hover:text-white">
+              <span class="inline-flex h-7 w-7 items-center justify-center rounded-full border border-wood-300 text-wood-700 transition-[background-color,border-color,color] duration-[240ms] ease-[var(--ease-editorial)] group-hover:border-wood-600 group-hover:bg-wood-600 group-hover:text-white">
                 <Icon
                   name="i-lucide-arrow-right"
                   class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
