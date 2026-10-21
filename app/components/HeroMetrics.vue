@@ -27,7 +27,7 @@ defineProps<{
       <div
         v-for="(metric, index) in metrics"
         :key="metric.label"
-        v-reveal="(baseDelay ?? 320) + index * 80"
+        v-reveal="(baseDelay ?? 200) + index * 40"
         class="reveal metric-col flex flex-col justify-center lg:px-6 lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0"
         :class="[
           index % 2 === 0 ? 'sm:border-r sm:border-[var(--hairline)]' : '',
@@ -36,15 +36,9 @@ defineProps<{
           index < metrics.length - 1 ? 'lg:border-r lg:border-[var(--hairline)]' : ''
         ]"
       >
-        <div class="flex items-center gap-2">
-          <span
-            class="metric-pulse shrink-0"
-            aria-hidden="true"
-          />
-          <p class="home-eyebrow-text text-[var(--bronze-light)]">
-            {{ metric.label }}
-          </p>
-        </div>
+        <p class="home-eyebrow-text text-[var(--bronze-light)]">
+          {{ metric.label }}
+        </p>
         <p class="home-stat-value mt-2 font-display font-medium tracking-tight text-white">
           {{ metric.value }}
         </p>

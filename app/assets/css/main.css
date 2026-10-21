@@ -151,9 +151,10 @@
   --ease-editorial: cubic-bezier(0.22, 0.61, 0.36, 1);
   --ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --dur-hover: 240ms;
-  --dur-state: 400ms;
+  --dur-state: 280ms; /* chrome only: header, subnav anchor, nav and drawer underlines */
   --dur-drawer: 300ms;
-  --dur-reveal: 700ms;
+  --dur-drawer-exit: 200ms; /* closing is quicker than opening */
+  --dur-reveal: 600ms;
 
   /* ── L1 · Radius / shadow ───────────────────────────────────────────── */
   --radius-pill: 9999px;
@@ -516,11 +517,23 @@
 
 @keyframes hero-zoom {
   from {
-    transform: scale(1.08);
+    transform: scale(1.04);
   }
 
   to {
     transform: scale(1);
+  }
+}
+
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -835,7 +848,7 @@
     background: currentcolor;
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform var(--dur-state) var(--ease-editorial);
+    transition: transform var(--dur-hover) var(--ease-editorial);
   }
 
   .nav-link:hover::after,
@@ -1085,7 +1098,7 @@
   }
 
   .drawer-panel-leave-active {
-    transition: transform var(--dur-drawer) var(--ease-exit);
+    transition: transform var(--dur-drawer-exit) var(--ease-exit);
   }
 
   .drawer-panel-enter-from,
@@ -1093,9 +1106,12 @@
     transform: translateX(100%);
   }
 
-  .drawer-overlay-enter-active,
-  .drawer-overlay-leave-active {
+  .drawer-overlay-enter-active {
     transition: opacity var(--dur-drawer) linear;
+  }
+
+  .drawer-overlay-leave-active {
+    transition: opacity var(--dur-drawer-exit) linear;
   }
 
   .drawer-overlay-enter-from,
@@ -1719,19 +1735,19 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-wood-500 px-7 py-3.5 text-sm font-bold text-white shadow-sm shadow-wood-950/10 transition-all duration-300 hover:bg-wood-600 hover:shadow-md hover:shadow-wood-950/15;
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-wood-500 px-7 py-3.5 text-sm font-bold text-white shadow-sm shadow-wood-950/10 transition-[background-color,border-color,color,box-shadow] duration-[240ms] ease-[var(--ease-editorial)] hover:bg-wood-600 hover:shadow-md hover:shadow-wood-950/15;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/35 px-7 py-3.5 text-sm font-bold text-white transition-all duration-300 hover:bg-white hover:text-ink-950;
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/35 px-7 py-3.5 text-sm font-bold text-white transition-[background-color,border-color,color,box-shadow] duration-[240ms] ease-[var(--ease-editorial)] hover:bg-white hover:text-ink-950;
   }
 
   .btn-dark {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-ink-950 px-7 py-3.5 text-sm font-bold text-white shadow-sm shadow-ink-950/10 transition-all duration-300 hover:bg-ink-800 hover:shadow-md hover:shadow-ink-950/15;
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-ink-950 px-7 py-3.5 text-sm font-bold text-white shadow-sm shadow-ink-950/10 transition-[background-color,border-color,color,box-shadow] duration-[240ms] ease-[var(--ease-editorial)] hover:bg-ink-800 hover:shadow-md hover:shadow-ink-950/15;
   }
 
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-ink-300 px-7 py-3.5 text-sm font-bold text-ink-900 transition-all duration-300 hover:border-ink-950 hover:bg-ink-950 hover:text-white;
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-ink-300 px-7 py-3.5 text-sm font-bold text-ink-900 transition-[background-color,border-color,color,box-shadow] duration-[240ms] ease-[var(--ease-editorial)] hover:border-ink-950 hover:bg-ink-950 hover:text-white;
   }
 
   .metric-card {
@@ -1838,42 +1854,52 @@
   }
 
   /* Scroll-reveal — default (no-JS / SSR) state is fully visible.
-     The hidden state only applies once the client adds `reveal-ready`. */
-  html.reveal-ready .reveal {
+     The hidden state only applies once the client adds `reveal-ready`.
+
+     A keyframe, not a transition, on purpose. `.reveal` declares no `transition`, `transform` or
+     `will-change`, so the element's own hover transitions (card lift, image zoom, colour) are
+     untouched and never inherit the stagger delay. `backwards` fill (not `both`) hands the
+     element back to its own styles the moment the rise ends, so hover transforms work right
+     after. The stagger arrives as `--reveal-delay` from plugins/reveal.ts (clamped to 320ms). */
+  html.reveal-ready .reveal:not(.is-visible) {
     opacity: 0;
-    transform: translateY(24px);
-    transition:
-      opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
-      transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
-    will-change: opacity, transform;
   }
 
   html.reveal-ready .reveal.is-visible {
-    opacity: 1;
-    transform: none;
-    /* Release the compositor layer once the animation has run. `will-change` above is a
-       PROMISE, not a style: it holds a dedicated layer for the element's whole life unless
-       something takes it back. `.is-visible` overrode opacity and transform but not this, so
-       every revealed element stayed promoted — 50+ permanent layers on the project detail
-       page, for an animation that fires once and never repeats (the observer unobserves on
-       intersect, see plugins/reveal.ts). Memory cost with zero benefit after first paint. */
-    will-change: auto;
+    animation: reveal-rise var(--dur-reveal) var(--ease-editorial) backwards;
+    animation-delay: var(--reveal-delay, 0ms);
   }
 
-  /* Gentle one-time zoom-in for the hero image (image reveal). */
+  /* One-shot settle for the hero photograph: 1.04 → 1 over 1.6s, then it stays put. The opacity
+     transition is the fade-in for an image that arrives late (see `.is-pending`). */
   .hero-image {
-    animation: hero-zoom 1.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    animation: hero-zoom 1.6s var(--ease-editorial) both;
+    transition: opacity 360ms var(--ease-editorial);
+  }
+
+  /* plugins/reveal.ts adds `is-pending` to a hero image with no decoded data yet and removes it
+     on load/error. Hidden and unanimated while pending, so removing the class starts both the
+     fade and the settle at the moment the photograph can actually be seen. `transition: none`
+     makes entering the pending state instant (the transition that runs is the one in the
+     after-change style), while leaving it uses the base 360ms fade-in. */
+  html.reveal-ready .hero-image.is-pending {
+    opacity: 0;
+    animation: none;
+    transition: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    html.reveal-ready .reveal {
+    html.reveal-ready .reveal:not(.is-visible) {
       opacity: 1;
-      transform: none;
-      transition: none;
+    }
+
+    html.reveal-ready .reveal.is-visible {
+      animation: none;
     }
 
     .hero-image {
       animation: none;
+      transition: none;
     }
   }
 
@@ -1918,16 +1944,13 @@
 
   /* PRIMARY ACTION — DESIGN.md "Buttons". The one bronze, sentence-case action used by the
      home hero, the header, the footer and the home closing CTA. Flat at rest (Flat-By-Default
-     Rule): no glow and no lift; hover warms the fill and runs one slow sheen.
+     Rule): no glow and no lift; hover warms the fill and nothing else moves.
 
      The 1px Deep Timber edge is the Bronze Edge Rule: bronze alone is ~2.9:1 against linen,
      under the 3:1 non-text floor, so on light surfaces the border carries the shape. On the
      obsidian hero and footer bronze already clears 3:1, so `--on-dark` matches the border to
      the fill instead of dropping it, which keeps the box identical in both contexts. */
   .btn-bronze {
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1965,28 +1988,6 @@
 
   .btn-bronze:active {
     transform: scale(0.97);
-  }
-
-  /* The sheen sits under the label (z-index -1 inside the isolated button) and travels on
-     transform only, so it never repaints the text. Pointer devices only: on touch, :hover
-     sticks after a tap and the sheen would replay on every scroll-back. */
-  .btn-bronze::after {
-    content: '';
-    position: absolute;
-    inset-block: -50%;
-    left: 0;
-    z-index: -1;
-    width: 2.5rem;
-    background: rgb(255 255 255 / 0.28);
-    transform: translateX(-4rem) rotate(30deg);
-    pointer-events: none;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .btn-bronze:hover::after {
-      transform: translateX(22rem) rotate(30deg);
-      transition: transform 900ms var(--ease-editorial);
-    }
   }
 
   /* Secondary action on the dark hero — DESIGN.md "Outline … On the dark hero it uses a bronze
@@ -2043,15 +2044,6 @@
     gap: 0.5rem;
   }
 
-  .metric-pulse {
-    width: 6px;
-    height: 6px;
-    border-radius: 9999px;
-    background: var(--bronze);
-    box-shadow: 0 0 8px var(--bronze);
-    animation: pulse-glow 2.5s infinite;
-  }
-
   .editorial-quote {
     border-left: 2px solid var(--bronze);
     padding-left: 1.5rem;
@@ -2060,30 +2052,10 @@
     color: var(--text-main);
   }
 
-  @keyframes pulse-glow {
-    0%, 100% {
-      opacity: 0.4;
-      transform: scale(0.9);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.1);
-      box-shadow: 0 0 12px var(--bronze);
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .btn-bronze::after {
-      display: none;
-    }
-
     .btn-bronze:active,
     .btn-luxury-outline:active {
       transform: none;
-    }
-
-    .metric-pulse {
-      animation: none;
     }
   }
 
