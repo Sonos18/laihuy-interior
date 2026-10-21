@@ -1,8 +1,9 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from './fixtures'
+import { APP_ORIGIN } from './origin'
 
 const VIEWPORT_HEIGHT = 900
-const TEST_ORIGIN = process.env.DENSITY_TEST_ORIGIN ?? 'http://localhost:3000'
+const TEST_ORIGIN = process.env.DENSITY_TEST_ORIGIN ?? APP_ORIGIN
 const TRANSPARENT_PNG = Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAF/gL+X9j7WQAAAABJRU5ErkJggg==',
   'base64'

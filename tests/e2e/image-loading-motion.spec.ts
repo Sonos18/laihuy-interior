@@ -1,6 +1,7 @@
 import { expect, test } from './fixtures'
+import { APP_ORIGIN } from './origin'
 
-const TEST_ORIGIN = process.env.DENSITY_TEST_ORIGIN ?? 'http://localhost:3000'
+const TEST_ORIGIN = process.env.DENSITY_TEST_ORIGIN ?? APP_ORIGIN
 
 test('MediaImage keeps its loading placeholder static', async ({ page }) => {
   await page.route('**/*', async (route) => {
