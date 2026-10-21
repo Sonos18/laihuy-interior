@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { homePageContent } from '~/data/home-page'
-import type { Capability, MachineryProcessGroup, MachinerySectionContent, ProductionStep } from '~/data/factory'
+import type { Capability, MachinerySectionContent, ProductionStep } from '~/data/factory'
 import type { MediaImage } from '~/shared/media/types'
 
 const props = defineProps<{
   capabilities: readonly Capability[]
-  groups: readonly MachineryProcessGroup[]
   content: MachinerySectionContent
   image: MediaImage
   steps: readonly ProductionStep[]
@@ -13,14 +12,27 @@ const props = defineProps<{
 
 const { t } = useLanguage()
 
-const pillar1Title = computed(() => (props.steps?.[1] ? t(props.steps[1].title) : ''))
-const pillar2TitleLead = computed(() => t(props.content.titleLead))
-const pillar2TitleAccent = computed(() => t(props.content.titleAccent))
-const pillar3Title = computed(() => (props.capabilities?.[2] ? t(props.capabilities[2].label) : ''))
+type Pillar = { title: string, accent?: string, description: string, descriptionTestId?: string }
+
+// Pillar sources are existing strings: technical take-off (workflow step 2), direct
+// manufacturing (machinery intro) and the project delivery team (third capability).
+const pillars = computed<Pillar[]>(() => {
+  const list: Pillar[] = []
+  const takeOff = props.steps[1]
+  const delivery = props.capabilities[2]
+  if (takeOff) list.push({ title: t(takeOff.title), description: t(takeOff.description) })
+  list.push({
+    title: t(props.content.titleLead),
+    accent: t(props.content.titleAccent),
+    description: t(props.content.description),
+    descriptionTestId: 'homepage-machinery-description'
+  })
+  if (delivery) list.push({ title: t(delivery.label), description: t(delivery.description) })
+  return list
+})
 
 const metricFootprint = computed(() => props.capabilities?.[0])
 const metricCapacity = computed(() => props.capabilities?.[1])
-const capabilityDelivery = computed(() => props.capabilities?.[2])
 </script>
 
 <template>
@@ -108,163 +120,39 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
         </div>
       </div>
 
-      <!-- Craft & Precision Trinity -->
+      <!-- Craft & Precision Trinity: one fact and one supporting line per pillar. The machinery,
+           production-step and QC evidence lives on /nha-xuong. -->
       <div
         data-testid="homepage-machinery-trinity"
         class="home-factory__trinity mt-16 grid grid-cols-1 gap-12 lg:grid-cols-3 lg:gap-8 lg:divide-x lg:divide-[var(--rule-light)]"
       >
-        <!-- Pillar 01: Technical Preparation -->
         <article
+          v-for="(pillar, index) in pillars"
+          :key="index"
           data-testid="homepage-machinery-pillar"
-          class="home-factory__pillar flex flex-col lg:pr-6"
+          class="home-factory__pillar flex flex-col lg:px-6 lg:first:pl-0 lg:last:pr-0"
         >
           <span
             data-machinery-sequence
             aria-hidden="true"
             class="home-meta-text font-semibold tracking-[0.2em] text-wood-600"
-          >01</span>
+          >{{ String(index + 1).padStart(2, '0') }}</span>
           <h3
             data-testid="homepage-machinery-pillar-title"
             class="home-card-heading mt-4 text-ink-950"
           >
-            {{ pillar1Title }}
+            {{ pillar.title }}
+            <span
+              v-if="pillar.accent"
+              class="text-wood-600"
+            >{{ pillar.accent }}</span>
           </h3>
           <p
-            v-if="steps?.[1]"
-            class="mt-3 text-sm leading-[1.75] text-ink-600"
+            :data-testid="pillar.descriptionTestId"
+            class="mt-3 text-sm leading-[1.75] text-ink-600 md:text-base"
           >
-            {{ t(steps[1].description) }}
+            {{ pillar.description }}
           </p>
-
-          <!-- Evidence: Step 1 Intake -->
-          <div
-            v-if="steps?.[0]"
-            class="mt-6 border-t border-[var(--rule-light)] pt-4"
-          >
-            <h4 class="home-nested-heading font-semibold text-ink-950">
-              {{ t(steps[0].title) }}
-            </h4>
-            <p class="mt-1 text-xs leading-[1.75] text-ink-600">
-              {{ t(steps[0].description) }}
-            </p>
-          </div>
-        </article>
-
-        <!-- Pillar 02: Direct Manufacturing -->
-        <article
-          data-testid="homepage-machinery-pillar"
-          class="home-factory__pillar flex flex-col lg:px-6"
-        >
-          <span
-            data-machinery-sequence
-            aria-hidden="true"
-            class="home-meta-text font-semibold tracking-[0.2em] text-wood-600"
-          >02</span>
-          <h3
-            data-testid="homepage-machinery-pillar-title"
-            class="home-card-heading mt-4 text-ink-950"
-          >
-            {{ pillar2TitleLead }} <span class="text-wood-600">{{ pillar2TitleAccent }}</span>
-          </h3>
-          <p
-            data-testid="homepage-machinery-description"
-            class="mt-3 text-sm leading-[1.75] text-ink-600"
-          >
-            {{ t(content.description) }}
-          </p>
-
-          <!-- Evidence: 4 Groups & 7 Machines -->
-          <div class="mt-6 space-y-4 border-t border-[var(--rule-light)] pt-4">
-            <div
-              v-for="group in groups"
-              :key="group.id"
-              class="text-xs"
-            >
-              <h4 class="home-nested-heading font-semibold text-ink-950">
-                {{ t(group.title) }}
-              </h4>
-              <p class="mt-1 text-xs leading-[1.75] text-ink-600">
-                {{ t(group.benefit) }}
-              </p>
-              <p class="mt-1 text-[0.7rem] leading-[1.75] text-wood-600">
-                <template
-                  v-for="(machine, mIdx) in group.machines"
-                  :key="t(machine)"
-                >
-                  <span>{{ t(machine) }}</span><span
-                    v-if="mIdx < group.machines.length - 1"
-                    aria-hidden="true"
-                  > · </span>
-                </template>
-              </p>
-            </div>
-          </div>
-        </article>
-
-        <!-- Pillar 03: Quality & Delivery -->
-        <article
-          data-testid="homepage-machinery-pillar"
-          class="home-factory__pillar flex flex-col lg:pl-6"
-        >
-          <span
-            data-machinery-sequence
-            aria-hidden="true"
-            class="home-meta-text font-semibold tracking-[0.2em] text-wood-600"
-          >03</span>
-          <h3
-            data-testid="homepage-machinery-pillar-title"
-            class="home-card-heading mt-4 text-ink-950"
-          >
-            {{ pillar3Title }}
-          </h3>
-          <div
-            v-if="capabilityDelivery"
-            class="mt-3"
-          >
-            <p class="text-sm font-medium leading-[1.75] text-wood-600">
-              {{ t(capabilityDelivery.value) }}
-            </p>
-            <p class="mt-1 text-sm leading-[1.75] text-ink-600">
-              {{ t(capabilityDelivery.description) }}
-            </p>
-          </div>
-
-          <!-- Evidence: Steps 3, 5, 6 -->
-          <div class="mt-6 space-y-4 border-t border-[var(--rule-light)] pt-4">
-            <div
-              v-if="steps?.[2]"
-              class="text-xs"
-            >
-              <h4 class="home-nested-heading font-semibold text-ink-950">
-                {{ t(steps[2].title) }}
-              </h4>
-              <p class="mt-1 text-xs leading-[1.75] text-ink-600">
-                {{ t(steps[2].description) }}
-              </p>
-            </div>
-            <div
-              v-if="steps?.[4]"
-              class="text-xs"
-            >
-              <h4 class="home-nested-heading font-semibold text-ink-950">
-                {{ t(steps[4].title) }}
-              </h4>
-              <p class="mt-1 text-xs leading-[1.75] text-ink-600">
-                {{ t(steps[4].description) }}
-              </p>
-            </div>
-            <div
-              v-if="steps?.[5]"
-              class="text-xs"
-            >
-              <h4 class="home-nested-heading font-semibold text-ink-950">
-                {{ t(steps[5].title) }}
-              </h4>
-              <p class="mt-1 text-xs leading-[1.75] text-ink-600">
-                {{ t(steps[5].description) }}
-              </p>
-            </div>
-          </div>
         </article>
       </div>
 

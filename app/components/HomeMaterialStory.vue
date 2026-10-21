@@ -43,7 +43,7 @@ const layerStyle = (index: number) => {
     data-testid="home-material-story"
     :data-enhanced="isEnhanced ? 'true' : 'false'"
     :style="{ '--story-progress': progress.toFixed(4) }"
-    class="home-material-story bg-white text-ink-950"
+    class="home-material-story bg-wood-50 text-ink-950"
   >
     <div
       data-testid="home-story-sticky"
@@ -186,7 +186,7 @@ const layerStyle = (index: number) => {
 
 .home-material-story__number,
 .home-material-story__label {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -306,7 +306,7 @@ const layerStyle = (index: number) => {
     display: flex;
     justify-content: space-between;
     color: var(--color-ink-700);
-    font-size: 0.64rem;
+    font-size: 0.75rem;
     font-weight: 800;
     letter-spacing: 0.18em;
     text-shadow: 0 1px 2px rgb(255 255 255 / 0.8);

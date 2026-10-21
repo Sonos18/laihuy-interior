@@ -309,3 +309,9 @@ test('HOME-no-pulse has no pulse dot in the projects section and no Ken Burns lo
   )
   expect(animationName).not.toBe('kenBurnsHero')
 })
+
+test('HMS-linen sits on Linen, not white', async ({ page }) => {
+  await prepareHome(page, 'vi', 1440, 'no-preference')
+  const background = await page.getByTestId('home-material-story').evaluate(element => getComputedStyle(element).backgroundColor)
+  expect(background).toBe('rgb(250, 246, 240)')
+})

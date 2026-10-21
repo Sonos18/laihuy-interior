@@ -107,8 +107,8 @@ async function countExactText(page: Page, selector: string, expected: readonly s
 for (const locale of ['vi', 'en'] as const) {
   const copy = WORKFLOW_COPY[locale]
 
-  // Phase 2C replaced the linked home summary (HomeProcessRail) with HomeFactoryProof, which
-  // shows workflow steps inline. What still holds: about owns the anchored workflow section and
+  // The home page carries no workflow or QC summary of its own (HomeProcessRail is gone, and
+  // HomeFactoryProof shows one fact per pillar). About owns the anchored workflow section and
   // factory owns the full QC list, so home repeats neither.
   test(`DENS-WORKFLOW-01 home owns neither the workflow anchor nor the QC list in ${locale}`, async ({ page }) => {
     const errors = await prepareContentPage(page, locale, '/')

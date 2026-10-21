@@ -87,10 +87,10 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
               <p class="home-meta-text font-semibold uppercase tracking-[0.14em] text-wood-700">
                 {{ t(categoryDefinitions[heroProject.project.category].label) }}
               </p>
-              <h3 class="home-projects__title-hero font-display mt-2 text-xl font-medium tracking-tight text-ink-950 md:text-2xl lg:text-[1.625rem]">
+              <h3 class="home-projects__title-hero home-card-heading mt-2 text-ink-950">
                 {{ t(heroProject.project.name) }}
               </h3>
-              <p class="home-projects__excerpt mt-3 text-sm leading-[1.7] text-ink-600 lg:text-[0.92rem]">
+              <p class="home-projects__excerpt mt-3 text-sm leading-[1.7] text-ink-600 lg:text-base">
                 {{ t(heroProject.project.shortDescription) }}
               </p>
 
@@ -100,7 +100,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
                 class="home-projects__specs mt-6 grid grid-cols-2 gap-4 border-t border-ink-200/80 pt-5 sm:grid-cols-3"
               >
                 <div v-if="heroProject.project.location">
-                  <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-ink-500">
+                  <p class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-500">
                     {{ t(homePageContent.projects.locationLabel) }}
                   </p>
                   <p class="mt-1 text-xs font-medium leading-[1.7] text-ink-900 lg:text-sm">
@@ -108,7 +108,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
                   </p>
                 </div>
                 <div v-if="ta(heroProject.project.scope).length">
-                  <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-ink-500">
+                  <p class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-500">
                     {{ t(homePageContent.projects.scopeLabel) }}
                   </p>
                   <p class="mt-1 text-xs font-medium leading-[1.7] text-ink-900 lg:text-sm">
@@ -119,7 +119,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
                   v-if="ta(heroProject.project.content?.materials).length"
                   class="col-span-2 sm:col-span-1"
                 >
-                  <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-ink-500">
+                  <p class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-500">
                     {{ t(homePageContent.projects.materialsLabel) }}
                   </p>
                   <p class="mt-1 text-xs font-medium leading-[1.7] text-ink-900 lg:text-sm truncate">
@@ -190,7 +190,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
               <h3 class="home-projects__title-satellite font-display mt-1.5 text-lg font-medium tracking-tight text-ink-950 lg:text-xl">
                 {{ t(project.name) }}
               </h3>
-              <p class="mt-2 line-clamp-2 text-xs leading-[1.7] text-ink-600 lg:text-sm">
+              <p class="mt-2 line-clamp-2 text-sm leading-[1.7] text-ink-600">
                 {{ t(project.shortDescription) }}
               </p>
             </div>
@@ -260,7 +260,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
   backdrop-filter: blur(8px);
   border: 1px solid color-mix(in srgb, var(--color-ink-200) 80%, transparent);
   color: var(--color-ink-900);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   font-weight: 600;
@@ -277,7 +277,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
   top: 1rem;
   right: 1rem;
   color: var(--color-wood-700);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   background: color-mix(in srgb, var(--color-white) 88%, transparent);
