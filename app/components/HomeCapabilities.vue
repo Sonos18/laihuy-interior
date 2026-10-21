@@ -38,7 +38,7 @@ const { t } = useLanguage()
             class="home-capabilities__number home-meta-text"
             aria-hidden="true"
           >{{ String(index + 1).padStart(2, '0') }}</span>
-          <h3 class="home-capabilities__item-title home-card-heading mt-10 font-semibold text-ink-950">
+          <h3 class="home-capabilities__item-title home-card-heading mt-10 text-ink-950">
             {{ t(capability.title) }}
           </h3>
           <p class="home-capabilities__item-desc mt-4 text-sm leading-[1.7] text-ink-600 md:text-base">

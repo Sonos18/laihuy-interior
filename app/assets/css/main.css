@@ -2158,7 +2158,11 @@
     line-height: var(--home-lead-lh);
   }
 
+  /* DESIGN.md "Title": card, stage and pillar headings are Outfit 500, owned here like the
+     section heading above so no block drifts back to Inter 600. */
   .home-card-heading {
+    font-family: var(--font-display);
+    font-weight: 500;
     font-size: var(--home-card-title);
     line-height: var(--home-card-title-lh);
     letter-spacing: -0.02em;

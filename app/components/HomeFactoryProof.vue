@@ -125,7 +125,7 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
           >01</span>
           <h3
             data-testid="homepage-machinery-pillar-title"
-            class="home-card-heading mt-4 font-display font-medium tracking-tight text-ink-950"
+            class="home-card-heading mt-4 text-ink-950"
           >
             {{ pillar1Title }}
           </h3>
@@ -162,7 +162,7 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
           >02</span>
           <h3
             data-testid="homepage-machinery-pillar-title"
-            class="home-card-heading mt-4 font-display font-medium tracking-tight text-ink-950"
+            class="home-card-heading mt-4 text-ink-950"
           >
             {{ pillar2TitleLead }} <span class="text-wood-600">{{ pillar2TitleAccent }}</span>
           </h3>
@@ -213,7 +213,7 @@ const capabilityDelivery = computed(() => props.capabilities?.[2])
           >03</span>
           <h3
             data-testid="homepage-machinery-pillar-title"
-            class="home-card-heading mt-4 font-display font-medium tracking-tight text-ink-950"
+            class="home-card-heading mt-4 text-ink-950"
           >
             {{ pillar3Title }}
           </h3>

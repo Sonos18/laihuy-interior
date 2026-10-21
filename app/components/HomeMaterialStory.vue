@@ -129,7 +129,7 @@ const layerStyle = (index: number) => {
                     class="home-material-story__label home-meta-text"
                   >{{ t(stage.label) }}</span>
                 </div>
-                <h3 class="home-material-story__stage-title home-card-heading mt-5 font-semibold text-ink-950">
+                <h3 class="home-material-story__stage-title home-card-heading mt-5 text-ink-950">
                   {{ t(stage.title) }}
                 </h3>
                 <p class="home-material-story__stage-desc mt-4 text-sm leading-[1.7] text-ink-600 md:text-base">
