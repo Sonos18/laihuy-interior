@@ -504,15 +504,69 @@ test.describe('motion contract', () => {
     for (const items of groups) {
       let rank = 0
       for (const item of items) {
-        if (!item.visible) continue
         if (item.firstRow) {
-          expect(item.delay, 'first-row stagger').toBe(Math.min(rank * 70, 320))
+          // Items painted at hydration are never animated, but they still hold their place in the row.
+          if (item.visible) expect(item.delay, 'first-row stagger').toBe(Math.min(rank * 70, 320))
           rank += 1
-        } else {
+        } else if (item.visible) {
           expect(item.delay, 'a later row has no animation-delay').toBe(0)
         }
       }
     }
+  })
+
+  test('MOTION-12b a grid that straddles the fold at hydration does not restagger its later rows', async ({ page }) => {
+    // The workflow rail is a grid of steps in rows. Load /gioi-thieu with a viewport that ends
+    // inside its first row: row one is painted by the server (and left alone at hydration), the
+    // rows below it are hidden. The router resets scroll to the top at hydration, so the viewport
+    // height is what places the fold. The rail's offset grows linearly with the viewport height
+    // (the hero is sized in viewport units), so measure it at two heights and solve for the fold.
+    const firstRowTop = async (height: number) => {
+      await page.setViewportSize({ width: 1440, height })
+      await page.goto(url('/gioi-thieu'), { waitUntil: 'load' })
+      return page.evaluate(() => Math.min(
+        ...Array.from(document.querySelectorAll<HTMLElement>('[data-testid="about-workflow-step"]'))
+          .map(el => el.getBoundingClientRect().top + window.scrollY)
+      ))
+    }
+    // Secant search for the viewport height whose fold sits 110px into the first row, i.e.
+    // height = top(height) + 110; the rows are about 217px apart, so a few frames of tolerance.
+    let low = { height: 1400, top: await firstRowTop(1400) }
+    let high = { height: 2400, top: await firstRowTop(2400) }
+    let height = high.height
+    for (let attempt = 0; attempt < 6; attempt++) {
+      const slope = (high.top - low.top) / (high.height - low.height)
+      expect(slope, 'the rail moves with the viewport height, but by less than it').toBeLessThan(1)
+      height = Math.round((high.top - slope * high.height + 110) / (1 - slope))
+      const top = await firstRowTop(height)
+      low = high
+      high = { height, top }
+      if (top < height - 20 && top + 150 > height) break
+    }
+
+    await page.setViewportSize({ width: 1440, height })
+    await page.goto(url('/gioi-thieu'), { waitUntil: 'load' })
+    await waitForHydration(page)
+
+    const state = await page.evaluate(async () => {
+      const steps = Array.from(document.querySelectorAll<HTMLElement>('[data-testid="about-workflow-step"]'))
+      const firstTop = Math.min(...steps.map(el => el.offsetTop))
+      const later = steps.filter(el => el.offsetTop > firstTop)
+      const painted = steps.filter(el => el.offsetTop === firstTop && !el.classList.contains('reveal-hidden')).length
+      const hiddenLater = later.filter(el => el.classList.contains('reveal-hidden')).length
+      for (let y = 0; y < document.documentElement.scrollHeight; y += 200) {
+        window.scrollTo(0, y)
+        await new Promise(resolve => setTimeout(resolve, 80))
+      }
+      return {
+        painted,
+        hiddenLater,
+        delays: later.map(el => Number.parseFloat(getComputedStyle(el).animationDelay) * 1000)
+      }
+    })
+    expect(state.painted, `the first row was painted at hydration (viewport ${height}px)`).toBeGreaterThan(0)
+    expect(state.hiddenLater, 'the rows below it were hidden').toBeGreaterThan(1)
+    expect(state.delays, 'rows below a visible row carry no delay').toEqual(state.delays.map(() => 0))
   })
 
   test('MOTION-13 an image reveal is opacity only and never slides', async ({ page }) => {
@@ -688,15 +742,8 @@ test.describe('motion contract', () => {
     await expect(page.locator('main#main > *')).toHaveCount(1)
   })
 
-  test('MOTION-15c header chrome takes a client navigation with no transition, and settles after the swap', async ({ page }) => {
-    await page.context().addCookies([{ name: 'lai-huy-locale', value: 'vi', url: TEST_ORIGIN }])
-    await page.goto(url('/privacy-policy'), { waitUntil: 'load' })
-    await waitForHydration(page)
-    const header = page.locator('header.app-header')
-    await expect(header).toHaveAttribute('data-chrome-state', 'nav')
-
-    // Header chrome only: the nav underline's ::after is a pseudo-element and is not part of the
-    // suppressed chrome (it marks the current link).
+  /** Records every non-pseudo transition that starts on the header (the nav underline's ::after is not chrome). */
+  async function recordHeaderTransitions(page: Page): Promise<void> {
     await page.evaluate(() => {
       const w = window as unknown as { __chrome: string[] }
       w.__chrome = []
@@ -706,6 +753,19 @@ test.describe('motion contract', () => {
         if (!e.pseudoElement && target.closest?.('.app-header')) w.__chrome.push(`${e.propertyName}:${String(target.className)}`)
       }, true)
     })
+  }
+
+  const headerTransitions = (page: Page) =>
+    page.evaluate(() => (window as unknown as { __chrome: string[] }).__chrome)
+
+  test('MOTION-15c header chrome takes a client navigation with no transition, and settles after the swap', async ({ page }) => {
+    await page.context().addCookies([{ name: 'lai-huy-locale', value: 'vi', url: TEST_ORIGIN }])
+    await page.goto(url('/privacy-policy'), { waitUntil: 'load' })
+    await waitForHydration(page)
+    const header = page.locator('header.app-header')
+    await expect(header).toHaveAttribute('data-chrome-state', 'nav')
+
+    await recordHeaderTransitions(page)
 
     // Legal (pinned header) to home (cover): the pin is released by the unmounting page, which
     // happens after the old page has faded out, so the chrome must stay frozen until then.
@@ -713,9 +773,89 @@ test.describe('motion contract', () => {
     await page.waitForURL(`${TEST_ORIGIN}/`)
     await expect(header).toHaveAttribute('data-chrome-state', 'cover')
     await expect(header).toHaveCSS('--header-p', '0')
-    await expect(header).not.toHaveClass(/chrome-no-transition/)
+    // Settled by the swap, not by the 1.5s safety timer: 120 + 200ms of crossfade, two frames.
+    await expect(header).not.toHaveClass(/chrome-no-transition/, { timeout: 600 })
     await page.waitForTimeout(500)
-    expect(await page.evaluate(() => (window as unknown as { __chrome: string[] }).__chrome)).toEqual([])
+    expect(await headerTransitions(page)).toEqual([])
+  })
+
+  test('MOTION-15d a slow page chunk cannot settle the header early', async ({ page }) => {
+    await page.context().addCookies([{ name: 'lai-huy-locale', value: 'vi', url: TEST_ORIGIN }])
+    await page.goto(url('/'), { waitUntil: 'load' })
+    await waitForHydration(page)
+    const header = page.locator('header.app-header')
+    await expect(header).toHaveAttribute('data-chrome-state', 'cover')
+
+    // Hold every script chunk requested from here on for longer than the old 1.5s safety timer
+    // (saveData / 2g visitors skip prefetch). The terms page is linked only from the footer, so
+    // its chunk is not loaded yet.
+    await page.route('**/_nuxt/*.js', async (route) => {
+      await new Promise(resolve => setTimeout(resolve, 2500))
+      await route.continue().catch(() => undefined)
+    })
+    await recordHeaderTransitions(page)
+
+    await page.evaluate(() => {
+      void (window as unknown as { useNuxtApp: () => { $router: { push: (to: string) => unknown } } }).useNuxtApp().$router.push('/terms-of-use')
+    })
+    // The old page is still on screen while the chunk loads: the chrome stays frozen.
+    await page.waitForTimeout(1900)
+    await expect(header).toHaveClass(/chrome-no-transition/)
+    expect(new URL(page.url()).pathname, 'the route has not committed yet').toBe('/')
+
+    await page.waitForURL(url('/terms-of-use'))
+    await expect(header).toHaveAttribute('data-chrome-state', 'nav')
+    await expect(header).not.toHaveClass(/chrome-no-transition/, { timeout: 800 })
+    expect(await headerTransitions(page), 'no chrome transition during the swap').toEqual([])
+  })
+
+  test('MOTION-15e a second navigation during the out phase settles once, on the last page', async ({ page }) => {
+    await page.context().addCookies([{ name: 'lai-huy-locale', value: 'vi', url: TEST_ORIGIN }])
+    await page.goto(url('/'), { waitUntil: 'load' })
+    await waitForHydration(page)
+    const header = page.locator('header.app-header')
+    await recordHeaderTransitions(page)
+
+    await page.evaluate(async () => {
+      const router = (window as unknown as { useNuxtApp: () => { $router: { push: (to: string) => unknown } } }).useNuxtApp().$router
+      void router.push('/dich-vu')
+      await new Promise(resolve => setTimeout(resolve, 70))
+      void router.push('/nha-xuong')
+    })
+    await page.waitForURL(url('/nha-xuong'))
+    await expect(header).not.toHaveClass(/chrome-no-transition/, { timeout: 2500 })
+    await expect(page.locator('main#main > *')).toHaveCount(1)
+    await expect(page.locator('main#main h1')).toBeVisible()
+    expect(await headerTransitions(page), 'no chrome transition across the double navigation').toEqual([])
+  })
+
+  test('MOTION-15f the cover-state language toggle keeps its colours while the old page fades out', async ({ page }) => {
+    await page.context().addCookies([{ name: 'lai-huy-locale', value: 'vi', url: TEST_ORIGIN }])
+    await page.goto(url('/'), { waitUntil: 'load' })
+    await waitForHydration(page)
+
+    // Home -> a pinned legal page. The head plugin sets data-chrome-solid at page:finish, while
+    // the old page (and the header, still in COVER over the hero scrim) is on screen.
+    const colors = await page.evaluate(async () => {
+      const router = (window as unknown as { useNuxtApp: () => { $router: { push: (to: string) => unknown } } }).useNuxtApp().$router
+      const option = () => document.querySelector('.app-header .lang-option[aria-pressed="false"]')!
+      const before = getComputedStyle(option()).color
+      void router.push('/privacy-policy')
+      const seen = new Set<string>()
+      // The lazy chunk takes a while: wait for the old page to start leaving, then sample it.
+      const giveUp = performance.now() + 4000
+      while (!document.querySelector('.page-leave-active') && performance.now() < giveUp) {
+        await new Promise(resolve => requestAnimationFrame(resolve))
+      }
+      const end = performance.now() + 100
+      while (performance.now() < end) {
+        if (document.querySelector('.page-leave-active')) seen.add(getComputedStyle(option()).color)
+        await new Promise(resolve => requestAnimationFrame(resolve))
+      }
+      return { before, seen: Array.from(seen) }
+    })
+    expect(colors.seen.length, 'sampled while the old page was leaving').toBeGreaterThan(0)
+    expect(colors.seen, 'the toggle does not pick up the light-surface colour early').toEqual([colors.before])
   })
 
   test('MOTION-17 the gallery autoplay only runs in view, makes one pass and rests', async ({ page }) => {

@@ -94,15 +94,20 @@ export default defineNuxtPlugin((nuxtApp) => {
 
       observer = new IntersectionObserver(
         (entries) => {
-          for (const entry of entries) {
-            if (!entry.isIntersecting || !(entry.target instanceof HTMLElement)) {
-              continue
-            }
+          const arrived = entries
+            .filter(entry => entry.isIntersecting)
+            .map(entry => entry.target)
+            .filter((target): target is HTMLElement => target instanceof HTMLElement)
 
-            const el = entry.target
+          // Read everything first, write afterwards: `itemDelay` reads layout, and a class write
+          // between two reads would force a style recalc per entry.
+          const delays = arrived.map(el => (el.hasAttribute(ITEM_ATTR) ? itemDelay(el) : null))
 
-            if (el.hasAttribute(ITEM_ATTR)) {
-              setDelay(el, itemDelay(el))
+          arrived.forEach((el, index) => {
+            const delay = delays[index]
+
+            if (delay !== null && delay !== undefined) {
+              setDelay(el, delay)
             }
 
             show(el)
@@ -115,7 +120,7 @@ export default defineNuxtPlugin((nuxtApp) => {
                 }
               }
             }
-          }
+          })
         },
         { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
       )
@@ -165,12 +170,18 @@ export default defineNuxtPlugin((nuxtApp) => {
         return
       }
 
-      // Painted by the server and in view right now: leave it visible, never observe it.
+      const { head, item, image } = binding.modifiers
+
+      // Painted by the server and in view right now: leave it visible, never observe it. An item
+      // is still marked as a member of its grid, so a grid that straddles the fold is measured
+      // as a whole: the rows below an already-visible row are not "the first row" and do not
+      // stagger.
       if (nuxtApp.isHydrating && isInViewport(el)) {
+        if (item && !head) {
+          el.setAttribute(ITEM_ATTR, '')
+        }
         return
       }
-
-      const { head, item, image } = binding.modifiers
 
       // The markup normally carries `reveal` for the no-JS/SSR contract; adding it here keeps a
       // directive on a component root (which cannot always take a class) working too.
