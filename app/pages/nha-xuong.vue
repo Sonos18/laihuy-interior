@@ -157,7 +157,10 @@ usePageSeo({
           </p>
           <!-- The four QC checkpoints run in a fixed order (incoming materials → drawings →
                in production → sign-off), so they keep Label-size sequence markers. -->
-          <ol class="mt-8 grid gap-4">
+          <ol
+            role="list"
+            class="mt-8 grid gap-4"
+          >
             <li
               v-for="(item, index) in qualityControl"
               :key="t(item)"

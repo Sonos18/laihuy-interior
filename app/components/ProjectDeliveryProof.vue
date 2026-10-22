@@ -66,6 +66,7 @@ const timelineStyle = computed(() => ({ '--phase-count': String(props.phases.len
       </ul>
 
       <ol
+        role="list"
         data-delivery-timeline
         class="project-delivery__timeline mt-12"
         :style="timelineStyle"

@@ -44,6 +44,7 @@ const mediaClass = (index: number) => index % 2 === 1
     </div>
 
     <ol
+      role="list"
       data-testid="services-journey-layout"
       class="shell grid grid-cols-1 gap-16 md:gap-24"
     >
@@ -63,6 +64,7 @@ const mediaClass = (index: number) => index % 2 === 1
           <span
             data-testid="services-sequence"
             class="home-eyebrow-text block text-wood-600"
+            aria-hidden="true"
           >
             {{ sequence(index) }}
           </span>

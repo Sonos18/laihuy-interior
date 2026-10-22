@@ -40,6 +40,7 @@ const sequence = (index: number) => String(props.startAt + index).padStart(2, '0
       </p>
 
       <ol
+        role="list"
         data-testid="services-programme-list"
         class="mt-12 grid gap-4"
         :start="startAt"
@@ -63,6 +64,7 @@ const sequence = (index: number) => String(props.startAt + index).padStart(2, '0
               <span
                 data-testid="services-sequence"
                 class="home-eyebrow-text text-wood-600"
+                aria-hidden="true"
               >
                 {{ sequence(index) }}
               </span>
