@@ -179,15 +179,22 @@ for (const locale of ['vi', 'en'] as const) {
             valueLines: Math.round(value.getBoundingClientRect().height / lineHeight)
           }
         })
+        // Linen is the page canvas token; resolve it instead of restating its rgb.
+        const probe = document.createElement('div')
+        probe.style.backgroundColor = 'var(--color-wood-50)'
+        document.body.appendChild(probe)
+        const linen = getComputedStyle(probe).backgroundColor
+        probe.remove()
         return {
           gap: bandBox.top - heroBox.bottom,
           background: getComputedStyle(bandEl).backgroundColor,
+          linen,
           cells
         }
       })
 
       expect(Math.abs(geometry.gap)).toBeLessThanOrEqual(1)
-      expect(geometry.background).toBe('rgb(250, 246, 240)')
+      expect(geometry.background).toBe(geometry.linen)
       expect(geometry.cells).toHaveLength(4)
       for (const cell of geometry.cells) expect(cell.valueLines).toBeLessThanOrEqual(2)
       // Cells that share a grid row share a top, a height, a label baseline and a value baseline.

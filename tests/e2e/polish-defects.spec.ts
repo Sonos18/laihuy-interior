@@ -8,13 +8,14 @@ import { APP_ORIGIN } from './origin'
  * in warm-canvas.spec.ts.
  */
 
+const TEST_ORIGIN = process.env.DENSITY_TEST_ORIGIN ?? APP_ORIGIN
 const TRANSPARENT_PNG = Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAF/gL+X9j7WQAAAABJRU5ErkJggg==',
   'base64'
 )
 
 async function open(page: Page, path: string, width: number, locale: 'vi' | 'en' = 'vi', height = 900) {
-  await page.context().addCookies([{ name: 'lai-huy-locale', value: locale, url: APP_ORIGIN }])
+  await page.context().addCookies([{ name: 'lai-huy-locale', value: locale, url: TEST_ORIGIN }])
   await page.route('**/*', async (handler) => {
     if (handler.request().resourceType() === 'image') {
       await handler.fulfill({ status: 200, contentType: 'image/png', body: TRANSPARENT_PNG })
@@ -25,7 +26,7 @@ async function open(page: Page, path: string, width: number, locale: 'vi' | 'en'
   await page.route('https://maps.google.com/**', handler =>
     handler.fulfill({ status: 200, contentType: 'text/html', body: '<!doctype html><title>Map unavailable in test</title>' }))
   await page.setViewportSize({ width, height })
-  await page.goto(path, { waitUntil: 'load' })
+  await page.goto(new URL(path, TEST_ORIGIN).toString(), { waitUntil: 'load' })
   await page.evaluate(() => document.fonts.ready)
 }
 
