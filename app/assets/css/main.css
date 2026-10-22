@@ -632,8 +632,13 @@
 
   /* §34.2 — static NAVIGATION for the one pre-hydration frame after a reload that
      restored a mid-page scroll. The composable's inline write outranks this and
-     then deletes the attribute. */
-  :root[data-chrome="nav"] .app-header {
+     then deletes the attribute.
+     `data-chrome-solid` is the same state for routes that pin the header to NAVIGATION
+     for their whole life (legal pages, error shell): LegalPage.vue and error.vue set it
+     through useHead so SSR HTML, and a JavaScript-off visit, paint the nav state instead
+     of the cover scrim over a light masthead. Unhead removes it on unmount. */
+  :root[data-chrome="nav"] .app-header,
+  :root[data-chrome-solid] .app-header {
     --header-p: 1;
 
     transition: none;
@@ -1186,6 +1191,20 @@
 
   .lang-toggle-light .lang-option:hover,
   .lang-toggle-light .lang-option[aria-pressed="true"] {
+    color: var(--fg-light);
+  }
+
+  /* The header's toggle is told its surface from chromeState, which the server always renders
+     as COVER. On a route that pins NAVIGATION (`data-chrome-solid`) that would paint the dark
+     variant on white glass until hydration, and never fix itself with JavaScript off. Resolve
+     the light colours here so the first paint is right and the later class swap changes
+     nothing (no colour transition). */
+  :root[data-chrome-solid] .app-header .lang-toggle-dark .lang-option {
+    color: var(--fg-light-subtle);
+  }
+
+  :root[data-chrome-solid] .app-header .lang-toggle-dark .lang-option:hover,
+  :root[data-chrome-solid] .app-header .lang-toggle-dark .lang-option[aria-pressed="true"] {
     color: var(--fg-light);
   }
 

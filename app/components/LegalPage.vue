@@ -37,6 +37,11 @@ const { t, ta, locale } = useLanguage()
 // NAVIGATION chrome, as error.vue does with `<AppHeader solid />`. The singleton is released on
 // the way out so the next route's cover gets its transparent header back.
 const { setSolid } = useHeaderState()
+// The same pin, expressed for the first paint: `setSolid` only runs on mount, so the SSR HTML
+// (and a visit with JavaScript off) would otherwise show the cover scrim over this light
+// masthead. `data-chrome-solid` feeds the pre-hydration guard in main.css; Unhead removes it
+// when this page unmounts.
+useHead({ htmlAttrs: { 'data-chrome-solid': '' } })
 onMounted(() => setSolid(true))
 onBeforeUnmount(() => setSolid(false))
 

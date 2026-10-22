@@ -33,7 +33,10 @@ useHead({
   meta: [{ name: 'viewport', content: 'width=device-width, initial-scale=1' }],
   link: [{ rel: 'icon', href: '/logo_favicon.png' }],
   htmlAttrs: {
-    lang: locale
+    'lang': locale,
+    // `<AppHeader solid />` pins NAVIGATION once mounted; this attribute does the same for the
+    // first paint and for a JavaScript-off visit (main.css, `data-chrome-solid`).
+    'data-chrome-solid': ''
   },
   // The header's pre-hydration chrome guard, identical to app.vue's. Without it this route
   // paints a transparent header over white content for a frame on a restored scroll position.

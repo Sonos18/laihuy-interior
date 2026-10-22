@@ -271,6 +271,7 @@ Warm and tactile: a soft bronze surface that warms further under the hand.
 
 ### Navigation
 - **Header:** transparent over the hero with a soft obsidian scrim; after scrolling it becomes white glass at 92% with a 16px blur and a Plaster Line bottom hairline, and hides on scroll down and returns on scroll up. Desktop items appear from 1280px.
+- **Pinned routes:** the legal pages and the error shell have no photograph (so no obsidian band; the legal masthead is a Raw Silk step) and the header is pinned in its navigation state from the first paint (server HTML included, so it holds with JavaScript off) and does not hide on scroll. A route opts in with `data-chrome-solid` on the root element (set through `useHead`, released on unmount) plus `useHeaderState().setSolid`; every other route keeps the cover-to-navigation behaviour above.
 - **Items:** Nav type, Walnut Grey on light glass (white at 72% over the hero), full color on hover and current, with a 1.5px underline that scales in over 240ms (the hover duration) on the editorial curve. The header hides and returns over about 280ms.
 - **Mobile:** a white drawer up to 336px wide over an obsidian overlay at 60% with an 8px blur; links in 24px Inter 600 with hairline dividers, current item in Deep Timber. The drawer opens over 300ms on the editorial curve and closes over 200ms on the exit curve.
 
@@ -303,6 +304,5 @@ A centered 16:10 slide with its neighbours scaled to about 0.7 and dimmed; slide
 This document records the target chosen with the owner. These parts of the current implementation do not yet match it and should converge section by section:
 
 - `GalleryLightbox` (the full-screen viewer) still uses 8px and 6px radii (`rounded-lg` frame, `rounded-md` thumbnails); it converges to the 4px content edge when the lightbox is next touched. It is the only code left outside the system: every interior route now uses the Headline/Title roles, the 4px edge and `.btn-bronze`.
-- The legal pages and the error shell have no photograph, so they carry no obsidian band: the legal masthead is a Raw Silk step and both routes pin the header to its navigation chrome. The header is still painted in its cover state for the one frame before hydration on those two routes.
 - Duplicate token declarations (obsidian/bronze/ivory in both `:root` and `@theme`), unused legacy tokens (`--color-wood`, `--color-warm`, `--radius-*`), the unused Syne font, and Nuxt UI `primary: 'amber'` with no Nuxt UI components rendered.
 - `docs/design/redesign-concept-showcase.html` still renders a fully dark obsidian world; it remains a composition and motion reference only, and the owner's 2026-10-20 decision for a continuous warm-light canvas supersedes its surfaces. (`.agents/rules/laihuy-ux-ui.md` was aligned with this document on the same date.)

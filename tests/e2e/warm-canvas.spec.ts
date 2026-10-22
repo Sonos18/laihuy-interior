@@ -235,6 +235,98 @@ for (const locale of ['vi', 'en'] as const) {
       await idle.click()
       await expect(idle).toHaveAttribute('aria-pressed', 'true')
       await expect(idle).toHaveCSS('background-color', 'rgb(24, 22, 20)')
+  // Unhead removed the pin with the page that set it: nothing may stay behind to force the next
+  // cover into NAVIGATION.
+  await expect(page.locator('html')).not.toHaveAttribute('data-chrome-solid', /.*/)
+})
+
+// The pre-hydration pin: the SSR HTML must already paint the header in NAVIGATION on a route
+// whose masthead is light. With JavaScript off nothing ever hydrates, so this is also what the
+// visitor keeps seeing. Runs at 1440 so the desktop nav row is rendered.
+for (const route of ROUTES.filter(({ name }) => ['privacy', 'terms', 'error'].includes(name))) {
+  test(`WARM-08 ${route.name} paints the header in navigation chrome without JavaScript`, async ({ browser }) => {
+    const context = await browser.newContext({
+      javaScriptEnabled: false,
+      viewport: { width: 1440, height: 900 },
+      reducedMotion: 'reduce'
+    })
+    try {
+      await context.addCookies([{ name: 'lai-huy-locale', value: 'vi', url: TEST_ORIGIN }])
+      const page = await context.newPage()
+      const response = await page.goto(`${TEST_ORIGIN}${route.path}`, { waitUntil: 'load' })
+      expect(response?.status()).toBe(route.status ?? 200)
+
+      await expect(page.locator('html')).toHaveAttribute('data-chrome-solid', '')
+      const header = page.locator('header.app-header')
+      await expect(header).toHaveCSS('--header-p', '1')
+      // NAVIGATION chrome: the coloured logo is shown and the white one is gone.
+      await expect(header.locator('.chrome-logo-ink')).toHaveCSS('opacity', '1')
+      await expect(header.locator('.chrome-logo-white')).toHaveCSS('opacity', '0')
+      // Dark nav text, not the light-on-scrim colour (--fg-dark-muted is white at 72%).
+      // color-mix() serialises as oklab(L a b) in Chromium; plain colours as rgb(). Either way the
+      // dark nav is a low lightness, the white-on-scrim cover colour a high one.
+      const lightness = async (selector: string) => {
+        const color = await header.locator(selector).first().evaluate(el => getComputedStyle(el).color)
+        const [first, second, third] = color.match(/[\d.]+/g)!.map(Number)
+        return color.startsWith('oklab(') ? first! : Math.max(first!, second!, third!) / 255
+      }
+      expect(await lightness('.nav-link'), 'nav link must be dark').toBeLessThan(0.6)
+      // The VI/EN toggle is told its surface by client state; the first paint must already be dark.
+      expect(await lightness('.lang-option[aria-pressed="true"]'), 'language toggle must be dark').toBeLessThan(0.6)
+    } finally {
+      await context.close()
+    }
+  })
+}
+
+test('WARM-08 no header transition runs while a legal page hydrates', async ({ page }) => {
+  // Motion on: reduced-motion would switch the transitions off and make this vacuous.
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  await page.context().addCookies([{ name: 'lai-huy-locale', value: 'vi', url: TEST_ORIGIN }])
+  await page.addInitScript(() => {
+    const seen: string[] = []
+    ;(window as unknown as { __headerTransitions: string[] }).__headerTransitions = seen
+    const record = (event: Event) => {
+      const target = event.target as Element | null
+      if (target?.closest?.('.app-header')) seen.push(`${event.type}:${(event as TransitionEvent).propertyName}:${String((target as Element).className)}`)
+    }
+    document.addEventListener('transitionrun', record, true)
+    document.addEventListener('transitionstart', record, true)
+  })
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto(`${TEST_ORIGIN}/privacy-policy`, { waitUntil: 'load' })
+  await expect(page.locator('header.app-header')).toHaveAttribute('data-chrome-state', 'nav')
+  // Give a late transition (started by the post-hydration write) room to appear.
+  await page.waitForTimeout(600)
+
+  const seen = await page.evaluate(() => (window as unknown as { __headerTransitions: string[] }).__headerTransitions)
+  expect(seen).toEqual([])
+})
+
+test('WARM-08 privacy to terms keeps navigation chrome, back to home restores the cover', async ({ page }) => {
+  await open(page, ROUTES.find(route => route.name === 'privacy')!, 'vi', 1440)
+
+  const header = page.locator('header.app-header')
+  const html = page.locator('html')
+  await expect(header).toHaveAttribute('data-chrome-state', 'nav')
+  await expect(html).toHaveAttribute('data-chrome-solid', '')
+
+  // Privacy -> terms through the footer: both pin, so the header must stay in NAVIGATION.
+  await page.locator('footer a[href="/terms-of-use"]').first().click()
+  await page.waitForURL(`${TEST_ORIGIN}/terms-of-use`)
+  await expect(header).toHaveAttribute('data-chrome-state', 'nav')
+  await expect(html).toHaveAttribute('data-chrome-solid', '')
+
+  // Back to privacy (browser history), then home through the logo.
+  await page.goBack()
+  await page.waitForURL(`${TEST_ORIGIN}/privacy-policy`)
+  await expect(header).toHaveAttribute('data-chrome-state', 'nav')
+
+  await page.locator('header.app-header a[href="/"]').first().click()
+  await page.waitForURL(`${TEST_ORIGIN}/`)
+  await expect(header).toHaveAttribute('data-chrome-state', 'cover')
+  await expect(html).not.toHaveAttribute('data-chrome-solid', /.*/)
+  await expect(header).toHaveCSS('--header-p', '0')
       expect(await page.locator('main .grid.gap-7 > a').count()).toBeLessThan(11)
     })
 
