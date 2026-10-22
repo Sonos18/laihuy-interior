@@ -2065,9 +2065,11 @@
        Eyebrow:            12-13px desktop / 12px mobile, line-height 1.3
        Meta / Index:       12-14px
        Statistic values:   28-36px desktop / 24-30px mobile
-     The scale tokens are scoped to .home-page (the homepage and the case study, which reuses
-     these classes) and to the shared interior hero (.app-hero), so the type is one system on
-     those surfaces while nothing else on other routes changes. */
+     The scale tokens are scoped to .home-page and to the shared interior hero (.app-hero).
+     Despite the name, .home-page is no longer homepage-only: it is the shared type scope on the
+     root of every page (home, interior routes, legal pages, the error shell), so the Headline,
+     Title and Label roles are one system everywhere. The class name is kept deliberately;
+     renaming it would touch every page root for no behavioural change. */
   .home-page,
   .app-hero {
     --home-display: clamp(2.25rem, 1.75rem + 2.8vw, 4.5rem);
