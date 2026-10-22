@@ -9,7 +9,8 @@ defineProps<{ image: MediaImage }>()
 </script>
 
 <template>
-  <figure
+  <!-- A div, not a figure: a figure with no caption is announced as an empty figure. -->
+  <div
     data-breath
     class="breath"
   >
@@ -20,5 +21,5 @@ defineProps<{ image: MediaImage }>()
       class="breath__frame reveal bg-ink-100"
       img-class="object-center"
     />
-  </figure>
+  </div>
 </template>

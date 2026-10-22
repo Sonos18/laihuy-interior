@@ -4,7 +4,8 @@
 // has chips beyond it fades out. From 768px two arrow buttons scroll the row for pointer users;
 // they are redundant for keyboard users (Tab moves from chip to chip and the browser scrolls the
 // focused chip into view, clear of the fade through `scroll-padding`) and for touch users (swipe),
-// so they stay out of the tab order and the accessibility tree.
+// so they stay out of the tab order and the accessibility tree, and a mouse press does not give
+// them focus (it would drop to the page when the button disables itself at the end of the row).
 defineProps<{
   /** Names the group of chips for assistive technology. */
   label: string
@@ -76,6 +77,7 @@ onBeforeUnmount(() => resizeObserver?.disconnect())
       tabindex="-1"
       aria-hidden="true"
       :disabled="atStart"
+      @mousedown.prevent
       @click="scrollByPage(-1)"
     >
       <Icon
@@ -105,6 +107,7 @@ onBeforeUnmount(() => resizeObserver?.disconnect())
       tabindex="-1"
       aria-hidden="true"
       :disabled="atEnd"
+      @mousedown.prevent
       @click="scrollByPage(1)"
     >
       <Icon

@@ -25,19 +25,24 @@ const sequence = (index: number) => String(index + 1).padStart(2, '0')
     class="section-y border-t border-[var(--rule-light)] bg-wood-100 text-ink-950"
   >
     <div class="shell">
-      <FactMonument
-        v-if="monument"
-        class="mb-16 md:mb-24"
-        :label="monument.label"
-        :value="monument.value"
-      />
+      <!-- The heading comes first in the document, so a screen reader announces the chapter
+           before its figure; the figure still opens the chapter on screen (`order-first`). It and
+           the head hold nothing focusable, so the visual order costs keyboard users nothing. -->
+      <div class="flex flex-col">
+        <FactMonument
+          v-if="monument"
+          class="order-first mb-16 md:mb-24"
+          :label="monument.label"
+          :value="monument.value"
+        />
 
-      <SectionHead
-        layout="split"
-        :eyebrow="t(content.eyebrow)"
-        :title="t(content.title)"
-        :lead="t(content.description)"
-      />
+        <SectionHead
+          layout="split"
+          :eyebrow="t(content.eyebrow)"
+          :title="t(content.title)"
+          :lead="t(content.description)"
+        />
+      </div>
 
       <div
         data-testid="factory-process-layout"
