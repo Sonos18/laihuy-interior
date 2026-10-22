@@ -220,26 +220,37 @@ The system is flat at rest. Depth comes from tone (paper white on linen, raw sil
 
 ## Motion
 
-Motion is slow, editorial and one-shot: things arrive once, settle, and stay still. Nothing loops.
+Motion is slow, editorial and one-shot: things arrive once, settle, and stay still. Nothing loops. Fewer things move, and each move has a job: a heading arrives as one thought, a grid arrives as one row of cards, a photograph arrives by developing and never by sliding.
 
 ### Curves and durations
 - **Editorial** `cubic-bezier(0.22, 0.61, 0.36, 1)` (`--ease-editorial`): entrances and state changes.
 - **Exit** `cubic-bezier(0.4, 0, 1, 1)` (`--ease-exit`): anything leaving.
-- **Hover** 240ms (`--dur-hover`); **state** 280-400ms; **reveal** 600ms; **hero settle** 1.6s.
+- **Hover** 240ms (`--dur-hover`): colour, border and arrow nudges. **Image** 700ms (`--dur-image`): the hover zoom of a photograph, always on the editorial curve. **Arrive** 400ms (`--dur-arrive`): a photograph fading in once its bytes land. **State** 280-400ms; **reveal** 600ms (`--dur-reveal`); **hero settle** 1.6s.
+- **Page** out 120ms (`--dur-page-out`, exit curve) then in 200ms (`--dur-page-in`, editorial curve).
 
 ### Patterns
-- **Scroll reveal.** A one-shot keyframe: opacity 0 to 1 with a 16px rise, 600ms on the editorial curve. Stagger comes from `animation-delay`, capped at 320ms. The hidden state sets only opacity, and the animation uses `backwards` fill, so after it ends the element's own styles apply again: a reveal never delays hover or any other transition.
+- **Scroll reveal.** A one-shot keyframe on the editorial curve over 600ms. The hidden state sets only opacity, and the animation uses `backwards` fill, so after it ends the element's own styles apply again: a reveal never delays hover or any other transition. Not everything moves the same way; each element has one of four roles (`v-reveal` modifiers):
+  - **Section head** (`.head`): the eyebrow, headline and lead of one section reveal as one unit. They share a parent, trigger together (when any one of them scrolls into view, all of them do) and carry no delay. Opacity 0 to 1 with a 16px rise.
+  - **Item** (`.item`): a card, row or cell of a grid or list. Only the first row staggers, in 70ms steps in reading order, capped at 320ms. Any later row reveals as it scrolls into view with no `animation-delay`, so a vertical list has no stagger beyond its first element. 16px rise.
+  - **Image** (`.image`): a photograph, or a card whose substance is a photograph. Opacity only (0 to 1 over 600ms), never a translate: photographs do not slide. It composes with `.item` (first-row stagger) and carries no rise.
+  - **Block** (no modifier): any other single element (a button row, a filter bar, the home metrics band as one unit). 16px rise, no delay. The hero copy is the one place a numeric delay survives (`v-reveal="80"`, 0 to 240ms): the kicker, headline, lead and actions of a hero are one authored sequence.
 - **Hero image.** One-shot settle from `scale(1.04)` to `1` over 1.6s on the editorial curve. If the image arrives after the page is interactive, it is hidden only while undecoded and then fades in over 360ms, with the settle starting at that moment. No looping Ken Burns.
+- **Image arrival.** Every other photograph (`MediaImage`) fades in over `--dur-arrive` (400ms, editorial) when its bytes land, as a one-shot keyframe from opacity 0, on top of a static placeholder. It is hidden only while it has no decoded data at hydration or mount: an image that is already complete, or already partly decoded, is never hidden (a painted frame must not blink), and a failed image is released at once. The placeholder is released on the same curve and duration. Hover transitions on the image are untouched.
+- **Image hover zoom.** Scales to 1.02-1.03 over `--dur-image` on the editorial curve. An arrow nudge (a 2-4px translate on an icon) uses `--dur-hover` on the editorial curve.
+- **Page transition.** Moving between routes is an opacity crossfade through Linen, no translate: the old page fades out in 120ms on the exit curve, then the new page fades in over 200ms on the editorial curve (320ms in all, `out-in`). The header chrome never takes part (it takes the route change with transitions suppressed, see Navigation). Under reduced motion routes change instantly.
 - **Material story copy swap.** The outgoing copy exits in 120ms on the exit curve; the incoming copy enters over 240ms on the editorial curve after the 120ms exit. Both are never visible together.
+- **Material story seam.** The clip-path wipe between two photographs has a leading edge: a 1px Workshop Bronze line that travels with the wipe (it is a 1px clip of a bronze fill, so it costs no layout) and is absent before the wipe starts and once it has finished. The story carries no numeric progress counter: the active stage number and label on the side rail already say where the visitor is.
 - **Navigation.** Underline 240ms, header hide/show about 280ms, drawer open 300ms editorial and close 200ms exit (see Components).
 - **Primary button sheen.** On hover, one soft warm highlight (a linen-tinted band fading to transparent at both edges, never a hard white bar) crosses the bronze button left to right in 800ms on an ease-in-out curve (`cubic-bezier(0.45, 0, 0.25, 1)`: it is on-screen travel, so it must not front-load like the editorial curve), once per hover. It resets instantly when the pointer leaves, so it never sweeps backwards. Pointer devices only (`hover: hover` and `pointer: fine`), because on touch `:hover` sticks after a tap.
 
 ### Named Rules
-**The One-Shot Rule.** No infinite animation. Motion plays once on arrival or on interaction, then rests.
+**The One-Shot Rule.** No infinite animation. Motion plays once on arrival or on interaction, then rests. The carousel is not an exception: its autoplay is bounded (see Spotlight Gallery Carousel).
 
 **The Rest-State Rule.** No `will-change` is held at rest; promote a layer only while it animates.
 
-**The Reduced-Motion Rule.** Under `prefers-reduced-motion: reduce` the scroll reveal, hero settle and fade, copy-swap motion, button sheen and press-scale are all off, and the material story uses its static layout. Content is shown immediately, never hidden waiting for an animation.
+**The Few-Movers Rule.** A section never has more than one thing moving per role at once: one head, one first row, and photographs that only fade. Do not stagger what is already a row, and do not rise what is a photograph.
+
+**The Reduced-Motion Rule.** Under `prefers-reduced-motion: reduce` the scroll reveal, hero settle and fade, image arrival fade, page transition, copy-swap motion, carousel autoplay, button sheen and press-scale are all off, and the material story uses its static layout. Content is shown immediately, never hidden waiting for an animation.
 
 ## Shapes
 
@@ -263,7 +274,7 @@ Warm and tactile: a soft bronze surface that warms further under the hand.
 - **Background:** Paper White on linen or raw silk.
 - **Shadow Strategy:** Rest lift, Hover lift on interaction (see Elevation).
 - **Border:** 1px Plaster Line; darkens to Dust Grey on hover.
-- **Internal Padding:** 24px (28px from 1024px). Images scale to 1.03 over 700ms on hover.
+- **Internal Padding:** 24px (28px from 1024px). Images scale to 1.03 over `--dur-image` (700ms) on hover.
 
 ### Inputs / Fields
 - **Style:** Paper White field, 1px Plaster Line border, 4px edge, 12px × 16px padding, 16px text, labels in Inter 700 at 14px.
@@ -277,10 +288,10 @@ Warm and tactile: a soft bronze surface that warms further under the hand.
 - **Mobile:** a white drawer up to 336px wide over an obsidian overlay at 60% with an 8px blur; links in 24px Inter 600 with hairline dividers, current item in Deep Timber. The drawer opens over 300ms on the editorial curve and closes over 200ms on the exit curve.
 
 ### Metrics Band
-The four home proof facts sit on the Linen canvas directly below the hero, as the first content band, with a Plaster Line hairline under it; they are not part of the hero and there is no dark box. Each cell pairs a Label (Walnut Grey) with a value; cells are separated by Plaster Line hairlines (a 2 × 2 block below 1024px, four across from 1024px). The cells are a two-row subgrid (label row, value row), so the labels share a top, the values share a first baseline and the cells share one height whatever the value size. A figure keeps the Stat role, a phrase uses the Title role, and every value fits on at most two lines. There is no dot and nothing animates inside the band beyond the one-shot scroll reveal.
+The four home proof facts sit on the Linen canvas directly below the hero, as the first content band, with a Plaster Line hairline under it; they are not part of the hero and there is no dark box. Each cell pairs a Label (Walnut Grey) with a value; cells are separated by Plaster Line hairlines (a 2 × 2 block below 1024px, four across from 1024px). The cells are a two-row subgrid (label row, value row), so the labels share a top, the values share a first baseline and the cells share one height whatever the value size. A figure keeps the Stat role, a phrase uses the Title role, and every value fits on at most two lines. There is no dot and nothing animates inside the band: it takes one scroll reveal as a single unit (frame, hairlines and figures arrive together, so a client-side navigation never shows an empty frame), with no per-cell stagger.
 
 ### Spotlight Gallery Carousel
-A centered 16:10 slide with its neighbours scaled to about 0.7 and dimmed; slides move on a 650ms transform, autoplay every 5 seconds, and controls are 44px pill buttons. Under reduced motion transitions collapse and autoplay stops.
+A centered 16:10 slide with its neighbours scaled to about 0.7 and dimmed; slides move on a 650ms transform and controls are 44px pill buttons. Autoplay advances every 5 seconds and is bounded: it runs only while the carousel is in view, makes one pass through the set (ending back on the first slide) and then rests, and it ends for good at the visitor's first manual navigation (previous, next, a side slide, a swipe or an arrow key). Hover, focus within, a hidden tab, the open lightbox and the visitor's own pause button hold it; the play button starts a fresh pass. A new room filter starts a fresh set and a fresh pass. Under reduced motion transitions collapse and autoplay is off.
 
 ## Do's and Don'ts
 
@@ -290,7 +301,7 @@ A centered 16:10 slide with its neighbours scaled to about 0.7 and dimmed; slide
 - **Do** set headings in Outfit 500, sentence case, and keep prose at line-height 1.65 or more.
 - **Do** use the 4px edge for content containers and pills for controls.
 - **Do** separate content with Plaster Line hairlines at 60% before reaching for a shadow.
-- **Do** move with the editorial curve (`cubic-bezier(0.22, 0.61, 0.36, 1)`), 240ms for hover and 280-400ms for state, reveal once at 600ms, and disable reveal, hero settle and fade, copy-swap motion, button sheen and press-scale under `prefers-reduced-motion`; no infinite animation.
+- **Do** move with the editorial curve (`cubic-bezier(0.22, 0.61, 0.36, 1)`), 240ms for hover, 700ms for image zoom and 280-400ms for state, reveal once at 600ms (photographs by opacity alone), and disable reveal, hero settle and fade, image arrival, page transition, copy-swap motion, carousel autoplay, button sheen and press-scale under `prefers-reduced-motion`; no infinite animation.
 
 ### Don't:
 - **Don't** alternate light and dark section bands; obsidian appears only behind the hero photograph and in the footer.
