@@ -90,11 +90,38 @@ const { t } = useLanguage()
    open. Copy contrast is measured, not assumed: against the real Supabase hero photograph, with
    the wash applied and the text hidden, the lightest pixel behind each line of copy gives
    (min over 375/768/1440, vi and en) eyebrow 6.4:1 (need 4.5), h1 12.9:1 (need 3), sublead 9.0:1
-   (need 4.5); the metric strip sits on solid obsidian (8.3:1 labels, 18.7:1 values). */
+   (need 4.5); the metric strip sits on solid obsidian (8.3:1 labels, 18.7:1 values).
+
+   Below 768px the copy stacks over a tall crop of an already dark photograph, so the wash is
+   re-cut to the copy's rhythm instead of one tall floor: the eyebrow (bronze, the tightest line)
+   sits 51 to 68% up from the bottom across 320 to 767px and gets the 0.72 plateau; the h1,
+   sublead and buttons below it only need 0.6; above the eyebrow the wash falls away so the
+   photograph reads. Measured the same way (lightest pixel behind each line, vi and en): at 375
+   and 390 eyebrow 5.2:1 (need 4.5), h1 10.6:1 (need 3), sublead 5.9:1 (need 4.5), outline button
+   label 4.9:1, bronze button label 6.3:1 (solid fill, independent of the wash); the mean
+   luminance of the photograph above the copy rises from 0.067 to 0.104. The same stops hold
+   every copy line at 4.7:1 or better from 320 to 767px. Re-measure if the copy length, the hero
+   photograph, or these stops change. */
 .home-hero__wash {
   background:
     linear-gradient(90deg, rgb(11 10 9 / 0.4) 0%, rgb(11 10 9 / 0.25) 50%, rgb(11 10 9 / 0.1) 100%),
     linear-gradient(0deg, rgb(11 10 9 / 0.8) 0%, rgb(11 10 9 / 0.8) 64%, transparent 90%);
+}
+
+@media (max-width: 767px) {
+  .home-hero__wash {
+    background:
+      linear-gradient(90deg, rgb(11 10 9 / 0.12) 0%, rgb(11 10 9 / 0.04) 100%),
+      linear-gradient(
+        0deg,
+        rgb(11 10 9 / 0.6) 0%,
+        rgb(11 10 9 / 0.6) 44%,
+        rgb(11 10 9 / 0.72) 50%,
+        rgb(11 10 9 / 0.72) 67%,
+        rgb(11 10 9 / 0.2) 76%,
+        transparent 85%
+      );
+  }
 }
 
 .home-hero__copy {

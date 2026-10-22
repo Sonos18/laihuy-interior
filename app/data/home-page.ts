@@ -42,7 +42,7 @@ export const homePageContent = {
   },
   projects: {
     eyebrow: { vi: 'Công trình tiêu biểu', en: 'Selected work' },
-    title: { vi: 'Không gian đã đi qua toàn bộ quy trình', en: 'Spaces delivered through the complete process' },
+    title: { vi: 'Những không gian Lai Huy đã thực hiện', en: 'Spaces Lai Huy has delivered' },
     allCta: { vi: 'Xem toàn bộ dự án', en: 'View all projects' },
     locationLabel: { vi: 'Địa điểm', en: 'Location' },
     scopeLabel: { vi: 'Phạm vi', en: 'Scope' },

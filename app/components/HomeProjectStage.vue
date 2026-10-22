@@ -69,17 +69,19 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
               loading="lazy"
               class="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.03] group-focus-visible:scale-[1.03]"
             />
-            <div class="home-projects__tag-pill">
-              <span>{{ t(categoryDefinitions[heroProject.project.category].label) }}</span>
-              <template v-if="heroProject.project.area">
-                <span class="opacity-40">·</span>
-                <span>{{ t(heroProject.project.area) }}</span>
-              </template>
+            <div class="home-projects__chrome">
+              <div class="home-projects__tag-pill">
+                <span class="home-projects__tag-label">{{ t(categoryDefinitions[heroProject.project.category].label) }}</span>
+                <template v-if="heroProject.project.area">
+                  <span class="opacity-40">·</span>
+                  <span class="shrink-0">{{ t(heroProject.project.area) }}</span>
+                </template>
+              </div>
+              <span
+                class="home-projects__index"
+                aria-hidden="true"
+              >01</span>
             </div>
-            <span
-              class="home-projects__index"
-              aria-hidden="true"
-            >01</span>
           </div>
 
           <div class="home-projects__body home-projects__body--hero">
@@ -163,17 +165,19 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
               loading="lazy"
               class="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.03] group-focus-visible:scale-[1.03]"
             />
-            <div class="home-projects__tag-pill sm:hidden">
-              <span>{{ t(categoryDefinitions[project.category].label) }}</span>
-              <template v-if="project.area">
-                <span class="opacity-40">·</span>
-                <span>{{ t(project.area) }}</span>
-              </template>
+            <div class="home-projects__chrome">
+              <div class="home-projects__tag-pill sm:hidden">
+                <span class="home-projects__tag-label">{{ t(categoryDefinitions[project.category].label) }}</span>
+                <template v-if="project.area">
+                  <span class="opacity-40">·</span>
+                  <span class="shrink-0">{{ t(project.area) }}</span>
+                </template>
+              </div>
+              <span
+                class="home-projects__index"
+                aria-hidden="true"
+              >0{{ index + 2 }}</span>
             </div>
-            <span
-              class="home-projects__index"
-              aria-hidden="true"
-            >0{{ index + 2 }}</span>
           </div>
 
           <div class="home-projects__body home-projects__body--satellite">
@@ -252,10 +256,23 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
   background: var(--color-ink-100);
 }
 
-.home-projects__tag-pill {
+/* Pill and number badge share one flex row, so they cannot collide: the pill is the flexible
+   item (its label truncates), the badge keeps its size and stays on the right. */
+.home-projects__chrome {
   position: absolute;
   top: 1rem;
+  right: 1rem;
   left: 1rem;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.home-projects__tag-pill {
+  min-width: 0;
   background: color-mix(in srgb, var(--color-white) 88%, transparent);
   backdrop-filter: blur(8px);
   border: 1px solid color-mix(in srgb, var(--color-ink-200) 80%, transparent);
@@ -269,13 +286,18 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  z-index: 2;
+  white-space: nowrap;
+}
+
+.home-projects__tag-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .home-projects__index {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
+  flex-shrink: 0;
+  margin-left: auto;
   color: var(--color-wood-700);
   font-size: 0.75rem;
   font-weight: 700;
@@ -285,7 +307,6 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
   border: 1px solid color-mix(in srgb, var(--color-ink-200) 80%, transparent);
   padding: 2px 8px;
   border-radius: 4px;
-  z-index: 2;
 }
 
 .home-projects__body {
@@ -365,26 +386,18 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
   }
 }
 
-/* Wide / Laptop (≥1024px): Satellite cards become horizontal */
+/* Wide / Laptop (≥1024px): more air around the cards. Satellites stay stacked (16:9 image over
+   the text): a side-by-side card inherits the row height set by the lead, which turned its image
+   into a portrait strip. Two stacked satellites are taller than a lead of the same width, so the
+   lead column takes 2.2fr: measured at 1024 to 1440 it leaves 43 to 67px of slack in the lead
+   body instead of about 280px of empty card. */
 @media (min-width: 1024px) {
   .home-projects__grid {
+    grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
     gap: 2rem;
   }
 
-  .home-projects__card--hero .home-projects__body {
-    padding: 1.75rem;
-  }
-
-  .home-projects__card--satellite {
-    display: grid;
-    grid-template-columns: 42% minmax(0, 1fr);
-  }
-
-  .home-projects__card--satellite .home-projects__media {
-    height: 100%;
-    aspect-ratio: auto;
-  }
-
+  .home-projects__card--hero .home-projects__body,
   .home-projects__card--satellite .home-projects__body {
     padding: 1.75rem;
   }

@@ -10,7 +10,8 @@ import { APP_ORIGIN } from './origin'
 
 const HOME = new URL('/', APP_ORIGIN).toString()
 
-async function openHome(page: import('@playwright/test').Page, width: number) {
+async function openHome(page: import('@playwright/test').Page, width: number, locale: 'vi' | 'en' = 'vi') {
+  await page.context().addCookies([{ name: 'lai-huy-locale', value: locale, url: APP_ORIGIN }])
   await page.setViewportSize({ width, height: 900 })
   await page.goto(HOME, { waitUntil: 'load' })
   await page.evaluate(() => document.fonts.ready)
@@ -48,6 +49,56 @@ for (const width of [1024, 1280, 1440]) {
   })
 }
 
+for (const width of [320, 375, 767, 768, 1023, 1024, 1279, 1280, 1440]) {
+  test(`HL-05 satellite media is landscape at ${width}px`, async ({ page }) => {
+    await openHome(page, width)
+    const boxes = await page.locator('.home-projects__card--satellite .home-projects__media').evaluateAll(
+      media => media.map((element) => {
+        const rect = element.getBoundingClientRect()
+        return { width: rect.width, height: rect.height }
+      })
+    )
+    expect(boxes).toHaveLength(2)
+    for (const box of boxes) {
+      expect(box.height).toBeGreaterThan(0)
+      expect(box.width).toBeGreaterThanOrEqual(box.height)
+    }
+  })
+}
+
+for (const locale of ['vi', 'en'] as const) {
+  for (const width of [320, 375, 640, 768, 1024, 1280, 1440]) {
+    test(`HL-06 tag pill and number badge never overlap (${locale}, ${width}px)`, async ({ page }) => {
+      await openHome(page, width, locale)
+      const media = await page.locator('.home-projects__media').evaluateAll(
+        elements => elements.map((element) => {
+          const box = (selector: string) => {
+            const target = element.querySelector(selector)
+            if (!target || getComputedStyle(target).display === 'none') return null
+            const rect = target.getBoundingClientRect()
+            return { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom }
+          }
+          const frame = element.getBoundingClientRect()
+          return {
+            frame: { left: frame.left, right: frame.right },
+            pill: box('.home-projects__tag-pill'),
+            badge: box('.home-projects__index')
+          }
+        })
+      )
+      expect(media).toHaveLength(3)
+      for (const { frame, pill, badge } of media) {
+        expect(badge).not.toBeNull()
+        if (!pill || !badge) continue
+        // Horizontal separation is what matters: both sit on the same top row of the media.
+        expect(pill.right).toBeLessThanOrEqual(badge.left)
+        expect(pill.left).toBeGreaterThanOrEqual(frame.left)
+        expect(badge.right).toBeLessThanOrEqual(frame.right)
+      }
+    })
+  }
+}
+
 for (const width of [768, 1280, 1440]) {
   test(`HL-03 capabilities heading sits on the shell rail at ${width}px`, async ({ page }) => {
     await openHome(page, width)
@@ -62,14 +113,16 @@ for (const width of [768, 1280, 1440]) {
   })
 }
 
-test('HL-04 hero wash is lighter than the retired 0.94 scrim', async ({ page }) => {
-  await openHome(page, 1440)
-  const image = await page.locator('.home-hero__wash').evaluate(element => getComputedStyle(element).backgroundImage)
-  // Computed colours serialise as rgb(r, g, b) (alpha 1, not listed) or rgba(r, g, b, a).
-  const alphas = [...image.matchAll(/rgba?\(([^)]+)\)/g)].map((match) => {
-    const parts = match[1]!.split(/[\s,/]+/).filter(Boolean)
-    return parts.length >= 4 ? Number(parts[3]) : 1
+for (const width of [375, 1440]) {
+  test(`HL-04 hero wash is lighter than the retired 0.94 scrim at ${width}px`, async ({ page }) => {
+    await openHome(page, width)
+    const image = await page.locator('.home-hero__wash').evaluate(element => getComputedStyle(element).backgroundImage)
+    // Computed colours serialise as rgb(r, g, b) (alpha 1, not listed) or rgba(r, g, b, a).
+    const alphas = [...image.matchAll(/rgba?\(([^)]+)\)/g)].map((match) => {
+      const parts = match[1]!.split(/[\s,/]+/).filter(Boolean)
+      return parts.length >= 4 ? Number(parts[3]) : 1
+    })
+    expect(alphas.length).toBeGreaterThan(0)
+    expect(Math.max(...alphas)).toBeLessThanOrEqual(0.8)
   })
-  expect(alphas.length).toBeGreaterThan(0)
-  expect(Math.max(...alphas)).toBeLessThanOrEqual(0.8)
-})
+}
