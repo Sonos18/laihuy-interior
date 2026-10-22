@@ -49,6 +49,24 @@ for (const width of [1024, 1280, 1440]) {
   })
 }
 
+// A classic scrollbar takes 15-17px of layout width without changing the media-query viewport, so
+// at a 1024px window the two-column rules apply to a 1007px page. Headless Chromium hides its
+// scrollbars, so the loss is simulated by narrowing the root to the width a 17px bar leaves.
+test('HL-02 satellites keep the height floor at 1024px with a 17px scrollbar', async ({ page }) => {
+  await openHome(page, 1024)
+  await page.addStyleTag({ content: 'html { width: 1007px; }' })
+  await page.evaluate(() => document.fonts.ready)
+  expect(await page.evaluate(() => document.documentElement.getBoundingClientRect().width)).toBe(1007)
+
+  const media = await page.locator('.home-projects__card--satellite .home-projects__media').evaluateAll(
+    elements => elements.map(element => element.getBoundingClientRect().height)
+  )
+  expect(media).toHaveLength(2)
+  for (const height of media) {
+    expect(height).toBeGreaterThanOrEqual(160)
+  }
+})
+
 for (const width of [320, 375, 767, 768, 1023, 1024, 1279, 1280, 1440]) {
   test(`HL-05 satellite media is landscape at ${width}px`, async ({ page }) => {
     await openHome(page, width)

@@ -202,7 +202,7 @@ A warm, low-chroma palette of linen, timber and bronze, anchored by a near-black
 
 Content sits on a single rail: `.shell` caps content at 1280px with 24px gutters (32px from 768px), and every shell on every page resolves to one left edge and one measure. Sections breathe on a fixed vertical rhythm of 64px (88px from 768px). The footer runs looser: 80px of bottom padding (112px from 768px).
 
-Composition favors editorial asymmetry over symmetric card walls: projects use a 1.35fr / 1fr split with one dominant case study and two satellites; the factory introduction runs 1.15fr / 0.85fr from 1024px; the closing CTA runs 1.45fr / 0.55fr. Collections that are genuinely uniform (the project index) step 1 → 2 → 3 columns.
+Composition favors editorial asymmetry over symmetric card walls: projects use one dominant case study and two satellites, split 1.35fr / 1fr from 768 to 1023px and 2.1fr / 1fr from 1024px (lead 16:10, satellites stacked 16:9); the factory introduction runs 1.15fr / 0.85fr from 1024px; the closing CTA runs 1.45fr / 0.55fr. Collections that are genuinely uniform (the project index) step 1 → 2 → 3 columns.
 
 Breakpoints are 768px (gutter and rhythm step, tablet grids) and 1280px (the chrome breakpoint: desktop navigation appears, header grows from 72px to 88px). 1024px is used by a few home compositions. Verify layouts immediately below, at and above 768 and 1280.
 

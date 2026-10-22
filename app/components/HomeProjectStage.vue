@@ -389,11 +389,12 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
 /* Wide / Laptop (≥1024px): more air around the cards. Satellites stay stacked (16:9 image over
    the text): a side-by-side card inherits the row height set by the lead, which turned its image
    into a portrait strip. Two stacked satellites are taller than a lead of the same width, so the
-   lead column takes 2.2fr: measured at 1024 to 1440 it leaves 43 to 67px of slack in the lead
-   body instead of about 280px of empty card. */
+   lead column takes 2.1fr rather than the 1.35fr of the tablet split. The ratio is bounded by
+   HL-02's 160px satellite floor: a 1024px window with a 17px classic scrollbar lays out at 1007px,
+   where 2.1fr leaves a satellite image about 165px tall and 2.2fr only about 159px. */
 @media (min-width: 1024px) {
   .home-projects__grid {
-    grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr);
     gap: 2rem;
   }
 
