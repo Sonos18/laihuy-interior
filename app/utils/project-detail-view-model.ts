@@ -81,6 +81,13 @@ const resolveScope = (project: Project, locale: Locale) =>
       return { key: item.key, icon: item.icon, label: textFor(item.label, locale) }
     })
 
+/** True when the project's scope spans design, production and construction: the one definition
+ *  shared by the case-study view model and the project index's featured composition. */
+export const coversEndToEnd = (project: Project): boolean => {
+  const scopeItems = resolveScope(project, 'vi')
+  return (['Thiết kế', 'Sản xuất', 'Thi công'] as const).every(key => scopeItems.some(item => item.key === key))
+}
+
 const resolveFacts = (project: Project, locale: Locale): ProjectDetailFact[] => {
   const candidates: Array<ProjectDetailFact | undefined> = [
     project.area
@@ -176,6 +183,6 @@ export const buildProjectDetailViewModel = ({ project, projects, imageCount, loc
     navSections,
     relatedProjects: resolveRelatedProjects(project, projects),
     hasMaterialStory,
-    coversEndToEnd: (['Thiết kế', 'Sản xuất', 'Thi công'] as const).every(key => scopeItems.some(item => item.key === key))
+    coversEndToEnd: coversEndToEnd(project)
   }
 }

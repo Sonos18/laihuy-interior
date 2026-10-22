@@ -2,11 +2,14 @@
 import { company } from '~/data/company'
 import { categoryDefinitions, orderedCategories } from '~/data/categories'
 import { projects } from '~/data/projects'
+import { projectsPageContent } from '~/data/projects-page'
 import { uiText } from '~/data/ui'
 import { projectMedia } from '~/media/catalog.generated'
 import { projectCoverAsset, withAlt } from '~/media/project-media'
+import type { MediaAsset } from '~/shared/media/types'
 import type { LocalizedText } from '~/shared/types/localization'
 import type { Project, ProjectCategory } from '~/shared/types/project'
+import { coversEndToEnd } from '~/utils/project-detail-view-model'
 
 const { t, ta } = useLanguage()
 
@@ -16,31 +19,45 @@ type CategoryFilter = 'all' | ProjectCategory
 
 const selectedCategory = ref<CategoryFilter>('all')
 
-// Filter options derive from the category source of truth. Only categories with
-// at least one project appear, preceded by an "All" entry.
+const byCategoryOrder = (first: Project, second: Project) =>
+  categoryDefinitions[first.category].order - categoryDefinitions[second.category].order
+
+const withCover = (project: Project) => ({
+  project,
+  cover: projectCoverAsset(project.mediaId, project.coverImage)
+})
+
+// The featured composition is the work Lai Huy designed, produced and built end to end. It is
+// derived from the same scope rule as the case-study view model, never from a list of slugs, and
+// it stays on the page whatever the archive filter says.
+const featuredProjects = [...projects]
+  .filter(coversEndToEnd)
+  .sort(byCategoryOrder)
+  .map(withCover)
+  .filter((entry): entry is { project: Project, cover: MediaAsset } => entry.cover !== undefined)
+
+const featuredSlugs = new Set(featuredProjects.map(({ project }) => project.slug))
+const archiveProjects = [...projects]
+  .filter(project => !featuredSlugs.has(project.slug))
+  .sort(byCategoryOrder)
+
+// Filter options derive from the category source of truth. Only categories with at least one
+// archive project appear, preceded by an "All" entry: the filter narrows the archive, so every
+// chip has a result.
 const categories = computed<{ value: CategoryFilter, label: LocalizedText }[]>(() => [
-  { value: 'all', label: { vi: 'Tất cả', en: 'All' } },
+  { value: 'all', label: uiText.labels.all },
   ...orderedCategories
-    .filter(category => projects.some(project => project.category === category))
+    .filter(category => archiveProjects.some(project => project.category === category))
     .map(category => ({ value: category, label: categoryDefinitions[category].label }))
 ])
 
-const sortedProjects = computed(() =>
-  [...projects].sort((first, second) =>
-    categoryDefinitions[first.category].order - categoryDefinitions[second.category].order
-  )
-)
-
-const filteredProjects = computed(() =>
-  sortedProjects.value
+const filteredArchive = computed(() =>
+  archiveProjects
     .filter(project => selectedCategory.value === 'all' || project.category === selectedCategory.value)
-    .map(project => ({ project, cover: projectCoverAsset(project.mediaId, project.coverImage) }))
+    .map(withCover)
 )
 
-const getProjectMetric = (project: Project) =>
-  t(project.area)
-  || ta(project.scope)[0]
-  || t(categoryDefinitions[project.category].label)
+const scopeLine = (project: Project) => ta(project.scope).join(' · ')
 
 const seoTitle = computed(() => t(company.seo.projects.title))
 const seoDescription = computed(() => t(company.seo.projects.description))
@@ -81,8 +98,9 @@ usePageSeo({
 
 <template>
   <!-- `home-page` only supplies the shared Headline/Title/Label type tokens. Below the hero the
-       index is Linen: Paper White project cards sit directly on it, and the closing CTA is the
-       shared `.section-cta` band. -->
+       index is two chapters: the end-to-end projects as the editorial lead + satellites
+       composition on Linen, then a quieter archive grid on Raw Silk with the category filter. The
+       closing CTA is the shared `.section-cta` band. -->
   <div class="home-page bg-wood-50 text-ink-950">
     <AppHero
       :topic="t(uiText.labels.caseStudies)"
@@ -95,28 +113,58 @@ usePageSeo({
       focal="50% 42%"
     />
 
-    <section class="section-y">
+    <section
+      v-if="featuredProjects.length"
+      data-testid="projects-featured"
+      class="section-y"
+    >
       <div class="shell">
-        <!-- DESIGN.md Chips: pill, Action type, Plaster border and Walnut Grey text at rest, Mid
-             Timber border and Deep Timber text on hover, Charcoal Ink fill with Linen text when
-             active. 44px minimum hit target. -->
-        <div class="mb-10 flex flex-wrap gap-3">
-          <button
+        <!-- The page's lead section: its heading takes the Statement role (DESIGN.md). -->
+        <SectionHead
+          layout="stacked"
+          statement
+          :eyebrow="t(projectsPageContent.featured.eyebrow)"
+          :title="t(projectsPageContent.featured.title)"
+          :lead="t(projectsPageContent.featured.lead)"
+        />
+
+        <ProjectStage
+          :projects="featuredProjects"
+          :badges="false"
+          class="mt-10 md:mt-12 lg:mt-16"
+        />
+      </div>
+    </section>
+
+    <section
+      data-testid="projects-archive"
+      class="section-y border-t border-[var(--rule-light)] bg-[var(--color-ivory)]"
+    >
+      <div class="shell">
+        <SectionHead
+          layout="rail"
+          :eyebrow="t(projectsPageContent.archive.eyebrow)"
+          :title="t(projectsPageContent.archive.title)"
+          :lead="t(projectsPageContent.archive.lead)"
+        />
+
+        <!-- DESIGN.md Chips: one row that scrolls sideways when the options are wider than it,
+             so seven categories never become several rows. The filter narrows the archive only;
+             the end-to-end projects above stay. -->
+        <ChipRow
+          v-reveal
+          class="reveal mt-10"
+          :label="t(projectsPageContent.filterLabel)"
+        >
+          <FilterChip
             v-for="category in categories"
             :key="category.value"
-            type="button"
-            :class="[
-              'inline-flex min-h-11 items-center rounded-full border px-5 py-3 text-sm font-semibold tracking-[0.01em] transition-[border-color,color,background-color] duration-[var(--dur-hover)] ease-[var(--ease-editorial)] motion-reduce:transition-none',
-              selectedCategory === category.value
-                ? 'border-ink-900 bg-ink-900 text-wood-50'
-                : 'border-ink-200 bg-transparent text-ink-600 hover:border-wood-500 hover:text-wood-600'
-            ]"
-            :aria-pressed="selectedCategory === category.value"
+            :pressed="selectedCategory === category.value"
             @click="selectedCategory = category.value"
           >
             {{ t(category.label) }}
-          </button>
-        </div>
+          </FilterChip>
+        </ChipRow>
 
         <!-- Announces the result count to screen readers after each filter change. -->
         <p
@@ -125,66 +173,56 @@ usePageSeo({
           aria-live="polite"
         >
           {{ t({
-            vi: `${filteredProjects.length} dự án`,
-            en: `${filteredProjects.length} projects`
+            vi: `${filteredArchive.length} dự án`,
+            en: `${filteredArchive.length} projects`
           }) }}
         </p>
 
+        <!-- One chip type per card: the category is the Label line; area and scope are plain
+             meta text. -->
         <div
           data-testid="projects-grid"
-          class="grid gap-7 sm:grid-cols-2 lg:grid-cols-3"
+          class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         >
           <NuxtLink
-            v-for="{ project, cover } in filteredProjects"
+            v-for="{ project, cover } in filteredArchive"
             :key="project.slug"
             :to="`/du-an/${project.slug}`"
             class="group flex flex-col overflow-hidden card-link"
           >
             <div
               v-if="cover"
-              class="relative aspect-[4/3] overflow-hidden bg-ink-100"
+              class="relative aspect-[3/2] overflow-hidden bg-ink-100"
             >
               <NuxtImg
                 :src="cover.path"
                 :alt="t(project.name)"
                 :width="cover.width"
                 :height="cover.height"
-                sizes="sm:100vw md:50vw lg:33vw"
+                sizes="sm:100vw md:50vw lg:33vw xl:25vw"
                 loading="lazy"
                 class="h-full w-full object-cover transition-transform duration-[var(--dur-image)] ease-[var(--ease-editorial)] group-hover:scale-[1.03] group-focus-visible:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100 motion-reduce:group-focus-visible:scale-100"
               />
-              <div class="home-eyebrow-text absolute left-4 top-4 rounded-[4px] bg-white/92 px-3 py-1.5 text-ink-950">
-                {{ t(categoryDefinitions[project.category].label) }}
-              </div>
             </div>
-            <div :class="['flex grow flex-col p-6 lg:p-7', cover ? 'border-t border-[var(--rule-light)]' : '']">
-              <div class="home-meta-text mb-4 inline-flex self-start rounded-[4px] border border-ink-200 px-3 py-1.5 font-semibold text-wood-600">
-                {{ getProjectMetric(project) }}
-              </div>
-              <p
-                v-if="!cover"
-                class="eyebrow mb-3"
-              >
+            <div :class="['flex grow flex-col p-5', cover ? 'border-t border-[var(--rule-light)]' : '']">
+              <p class="eyebrow">
                 {{ t(categoryDefinitions[project.category].label) }}
               </p>
-              <h2 class="home-card-heading text-ink-950">
+              <h3 class="home-card-heading mt-2 text-ink-950">
                 {{ t(project.name) }}
-              </h2>
-              <p class="mt-3 text-base leading-[1.7] text-ink-600">
-                {{ t(project.shortDescription) }}
-              </p>
-              <div
-                v-if="ta(project.scope).length"
-                class="mt-auto flex flex-wrap gap-2 pt-5"
+              </h3>
+              <p
+                v-if="project.area"
+                class="home-meta-text mt-3 font-semibold text-ink-900"
               >
-                <span
-                  v-for="scope in ta(project.scope).slice(0, 3)"
-                  :key="scope"
-                  class="home-meta-text rounded-[4px] bg-[var(--color-ivory)] px-3 py-1.5 font-semibold text-ink-600"
-                >
-                  {{ scope }}
-                </span>
-              </div>
+                {{ t(project.area) }}
+              </p>
+              <p
+                v-if="scopeLine(project)"
+                class="home-meta-text mt-1 text-ink-600"
+              >
+                {{ scopeLine(project) }}
+              </p>
             </div>
           </NuxtLink>
         </div>
