@@ -298,18 +298,22 @@ function create(): HeaderState {
   const router = useRouter()
   const nuxtApp = useNuxtApp()
 
-  router.beforeEach((to, from, next) => {
-    if (to.path !== from.path && el) {
-      // Phase 1 — suppress transitions and force REVEALED before Nuxt paints.
-      el.classList.add('chrome-no-transition')
-      revealed = true
-      hidden = false
-      document.documentElement.style.setProperty('--header-shift', '0px')
-    }
-    next()
-  })
+  // Page transition (nuxt.config `app.pageTransition`, mode out-in). Suspense resolves — so
+  // `page:finish` fires — as soon as the NEW page is ready, but that page is not in the DOM until
+  // the old one has finished fading out (`page:transition:finish`), and the old page's unmount is
+  // what releases a pinned header (LegalPage -> setSolid(false)). Phases 3 and 4 must see the
+  // swapped DOM: run any earlier, `p` is recomputed with the old pin still set and the chrome
+  // transitions come back while the colours are about to flip, which is the melt (FG-06). So a
+  // route change settles once BOTH have happened, in either order (a slow page resolves after
+  // the old one has left; a fast one before). The timer is the safety net for a navigation that
+  // never completes both.
+  const SETTLE_FALLBACK_MS = 1500
+  let navigating = false
+  let resolved = false
+  let swapped = false
+  let fallbackTimer = 0
 
-  nuxtApp.hook('page:finish', () => {
+  const settle = () => {
     if (!el) return
     // Phase 3 — recompute synchronously from the ACTUAL scrollY, so back/forward with a
     // savedPosition lands in NAVIGATION instantly rather than animating into it.
@@ -327,6 +331,52 @@ function create(): HeaderState {
     requestAnimationFrame(() => {
       requestAnimationFrame(() => el?.classList.remove('chrome-no-transition'))
     })
+  }
+
+  const settleWhenSwapped = () => {
+    if (!navigating || !resolved || !swapped) return
+    navigating = false
+    window.clearTimeout(fallbackTimer)
+    // The new page is inserted synchronously right after the transition's afterLeave hook
+    // returns; one frame later the DOM (and the old page's unmount) is in its final state.
+    requestAnimationFrame(settle)
+  }
+
+  router.beforeEach((to, from, next) => {
+    if (to.path !== from.path && el) {
+      // Phase 1 — suppress transitions and force REVEALED before Nuxt paints.
+      el.classList.add('chrome-no-transition')
+      revealed = true
+      hidden = false
+      document.documentElement.style.setProperty('--header-shift', '0px')
+
+      navigating = true
+      resolved = false
+      swapped = false
+      window.clearTimeout(fallbackTimer)
+      fallbackTimer = window.setTimeout(() => {
+        resolved = true
+        swapped = true
+        settleWhenSwapped()
+      }, SETTLE_FALLBACK_MS)
+    }
+    next()
+  })
+
+  nuxtApp.hook('page:finish', () => {
+    if (!el) return
+    if (!navigating) {
+      // First paint (or a navigation that did not change the path): nothing is leaving.
+      settle()
+      return
+    }
+    resolved = true
+    settleWhenSwapped()
+  })
+
+  nuxtApp.hook('page:transition:finish', () => {
+    swapped = true
+    settleWhenSwapped()
   })
 
   return {

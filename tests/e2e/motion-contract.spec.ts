@@ -615,6 +615,93 @@ test.describe('motion contract', () => {
     expect(state.marked, 'a painted image is not given the arrival classes').toBe(0)
     expect(state.min, 'a painted image never drops below full opacity').toBe(1)
   })
+
+  test('MOTION-15 a route change is a 120ms + 200ms opacity crossfade, no translate', async ({ page }) => {
+    await page.goto(url('/'), { waitUntil: 'load' })
+    await waitForHydration(page)
+
+    type PageEvent = { type: string, property: string, duration: string, t: number }
+    await page.evaluate(() => {
+      const w = window as unknown as { __page: PageEvent[] }
+      w.__page = []
+      const record = (event: Event) => {
+        const target = event.target as Element | null
+        if (!target || target.parentElement?.id !== 'main') return
+        w.__page.push({
+          type: event.type,
+          property: (event as TransitionEvent).propertyName,
+          duration: getComputedStyle(target).transitionDuration,
+          t: performance.now()
+        })
+      }
+      for (const type of ['transitionrun', 'transitionend']) document.addEventListener(type, record, true)
+    })
+    await page.locator('header.app-header a[href="/dich-vu"]').first().click()
+    await page.waitForURL(url('/dich-vu'))
+    // Vue ends the leaving page on its own timer and removes it, so its transitionend may never
+    // be dispatched; the entering page's is the end of the whole crossfade.
+    await expect.poll(() => page.evaluate(() =>
+      (window as unknown as { __page: PageEvent[] }).__page.filter(e => e.type === 'transitionend').length
+    )).toBeGreaterThanOrEqual(1)
+
+    const events = await page.evaluate(() => (window as unknown as { __page: PageEvent[] }).__page)
+    const runs = events.filter(e => e.type === 'transitionrun')
+    expect(runs.map(e => e.property), 'opacity only: nothing translates').toEqual(['opacity', 'opacity'])
+    expect(runs.map(e => e.duration)).toEqual(['0.12s', '0.2s'])
+    const total = events.at(-1)!.t - runs[0]!.t
+    // 120 + 200 = 320ms of motion; the allowance covers the frame Vue waits before each phase.
+    expect(total, `crossfade took ${Math.round(total)}ms`).toBeLessThan(420)
+  })
+
+  test('MOTION-15b reduced motion changes route without a transition', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.goto(url('/'), { waitUntil: 'load' })
+    await waitForHydration(page)
+
+    await page.evaluate(() => {
+      const w = window as unknown as { __page: string[] }
+      w.__page = []
+      document.addEventListener('transitionrun', (event) => {
+        if ((event.target as Element).parentElement?.id === 'main') w.__page.push((event as TransitionEvent).propertyName)
+      }, true)
+    })
+    await page.locator('header.app-header a[href="/dich-vu"]').first().click()
+    await page.waitForURL(url('/dich-vu'))
+    await page.waitForTimeout(600)
+
+    expect(await page.evaluate(() => (window as unknown as { __page: string[] }).__page)).toEqual([])
+    await expect(page.locator('main#main > *')).toHaveCount(1)
+  })
+
+  test('MOTION-15c header chrome takes a client navigation with no transition, and settles after the swap', async ({ page }) => {
+    await page.context().addCookies([{ name: 'lai-huy-locale', value: 'vi', url: TEST_ORIGIN }])
+    await page.goto(url('/privacy-policy'), { waitUntil: 'load' })
+    await waitForHydration(page)
+    const header = page.locator('header.app-header')
+    await expect(header).toHaveAttribute('data-chrome-state', 'nav')
+
+    // Header chrome only: the nav underline's ::after is a pseudo-element and is not part of the
+    // suppressed chrome (it marks the current link).
+    await page.evaluate(() => {
+      const w = window as unknown as { __chrome: string[] }
+      w.__chrome = []
+      document.addEventListener('transitionrun', (event) => {
+        const e = event as TransitionEvent
+        const target = e.target as Element
+        if (!e.pseudoElement && target.closest?.('.app-header')) w.__chrome.push(`${e.propertyName}:${String(target.className)}`)
+      }, true)
+    })
+
+    // Legal (pinned header) to home (cover): the pin is released by the unmounting page, which
+    // happens after the old page has faded out, so the chrome must stay frozen until then.
+    await header.locator('a[href="/"]').first().click()
+    await page.waitForURL(`${TEST_ORIGIN}/`)
+    await expect(header).toHaveAttribute('data-chrome-state', 'cover')
+    await expect(header).toHaveCSS('--header-p', '0')
+    await expect(header).not.toHaveClass(/chrome-no-transition/)
+    await page.waitForTimeout(500)
+    expect(await page.evaluate(() => (window as unknown as { __chrome: string[] }).__chrome)).toEqual([])
+  })
 })
 
 async function openDrawer(page: Page): Promise<void> {

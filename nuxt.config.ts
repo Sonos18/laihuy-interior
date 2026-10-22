@@ -20,6 +20,13 @@ export default defineNuxtConfig({
     enabled: false
   },
 
+  // Route continuity (DESIGN.md "Motion", page transition): an opacity crossfade through Linen.
+  // `out-in` so the two pages are never stacked, which would double the height of <main>. The
+  // durations and the reduced-motion switch-off live in main.css (`.page-*-active`).
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' }
+  },
+
   // layers.css MUST precede main.css: it carries the cascade-layer order
   // statement, which has to be read before Tailwind's own layer blocks. See the
   // comment in that file for the defect it fixes.
