@@ -11,10 +11,12 @@
 // a reference page: the reader arrived from a footer link with a specific question, and a
 // viewport of workshop photography between them and clause 8 is an obstacle, not a welcome.
 //
-// The masthead below is the same typographic system as those heroes — ink-950 surface, wood
-// eyebrow, black uppercase display — at a utility height. Styled with utilities rather than
-// bespoke `.legal-*` rules, which is how every other page in this repo is built (see
-// tuyen-dung.vue): a reference page is not worth a new component-layer API.
+// The masthead below is the same typographic system as those heroes (Label eyebrow, Outfit 500
+// title) at a utility height, but on the warm-light canvas: with no photograph behind it, an
+// obsidian band would break the Warm Light Rule (DESIGN.md), so it is a Raw Silk step with a
+// Plaster hairline instead. Styled with utilities rather than bespoke `.legal-*` rules, which is
+// how every other page in this repo is built (see tuyen-dung.vue): a reference page is not worth
+// a new component-layer API.
 import type { LegalDocument } from '~/data/legal'
 import { legalUpdatedAt } from '~/data/legal'
 import { company } from '~/data/company'
@@ -31,6 +33,13 @@ defineProps<{
 
 const { t, ta, locale } = useLanguage()
 
+// The masthead is light, so the header cannot rest as a scrim over a photograph: pin it to its
+// NAVIGATION chrome, as error.vue does with `<AppHeader solid />`. The singleton is released on
+// the way out so the next route's cover gets its transparent header back.
+const { setSolid } = useHeaderState()
+onMounted(() => setSolid(true))
+onBeforeUnmount(() => setSolid(false))
+
 // Formatted per locale rather than hardcoded: `legalUpdatedAt` is ISO, and a literal
 // "31/07/2026" would read as a malformed US date on the English page.
 const updatedAt = computed(() =>
@@ -43,30 +52,31 @@ const updatedAt = computed(() =>
 </script>
 
 <template>
-  <div>
+  <!-- `home-page` only supplies the shared Headline/Title/Label type tokens. -->
+  <div class="home-page bg-wood-50 text-ink-950">
     <!-- The header is `position: fixed` and there is no hero photograph to sit beneath it, so
          this band clears the chrome itself. --header-h tracks the breakpoint (72/88px), which is
          why the clearance is expressed against the token rather than a literal. -->
-    <section class="bg-ink-950 pb-12 pt-[calc(var(--header-h)+3.5rem)] text-white">
+    <section class="border-b border-[var(--rule-light)] bg-[var(--color-ivory)] pb-12 pt-[calc(var(--header-h)+3.5rem)]">
       <div class="shell">
-        <p class="eyebrow text-wood-300">
+        <p class="eyebrow">
           {{ topic }}
         </p>
-        <h1 class="mt-4 max-w-3xl text-3xl font-black uppercase leading-tight md:text-5xl">
+        <h1 class="home-section-heading mt-4 max-w-3xl text-ink-950">
           {{ t(document.title) }}
         </h1>
-        <p class="mt-5 text-sm text-white/48">
+        <p class="mt-5 text-base leading-[1.7] text-ink-600">
           {{ t(uiText.labels.lastUpdated) }}: {{ updatedAt }}
         </p>
       </div>
     </section>
 
-    <section class="section-y bg-white">
+    <section class="section-y">
       <div class="shell">
         <!-- max-w-3xl (768px) is a reading measure, not the rail: legal prose set across the
              full 1280px rail runs to ~150 characters a line and stops being readable. -->
         <div class="max-w-3xl">
-          <p class="text-lg leading-8 text-ink-700">
+          <p class="home-lead-text text-ink-700">
             {{ t(document.intro) }}
           </p>
 
@@ -77,13 +87,13 @@ const updatedAt = computed(() =>
             :key="section.heading.vi"
             class="mt-10"
           >
-            <h2 class="text-xl font-black uppercase text-ink-950">
+            <h2 class="home-card-heading text-ink-950">
               {{ t(section.heading) }}
             </h2>
 
             <p
               v-if="section.body"
-              class="mt-3 leading-7 text-ink-600"
+              class="mt-3 text-base leading-[1.7] text-ink-600"
             >
               {{ t(section.body) }}
             </p>
@@ -95,13 +105,13 @@ const updatedAt = computed(() =>
               <li
                 v-for="item in ta(section.items)"
                 :key="item"
-                class="flex gap-3 leading-7 text-ink-600"
+                class="flex gap-3 text-base leading-[1.7] text-ink-600"
               >
                 <!-- The same bullet glyph /tuyen-dung uses for its requirement lists, so a
                      list on a legal page and a list on a careers page are the same object. -->
                 <Icon
                   name="i-lucide-dot"
-                  class="mt-1 size-4 shrink-0 text-wood-500"
+                  class="mt-1.5 size-4 shrink-0 text-wood-600"
                   aria-hidden="true"
                 />
                 <span>{{ item }}</span>
@@ -114,31 +124,31 @@ const updatedAt = computed(() =>
                a site ends up publishing a disconnected number on the one page that has to be
                reachable. -->
           <section class="mt-10">
-            <h2 class="text-xl font-black uppercase text-ink-950">
+            <h2 class="home-card-heading text-ink-950">
               {{ t(uiText.labels.legalContactHeading) }}
             </h2>
-            <p class="mt-3 leading-7 text-ink-600">
+            <p class="mt-3 text-base leading-[1.7] text-ink-600">
               {{ t(uiText.labels.legalContactBody) }}
             </p>
 
             <dl class="mt-6 grid gap-5 sm:grid-cols-2">
               <div>
-                <dt class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-500">
+                <dt class="home-eyebrow-text text-ink-600">
                   {{ t(uiText.labels.company) }}
                 </dt>
-                <dd class="mt-1 leading-7 text-ink-700">
+                <dd class="mt-1 text-base leading-[1.7] text-ink-700">
                   {{ company.name }}
                 </dd>
               </div>
 
               <div>
-                <dt class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-500">
+                <dt class="home-eyebrow-text text-ink-600">
                   {{ t(uiText.labels.email) }}
                 </dt>
-                <dd class="mt-1 leading-7 text-ink-700">
+                <dd class="mt-1 text-base leading-[1.7] text-ink-700">
                   <a
                     :href="`mailto:${company.email}`"
-                    class="text-wood-600 underline underline-offset-4 transition-colors hover:text-wood-700"
+                    class="text-wood-600 underline underline-offset-4 transition-colors duration-[var(--dur-hover)] hover:text-wood-700 motion-reduce:transition-none"
                   >
                     {{ company.email }}
                   </a>
@@ -146,13 +156,13 @@ const updatedAt = computed(() =>
               </div>
 
               <div>
-                <dt class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-500">
+                <dt class="home-eyebrow-text text-ink-600">
                   {{ t(uiText.labels.phone) }}
                 </dt>
-                <dd class="mt-1 leading-7 text-ink-700">
+                <dd class="mt-1 text-base leading-[1.7] text-ink-700">
                   <a
                     :href="`tel:${company.phone.replaceAll(' ', '')}`"
-                    class="text-wood-600 underline underline-offset-4 transition-colors hover:text-wood-700"
+                    class="text-wood-600 underline underline-offset-4 transition-colors duration-[var(--dur-hover)] hover:text-wood-700 motion-reduce:transition-none"
                   >
                     {{ company.phone }}
                   </a>
@@ -163,10 +173,10 @@ const updatedAt = computed(() =>
                 v-for="address in company.addresses"
                 :key="address.label.vi"
               >
-                <dt class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-500">
+                <dt class="home-eyebrow-text text-ink-600">
                   {{ t(address.label) }}
                 </dt>
-                <dd class="mt-1 leading-7 text-ink-700">
+                <dd class="mt-1 text-base leading-[1.7] text-ink-700">
                   {{ t(address.address) }}
                 </dd>
               </div>

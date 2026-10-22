@@ -188,7 +188,10 @@ usePageSeo({
 </script>
 
 <template>
-  <div>
+  <!-- `home-page` only supplies the shared Headline/Title/Label type tokens. Below the hero the
+       page is one Linen surface; the form panel, map frame and info cards are Paper White 4px
+       containers with a Plaster border (DESIGN.md Cards / Inputs). -->
+  <div class="home-page bg-wood-50 text-ink-950">
     <AppHero
       :topic="t({ vi: 'Liên hệ', en: 'Contact' })"
       :title="t({ vi: 'Bắt đầu dự án', en: 'Start a project' })"
@@ -218,22 +221,22 @@ usePageSeo({
       </template>
     </AppHero>
 
-    <section class="section-y bg-ink-50">
+    <section class="section-y">
       <div class="shell">
         <div
           data-testid="contact-primary"
           class="grid gap-12 lg:grid-cols-[1fr_0.9fr]"
         >
-          <div class="rounded-2xl border border-ink-200 bg-white p-6 md:p-8">
+          <div class="rounded-[4px] border border-ink-200 bg-white p-6 shadow-[var(--shadow-rest)] md:p-8">
             <p class="eyebrow">
               {{ t(uiText.contactForm.eyebrow) }}
             </p>
-            <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
+            <h2 class="home-section-heading mt-4 text-ink-950">
               {{ t(uiText.contactForm.heading) }}
             </h2>
             <p
               id="form-note"
-              class="mt-4 text-sm leading-6 text-ink-600"
+              class="mt-4 text-base leading-[1.7] text-ink-600"
             >
               {{ t(uiText.contactForm.note) }}
             </p>
@@ -261,7 +264,7 @@ usePageSeo({
                     :aria-invalid="errors.name ? 'true' : undefined"
                     :aria-describedby="errors.name ? errorId('name') : undefined"
                     :class="[
-                      'mt-2 w-full rounded-2xl border px-4 py-3 transition-colors',
+                      'mt-2 w-full rounded-[4px] border bg-white px-4 py-3 text-base text-ink-950 transition-colors duration-[var(--dur-hover)] placeholder:text-ink-500 motion-reduce:transition-none',
                       errors.name
                         ? 'border-alert-500 focus:border-alert-500'
                         : 'border-ink-200 focus:border-wood-500'
@@ -291,7 +294,7 @@ usePageSeo({
                     :aria-invalid="errors.phone ? 'true' : undefined"
                     :aria-describedby="errors.phone ? errorId('phone') : undefined"
                     :class="[
-                      'mt-2 w-full rounded-2xl border px-4 py-3 transition-colors',
+                      'mt-2 w-full rounded-[4px] border bg-white px-4 py-3 text-base text-ink-950 transition-colors duration-[var(--dur-hover)] placeholder:text-ink-500 motion-reduce:transition-none',
                       errors.phone
                         ? 'border-alert-500 focus:border-alert-500'
                         : 'border-ink-200 focus:border-wood-500'
@@ -323,7 +326,7 @@ usePageSeo({
                     :aria-invalid="errors.email ? 'true' : undefined"
                     :aria-describedby="errors.email ? errorId('email') : undefined"
                     :class="[
-                      'mt-2 w-full rounded-2xl border px-4 py-3 transition-colors',
+                      'mt-2 w-full rounded-[4px] border bg-white px-4 py-3 text-base text-ink-950 transition-colors duration-[var(--dur-hover)] placeholder:text-ink-500 motion-reduce:transition-none',
                       errors.email
                         ? 'border-alert-500 focus:border-alert-500'
                         : 'border-ink-200 focus:border-wood-500'
@@ -351,7 +354,7 @@ usePageSeo({
                     :aria-invalid="errors.projectType ? 'true' : undefined"
                     :aria-describedby="errors.projectType ? errorId('projectType') : undefined"
                     :class="[
-                      'mt-2 w-full rounded-2xl border bg-white px-4 py-3 transition-colors',
+                      'mt-2 w-full rounded-[4px] border bg-white px-4 py-3 text-base text-ink-950 transition-colors duration-[var(--dur-hover)] motion-reduce:transition-none',
                       errors.projectType
                         ? 'border-alert-500 focus:border-alert-500'
                         : 'border-ink-200 focus:border-wood-500'
@@ -391,7 +394,7 @@ usePageSeo({
                   :aria-invalid="errors.message ? 'true' : undefined"
                   :aria-describedby="errors.message ? errorId('message') : undefined"
                   :class="[
-                    'mt-2 w-full rounded-2xl border px-4 py-3 transition-colors',
+                    'mt-2 w-full rounded-[4px] border bg-white px-4 py-3 text-base text-ink-950 transition-colors duration-[var(--dur-hover)] placeholder:text-ink-500 motion-reduce:transition-none',
                     errors.message
                       ? 'border-alert-500 focus:border-alert-500'
                       : 'border-ink-200 focus:border-wood-500'
@@ -410,7 +413,7 @@ usePageSeo({
 
               <button
                 type="submit"
-                class="btn-dark w-full"
+                class="btn-bronze w-full"
               >
                 {{ t(uiText.contactForm.submit) }}
               </button>
@@ -433,10 +436,10 @@ usePageSeo({
             <p class="eyebrow">
               {{ t({ vi: 'Bản đồ', en: 'Map' }) }}
             </p>
-            <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
+            <h2 class="home-section-heading mt-4 text-ink-950">
               {{ t({ vi: 'Văn phòng và nhà xưởng', en: 'Office and factory' }) }}
             </h2>
-            <div class="mt-8 overflow-hidden rounded-2xl border border-ink-200 bg-white">
+            <div class="mt-8 overflow-hidden rounded-[4px] border border-ink-200 bg-white">
               <iframe
                 :src="mapEmbedUrl"
                 :title="t({ vi: 'Bản đồ nhà xưởng Lai Huy Interior', en: 'Map to the Lai Huy Interior workshop' })"
@@ -453,10 +456,10 @@ usePageSeo({
                 :href="address.mapUrl"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="block rounded-2xl border border-ink-200 bg-white p-5"
+                class="block rounded-[4px] border border-ink-200 bg-white p-5 shadow-[var(--shadow-rest)] transition-[border-color,box-shadow] duration-[var(--dur-hover)] ease-[var(--ease-editorial)] hover:border-ink-500 hover:shadow-[var(--shadow-hover)] focus-visible:border-ink-500 focus-visible:shadow-[var(--shadow-hover)] motion-reduce:transition-none"
               >
                 <strong class="text-ink-950">{{ t(address.label) }}</strong>
-                <span class="mt-2 block text-sm leading-6 text-ink-600">
+                <span class="mt-2 block text-base leading-[1.7] text-ink-600">
                   {{ t(address.address) }}
                 </span>
               </a>
@@ -476,19 +479,20 @@ usePageSeo({
           <article
             v-for="card in contactCards"
             :key="card.title"
-            class="industrial-card"
+            class="rounded-[4px] border border-ink-200 bg-white p-6 shadow-[var(--shadow-rest)]"
           >
             <Icon
               :name="card.icon"
-              class="h-7 w-7 text-wood-500"
+              class="h-7 w-7 text-wood-600"
+              aria-hidden="true"
             />
-            <h3 class="mt-5 text-xl font-black text-ink-950">
+            <h3 class="home-card-heading mt-5 text-ink-950">
               {{ card.title }}
             </h3>
             <p
               v-for="line in card.lines"
               :key="line"
-              class="mt-2 text-sm leading-6 text-ink-600"
+              class="mt-2 text-base leading-[1.7] text-ink-600"
             >
               {{ line }}
             </p>
@@ -497,7 +501,7 @@ usePageSeo({
               :href="card.href"
               target="_blank"
               rel="noopener noreferrer"
-              class="mt-5 inline-flex text-sm font-bold text-wood-600"
+              class="mt-5 inline-flex min-h-11 items-center text-sm font-semibold text-wood-600 underline-offset-4 hover:underline"
             >
               {{ card.action }}
             </a>

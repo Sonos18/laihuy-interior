@@ -80,7 +80,10 @@ usePageSeo({
 </script>
 
 <template>
-  <div>
+  <!-- `home-page` only supplies the shared Headline/Title/Label type tokens. Below the hero the
+       index is Linen: Paper White project cards sit directly on it, and the closing CTA is the
+       shared `.section-cta` band. -->
+  <div class="home-page bg-wood-50 text-ink-950">
     <AppHero
       :topic="t(uiText.labels.caseStudies)"
       :title="t({ vi: 'Khách sạn, villa', en: 'Hotels, villas' })"
@@ -92,18 +95,21 @@ usePageSeo({
       focal="50% 42%"
     />
 
-    <section class="section-y bg-white">
+    <section class="section-y">
       <div class="shell">
+        <!-- DESIGN.md Chips: pill, Action type, Plaster border and Walnut Grey text at rest, Mid
+             Timber border and Deep Timber text on hover, Charcoal Ink fill with Linen text when
+             active. 44px minimum hit target. -->
         <div class="mb-10 flex flex-wrap gap-3">
           <button
             v-for="category in categories"
             :key="category.value"
             type="button"
             :class="[
-              'rounded-full border px-5 py-3 text-sm font-bold transition-colors',
+              'inline-flex min-h-11 items-center rounded-full border px-5 py-3 text-sm font-semibold tracking-[0.01em] transition-[border-color,color,background-color] duration-[var(--dur-hover)] ease-[var(--ease-editorial)] motion-reduce:transition-none',
               selectedCategory === category.value
-                ? 'border-ink-950 bg-ink-950 text-white'
-                : 'border-ink-200 bg-white text-ink-600 hover:border-wood-500 hover:text-wood-600'
+                ? 'border-ink-900 bg-ink-900 text-wood-50'
+                : 'border-ink-200 bg-transparent text-ink-600 hover:border-wood-500 hover:text-wood-600'
             ]"
             :aria-pressed="selectedCategory === category.value"
             @click="selectedCategory = category.value"
@@ -129,7 +135,7 @@ usePageSeo({
             v-for="{ project, cover } in filteredProjects"
             :key="project.slug"
             :to="`/du-an/${project.slug}`"
-            class="group block overflow-hidden rounded-2xl bg-white"
+            class="group flex flex-col overflow-hidden rounded-[4px] border border-ink-200 bg-white shadow-[var(--shadow-rest)] transition-[border-color,box-shadow] duration-[var(--dur-hover)] ease-[var(--ease-editorial)] hover:border-ink-500 hover:shadow-[var(--shadow-hover)] focus-visible:border-ink-500 focus-visible:shadow-[var(--shadow-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-wood-500 motion-reduce:transition-none"
           >
             <div
               v-if="cover"
@@ -142,14 +148,14 @@ usePageSeo({
                 :height="cover.height"
                 sizes="sm:100vw md:50vw lg:33vw"
                 loading="lazy"
-                class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] group-focus-visible:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100 motion-reduce:group-focus-visible:scale-100"
               />
-              <div class="absolute left-4 top-4 rounded-full bg-ink-950 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-white">
+              <div class="home-eyebrow-text absolute left-4 top-4 rounded-[4px] bg-white/92 px-3 py-1.5 text-ink-950">
                 {{ t(categoryDefinitions[project.category].label) }}
               </div>
             </div>
-            <div :class="['border border-ink-200 p-6', cover ? 'border-t-0' : '']">
-              <div class="mb-4 inline-flex rounded-full border border-ink-200 px-3 py-2 text-xs font-bold text-wood-700">
+            <div :class="['flex grow flex-col p-6 lg:p-7', cover ? 'border-t border-[var(--rule-light)]' : '']">
+              <div class="home-meta-text mb-4 inline-flex self-start rounded-[4px] border border-ink-200 px-3 py-1.5 font-semibold text-wood-600">
                 {{ getProjectMetric(project) }}
               </div>
               <p
@@ -158,20 +164,20 @@ usePageSeo({
               >
                 {{ t(categoryDefinitions[project.category].label) }}
               </p>
-              <h2 class="text-2xl font-black leading-tight text-ink-950">
+              <h2 class="home-card-heading text-ink-950">
                 {{ t(project.name) }}
               </h2>
-              <p class="mt-3 text-sm leading-6 text-ink-600">
+              <p class="mt-3 text-base leading-[1.7] text-ink-600">
                 {{ t(project.shortDescription) }}
               </p>
               <div
                 v-if="ta(project.scope).length"
-                class="mt-5 flex flex-wrap gap-2"
+                class="mt-auto flex flex-wrap gap-2 pt-5"
               >
                 <span
                   v-for="scope in ta(project.scope).slice(0, 3)"
                   :key="scope"
-                  class="rounded-full bg-ink-50 px-3 py-2 text-xs font-semibold text-ink-600"
+                  class="home-meta-text rounded-[4px] bg-[var(--color-ivory)] px-3 py-1.5 font-semibold text-ink-600"
                 >
                   {{ scope }}
                 </span>
@@ -188,13 +194,14 @@ usePageSeo({
           <p class="eyebrow">
             {{ t(uiText.cta.hotelConsult) }}
           </p>
-          <h2 class="mt-4 max-w-3xl text-3xl font-black uppercase md:text-5xl">
+          <h2 class="home-section-heading mt-4 max-w-3xl text-ink-950">
             {{ t({ vi: 'Bạn cần đội ngũ sản xuất và thi công cho dự án tiếp theo?', en: 'Need a production and contracting team for your next project?' }) }}
           </h2>
         </div>
         <NuxtLink
           to="/lien-he"
-          class="btn-primary"
+          class="btn-bronze"
+          data-testid="projects-cta"
         >
           {{ t(uiText.cta.sendDrawings) }}
         </NuxtLink>

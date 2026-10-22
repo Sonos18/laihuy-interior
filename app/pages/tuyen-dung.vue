@@ -55,7 +55,10 @@ usePageSeo({
 </script>
 
 <template>
-  <div>
+  <!-- `home-page` only supplies the shared Headline/Title/Label type tokens that
+       `.home-section-heading` and friends read. Below the hero the page is one warm-light
+       canvas: Linen, one Raw Silk step for the open positions, Plaster hairlines between. -->
+  <div class="home-page bg-wood-50 text-ink-950">
     <AppHero
       :topic="t({ vi: 'Tuyển dụng', en: 'Careers' })"
       :title="t({ vi: 'Nơi tay nghề', en: 'Where craft' })"
@@ -65,40 +68,45 @@ usePageSeo({
       focal="50% 40%"
     />
 
-    <section class="section-y bg-white">
+    <section class="section-y">
       <div class="shell grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
         <div>
           <p class="eyebrow">
             {{ t({ vi: 'Môi trường làm việc', en: 'Work environment' }) }}
           </p>
-          <h2 class="mt-4 text-3xl font-black uppercase leading-tight text-ink-950 md:text-5xl">
+          <h2 class="home-section-heading mt-4 text-ink-950">
             {{ t({ vi: 'Cùng phát triển năng lực nội thất dự án', en: 'Build project interior capability with us' }) }}
           </h2>
         </div>
         <div>
-          <p class="text-lg leading-9 text-ink-600">
+          <p class="home-lead-text text-ink-600">
             {{ t({ vi: 'Lai Huy Interior đang mở rộng đội ngũ cho mảng sản xuất, kỹ thuật, thiết kế, giám sát và kinh doanh dự án. Chúng tôi tìm kiếm những nhân sự muốn làm việc trong môi trường rõ quy trình, có sản phẩm thực tế và có cơ hội tham gia các công trình khách sạn, villa, căn hộ và thương mại.', en: 'Lai Huy Interior is expanding its production, technical, design, site supervision, and project sales teams. We welcome people who want clear processes, real products, and exposure to hotel, villa, apartment, and commercial projects.' }) }}
           </p>
-          <div class="mt-8 grid gap-3 md:grid-cols-2">
+          <div class="mt-8 grid gap-4 md:grid-cols-2">
             <div
               v-for="benefit in careerBenefits"
               :key="benefit.vi"
-              class="rounded-2xl border border-ink-200 p-4 text-sm font-semibold leading-6 text-ink-700"
+              class="flex gap-3 rounded-[4px] border border-ink-200 bg-white p-4 text-base font-semibold leading-[1.7] text-ink-700 shadow-[var(--shadow-rest)]"
             >
-              {{ t(benefit) }}
+              <Icon
+                name="i-lucide-check"
+                class="mt-1 h-4 w-4 shrink-0 text-wood-600"
+                aria-hidden="true"
+              />
+              <span>{{ t(benefit) }}</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section-y bg-ink-50">
+    <section class="section-y border-t border-[var(--rule-light)] bg-[var(--color-ivory)]">
       <div class="shell">
         <div class="mb-12 max-w-3xl">
           <p class="eyebrow">
             {{ t(uiText.labels.openPositions) }}
           </p>
-          <h2 class="mt-4 text-3xl font-black uppercase text-ink-950 md:text-5xl">
+          <h2 class="home-section-heading mt-4 text-ink-950">
             {{ t({ vi: 'Vị trí đang tuyển', en: 'Open positions' }) }}
           </h2>
         </div>
@@ -107,31 +115,34 @@ usePageSeo({
           <article
             v-for="job in jobs"
             :key="job.id"
-            class="rounded-2xl border border-ink-200 bg-white p-6"
+            class="rounded-[4px] border border-ink-200 bg-white p-6 shadow-[var(--shadow-rest)] lg:p-7"
           >
-            <div class="mb-5 flex flex-wrap gap-2 text-xs font-bold text-ink-600">
-              <span class="rounded-full border border-ink-200 px-3 py-2">
+            <!-- Location and type are facts about the role, not controls, so they take the 4px
+                 content edge rather than the pill reserved for things you press. -->
+            <div class="home-meta-text mb-5 flex flex-wrap gap-2 font-semibold text-ink-600">
+              <span class="rounded-[4px] border border-ink-200 px-3 py-1.5">
                 {{ t(job.location) }}
               </span>
-              <span class="rounded-full border border-ink-200 px-3 py-2">
+              <span class="rounded-[4px] border border-ink-200 px-3 py-1.5">
                 {{ t(job.type) }}
               </span>
             </div>
-            <h3 class="text-2xl font-black text-ink-950">
+            <h3 class="home-card-heading text-ink-950">
               {{ t(job.title) }}
             </h3>
-            <p class="mt-3 text-sm leading-6 text-ink-600">
+            <p class="mt-3 text-base leading-[1.7] text-ink-600">
               {{ t(job.description) }}
             </p>
             <ul class="mt-5 space-y-3">
               <li
                 v-for="requirement in ta(job.requirements)"
                 :key="requirement"
-                class="flex gap-3 text-sm leading-6 text-ink-700"
+                class="flex gap-3 text-base leading-[1.7] text-ink-700"
               >
                 <Icon
                   name="i-lucide-dot"
-                  class="mt-1 h-4 w-4 shrink-0 text-wood-500"
+                  class="mt-1.5 h-4 w-4 shrink-0 text-wood-600"
+                  aria-hidden="true"
                 />
                 {{ requirement }}
               </li>
@@ -147,16 +158,17 @@ usePageSeo({
           <p class="eyebrow">
             {{ t({ vi: 'Ứng tuyển', en: 'Apply' }) }}
           </p>
-          <h2 class="mt-4 max-w-3xl text-3xl font-black uppercase md:text-5xl">
+          <h2 class="home-section-heading mt-4 max-w-3xl text-ink-950">
             {{ t({ vi: 'Gửi hồ sơ để cùng Lai Huy triển khai những dự án lớn hơn', en: 'Send your profile and help Lai Huy deliver larger projects' }) }}
           </h2>
-          <p class="mt-4 text-ink-600">
+          <p class="home-lead-text mt-4 text-ink-600">
             {{ t({ vi: 'Email tuyển dụng hiện dùng chung với kênh liên hệ công ty.', en: 'Recruitment applications currently use the company contact email.' }) }}
           </p>
         </div>
         <a
           :href="`mailto:${company.email}?subject=${encodeURIComponent(t({ vi: 'Ứng tuyển Lai Huy Interior', en: 'Career application - Lai Huy Interior' }))}`"
-          class="btn-primary"
+          class="btn-bronze"
+          data-testid="careers-apply"
         >
           {{ t(uiText.cta.sendCv) }}
         </a>

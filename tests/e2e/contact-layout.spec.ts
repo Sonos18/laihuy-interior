@@ -10,7 +10,7 @@ import { settle } from './helpers'
  * lives in visual.spec.ts.
  */
 
-const CARDS = '[data-testid="contact-cards"] .industrial-card'
+const CARDS = '[data-testid="contact-cards"] > article'
 
 /** Cards on the same visual row share a top edge. Sub-pixel rounding differs per engine, so
  *  rows are bucketed with a 2px tolerance rather than compared exactly. */

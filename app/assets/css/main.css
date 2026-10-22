@@ -543,7 +543,7 @@
   }
 
   /* Element resets only — no font-size here. Heading sizing is owned by utility
-     classes (text-hero / text-section-title / text-3xl …) so a class always wins
+     classes (text-hero / text-3xl …) so a class always wins
      over the element default. */
   h1,
   h2,
@@ -1734,28 +1734,8 @@
     @apply text-xs font-semibold uppercase tracking-[0.22em] text-wood-600;
   }
 
-  .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-wood-500 px-7 py-3.5 text-sm font-bold text-white shadow-sm shadow-wood-950/10 transition-[background-color,border-color,color,box-shadow] duration-[240ms] ease-[var(--ease-editorial)] hover:bg-wood-600 hover:shadow-md hover:shadow-wood-950/15;
-  }
-
-  .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/35 px-7 py-3.5 text-sm font-bold text-white transition-[background-color,border-color,color,box-shadow] duration-[240ms] ease-[var(--ease-editorial)] hover:bg-white hover:text-ink-950;
-  }
-
-  .btn-dark {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-ink-950 px-7 py-3.5 text-sm font-bold text-white shadow-sm shadow-ink-950/10 transition-[background-color,border-color,color,box-shadow] duration-[240ms] ease-[var(--ease-editorial)] hover:bg-ink-800 hover:shadow-md hover:shadow-ink-950/15;
-  }
-
   .btn-outline {
     @apply inline-flex items-center justify-center gap-2 rounded-full border border-ink-300 px-7 py-3.5 text-sm font-semibold text-ink-900 transition-[background-color,border-color,color,box-shadow] duration-[240ms] ease-[var(--ease-editorial)] hover:border-ink-950 hover:bg-ink-950 hover:text-white;
-  }
-
-  .metric-card {
-    @apply rounded-2xl border border-ink-200 bg-white p-6;
-  }
-
-  .industrial-card {
-    @apply rounded-2xl border border-ink-200 bg-white p-6 transition-colors hover:border-wood-400;
   }
 
   .fade-enter-active,
@@ -1786,13 +1766,6 @@
     font-size: clamp(2.25rem, 1.4rem + 4.2vw, 4.75rem);
     line-height: 1.05;
     letter-spacing: -0.02em;
-    text-wrap: balance;
-  }
-
-  .text-section-title {
-    font-size: clamp(1.75rem, 1.2rem + 2.6vw, 3rem);
-    line-height: 1.12;
-    letter-spacing: -0.01em;
     text-wrap: balance;
   }
 

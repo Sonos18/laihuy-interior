@@ -85,7 +85,9 @@ const recoveryLinks = [
 </script>
 
 <template>
-  <div class="flex min-h-screen flex-col bg-white">
+  <!-- The error shell is one Linen surface: no photograph, so no dark band (DESIGN.md Warm Light
+       Rule). `home-page` only supplies the Headline/Title type tokens used below. -->
+  <div class="home-page flex min-h-screen flex-col bg-wood-50 text-ink-950">
     <a
       class="skip-link"
       href="#main"
@@ -123,7 +125,7 @@ const recoveryLinks = [
                  reference for anyone reporting the problem, not the page's title. The <h1>
                  is the sentence below it, which is what the page is actually about. -->
             <p
-              class="text-7xl font-black leading-none tracking-tight text-ink-200 md:text-8xl"
+              class="font-display text-7xl font-medium leading-none tracking-tight text-ink-200 md:text-8xl"
               aria-hidden="true"
             >
               {{ t(copy.code) }}
@@ -133,18 +135,18 @@ const recoveryLinks = [
               {{ t(copy.eyebrow) }}
             </p>
 
-            <h1 class="mt-4 text-4xl font-black uppercase leading-tight text-ink-950 md:text-6xl">
+            <h1 class="home-display-title mt-4 font-display font-medium text-ink-950">
               {{ t(copy.title) }}
             </h1>
 
-            <p class="mt-6 max-w-2xl text-lg leading-8 text-ink-600">
+            <p class="home-lead-text mt-6 max-w-2xl text-ink-600">
               {{ t(copy.body) }}
             </p>
 
             <div class="mt-9 flex flex-col gap-3 sm:flex-row">
               <button
                 type="button"
-                class="btn-primary"
+                class="btn-bronze"
                 @click="goHome"
               >
                 {{ t(uiText.errorPage.home) }}
@@ -171,23 +173,25 @@ const recoveryLinks = [
               v-for="link in recoveryLinks"
               :key="link.to"
               :to="link.to"
-              class="industrial-card group"
+              class="group rounded-[4px] border border-ink-200 bg-white p-6 shadow-[var(--shadow-rest)] transition-[border-color,box-shadow] duration-[var(--dur-hover)] ease-[var(--ease-editorial)] hover:border-ink-500 hover:shadow-[var(--shadow-hover)] focus-visible:border-ink-500 focus-visible:shadow-[var(--shadow-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-wood-500 motion-reduce:transition-none lg:p-7"
             >
               <Icon
                 :name="link.icon"
-                class="h-7 w-7 text-wood-500"
+                class="h-7 w-7 text-wood-600"
+                aria-hidden="true"
               />
-              <h2 class="mt-5 text-xl font-black text-ink-950">
+              <h2 class="home-card-heading mt-5 text-ink-950">
                 {{ t(link.label) }}
               </h2>
-              <p class="mt-2 text-sm leading-6 text-ink-600">
+              <p class="mt-2 text-base leading-[1.7] text-ink-600">
                 {{ t(link.description) }}
               </p>
-              <span class="mt-5 inline-flex items-center gap-2 text-sm font-bold text-wood-600">
+              <span class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-wood-600">
                 {{ t({ vi: 'Xem', en: 'View' }) }}
                 <Icon
                   name="i-lucide-arrow-right"
-                  class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                  class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
+                  aria-hidden="true"
                 />
               </span>
             </NuxtLink>
