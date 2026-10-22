@@ -360,3 +360,166 @@ for (const locale of ['vi', 'en'] as const) {
     expect(structuredFaqs).toEqual([...tagged('vi'), ...tagged('en')])
   })
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FX-WARM: /nha-xuong sits on the warm-light canvas below the hero (DESIGN.md, Warm Light Rule).
+// Obsidian lives behind the hero photograph and in the footer only.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const WARM_WIDTHS = [768, 1440] as const
+const warmSections = [
+  'factory-stats',
+  'factory-pillars',
+  'factory-process',
+  'factory-people-quality',
+  'factory-audiences',
+  'factory-faq',
+  'factory-visit-cta'
+] as const
+
+for (const locale of ['vi', 'en'] as const) {
+  for (const width of WARM_WIDTHS) {
+    const tag = `${locale} @ ${width}`
+
+    test(`FX-WARM-01 no dark band ${tag}`, async ({ page }) => {
+      await openFactory(page, locale, width)
+
+      const surfaces = await page.evaluate((testIds) => {
+        const parse = (value: string): number[] | null => {
+          const match = value.match(/^(?:rgba?|color)\(([^)]+)\)$/)
+          if (!match) return null
+          const parts = match[1]!.replace('srgb', '').split(/[,/\s]+/).filter(Boolean).map(Number)
+          const scale = value.startsWith('color(') ? 255 : 1
+          return [parts[0]! * scale, parts[1]! * scale, parts[2]! * scale, parts[3] ?? 1]
+        }
+        // Composite translucent layers up the tree until an opaque one, so a tinted surface is
+        // judged by what the reader sees.
+        const background = (el: Element): number[] => {
+          const layers: number[][] = []
+          let current: Element | null = el
+          while (current) {
+            const layer = parse(getComputedStyle(current).backgroundColor)
+            if (layer && layer[3]! > 0) {
+              layers.push(layer)
+              if (layer[3] === 1) break
+            }
+            current = current.parentElement
+          }
+          let result = [255, 255, 255]
+          for (const [r, g, b, a] of layers.reverse()) {
+            result = [r! * a! + result[0]! * (1 - a!), g! * a! + result[1]! * (1 - a!), b! * a! + result[2]! * (1 - a!)]
+          }
+          return result
+        }
+        const channel = (c: number) => {
+          const v = c / 255
+          return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)
+        }
+        const luminanceOf = (el: Element) => {
+          const [r, g, b] = background(el)
+          return 0.2126 * channel(r!) + 0.7152 * channel(g!) + 0.0722 * channel(b!)
+        }
+        return testIds.map(id => ({
+          id,
+          luminance: luminanceOf(document.querySelector(`[data-testid="${id}"]`)!)
+        }))
+      }, warmSections)
+
+      for (const surface of surfaces) {
+        // Sawdust, the darkest allowed band, measures about 0.78.
+        expect(surface.luminance, `${surface.id} background is a dark band`).toBeGreaterThanOrEqual(0.7)
+      }
+      // Sawdust is the emphasis band: the process chapter, and nothing else.
+      const sawdust = surfaces.filter(surface => surface.luminance < 0.85).map(surface => surface.id)
+      expect(sawdust).toEqual(['factory-process'])
+    })
+
+    test(`FX-WARM-02 headings and type ${tag}`, async ({ page }) => {
+      await openFactory(page, locale, width)
+
+      const result = await page.evaluate(() => {
+        const outside = (el: Element) => !el.closest('.app-hero')
+        const typeOf = (el: Element) => {
+          const style = getComputedStyle(el)
+          return {
+            text: (el.textContent ?? '').trim().slice(0, 40),
+            weight: style.fontWeight,
+            transform: style.textTransform,
+            family: style.fontFamily
+          }
+        }
+        const headings = [...document.querySelectorAll('main h2')].filter(outside).map(typeOf)
+        const cardHeadings = [...document.querySelectorAll('main h3')].filter(outside).map(typeOf)
+        const heavy = [...document.querySelectorAll('main *')]
+          .filter(outside)
+          .filter(el => getComputedStyle(el).fontWeight === '900')
+          .map(el => `${el.tagName.toLowerCase()}: ${(el.textContent ?? '').trim().slice(0, 30)}`)
+        const markers = [...document.querySelectorAll('[data-testid="factory-process-group"] > span')]
+          .map(el => parseFloat(getComputedStyle(el).fontSize))
+        const smallest = [...document.querySelectorAll('main p, main li, main h2, main h3, main a, main span, main dt, main dd, main summary')]
+          .filter(outside)
+          .filter(el => (el.textContent ?? '').trim() !== '' && el.children.length === 0)
+          .map(el => parseFloat(getComputedStyle(el).fontSize))
+        return { headings, cardHeadings, heavy, markers, smallest }
+      })
+
+      // pillars, process, people and quality, audiences, FAQ and visit
+      expect(result.headings).toHaveLength(6)
+      // 4 pillars, 4 process groups and 2 audiences
+      expect(result.cardHeadings).toHaveLength(10)
+      for (const heading of [...result.headings, ...result.cardHeadings]) {
+        expect(heading.weight, heading.text).toBe('500')
+        expect(heading.transform, heading.text).toBe('none')
+        expect(heading.family, heading.text).toContain('Outfit')
+      }
+      expect(result.heavy).toEqual([])
+      // The four production stages are a real order, so they keep Label-sized markers.
+      expect(result.markers).toHaveLength(4)
+      for (const size of result.markers) {
+        expect(size).toBeLessThanOrEqual(14)
+      }
+      for (const size of result.smallest) {
+        expect(size).toBeGreaterThanOrEqual(12)
+      }
+    })
+
+    test(`FX-WARM-03 radii ${tag}`, async ({ page }) => {
+      await openFactory(page, locale, width)
+
+      const offenders = await page.evaluate(() => {
+        const corners = [
+          'borderTopLeftRadius',
+          'borderTopRightRadius',
+          'borderBottomRightRadius',
+          'borderBottomLeftRadius'
+        ] as const
+        const found: string[] = []
+        for (const el of document.querySelectorAll('main *')) {
+          if (el.closest('.app-hero')) continue
+          const style = getComputedStyle(el)
+          for (const corner of corners) {
+            const raw = style[corner]
+            const value = parseFloat(raw)
+            const pill = raw.endsWith('%') ? value >= 50 : value >= 9000
+            if (!pill && value > 4) {
+              found.push(`${el.tagName.toLowerCase()}.${String(el.className).slice(0, 60)} ${corner}=${raw}`)
+            }
+          }
+        }
+        return found
+      })
+
+      expect(offenders).toEqual([])
+    })
+
+    test(`FX-WARM-04 actions ${tag}`, async ({ page }) => {
+      await openFactory(page, locale, width)
+
+      const primary = page.getByTestId('factory-visit-phone')
+      await expect(primary).toHaveClass(/\bbtn-bronze\b/)
+      // Bronze Edge Rule: on a light surface the bronze fill carries the Deep Timber border.
+      await expect(primary).toHaveCSS('border-top-color', 'rgb(124, 80, 50)')
+      await expect(page.getByTestId('factory-visit-map')).toHaveClass(/\bbtn-outline\b/)
+    })
+  }
+}

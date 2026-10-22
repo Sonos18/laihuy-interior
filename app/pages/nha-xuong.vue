@@ -39,7 +39,11 @@ usePageSeo({
 </script>
 
 <template>
-  <div>
+  <!-- `home-page` only supplies the shared Headline/Title/Label type tokens that
+       `.home-section-heading` and friends read. Below the hero the page is one warm-light
+       canvas: Linen and Raw Silk in steps, one Sawdust band (the production proof chapter) and
+       Plaster hairlines. -->
+  <div class="home-page bg-wood-50 text-ink-950">
     <AppHero
       data-testid="factory-hero"
       :topic="t(factoryPageContent.hero.topic)"
@@ -74,7 +78,7 @@ usePageSeo({
 
     <section
       data-testid="factory-pillars"
-      class="section-y bg-white"
+      class="section-y border-t border-[var(--rule-light)] bg-[var(--color-ivory)]"
     >
       <div class="shell">
         <div
@@ -83,36 +87,37 @@ usePageSeo({
         >
           <MediaImage
             :image="factoryMedia.facade"
-            class="rounded-2xl"
+            class="rounded-[4px] bg-ink-100"
           />
           <div>
             <p class="eyebrow">
               {{ t(factoryPageContent.pillars.eyebrow) }}
             </p>
-            <h2 class="text-section-title mt-4 font-black uppercase text-ink-950">
+            <h2 class="home-section-heading mt-4 text-ink-950">
               {{ t(factoryPageContent.pillars.title) }}
             </h2>
-            <p class="measure-lead mt-5 text-ink-600">
+            <p class="measure-lead home-lead-text mt-5 text-ink-600">
               {{ t(factoryPageContent.pillars.description) }}
             </p>
             <div
               data-testid="factory-pillars-grid"
-              class="mt-8 grid grid-cols-2 gap-4"
+              class="mt-8 grid grid-cols-2 gap-x-6 gap-y-8"
             >
               <article
                 v-for="pillar in factoryPillars"
                 :key="pillar.id"
                 data-testid="factory-pillar"
-                class="border-t-2 border-wood-500 pt-5"
+                class="border-t border-ink-200 pt-5"
               >
                 <Icon
                   :name="pillar.icon"
                   class="h-5 w-5 text-wood-600"
+                  aria-hidden="true"
                 />
-                <h3 class="mt-4 font-black text-ink-950">
+                <h3 class="home-card-heading mt-4 text-ink-950">
                   {{ t(pillar.title) }}
                 </h3>
-                <p class="mt-2 text-sm leading-6 text-ink-600">
+                <p class="mt-2 text-base leading-[1.7] text-ink-600">
                   {{ t(pillar.description) }}
                 </p>
               </article>
@@ -130,7 +135,7 @@ usePageSeo({
 
     <section
       data-testid="factory-people-quality"
-      class="section-y bg-ink-50"
+      class="section-y border-t border-[var(--rule-light)] bg-wood-50"
     >
       <div
         data-testid="factory-people-quality-layout"
@@ -138,27 +143,33 @@ usePageSeo({
       >
         <MediaImage
           :image="factoryMedia.people"
-          class="rounded-2xl"
+          class="rounded-[4px] bg-ink-100"
         />
         <div>
           <p class="eyebrow">
             {{ t(factoryPageContent.peopleQuality.eyebrow) }}
           </p>
-          <h2 class="text-section-title mt-4 font-black uppercase text-ink-950">
+          <h2 class="home-section-heading mt-4 text-ink-950">
             {{ t(factoryPageContent.peopleQuality.title) }}
           </h2>
-          <p class="mt-5 leading-7 text-ink-600">
+          <p class="measure-lead home-lead-text mt-5 text-ink-600">
             {{ t(factoryPageContent.peopleQuality.description) }}
           </p>
+          <!-- The four checks are a list of safeguards, not a numbered programme, so each gets a
+               tick from the icon set instead of a decorative 01-04. -->
           <ul class="mt-8 grid gap-4">
             <li
-              v-for="(item, index) in qualityControl"
+              v-for="item in qualityControl"
               :key="t(item)"
               data-testid="factory-quality-step"
-              class="flex gap-4 border-b border-ink-200 pb-4"
+              class="flex gap-4 border-b border-[var(--rule-light)] pb-4"
             >
-              <span class="font-black text-wood-600">{{ String(index + 1).padStart(2, '0') }}</span>
-              <span class="text-sm leading-6 text-ink-700">{{ t(item) }}</span>
+              <Icon
+                name="i-lucide-check"
+                class="mt-1 h-4 w-4 shrink-0 text-wood-600"
+                aria-hidden="true"
+              />
+              <span class="text-base leading-[1.7] text-ink-700">{{ t(item) }}</span>
             </li>
           </ul>
         </div>
@@ -167,16 +178,16 @@ usePageSeo({
 
     <section
       data-testid="factory-audiences"
-      class="section-y bg-white"
+      class="section-y border-t border-[var(--rule-light)] bg-[var(--color-ivory)]"
     >
       <div class="shell">
         <p class="eyebrow">
           {{ t(factoryPageContent.audiences.eyebrow) }}
         </p>
-        <h2 class="text-section-title mt-4 max-w-4xl font-black uppercase text-ink-950">
+        <h2 class="home-section-heading mt-4 max-w-4xl text-ink-950">
           {{ t(factoryPageContent.audiences.title) }}
         </h2>
-        <p class="measure-lead mt-5 text-ink-600">
+        <p class="measure-lead home-lead-text mt-5 text-ink-600">
           {{ t(factoryPageContent.audiences.description) }}
         </p>
         <div class="mt-10 grid gap-5 md:grid-cols-2">
@@ -184,20 +195,21 @@ usePageSeo({
             v-for="audience in factoryAudiences"
             :key="audience.id"
             data-testid="factory-audience"
-            class="rounded-2xl border border-ink-200 bg-ink-50 p-6 md:p-8"
+            class="rounded-[4px] border border-ink-200 bg-white p-6 shadow-[var(--shadow-rest)] md:p-8"
           >
-            <h3 class="text-xl font-black uppercase text-ink-950">
+            <h3 class="home-card-heading text-ink-950">
               {{ t(audience.title) }}
             </h3>
             <ul class="mt-6 grid gap-4">
               <li
                 v-for="point in audience.points"
                 :key="t(point)"
-                class="flex gap-3 text-ink-700"
+                class="flex gap-3 text-base leading-[1.7] text-ink-700"
               >
                 <Icon
                   name="i-lucide-check"
                   class="mt-1 h-4 w-4 shrink-0 text-wood-600"
+                  aria-hidden="true"
                 />
                 <span>{{ t(point) }}</span>
               </li>
@@ -209,14 +221,14 @@ usePageSeo({
 
     <section
       data-testid="factory-faq"
-      class="section-y bg-ink-50"
+      class="section-y border-t border-[var(--rule-light)] bg-wood-50"
     >
       <div class="shell grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
         <div>
           <p class="eyebrow">
             {{ t(factoryPageContent.faq.eyebrow) }}
           </p>
-          <h2 class="text-section-title mt-4 font-black uppercase text-ink-950">
+          <h2 class="home-section-heading mt-4 text-ink-950">
             {{ t(factoryPageContent.faq.title) }}
           </h2>
         </div>
@@ -224,16 +236,17 @@ usePageSeo({
           <details
             v-for="faq in factoryFaqs"
             :key="faq.id"
-            class="group rounded-2xl border border-ink-200 bg-white px-6 open:border-wood-300"
+            class="group rounded-[4px] border border-ink-200 bg-white px-6 shadow-[var(--shadow-rest)] transition-[border-color] duration-[var(--dur-hover)] ease-[var(--ease-editorial)] hover:border-ink-500 open:border-ink-500 motion-reduce:transition-none"
           >
-            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-base font-black text-ink-950 [&::-webkit-details-marker]:hidden">
+            <summary class="home-nested-heading flex cursor-pointer list-none items-center justify-between gap-4 py-5 font-display font-medium text-ink-950 [&::-webkit-details-marker]:hidden">
               {{ t(faq.question) }}
               <Icon
                 name="i-lucide-plus"
-                class="h-5 w-5 shrink-0 text-wood-500 transition-transform duration-300 group-open:rotate-45 motion-reduce:transition-none"
+                class="h-5 w-5 shrink-0 text-wood-600 transition-transform duration-300 group-open:rotate-45 motion-reduce:transition-none"
+                aria-hidden="true"
               />
             </summary>
-            <p class="measure pb-5 text-sm leading-7 text-ink-600">
+            <p class="measure pb-5 text-base leading-[1.7] text-ink-600">
               {{ t(faq.answer) }}
             </p>
           </details>

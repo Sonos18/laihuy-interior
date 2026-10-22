@@ -17,30 +17,32 @@ const phoneHref = computed(() => `tel:${props.phone.replaceAll(' ', '')}`)
 </script>
 
 <template>
+  <!-- Closing CTA on the shared `.section-cta` band (Linen, top hairline); the footer is the
+       only dark surface after it. -->
   <section
     data-testid="factory-visit-cta"
-    class="bg-wood-700 text-white"
+    class="section-cta"
   >
-    <div class="shell grid gap-8 py-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:py-16">
+    <div class="shell grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-12">
       <MediaImage
         :image="image"
         sizes="sm:100vw lg:40vw"
-        class="aspect-[16/10] rounded-2xl"
+        class="aspect-[16/10] rounded-[4px] bg-ink-100"
       />
       <div>
-        <p class="eyebrow text-wood-100">
+        <p class="eyebrow">
           {{ t(content.eyebrow) }}
         </p>
-        <h2 class="mt-4 text-3xl font-black uppercase md:text-5xl">
+        <h2 class="home-section-heading mt-4 text-ink-950">
           {{ t(content.title) }}
         </h2>
-        <p class="mt-5 max-w-2xl leading-7 text-white/80">
+        <p class="home-lead-text mt-5 max-w-2xl text-ink-600">
           {{ t(content.description) }}
         </p>
-        <p class="mt-6 font-bold">
+        <p class="mt-6 text-base font-semibold leading-[1.7] text-ink-950">
           {{ t(address.address) }}
         </p>
-        <p class="mt-2 text-sm text-white/75">
+        <p class="mt-2 text-base leading-[1.7] text-ink-600">
           {{ ta(workingHours).join(' · ') }}
         </p>
         <div
@@ -50,7 +52,7 @@ const phoneHref = computed(() => `tel:${props.phone.replaceAll(' ', '')}`)
           <a
             data-testid="factory-visit-phone"
             :href="phoneHref"
-            class="btn-primary"
+            class="btn-bronze"
           >
             {{ t(content.phoneCta) }}
           </a>
@@ -59,7 +61,7 @@ const phoneHref = computed(() => `tel:${props.phone.replaceAll(' ', '')}`)
             :href="address.mapUrl"
             target="_blank"
             rel="noopener noreferrer"
-            class="btn-secondary"
+            class="btn-outline"
           >
             {{ t(content.mapCta) }}
           </a>

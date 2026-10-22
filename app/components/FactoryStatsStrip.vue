@@ -10,7 +10,7 @@ const { t } = useLanguage()
   <div
     id="factory-capability"
     data-testid="factory-stats"
-    class="scroll-mt-[calc(var(--header-h)+1rem)] border-b border-ink-200 bg-white"
+    class="scroll-mt-[calc(var(--header-h)+1rem)] border-b border-[var(--rule-light)] bg-wood-50"
   >
     <div class="shell">
       <dl class="grid grid-cols-2 lg:grid-cols-4">
@@ -19,17 +19,17 @@ const { t } = useLanguage()
           :key="stat.id"
           v-reveal="index * 70"
           data-testid="factory-stat"
-          class="reveal border-b border-ink-200 px-4 py-6 odd:border-r lg:border-b-0 lg:border-r lg:last:border-r-0"
+          class="reveal border-b border-[var(--rule-light)] px-4 py-6 odd:border-r lg:border-b-0 lg:border-r lg:last:border-r-0"
         >
           <Icon
             :name="stat.icon"
             class="h-5 w-5 text-wood-600"
             aria-hidden="true"
           />
-          <dt class="mt-4 text-xs font-bold uppercase tracking-[0.14em] text-ink-600">
+          <dt class="home-eyebrow-text mt-4 text-ink-600">
             {{ t(stat.label) }}
           </dt>
-          <dd class="mt-2 text-2xl font-black text-ink-950 md:text-3xl">
+          <dd class="home-stat-value mt-2 font-display font-medium tracking-tight text-ink-950">
             {{ t(stat.value) }}
           </dd>
         </div>
