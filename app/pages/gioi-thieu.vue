@@ -9,6 +9,7 @@ import { company } from '~/data/company'
 import { factoryStats, productionWorkflow } from '~/data/factory'
 import { projects } from '~/data/projects'
 import { companyMedia } from '~/media/catalog.generated'
+import { breathMedia } from '~/media/breath-media'
 import { requireWorkshopAsset } from '~/media/factory-media'
 import { projectCover, withAlt } from '~/media/project-media'
 
@@ -26,6 +27,10 @@ const proofStats = aboutProofStatIds.flatMap((id) => {
   const stat = factoryStats.find(item => item.id === id)
   return stat ? [stat] : []
 })
+const proofFacts = computed(() => factsFromStats(proofStats, t))
+
+// The page's Monument (DESIGN.md "Monument"): the monthly room capacity opens the factory chapter.
+const capacityStat = factoryStats.find(stat => stat.id === 'throughput')
 
 const projectFeatures = aboutProjectSlugs.flatMap((slug) => {
   const project = projects.find(item => item.slug === slug)
@@ -102,32 +107,28 @@ usePageSeo({
         </template>
       </AppHero>
 
-      <AboutProofStrip :stats="proofStats" />
+      <FactsBand
+        :facts="proofFacts"
+        testid="about-proof"
+        grid-testid="about-proof-grid"
+        cell-testid="about-proof-stat"
+      />
     </div>
 
+    <!-- The lead section: a rail head with the page's Statement heading. Its chapter ends on the
+         page's one breath photograph (DESIGN.md "Breath"), so the section keeps no bottom padding. -->
     <section
       data-about-chapter="problem"
-      class="section-y border-t border-[var(--rule-light)] bg-[var(--color-ivory)]"
+      class="section-y border-t border-[var(--rule-light)] bg-[var(--color-ivory)] pb-0"
     >
-      <div class="shell">
-        <p
-          v-reveal.head
-          class="eyebrow reveal"
-        >
-          {{ t(aboutPageContent.problem.eyebrow) }}
-        </p>
-        <h2
-          v-reveal.head
-          class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
-        >
-          {{ t(aboutPageContent.problem.title) }}
-        </h2>
-        <p
-          v-reveal.head
-          class="measure-lead home-lead-text reveal mt-5 text-ink-600"
-        >
-          {{ t(aboutPageContent.problem.description) }}
-        </p>
+      <div class="shell pb-[var(--section-py)]">
+        <SectionHead
+          layout="rail"
+          statement
+          :eyebrow="t(aboutPageContent.problem.eyebrow)"
+          :title="t(aboutPageContent.problem.title)"
+          :lead="t(aboutPageContent.problem.description)"
+        />
 
         <div class="mt-12 grid gap-10 xl:grid-cols-[0.72fr_1.28fr] xl:gap-16">
           <p
@@ -153,6 +154,8 @@ usePageSeo({
           </ul>
         </div>
       </div>
+
+      <BreathImage :image="breathMedia.about" />
     </section>
 
     <AboutWorkflowRail
@@ -165,28 +168,23 @@ usePageSeo({
       class="section-y border-t border-[var(--rule-light)] bg-wood-50"
     >
       <div class="shell">
-        <p
-          v-reveal.head
-          class="eyebrow reveal"
-        >
-          {{ t(aboutPageContent.factory.eyebrow) }}
-        </p>
-        <h2
-          v-reveal.head
-          class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
-        >
-          {{ t(aboutPageContent.factory.title) }}
-        </h2>
-        <p
-          v-reveal.head
-          class="measure-lead home-lead-text reveal mt-5 text-ink-600"
-        >
-          {{ t(aboutPageContent.factory.description) }}
-        </p>
+        <SectionHead
+          layout="split"
+          :eyebrow="t(aboutPageContent.factory.eyebrow)"
+          :title="t(aboutPageContent.factory.title)"
+          :lead="t(aboutPageContent.factory.description)"
+        />
+
+        <FactMonument
+          v-if="capacityStat"
+          class="mt-16 md:mt-20"
+          :label="t(capacityStat.label)"
+          :value="t(capacityStat.value)"
+        />
 
         <div
           data-testid="about-factory-grid"
-          class="mt-10 grid gap-5 md:grid-cols-[1.15fr_0.85fr]"
+          class="mt-16 grid gap-5 md:mt-20 md:grid-cols-[1.15fr_0.85fr]"
         >
           <MediaImage
             :image="factoryImages.main"
@@ -231,24 +229,13 @@ usePageSeo({
       class="section-y border-t border-[var(--rule-light)] bg-[var(--color-ivory)]"
     >
       <div class="shell">
-        <p
-          v-reveal.head
-          class="eyebrow reveal"
-        >
-          {{ t(aboutPageContent.projects.eyebrow) }}
-        </p>
-        <h2
-          v-reveal.head
-          class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
-        >
-          {{ t(aboutPageContent.projects.title) }}
-        </h2>
-        <p
-          v-reveal.head
-          class="measure-lead home-lead-text reveal mt-5 text-ink-600"
-        >
-          {{ t(aboutPageContent.projects.description) }}
-        </p>
+        <SectionHead
+          layout="stacked"
+          title-class="max-w-4xl"
+          :eyebrow="t(aboutPageContent.projects.eyebrow)"
+          :title="t(aboutPageContent.projects.title)"
+          :lead="t(aboutPageContent.projects.description)"
+        />
 
         <div
           data-testid="about-project-grid"
@@ -272,18 +259,11 @@ usePageSeo({
       class="section-y border-t border-[var(--rule-light)] bg-wood-50"
     >
       <div class="shell">
-        <p
-          v-reveal.head
-          class="eyebrow reveal"
-        >
-          {{ t(aboutPageContent.fit.eyebrow) }}
-        </p>
-        <h2
-          v-reveal.head
-          class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
-        >
-          {{ t(aboutPageContent.fit.title) }}
-        </h2>
+        <SectionHead
+          layout="rail"
+          :eyebrow="t(aboutPageContent.fit.eyebrow)"
+          :title="t(aboutPageContent.fit.title)"
+        />
         <ul class="mt-10 grid gap-5 md:grid-cols-3">
           <li
             v-for="item in aboutPageContent.fit.items"
@@ -304,15 +284,17 @@ usePageSeo({
       class="section-cta"
     >
       <div class="shell text-center">
-        <p class="eyebrow">
-          {{ t(aboutPageContent.contact.eyebrow) }}
-        </p>
-        <h2 class="home-section-heading mx-auto mt-4 max-w-4xl text-ink-950">
-          {{ t(aboutPageContent.contact.title) }}
-        </h2>
-        <p class="home-lead-text mx-auto mt-5 max-w-2xl text-ink-600">
-          {{ t(aboutPageContent.contact.description) }}
-        </p>
+        <div data-head="stacked">
+          <p class="eyebrow">
+            {{ t(aboutPageContent.contact.eyebrow) }}
+          </p>
+          <h2 class="home-section-heading mx-auto mt-4 max-w-4xl text-ink-950">
+            {{ t(aboutPageContent.contact.title) }}
+          </h2>
+          <p class="home-lead-text mx-auto mt-5 max-w-2xl text-ink-600">
+            {{ t(aboutPageContent.contact.description) }}
+          </p>
+        </div>
         <div class="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
           <NuxtLink
             to="/lien-he"

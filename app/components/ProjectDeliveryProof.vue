@@ -24,31 +24,15 @@ const timelineStyle = computed(() => ({ '--phase-count': String(props.phases.len
     class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] border-t border-[var(--rule-light)] bg-wood-50"
   >
     <div class="shell">
-      <div class="grid gap-10 md:grid-cols-[0.72fr_1.28fr] md:items-end">
-        <div>
-          <p
-            v-reveal.head
-            class="eyebrow reveal"
-          >
-            {{ t({ vi: 'Triển khai', en: 'Delivery' }) }}
-          </p>
-          <h2
-            v-reveal.head
-            class="home-section-heading reveal mt-4 text-ink-950"
-          >
-            {{ t({ vi: 'Từ phạm vi đến bàn giao', en: 'From scope to handover' }) }}
-          </h2>
-        </div>
-        <p
-          v-reveal.head
-          class="measure-lead home-lead-text reveal text-ink-600"
-        >
-          {{ t({
-            vi: `Từ chiến lược thiết kế, ${projectName} được triển khai theo đúng phạm vi đã xác nhận, với từng bước nối tiếp đến bàn giao.`,
-            en: `From the design response, ${projectName} moves through its verified scope as one connected sequence toward handover.`
-          }) }}
-        </p>
-      </div>
+      <SectionHead
+        layout="rail"
+        :eyebrow="t({ vi: 'Triển khai', en: 'Delivery' })"
+        :title="t({ vi: 'Từ phạm vi đến bàn giao', en: 'From scope to handover' })"
+        :lead="t({
+          vi: `Từ chiến lược thiết kế, ${projectName} được triển khai theo đúng phạm vi đã xác nhận, với từng bước nối tiếp đến bàn giao.`,
+          en: `From the design response, ${projectName} moves through its verified scope as one connected sequence toward handover.`
+        })"
+      />
 
       <ul class="mt-10 flex flex-wrap border-y border-[var(--rule-light)]">
         <li

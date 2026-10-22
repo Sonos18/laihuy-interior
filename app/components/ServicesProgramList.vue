@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import type { ServicesPageContent } from '~/data/services-page'
 import type { Service } from '~/data/services'
+import type { MediaImage } from '~/shared/media/types'
 
 const props = withDefaults(defineProps<{
   content: ServicesPageContent['programmes']
   services: readonly Service[]
   startAt?: number
+  /** The page's one breath photograph (DESIGN.md "Breath"), closing this chapter. */
+  breath?: MediaImage
 }>(), {
-  startAt: 4
+  startAt: 4,
+  breath: undefined
 })
 
 const { t, ta } = useLanguage()
@@ -15,29 +19,22 @@ const sequence = (index: number) => String(props.startAt + index).padStart(2, '0
 </script>
 
 <template>
+  <!-- With a breath photograph the chapter ends on it, so the bottom padding moves inside. -->
   <section
     data-services-chapter="programmes"
-    class="section-y bg-[var(--color-ivory)]"
+    class="section-y border-t border-[var(--rule-light)] bg-[var(--color-ivory)]"
+    :class="breath ? 'pb-0' : ''"
   >
-    <div class="shell">
-      <p
-        v-reveal.head
-        class="eyebrow reveal"
-      >
-        {{ t(content.eyebrow) }}
-      </p>
-      <h2
-        v-reveal.head
-        class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
-      >
-        {{ t(content.title) }}
-      </h2>
-      <p
-        v-reveal.head
-        class="measure-lead home-lead-text reveal mt-5 text-ink-600"
-      >
-        {{ t(content.description) }}
-      </p>
+    <div
+      class="shell"
+      :class="breath ? 'pb-[var(--section-py)]' : ''"
+    >
+      <SectionHead
+        layout="split"
+        :eyebrow="t(content.eyebrow)"
+        :title="t(content.title)"
+        :lead="t(content.description)"
+      />
 
       <ol
         role="list"
@@ -101,5 +98,10 @@ const sequence = (index: number) => String(props.startAt + index).padStart(2, '0
         </li>
       </ol>
     </div>
+
+    <BreathImage
+      v-if="breath"
+      :image="breath"
+    />
   </section>
 </template>

@@ -22,7 +22,7 @@ const sequence = (index: number) => String(index + 1).padStart(2, '0')
         data-testid="about-workflow-layout"
         class="grid gap-10 xl:grid-cols-[0.7fr_1.3fr] xl:gap-16"
       >
-        <div>
+        <div data-head="stacked">
           <p
             v-reveal.head
             class="eyebrow reveal"

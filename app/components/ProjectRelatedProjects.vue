@@ -15,28 +15,22 @@ const { t } = useLanguage()
     class="section-y border-t border-[var(--rule-light)] bg-wood-50"
   >
     <div class="shell">
-      <div class="mb-10 flex items-end justify-between gap-6">
-        <div>
-          <p
-            v-reveal.head
-            class="eyebrow reveal"
+      <!-- A rail head; the link to the full index hangs under the heading. -->
+      <SectionHead
+        layout="rail"
+        class="mb-10"
+        :eyebrow="t(uiText.labels.exploreMore)"
+        :title="t(uiText.labels.relatedProjects)"
+      >
+        <template #aside>
+          <NuxtLink
+            to="/du-an"
+            class="btn-outline hidden md:inline-flex"
           >
-            {{ t(uiText.labels.exploreMore) }}
-          </p>
-          <h2
-            v-reveal.head
-            class="home-section-heading reveal mt-4 text-ink-950"
-          >
-            {{ t(uiText.labels.relatedProjects) }}
-          </h2>
-        </div>
-        <NuxtLink
-          to="/du-an"
-          class="btn-outline hidden md:inline-flex"
-        >
-          {{ t(uiText.cta.allProjects) }}
-        </NuxtLink>
-      </div>
+            {{ t(uiText.cta.allProjects) }}
+          </NuxtLink>
+        </template>
+      </SectionHead>
 
       <div class="grid gap-6 md:grid-cols-3">
         <NuxtLink

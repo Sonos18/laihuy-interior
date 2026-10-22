@@ -21,7 +21,12 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
   >
     <div class="shell">
       <!-- Section Header -->
-      <div class="home-projects__header">
+      <!-- A split head (DESIGN.md "Section heads"): the section's one action sits on the
+           heading's last line. -->
+      <div
+        class="home-projects__header"
+        data-head="split"
+      >
         <div class="max-w-2xl">
           <p
             v-reveal.head

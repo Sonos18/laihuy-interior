@@ -38,69 +38,50 @@ const metricCapacity = computed(() => props.capabilities?.[1])
 <template>
   <section
     data-testid="homepage-machinery"
-    class="home-factory bg-wood-100 text-ink-950"
+    class="home-factory border-t border-[var(--rule-light)] bg-wood-100 text-ink-950"
   >
     <div class="shell">
-      <!-- Section Intro -->
-      <div class="home-factory__intro">
-        <div>
-          <p
-            v-reveal.head
-            class="eyebrow home-eyebrow-text reveal text-wood-600"
-          >
-            {{ t(homePageContent.factory.eyebrow) }}
-          </p>
-          <h2
-            v-reveal.head
-            class="home-factory__title home-section-heading reveal mt-4 text-ink-950"
-          >
-            {{ t(homePageContent.factory.title) }}
-          </h2>
-        </div>
-        <p
-          v-reveal.head
-          class="home-lead-text reveal max-w-2xl text-ink-600"
-        >
-          {{ t(homePageContent.factory.description) }}
-        </p>
-      </div>
+      <!-- A rail head (DESIGN.md "Section heads"): the eyebrow alone in the left quarter. -->
+      <SectionHead
+        layout="rail"
+        eyebrow-class="eyebrow home-eyebrow-text text-wood-600"
+        lead-class="max-w-2xl"
+        :eyebrow="t(homePageContent.factory.eyebrow)"
+        :title="t(homePageContent.factory.title)"
+        :lead="t(homePageContent.factory.description)"
+      />
 
-      <!-- Proof Metrics Rail (Workshop footprint & capacity) -->
-      <dl class="home-factory__metrics mt-12 grid grid-cols-1 gap-6 border-y border-[var(--rule-light)] py-6 sm:grid-cols-2">
-        <div
-          v-if="metricFootprint"
-          class="home-factory__metric"
-        >
-          <dt class="home-eyebrow-text uppercase text-wood-600">
-            {{ t(metricFootprint.label) }}
-          </dt>
-          <dd class="home-stat-value mt-2 font-display font-medium tracking-tight text-ink-950">
-            {{ t(metricFootprint.value) }}
-          </dd>
-          <dd class="mt-1 text-sm leading-[1.75] text-ink-600">
-            {{ t(metricFootprint.description) }}
-          </dd>
-        </div>
-        <div
+      <!-- The page's Monument (DESIGN.md "Monument"): the workshop footprint opens the factory
+           proof as one figure, with its sentence and the companion capacity fact beside it. -->
+      <FactMonument
+        v-if="metricFootprint"
+        class="mt-16 md:mt-24"
+        :label="t(metricFootprint.label)"
+        :value="t(metricFootprint.value)"
+      >
+        <p class="text-base leading-[1.7] text-ink-600">
+          {{ t(metricFootprint.description) }}
+        </p>
+        <dl
           v-if="metricCapacity"
-          class="home-factory__metric sm:border-l sm:border-[var(--rule-light)] sm:pl-6"
+          class="mt-6 border-t border-ink-200 pt-6"
         >
-          <dt class="home-eyebrow-text uppercase text-wood-600">
+          <dt class="home-eyebrow-text text-ink-600">
             {{ t(metricCapacity.label) }}
           </dt>
-          <dd class="home-stat-value mt-2 font-display font-medium tracking-tight text-ink-950">
+          <dd class="home-card-heading mt-2 text-ink-950">
             {{ t(metricCapacity.value) }}
           </dd>
-          <dd class="mt-1 text-sm leading-[1.75] text-ink-600">
+          <dd class="mt-2 text-base leading-[1.7] text-ink-600">
             {{ t(metricCapacity.description) }}
           </dd>
-        </div>
-      </dl>
+        </dl>
+      </FactMonument>
 
       <!-- Factory Real Visual Evidence -->
       <div
         data-testid="homepage-machinery-image"
-        class="home-factory__image-container mt-12 overflow-hidden rounded-sm border border-[var(--rule-light)] bg-ink-100"
+        class="home-factory__image-container mt-16 overflow-hidden rounded-sm border border-[var(--rule-light)] bg-ink-100"
       >
         <div class="relative aspect-[16/9] w-full md:aspect-[21/9]">
           <MediaImage
@@ -175,13 +156,6 @@ const metricCapacity = computed(() => props.capabilities?.[1])
 .home-factory {
   padding-block: var(--section-py);
 }
-.home-factory__intro {
-  display: grid;
-  gap: 2rem;
-}
-.home-factory__title {
-  max-width: 55rem;
-}
 .home-factory__caption {
   position: absolute;
   inset-inline: 0;
@@ -197,12 +171,6 @@ const metricCapacity = computed(() => props.capabilities?.[1])
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-ivory);
-}
-@media (min-width: 1024px) {
-  .home-factory__intro {
-    grid-template-columns: minmax(0, 1.15fr) minmax(20rem, 0.85fr);
-    align-items: end;
-  }
 }
 @media (prefers-reduced-motion: reduce) {
   .home-factory * {

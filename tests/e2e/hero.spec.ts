@@ -207,7 +207,7 @@ async function settleHero(page: import('@playwright/test').Page) {
  */
 function heroGate(cover: { name: string, path: string }, vp: { name: string, width: number, height: number }) {
   // The floor binds for every cover, home included: the metrics band lives below the hero
-  // (HomeMetricsBand), so nothing but the copy sits inside the section.
+  // (FactsBand), so nothing but the copy sits inside the section.
   test(`${cover.name} @ ${vp.name} — floor binds (G1) and crop is locale-independent (G2)`, async ({ page }) => {
     await blockImages(page)
     await page.setViewportSize({ width: vp.width, height: vp.height })

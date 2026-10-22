@@ -9,10 +9,12 @@ import { homeCapabilities, homeStoryStages } from '~/data/home-page'
 import { projects } from '~/data/projects'
 import { siteImages } from '~/data/site-images'
 import { projectMedia } from '~/media/catalog.generated'
+import { breathMedia } from '~/media/breath-media'
 import { homeMaterialStoryMedia } from '~/media/home-media'
 import { projectCoverAsset } from '~/media/project-media'
 import type { MediaAsset } from '~/shared/media/types'
 import type { Project } from '~/shared/types/project'
+import type { Fact } from '~/utils/facts'
 
 const { t } = useLanguage()
 
@@ -26,11 +28,11 @@ const featuredProjects = computed(() =>
     .slice(0, 3)
 )
 
-const homeMetrics = computed(() => [
-  { label: t({ vi: 'Xưởng sản xuất & kho', en: 'Factory & warehouse' }), value: t({ vi: '3.000 m²', en: '3,000 m²' }), figure: true },
-  { label: t({ vi: 'Năng lực dự án', en: 'Project capacity' }), value: t({ vi: 'Đến 50 phòng/tháng', en: 'Up to 50 rooms/month' }) },
-  { label: t({ vi: 'Phạm vi', en: 'Coverage' }), value: t({ vi: 'Thiết kế → bàn giao', en: 'Design → handover' }) },
-  { label: t({ vi: 'Thị trường', en: 'Markets' }), value: t({ vi: 'Toàn quốc & xuất khẩu', en: 'Nationwide & export' }) }
+const homeMetrics = computed<Fact[]>(() => [
+  { id: 'footprint', label: t({ vi: 'Xưởng sản xuất & kho', en: 'Factory & warehouse' }), value: t({ vi: '3.000 m²', en: '3,000 m²' }), figure: true },
+  { id: 'throughput', label: t({ vi: 'Năng lực dự án', en: 'Project capacity' }), value: t({ vi: 'Đến 50 phòng/tháng', en: 'Up to 50 rooms/month' }) },
+  { id: 'end-to-end', label: t({ vi: 'Phạm vi', en: 'Coverage' }), value: t({ vi: 'Thiết kế → bàn giao', en: 'Design → handover' }) },
+  { id: 'reach', label: t({ vi: 'Thị trường', en: 'Markets' }), value: t({ vi: 'Toàn quốc & xuất khẩu', en: 'Nationwide & export' }) }
 ])
 
 const seoTitle = computed(() => t(company.seo.home.title))
@@ -59,12 +61,17 @@ usePageSeo({
 <template>
   <div class="home-page">
     <HomeHero :image="heroImage" />
-    <HomeMetricsBand :metrics="homeMetrics" />
+    <FactsBand
+      :facts="homeMetrics"
+      testid="home-metrics"
+      cell-testid="home-metric"
+    />
     <HomeMaterialStory
       :stages="homeStoryStages"
       :images="homeMaterialStoryMedia"
     />
     <HomeCapabilities :capabilities="homeCapabilities" />
+    <BreathImage :image="breathMedia.home" />
     <HomeProjectStage :projects="featuredProjects" />
     <HomeFactoryProof
       :capabilities="factoryCapabilities"

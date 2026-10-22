@@ -11,7 +11,7 @@ const { t } = useLanguage()
     class="home-project-cta section-cta"
   >
     <div class="shell home-project-cta__grid">
-      <div>
+      <div data-head="stacked">
         <p
           v-reveal.head
           class="eyebrow home-eyebrow-text reveal text-wood-600"

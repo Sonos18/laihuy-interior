@@ -26,8 +26,10 @@ const materialImage = computed(() => props.images[3] ?? props.images[0])
     class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] border-t border-[var(--rule-light)] bg-[var(--color-ivory)] text-ink-950"
   >
     <div class="shell space-y-16">
+      <!-- A split head (DESIGN.md "Section heads"); without the experience lead it is stacked. -->
       <div
         data-material-layout
+        :data-head="experience ? 'split' : 'stacked'"
         class="grid gap-10 md:grid-cols-[0.8fr_1.2fr] md:items-end"
       >
         <div>

@@ -1345,70 +1345,46 @@ for (const locale of ['vi', 'en'] as const) {
       const finale = page.locator('section[data-project-chapter="finale"]')
       await expect(finale).toBeVisible()
 
-      // Stats rail has border-b border-[var(--rule-light)]
-      const statsUl = finale.locator('ul')
-      const statsStyles = await statsUl.evaluate((el) => {
+      // The finale opens on the shared Facts Band (DESIGN.md "Facts Band"): Linen with a
+      // Plaster hairline under it, no icons, values in Charcoal Ink, labels in Walnut Grey.
+      const band = finale.locator('[data-facts-band]')
+      await expect(band).toHaveCount(1)
+      const bandStyles = await band.evaluate((el) => {
         const probe = document.createElement('div')
         probe.style.borderColor = 'var(--rule-light)'
-        document.body.appendChild(probe)
-        const expectedBorder = getComputedStyle(probe).borderColor
-        probe.remove()
-        return {
-          borderBottomColor: getComputedStyle(el).borderBottomColor,
-          expectedBorder
-        }
-      })
-      expect(statsStyles.borderBottomColor).toBe(statsStyles.expectedBorder)
-
-      // Rendered stat count matches supplied factory stats (>=3)
-      const statLis = statsUl.locator('li')
-      const statCount = await statLis.count()
-      expect(statCount).toBeGreaterThanOrEqual(3)
-
-      // Stat icon uses the light-surface accent
-      const { iconColor, expectedAccent } = await statLis.first().evaluate((el) => {
-        const icon = el.querySelector('svg, span')
-        const probe = document.createElement('div')
-        probe.style.color = 'var(--accent-light)'
-        document.body.appendChild(probe)
-        const expectedAccent = getComputedStyle(probe).color
-        probe.remove()
-        return {
-          iconColor: icon ? getComputedStyle(icon).color : '',
-          expectedAccent
-        }
-      })
-      expect(iconColor).toBe(expectedAccent)
-
-      // Stat value uses Charcoal Ink in the Title role
-      const { valColor, expectedInk } = await statLis.first().evaluate((el) => {
-        const val = el.querySelector('span.home-card-heading')
-        const probe = document.createElement('div')
         probe.style.color = 'var(--fg-light)'
+        probe.style.backgroundColor = 'var(--color-wood-50)'
         document.body.appendChild(probe)
-        const expectedInk = getComputedStyle(probe).color
+        const expected = getComputedStyle(probe)
+        const result = {
+          expectedBorder: expected.borderTopColor,
+          expectedInk: expected.color,
+          expectedLinen: expected.backgroundColor
+        }
         probe.remove()
+        const walnutProbe = document.createElement('div')
+        walnutProbe.style.color = 'var(--fg-light-muted)'
+        document.body.appendChild(walnutProbe)
+        const expectedWalnut = getComputedStyle(walnutProbe).color
+        walnutProbe.remove()
         return {
-          valColor: val ? getComputedStyle(val).color : '',
-          expectedInk
+          ...result,
+          expectedWalnut,
+          borderBottomColor: getComputedStyle(el).borderBottomColor,
+          background: getComputedStyle(el).backgroundColor,
+          icons: el.querySelectorAll('svg, .iconify, [class*="i-lucide"]').length,
+          valueColor: getComputedStyle(el.querySelector('dd')!).color,
+          labelColor: getComputedStyle(el.querySelector('dt')!).color
         }
       })
-      expect(valColor).toBe(expectedInk)
+      expect(bandStyles.borderBottomColor).toBe(bandStyles.expectedBorder)
+      expect(bandStyles.background).toBe(bandStyles.expectedLinen)
+      expect(bandStyles.icons).toBe(0)
+      expect(bandStyles.valueColor).toBe(bandStyles.expectedInk)
+      expect(bandStyles.labelColor).toBe(bandStyles.expectedWalnut)
 
-      // Stat label uses Walnut Grey
-      const { labelColor, expectedWalnut } = await statLis.first().evaluate((el) => {
-        const label = el.querySelector('span.home-eyebrow-text')
-        const probe = document.createElement('div')
-        probe.style.color = 'var(--fg-light-muted)'
-        document.body.appendChild(probe)
-        const expectedWalnut = getComputedStyle(probe).color
-        probe.remove()
-        return {
-          labelColor: label ? getComputedStyle(label).color : '',
-          expectedWalnut
-        }
-      })
-      expect(labelColor).toBe(expectedWalnut)
+      // Rendered fact count matches the supplied factory facts (>=3)
+      expect(await band.locator('[data-testid="project-fact"]').count()).toBeGreaterThanOrEqual(3)
     })
   }
 }

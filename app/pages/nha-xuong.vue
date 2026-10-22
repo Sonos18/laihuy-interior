@@ -18,6 +18,14 @@ if (!factoryAddress) {
   throw new Error('Missing company address entry: Nhà xưởng')
 }
 
+const facts = computed(() => factsFromStats(factoryStats, t))
+
+// The page's Monument (DESIGN.md "Monument"): the workshop footprint opens the production chapter.
+const footprintStat = factoryStats.find(stat => stat.id === 'footprint')
+const monument = computed(() => footprintStat
+  ? { label: t(footprintStat.label), value: t(footprintStat.value) }
+  : undefined)
+
 const factoryPhoneHref = `tel:${company.phone.replaceAll(' ', '')}`
 const seoTitle = computed(() => t(company.seo.factory.title))
 const seoDescription = computed(() => t(company.seo.factory.description))
@@ -74,7 +82,12 @@ usePageSeo({
       </template>
     </AppHero>
 
-    <FactoryStatsStrip :stats="factoryStats" />
+    <FactsBand
+      :facts="facts"
+      testid="factory-stats"
+      cell-testid="factory-stat"
+      anchor="factory-capability"
+    />
 
     <section
       data-testid="factory-pillars"
@@ -90,15 +103,13 @@ usePageSeo({
             class="rounded-[4px] bg-ink-100"
           />
           <div>
-            <p class="eyebrow">
-              {{ t(factoryPageContent.pillars.eyebrow) }}
-            </p>
-            <h2 class="home-section-heading mt-4 text-ink-950">
-              {{ t(factoryPageContent.pillars.title) }}
-            </h2>
-            <p class="measure-lead home-lead-text mt-5 text-ink-600">
-              {{ t(factoryPageContent.pillars.description) }}
-            </p>
+            <SectionHead
+              layout="stacked"
+              :reveal="false"
+              :eyebrow="t(factoryPageContent.pillars.eyebrow)"
+              :title="t(factoryPageContent.pillars.title)"
+              :lead="t(factoryPageContent.pillars.description)"
+            />
             <div
               data-testid="factory-pillars-grid"
               class="mt-8 grid grid-cols-2 gap-x-6 gap-y-8"
@@ -131,6 +142,7 @@ usePageSeo({
       :content="factoryPageContent.process"
       :groups="machineryProcessGroups"
       :image="factoryMedia.process"
+      :monument="monument"
     />
 
     <section
@@ -146,15 +158,13 @@ usePageSeo({
           class="rounded-[4px] bg-ink-100"
         />
         <div>
-          <p class="eyebrow">
-            {{ t(factoryPageContent.peopleQuality.eyebrow) }}
-          </p>
-          <h2 class="home-section-heading mt-4 text-ink-950">
-            {{ t(factoryPageContent.peopleQuality.title) }}
-          </h2>
-          <p class="measure-lead home-lead-text mt-5 text-ink-600">
-            {{ t(factoryPageContent.peopleQuality.description) }}
-          </p>
+          <SectionHead
+            layout="stacked"
+            :reveal="false"
+            :eyebrow="t(factoryPageContent.peopleQuality.eyebrow)"
+            :title="t(factoryPageContent.peopleQuality.title)"
+            :lead="t(factoryPageContent.peopleQuality.description)"
+          />
           <!-- The four QC checkpoints run in a fixed order (incoming materials → drawings →
                in production → sign-off), so they keep Label-size sequence markers. -->
           <ol
@@ -185,15 +195,13 @@ usePageSeo({
       class="section-y border-t border-[var(--rule-light)] bg-[var(--color-ivory)]"
     >
       <div class="shell">
-        <p class="eyebrow">
-          {{ t(factoryPageContent.audiences.eyebrow) }}
-        </p>
-        <h2 class="home-section-heading mt-4 max-w-4xl text-ink-950">
-          {{ t(factoryPageContent.audiences.title) }}
-        </h2>
-        <p class="measure-lead home-lead-text mt-5 text-ink-600">
-          {{ t(factoryPageContent.audiences.description) }}
-        </p>
+        <SectionHead
+          layout="split"
+          :reveal="false"
+          :eyebrow="t(factoryPageContent.audiences.eyebrow)"
+          :title="t(factoryPageContent.audiences.title)"
+          :lead="t(factoryPageContent.audiences.description)"
+        />
         <div class="mt-10 grid gap-5 md:grid-cols-2">
           <article
             v-for="audience in factoryAudiences"
@@ -227,16 +235,16 @@ usePageSeo({
       data-testid="factory-faq"
       class="section-y border-t border-[var(--rule-light)] bg-wood-50"
     >
-      <div class="shell grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
-        <div>
-          <p class="eyebrow">
-            {{ t(factoryPageContent.faq.eyebrow) }}
-          </p>
-          <h2 class="home-section-heading mt-4 text-ink-950">
-            {{ t(factoryPageContent.faq.title) }}
-          </h2>
-        </div>
-        <div class="space-y-3">
+      <!-- A rail head; the questions continue its argument, so they hang from the heading's
+           column rather than returning to the full measure. -->
+      <div class="shell">
+        <SectionHead
+          layout="rail"
+          :reveal="false"
+          :eyebrow="t(factoryPageContent.faq.eyebrow)"
+          :title="t(factoryPageContent.faq.title)"
+        />
+        <div class="rail-hang mt-10 space-y-3">
           <details
             v-for="faq in factoryFaqs"
             :key="faq.id"

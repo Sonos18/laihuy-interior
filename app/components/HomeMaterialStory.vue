@@ -60,7 +60,10 @@ const layerStyle = (index: number) => {
       class="home-material-story__sticky"
     >
       <div class="shell home-material-story__shell">
-        <div class="home-material-story__heading">
+        <div
+          class="home-material-story__heading"
+          data-head="split"
+        >
           <p class="eyebrow home-eyebrow-text text-wood-600">
             {{ t(homePageContent.story.eyebrow) }}
           </p>

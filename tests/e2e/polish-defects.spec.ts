@@ -143,17 +143,17 @@ test.describe('case study', () => {
 
   test('the "end-to-end" cell shows only when scope covers design, production and construction', async ({ page }) => {
     await open(page, '/du-an/khach-san-eo-gio', 1440)
-    await expect(page.locator('[data-project-chapter="finale"] ul li')).toHaveCount(4)
-    await expect(page.locator('[data-project-chapter="finale"] ul')).toContainText('Trọn gói')
+    await expect(page.locator('[data-project-chapter="finale"] [data-testid="project-fact"]')).toHaveCount(4)
+    await expect(page.locator('[data-project-chapter="finale"] [data-testid="project-facts-band"]')).toContainText('Trọn gói')
 
     await open(page, '/du-an/phong-hop-quan-7', 1440)
-    await expect(page.locator('[data-project-chapter="finale"] ul li')).toHaveCount(3)
-    await expect(page.locator('[data-project-chapter="finale"] ul')).not.toContainText('Trọn gói')
+    await expect(page.locator('[data-project-chapter="finale"] [data-testid="project-fact"]')).toHaveCount(3)
+    await expect(page.locator('[data-project-chapter="finale"] [data-testid="project-facts-band"]')).not.toContainText('Trọn gói')
   })
 
   test('the "end-to-end" cell is omitted in English on a design-only project', async ({ page }) => {
     await open(page, '/du-an/phong-hop-quan-7', 1440, 'en')
-    await expect(page.locator('[data-project-chapter="finale"] ul')).not.toContainText('End-to-end')
+    await expect(page.locator('[data-project-chapter="finale"] [data-testid="project-facts-band"]')).not.toContainText('End-to-end')
   })
 })
 

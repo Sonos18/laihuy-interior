@@ -30,15 +30,14 @@ const phoneHref = computed(() => `tel:${props.phone.replaceAll(' ', '')}`)
         class="aspect-[16/10] rounded-[4px] bg-ink-100"
       />
       <div>
-        <p class="eyebrow">
-          {{ t(content.eyebrow) }}
-        </p>
-        <h2 class="home-section-heading mt-4 text-ink-950">
-          {{ t(content.title) }}
-        </h2>
-        <p class="home-lead-text mt-5 max-w-2xl text-ink-600">
-          {{ t(content.description) }}
-        </p>
+        <SectionHead
+          layout="stacked"
+          :reveal="false"
+          lead-class="max-w-2xl"
+          :eyebrow="t(content.eyebrow)"
+          :title="t(content.title)"
+          :lead="t(content.description)"
+        />
         <p class="mt-6 text-base font-semibold leading-[1.7] text-ink-950">
           {{ t(address.address) }}
         </p>

@@ -5,6 +5,7 @@ import { factoryStats } from '~/data/factory'
 import { projects } from '~/data/projects'
 import { siteImages } from '~/data/site-images'
 import { uiText } from '~/data/ui'
+import { caseStudyBreath } from '~/media/breath-media'
 import {
   buildProjectMediaFlow,
   projectCoverAsset,
@@ -53,12 +54,17 @@ const detail = computed(() => buildProjectDetailViewModel({
   locale: locale.value
 }))
 
-// The finale repeats the factory proof strip. Its "end-to-end" cell (design → install) is a claim
+// The finale opens on the Facts Band. Its "end-to-end" cell (design → install) is a claim
 // about this project's delivery, so it only shows when the scope really spans design,
 // production and construction; every other cell is about the factory and always shows.
-const finaleStats = computed(() =>
-  detail.value.coversEndToEnd ? factoryStats : factoryStats.filter(stat => stat.id !== 'end-to-end')
-)
+const finaleFacts = computed(() => factsFromStats(
+  detail.value.coversEndToEnd ? factoryStats : factoryStats.filter(stat => stat.id !== 'end-to-end'),
+  t
+))
+
+// The case study's one breath photograph (DESIGN.md "Breath"), between the material story and
+// the related projects; a project without a spare landscape photograph has none.
+const breathImage = caseStudyBreath(allImages)
 
 const prettifySlug = (value: string): string =>
   value.replace(/-/g, ' ').replace(/\b\w/g, char => char.toUpperCase())
@@ -226,7 +232,11 @@ usePageSeo({
       :data-inline-media="filteredGallery.length"
     >
       <div class="shell">
-        <div class="mb-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <!-- Split when the room filters sit beside the heading, stacked otherwise. -->
+        <div
+          class="mb-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between"
+          :data-head="showGalleryFilters ? 'split' : 'stacked'"
+        >
           <div class="max-w-2xl">
             <p
               v-reveal.head
@@ -326,9 +336,14 @@ usePageSeo({
       :images="allImages"
     />
 
+    <BreathImage
+      v-if="breathImage"
+      :image="breathImage"
+    />
+
     <ProjectRelatedProjects :projects="relatedCards" />
     <ProjectConversionFinale
-      :stats="finaleStats"
+      :facts="finaleFacts"
       :phone="company.phone"
     />
 

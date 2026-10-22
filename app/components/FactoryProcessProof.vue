@@ -9,6 +9,8 @@ defineProps<{
   content: FactoryPageContent['process']
   groups: readonly MachineryProcessGroup[]
   image: MediaImage
+  /** The page's one Monument figure, opening this chapter (DESIGN.md "Monument"). */
+  monument?: { label: string, value: string }
 }>()
 
 const { t } = useLanguage()
@@ -23,24 +25,19 @@ const sequence = (index: number) => String(index + 1).padStart(2, '0')
     class="section-y border-t border-[var(--rule-light)] bg-wood-100 text-ink-950"
   >
     <div class="shell">
-      <p
-        v-reveal.head
-        class="eyebrow reveal"
-      >
-        {{ t(content.eyebrow) }}
-      </p>
-      <h2
-        v-reveal.head
-        class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
-      >
-        {{ t(content.title) }}
-      </h2>
-      <p
-        v-reveal.head
-        class="measure-lead home-lead-text reveal mt-5 text-ink-600"
-      >
-        {{ t(content.description) }}
-      </p>
+      <FactMonument
+        v-if="monument"
+        class="mb-16 md:mb-24"
+        :label="monument.label"
+        :value="monument.value"
+      />
+
+      <SectionHead
+        layout="split"
+        :eyebrow="t(content.eyebrow)"
+        :title="t(content.title)"
+        :lead="t(content.description)"
+      />
 
       <div
         data-testid="factory-process-layout"

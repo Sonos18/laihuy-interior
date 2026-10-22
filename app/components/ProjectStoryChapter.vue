@@ -19,18 +19,13 @@ const { t } = useLanguage()
     class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] bg-wood-50"
   >
     <div class="shell">
-      <p
-        v-reveal.head
-        class="eyebrow reveal"
-      >
-        {{ t({ vi: 'Câu chuyện dự án', en: 'Project story' }) }}
-      </p>
-      <h2
-        v-reveal.head
-        class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
-      >
-        {{ t({ vi: 'Từ bối cảnh đến lời giải', en: 'From context to response' }) }}
-      </h2>
+      <!-- The case study's lead section: a rail head with the page's Statement heading. -->
+      <SectionHead
+        layout="rail"
+        statement
+        :eyebrow="t({ vi: 'Câu chuyện dự án', en: 'Project story' })"
+        :title="t({ vi: 'Từ bối cảnh đến lời giải', en: 'From context to response' })"
+      />
 
       <div
         data-story-layout

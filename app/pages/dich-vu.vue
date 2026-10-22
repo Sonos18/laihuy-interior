@@ -8,6 +8,7 @@ import {
 } from '~/data/services-page'
 import { services, type Service, type ServiceId } from '~/data/services'
 import { projectMedia } from '~/media/catalog.generated'
+import { breathMedia } from '~/media/breath-media'
 import { requireWorkshopAsset } from '~/media/factory-media'
 import { withAlt } from '~/media/project-media'
 
@@ -136,24 +137,14 @@ usePageSeo({
         class="shell grid grid-cols-1 gap-14 md:grid-cols-2 md:gap-16 xl:gap-24"
       >
         <div>
-          <p
-            v-reveal.head
-            class="eyebrow reveal"
-          >
-            {{ t(servicesPageContent.documents.eyebrow) }}
-          </p>
-          <h2
-            v-reveal.head
-            class="home-section-heading reveal mt-4 max-w-3xl text-ink-950"
-          >
-            {{ t(servicesPageContent.documents.title) }}
-          </h2>
-          <p
-            v-reveal.head
-            class="measure-lead home-lead-text reveal mt-5 text-ink-600"
-          >
-            {{ t(servicesPageContent.documents.description) }}
-          </p>
+          <!-- The lead section: its heading takes the page's Statement role (DESIGN.md). -->
+          <SectionHead
+            layout="stacked"
+            statement
+            :eyebrow="t(servicesPageContent.documents.eyebrow)"
+            :title="t(servicesPageContent.documents.title)"
+            :lead="t(servicesPageContent.documents.description)"
+          />
 
           <div
             v-reveal
@@ -217,31 +208,20 @@ usePageSeo({
       data-services-chapter="proof"
       class="section-y overflow-hidden border-t border-[var(--rule-light)] bg-wood-100 text-ink-950"
     >
+      <div class="shell">
+        <SectionHead
+          layout="rail"
+          :eyebrow="t(servicesPageContent.proof.eyebrow)"
+          :title="t(servicesPageContent.proof.title)"
+          :lead="t(servicesPageContent.proof.description)"
+        />
+      </div>
       <div
         data-testid="services-proof-grid"
-        class="shell grid grid-cols-1 gap-14 md:grid-cols-2 md:items-center md:gap-16 xl:gap-24"
+        class="shell mt-12 grid grid-cols-1 gap-14 md:grid-cols-2 md:items-center md:gap-16 xl:gap-24"
       >
         <div>
-          <p
-            v-reveal.head
-            class="eyebrow reveal"
-          >
-            {{ t(servicesPageContent.proof.eyebrow) }}
-          </p>
-          <h2
-            v-reveal.head
-            class="home-section-heading reveal mt-4 max-w-3xl text-ink-950"
-          >
-            {{ t(servicesPageContent.proof.title) }}
-          </h2>
-          <p
-            v-reveal.head
-            class="home-lead-text mt-5 max-w-2xl text-ink-600"
-          >
-            {{ t(servicesPageContent.proof.description) }}
-          </p>
-
-          <div class="mt-10 grid gap-7">
+          <div class="grid gap-7">
             <article
               v-for="item in servicesPageContent.proof.items"
               :key="item.id"
@@ -286,7 +266,7 @@ usePageSeo({
 
     <section
       data-services-chapter="evidence"
-      class="bg-wood-50 py-10 md:py-12"
+      class="border-t border-[var(--rule-light)] bg-wood-50 py-10 md:py-12"
     >
       <div
         data-testid="services-evidence-grid"
@@ -308,6 +288,7 @@ usePageSeo({
       :content="servicesPageContent.programmes"
       :services="programmeServices"
       :start-at="4"
+      :breath="breathMedia.services"
     />
 
     <section
@@ -315,26 +296,13 @@ usePageSeo({
       class="section-cta"
     >
       <div class="shell grid gap-10 xl:grid-cols-[1.2fr_0.8fr] xl:items-end xl:gap-16">
-        <div>
-          <p
-            v-reveal.head
-            class="eyebrow reveal"
-          >
-            {{ t(servicesPageContent.contact.eyebrow) }}
-          </p>
-          <h2
-            v-reveal.head
-            class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
-          >
-            {{ t(servicesPageContent.contact.title) }}
-          </h2>
-          <p
-            v-reveal.head
-            class="measure-lead home-lead-text reveal mt-5 text-ink-600"
-          >
-            {{ t(servicesPageContent.contact.description) }}
-          </p>
-        </div>
+        <SectionHead
+          layout="stacked"
+          title-class="max-w-4xl"
+          :eyebrow="t(servicesPageContent.contact.eyebrow)"
+          :title="t(servicesPageContent.contact.title)"
+          :lead="t(servicesPageContent.contact.description)"
+        />
 
         <div
           v-reveal

@@ -11,20 +11,14 @@ const { t } = useLanguage()
     class="home-capabilities bg-[var(--color-ivory)] text-ink-950"
   >
     <div class="shell">
-      <div class="home-capabilities__intro">
-        <p
-          v-reveal.head
-          class="eyebrow home-eyebrow-text reveal text-wood-600"
-        >
-          {{ t(homePageContent.capabilities.eyebrow) }}
-        </p>
-        <h2
-          v-reveal.head
-          class="home-capabilities__title home-section-heading reveal mt-4 text-ink-950"
-        >
-          {{ t(homePageContent.capabilities.title) }}
-        </h2>
-      </div>
+      <!-- The home page's lead section: its heading takes the Statement role (DESIGN.md). -->
+      <SectionHead
+        layout="stacked"
+        statement
+        eyebrow-class="eyebrow home-eyebrow-text text-wood-600"
+        :eyebrow="t(homePageContent.capabilities.eyebrow)"
+        :title="t(homePageContent.capabilities.title)"
+      />
 
       <ol
         class="home-capabilities__list mt-14"
@@ -59,15 +53,6 @@ const { t } = useLanguage()
 .home-capabilities {
   padding-block: var(--section-py);
   border-block: 1px solid var(--rule-light);
-}
-
-.home-capabilities__intro {
-  display: grid;
-  gap: 1rem;
-}
-
-.home-capabilities__title {
-  max-width: 58rem;
 }
 
 .home-capabilities__list {
