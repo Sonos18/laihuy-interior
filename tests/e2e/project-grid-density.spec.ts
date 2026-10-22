@@ -120,6 +120,7 @@ async function projectGridGeometry(page: Page) {
         .filter(card => !card.href?.startsWith('/du-an/') || card.tabIndex < 0),
       pageHeight: document.documentElement.scrollHeight,
       gridHeight: grid.getBoundingClientRect().height,
+      featuredHeight: document.querySelector('[data-testid="projects-featured"]')?.getBoundingClientRect().height ?? 0,
       horizontalOverflow: document.documentElement.scrollWidth > window.innerWidth + 1
     }
   })
@@ -146,18 +147,22 @@ for (const viewport of BREAKPOINT_CASES) {
 }
 
 // The featured composition above the archive changes shape at 768 by design (one column below,
-// lead + satellites from 768: see PI-01), so the page height steps there. The archive grid is two
-// columns on both sides of the boundary and must not.
-test('/du-an archive grid has no material one-pixel height cliff at 767/768', async ({ page }) => {
-  const heights: number[] = []
+// lead + satellites from 768: see PI-01), so the page height steps there. Everything else is the
+// same on both sides of the boundary: the page height without the featured section, and the
+// archive grid itself, must not have a one-pixel cliff.
+test('/du-an has no material one-pixel height cliff at 767/768 outside the featured section', async ({ page }) => {
+  const pages: number[] = []
+  const grids: number[] = []
 
   for (const width of [767, 768]) {
     await prepareProjectsPage(page, width)
-    heights.push((await projectGridGeometry(page)).gridHeight)
+    const geometry = await projectGridGeometry(page)
+    pages.push(geometry.pageHeight - geometry.featuredHeight)
+    grids.push(geometry.gridHeight)
   }
 
-  const [height767, height768] = heights as [number, number]
-  const differenceRatio = Math.abs(height767 - height768) / Math.max(height767, height768)
-
-  expect(differenceRatio).toBeLessThanOrEqual(0.15)
+  for (const [name, [at767, at768]] of [['page without the featured section', pages], ['archive grid', grids]] as const) {
+    const differenceRatio = Math.abs(at767! - at768!) / Math.max(at767!, at768!)
+    expect(differenceRatio, name).toBeLessThanOrEqual(0.15)
+  }
 })

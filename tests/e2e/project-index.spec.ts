@@ -1,12 +1,16 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from './fixtures'
+import { projects } from '../../app/data/projects'
+import { FEATURED_LIMIT, splitProjectIndex } from '../../app/utils/project-index'
+import { coversEndToEnd } from '../../app/utils/project-detail-view-model'
 import { APP_ORIGIN } from './origin'
 
 /**
  * PROJECT INDEX (`/du-an`) and the case-study room filter.
  *
  * PI-01  the projects that cover design, production and construction are the featured
- *        composition (one lead + two satellites), and only they are.
+ *        composition (one lead + two satellites), and only they are: up to three are featured,
+ *        any further one falls into the archive, and no project is lost.
  * PI-02  a card carries one chip type: the category as a Label line; no pills.
  * PI-03  the category filter narrows the archive and leaves the featured composition alone.
  * PI-04  the archive filter chips stay on one row (they scroll sideways instead of wrapping).
@@ -23,10 +27,11 @@ const TRANSPARENT_PNG = Buffer.from(
   'base64'
 )
 
-// Scope of the 11 projects in app/data/projects.ts: these three span design + production +
-// construction, in category order (hotel, villa, office).
-const END_TO_END = ['/du-an/khach-san-eo-gio', '/du-an/codi-villa-phan-thiet', '/du-an/van-phong-quan-4']
-const ARCHIVE_COUNT = 8
+// The expected split comes from the data through the same function the page uses: up to
+// FEATURED_LIMIT end-to-end projects are featured, every other project is in the archive.
+const { featured, archive } = splitProjectIndex(projects)
+const END_TO_END = featured.map(project => `/du-an/${project.slug}`)
+const ARCHIVE_COUNT = archive.length
 
 type Locale = 'vi' | 'en'
 
@@ -50,7 +55,9 @@ for (const locale of ['vi', 'en'] as const) {
       await open(page, '/du-an', width, locale)
 
       const cards = page.locator('[data-testid="projects-featured"] [data-project-card]')
-      await expect(cards).toHaveCount(3)
+      // Up to FEATURED_LIMIT end-to-end projects are featured; the lead and satellites need three.
+      expect(END_TO_END).toHaveLength(Math.min(FEATURED_LIMIT, projects.filter(coversEndToEnd).length))
+      await expect(cards).toHaveCount(FEATURED_LIMIT)
       expect(await cards.evaluateAll(links => links.map(link => link.getAttribute('href')))).toEqual(END_TO_END)
 
       const boxes = await cards.evaluateAll(links => links.map((link) => {
@@ -77,6 +84,8 @@ for (const locale of ['vi', 'en'] as const) {
         .evaluateAll(links => links.map(link => link.getAttribute('href')))
       expect(archiveHrefs).toHaveLength(ARCHIVE_COUNT)
       for (const href of END_TO_END) expect(archiveHrefs).not.toContain(href)
+      // None is lost: the featured and the archive cards together are the whole portfolio.
+      expect([...END_TO_END, ...archiveHrefs].sort()).toEqual(projects.map(project => `/du-an/${project.slug}`).sort())
     })
   }
 }
@@ -91,7 +100,7 @@ test('PI-02 a card carries the category as one Label line and no pill chips', as
       .filter(el => el.textContent?.trim() && Number.parseFloat(getComputedStyle(el).borderTopLeftRadius) >= 9000)
       .map(el => el.className.toString())
     const archive = [...document.querySelectorAll('[data-testid="projects-grid"] > a')]
-    const featured = [...document.querySelectorAll('[data-testid="projects-featured"] [data-project-card]')]
+    const featuredCards = [...document.querySelectorAll('[data-testid="projects-featured"] [data-project-card]')]
     return {
       archive: archive.map(card => ({
         pills: pills(card),
@@ -104,7 +113,7 @@ test('PI-02 a card carries the category as one Label line and no pill chips', as
         }).length,
         scopeLines: [...card.querySelectorAll('p')].filter(p => p.textContent?.includes('·')).length
       })),
-      featured: featured.map(card => ({
+      featured: featuredCards.map(card => ({
         pills: pills(card),
         badges: card.querySelectorAll('.home-projects__tag-pill, .home-projects__index').length
       }))
@@ -118,7 +127,7 @@ test('PI-02 a card carries the category as one Label line and no pill chips', as
     expect(card.tags).toBe(0)
     expect(card.scopeLines).toBeLessThanOrEqual(1)
   }
-  expect(result.featured).toHaveLength(3)
+  expect(result.featured).toHaveLength(FEATURED_LIMIT)
   for (const card of result.featured) {
     expect(card.pills).toEqual([])
     expect(card.badges).toBe(0)
@@ -129,7 +138,7 @@ test('PI-03 the filter narrows the archive and keeps the featured composition', 
   await open(page, '/du-an', 1440)
 
   const archive = page.locator('[data-testid="projects-grid"] > a')
-  const featured = page.locator('[data-testid="projects-featured"] [data-project-card]')
+  const featuredCards = page.locator('[data-testid="projects-featured"] [data-project-card]')
   const chips = page.locator('main button[aria-pressed]')
   await expect(archive).toHaveCount(ARCHIVE_COUNT)
 
@@ -141,7 +150,7 @@ test('PI-03 the filter narrows the archive and keeps the featured composition', 
     const count = await archive.count()
     expect(count).toBeGreaterThan(0)
     expect(count).toBeLessThan(ARCHIVE_COUNT)
-    await expect(featured).toHaveCount(3)
+    await expect(featuredCards).toHaveCount(FEATURED_LIMIT)
   }
 
   await chips.first().click()

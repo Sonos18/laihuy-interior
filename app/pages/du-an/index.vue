@@ -9,7 +9,7 @@ import { projectCoverAsset, withAlt } from '~/media/project-media'
 import type { MediaAsset } from '~/shared/media/types'
 import type { LocalizedText } from '~/shared/types/localization'
 import type { Project, ProjectCategory } from '~/shared/types/project'
-import { coversEndToEnd } from '~/utils/project-detail-view-model'
+import { splitProjectIndex } from '~/utils/project-index'
 
 const { t, ta } = useLanguage()
 
@@ -19,27 +19,22 @@ type CategoryFilter = 'all' | ProjectCategory
 
 const selectedCategory = ref<CategoryFilter>('all')
 
-const byCategoryOrder = (first: Project, second: Project) =>
-  categoryDefinitions[first.category].order - categoryDefinitions[second.category].order
-
 const withCover = (project: Project) => ({
   project,
   cover: projectCoverAsset(project.mediaId, project.coverImage)
 })
 
-// The featured composition is the work Lai Huy designed, produced and built end to end. It is
-// derived from the same scope rule as the case-study view model, never from a list of slugs, and
-// it stays on the page whatever the archive filter says.
-const featuredProjects = [...projects]
-  .filter(coversEndToEnd)
-  .sort(byCategoryOrder)
+// The featured composition is the work Lai Huy designed, produced and built end to end: up to
+// three of them (the composition has one lead and two satellites), chosen by the same scope rule as
+// the case-study view model. Any further end-to-end project falls into the archive, so none is
+// lost, and the featured work stays on the page whatever the archive filter says.
+const { featured, archive: archiveProjects } = splitProjectIndex(
+  projects,
+  project => projectCoverAsset(project.mediaId, project.coverImage) !== undefined
+)
+const featuredProjects = featured
   .map(withCover)
   .filter((entry): entry is { project: Project, cover: MediaAsset } => entry.cover !== undefined)
-
-const featuredSlugs = new Set(featuredProjects.map(({ project }) => project.slug))
-const archiveProjects = [...projects]
-  .filter(project => !featuredSlugs.has(project.slug))
-  .sort(byCategoryOrder)
 
 // Filter options derive from the category source of truth. Only categories with at least one
 // archive project appear, preceded by an "All" entry: the filter narrows the archive, so every

@@ -6,9 +6,10 @@ import type { Project } from '~/shared/types/project'
 
 // The editorial project composition: one dominant case study and two satellites (DESIGN.md
 // "Layout"). It is shared by the home page and the project index, so both read as the same
-// object. `badges` keeps the home cards' photograph chrome (a category/area pill and a number);
-// the index turns it off, because there a card carries one chip type only: the category as a
-// Label line.
+// object. It shows at most three projects (one lead, two satellites; `FEATURED_LIMIT`), so a
+// caller with more sends the rest elsewhere. `badges` keeps the home cards' photograph chrome (a
+// category/area pill and a number); the index turns it off, because there a card carries one chip
+// type only: the category as a Label line.
 const props = withDefaults(defineProps<{
   projects: readonly { project: Project, cover: MediaAsset }[]
   badges?: boolean
@@ -346,12 +347,6 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
 
 /* Tablet & Desktop (≥768px): Asymmetric 2-column grid */
 @media (min-width: 768px) {
-  .home-projects__header {
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: space-between;
-  }
-
   .home-projects__grid {
     display: grid;
     grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
