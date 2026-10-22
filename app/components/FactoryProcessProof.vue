@@ -24,19 +24,19 @@ const sequence = (index: number) => String(index + 1).padStart(2, '0')
   >
     <div class="shell">
       <p
-        v-reveal
+        v-reveal.head
         class="eyebrow reveal"
       >
         {{ t(content.eyebrow) }}
       </p>
       <h2
-        v-reveal="80"
+        v-reveal.head
         class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
       >
         {{ t(content.title) }}
       </h2>
       <p
-        v-reveal="140"
+        v-reveal.head
         class="measure-lead home-lead-text reveal mt-5 text-ink-600"
       >
         {{ t(content.description) }}
@@ -50,7 +50,7 @@ const sequence = (index: number) => String(index + 1).padStart(2, '0')
           :image="image"
           sizes="sm:100vw lg:52vw"
           class="group min-h-64 rounded-[4px] bg-ink-100"
-          img-class="object-center transition-transform duration-[1200ms] group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+          img-class="object-center transition-transform duration-[var(--dur-image)] ease-[var(--ease-editorial)] group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
         />
         <div
           data-testid="factory-process-groups"
@@ -59,7 +59,7 @@ const sequence = (index: number) => String(index + 1).padStart(2, '0')
           <article
             v-for="(group, index) in groups"
             :key="group.id"
-            v-reveal="index * 70"
+            v-reveal.item
             data-testid="factory-process-group"
             class="reveal flex flex-col card p-6"
           >

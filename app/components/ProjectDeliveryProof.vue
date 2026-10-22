@@ -27,20 +27,20 @@ const timelineStyle = computed(() => ({ '--phase-count': String(props.phases.len
       <div class="grid gap-10 md:grid-cols-[0.72fr_1.28fr] md:items-end">
         <div>
           <p
-            v-reveal
+            v-reveal.head
             class="eyebrow reveal"
           >
             {{ t({ vi: 'Triển khai', en: 'Delivery' }) }}
           </p>
           <h2
-            v-reveal="80"
+            v-reveal.head
             class="home-section-heading reveal mt-4 text-ink-950"
           >
             {{ t({ vi: 'Từ phạm vi đến bàn giao', en: 'From scope to handover' }) }}
           </h2>
         </div>
         <p
-          v-reveal="120"
+          v-reveal.head
           class="measure-lead home-lead-text reveal text-ink-600"
         >
           {{ t({

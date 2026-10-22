@@ -14,9 +14,9 @@ const { t } = useLanguage()
         class="grid grid-cols-1 md:grid-cols-3"
       >
         <div
-          v-for="(stat, index) in stats"
+          v-for="stat in stats"
           :key="stat.id"
-          v-reveal="index * 70"
+          v-reveal.item
           data-testid="about-proof-stat"
           :data-stat-id="stat.id"
           class="reveal border-b border-[var(--rule-light)] py-6 md:border-b-0 md:border-r md:px-6 md:first:pl-0 md:last:border-r-0 md:last:pr-0"

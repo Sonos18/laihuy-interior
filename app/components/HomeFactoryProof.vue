@@ -45,20 +45,20 @@ const metricCapacity = computed(() => props.capabilities?.[1])
       <div class="home-factory__intro">
         <div>
           <p
-            v-reveal
+            v-reveal.head
             class="eyebrow home-eyebrow-text reveal text-wood-600"
           >
             {{ t(homePageContent.factory.eyebrow) }}
           </p>
           <h2
-            v-reveal="80"
+            v-reveal.head
             class="home-factory__title home-section-heading reveal mt-4 text-ink-950"
           >
             {{ t(homePageContent.factory.title) }}
           </h2>
         </div>
         <p
-          v-reveal="140"
+          v-reveal.head
           class="home-lead-text reveal max-w-2xl text-ink-600"
         >
           {{ t(homePageContent.factory.description) }}
@@ -107,7 +107,7 @@ const metricCapacity = computed(() => props.capabilities?.[1])
             :image="image"
             sizes="sm:100vw md:100vw lg:100vw xl:1280px"
             class="absolute inset-0 h-full w-full"
-            img-class="object-cover object-center w-full h-full transition-transform duration-1000 ease-out hover:scale-[1.02]"
+            img-class="object-cover object-center w-full h-full transition-transform duration-[var(--dur-image)] ease-[var(--ease-editorial)] hover:scale-[1.02]"
           />
           <div
             data-testid="homepage-machinery-caption"

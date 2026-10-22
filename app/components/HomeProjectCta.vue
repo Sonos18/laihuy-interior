@@ -13,19 +13,19 @@ const { t } = useLanguage()
     <div class="shell home-project-cta__grid">
       <div>
         <p
-          v-reveal
+          v-reveal.head
           class="eyebrow home-eyebrow-text reveal text-wood-600"
         >
           {{ t(homePageContent.cta.eyebrow) }}
         </p>
         <h2
-          v-reveal="80"
+          v-reveal.head
           class="home-project-cta__title home-section-heading reveal mt-4 text-ink-950"
         >
           {{ t(homePageContent.cta.title) }}
         </h2>
         <p
-          v-reveal="140"
+          v-reveal.head
           class="home-lead-text reveal mt-5 max-w-2xl text-ink-600"
         >
           {{ t(homePageContent.cta.description) }}
@@ -33,7 +33,7 @@ const { t } = useLanguage()
       </div>
 
       <div
-        v-reveal="180"
+        v-reveal
         class="home-project-cta__actions reveal"
       >
         <NuxtLink

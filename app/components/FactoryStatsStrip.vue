@@ -15,9 +15,9 @@ const { t } = useLanguage()
     <div class="shell">
       <dl class="grid grid-cols-2 lg:grid-cols-4">
         <div
-          v-for="(stat, index) in stats"
+          v-for="stat in stats"
           :key="stat.id"
-          v-reveal="index * 70"
+          v-reveal.item
           data-testid="factory-stat"
           class="reveal border-b border-[var(--rule-light)] px-4 py-6 odd:border-r lg:border-b-0 lg:border-r lg:last:border-r-0"
         >

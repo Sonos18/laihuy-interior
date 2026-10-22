@@ -21,19 +21,19 @@ const sequence = (index: number) => String(props.startAt + index).padStart(2, '0
   >
     <div class="shell">
       <p
-        v-reveal
+        v-reveal.head
         class="eyebrow reveal"
       >
         {{ t(content.eyebrow) }}
       </p>
       <h2
-        v-reveal="80"
+        v-reveal.head
         class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
       >
         {{ t(content.title) }}
       </h2>
       <p
-        v-reveal="140"
+        v-reveal.head
         class="measure-lead home-lead-text reveal mt-5 text-ink-600"
       >
         {{ t(content.description) }}
@@ -49,7 +49,7 @@ const sequence = (index: number) => String(props.startAt + index).padStart(2, '0
           v-for="(service, index) in services"
           :id="service.id"
           :key="service.id"
-          v-reveal="index * 70"
+          v-reveal.item
           data-testid="services-programme"
           class="group reveal scroll-mt-[calc(var(--header-h)+1rem)] card-link"
         >

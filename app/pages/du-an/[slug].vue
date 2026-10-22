@@ -229,13 +229,13 @@ usePageSeo({
         <div class="mb-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div class="max-w-2xl">
             <p
-              v-reveal
+              v-reveal.head
               class="eyebrow reveal"
             >
               {{ t(uiText.labels.completedImages) }}
             </p>
             <h2
-              v-reveal="80"
+              v-reveal.head
               class="home-section-heading reveal mt-4 text-ink-950"
             >
               {{ t(uiText.labels.gallery) }}
@@ -244,7 +244,7 @@ usePageSeo({
 
           <div
             v-if="showGalleryFilters"
-            v-reveal="120"
+            v-reveal
             data-gallery-filters
             class="reveal flex flex-wrap gap-2"
           >

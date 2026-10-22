@@ -24,19 +24,19 @@ const sequence = (index: number) => String(index + 1).padStart(2, '0')
       >
         <div>
           <p
-            v-reveal
+            v-reveal.head
             class="eyebrow reveal"
           >
             {{ t(content.eyebrow) }}
           </p>
           <h2
-            v-reveal="80"
+            v-reveal.head
             class="home-section-heading reveal mt-4 text-ink-950"
           >
             {{ t(content.title) }}
           </h2>
           <p
-            v-reveal="140"
+            v-reveal.head
             class="home-lead-text reveal mt-5 text-ink-600"
           >
             {{ t(content.description) }}
@@ -53,7 +53,7 @@ const sequence = (index: number) => String(index + 1).padStart(2, '0')
           <li
             v-for="(step, index) in steps"
             :key="t(step.title)"
-            v-reveal="(index % 2) * 70"
+            v-reveal.item
             data-testid="about-workflow-step"
             class="reveal border-b border-r border-ink-200 p-6 md:p-8"
           >

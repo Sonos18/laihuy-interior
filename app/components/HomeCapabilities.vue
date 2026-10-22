@@ -13,13 +13,13 @@ const { t } = useLanguage()
     <div class="shell">
       <div class="home-capabilities__intro">
         <p
-          v-reveal
+          v-reveal.head
           class="eyebrow home-eyebrow-text reveal text-wood-600"
         >
           {{ t(homePageContent.capabilities.eyebrow) }}
         </p>
         <h2
-          v-reveal="80"
+          v-reveal.head
           class="home-capabilities__title home-section-heading reveal mt-4 text-ink-950"
         >
           {{ t(homePageContent.capabilities.title) }}
@@ -33,7 +33,7 @@ const { t } = useLanguage()
         <li
           v-for="(capability, index) in capabilities"
           :key="capability.id"
-          v-reveal="index * 90"
+          v-reveal.item
           data-testid="home-capability"
           class="home-capabilities__item reveal"
         >

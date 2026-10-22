@@ -52,7 +52,7 @@ const mediaClass = (index: number) => index % 2 === 1
         v-for="(service, index) in services"
         :id="service.id"
         :key="service.id"
-        v-reveal="index * 80"
+        v-reveal.item.image
         data-testid="services-core-stage"
         class="reveal grid scroll-mt-[calc(var(--header-h)+1rem)] grid-cols-1 gap-8 xl:items-center xl:gap-16"
         :class="stageGridClass(index)"

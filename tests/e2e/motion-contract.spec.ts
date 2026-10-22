@@ -55,6 +55,9 @@ test.describe('motion contract', () => {
   test('MOTION-01 reveal uses a keyframe and a custom-property delay', async ({ page }) => {
     await page.goto(url('/'), { waitUntil: 'load' })
     await waitForHydration(page)
+    // The material story switches to its tall sticky layout one frame after hydration; scrolling
+    // before that measures a layout that is about to move.
+    await expect(page.getByTestId('home-material-story')).toHaveAttribute('data-enhanced', 'true')
     await expect(page.locator('html')).toHaveClass(/reveal-ready/)
 
     const results = await page.evaluate(async () => {
@@ -63,6 +66,7 @@ test.describe('motion contract', () => {
         label: string
         hydratedInView: boolean
         isVisible: boolean
+        isImage: boolean
         inlineTransitionDelay: string
         animationName: string
         revealDelay: string
@@ -78,6 +82,7 @@ test.describe('motion contract', () => {
           label: `${el.tagName.toLowerCase()}.${el.className.toString().split(/\s+/).slice(0, 3).join('.')}`,
           hydratedInView,
           isVisible: el.classList.contains('is-visible'),
+          isImage: el.classList.contains('reveal-image'),
           inlineTransitionDelay: el.style.transitionDelay,
           animationName: getComputedStyle(el).animationName,
           revealDelay: el.style.getPropertyValue('--reveal-delay').trim()
@@ -97,7 +102,8 @@ test.describe('motion contract', () => {
         continue
       }
       expect(r.isVisible, `${r.label} never became visible`).toBe(true)
-      expect(r.animationName, `${r.label} animation`).toBe('reveal-rise')
+      // Photographs fade, everything else rises (DESIGN.md "Motion", scroll reveal roles).
+      expect(r.animationName, `${r.label} animation`).toBe(r.isImage ? 'reveal-fade' : 'reveal-rise')
       if (r.revealDelay !== '') {
         // The directive clamps every bound delay to 320ms.
         expect(Number.parseFloat(r.revealDelay), `${r.label} --reveal-delay`).toBeLessThanOrEqual(320)
@@ -121,7 +127,7 @@ test.describe('motion contract', () => {
     expect(delays.split(',').every(v => v.trim() === '0s'), `transition-delay: ${delays}`).toBe(true)
   })
 
-  for (const path of ['/', '/du-an/khach-san-eo-gio']) {
+  for (const path of ['/', '/gioi-thieu', '/du-an', '/du-an/khach-san-eo-gio', '/nha-xuong', '/dich-vu', '/tuyen-dung', '/lien-he']) {
     test(`MOTION-03 no infinite animations on ${path}`, async ({ page }) => {
       await page.goto(url(path), { waitUntil: 'load' })
       await page.evaluate(async () => {
@@ -338,6 +344,7 @@ test.describe('motion contract', () => {
         heroComplete: hero.complete,
         heroAnimation: getComputedStyle(hero).animationName,
         heroPending: hero.classList.contains('is-pending'),
+        mediaPending: document.querySelectorAll('img.media-img.is-pending').length,
         hiddenClass: document.querySelectorAll('.reveal-hidden').length,
         hidden: Array.from(document.querySelectorAll<HTMLElement>('main .reveal'))
           .filter(el => getComputedStyle(el).opacity !== '1').length
@@ -347,6 +354,7 @@ test.describe('motion contract', () => {
     expect(state.heroComplete, 'the image is still held back, so a pending mark could have appeared').toBe(false)
     expect(state.heroAnimation).toBe('none')
     expect(state.heroPending).toBe(false)
+    expect(state.mediaPending, 'no MediaImage is hidden waiting for its bytes under reduced motion').toBe(0)
     expect(state.hiddenClass).toBe(0)
     expect(state.hidden).toBe(0)
   })
@@ -407,6 +415,205 @@ test.describe('motion contract', () => {
     })
     expect(samples, 'the sampler saw the hero heading').toBeGreaterThan(10)
     expect(min).toBe(1)
+  })
+
+  test('MOTION-11 a section head reveals as one unit', async ({ page }) => {
+    await page.goto(url('/dich-vu'), { waitUntil: 'load' })
+    await waitForHydration(page)
+
+    // A head that is still hidden after hydration (the first one is painted by the server and
+    // never animates), with at least the eyebrow, the headline and the lead.
+    const marked = await page.evaluate(() => {
+      for (const el of Array.from(document.querySelectorAll<HTMLElement>('[data-reveal-head].reveal-hidden'))) {
+        const group = Array.from(el.parentElement!.children).filter(c => c.hasAttribute('data-reveal-head'))
+        if (group.length >= 3 && group.every(c => c.classList.contains('reveal-hidden'))) {
+          group.forEach((c, i) => c.setAttribute('data-test-head', String(i)))
+          return group.length
+        }
+      }
+      return 0
+    })
+    expect(marked, 'a hidden section head with eyebrow, headline and lead').toBeGreaterThanOrEqual(3)
+
+    const head = page.locator('[data-test-head]')
+    // Only the first member is scrolled to; the others must come with it.
+    await head.first().scrollIntoViewIfNeeded()
+    await expect(head.first()).not.toHaveClass(/reveal-hidden/)
+    await expect.poll(() => head.evaluateAll(els => els.every(el => el.classList.contains('is-visible')))).toBe(true)
+
+    const members = await head.evaluateAll(els => els.map((el) => {
+      const animation = el.getAnimations().find((a): a is CSSAnimation => a instanceof CSSAnimation)
+      return {
+        name: animation?.animationName,
+        delay: getComputedStyle(el).animationDelay,
+        revealDelay: (el as HTMLElement).style.getPropertyValue('--reveal-delay'),
+        start: animation ? Number(animation.startTime) : null
+      }
+    }))
+    for (const member of members) {
+      expect(member.name).toBe('reveal-rise')
+      expect(member.delay, 'a head member carries no delay').toBe('0s')
+      expect(member.revealDelay).toBe('')
+    }
+    expect(new Set(members.map(m => m.start)).size, 'every member starts in the same frame').toBe(1)
+  })
+
+  test('MOTION-12 only the first row of a grid staggers', async ({ page }) => {
+    await page.goto(url('/gioi-thieu'), { waitUntil: 'load' })
+    await waitForHydration(page)
+
+    // Scroll the whole page so every item is revealed, then read the delay each one got.
+    const groups = await page.evaluate(async () => {
+      for (let y = 0; y < document.documentElement.scrollHeight; y += 300) {
+        window.scrollTo(0, y)
+        await new Promise(resolve => setTimeout(resolve, 80))
+      }
+      const byParent = new Map<Element, HTMLElement[]>()
+      for (const el of Array.from(document.querySelectorAll<HTMLElement>('[data-reveal-item]'))) {
+        const list = byParent.get(el.parentElement!) ?? []
+        list.push(el)
+        byParent.set(el.parentElement!, list)
+      }
+      return Array.from(byParent.values()).map((items) => {
+        const top = items.reduce((best, el) => (el.offsetTop < best.offsetTop ? el : best), items[0]!)
+        const bandEnd = top.offsetTop + top.offsetHeight
+        return items.map(el => ({
+          firstRow: el.offsetTop < bandEnd,
+          delay: Number.parseFloat(getComputedStyle(el).animationDelay) * 1000,
+          visible: el.classList.contains('is-visible')
+        }))
+      })
+    })
+
+    expect(groups.some(items => items.some(i => !i.firstRow)), 'a grid with more than one row was measured').toBe(true)
+    for (const items of groups) {
+      let rank = 0
+      for (const item of items) {
+        if (!item.visible) continue
+        if (item.firstRow) {
+          expect(item.delay, 'first-row stagger').toBe(Math.min(rank * 70, 320))
+          rank += 1
+        } else {
+          expect(item.delay, 'a later row has no animation-delay').toBe(0)
+        }
+      }
+    }
+  })
+
+  test('MOTION-13 an image reveal is opacity only and never slides', async ({ page }) => {
+    await page.goto(url('/dich-vu'), { waitUntil: 'load' })
+    await waitForHydration(page)
+
+    // Pinned with an attribute: a locator on `.reveal-hidden` would re-resolve to a different
+    // element once the first one has been revealed.
+    await page.evaluate(() => document.querySelector('.reveal-image.reveal-hidden')?.setAttribute('data-test-image', ''))
+    const target = page.locator('[data-test-image]')
+    await expect(target).toHaveCount(1)
+    await target.scrollIntoViewIfNeeded()
+    await expect(target).toHaveClass(/is-visible/)
+
+    const probe = await target.evaluate(async (el) => {
+      const animation = el.getAnimations().find((a): a is CSSAnimation => a instanceof CSSAnimation)
+      const keyframes = animation ? (animation.effect as KeyframeEffect).getKeyframes() : []
+      const samples: string[] = []
+      for (let i = 0; i < 12; i++) {
+        samples.push(getComputedStyle(el).transform)
+        await new Promise(resolve => requestAnimationFrame(resolve))
+      }
+      return {
+        name: animation?.animationName,
+        properties: Array.from(new Set(keyframes.flatMap(k => Object.keys(k))))
+          .filter(k => !['offset', 'computedOffset', 'easing', 'composite'].includes(k)),
+        transforms: Array.from(new Set(samples))
+      }
+    })
+    expect(probe.name).toBe('reveal-fade')
+    expect(probe.properties).toEqual(['opacity'])
+    expect(probe.transforms, 'no translate at any frame').toEqual(['none'])
+  })
+
+  test('MOTION-14 a photograph that arrives late fades in over 400ms', async ({ page }) => {
+    const images = await holdImages(page)
+    await page.goto(url('/nha-xuong'), { waitUntil: 'domcontentloaded' })
+    await waitForHydration(page)
+
+    const pending = page.locator('img.media-img.is-pending')
+    await expect.poll(() => pending.count()).toBeGreaterThan(0)
+    expect(await pending.first().evaluate(el => getComputedStyle(el).opacity)).toBe('0')
+
+    images.release()
+    const arriving = page.locator('img.media-img.is-arriving').first()
+    await expect(arriving).toBeAttached({ timeout: 10_000 })
+    // The keyframe may already have finished on a fast machine: its declared shape is what counts.
+    const declared = await arriving.evaluate(el => ({
+      name: getComputedStyle(el).animationName,
+      duration: getComputedStyle(el).animationDuration,
+      easing: getComputedStyle(el).animationTimingFunction
+    }))
+    expect(declared).toEqual({ name: 'media-arrive', duration: '0.4s', easing: 'cubic-bezier(0.22, 0.61, 0.36, 1)' })
+
+    // The placeholder is released on the same duration and curve.
+    const skeleton = await page.locator('.media-skeleton').first().evaluate(el => ({
+      duration: getComputedStyle(el).transitionDuration,
+      easing: getComputedStyle(el).transitionTimingFunction
+    }))
+    expect(skeleton).toEqual({ duration: '0.4s', easing: 'cubic-bezier(0.22, 0.61, 0.36, 1)' })
+  })
+
+  test('MOTION-14b an image that is already painted at hydration is never hidden', async ({ page }) => {
+    // Hold the app's scripts so the server-rendered page paints and its images load without any
+    // client code, then let hydration run and sample every frame from there.
+    let releaseScripts!: () => void
+    const scriptGate = new Promise<void>((resolve) => {
+      releaseScripts = resolve
+    })
+    await page.route('**/_nuxt/**', async (route) => {
+      if (route.request().resourceType() === 'script') await scriptGate
+      await route.continue().catch(() => undefined)
+    })
+
+    // Deferred module scripts hold DOMContentLoaded back, so wait for the markup, not the event.
+    await page.goto(url('/nha-xuong'), { waitUntil: 'commit' })
+    await page.waitForSelector('main#main img', { state: 'attached' })
+    // Scroll through the page so every lazy image is requested, with no JavaScript involved.
+    const painted = await page.evaluate(async () => {
+      for (let y = 0; y < document.documentElement.scrollHeight; y += 400) {
+        window.scrollTo(0, y)
+        await new Promise(resolve => setTimeout(resolve, 120))
+      }
+      const framed = () => Array.from(document.querySelectorAll<HTMLImageElement>('img.media-img'))
+      for (let i = 0; i < 60; i++) {
+        const imgs = framed()
+        if (imgs.length > 0 && imgs.every(img => img.complete && img.naturalWidth > 0)) break
+        await new Promise(resolve => setTimeout(resolve, 100))
+      }
+      const imgs = framed().filter(img => img.complete && img.naturalWidth > 0)
+      imgs.forEach(img => img.setAttribute('data-was-painted', ''))
+      window.scrollTo(0, 0)
+
+      const w = window as unknown as { __minOpacity: number }
+      w.__minOpacity = 1
+      const sample = () => {
+        for (const img of Array.from(document.querySelectorAll('img[data-was-painted]'))) {
+          w.__minOpacity = Math.min(w.__minOpacity, Number(getComputedStyle(img).opacity))
+        }
+        requestAnimationFrame(sample)
+      }
+      requestAnimationFrame(sample)
+      return imgs.length
+    })
+    expect(painted, 'the server painted some photographs').toBeGreaterThan(0)
+
+    releaseScripts()
+    await waitForHydration(page)
+    await page.waitForTimeout(800)
+
+    const state = await page.evaluate(() => ({
+      min: (window as unknown as { __minOpacity: number }).__minOpacity,
+      marked: document.querySelectorAll('img[data-was-painted].is-pending, img[data-was-painted].is-arriving').length
+    }))
+    expect(state.marked, 'a painted image is not given the arrival classes').toBe(0)
+    expect(state.min, 'a painted image never drops below full opacity').toBe(1)
   })
 })
 

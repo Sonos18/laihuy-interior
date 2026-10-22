@@ -32,13 +32,13 @@ const materialImage = computed(() => props.images[3] ?? props.images[0])
       >
         <div>
           <p
-            v-reveal
+            v-reveal.head
             class="eyebrow reveal"
           >
             {{ t({ vi: 'Câu chuyện vật liệu', en: 'Material story' }) }}
           </p>
           <h2
-            v-reveal="80"
+            v-reveal.head
             class="home-section-heading reveal mt-4 text-ink-950"
           >
             {{ t({ vi: 'Quyết định trở thành trải nghiệm', en: 'Decisions made tangible' }) }}
@@ -46,7 +46,7 @@ const materialImage = computed(() => props.images[3] ?? props.images[0])
         </div>
         <p
           v-if="experience"
-          v-reveal="120"
+          v-reveal.head
           class="home-lead-text reveal text-ink-600"
         >
           {{ experience }}

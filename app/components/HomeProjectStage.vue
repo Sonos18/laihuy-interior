@@ -24,27 +24,27 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
       <div class="home-projects__header">
         <div class="max-w-2xl">
           <p
-            v-reveal
+            v-reveal.head
             class="reveal home-eyebrow-text text-wood-600"
           >
             {{ t(homePageContent.projects.eyebrow) }}
           </p>
           <h2
-            v-reveal="80"
+            v-reveal.head
             class="home-projects__title home-section-heading reveal mt-3 text-ink-950"
           >
             {{ t(homePageContent.projects.title) }}
           </h2>
         </div>
         <NuxtLink
-          v-reveal="140"
+          v-reveal
           to="/du-an"
           class="btn-outline reveal group shrink-0 border-ink-300 text-ink-900 hover:border-ink-950 hover:bg-ink-950 hover:text-white"
         >
           <span>{{ t(homePageContent.projects.allCta) }}</span>
           <Icon
             name="i-lucide-arrow-right"
-            class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+            class="h-4 w-4 transition-transform duration-[var(--dur-hover)] ease-[var(--ease-editorial)] group-hover:translate-x-1"
           />
         </NuxtLink>
       </div>
@@ -54,7 +54,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
         <!-- 1. Hero Case Study (Dominant) -->
         <NuxtLink
           v-if="heroProject"
-          v-reveal="180"
+          v-reveal.item.image
           data-project-card
           :to="`/du-an/${heroProject.project.slug}`"
           class="home-projects__card home-projects__card--hero reveal group"
@@ -67,7 +67,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
               :height="heroProject.cover.height"
               sizes="sm:100vw md:60vw lg:65vw"
               loading="lazy"
-              class="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.03] group-focus-visible:scale-[1.03]"
+              class="h-full w-full object-cover transition-transform duration-[var(--dur-image)] ease-[var(--ease-editorial)] group-hover:scale-[1.03] group-focus-visible:scale-[1.03]"
             />
             <div class="home-projects__chrome">
               <div class="home-projects__tag-pill">
@@ -142,13 +142,13 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
 
             <!-- Footer / Meta row -->
             <div class="home-projects__meta flex items-center justify-between border-t border-ink-200/80 pt-4">
-              <span class="text-xs font-semibold uppercase tracking-[0.08em] text-wood-700 transition-colors duration-300 group-hover:text-wood-950">
+              <span class="text-xs font-semibold uppercase tracking-[0.08em] text-wood-700 transition-colors duration-[var(--dur-hover)] ease-[var(--ease-editorial)] group-hover:text-wood-950">
                 {{ t(homePageContent.projects.heroCta) }}
               </span>
               <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-wood-300 text-wood-700 transition-[background-color,border-color,color] duration-[240ms] ease-[var(--ease-editorial)] group-hover:border-wood-600 group-hover:bg-wood-600 group-hover:text-white">
                 <Icon
                   name="i-lucide-arrow-right"
-                  class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
+                  class="h-4 w-4 transition-transform duration-[var(--dur-hover)] ease-[var(--ease-editorial)] group-hover:translate-x-0.5"
                 />
               </span>
             </div>
@@ -159,7 +159,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
         <NuxtLink
           v-for="({ project, cover }, index) in secondaryProjects"
           :key="project.slug"
-          v-reveal="240 + index * 80"
+          v-reveal.item.image
           data-project-card
           :to="`/du-an/${project.slug}`"
           class="home-projects__card home-projects__card--satellite reveal group"
@@ -172,7 +172,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
               :height="cover.height"
               sizes="sm:100vw md:40vw lg:35vw"
               loading="lazy"
-              class="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.03] group-focus-visible:scale-[1.03]"
+              class="h-full w-full object-cover transition-transform duration-[var(--dur-image)] ease-[var(--ease-editorial)] group-hover:scale-[1.03] group-focus-visible:scale-[1.03]"
             />
             <div class="home-projects__chrome">
               <div class="home-projects__tag-pill sm:hidden">
@@ -210,13 +210,13 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
 
             <!-- Footer / Meta row -->
             <div class="home-projects__meta mt-4 flex items-center justify-between border-t border-ink-200/80 pt-3.5">
-              <span class="text-xs font-semibold uppercase tracking-[0.08em] text-wood-700 transition-colors duration-300 group-hover:text-wood-950">
+              <span class="text-xs font-semibold uppercase tracking-[0.08em] text-wood-700 transition-colors duration-[var(--dur-hover)] ease-[var(--ease-editorial)] group-hover:text-wood-950">
                 {{ t(homePageContent.projects.cardCta) }}
               </span>
               <span class="inline-flex h-7 w-7 items-center justify-center rounded-full border border-wood-300 text-wood-700 transition-[background-color,border-color,color] duration-[240ms] ease-[var(--ease-editorial)] group-hover:border-wood-600 group-hover:bg-wood-600 group-hover:text-white">
                 <Icon
                   name="i-lucide-arrow-right"
-                  class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
+                  class="h-3.5 w-3.5 transition-transform duration-[var(--dur-hover)] ease-[var(--ease-editorial)] group-hover:translate-x-0.5"
                 />
               </span>
             </div>
@@ -248,7 +248,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
   border: 1px solid var(--color-ink-200);
   border-radius: 4px;
   overflow: hidden;
-  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color var(--dur-hover) var(--ease-editorial), box-shadow var(--dur-hover) var(--ease-editorial);
   outline-offset: 4px;
   box-shadow: var(--shadow-rest);
 }

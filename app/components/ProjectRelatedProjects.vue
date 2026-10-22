@@ -18,13 +18,13 @@ const { t } = useLanguage()
       <div class="mb-10 flex items-end justify-between gap-6">
         <div>
           <p
-            v-reveal
+            v-reveal.head
             class="eyebrow reveal"
           >
             {{ t(uiText.labels.exploreMore) }}
           </p>
           <h2
-            v-reveal="80"
+            v-reveal.head
             class="home-section-heading reveal mt-4 text-ink-950"
           >
             {{ t(uiText.labels.relatedProjects) }}
@@ -40,9 +40,9 @@ const { t } = useLanguage()
 
       <div class="grid gap-6 md:grid-cols-3">
         <NuxtLink
-          v-for="({ item, cover }, index) in projects"
+          v-for="{ item, cover } in projects"
           :key="item.slug"
-          v-reveal="index * 100"
+          v-reveal.item.image
           :to="`/du-an/${item.slug}`"
           class="group reveal block overflow-hidden card-link"
         >
@@ -57,7 +57,7 @@ const { t } = useLanguage()
               :height="cover.height"
               sizes="sm:100vw md:33vw"
               loading="lazy"
-              class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02] motion-reduce:transform-none motion-reduce:transition-none"
+              class="h-full w-full object-cover transition-transform duration-[var(--dur-image)] ease-[var(--ease-editorial)] group-hover:scale-[1.02] motion-reduce:transform-none motion-reduce:transition-none"
             />
           </div>
           <div :class="['p-5', cover ? 'border-t border-[var(--rule-light)]' : '']">

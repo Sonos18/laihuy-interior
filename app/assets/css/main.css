@@ -155,6 +155,10 @@
   --dur-drawer: 300ms;
   --dur-drawer-exit: 200ms; /* closing is quicker than opening */
   --dur-reveal: 600ms;
+  --dur-image: 700ms; /* hover zoom of a photograph */
+  --dur-arrive: 400ms; /* a photograph (or its placeholder) arriving once its bytes land */
+  --dur-page-out: 120ms; /* route change: old page out on --ease-exit... */
+  --dur-page-in: 200ms; /* ...then the new page in on --ease-editorial */
 
   /* ── L1 · Radius / shadow ───────────────────────────────────────────── */
   --radius-pill: 9999px;
@@ -491,9 +495,6 @@
   --color-alert-500: #b23c2a;
   --color-alert-700: #8a2e1f;
 
-  --animate-fade-in-up: fade-in-up 0.8s ease-out both;
-  --animate-fade-in: fade-in 0.6s ease-out both;
-
   /* ── Quiet Luxury & Architectural Editorial Primitives ──────────────────── */
   --color-obsidian: #0b0a09;
   --color-surface-dark: #141210;
@@ -505,28 +506,6 @@
 
   --font-display: "Outfit", "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
   --font-artistic: "Syne", system-ui, -apple-system, sans-serif;
-}
-
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(28px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
 }
 
 @keyframes hero-zoom {
@@ -548,6 +527,22 @@
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* Photographs reveal by opacity alone: no translate, so an image never slides. Only a `from`
+   keyframe: the end state is the element's own opacity (a dimmed layer stays dimmed). */
+@keyframes reveal-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* A photograph arriving once its bytes land (MediaImage `.is-arriving`); same shape as
+   reveal-fade, named for its own job so the two can be tuned apart. */
+@keyframes media-arrive {
+  from {
+    opacity: 0;
   }
 }
 
@@ -1776,27 +1771,17 @@
   }
 
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-ink-300 px-7 py-3.5 text-sm font-semibold text-ink-900 transition-[background-color,border-color,color,box-shadow] duration-[240ms] ease-[var(--ease-editorial)] hover:border-ink-950 hover:bg-ink-950 hover:text-white;
+    @apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-ink-300 px-7 py-3.5 text-sm font-semibold text-ink-900 transition-[background-color,border-color,color,box-shadow] duration-[var(--dur-hover)] ease-[var(--ease-editorial)] hover:border-ink-950 hover:bg-ink-950 hover:text-white;
   }
 
   .fade-enter-active,
   .fade-leave-active {
-    transition: opacity 0.3s ease;
+    transition: opacity var(--dur-state) var(--ease-editorial);
   }
 
   .fade-enter-from,
   .fade-leave-to {
     opacity: 0;
-  }
-
-  .slide-right-enter-active,
-  .slide-right-leave-active {
-    transition: transform 0.3s ease;
-  }
-
-  .slide-right-enter-from,
-  .slide-right-leave-to {
-    transform: translateX(100%);
   }
 }
 
@@ -1888,7 +1873,7 @@
     background-position: 0 100%;
     background-repeat: no-repeat;
     background-size: 0% 1.5px;
-    transition: background-size 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transition: background-size var(--dur-state) var(--ease-editorial);
   }
 
   .link-underline:hover {
@@ -1921,6 +1906,68 @@
   html.reveal-ready .reveal.is-visible {
     animation: reveal-rise var(--dur-reveal) var(--ease-editorial) backwards;
     animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  /* `v-reveal.image`: a photograph (or an image-led card) develops, it does not slide. */
+  html.reveal-ready .reveal.reveal-image.is-visible {
+    animation-name: reveal-fade;
+  }
+
+  /* ── Image arrival (MediaImage) ──────────────────────────────────────────
+     MediaImage marks an <img> `is-pending` when it has no decoded data at mount and swaps it to
+     `is-arriving` on load: a one-shot fade from 0 on top of the static placeholder. A keyframe,
+     not a transition, so the image's own hover transitions (zoom) are never overridden or
+     delayed, and `backwards` fill hands the element back to its own opacity afterwards. Only
+     under no-preference: with reduced motion the class has no effect and the image just shows. */
+  @media (prefers-reduced-motion: no-preference) {
+    .media-img.is-pending {
+      opacity: 0;
+    }
+
+    .media-img.is-arriving {
+      animation: media-arrive var(--dur-arrive) var(--ease-editorial) backwards;
+    }
+  }
+
+  /* The loading placeholder is static (no pulse, no shimmer); it only leaves, on the same
+     curve and duration as the photograph that replaces it. */
+  .media-skeleton {
+    transition: opacity var(--dur-arrive) var(--ease-editorial);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .media-skeleton {
+      transition: none;
+    }
+  }
+
+  /* ── Route continuity ───────────────────────────────────────────────────
+     nuxt.config `app.pageTransition` (name `page`, mode out-in): the old page fades out on the
+     exit curve, then the new page fades in on the editorial curve, through the Linen canvas
+     behind <main>. Opacity only, so no containing block is created for the sticky sub-nav and
+     nothing translates. Reduced motion routes change instantly. */
+  .page-leave-active {
+    transition: opacity var(--dur-page-out) var(--ease-exit);
+  }
+
+  .page-enter-active {
+    transition: opacity var(--dur-page-in) var(--ease-editorial);
+  }
+
+  .page-enter-from,
+  .page-leave-to {
+    opacity: 0;
+  }
+
+  main#main {
+    background-color: var(--color-wood-50);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page-enter-active,
+    .page-leave-active {
+      transition: none;
+    }
   }
 
   /* One-shot settle for the hero photograph: 1.04 → 1 over 1.6s, then it stays put. The opacity

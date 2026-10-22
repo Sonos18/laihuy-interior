@@ -30,13 +30,18 @@ defineProps<{
     class="home-metrics border-b border-[var(--rule-light)] bg-wood-50 text-ink-950"
   >
     <div class="shell">
-      <dl class="home-metrics__grid">
+      <!-- The band reveals as ONE unit (DESIGN.md "Motion"): its hairlines and its figures arrive
+           together, so a client-side navigation never shows an empty frame first. The cells do
+           not stagger individually. -->
+      <dl
+        v-reveal
+        class="home-metrics__grid reveal"
+      >
         <div
-          v-for="(metric, index) in metrics"
+          v-for="metric in metrics"
           :key="metric.label"
-          v-reveal="index * 60"
           data-testid="home-metric"
-          class="home-metrics__cell reveal"
+          class="home-metrics__cell"
         >
           <dt class="home-eyebrow-text text-ink-600">
             {{ metric.label }}

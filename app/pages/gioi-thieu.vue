@@ -111,19 +111,19 @@ usePageSeo({
     >
       <div class="shell">
         <p
-          v-reveal
+          v-reveal.head
           class="eyebrow reveal"
         >
           {{ t(aboutPageContent.problem.eyebrow) }}
         </p>
         <h2
-          v-reveal="80"
+          v-reveal.head
           class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
         >
           {{ t(aboutPageContent.problem.title) }}
         </h2>
         <p
-          v-reveal="140"
+          v-reveal.head
           class="measure-lead home-lead-text reveal mt-5 text-ink-600"
         >
           {{ t(aboutPageContent.problem.description) }}
@@ -138,9 +138,9 @@ usePageSeo({
           </p>
           <ul class="border-t border-[var(--rule-light)]">
             <li
-              v-for="(response, index) in aboutPageContent.problem.responses"
+              v-for="response in aboutPageContent.problem.responses"
               :key="response.id"
-              v-reveal="index * 70"
+              v-reveal.item
               class="reveal grid gap-3 border-b border-[var(--rule-light)] py-6 sm:grid-cols-[0.8fr_1.2fr] sm:gap-8"
             >
               <h3 class="home-card-heading text-ink-950">
@@ -166,19 +166,19 @@ usePageSeo({
     >
       <div class="shell">
         <p
-          v-reveal
+          v-reveal.head
           class="eyebrow reveal"
         >
           {{ t(aboutPageContent.factory.eyebrow) }}
         </p>
         <h2
-          v-reveal="80"
+          v-reveal.head
           class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
         >
           {{ t(aboutPageContent.factory.title) }}
         </h2>
         <p
-          v-reveal="140"
+          v-reveal.head
           class="measure-lead home-lead-text reveal mt-5 text-ink-600"
         >
           {{ t(aboutPageContent.factory.description) }}
@@ -211,7 +211,7 @@ usePageSeo({
         </div>
 
         <NuxtLink
-          v-reveal="120"
+          v-reveal
           to="/nha-xuong"
           class="btn-outline reveal mt-8"
         >
@@ -232,19 +232,19 @@ usePageSeo({
     >
       <div class="shell">
         <p
-          v-reveal
+          v-reveal.head
           class="eyebrow reveal"
         >
           {{ t(aboutPageContent.projects.eyebrow) }}
         </p>
         <h2
-          v-reveal="80"
+          v-reveal.head
           class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
         >
           {{ t(aboutPageContent.projects.title) }}
         </h2>
         <p
-          v-reveal="140"
+          v-reveal.head
           class="measure-lead home-lead-text reveal mt-5 text-ink-600"
         >
           {{ t(aboutPageContent.projects.description) }}
@@ -273,22 +273,22 @@ usePageSeo({
     >
       <div class="shell">
         <p
-          v-reveal
+          v-reveal.head
           class="eyebrow reveal"
         >
           {{ t(aboutPageContent.fit.eyebrow) }}
         </p>
         <h2
-          v-reveal="80"
+          v-reveal.head
           class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
         >
           {{ t(aboutPageContent.fit.title) }}
         </h2>
         <ul class="mt-10 grid gap-5 md:grid-cols-3">
           <li
-            v-for="(item, index) in aboutPageContent.fit.items"
+            v-for="item in aboutPageContent.fit.items"
             :key="t(item)"
-            v-reveal="index * 70"
+            v-reveal.item
             class="reveal card p-6 md:p-8"
           >
             <p class="home-nested-heading font-display font-medium tracking-tight text-ink-950">

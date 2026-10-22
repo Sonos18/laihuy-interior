@@ -137,26 +137,26 @@ usePageSeo({
       >
         <div>
           <p
-            v-reveal
+            v-reveal.head
             class="eyebrow reveal"
           >
             {{ t(servicesPageContent.documents.eyebrow) }}
           </p>
           <h2
-            v-reveal="80"
+            v-reveal.head
             class="home-section-heading reveal mt-4 max-w-3xl text-ink-950"
           >
             {{ t(servicesPageContent.documents.title) }}
           </h2>
           <p
-            v-reveal="140"
+            v-reveal.head
             class="measure-lead home-lead-text reveal mt-5 text-ink-600"
           >
             {{ t(servicesPageContent.documents.description) }}
           </p>
 
           <div
-            v-reveal="180"
+            v-reveal
             class="reveal mt-9 flex flex-col items-start gap-3 sm:flex-row md:flex-col xl:flex-row"
           >
             <NuxtLink
@@ -184,9 +184,9 @@ usePageSeo({
           class="grid border-l border-[var(--rule-light)] pl-8 md:pl-10 xl:pl-12"
         >
           <article
-            v-for="(item, index) in servicesPageContent.documents.items"
+            v-for="item in servicesPageContent.documents.items"
             :key="item.id"
-            v-reveal="index * 70"
+            v-reveal.item
             class="reveal flex gap-5 border-b border-[var(--rule-light)] py-7 first:border-t"
           >
             <Icon
@@ -223,19 +223,19 @@ usePageSeo({
       >
         <div>
           <p
-            v-reveal
+            v-reveal.head
             class="eyebrow reveal"
           >
             {{ t(servicesPageContent.proof.eyebrow) }}
           </p>
           <h2
-            v-reveal="80"
+            v-reveal.head
             class="home-section-heading reveal mt-4 max-w-3xl text-ink-950"
           >
             {{ t(servicesPageContent.proof.title) }}
           </h2>
           <p
-            v-reveal="140"
+            v-reveal.head
             class="home-lead-text mt-5 max-w-2xl text-ink-600"
           >
             {{ t(servicesPageContent.proof.description) }}
@@ -243,9 +243,9 @@ usePageSeo({
 
           <div class="mt-10 grid gap-7">
             <article
-              v-for="(item, index) in servicesPageContent.proof.items"
+              v-for="item in servicesPageContent.proof.items"
               :key="item.id"
-              v-reveal="index * 70"
+              v-reveal.item
               class="reveal border-t border-ink-200 pt-6"
             >
               <p class="home-eyebrow-text text-wood-600">
@@ -261,7 +261,7 @@ usePageSeo({
           </div>
 
           <NuxtLink
-            v-reveal="160"
+            v-reveal
             to="/nha-xuong"
             class="btn-outline reveal mt-9"
           >
@@ -275,7 +275,7 @@ usePageSeo({
         </div>
 
         <MediaImage
-          v-reveal="100"
+          v-reveal.image
           :image="proofImage"
           sizes="sm:100vw md:50vw"
           class="reveal aspect-[4/5] min-h-[32rem] rounded-[4px] bg-ink-100"
@@ -293,9 +293,9 @@ usePageSeo({
         class="shell grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5"
       >
         <MediaImage
-          v-for="(image, index) in evidenceImages"
+          v-for="image in evidenceImages"
           :key="image.path"
-          v-reveal="index * 60"
+          v-reveal.item.image
           :image="image"
           sizes="sm:50vw md:25vw"
           class="reveal aspect-[8/5] rounded-[4px] bg-ink-100"
@@ -317,19 +317,19 @@ usePageSeo({
       <div class="shell grid gap-10 xl:grid-cols-[1.2fr_0.8fr] xl:items-end xl:gap-16">
         <div>
           <p
-            v-reveal
+            v-reveal.head
             class="eyebrow reveal"
           >
             {{ t(servicesPageContent.contact.eyebrow) }}
           </p>
           <h2
-            v-reveal="80"
+            v-reveal.head
             class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
           >
             {{ t(servicesPageContent.contact.title) }}
           </h2>
           <p
-            v-reveal="140"
+            v-reveal.head
             class="measure-lead home-lead-text reveal mt-5 text-ink-600"
           >
             {{ t(servicesPageContent.contact.description) }}
@@ -337,7 +337,7 @@ usePageSeo({
         </div>
 
         <div
-          v-reveal="120"
+          v-reveal
           class="reveal flex flex-col gap-3 sm:flex-row sm:flex-wrap xl:justify-end"
         >
           <NuxtLink
