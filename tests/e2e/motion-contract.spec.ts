@@ -46,6 +46,21 @@ async function holdImages(page: Page): Promise<{ release: () => void }> {
   return { release }
 }
 
+/** A 1x1 PNG for every image request: the page paints at once and nothing waits on the network. */
+async function stubImages(page: Page): Promise<void> {
+  const png = Buffer.from(
+    'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAF/gL+X9j7WQAAAABJRU5ErkJggg==',
+    'base64'
+  )
+  await page.route('**/*', async (route) => {
+    if (route.request().resourceType() === 'image') {
+      await route.fulfill({ status: 200, contentType: 'image/png', body: png })
+      return
+    }
+    await route.continue()
+  })
+}
+
 test.describe('motion contract', () => {
   test.beforeEach(async ({ page }) => {
     await page.setViewportSize(VIEWPORT_DESKTOP)
@@ -701,6 +716,70 @@ test.describe('motion contract', () => {
     await expect(header).not.toHaveClass(/chrome-no-transition/)
     await page.waitForTimeout(500)
     expect(await page.evaluate(() => (window as unknown as { __chrome: string[] }).__chrome)).toEqual([])
+  })
+
+  test('MOTION-17 the gallery autoplay only runs in view, makes one pass and rests', async ({ page }) => {
+    await page.clock.install()
+    await stubImages(page)
+    await page.goto(url('/du-an/khach-san-eo-gio'), { waitUntil: 'load' })
+    await waitForHydration(page)
+
+    const carousel = page.locator('[data-gallery-carousel]')
+    const total = Number(await carousel.getAttribute('data-gallery-count'))
+    expect(total).toBeGreaterThan(2)
+
+    // Below the fold: it does not run, however long the page waits.
+    await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'paused')
+    await page.clock.fastForward(12_000)
+    await expect(carousel).toHaveAttribute('data-gallery-active-index', '0')
+
+    // In view: it runs, one slide per 5 seconds.
+    await carousel.scrollIntoViewIfNeeded()
+    await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'running')
+    await page.clock.fastForward(5100)
+    await expect(carousel).toHaveAttribute('data-gallery-active-index', '1')
+
+    // Scrolled away it holds again.
+    await page.evaluate(() => window.scrollTo(0, 0))
+    await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'paused')
+    await page.clock.fastForward(12_000)
+    await expect(carousel).toHaveAttribute('data-gallery-active-index', '1')
+
+    // Back in view it finishes the pass, lands on the first slide and stops for good.
+    await carousel.scrollIntoViewIfNeeded()
+    await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'running')
+    for (let step = 0; step < total; step++) {
+      if ((await carousel.getAttribute('data-gallery-autoplay')) === 'ended') break
+      await page.clock.fastForward(5100)
+    }
+    await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'ended')
+    await expect(carousel).toHaveAttribute('data-gallery-active-index', '0')
+    await page.clock.fastForward(20_000)
+    await expect(carousel).toHaveAttribute('data-gallery-active-index', '0')
+  })
+
+  test('MOTION-17b the first manual navigation ends the gallery autoplay', async ({ page }) => {
+    await page.clock.install()
+    await stubImages(page)
+    await page.goto(url('/du-an/khach-san-eo-gio'), { waitUntil: 'load' })
+    await waitForHydration(page)
+
+    const carousel = page.locator('[data-gallery-carousel]')
+    await carousel.scrollIntoViewIfNeeded()
+    await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'running')
+    await carousel.getByRole('button', { name: 'Ảnh tiếp theo' }).click()
+    await page.mouse.move(0, 0)
+    await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'ended')
+    await expect(carousel).toHaveAttribute('data-gallery-active-index', '1')
+    await page.clock.fastForward(20_000)
+    await expect(carousel).toHaveAttribute('data-gallery-active-index', '1')
+
+    // The play button starts a fresh pass.
+    await carousel.getByRole('button', { name: 'Tiếp tục trình chiếu' }).click()
+    await page.mouse.move(0, 0)
+    // Focus within pauses it (a separate, existing rule); once focus leaves, the pass runs.
+    await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur())
+    await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'running')
   })
 })
 

@@ -86,6 +86,8 @@ test('autoplay advances after five seconds and explicit pause stops it', async (
   await page.clock.install()
   await openProject(page, '/du-an/khach-san-eo-gio')
   const carousel = page.locator('[data-gallery-carousel]')
+  // Autoplay only runs while the carousel is on screen.
+  await carousel.scrollIntoViewIfNeeded()
 
   await expect(carousel).toHaveAttribute('data-gallery-active-index', '0')
   await page.clock.fastForward(4800)
@@ -115,6 +117,7 @@ test('hover and keyboard focus pause autoplay without changing visitor preferenc
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   await openProject(page, '/du-an/khach-san-eo-gio')
   const carousel = page.locator('[data-gallery-carousel]')
+  await carousel.scrollIntoViewIfNeeded()
 
   await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'running')
   await carousel.locator('[data-gallery-viewport]').hover()
@@ -157,6 +160,8 @@ test('changing a room filter resets the carousel and lightbox pauses autoplay', 
 
   await carousel.getByRole('button', { name: 'Ảnh tiếp theo' }).click()
   await expect(carousel).toHaveAttribute('data-gallery-active-index', '1')
+  // That manual step ended this pass; a new room filter is a new set and starts a fresh one.
+  await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'ended')
   await page.locator('[data-gallery-filters] button').nth(1).click()
   await expect(carousel).toHaveAttribute('data-gallery-active-index', '0')
 

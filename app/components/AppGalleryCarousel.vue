@@ -37,9 +37,16 @@ const focusWithin = ref(false)
 const dragging = ref(false)
 const pageHidden = ref(false)
 const reduceMotion = ref(false)
+// Autoplay is bounded (DESIGN.md "Spotlight Gallery Carousel"): it runs only while the carousel
+// is on screen, makes one pass through the set and then rests, and it ends for good at the
+// visitor's first manual navigation. `autoplayEnded` is that rest; the play button clears it.
+const inView = ref(false)
+const autoplayEnded = ref(false)
 
 let autoplayTimer: ReturnType<typeof setTimeout> | undefined
+let autoplaySteps = 0
 let motionQuery: MediaQueryList | undefined
+let viewObserver: IntersectionObserver | undefined
 let pointerId: number | undefined
 let pointerStartX = 0
 let pointerStartY = 0
@@ -54,15 +61,49 @@ const goTo = (index: number) => {
   emit('change', nextIndex)
 }
 
-const previous = () => goTo(activeIndex.value - 1)
-const next = () => goTo(activeIndex.value + 1)
+const endAutoplay = () => {
+  autoplayEnded.value = true
+}
+
+// Manual navigation (buttons, arrow keys, swipe, a side slide) ends autoplay; the timer's own
+// step does not.
+const previous = () => {
+  endAutoplay()
+  goTo(activeIndex.value - 1)
+}
+const next = () => {
+  endAutoplay()
+  goTo(activeIndex.value + 1)
+}
 const activate = (index: number) => {
   if (suppressClick.value) return
   if (index === activeIndex.value && props.selectable) {
     emit('select', index)
     return
   }
+  endAutoplay()
   goTo(index)
+}
+
+const autoplayStep = () => {
+  autoplaySteps += 1
+  goTo(activeIndex.value + 1)
+  // One pass: after as many steps as there are slides the carousel is back on the first one.
+  if (autoplaySteps >= props.images.length) endAutoplay()
+}
+
+const restartAutoplay = () => {
+  autoplaySteps = 0
+  autoplayEnded.value = false
+}
+
+const togglePlayback = () => {
+  if (autoplayEnded.value) {
+    visitorPaused.value = false
+    restartAutoplay()
+    return
+  }
+  visitorPaused.value = !visitorPaused.value
 }
 
 const temporarilyPaused = computed(() =>
@@ -72,11 +113,18 @@ const autoplayEnabled = computed(() =>
   props.images.length > 1 && props.autoplayMs > 0 && !reduceMotion.value
 )
 const autoplayRunning = computed(() =>
-  autoplayEnabled.value && !visitorPaused.value && !temporarilyPaused.value
+  autoplayEnabled.value
+  && inView.value
+  && !autoplayEnded.value
+  && !visitorPaused.value
+  && !temporarilyPaused.value
 )
-const autoplayState = computed(() =>
-  !autoplayEnabled.value ? 'disabled' : autoplayRunning.value ? 'running' : 'paused'
-)
+const autoplayState = computed(() => {
+  if (!autoplayEnabled.value) return 'disabled'
+  if (autoplayEnded.value) return 'ended'
+  return autoplayRunning.value ? 'running' : 'paused'
+})
+const showPlay = computed(() => visitorPaused.value || autoplayEnded.value)
 
 const clearAutoplay = () => {
   if (autoplayTimer) clearTimeout(autoplayTimer)
@@ -86,7 +134,7 @@ const clearAutoplay = () => {
 const scheduleAutoplay = () => {
   clearAutoplay()
   if (!autoplayRunning.value) return
-  autoplayTimer = setTimeout(next, props.autoplayMs)
+  autoplayTimer = setTimeout(autoplayStep, props.autoplayMs)
 }
 
 const onMotionChange = (event: MediaQueryListEvent) => {
@@ -146,9 +194,36 @@ const onPointerCancel = (event: PointerEvent) => {
   if (event.pointerId === pointerId) clearPointer()
 }
 
+// A new set of images (a room filter) is a new carousel: back to the first slide and a fresh
+// pass. The visitor's own pause is deliberately kept.
 watch(() => props.images, () => {
   activeIndex.value = 0
+  restartAutoplay()
 })
+
+// Observed from mount and again if the root element is swapped (it only exists while there are
+// images), so autoplay never runs for a carousel nobody can see.
+const observeView = (element: HTMLElement | null) => {
+  viewObserver?.disconnect()
+  if (!element) {
+    inView.value = false
+    return
+  }
+  if (typeof IntersectionObserver === 'undefined') {
+    inView.value = true
+    return
+  }
+  viewObserver = new IntersectionObserver(
+    (entries) => {
+      const latest = entries[entries.length - 1]
+      if (latest) inView.value = latest.isIntersecting
+    },
+    { threshold: 0.35 }
+  )
+  viewObserver.observe(element)
+}
+
+watch(root, observeView, { flush: 'post' })
 
 watch([autoplayRunning, activeIndex, () => props.autoplayMs], scheduleAutoplay)
 
@@ -158,11 +233,13 @@ onMounted(() => {
   motionQuery.addEventListener('change', onMotionChange)
   pageHidden.value = document.hidden
   document.addEventListener('visibilitychange', onVisibilityChange)
+  observeView(root.value)
   scheduleAutoplay()
 })
 
 onBeforeUnmount(() => {
   clearAutoplay()
+  viewObserver?.disconnect()
   motionQuery?.removeEventListener('change', onMotionChange)
   document.removeEventListener('visibilitychange', onVisibilityChange)
 })
@@ -237,12 +314,12 @@ onBeforeUnmount(() => {
         v-if="autoplayEnabled"
         type="button"
         class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-ink-200 bg-white text-ink-950 transition-colors hover:border-wood-500 hover:text-wood-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wood-500 motion-reduce:transition-none"
-        :aria-label="t(visitorPaused ? uiText.galleryCarousel.play : uiText.galleryCarousel.pause)"
-        :aria-pressed="visitorPaused"
-        @click="visitorPaused = !visitorPaused"
+        :aria-label="t(showPlay ? uiText.galleryCarousel.play : uiText.galleryCarousel.pause)"
+        :aria-pressed="showPlay"
+        @click="togglePlayback"
       >
         <Icon
-          :name="visitorPaused ? 'i-lucide-play' : 'i-lucide-pause'"
+          :name="showPlay ? 'i-lucide-play' : 'i-lucide-pause'"
           class="h-4 w-4"
         />
       </button>
@@ -273,8 +350,8 @@ onBeforeUnmount(() => {
   pointer-events: none;
   transform: translate(-50%, -50%) scale(0.62);
   transition:
-    transform 650ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 450ms ease;
+    transform 650ms var(--ease-editorial),
+    opacity 450ms var(--ease-editorial);
 }
 
 .gallery-carousel-slide[data-gallery-position='active'] {
