@@ -2235,6 +2235,12 @@
     --home-meta-lh: 1.4;
     --home-stat: clamp(1.5rem, 1.3rem + 1vw, 2.125rem);
     --home-stat-lh: 1.15;
+    /* DESIGN.md "Statement": the lead section's headline, one per page. */
+    --home-statement: clamp(2.25rem, 1.6rem + 2.4vw, 3.75rem);
+    --home-statement-lh: 1.08;
+    /* DESIGN.md "Monument": one figure per page, above Display. */
+    --home-monument: clamp(4rem, 2.4rem + 7vw, 9rem);
+    --home-monument-lh: 0.92;
   }
 
   .home-display-title {
@@ -2309,5 +2315,117 @@
   .home-stat-value {
     font-size: var(--home-stat);
     line-height: var(--home-stat-lh);
+  }
+
+  /* DESIGN.md "Statement": the headline of a page's one lead section. It is a size step on the
+     Headline role, not a new voice: same family, weight and balance, a wider measure cap. */
+  .home-statement-heading {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--home-statement);
+    line-height: var(--home-statement-lh);
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+    max-width: 18ch;
+  }
+
+  /* DESIGN.md "Monument": one figure per page, set as the statement that opens a chapter.
+     Tabular lining figures so the digits sit as a block; it never wraps, so "3.000 m²" can not
+     break between the number and its unit. */
+  .monument-value {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: var(--home-monument);
+    line-height: var(--home-monument-lh);
+    letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums lining-nums;
+    white-space: nowrap;
+  }
+
+  /* ── SECTION HEADS — DESIGN.md "Section heads" ─────────────────────────────
+     Eyebrow, heading and lead stay direct siblings in every layout, so `v-reveal.head` still
+     reveals them as one unit (it groups by shared parent). The layout is named on the element
+     (`data-head`) and only changes from 1024px; below that every head is Stacked. Spacing lives
+     here, not in margin utilities on the children, because the split and rail layouts cancel it
+     for the element that moves into the second column. */
+  .section-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .section-head > .section-head__title {
+    margin-top: 1rem;
+  }
+
+  .section-head > .section-head__lead {
+    margin-top: 1.25rem;
+  }
+
+  @media (min-width: 1024px) {
+    .section-head[data-head='split'] {
+      grid-template-columns: minmax(0, 1.6fr) minmax(18rem, 1fr);
+      column-gap: 4rem;
+      align-items: end;
+    }
+
+    .section-head[data-head='split'] > .section-head__eyebrow,
+    .section-head[data-head='split'] > .section-head__title {
+      grid-column: 1;
+    }
+
+    .section-head[data-head='split'] > .section-head__lead {
+      grid-column: 2;
+      grid-row: 2;
+      margin-top: 0;
+    }
+
+    /* The eyebrow takes a quarter of the measure and sits on the heading's first baseline. */
+    .section-head[data-head='rail'] {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+      column-gap: 2rem;
+      align-items: baseline;
+    }
+
+    .section-head[data-head='rail'] > .section-head__eyebrow {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .section-head[data-head='rail'] > .section-head__title {
+      grid-column: 2;
+      grid-row: 1;
+      margin-top: 0;
+    }
+
+    .section-head[data-head='rail'] > .section-head__lead {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    /* Content that continues a Rail head's argument hangs from the heading's column: the rail
+       column (a quarter of the width left after the 2rem gap) plus that gap. */
+    .rail-hang {
+      margin-left: calc((100% - 2rem) / 4 + 2rem);
+    }
+  }
+
+  /* ── BREATH — DESIGN.md "Breath" ───────────────────────────────────────────
+     One full-bleed photograph per long page: the viewport's width, no radius, no caption. The
+     element is a direct child of a full-width section or page root, never of a `.shell`. */
+  .breath {
+    margin: 0;
+    width: 100%;
+  }
+
+  .breath__frame {
+    aspect-ratio: 16 / 7;
+    width: 100%;
+    max-height: 46rem;
+  }
+
+  @media (min-width: 768px) {
+    .breath__frame {
+      aspect-ratio: 21 / 9;
+    }
   }
 }
