@@ -63,7 +63,10 @@ const sequence = (index: number) => String(index + 1).padStart(2, '0')
             data-testid="factory-process-group"
             class="reveal flex flex-col card p-6"
           >
-            <span class="home-eyebrow-text block text-wood-600">
+            <span
+              class="home-eyebrow-text block text-wood-600"
+              aria-hidden="true"
+            >
               {{ sequence(index) }}
             </span>
             <h3 class="home-card-heading mt-3 text-ink-950">

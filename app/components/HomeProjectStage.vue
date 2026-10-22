@@ -391,7 +391,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
    into a portrait strip. Two stacked satellites are taller than a lead of the same width, so the
    lead column takes 2.1fr rather than the 1.35fr of the tablet split. The ratio is bounded by
    HL-02's 160px satellite floor: a 1024px window with a 17px classic scrollbar lays out at 1007px,
-   where 2.1fr leaves a satellite image about 165px tall and 2.2fr only about 159px. */
+   where 2.1fr leaves a satellite image about 164px tall and 2.2fr only about 159px. */
 @media (min-width: 1024px) {
   .home-projects__grid {
     grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr);

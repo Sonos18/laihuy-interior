@@ -26,7 +26,10 @@ const { t } = useLanguage()
         </h2>
       </div>
 
-      <ol class="home-capabilities__list mt-14">
+      <ol
+        class="home-capabilities__list mt-14"
+        role="list"
+      >
         <li
           v-for="(capability, index) in capabilities"
           :key="capability.id"

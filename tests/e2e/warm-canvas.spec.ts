@@ -273,6 +273,8 @@ for (const route of ROUTES.filter(({ name }) => ['privacy', 'terms', 'error'].in
       expect(await lightness('.nav-link'), 'nav link must be dark').toBeLessThan(0.6)
       // The VI/EN toggle is told its surface by client state; the first paint must already be dark.
       expect(await lightness('.lang-option[aria-pressed="true"]'), 'language toggle must be dark').toBeLessThan(0.6)
+      // The CTA stays inert without hydration, so it must not be a visible, unpressable button.
+      await expect(header.locator('.chrome-actions')).toBeHidden()
     } finally {
       await context.close()
     }
@@ -310,6 +312,10 @@ test('WARM-08 privacy to terms keeps navigation chrome, back to home restores th
   const html = page.locator('html')
   await expect(header).toHaveAttribute('data-chrome-state', 'nav')
   await expect(html).toHaveAttribute('data-chrome-solid', '')
+  // Once hydrated the pinned header's CTA is live: visible, not inert, reachable.
+  const actions = header.locator('.chrome-actions')
+  await expect(actions).toBeVisible()
+  await expect(actions).not.toHaveAttribute('inert', /.*/)
 
   // Privacy -> terms through the footer: both pin, so the header must stay in NAVIGATION.
   await page.locator('footer a[href="/terms-of-use"]').first().click()

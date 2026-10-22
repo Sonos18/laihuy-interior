@@ -1208,6 +1208,14 @@
     color: var(--fg-light);
   }
 
+  /* Same server/client gap for the CTA: the guard above lifts --header-p to 1, which fades
+     `.chrome-actions` in, but the server renders it `inert` (chromeState is COVER). Keep it
+     out of sight while it is inert, so it is never a visible button that cannot be pressed;
+     hydration removes `inert` and it appears. With JavaScript off it stays hidden, as before. */
+  :root[data-chrome-solid] .app-header .chrome-actions[inert] {
+    visibility: hidden;
+  }
+
   /* ── FOOTER — §10, §29, §12 ────────────────────────────────────────────────
      The footer is the FINAL PAGE OF THE MAGAZINE, not the bottom of the
      document (§1). It closes the loop the hero opened: the site begins on

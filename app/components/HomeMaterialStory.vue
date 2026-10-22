@@ -102,7 +102,10 @@ const layerStyle = (index: number) => {
             </div>
           </div>
 
-          <ol class="home-material-story__copy">
+          <ol
+            class="home-material-story__copy"
+            role="list"
+          >
             <li
               v-for="(stage, index) in stages"
               :key="stage.id"
