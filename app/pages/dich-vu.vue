@@ -338,7 +338,7 @@ usePageSeo({
 
         <div
           v-reveal="120"
-          class="reveal flex flex-col gap-3 sm:flex-row xl:justify-end"
+          class="reveal flex flex-col gap-3 sm:flex-row sm:flex-wrap xl:justify-end"
         >
           <NuxtLink
             to="/lien-he"

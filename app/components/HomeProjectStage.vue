@@ -95,44 +95,53 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
               <p class="home-projects__excerpt mt-3 text-sm leading-[1.7] text-ink-600 lg:text-base">
                 {{ t(heroProject.project.shortDescription) }}
               </p>
-
-              <!-- Editorial specs row -->
-              <div
-                v-if="heroProject.project.location || ta(heroProject.project.scope).length || ta(heroProject.project.content?.materials).length"
-                class="home-projects__specs mt-6 grid grid-cols-2 gap-4 border-t border-ink-200/80 pt-5 sm:grid-cols-3"
-              >
-                <div v-if="heroProject.project.location">
-                  <p class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-500">
-                    {{ t(homePageContent.projects.locationLabel) }}
-                  </p>
-                  <p class="mt-1 text-xs font-medium leading-[1.7] text-ink-900 lg:text-sm">
-                    {{ t(heroProject.project.location) }}
-                  </p>
-                </div>
-                <div v-if="ta(heroProject.project.scope).length">
-                  <p class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-500">
-                    {{ t(homePageContent.projects.scopeLabel) }}
-                  </p>
-                  <p class="mt-1 text-xs font-medium leading-[1.7] text-ink-900 lg:text-sm">
-                    {{ ta(heroProject.project.scope).slice(0, 3).join(' · ') }}
-                  </p>
-                </div>
-                <div
-                  v-if="ta(heroProject.project.content?.materials).length"
-                  class="col-span-2 sm:col-span-1"
-                >
-                  <p class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-500">
-                    {{ t(homePageContent.projects.materialsLabel) }}
-                  </p>
-                  <p class="mt-1 text-xs font-medium leading-[1.7] text-ink-900 lg:text-sm truncate">
-                    {{ ta(heroProject.project.content?.materials)[0] }}
-                  </p>
-                </div>
-              </div>
             </div>
 
+            <!-- Editorial spec ledger. The lead card is stretched to the height of the two stacked
+                 satellites, so this block is the part that absorbs the extra height: its rows
+                 share it equally and each row centres its content, which turns the spare space
+                 into ledger rhythm instead of a blank gap above the call to action. -->
+            <dl
+              v-if="heroProject.project.location || ta(heroProject.project.scope).length || ta(heroProject.project.content?.materials).length"
+              class="home-projects__specs mt-6 border-t border-ink-200/80"
+            >
+              <div
+                v-if="heroProject.project.location"
+                class="home-projects__spec"
+              >
+                <dt class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-500">
+                  {{ t(homePageContent.projects.locationLabel) }}
+                </dt>
+                <dd class="text-sm font-medium leading-[1.7] text-ink-900 lg:text-base">
+                  {{ t(heroProject.project.location) }}
+                </dd>
+              </div>
+              <div
+                v-if="ta(heroProject.project.scope).length"
+                class="home-projects__spec"
+              >
+                <dt class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-500">
+                  {{ t(homePageContent.projects.scopeLabel) }}
+                </dt>
+                <dd class="text-sm font-medium leading-[1.7] text-ink-900 lg:text-base">
+                  {{ ta(heroProject.project.scope).slice(0, 3).join(' · ') }}
+                </dd>
+              </div>
+              <div
+                v-if="ta(heroProject.project.content?.materials).length"
+                class="home-projects__spec"
+              >
+                <dt class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-500">
+                  {{ t(homePageContent.projects.materialsLabel) }}
+                </dt>
+                <dd class="text-sm font-medium leading-[1.7] text-ink-900 lg:text-base">
+                  {{ ta(heroProject.project.content?.materials)[0] }}
+                </dd>
+              </div>
+            </dl>
+
             <!-- Footer / Meta row -->
-            <div class="home-projects__meta mt-6 flex items-center justify-between border-t border-ink-200/80 pt-4">
+            <div class="home-projects__meta flex items-center justify-between border-t border-ink-200/80 pt-4">
               <span class="text-xs font-semibold uppercase tracking-[0.08em] text-wood-700 transition-colors duration-300 group-hover:text-wood-950">
                 {{ t(homePageContent.projects.heroCta) }}
               </span>
@@ -194,7 +203,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
               <h3 class="home-projects__title-satellite font-display mt-1.5 text-lg font-medium tracking-tight text-ink-950 lg:text-xl">
                 {{ t(project.name) }}
               </h3>
-              <p class="mt-2 line-clamp-2 text-sm leading-[1.7] text-ink-600">
+              <p class="home-projects__excerpt mt-2 text-sm leading-[1.7] text-ink-600">
                 {{ t(project.shortDescription) }}
               </p>
             </div>
@@ -314,6 +323,41 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
   flex-direction: column;
   justify-content: space-between;
   padding: 1.5rem;
+}
+
+/* Short curated copy, shown whole: a line clamp ends mid-word ("điề…") at some widths. */
+.home-projects__excerpt {
+  text-wrap: pretty;
+}
+
+/* Spec ledger: label and value on one row, hairline between rows. Rows share the card's spare
+   height equally (see the template note), and never shrink below a comfortable 2.75rem. */
+.home-projects__specs {
+  display: grid;
+  grid-auto-rows: minmax(2.75rem, 1fr);
+  flex: 1 1 auto;
+}
+
+.home-projects__spec {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  column-gap: 1rem;
+  align-items: center;
+  padding-block: 0.5rem;
+}
+
+.home-projects__spec + .home-projects__spec {
+  border-top: 1px solid color-mix(in srgb, var(--color-ink-200) 80%, transparent);
+}
+
+.home-projects__spec dd {
+  text-wrap: balance;
+}
+
+@media (min-width: 1024px) {
+  .home-projects__spec {
+    grid-template-columns: 8rem minmax(0, 1fr);
+  }
 }
 
 /* Mobile & base grid: Single column stack */
