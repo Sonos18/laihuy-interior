@@ -63,6 +63,20 @@ describe('buildProjectDetailViewModel', () => {
     expect(designOnly.executionProof).toEqual([])
   })
 
+  it('claims end-to-end delivery only when the scope covers design, production and construction', () => {
+    const coverage = (slug: string) => buildProjectDetailViewModel({
+      project: project(slug),
+      projects,
+      imageCount: 10,
+      locale: 'vi'
+    }).coversEndToEnd
+
+    expect(coverage('khach-san-eo-gio')).toBe(true)
+    expect(coverage('phong-hop-quan-7')).toBe(false)
+    expect(coverage('nha-ta-dung')).toBe(false)
+    expect(projects.filter(item => coverage(item.slug))).toHaveLength(3)
+  })
+
   it('builds only renderable stable anchors', () => {
     const rich = buildProjectDetailViewModel({
       project: project('khach-san-eo-gio'),

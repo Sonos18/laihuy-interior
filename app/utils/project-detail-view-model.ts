@@ -175,6 +175,7 @@ export const buildProjectDetailViewModel = ({ project, projects, imageCount, loc
     executionProof: resolveExecutionProof(scopeItems, locale),
     navSections,
     relatedProjects: resolveRelatedProjects(project, projects),
-    hasMaterialStory
+    hasMaterialStory,
+    coversEndToEnd: (['Thiết kế', 'Sản xuất', 'Thi công'] as const).every(key => scopeItems.some(item => item.key === key))
   }
 }

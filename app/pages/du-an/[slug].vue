@@ -53,6 +53,13 @@ const detail = computed(() => buildProjectDetailViewModel({
   locale: locale.value
 }))
 
+// The finale repeats the factory proof strip. Its "end-to-end" cell (design → install) is a claim
+// about this project's delivery, so it only shows when the scope really spans design,
+// production and construction; every other cell is about the factory and always shows.
+const finaleStats = computed(() =>
+  detail.value.coversEndToEnd ? factoryStats : factoryStats.filter(stat => stat.id !== 'end-to-end')
+)
+
 const prettifySlug = (value: string): string =>
   value.replace(/-/g, ' ').replace(/\b\w/g, char => char.toUpperCase())
 
@@ -321,7 +328,7 @@ usePageSeo({
 
     <ProjectRelatedProjects :projects="relatedCards" />
     <ProjectConversionFinale
-      :stats="factoryStats"
+      :stats="finaleStats"
       :phone="company.phone"
     />
 

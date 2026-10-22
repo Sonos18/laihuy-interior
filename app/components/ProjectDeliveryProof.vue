@@ -77,12 +77,12 @@ const timelineStyle = computed(() => ({ '--phase-count': String(props.phases.len
           class="relative border-t border-[var(--rule-light)] py-5 md:border-l md:border-t-0 md:px-5"
         >
           <span
-            class="text-xs font-semibold text-wood-600"
+            class="home-eyebrow-text block text-wood-600"
             aria-hidden="true"
           >{{ String(index + 1).padStart(2, '0') }}</span>
           <Icon
             :name="phase.icon"
-            class="mt-3 h-6 w-6 text-ink-950"
+            class="mt-4 block h-6 w-6 text-ink-950"
           />
           <p class="mt-3 text-sm font-semibold text-ink-950">
             {{ phase.label }}

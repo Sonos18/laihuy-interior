@@ -56,4 +56,6 @@ export type ProjectDetailViewModel = {
   navSections: ProjectNavSection[]
   relatedProjects: Project[]
   hasMaterialStory: boolean
+  /** Scope covers design, production and construction: the only case the "end-to-end" claim is true. */
+  coversEndToEnd: boolean
 }
