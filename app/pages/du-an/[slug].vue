@@ -3,6 +3,7 @@ import { categoryDefinitions } from '~/data/categories'
 import { company } from '~/data/company'
 import { factoryStats } from '~/data/factory'
 import { projects } from '~/data/projects'
+import { projectsPageContent } from '~/data/projects-page'
 import { siteImages } from '~/data/site-images'
 import { uiText } from '~/data/ui'
 import { caseStudyBreath } from '~/media/breath-media'
@@ -260,7 +261,7 @@ usePageSeo({
             v-reveal
             data-gallery-filters
             class="reveal mt-6"
-            :label="t({ vi: 'Lọc ảnh theo phòng', en: 'Filter photos by room' })"
+            :label="t(projectsPageContent.galleryFilterLabel)"
           >
             <FilterChip
               v-for="tab in galleryTabs"

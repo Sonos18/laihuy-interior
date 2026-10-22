@@ -6,11 +6,13 @@ type ProjectsSectionContent = {
   lead: LocalizedText
 }
 
-/** UI copy of the project index (`/du-an`): the two section heads and the archive filter label. */
+/** UI copy of the project index (`/du-an`): the two section heads and the filter group labels (the
+ *  archive's, and the case-study gallery's room filter). */
 export const projectsPageContent: {
   featured: ProjectsSectionContent
   archive: ProjectsSectionContent
   filterLabel: LocalizedText
+  galleryFilterLabel: LocalizedText
 } = {
   featured: {
     eyebrow: { vi: 'Thiết kế · Sản xuất · Thi công', en: 'Design · Production · Construction' },
@@ -28,5 +30,6 @@ export const projectsPageContent: {
       en: 'Homes, offices and commercial work, by scope of services.'
     }
   },
-  filterLabel: { vi: 'Lọc dự án theo loại hình', en: 'Filter projects by type' }
+  filterLabel: { vi: 'Lọc dự án theo loại hình', en: 'Filter projects by type' },
+  galleryFilterLabel: { vi: 'Lọc ảnh theo phòng', en: 'Filter photos by room' }
 }
