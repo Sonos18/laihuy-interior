@@ -19,6 +19,7 @@
  *     `inert` is a DOM attribute and I8 is a correctness requirement, not a paint.
  */
 import type { Ref } from 'vue'
+import { isNavigationFailure, NavigationFailureType } from 'vue-router'
 
 type Zone = 'cover' | 'content' | 'footer'
 
@@ -231,6 +232,12 @@ function create(): HeaderState {
     // §34.2 — the pre-hydration guard has done its job; take over via --header-p.
     delete document.documentElement.dataset.chrome
 
+    // From here on the header is client-driven. The pre-hydration colour guards in main.css
+    // (`data-chrome-solid` without `data-chrome-live`) stand down: the head plugin sets
+    // `data-chrome-solid` at page:finish, before the old page has faded out, and a guard that
+    // outlived hydration would repaint the cover-state toggle light over the hero scrim.
+    document.documentElement.dataset.chromeLive = ''
+
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('orientationchange', measure)
     el.addEventListener('focusin', onFocusIn)
@@ -266,6 +273,7 @@ function create(): HeaderState {
     observer?.disconnect()
     observer = null
     el = null
+    delete document.documentElement.dataset.chromeLive
   }
 
   const setDrawerOpen = (open: boolean) => {
@@ -298,17 +306,24 @@ function create(): HeaderState {
   const router = useRouter()
   const nuxtApp = useNuxtApp()
 
-  // Page transition (nuxt.config `app.pageTransition`, mode out-in). Suspense resolves — so
-  // `page:finish` fires — as soon as the NEW page is ready, but that page is not in the DOM until
-  // the old one has finished fading out (`page:transition:finish`), and the old page's unmount is
-  // what releases a pinned header (LegalPage -> setSolid(false)). Phases 3 and 4 must see the
-  // swapped DOM: run any earlier, `p` is recomputed with the old pin still set and the chrome
-  // transitions come back while the colours are about to flip, which is the melt (FG-06). So a
-  // route change settles once BOTH have happened, in either order (a slow page resolves after
-  // the old one has left; a fast one before). The timer is the safety net for a navigation that
-  // never completes both.
+  // Page transition (nuxt.config `app.pageTransition`, mode out-in). With Suspense and out-in,
+  // `page:finish` fires as soon as the NEW page is ready and ALWAYS precedes
+  // `page:transition:finish`, which fires when the old page has finished fading out; the new page
+  // is not in the DOM until then, and the old page's unmount is what releases a pinned header
+  // (LegalPage -> setSolid(false)). Phases 3 and 4 must see the swapped DOM: run any earlier, `p`
+  // is recomputed with the old pin still set and the chrome transitions come back while the
+  // colours are about to flip, which is the melt (FG-06).
+  //
+  // So a route change settles only once both hooks have fired, and then only when #main holds
+  // exactly one page that is not leaving. Each navigation is bound to its target route, so a late
+  // hook from an earlier one (A -> B, then B -> C during B's out phase) is ignored. A slow lazy
+  // chunk (saveData, 2g) can hold the new page back for any length of time, so the safety timer
+  // starts at `page:finish` and bounds only the wait for the transition, never the chunk load.
   const SETTLE_FALLBACK_MS = 1500
+  const SETTLE_MAX_FRAMES = 30
   let navigating = false
+  let target = ''
+  let epoch = 0
   let resolved = false
   let swapped = false
   let fallbackTimer = 0
@@ -333,14 +348,41 @@ function create(): HeaderState {
     })
   }
 
-  const settleWhenSwapped = () => {
-    if (!navigating || !resolved || !swapped) return
+  /** The swap is complete: one page child in #main, and it is not the one fading out. */
+  const swapDone = () => {
+    const pages = document.getElementById('main')?.children
+    return pages?.length === 1 && !/\bpage-leave/.test(pages[0]!.className)
+  }
+
+  /** Give up on a navigation that will not complete (aborted, failed): bring chrome back. */
+  const abandon = () => {
+    if (!navigating) return
     navigating = false
     window.clearTimeout(fallbackTimer)
-    // The new page is inserted synchronously right after the transition's afterLeave hook
-    // returns; one frame later the DOM (and the old page's unmount) is in its final state.
-    requestAnimationFrame(settle)
+    settle()
   }
+
+  const settleWhenSwapped = () => {
+    if (!navigating || !resolved || !swapped) return
+    window.clearTimeout(fallbackTimer)
+    const mine = epoch
+    let frames = 0
+    // The new page is inserted synchronously right after the transition's afterLeave hook
+    // returns; wait for the DOM to say so, with a frame budget so it can never hang.
+    const attempt = () => {
+      if (!navigating || mine !== epoch) return
+      if (!swapDone() && frames++ < SETTLE_MAX_FRAMES) {
+        requestAnimationFrame(attempt)
+        return
+      }
+      navigating = false
+      settle()
+    }
+    requestAnimationFrame(attempt)
+  }
+
+  /** A hook belongs to the navigation in flight only while the router is still on its target. */
+  const isCurrent = () => navigating && router.currentRoute.value.fullPath === target
 
   router.beforeEach((to, from, next) => {
     if (to.path !== from.path && el) {
@@ -351,30 +393,44 @@ function create(): HeaderState {
       document.documentElement.style.setProperty('--header-shift', '0px')
 
       navigating = true
+      target = to.fullPath
+      epoch += 1
       resolved = false
       swapped = false
       window.clearTimeout(fallbackTimer)
-      fallbackTimer = window.setTimeout(() => {
-        resolved = true
-        swapped = true
-        settleWhenSwapped()
-      }, SETTLE_FALLBACK_MS)
     }
     next()
   })
 
+  // An aborted navigation never reaches page:finish: release the chrome. (A cancelled one has
+  // been superseded by a newer navigation, which owns the state now.)
+  router.afterEach((to, _from, failure) => {
+    if (failure && isNavigationFailure(failure, NavigationFailureType.aborted) && to.fullPath === target) {
+      abandon()
+    }
+  })
+  router.onError(abandon)
+
   nuxtApp.hook('page:finish', () => {
     if (!el) return
-    if (!navigating) {
-      // First paint (or a navigation that did not change the path): nothing is leaving.
+    if (nuxtApp.isHydrating) {
+      // First paint: nothing is leaving.
       settle()
       return
     }
+    if (!isCurrent()) return
     resolved = true
+    if (!swapped) {
+      fallbackTimer = window.setTimeout(() => {
+        swapped = true
+        settleWhenSwapped()
+      }, SETTLE_FALLBACK_MS)
+    }
     settleWhenSwapped()
   })
 
   nuxtApp.hook('page:transition:finish', () => {
+    if (!isCurrent()) return
     swapped = true
     settleWhenSwapped()
   })

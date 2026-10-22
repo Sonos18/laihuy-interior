@@ -1207,13 +1207,16 @@
      as COVER. On a route that pins NAVIGATION (`data-chrome-solid`) that would paint the dark
      variant on white glass until hydration, and never fix itself with JavaScript off. Resolve
      the light colours here so the first paint is right and the later class swap changes
-     nothing (no colour transition). */
-  :root[data-chrome-solid] .app-header .lang-toggle-dark .lang-option {
+     nothing (no colour transition). Only until hydration (`data-chrome-live`, set by
+     useHeaderState.register): after that the toggle is told its surface by chromeState, and the
+     head plugin sets `data-chrome-solid` early on a client navigation (at page:finish, while the
+     old page is still fading out), when this guard must not repaint the cover-state toggle. */
+  :root[data-chrome-solid]:not([data-chrome-live]) .app-header .lang-toggle-dark .lang-option {
     color: var(--fg-light-subtle);
   }
 
-  :root[data-chrome-solid] .app-header .lang-toggle-dark .lang-option:hover,
-  :root[data-chrome-solid] .app-header .lang-toggle-dark .lang-option[aria-pressed="true"] {
+  :root[data-chrome-solid]:not([data-chrome-live]) .app-header .lang-toggle-dark .lang-option:hover,
+  :root[data-chrome-solid]:not([data-chrome-live]) .app-header .lang-toggle-dark .lang-option[aria-pressed="true"] {
     color: var(--fg-light);
   }
 
