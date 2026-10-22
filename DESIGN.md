@@ -216,7 +216,7 @@ A warm, low-chroma palette of linen, timber and bronze, anchored by a near-black
 
 Content sits on a single rail: `.shell` caps content at 1280px with 24px gutters (32px from 768px), and every shell on every page resolves to one left edge and one measure. Sections breathe on a fixed vertical rhythm of 64px (88px from 768px). The footer runs looser: 80px of bottom padding (112px from 768px).
 
-Composition favors editorial asymmetry over symmetric card walls: projects use one dominant case study and two satellites, split 1.35fr / 1fr from 768 to 1023px and 2.1fr / 1fr from 1024px (lead 16:10, satellites stacked 16:9); the factory introduction runs 1.15fr / 0.85fr from 1024px; the closing CTA runs 1.45fr / 0.55fr. Collections that are genuinely uniform (the project index) step 1 → 2 → 3 columns.
+Composition favors editorial asymmetry over symmetric card walls: projects use one dominant case study and two satellites, split 1.35fr / 1fr from 768 to 1023px and 2.1fr / 1fr from 1024px (lead 16:10, satellites stacked 16:9); the factory introduction runs 1.15fr / 0.85fr from 1024px; the closing CTA runs 1.45fr / 0.55fr. The project index (`/du-an`) is two chapters, not one wall: the projects whose scope covers design, production and construction open it as that same lead + satellites composition (derived from the scope rule, never from a list of slugs), and every other project follows as a quieter archive grid that steps 1 → 2 → 3 → 4 columns (640, 1024 and 1280px). Collections that are genuinely uniform step the same way.
 
 Breakpoints are 768px (gutter and rhythm step, tablet grids) and 1280px (the chrome breakpoint: desktop navigation appears, header grows from 72px to 88px). 1024px is used by a few home compositions and by the section heads below. Verify layouts immediately below, at and above 768 and 1280.
 
@@ -296,6 +296,8 @@ Warm and tactile: a soft bronze surface that warms further under the hand.
 ### Chips
 - **Style:** pill, 12px × 20px, Action type; idle has a 1px Plaster Line border and Walnut Grey text.
 - **State:** hover shifts the border to Mid Timber and text to Deep Timber; active fills Charcoal Ink with Linen text.
+- **One row, never wrapped.** A set of filter chips is one row (`ChipRow`), however many options it has. Every option stays on the page: when the chips are wider than the row they scroll sideways, and an edge that still has chips beyond it fades out over 48px. From 768px two 44px arrow buttons scroll the row by 80% of its width for pointer users; they are redundant, so they are `aria-hidden` and out of the tab order. Keyboard users Tab from chip to chip (each is a pressed-state button, 44px tall) and a focused chip is always scrolled clear of the fade, never left half hidden. Touch users swipe. Nothing is revealed only on hover, and under reduced motion the scroll is instant. The row carries a group label, and a set of more than about five chips (the 7 project categories, the 8 room filters of a rich case study) uses it; a short set simply fits on the row and shows no arrows or fade.
+- **What a filter filters.** The project index filter narrows the archive only; the end-to-end composition above it stays, and the filter sits in the archive's own chapter so that is obvious. Its options are the categories that have an archive project, so no chip is empty. A case study's room filter sits on its own row under the gallery head (a Stacked head), at the full measure.
 
 ### Cards / Containers
 - **Corner Style:** 4px edge.
@@ -303,6 +305,7 @@ Warm and tactile: a soft bronze surface that warms further under the hand.
 - **Shadow Strategy:** Rest lift, Hover lift on interaction (see Elevation).
 - **Border:** 1px Plaster Line; darkens to Dust Grey on hover.
 - **Internal Padding:** 24px (28px from 1024px). Images scale to 1.03 over `--dur-image` (700ms) on hover.
+- **One chip type per card.** A project card carries its category as a Label line and nothing else that is a pill, tag or badge: the area is plain meta text, the scope is one short line ("Thiết kế · Thi công") and no pill sits on the photograph. The archive card on the project index is the quiet form: a 3:2 photograph, 20px padding, Label, Title, area and scope, with no description. The home stage keeps its category pill and number on the photograph (`ProjectStage` `badges`); the index turns them off.
 
 ### Inputs / Fields
 - **Style:** Paper White field, 1px Plaster Line border, 4px edge, 12px × 16px padding, 16px text, labels in Inter 700 at 14px.
@@ -350,4 +353,5 @@ This document records the target chosen with the owner. These parts of the curre
 - Duplicate token declarations (obsidian/bronze/ivory in both `:root` and `@theme`), unused legacy tokens (`--color-wood`, `--color-warm`, `--radius-*`), the unused Syne font, and Nuxt UI `primary: 'amber'` with no Nuxt UI components rendered.
 - Copy formula, recorded for an owner decision and deliberately not rewritten: five headings use the "Từ … đến …" / "From … to …" pattern (the `/gioi-thieu` and `/dich-vu` hero titles, the home material story, and the case-study story and delivery chapters). Rewriting them is a copy change, outside the design system.
 - The Facts Band reprises one fact as a Monument on `/`, `/gioi-thieu` and `/nha-xuong` (the band near the hero, the Monument at its chapter). Dropping the repeated fact from those bands would change the facts a page shows, which is a content decision.
+- The home project stage uses `ProjectStage` with its default `badges`: its cards repeat the category as a pill on the photograph and as a Label line below, plus a number badge. The one-chip-type rule is met on the project index; the home cards converge when the home stage is next touched.
 - `docs/design/redesign-concept-showcase.html` still renders a fully dark obsidian world; it remains a composition and motion reference only, and the owner's 2026-10-20 decision for a continuous warm-light canvas supersedes its surfaces. (`.agents/rules/laihuy-ux-ui.md` was aligned with this document on the same date.)
