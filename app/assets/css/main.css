@@ -1983,13 +1983,16 @@
 
   /* PRIMARY ACTION — DESIGN.md "Buttons". The one bronze, sentence-case action used by the
      home hero, the header, the footer and the home closing CTA. Flat at rest (Flat-By-Default
-     Rule): no glow and no lift; hover warms the fill and nothing else moves.
+     Rule): no glow and no lift; hover warms the fill and runs one soft warm sheen.
 
      The 1px Deep Timber edge is the Bronze Edge Rule: bronze alone is ~2.9:1 against linen,
      under the 3:1 non-text floor, so on light surfaces the border carries the shape. On the
      obsidian hero and footer bronze already clears 3:1, so `--on-dark` matches the border to
      the fill instead of dropping it, which keeps the box identical in both contexts. */
   .btn-bronze {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -2027,6 +2030,39 @@
 
   .btn-bronze:active {
     transform: scale(0.97);
+  }
+
+  /* The sheen (DESIGN.md "Motion"): a soft linen-tinted band that fades to transparent at
+     both edges, so it reads as light passing over a finished surface rather than a glossy
+     white bar. It sits under the label (z-index -1 inside the isolated button) and moves on
+     transform only, so the text never repaints. The rest state carries no transition: leaving
+     the button resets the band instantly instead of sweeping it back. Pointer devices only,
+     because on touch :hover sticks after a tap and the sheen would replay on scroll-back. */
+  /* The layer is exactly the button's size and the diagonal band is drawn by the gradient, so
+     translateX(±100%) is always one button width: the band clears every primary button, from
+     the 206px header CTA to a full-width form submit, and never parks mid-label. */
+  .btn-bronze::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      105deg,
+      transparent 32%,
+      color-mix(in srgb, var(--color-wood-50) 42%, transparent) 50%,
+      transparent 68%
+    );
+    transform: translateX(-100%);
+    pointer-events: none;
+  }
+
+  /* An on-screen crossing, so ease-in-out rather than the front-loaded editorial curve: with
+     ease-out the band cleared the label in ~150ms and spent the rest of the time past the edge. */
+  @media (hover: hover) and (pointer: fine) {
+    .btn-bronze:hover::after {
+      transform: translateX(100%);
+      transition: transform 800ms cubic-bezier(0.45, 0, 0.25, 1);
+    }
   }
 
   /* Secondary action on the dark hero — DESIGN.md "Outline … On the dark hero it uses a bronze
@@ -2095,6 +2131,10 @@
     .btn-bronze:active,
     .btn-luxury-outline:active {
       transform: none;
+    }
+
+    .btn-bronze::after {
+      display: none;
     }
   }
 

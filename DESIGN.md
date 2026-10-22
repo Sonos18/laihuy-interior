@@ -232,13 +232,14 @@ Motion is slow, editorial and one-shot: things arrive once, settle, and stay sti
 - **Hero image.** One-shot settle from `scale(1.04)` to `1` over 1.6s on the editorial curve. If the image arrives after the page is interactive, it is hidden only while undecoded and then fades in over 360ms, with the settle starting at that moment. No looping Ken Burns.
 - **Material story copy swap.** The outgoing copy exits in 120ms on the exit curve; the incoming copy enters over 240ms on the editorial curve after the 120ms exit. Both are never visible together.
 - **Navigation.** Underline 240ms, header hide/show about 280ms, drawer open 300ms editorial and close 200ms exit (see Components).
+- **Primary button sheen.** On hover, one soft warm highlight (a linen-tinted band fading to transparent at both edges, never a hard white bar) crosses the bronze button left to right in 800ms on an ease-in-out curve (`cubic-bezier(0.45, 0, 0.25, 1)`: it is on-screen travel, so it must not front-load like the editorial curve), once per hover. It resets instantly when the pointer leaves, so it never sweeps backwards. Pointer devices only (`hover: hover` and `pointer: fine`), because on touch `:hover` sticks after a tap.
 
 ### Named Rules
 **The One-Shot Rule.** No infinite animation. Motion plays once on arrival or on interaction, then rests.
 
 **The Rest-State Rule.** No `will-change` is held at rest; promote a layer only while it animates.
 
-**The Reduced-Motion Rule.** Under `prefers-reduced-motion: reduce` the scroll reveal, hero settle and fade, copy-swap motion and press-scale are all off, and the material story uses its static layout. Content is shown immediately, never hidden waiting for an animation.
+**The Reduced-Motion Rule.** Under `prefers-reduced-motion: reduce` the scroll reveal, hero settle and fade, copy-swap motion, button sheen and press-scale are all off, and the material story uses its static layout. Content is shown immediately, never hidden waiting for an animation.
 
 ## Shapes
 
@@ -250,7 +251,7 @@ Two shape words only. Anything that holds content (cards, images, metric frames,
 Warm and tactile: a soft bronze surface that warms further under the hand.
 - **Shape:** full pill (9999px), 48px tall, 44px minimum hit target.
 - **Primary:** Workshop Bronze fill, Obsidian text, Action type in sentence case, 14px × 28px padding; 1px Deep Timber border on light surfaces.
-- **Hover / Focus:** fill warms to Polished Bronze and nothing else moves. `:active` scales the button to 0.97 (none under reduced motion). Focus shows a 2px Mid Timber outline with 2px offset.
+- **Hover / Focus:** fill warms to Polished Bronze and one soft warm sheen crosses the button once (see Motion; pointer devices only, off under reduced motion). `:active` scales the button to 0.97 (none under reduced motion). Focus shows a 2px Mid Timber outline with 2px offset.
 - **Outline:** transparent with a 1px Plaster Line border and Charcoal Ink text; fills Charcoal Ink with Linen text on hover. On the dark hero it uses a bronze hairline and Raw Silk text instead.
 
 ### Chips
@@ -289,14 +290,14 @@ A centered 16:10 slide with its neighbours scaled to about 0.7 and dimmed; slide
 - **Do** set headings in Outfit 500, sentence case, and keep prose at line-height 1.65 or more.
 - **Do** use the 4px edge for content containers and pills for controls.
 - **Do** separate content with Plaster Line hairlines at 60% before reaching for a shadow.
-- **Do** move with the editorial curve (`cubic-bezier(0.22, 0.61, 0.36, 1)`), 240ms for hover and 280-400ms for state, reveal once at 600ms, and disable reveal, hero settle and fade, copy-swap motion and press-scale under `prefers-reduced-motion`; no infinite animation.
+- **Do** move with the editorial curve (`cubic-bezier(0.22, 0.61, 0.36, 1)`), 240ms for hover and 280-400ms for state, reveal once at 600ms, and disable reveal, hero settle and fade, copy-swap motion, button sheen and press-scale under `prefers-reduced-motion`; no infinite animation.
 
 ### Don't:
 - **Don't** alternate light and dark section bands; obsidian appears only behind the hero photograph and in the footer.
 - **Don't** set headings in Inter 900 or continuous uppercase.
 - **Don't** use 16px card or input radii; they belong to the retired interior-page system.
 - **Don't** add a second accent hue, gradient text, neon, saturated badges, glassmorphism panels or deep drop shadows.
-- **Don't** use bouncing or spring motion, infinite or looping animation (pulsing dots, sheens, Ken Burns drift), `will-change` held at rest, or heavy parallax.
+- **Don't** use bouncing or spring motion, infinite or looping animation (pulsing dots, repeating sheens, Ken Burns drift), `will-change` held at rest, or heavy parallax.
 - **Don't** hardcode hex values in components; use the palette tokens.
 
 ## Drift from this system (incumbent code, 2026-10-20)

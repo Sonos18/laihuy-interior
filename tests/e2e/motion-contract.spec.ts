@@ -144,15 +144,39 @@ test.describe('motion contract', () => {
     })
   }
 
-  test('MOTION-04 no sheen, press scale kept', async ({ page }) => {
+  test('MOTION-04 soft one-shot sheen on hover, press scale kept', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'no-preference' })
+    await page.setViewportSize(VIEWPORT_DESKTOP)
     await page.goto(url('/'), { waitUntil: 'load' })
+    await waitForHydration(page)
 
-    const afterContent = await page.evaluate(() => {
-      const btn = document.querySelector('.btn-bronze')
-      if (!btn) throw new Error('no .btn-bronze on /')
-      return getComputedStyle(btn, '::after').content
+    const button = page.locator('main .btn-bronze').first()
+    const sheen = () => button.evaluate((btn) => {
+      const style = getComputedStyle(btn, '::after')
+      return {
+        content: style.content,
+        background: style.backgroundImage,
+        transform: style.transform,
+        duration: style.transitionDuration,
+        animation: style.animationName
+      }
     })
-    expect(['none', 'normal']).toContain(afterContent)
+
+    // At rest: present, a soft gradient band (not a solid white bar), parked off the left edge,
+    // with no transition, so leaving the button resets it instead of sweeping it back.
+    const rest = await sheen()
+    expect(rest.content).not.toMatch(/^(none|normal)$/)
+    expect(rest.background).toContain('linear-gradient')
+    expect(rest.duration).toBe('0s')
+    expect(rest.animation).toBe('none')
+
+    // On hover: one 800ms pass to a different position; never a looping animation.
+    await button.hover()
+    const hovered = await sheen()
+    expect(hovered.duration).toBe('0.8s')
+    expect(hovered.animation).toBe('none')
+    // Computed transform reports the in-flight value, so wait for the band to travel.
+    await expect.poll(async () => (await sheen()).transform, { timeout: 2000 }).not.toBe(rest.transform)
 
     const pressRule = await page.evaluate(() => {
       const visit = (rules: CSSRuleList): string | null => {
@@ -179,6 +203,17 @@ test.describe('motion contract', () => {
       return null
     })
     expect(pressRule, '.btn-bronze:active { transform: scale(0.97) }').not.toBeNull()
+  })
+
+  test('MOTION-04b the button sheen is off under reduced motion', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.setViewportSize(VIEWPORT_DESKTOP)
+    await page.goto(url('/'), { waitUntil: 'load' })
+
+    const button = page.locator('main .btn-bronze').first()
+    await button.hover()
+    const display = await button.evaluate(btn => getComputedStyle(btn, '::after').display)
+    expect(display).toBe('none')
   })
 
   for (const path of ['/', '/gioi-thieu']) {
