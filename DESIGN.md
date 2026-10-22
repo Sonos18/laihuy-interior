@@ -18,11 +18,23 @@ colors:
   kiln-red: "#b23c2a"
   kiln-red-deep: "#8a2e1f"
 typography:
+  monument:
+    fontFamily: "Outfit, Plus Jakarta Sans, system-ui, sans-serif"
+    fontSize: "clamp(4rem, 2.4rem + 7vw, 9rem)"
+    fontWeight: 500
+    lineHeight: 0.92
+    letterSpacing: "-0.035em"
   display:
     fontFamily: "Outfit, Plus Jakarta Sans, system-ui, sans-serif"
     fontSize: "clamp(2.25rem, 1.75rem + 2.8vw, 4.5rem)"
     fontWeight: 500
     lineHeight: 1.04
+    letterSpacing: "-0.025em"
+  statement:
+    fontFamily: "Outfit, Plus Jakarta Sans, system-ui, sans-serif"
+    fontSize: "clamp(2.25rem, 1.6rem + 2.4vw, 3.75rem)"
+    fontWeight: 500
+    lineHeight: 1.08
     letterSpacing: "-0.025em"
   headline:
     fontFamily: "Outfit, Plus Jakarta Sans, system-ui, sans-serif"
@@ -183,10 +195,12 @@ A warm, low-chroma palette of linen, timber and bronze, anchored by a near-black
 **Character:** Outfit's open geometry at a measured weight 500 gives headings the composure of an architect's title block; Inter carries long Vietnamese copy with clean diacritics at small sizes. Neither ever shouts.
 
 ### Hierarchy
+- **Monument** (Outfit 500, clamp(4rem → 9rem), 0.92, -0.035em, tabular figures, never wraps): one figure that already exists in the data, set as the statement that opens a chapter. Figures only, never words or headings; at most one per page; Charcoal Ink with its Label (Walnut Grey) directly above it, as in the Facts Band. It is paired with whitespace, never with a rule, box, tint or icon. Today: "3.000 m²" opening the factory proof on `/` and the production chapter on `/nha-xuong`, the monthly room capacity in the factory chapter of `/gioi-thieu`.
 - **Display** (Outfit 500, clamp(2.25rem → 4.5rem), 1.04, -0.025em): the hero headline on every page (home and interior heroes), balanced wrapping, max width about 64rem.
+- **Statement** (Outfit 500, clamp(2.25rem → 3.75rem), 1.08, -0.025em, max 18ch): the headline of the one lead section of a page, the section that states the page's argument after the hero. At most one per page; every other section heading is Headline.
 - **Headline** (Outfit 500, clamp(1.875rem → 3rem), 1.12, -0.02em): section headings on every page.
 - **Title** (Outfit 500, clamp(1.25rem → 1.5625rem), 1.24, -0.02em): card and pillar headings.
-- **Stat** (Outfit 500, clamp(1.5rem → 2.125rem), 1.15): metric values that are figures ("3.000 m²") in the home metrics band and factory stats. A value that is a phrase ("Thiết kế → bàn giao") uses the Title role instead, so it reads as a statement and not as a broken number.
+- **Stat** (Outfit 500, clamp(1.5rem → 2.125rem), 1.15): fact values that are figures ("3.000 m²", "Đến 50") in the Facts Band. A value that is a phrase ("Thiết kế → bàn giao", "Trọn gói") uses the Title role instead, so it reads as a statement and not as a broken number.
 - **Lead** (Inter 400, clamp(1rem → 1.1875rem), 1.65): section introductions, measure 48ch.
 - **Body** (Inter 400, 1rem, 1.7): running text, measure 56ch (about 68 characters), never beyond 75 characters per line.
 - **Label** (Inter 600, 0.75rem, 0.18em, uppercase): eyebrows and kickers. The only uppercase text in the system besides nav items.
@@ -204,7 +218,21 @@ Content sits on a single rail: `.shell` caps content at 1280px with 24px gutters
 
 Composition favors editorial asymmetry over symmetric card walls: projects use one dominant case study and two satellites, split 1.35fr / 1fr from 768 to 1023px and 2.1fr / 1fr from 1024px (lead 16:10, satellites stacked 16:9); the factory introduction runs 1.15fr / 0.85fr from 1024px; the closing CTA runs 1.45fr / 0.55fr. Collections that are genuinely uniform (the project index) step 1 → 2 → 3 columns.
 
-Breakpoints are 768px (gutter and rhythm step, tablet grids) and 1280px (the chrome breakpoint: desktop navigation appears, header grows from 72px to 88px). 1024px is used by a few home compositions. Verify layouts immediately below, at and above 768 and 1280.
+Breakpoints are 768px (gutter and rhythm step, tablet grids) and 1280px (the chrome breakpoint: desktop navigation appears, header grows from 72px to 88px). 1024px is used by a few home compositions and by the section heads below. Verify layouts immediately below, at and above 768 and 1280.
+
+### Section heads
+A section head is its Label eyebrow, its heading and, when there is one, its lead (or one action in place of the lead). Three layouts are sanctioned; each head carries its name in `data-head`, and they all collapse to Stacked below 1024px:
+- **Stacked** (`stacked`): eyebrow, heading and lead in one column, left on the rail. Also the layout of a head that sits in a side column of its own section's grid (beside a photograph, above a list of actions). With the Statement role it becomes the stacked-wide head of a page's lead section: the heading spans up to 18ch and the lead runs below it.
+- **Split** (`split`): from 1024px the eyebrow and heading take the left column (about 5/8) and the lead, or the section's one action, sits in the right column on the heading's last line (`align-items: end`).
+- **Rail** (`rail`): from 1024px the eyebrow sits alone in a narrow left rail (a quarter of the measure) on the heading's first baseline, and the heading and lead take the remaining three quarters. Content that continues the head's argument (the FAQ list) may hang from the same column; other content returns to the full measure.
+
+**The No-Echo Rule.** Two consecutive section heads on a page never share a layout; a head hidden from view (screen-reader only) does not count. Every head stays inside the shell; a full-width head starts on the shell's content edge (for a Rail head, its eyebrow does).
+
+### Breath
+On a long page (`/`, `/dich-vu`, `/gioi-thieu`, a case study) one photograph may run full-bleed between two sections as a pause in the reading: the full viewport width, 16:7 below 768px and 21:9 from 768px (capped at 46rem tall), no radius, no caption block, no overlay or scrim, and decorative (`alt=""`, it repeats a photograph the page already shows or one from the same project). At most one per page; never a factory photograph; never a dark band (it is a photograph, not a surface). It reuses an existing media entry (`data-breath`).
+
+### Seams
+Every seam between two light sections (Linen, Raw Silk, Sawdust) carries a Plaster Line hairline, even where the tone step exists: Linen and Raw Silk are one quiet step apart and read as one surface without it. A seam against the hero photograph, a breath photograph or the footer needs none.
 
 ## Elevation & Depth
 
@@ -233,7 +261,7 @@ Motion is slow, editorial and one-shot: things arrive once, settle, and stay sti
   - **Section head** (`.head`): the eyebrow, headline and lead of one section reveal as one unit. They share a parent, trigger together (when any one of them scrolls into view, all of them do) and carry no delay. Opacity 0 to 1 with a 16px rise.
   - **Item** (`.item`): a card, row or cell of a grid or list. Only the first row staggers, in 70ms steps in reading order, capped at 320ms. Any later row reveals as it scrolls into view with no `animation-delay`, so a vertical list has no stagger beyond its first element. 16px rise.
   - **Image** (`.image`): a photograph, or a card whose substance is a photograph. Opacity only (0 to 1 over 600ms), never a translate: photographs do not slide. It composes with `.item` (first-row stagger) and carries no rise.
-  - **Block** (no modifier): any other single element (a button row, a filter bar, the home metrics band as one unit). 16px rise, no delay. The hero copy is the one place a numeric delay survives (`v-reveal="80"`, 0 to 240ms): the kicker, headline, lead and actions of a hero are one authored sequence.
+  - **Block** (no modifier): any other single element (a button row, a filter bar, the Facts Band as one unit, a Monument figure). 16px rise, no delay. The hero copy is the one place a numeric delay survives (`v-reveal="80"`, 0 to 240ms): the kicker, headline, lead and actions of a hero are one authored sequence.
 - **Hero image.** One-shot settle from `scale(1.04)` to `1` over 1.6s on the editorial curve. If the image arrives after the page is interactive, it is hidden only while undecoded and then fades in over 360ms, with the settle starting at that moment. No looping Ken Burns.
 - **Image arrival.** Every other photograph (`MediaImage`) fades in over `--dur-arrive` (400ms, editorial) when its bytes land, as a one-shot keyframe from opacity 0, on top of a static placeholder. It is hidden only while it has no decoded data at hydration or mount: an image that is already complete, or already partly decoded, is never hidden (a painted frame must not blink), and a failed image is released at once. The placeholder is released on the same curve and duration. Hover transitions on the image are untouched.
 - **Image hover zoom.** Scales to 1.02-1.03 over `--dur-image` on the editorial curve. An arrow nudge (a 2-4px translate on an icon) uses `--dur-hover` on the editorial curve.
@@ -254,7 +282,7 @@ Motion is slow, editorial and one-shot: things arrive once, settle, and stay sti
 
 ## Shapes
 
-Two shape words only. Anything that holds content (cards, images, metric frames, form panels, inputs) has a gently eased 4px edge, like a sanded timber arris. Anything you press (buttons, chips, filter pills, carousel controls, language toggle targets) is a full pill. Images are cropped to fixed aspect ratios (16:10 for a lead image, 16:9 for satellites, 21:9 for the factory panorama) and never float without a frame. The home hero crop is art-directed per breakpoint with `object-position` (CSS only), so a phone frames the furnished room, not the ceiling. The material story reveals photographic layers with a left-to-right `clip-path` wipe.
+Two shape words only. Anything that holds content (cards, images, metric frames, form panels, inputs) has a gently eased 4px edge, like a sanded timber arris. Anything you press (buttons, chips, filter pills, carousel controls, language toggle targets) is a full pill. Images are cropped to fixed aspect ratios (16:10 for a lead image, 16:9 for satellites, 21:9 for the factory panorama and a breath photograph) and never float without a frame. The breath photograph is the one image with no edge at all: it runs full-bleed, so a radius would only clip the viewport corners. The home hero crop is art-directed per breakpoint with `object-position` (CSS only), so a phone frames the furnished room, not the ceiling. The material story reveals photographic layers with a left-to-right `clip-path` wipe.
 
 ## Components
 
@@ -287,8 +315,8 @@ Warm and tactile: a soft bronze surface that warms further under the hand.
 - **Items:** Nav type, Walnut Grey on light glass (white at 92% over the hero; the unselected language option is white at 80%, the selected one full white), full color on hover and current, with a 1.5px underline that scales in over 240ms (the hover duration) on the editorial curve. The header hides and returns over about 280ms.
 - **Mobile:** a white drawer up to 336px wide over an obsidian overlay at 60% with an 8px blur; links in 24px Inter 600 with hairline dividers, current item in Deep Timber. The drawer opens over 300ms on the editorial curve and closes over 200ms on the exit curve.
 
-### Metrics Band
-The four home proof facts sit on the Linen canvas directly below the hero, as the first content band, with a Plaster Line hairline under it; they are not part of the hero and there is no dark box. Each cell pairs a Label (Walnut Grey) with a value; cells are separated by Plaster Line hairlines (a 2 × 2 block below 1024px, four across from 1024px). The cells are a two-row subgrid (label row, value row), so the labels share a top, the values share a first baseline and the cells share one height whatever the value size. A figure keeps the Stat role, a phrase uses the Title role, and every value fits on at most two lines. There is no dot and nothing animates inside the band: it takes one scroll reveal as a single unit (frame, hairlines and figures arrive together, so a client-side navigation never shows an empty frame), with no per-cell stagger.
+### Facts Band
+The site's proof facts (3.000 m², up to 50 rooms a month, design to handover, nationwide and export) have one treatment, `FactsBand`, used in four places: below the home hero, below the `/gioi-thieu` and `/nha-xuong` heroes, and at the head of the case-study finale. It is a full-width Linen band with a Plaster Line hairline under it (in the finale it opens the Raw Silk section, so the hairline is also the seam to the closing CTA); it is never part of a hero and never a dark box. Each cell pairs a Label (Walnut Grey) with a value; cells are separated by Plaster Line hairlines. The grid follows the number of facts: four facts are a 2 × 2 block below 1024px and four across from 1024px; three facts stack below 768px and run three across from 768px (no orphan cell). The cells are a two-row subgrid (label row, value row), so the labels share a top, the values share a first baseline and the cells share one height whatever the value size. A figure keeps the Stat role, a phrase uses the Title role, and every value fits on at most two lines. There are no icons, no dot, and nothing animates inside the band: it takes one scroll reveal as a single unit (frame, hairlines and figures arrive together, so a client-side navigation never shows an empty frame), with no per-cell stagger. A page picks which facts it shows (the finale drops "Trọn gói" unless the project's scope covers design, production and construction) but never restyles them.
 
 ### Spotlight Gallery Carousel
 A centered 16:10 slide with its neighbours scaled to about 0.7 and dimmed; slides move on a 650ms transform and controls are 44px pill buttons. Autoplay advances every 5 seconds and is bounded: it runs only while the carousel is in view, makes one pass through the set (ending back on the first slide) and then rests, and it ends for good at the visitor's first manual navigation (previous, next, a side slide, a swipe or an arrow key). Hover, focus within, a hidden tab, the open lightbox and the visitor's own pause button hold it; the play button starts a fresh pass. A new room filter starts a fresh set and a fresh pass. Under reduced motion transitions collapse and autoplay is off.
@@ -300,7 +328,9 @@ A centered 16:10 slide with its neighbours scaled to about 0.7 and dimmed; slide
 - **Do** use Workshop Bronze for the primary action and give it a 1px Deep Timber border on light surfaces.
 - **Do** set headings in Outfit 500, sentence case, and keep prose at line-height 1.65 or more.
 - **Do** use the 4px edge for content containers and pills for controls.
-- **Do** separate content with Plaster Line hairlines at 60% before reaching for a shadow.
+- **Do** separate content with Plaster Line hairlines at 60% before reaching for a shadow, and put one on every seam between two light sections.
+- **Do** let type make one statement per page after the hero: at most one Monument figure and one Statement headline, with the section heads alternating between Stacked, Split and Rail.
+- **Do** show the proof facts only through the Facts Band; a page chooses which facts, never a new treatment.
 - **Do** move with the editorial curve (`cubic-bezier(0.22, 0.61, 0.36, 1)`), 240ms for hover, 700ms for image zoom and 280-400ms for state, reveal once at 600ms (photographs by opacity alone), and disable reveal, hero settle and fade, image arrival, page transition, copy-swap motion, carousel autoplay, button sheen and press-scale under `prefers-reduced-motion`; no infinite animation.
 
 ### Don't:
@@ -310,6 +340,7 @@ A centered 16:10 slide with its neighbours scaled to about 0.7 and dimmed; slide
 - **Don't** add a second accent hue, gradient text, neon, saturated badges, glassmorphism panels or deep drop shadows.
 - **Don't** use bouncing or spring motion, infinite or looping animation (pulsing dots, repeating sheens, Ken Burns drift), `will-change` held at rest, or heavy parallax.
 - **Don't** hardcode hex values in components; use the palette tokens.
+- **Don't** set a heading, a word or a sentence in the Monument role, or give a breath photograph a caption, a scrim or a radius.
 
 ## Drift from this system (incumbent code, 2026-10-20)
 
@@ -317,4 +348,6 @@ This document records the target chosen with the owner. These parts of the curre
 
 - `GalleryLightbox` (the full-screen viewer) still uses 8px and 6px radii (`rounded-lg` frame, `rounded-md` thumbnails); it converges to the 4px content edge when the lightbox is next touched. It is the only code left outside the system: every interior route now uses the Headline/Title roles, the 4px edge and `.btn-bronze`.
 - Duplicate token declarations (obsidian/bronze/ivory in both `:root` and `@theme`), unused legacy tokens (`--color-wood`, `--color-warm`, `--radius-*`), the unused Syne font, and Nuxt UI `primary: 'amber'` with no Nuxt UI components rendered.
+- Copy formula, recorded for an owner decision and deliberately not rewritten: five headings use the "Từ … đến …" / "From … to …" pattern (the `/gioi-thieu` and `/dich-vu` hero titles, the home material story, and the case-study story and delivery chapters). Rewriting them is a copy change, outside the design system.
+- The Facts Band reprises one fact as a Monument on `/`, `/gioi-thieu` and `/nha-xuong` (the band near the hero, the Monument at its chapter). Dropping the repeated fact from those bands would change the facts a page shows, which is a content decision.
 - `docs/design/redesign-concept-showcase.html` still renders a fully dark obsidian world; it remains a composition and motion reference only, and the owner's 2026-10-20 decision for a continuous warm-light canvas supersedes its surfaces. (`.agents/rules/laihuy-ux-ui.md` was aligned with this document on the same date.)
