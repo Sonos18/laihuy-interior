@@ -206,10 +206,8 @@ async function settleHero(page: import('@playwright/test').Page) {
  * them from one place loses nothing — the assertion messages still say which invariant broke.
  */
 function heroGate(cover: { name: string, path: string, floorBinds?: boolean }, vp: { name: string, width: number, height: number }) {
-  // floorBinds defaults true. Home is the one exception: its hero section INCLUDES the metrics
-  // band inside the image, so it intentionally runs taller than --hero-min-h-home and G1 (the
-  // section === floor mechanism) does not apply. Locale-invariance is still enforced there by G2
-  // — which holds because the metrics band's own height is identical in both locales.
+  // floorBinds defaults true for every cover, home included: the metrics band lives below the
+  // hero (HomeMetricsBand), so nothing but the copy sits inside the section and the floor binds.
   const floorBinds = cover.floorBinds !== false
   const g1 = floorBinds ? 'floor binds (G1) and ' : ''
   test(`${cover.name} @ ${vp.name} — ${g1}crop is locale-independent (G2)`, async ({ page }) => {
@@ -254,7 +252,7 @@ function heroGate(cover: { name: string, path: string, floorBinds?: boolean }, v
 }
 
 for (const vp of HOME_WIDTHS) {
-  heroGate({ name: 'home', path: '/', floorBinds: false }, vp)
+  heroGate({ name: 'home', path: '/' }, vp)
 }
 
 for (const cover of COVER_PAGES) {

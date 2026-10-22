@@ -107,8 +107,8 @@
      page's copy is shorter and fits with room above.
 
      svh, not vh/dvh: dvh re-triggers the growth every time a mobile URL bar collapses. Re-measure
-     if hero copy, --text-hero, or the hero padding changes; the homepage metrics band must stay
-     OUTSIDE the hero (index.vue) or these numbers are void. tests/e2e/hero.spec.ts G1/G2 enforce
+     if hero copy, --text-hero, or the hero padding changes; the homepage metrics band (HomeMetricsBand)
+     must stay OUTSIDE the hero (index.vue) or these numbers are void. tests/e2e/hero.spec.ts G1/G2 enforce
      both halves. */
   --hero-min-h-home: max(100svh, 59rem);
 

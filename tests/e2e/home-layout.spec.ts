@@ -144,3 +144,77 @@ for (const width of [375, 1440]) {
     expect(Math.max(...alphas)).toBeLessThanOrEqual(0.8)
   })
 }
+
+// The proof band is the first content band of the Linen canvas, not a box inside the hero.
+for (const locale of ['vi', 'en'] as const) {
+  for (const width of [375, 768, 1440]) {
+    test(`HL-07 metrics band sits below the hero on Linen with aligned cells (${locale}, ${width}px)`, async ({ page }) => {
+      await openHome(page, width, locale)
+      const hero = page.getByTestId('home-hero')
+      const band = page.getByTestId('home-metrics')
+      await expect(hero.getByTestId('home-metrics')).toHaveCount(0)
+      await expect(band).toHaveCount(1)
+
+      const geometry = await page.evaluate(() => {
+        const heroBox = document.querySelector('[data-testid=home-hero]')!.getBoundingClientRect()
+        const bandEl = document.querySelector<HTMLElement>('[data-testid=home-metrics]')!
+        const bandBox = bandEl.getBoundingClientRect()
+        const baselineOf = (element: Element) => {
+          const probe = document.createElement('span')
+          probe.style.cssText = 'display:inline-block;width:0;height:0'
+          element.prepend(probe)
+          const y = probe.getBoundingClientRect().bottom
+          probe.remove()
+          return y
+        }
+        const cells = [...document.querySelectorAll('[data-testid=home-metric]')].map((cell) => {
+          const label = cell.querySelector('dt')!
+          const value = cell.querySelector('dd')!
+          const lineHeight = Number.parseFloat(getComputedStyle(value).lineHeight)
+          return {
+            top: cell.getBoundingClientRect().top,
+            height: cell.getBoundingClientRect().height,
+            labelBaseline: baselineOf(label),
+            valueBaseline: baselineOf(value),
+            valueLines: Math.round(value.getBoundingClientRect().height / lineHeight)
+          }
+        })
+        return {
+          gap: bandBox.top - heroBox.bottom,
+          background: getComputedStyle(bandEl).backgroundColor,
+          cells
+        }
+      })
+
+      expect(Math.abs(geometry.gap)).toBeLessThanOrEqual(1)
+      expect(geometry.background).toBe('rgb(250, 246, 240)')
+      expect(geometry.cells).toHaveLength(4)
+      for (const cell of geometry.cells) expect(cell.valueLines).toBeLessThanOrEqual(2)
+      // Cells that share a grid row share a top, a height, a label baseline and a value baseline.
+      const rows = new Map<number, typeof geometry.cells>()
+      for (const cell of geometry.cells) {
+        const key = Math.round(cell.top)
+        rows.set(key, [...(rows.get(key) ?? []), cell])
+      }
+      expect(rows.size).toBe(width >= 1024 ? 1 : 2)
+      for (const row of rows.values()) {
+        for (const cell of row) {
+          expect(Math.abs(cell.height - row[0]!.height)).toBeLessThanOrEqual(1)
+          expect(Math.abs(cell.labelBaseline - row[0]!.labelBaseline)).toBeLessThanOrEqual(1)
+          expect(Math.abs(cell.valueBaseline - row[0]!.valueBaseline)).toBeLessThanOrEqual(1)
+        }
+      }
+    })
+  }
+}
+
+// A phone frames the furnished room, not the ceiling: the 1499x830 photograph is height-bound,
+// so the only lever is the horizontal object-position.
+test('HL-08 hero photograph is cropped toward the furnished room on a phone', async ({ page }) => {
+  await openHome(page, 375)
+  const position = await page.locator('.home-hero__image').evaluate(element => getComputedStyle(element).objectPosition)
+  expect(Number.parseFloat(position.split(' ')[0]!)).toBeGreaterThanOrEqual(70)
+  await page.setViewportSize({ width: 1440, height: 900 })
+  const wide = await page.locator('.home-hero__image').evaluate(element => getComputedStyle(element).objectPosition)
+  expect(Number.parseFloat(wide.split(' ')[0]!)).toBe(50)
+})

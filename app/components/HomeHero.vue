@@ -2,11 +2,8 @@
 import { homePageContent } from '~/data/home-page'
 import type { MediaAsset } from '~/shared/media/types'
 
-type Metric = { label: string, value: string }
-
 defineProps<{
   image: MediaAsset
-  metrics: Metric[]
 }>()
 
 const { t } = useLanguage()
@@ -25,14 +22,14 @@ const { t } = useLanguage()
       sizes="1536px xl:100vw"
       loading="eager"
       fetchpriority="high"
-      class="hero-image hero-media absolute inset-0 h-full w-full object-cover"
+      class="hero-image hero-media home-hero__image absolute inset-0 h-full w-full object-cover"
     />
     <div
       class="home-hero__wash pointer-events-none absolute inset-0"
       aria-hidden="true"
     />
 
-    <div class="shell relative z-10 flex min-h-[var(--hero-min-h-home)] flex-col justify-end pb-8 pt-28 md:pb-10">
+    <div class="shell relative z-10 flex min-h-[var(--hero-min-h-home)] flex-col justify-end pb-10 pt-28 md:pb-14">
       <div class="home-hero__copy">
         <p
           v-reveal
@@ -48,7 +45,7 @@ const { t } = useLanguage()
         </h1>
         <p
           v-reveal="160"
-          class="home-hero__sublead home-lead-text reveal mt-5 max-w-2xl text-white/80"
+          class="home-hero__sublead home-lead-text reveal mt-5 text-white/80"
         >
           {{ t(homePageContent.hero.description) }}
         </p>
@@ -76,51 +73,74 @@ const { t } = useLanguage()
         </div>
       </div>
     </div>
-
-    <div class="shell relative z-10 pb-10 md:pb-12">
-      <HeroMetrics :metrics="metrics" />
-    </div>
   </section>
 </template>
 
 <style scoped>
-/* Scrim: the photograph carries the hero, so the wash is only as dark as the copy needs.
-   The floor layer (peak 0.8) covers the copy and metrics and fades out above them; the side
-   layer (0.4 at the copy edge, 0.1 on the far side) keeps the upper right of the photograph
-   open. Copy contrast is measured, not assumed: against the real Supabase hero photograph, with
-   the wash applied and the text hidden, the lightest pixel behind each line of copy gives
-   (min over 375/768/1440, vi and en) eyebrow 6.4:1 (need 4.5), h1 12.9:1 (need 3), sublead 9.0:1
-   (need 4.5); the metric strip sits on solid obsidian (8.3:1 labels, 18.7:1 values).
+/* Scrim: the photograph carries the hero, so the wash is a LOCAL block behind the copy and
+   nothing else. It is one flat Obsidian layer (0.78, under the 0.8 HL-04 ceiling) shaped by an
+   intersected horizontal and vertical mask: full strength under the copy column (to 46% of the
+   width, the bottom two thirds of the hero), then a long fall-off to nothing, so the room reads
+   on the right and across the top. From 768 to 1023px the copy spans nearly the whole width, so
+   the horizontal fall-off is only a gentle taper there.
 
-   Below 768px the copy stacks over a tall crop of an already dark photograph, so the wash is
-   re-cut to the copy's rhythm instead of one tall floor: the eyebrow (bronze, the tightest line)
-   sits 51 to 68% up from the bottom across 320 to 767px and gets the 0.72 plateau; the h1,
-   sublead and buttons below it only need 0.6; above the eyebrow the wash falls away so the
-   photograph reads. Measured the same way (lightest pixel behind each line, vi and en): at 375
-   and 390 eyebrow 5.2:1 (need 4.5), h1 10.6:1 (need 3), sublead 5.9:1 (need 4.5), outline button
-   label 4.9:1, bronze button label 6.3:1 (solid fill, independent of the wash); the mean
-   luminance of the photograph above the copy rises from 0.067 to 0.104. The same stops hold
-   every copy line at 4.7:1 or better from 320 to 767px. Re-measure if the copy length, the hero
-   photograph, or these stops change. */
+   Copy contrast is measured, not assumed: against the real Supabase hero photograph, the
+   built page with the text hidden and the wash applied, the lightest pixel behind each line of
+   copy (every line box, Range.getClientRects), white and bronze-light text composited over it.
+   Minimum over 1920x1080, 1440x900, 1280x800, 1024x768 and 768x1024, vi and en: eyebrow 4.8:1
+   (need 4.5), h1 4.8:1 (need 3), sublead 6.2:1 (need 4.5), outline button label 6.2:1 (need 4.5);
+   the bronze button is a solid fill, so its label does not depend on the wash.
+
+   Below 768px the copy stacks full width over a tall crop, so a mask cannot shape the wash and
+   it is re-cut to the copy's rhythm instead: 0.6 under the buttons, 0.78 behind the eyebrow,
+   h1 and sublead, falling away above them so the furnished room (shelving, sofa; see the image's
+   object-position) reads above the copy. Measured the same way at 320, 360, 375, 390 and 414px,
+   vi and en: eyebrow 4.9:1, h1 7.0:1, sublead 5.0:1, outline button label 5.2:1.
+   Re-measure if the copy length, the hero photograph, the object-position or these stops
+   change. */
 .home-hero__wash {
-  background:
-    linear-gradient(90deg, rgb(11 10 9 / 0.4) 0%, rgb(11 10 9 / 0.25) 50%, rgb(11 10 9 / 0.1) 100%),
-    linear-gradient(0deg, rgb(11 10 9 / 0.8) 0%, rgb(11 10 9 / 0.8) 64%, transparent 90%);
+  --wash-x: linear-gradient(90deg, #000 0, #000 46%, rgb(0 0 0 / 0.6) 68%, transparent 92%);
+  --wash-y: linear-gradient(0deg, #000 0, #000 66%, rgb(0 0 0 / 0.45) 83%, transparent 97%);
+
+  /* A flat layer written as a gradient so the computed style still lists its alpha (HL-04). */
+  background: linear-gradient(rgb(11 10 9 / 0.78), rgb(11 10 9 / 0.78));
+  mask-image: var(--wash-x), var(--wash-y);
+  mask-composite: intersect;
+  -webkit-mask-image: var(--wash-x), var(--wash-y);
+  -webkit-mask-composite: source-in;
+}
+
+@media (max-width: 1023px) {
+  .home-hero__wash {
+    --wash-x: linear-gradient(90deg, #000 0, #000 72%, rgb(0 0 0 / 0.55) 100%);
+  }
+}
+
+/* Art direction: the photograph is 1499x830 and the hero is height-bound everywhere, so only
+   the horizontal position is free. On a phone the visible slice is about a quarter of the width,
+   and the centre of the frame is the hallway and the ceiling; the furnished room (shelving,
+   armchair and sofa) sits at 56 to 95% of the width. */
+.home-hero__image {
+  object-position: 50% 50%;
 }
 
 @media (max-width: 767px) {
+  .home-hero__image {
+    object-position: 78% 50%;
+  }
+
   .home-hero__wash {
-    background:
-      linear-gradient(90deg, rgb(11 10 9 / 0.12) 0%, rgb(11 10 9 / 0.04) 100%),
-      linear-gradient(
-        0deg,
-        rgb(11 10 9 / 0.6) 0%,
-        rgb(11 10 9 / 0.6) 44%,
-        rgb(11 10 9 / 0.72) 50%,
-        rgb(11 10 9 / 0.72) 67%,
-        rgb(11 10 9 / 0.2) 76%,
-        transparent 85%
-      );
+    background: linear-gradient(
+      0deg,
+      rgb(11 10 9 / 0.6) 0%,
+      rgb(11 10 9 / 0.6) 38%,
+      rgb(11 10 9 / 0.78) 44%,
+      rgb(11 10 9 / 0.78) 68%,
+      rgb(11 10 9 / 0.3) 77%,
+      transparent 87%
+    );
+    mask-image: none;
+    -webkit-mask-image: none;
   }
 }
 
@@ -131,5 +151,10 @@ const { t } = useLanguage()
 .home-hero__title {
   max-width: 64rem;
   font-weight: 500;
+}
+
+/* A reading measure for the lead: about 60 characters, which also keeps it inside the wash. */
+.home-hero__sublead {
+  max-width: 38rem;
 }
 </style>

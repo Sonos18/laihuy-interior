@@ -26,8 +26,8 @@ const featuredProjects = computed(() =>
     .slice(0, 3)
 )
 
-const heroMetrics = computed(() => [
-  { label: t({ vi: 'Xưởng sản xuất & kho', en: 'Factory & warehouse' }), value: t({ vi: '3.000 m²', en: '3,000 m²' }) },
+const homeMetrics = computed(() => [
+  { label: t({ vi: 'Xưởng sản xuất & kho', en: 'Factory & warehouse' }), value: t({ vi: '3.000 m²', en: '3,000 m²' }), figure: true },
   { label: t({ vi: 'Năng lực dự án', en: 'Project capacity' }), value: t({ vi: 'Đến 50 phòng/tháng', en: 'Up to 50 rooms/month' }) },
   { label: t({ vi: 'Phạm vi', en: 'Coverage' }), value: t({ vi: 'Thiết kế → bàn giao', en: 'Design → handover' }) },
   { label: t({ vi: 'Thị trường', en: 'Markets' }), value: t({ vi: 'Toàn quốc & xuất khẩu', en: 'Nationwide & export' }) }
@@ -58,10 +58,8 @@ usePageSeo({
 
 <template>
   <div class="home-page">
-    <HomeHero
-      :image="heroImage"
-      :metrics="heroMetrics"
-    />
+    <HomeHero :image="heroImage" />
+    <HomeMetricsBand :metrics="homeMetrics" />
     <HomeMaterialStory
       :stages="homeStoryStages"
       :images="homeMaterialStoryMedia"

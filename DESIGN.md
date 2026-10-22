@@ -132,7 +132,7 @@ components:
 
 Lai Huy's interface behaves like a well-run workshop at midday: warm light on linen and sawn timber, tools put away, the work itself on display. Capability is shown, not announced. Photography of real rooms and the factory carries the drama; the interface stays calm, warm and exact around it, the way a finished cabinet face is calm because the joinery behind it is precise.
 
-The page reads as one continuous warm-light surface. Darkness is reserved for two places only: the photographic hero, where an obsidian scrim lets copy sit on the image, and the footer, which closes the page. Sections are separated by small steps in warm tone (linen, raw silk, sawdust) and by hairlines, never by flipping between light and dark. Components feel warm and tactile, like a finished timber surface: soft bronze, gently eased edges, generous padding, nothing glossy.
+The page reads as one continuous warm-light surface. Darkness is reserved for two places only: the photographic hero, where a local obsidian wash behind the copy block (not a floor scrim) lets the copy sit on an image that otherwise stays visible, and the footer, which closes the page. Sections are separated by small steps in warm tone (linen, raw silk, sawdust) and by hairlines, never by flipping between light and dark. Components feel warm and tactile, like a finished timber surface: soft bronze, gently eased edges, generous padding, nothing glossy.
 
 The system rejects consumer furniture e-commerce, boilerplate construction templates, SaaS product pages and generic AI landing pages. It also rejects alternating light and dark section bands, which the owner found jarring.
 
@@ -186,7 +186,7 @@ A warm, low-chroma palette of linen, timber and bronze, anchored by a near-black
 - **Display** (Outfit 500, clamp(2.25rem → 4.5rem), 1.04, -0.025em): the hero headline on every page (home and interior heroes), balanced wrapping, max width about 64rem.
 - **Headline** (Outfit 500, clamp(1.875rem → 3rem), 1.12, -0.02em): section headings on every page.
 - **Title** (Outfit 500, clamp(1.25rem → 1.5625rem), 1.24, -0.02em): card and pillar headings.
-- **Stat** (Outfit 500, clamp(1.5rem → 2.125rem), 1.15): metric values in hero metrics and factory stats.
+- **Stat** (Outfit 500, clamp(1.5rem → 2.125rem), 1.15): metric values that are figures ("3.000 m²") in the home metrics band and factory stats. A value that is a phrase ("Thiết kế → bàn giao") uses the Title role instead, so it reads as a statement and not as a broken number.
 - **Lead** (Inter 400, clamp(1rem → 1.1875rem), 1.65): section introductions, measure 48ch.
 - **Body** (Inter 400, 1rem, 1.7): running text, measure 56ch (about 68 characters), never beyond 75 characters per line.
 - **Label** (Inter 600, 0.75rem, 0.18em, uppercase): eyebrows and kickers. The only uppercase text in the system besides nav items.
@@ -243,7 +243,7 @@ Motion is slow, editorial and one-shot: things arrive once, settle, and stay sti
 
 ## Shapes
 
-Two shape words only. Anything that holds content (cards, images, metric frames, form panels, inputs) has a gently eased 4px edge, like a sanded timber arris. Anything you press (buttons, chips, filter pills, carousel controls, language toggle targets) is a full pill. Images are cropped to fixed aspect ratios (16:10 for a lead image, 16:9 for satellites, 21:9 for the factory panorama) and never float without a frame. The material story reveals photographic layers with a left-to-right `clip-path` wipe.
+Two shape words only. Anything that holds content (cards, images, metric frames, form panels, inputs) has a gently eased 4px edge, like a sanded timber arris. Anything you press (buttons, chips, filter pills, carousel controls, language toggle targets) is a full pill. Images are cropped to fixed aspect ratios (16:10 for a lead image, 16:9 for satellites, 21:9 for the factory panorama) and never float without a frame. The home hero crop is art-directed per breakpoint with `object-position` (CSS only), so a phone frames the furnished room, not the ceiling. The material story reveals photographic layers with a left-to-right `clip-path` wipe.
 
 ## Components
 
@@ -276,8 +276,8 @@ Warm and tactile: a soft bronze surface that warms further under the hand.
 - **Items:** Nav type, Walnut Grey on light glass (white at 72% over the hero), full color on hover and current, with a 1.5px underline that scales in over 240ms (the hover duration) on the editorial curve. The header hides and returns over about 280ms.
 - **Mobile:** a white drawer up to 336px wide over an obsidian overlay at 60% with an 8px blur; links in 24px Inter 600 with hairline dividers, current item in Deep Timber. The drawer opens over 300ms on the editorial curve and closes over 200ms on the exit curve.
 
-### Hero Metrics Strip
-A four-up strip framed by a bronze hairline with a 4px edge; each metric pairs a Label in bronze with a Stat value. There is no dot and nothing animates inside the strip.
+### Metrics Band
+The four home proof facts sit on the Linen canvas directly below the hero, as the first content band, with a Plaster Line hairline under it; they are not part of the hero and there is no dark box. Each cell pairs a Label (Walnut Grey) with a value; cells are separated by Plaster Line hairlines (a 2 × 2 block below 1024px, four across from 1024px). The cells are a two-row subgrid (label row, value row), so the labels share a top, the values share a first baseline and the cells share one height whatever the value size. A figure keeps the Stat role, a phrase uses the Title role, and every value fits on at most two lines. There is no dot and nothing animates inside the band beyond the one-shot scroll reveal.
 
 ### Spotlight Gallery Carousel
 A centered 16:10 slide with its neighbours scaled to about 0.7 and dimmed; slides move on a 650ms transform, autoplay every 5 seconds, and controls are 44px pill buttons. Under reduced motion transitions collapse and autoplay stops.
