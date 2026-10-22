@@ -155,23 +155,24 @@ usePageSeo({
           <p class="measure-lead home-lead-text mt-5 text-ink-600">
             {{ t(factoryPageContent.peopleQuality.description) }}
           </p>
-          <!-- The four checks are a list of safeguards, not a numbered programme, so each gets a
-               tick from the icon set instead of a decorative 01-04. -->
-          <ul class="mt-8 grid gap-4">
+          <!-- The four QC checkpoints run in a fixed order (incoming materials → drawings →
+               in production → sign-off), so they keep Label-size sequence markers. -->
+          <ol class="mt-8 grid gap-4">
             <li
-              v-for="item in qualityControl"
+              v-for="(item, index) in qualityControl"
               :key="t(item)"
               data-testid="factory-quality-step"
               class="flex gap-4 border-b border-[var(--rule-light)] pb-4"
             >
-              <Icon
-                name="i-lucide-check"
-                class="mt-1 h-4 w-4 shrink-0 text-wood-600"
+              <span
+                class="home-eyebrow-text mt-1.5 shrink-0 tabular-nums text-wood-600"
                 aria-hidden="true"
-              />
+              >
+                {{ String(index + 1).padStart(2, '0') }}
+              </span>
               <span class="text-base leading-[1.7] text-ink-700">{{ t(item) }}</span>
             </li>
-          </ul>
+          </ol>
         </div>
       </div>
     </section>
