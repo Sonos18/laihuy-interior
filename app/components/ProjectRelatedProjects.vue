@@ -12,20 +12,20 @@ const { t } = useLanguage()
   <section
     v-if="projects.length"
     data-project-chapter="related"
-    class="section-y bg-ink-50"
+    class="section-y border-t border-[var(--rule-light)] bg-wood-50"
   >
     <div class="shell">
       <div class="mb-10 flex items-end justify-between gap-6">
         <div>
           <p
             v-reveal
-            class="eyebrow reveal !text-[var(--accent-light)]"
+            class="eyebrow reveal"
           >
             {{ t(uiText.labels.exploreMore) }}
           </p>
           <h2
             v-reveal="80"
-            class="reveal text-section-title mt-4 font-black uppercase text-[var(--fg-light)]"
+            class="home-section-heading reveal mt-4 text-ink-950"
           >
             {{ t(uiText.labels.relatedProjects) }}
           </h2>
@@ -44,7 +44,7 @@ const { t } = useLanguage()
           :key="item.slug"
           v-reveal="index * 100"
           :to="`/du-an/${item.slug}`"
-          class="group reveal block overflow-hidden rounded-2xl bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-wood-500"
+          class="group reveal block overflow-hidden rounded-[4px] border border-ink-200 bg-white shadow-[var(--shadow-rest)] transition-[border-color,box-shadow] duration-[var(--dur-hover)] ease-[var(--ease-editorial)] hover:border-ink-500 hover:shadow-[var(--shadow-hover)] focus-visible:border-ink-500 focus-visible:shadow-[var(--shadow-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-wood-500 motion-reduce:transition-none"
         >
           <div
             v-if="cover"
@@ -60,11 +60,11 @@ const { t } = useLanguage()
               class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.02] motion-reduce:transform-none motion-reduce:transition-none"
             />
           </div>
-          <div :class="['border border-[var(--rule-light)] p-5 hover:border-[var(--bronze)] transition-colors', cover ? 'border-t-0' : '']">
-            <span class="text-xs font-bold uppercase tracking-[0.16em] text-[var(--accent-light)]">
+          <div :class="['p-5', cover ? 'border-t border-[var(--rule-light)]' : '']">
+            <span class="home-eyebrow-text text-wood-600">
               {{ t(categoryDefinitions[item.category].label) }}
             </span>
-            <h3 class="mt-3 text-xl font-black text-[var(--fg-light)]">{{ t(item.name) }}</h3>
+            <h3 class="home-card-heading mt-3 text-ink-950">{{ t(item.name) }}</h3>
           </div>
         </NuxtLink>
       </div>

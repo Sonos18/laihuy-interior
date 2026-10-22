@@ -84,19 +84,13 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
 
           <div class="home-projects__body home-projects__body--hero">
             <div>
-              <div class="flex items-center gap-2">
-                <span
-                  class="metric-pulse shrink-0"
-                  aria-hidden="true"
-                />
-                <span class="home-meta-text font-semibold uppercase tracking-[0.14em] text-wood-700">
-                  {{ t(categoryDefinitions[heroProject.project.category].label) }}
-                </span>
-              </div>
-              <h3 class="home-projects__title-hero font-display mt-2 text-xl font-medium tracking-tight text-ink-950 md:text-2xl lg:text-[1.625rem]">
+              <p class="home-meta-text font-semibold uppercase tracking-[0.14em] text-wood-700">
+                {{ t(categoryDefinitions[heroProject.project.category].label) }}
+              </p>
+              <h3 class="home-projects__title-hero home-card-heading mt-2 text-ink-950">
                 {{ t(heroProject.project.name) }}
               </h3>
-              <p class="home-projects__excerpt mt-3 text-sm leading-[1.7] text-ink-600 lg:text-[0.92rem]">
+              <p class="home-projects__excerpt mt-3 text-sm leading-[1.7] text-ink-600 lg:text-base">
                 {{ t(heroProject.project.shortDescription) }}
               </p>
 
@@ -106,7 +100,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
                 class="home-projects__specs mt-6 grid grid-cols-2 gap-4 border-t border-ink-200/80 pt-5 sm:grid-cols-3"
               >
                 <div v-if="heroProject.project.location">
-                  <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-ink-500">
+                  <p class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-500">
                     {{ t(homePageContent.projects.locationLabel) }}
                   </p>
                   <p class="mt-1 text-xs font-medium leading-[1.7] text-ink-900 lg:text-sm">
@@ -114,7 +108,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
                   </p>
                 </div>
                 <div v-if="ta(heroProject.project.scope).length">
-                  <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-ink-500">
+                  <p class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-500">
                     {{ t(homePageContent.projects.scopeLabel) }}
                   </p>
                   <p class="mt-1 text-xs font-medium leading-[1.7] text-ink-900 lg:text-sm">
@@ -125,7 +119,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
                   v-if="ta(heroProject.project.content?.materials).length"
                   class="col-span-2 sm:col-span-1"
                 >
-                  <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-ink-500">
+                  <p class="text-xs font-semibold uppercase tracking-[0.12em] text-ink-500">
                     {{ t(homePageContent.projects.materialsLabel) }}
                   </p>
                   <p class="mt-1 text-xs font-medium leading-[1.7] text-ink-900 lg:text-sm truncate">
@@ -140,7 +134,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
               <span class="text-xs font-semibold uppercase tracking-[0.08em] text-wood-700 transition-colors duration-300 group-hover:text-wood-950">
                 {{ t(homePageContent.projects.heroCta) }}
               </span>
-              <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-wood-300 text-wood-700 transition-all duration-300 group-hover:border-wood-600 group-hover:bg-wood-600 group-hover:text-white">
+              <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-wood-300 text-wood-700 transition-[background-color,border-color,color] duration-[240ms] ease-[var(--ease-editorial)] group-hover:border-wood-600 group-hover:bg-wood-600 group-hover:text-white">
                 <Icon
                   name="i-lucide-arrow-right"
                   class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
@@ -169,7 +163,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
               loading="lazy"
               class="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.03] group-focus-visible:scale-[1.03]"
             />
-            <div class="home-projects__tag-pill sm:hidden lg:inline-flex">
+            <div class="home-projects__tag-pill sm:hidden">
               <span>{{ t(categoryDefinitions[project.category].label) }}</span>
               <template v-if="project.area">
                 <span class="opacity-40">·</span>
@@ -196,7 +190,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
               <h3 class="home-projects__title-satellite font-display mt-1.5 text-lg font-medium tracking-tight text-ink-950 lg:text-xl">
                 {{ t(project.name) }}
               </h3>
-              <p class="mt-2 line-clamp-2 text-xs leading-[1.7] text-ink-600 lg:text-sm">
+              <p class="mt-2 line-clamp-2 text-sm leading-[1.7] text-ink-600">
                 {{ t(project.shortDescription) }}
               </p>
             </div>
@@ -206,7 +200,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
               <span class="text-xs font-semibold uppercase tracking-[0.08em] text-wood-700 transition-colors duration-300 group-hover:text-wood-950">
                 {{ t(homePageContent.projects.cardCta) }}
               </span>
-              <span class="inline-flex h-7 w-7 items-center justify-center rounded-full border border-wood-300 text-wood-700 transition-all duration-300 group-hover:border-wood-600 group-hover:bg-wood-600 group-hover:text-white">
+              <span class="inline-flex h-7 w-7 items-center justify-center rounded-full border border-wood-300 text-wood-700 transition-[background-color,border-color,color] duration-[240ms] ease-[var(--ease-editorial)] group-hover:border-wood-600 group-hover:bg-wood-600 group-hover:text-white">
                 <Icon
                   name="i-lucide-arrow-right"
                   class="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
@@ -266,7 +260,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
   backdrop-filter: blur(8px);
   border: 1px solid color-mix(in srgb, var(--color-ink-200) 80%, transparent);
   color: var(--color-ink-900);
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   font-weight: 600;
@@ -283,7 +277,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
   top: 1rem;
   right: 1rem;
   color: var(--color-wood-700);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.14em;
   background: color-mix(in srgb, var(--color-white) 88%, transparent);
@@ -327,7 +321,10 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
   .home-projects__grid {
     display: grid;
     grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-    grid-template-rows: repeat(2, minmax(0, 1fr));
+    /* Rows follow their content. The lead spans both, so its 16:10 image sets the pair's height
+       and the satellites stretch to share it; forcing two equal 1fr rows squashed the lead image
+       into a strip. */
+    grid-template-rows: auto auto;
     gap: 1.5rem;
     align-items: stretch;
   }
@@ -339,15 +336,9 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
     flex-direction: column;
   }
 
-  .home-projects__card--hero .home-projects__media {
-    flex: 1 1 0;
-    height: auto;
-    min-height: 200px;
-    aspect-ratio: auto;
-  }
-
+  /* The lead image keeps the 16:10 frame from .home-projects__media--hero at every width. */
   .home-projects__card--hero .home-projects__body {
-    flex: 0 0 auto;
+    flex: 1 1 auto;
   }
 
   .home-projects__card--satellite:nth-of-type(2) {
@@ -386,7 +377,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
 
   .home-projects__card--satellite {
     display: grid;
-    grid-template-columns: 180px minmax(0, 1fr);
+    grid-template-columns: 42% minmax(0, 1fr);
   }
 
   .home-projects__card--satellite .home-projects__media {

@@ -33,14 +33,14 @@ const accessibleName = computed(() => {
     data-gallery-slide
     :data-gallery-position="position"
     :data-gallery-index="index"
-    class="gallery-carousel-slide absolute left-1/2 top-1/2 aspect-[16/10] overflow-hidden rounded-2xl"
+    class="gallery-carousel-slide absolute left-1/2 top-1/2 aspect-[16/10] overflow-hidden rounded-[4px]"
     role="group"
     :aria-roledescription="t({ vi: 'ảnh', en: 'slide' })"
     :aria-hidden="!isVisible"
   >
     <button
       type="button"
-      class="group relative h-full w-full cursor-pointer overflow-hidden rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-wood-500"
+      class="group relative h-full w-full cursor-pointer overflow-hidden rounded-[4px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-wood-500"
       :tabindex="isVisible ? 0 : -1"
       :aria-label="accessibleName"
       @click="emit('activate', index)"

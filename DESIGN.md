@@ -218,6 +218,28 @@ The system is flat at rest. Depth comes from tone (paper white on linen, raw sil
 ### Named Rules
 **The Flat-By-Default Rule.** Surfaces are flat at rest. A shadow appears only on hover, focus or for floating chrome; glows and deep drop shadows are drift.
 
+## Motion
+
+Motion is slow, editorial and one-shot: things arrive once, settle, and stay still. Nothing loops.
+
+### Curves and durations
+- **Editorial** `cubic-bezier(0.22, 0.61, 0.36, 1)` (`--ease-editorial`): entrances and state changes.
+- **Exit** `cubic-bezier(0.4, 0, 1, 1)` (`--ease-exit`): anything leaving.
+- **Hover** 240ms (`--dur-hover`); **state** 280-400ms; **reveal** 600ms; **hero settle** 1.6s.
+
+### Patterns
+- **Scroll reveal.** A one-shot keyframe: opacity 0 to 1 with a 16px rise, 600ms on the editorial curve. Stagger comes from `animation-delay`, capped at 320ms. The hidden state sets only opacity, and the animation uses `backwards` fill, so after it ends the element's own styles apply again: a reveal never delays hover or any other transition.
+- **Hero image.** One-shot settle from `scale(1.04)` to `1` over 1.6s on the editorial curve. If the image arrives after the page is interactive, it is hidden only while undecoded and then fades in over 360ms, with the settle starting at that moment. No looping Ken Burns.
+- **Material story copy swap.** The outgoing copy exits in 120ms on the exit curve; the incoming copy enters over 240ms on the editorial curve after the 120ms exit. Both are never visible together.
+- **Navigation.** Underline 240ms, header hide/show about 280ms, drawer open 300ms editorial and close 200ms exit (see Components).
+
+### Named Rules
+**The One-Shot Rule.** No infinite animation. Motion plays once on arrival or on interaction, then rests.
+
+**The Rest-State Rule.** No `will-change` is held at rest; promote a layer only while it animates.
+
+**The Reduced-Motion Rule.** Under `prefers-reduced-motion: reduce` the scroll reveal, hero settle and fade, copy-swap motion and press-scale are all off, and the material story uses its static layout. Content is shown immediately, never hidden waiting for an animation.
+
 ## Shapes
 
 Two shape words only. Anything that holds content (cards, images, metric frames, form panels, inputs) has a gently eased 4px edge, like a sanded timber arris. Anything you press (buttons, chips, filter pills, carousel controls, language toggle targets) is a full pill. Images are cropped to fixed aspect ratios (16:10 for a lead image, 16:9 for satellites, 21:9 for the factory panorama) and never float without a frame. The material story reveals photographic layers with a left-to-right `clip-path` wipe.
@@ -228,7 +250,7 @@ Two shape words only. Anything that holds content (cards, images, metric frames,
 Warm and tactile: a soft bronze surface that warms further under the hand.
 - **Shape:** full pill (9999px), 48px tall, 44px minimum hit target.
 - **Primary:** Workshop Bronze fill, Obsidian text, Action type in sentence case, 14px × 28px padding; 1px Deep Timber border on light surfaces.
-- **Hover / Focus:** fill warms to Polished Bronze; an optional slow bronze sheen sweeps across on hover (disabled under reduced motion). Focus shows a 2px Mid Timber outline with 2px offset.
+- **Hover / Focus:** fill warms to Polished Bronze and nothing else moves. `:active` scales the button to 0.97 (none under reduced motion). Focus shows a 2px Mid Timber outline with 2px offset.
 - **Outline:** transparent with a 1px Plaster Line border and Charcoal Ink text; fills Charcoal Ink with Linen text on hover. On the dark hero it uses a bronze hairline and Raw Silk text instead.
 
 ### Chips
@@ -249,11 +271,11 @@ Warm and tactile: a soft bronze surface that warms further under the hand.
 
 ### Navigation
 - **Header:** transparent over the hero with a soft obsidian scrim; after scrolling it becomes white glass at 92% with a 16px blur and a Plaster Line bottom hairline, and hides on scroll down and returns on scroll up. Desktop items appear from 1280px.
-- **Items:** Nav type, Walnut Grey on light glass (white at 72% over the hero), full color on hover and current, with a 1.5px underline that scales in over 400ms on the editorial curve.
-- **Mobile:** a white drawer up to 336px wide over an obsidian overlay at 60% with an 8px blur; links in 24px Inter 600 with hairline dividers, current item in Deep Timber.
+- **Items:** Nav type, Walnut Grey on light glass (white at 72% over the hero), full color on hover and current, with a 1.5px underline that scales in over 240ms (the hover duration) on the editorial curve. The header hides and returns over about 280ms.
+- **Mobile:** a white drawer up to 336px wide over an obsidian overlay at 60% with an 8px blur; links in 24px Inter 600 with hairline dividers, current item in Deep Timber. The drawer opens over 300ms on the editorial curve and closes over 200ms on the exit curve.
 
 ### Hero Metrics Strip
-A four-up strip framed by a bronze hairline with a 4px edge; each metric pairs a Label in bronze with a Stat value and a softly pulsing bronze dot. The pulse stops under reduced motion.
+A four-up strip framed by a bronze hairline with a 4px edge; each metric pairs a Label in bronze with a Stat value. There is no dot and nothing animates inside the strip.
 
 ### Spotlight Gallery Carousel
 A centered 16:10 slide with its neighbours scaled to about 0.7 and dimmed; slides move on a 650ms transform, autoplay every 5 seconds, and controls are 44px pill buttons. Under reduced motion transitions collapse and autoplay stops.
@@ -266,22 +288,23 @@ A centered 16:10 slide with its neighbours scaled to about 0.7 and dimmed; slide
 - **Do** set headings in Outfit 500, sentence case, and keep prose at line-height 1.65 or more.
 - **Do** use the 4px edge for content containers and pills for controls.
 - **Do** separate content with Plaster Line hairlines at 60% before reaching for a shadow.
-- **Do** move with the editorial curve (`cubic-bezier(0.22, 0.61, 0.36, 1)`), 240ms for hover and 400ms for state, and disable reveal, zoom, Ken Burns, sheen and pulse under `prefers-reduced-motion`.
+- **Do** move with the editorial curve (`cubic-bezier(0.22, 0.61, 0.36, 1)`), 240ms for hover and 280-400ms for state, reveal once at 600ms, and disable reveal, hero settle and fade, copy-swap motion and press-scale under `prefers-reduced-motion`; no infinite animation.
 
 ### Don't:
 - **Don't** alternate light and dark section bands; obsidian appears only behind the hero photograph and in the footer.
 - **Don't** set headings in Inter 900 or continuous uppercase.
 - **Don't** use 16px card or input radii; they belong to the retired interior-page system.
 - **Don't** add a second accent hue, gradient text, neon, saturated badges, glassmorphism panels or deep drop shadows.
-- **Don't** use bouncing or spring motion, constant looping distractions or heavy parallax.
+- **Don't** use bouncing or spring motion, infinite or looping animation (pulsing dots, sheens, Ken Burns drift), `will-change` held at rest, or heavy parallax.
 - **Don't** hardcode hex values in components; use the palette tokens.
 
 ## Drift from this system (incumbent code, 2026-10-20)
 
 This document records the target chosen with the owner. These parts of the current implementation do not yet match it and should converge section by section:
 
-- Dark mid-page bands: the services and about dark sections, and most of `/du-an/[slug]` (facts, gallery, material story, finale) sit on obsidian or ink-950.
-- Interior page section titles still use the older type system (Inter 900 uppercase `.text-section-title`), and cards, forms and inputs use 16px radii. Interior hero headlines already use Display.
-- Interior pages (services, about, factory, careers, contact, projects index, project detail, error) still use the wood `.btn-primary` for their primary action outside the hero; the heroes on every page, the header, the footer and the home closing CTA already use the bronze sentence-case `.btn-bronze`. The shared `.btn-outline` is still Inter 700 rather than the Action type (600).
+- Dark mid-page bands: the services and about dark sections sit on obsidian or ink-950.
+- Interior page section titles (outside the project detail) still use the older type system (Inter 900 uppercase `.text-section-title`), and cards, forms and inputs use 16px radii. Interior hero headlines already use Display.
+- Interior pages (services, about, factory, careers, contact, projects index, error) still use the wood `.btn-primary` for their primary action outside the hero; the heroes on every page, the header, the footer and the home closing CTA already use the bronze sentence-case `.btn-bronze`.
+- Remaining 16px radii outside the case study: `GalleryLightbox` (thumbnails and frame), `AboutProjectFeature`, `FactoryProcessProof` and `FactoryVisitCta`; they converge to 4px content containers with their pages.
 - Duplicate token declarations (obsidian/bronze/ivory in both `:root` and `@theme`), unused legacy tokens (`--color-wood`, `--color-warm`, `--radius-*`), the unused Syne font, and Nuxt UI `primary: 'amber'` with no Nuxt UI components rendered.
 - `docs/design/redesign-concept-showcase.html` still renders a fully dark obsidian world; it remains a composition and motion reference only, and the owner's 2026-10-20 decision for a continuous warm-light canvas supersedes its surfaces. (`.agents/rules/laihuy-ux-ui.md` was aligned with this document on the same date.)

@@ -1,5 +1,4 @@
-import type { Page } from '@playwright/test'
-import { expect, test } from './fixtures'
+import { expect, test, type Page } from '@playwright/test'
 import { APP_ORIGIN } from './origin'
 
 const TEST_ORIGIN = process.env.DENSITY_TEST_ORIGIN ?? APP_ORIGIN
@@ -247,4 +246,72 @@ test('HOME-STORY maps desktop scroll to start, middle, and final progress', asyn
 
   expect(errors.consoleErrors).toEqual([])
   expect(errors.pageErrors).toEqual([])
+})
+
+// Motion-allowed specs import from @playwright/test (not ./fixtures) and emulate the
+// media preference themselves in prepareHome().
+test('HMS-swap-sequenced exits in 120ms with no delay, then enters in 240ms after 120ms', async ({ page }) => {
+  const errors = await prepareHome(page, 'vi', 1440, 'no-preference')
+  const story = page.getByTestId('home-material-story')
+  await expect(story).toHaveAttribute('data-enhanced', 'true')
+
+  const timing = await story.evaluate((element) => {
+    const read = (item: Element) => {
+      const style = getComputedStyle(item)
+      return {
+        active: item.classList.contains('is-active'),
+        duration: style.transitionDuration,
+        delay: style.transitionDelay
+      }
+    }
+    return [...element.querySelectorAll('.home-material-story__copy-item')].map(read)
+  })
+
+  const inactive = timing.filter(item => !item.active)
+  const active = timing.filter(item => item.active)
+  expect(inactive.length).toBeGreaterThan(0)
+  expect(active).toHaveLength(1)
+  for (const item of inactive) {
+    expect(item.duration.startsWith('0.12s')).toBe(true)
+    expect(item.delay.startsWith('0s')).toBe(true)
+  }
+  expect(active[0]!.duration.startsWith('0.24s')).toBe(true)
+  expect(active[0]!.delay.startsWith('0.12s')).toBe(true)
+
+  expect(errors.consoleErrors).toEqual([])
+  expect(errors.pageErrors).toEqual([])
+})
+
+test('HMS-no-will-change holds no will-change on the wipe layers at rest', async ({ page }) => {
+  await prepareHome(page, 'vi', 1440, 'no-preference')
+  const values = await page.locator('.home-material-story__layer').evaluateAll(layers =>
+    layers.map(layer => getComputedStyle(layer).willChange)
+  )
+  expect(values).toHaveLength(4)
+  for (const value of values) expect(value).toBe('auto')
+})
+
+test('HMS-swap-reduced turns the copy swap transition off under reduced motion', async ({ page }) => {
+  await prepareHome(page, 'vi', 1440, 'reduce')
+  const durations = await page.locator('.home-material-story__copy-item').evaluateAll(items =>
+    items.map(item => getComputedStyle(item).transitionDuration)
+  )
+  expect(durations).toHaveLength(4)
+  for (const duration of durations) expect(duration.split(',').every(part => part.trim() === '0s')).toBe(true)
+})
+
+test('HOME-no-pulse has no pulse dot in the projects section and no Ken Burns loop on the hero image', async ({ page }) => {
+  await prepareHome(page, 'vi', 1440, 'no-preference')
+  await expect(page.getByTestId('home-projects').locator('.metric-pulse')).toHaveCount(0)
+
+  const animationName = await page.getByTestId('home-hero').locator('img.hero-image').evaluate(
+    image => getComputedStyle(image).animationName
+  )
+  expect(animationName).toBe('hero-zoom')
+})
+
+test('HMS-linen sits on Linen, not white', async ({ page }) => {
+  await prepareHome(page, 'vi', 1440, 'no-preference')
+  const background = await page.getByTestId('home-material-story').evaluate(element => getComputedStyle(element).backgroundColor)
+  expect(background).toBe('rgb(250, 246, 240)')
 })
