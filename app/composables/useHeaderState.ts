@@ -246,6 +246,10 @@ function create(): HeaderState {
     // §6.2 — the footer zone is detected with an IntersectionObserver, not a scroll calculation.
     // §27.1 permits exactly three observers site-wide; this is the second.
     const footer = document.querySelector('footer')
+    // A remount (app.vue -> error.vue -> app.vue) registers a new header while the singleton's
+    // cleanup stays bound to the first scope: never leave the previous footer observer running.
+    observer?.disconnect()
+    observer = null
     if (footer) {
       observer = new IntersectionObserver(
         (entries) => {
@@ -321,12 +325,18 @@ function create(): HeaderState {
   // starts at `page:finish` and bounds only the wait for the transition, never the chunk load.
   const SETTLE_FALLBACK_MS = 1500
   const SETTLE_MAX_FRAMES = 30
+  // Last-resort backstop for a navigation that never reaches page:finish by any path the hooks
+  // below recognise. Long enough never to cut a real slow chunk load short in practice.
+  const NAVIGATION_WATCHDOG_MS = 10000
   let navigating = false
+  // The target PATH, not fullPath: a hash or query push (in-page anchors, skip links) while a
+  // page change is in flight must neither strand nor misattribute it.
   let target = ''
   let epoch = 0
   let resolved = false
   let swapped = false
   let fallbackTimer = 0
+  let watchdogTimer = 0
 
   const settle = () => {
     if (!el) return
@@ -359,12 +369,14 @@ function create(): HeaderState {
     if (!navigating) return
     navigating = false
     window.clearTimeout(fallbackTimer)
+    window.clearTimeout(watchdogTimer)
     settle()
   }
 
   const settleWhenSwapped = () => {
     if (!navigating || !resolved || !swapped) return
     window.clearTimeout(fallbackTimer)
+    window.clearTimeout(watchdogTimer)
     const mine = epoch
     let frames = 0
     // The new page is inserted synchronously right after the transition's afterLeave hook
@@ -382,7 +394,7 @@ function create(): HeaderState {
   }
 
   /** A hook belongs to the navigation in flight only while the router is still on its target. */
-  const isCurrent = () => navigating && router.currentRoute.value.fullPath === target
+  const isCurrent = () => navigating && router.currentRoute.value.path === target
 
   router.beforeEach((to, from, next) => {
     if (to.path !== from.path && el) {
@@ -393,21 +405,27 @@ function create(): HeaderState {
       document.documentElement.style.setProperty('--header-shift', '0px')
 
       navigating = true
-      target = to.fullPath
+      target = to.path
       epoch += 1
       resolved = false
       swapped = false
       window.clearTimeout(fallbackTimer)
+      window.clearTimeout(watchdogTimer)
+      watchdogTimer = window.setTimeout(abandon, NAVIGATION_WATCHDOG_MS)
     }
     next()
   })
 
-  // An aborted navigation never reaches page:finish: release the chrome. (A cancelled one has
-  // been superseded by a newer navigation, which owns the state now.)
-  router.afterEach((to, _from, failure) => {
-    if (failure && isNavigationFailure(failure, NavigationFailureType.aborted) && to.fullPath === target) {
-      abandon()
+  router.afterEach((to, from, failure) => {
+    // An aborted navigation never reaches page:finish: release the chrome. (A cancelled one has
+    // been superseded by a newer navigation, which owns the state now.)
+    if (failure) {
+      if (isNavigationFailure(failure, NavigationFailureType.aborted) && to.path === target) abandon()
+      return
     }
+    // A same-path navigation (hash or query push) that superseded a pending page change: the
+    // router stays on the old page and no page:finish will follow, so release the chrome.
+    if (navigating && to.path === from.path && router.currentRoute.value.path !== target) abandon()
   })
   router.onError(abandon)
 

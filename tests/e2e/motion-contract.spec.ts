@@ -809,6 +809,61 @@ test.describe('motion contract', () => {
     expect(await headerTransitions(page), 'no chrome transition during the swap').toEqual([])
   })
 
+  test('MOTION-15g a hash push that supersedes a pending page change releases the header', async ({ page }) => {
+    await page.context().addCookies([{ name: 'lai-huy-locale', value: 'vi', url: TEST_ORIGIN }])
+    await page.goto(url('/'), { waitUntil: 'load' })
+    await waitForHydration(page)
+    const header = page.locator('header.app-header')
+
+    // Hold the terms chunk for the whole test, so the superseded page change cannot finish on its
+    // own while we measure.
+    await page.route('**/_nuxt/*.js', () => new Promise<void>(() => undefined))
+
+    // The hash push wins and the router stays on home: no page:finish will come for the terms
+    // page. The guard must release the chrome PROMPTLY (settle's double rAF), not merely
+    // eventually: other paths (the superseded navigation winding down, the 10s watchdog) release
+    // it many frames or seconds later, with the header frozen meanwhile. Counted in animation
+    // frames from the push, not milliseconds, because headless Chromium occasionally stalls frame
+    // production for most of a second regardless of the app.
+    const releasedAfterFrames = await page.evaluate(async () => {
+      const router = (window as unknown as { useNuxtApp: () => { $router: { push: (to: string | { hash: string }) => unknown } } }).useNuxtApp().$router
+      const el = document.querySelector('header.app-header')!
+      void router.push('/terms-of-use')
+      // Wait until the page change has actually frozen the chrome (its beforeEach ran).
+      for (let waited = 0; !el.classList.contains('chrome-no-transition'); waited += 20) {
+        if (waited > 1000) return -1
+        await new Promise(resolve => setTimeout(resolve, 20))
+      }
+      await new Promise(resolve => setTimeout(resolve, 100))
+      let frames = 0
+      let counting = true
+      const tick = () => {
+        if (!counting) return
+        frames += 1
+        requestAnimationFrame(tick)
+      }
+      requestAnimationFrame(tick)
+      const released = new Promise<number>((resolve) => {
+        new MutationObserver((_records, observer) => {
+          if (!el.classList.contains('chrome-no-transition')) {
+            observer.disconnect()
+            counting = false
+            resolve(frames)
+          }
+        }).observe(el, { attributes: true, attributeFilter: ['class'] })
+      })
+      void router.push({ hash: '#main' })
+      const result = await Promise.race([released, new Promise<number>(resolve => setTimeout(() => resolve(Infinity), 3000))])
+      counting = false
+      return result
+    })
+    expect(releasedAfterFrames, 'the chrome was frozen by the pending page change').toBeGreaterThanOrEqual(0)
+    expect(releasedAfterFrames, 'released within a few frames of the hash push').toBeLessThanOrEqual(4)
+    expect(new URL(page.url()).pathname).toBe('/')
+    await expect(header).not.toHaveClass(/chrome-no-transition/)
+    await page.unrouteAll({ behavior: 'ignoreErrors' })
+  })
+
   test('MOTION-15e a second navigation during the out phase settles once, on the last page', async ({ page }) => {
     await page.context().addCookies([{ name: 'lai-huy-locale', value: 'vi', url: TEST_ORIGIN }])
     await page.goto(url('/'), { waitUntil: 'load' })
