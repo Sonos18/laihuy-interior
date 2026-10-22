@@ -109,7 +109,8 @@ for (const width of [390, 767, 768, 1279, 1280, 1440] as const) {
 
     if (width >= 768) {
       expect(geometry.stickyPosition).toBe('sticky')
-      expect(geometry.height).toBeGreaterThanOrEqual(1800)
+      // 180vh with a 1500px floor (it was 220vh / 1800px).
+      expect(geometry.height).toBeGreaterThanOrEqual(1500)
     } else {
       expect(geometry.stickyPosition).not.toBe('sticky')
       await expect(story.locator('[data-mobile-frame]')).toHaveCount(4)

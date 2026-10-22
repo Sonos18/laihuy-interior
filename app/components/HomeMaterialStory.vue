@@ -21,18 +21,28 @@ const activeIndex = computed(() => {
 const phaseProgress = (start: number, end: number) =>
   Math.min(1, Math.max(0, (progress.value - start) / (end - start)))
 
+// `--wipe` is how much of the layer is revealed (0..1); the bronze seam reads it to sit exactly
+// on the leading edge. The seam only exists while the wipe is moving: before it starts the layer
+// is invisible and after it finishes the edge is the frame's own edge.
 const layerStyle = (index: number) => {
   if (!isEnhanced.value) {
-    return { opacity: index === props.stages.length - 1 ? 1 : 0, clipPath: 'inset(0 0 0 0)' }
+    return {
+      'opacity': index === props.stages.length - 1 ? 1 : 0,
+      'clipPath': 'inset(0 0 0 0)',
+      '--wipe': 1,
+      '--seam': 0
+    }
   }
 
-  if (index === 0) return { opacity: 1, clipPath: 'inset(0 0 0 0)' }
+  if (index === 0) return { 'opacity': 1, 'clipPath': 'inset(0 0 0 0)', '--wipe': 1, '--seam': 0 }
   const starts = [0, 0.12, 0.39, 0.66]
   const ends = [0, 0.34, 0.62, 0.92]
   const amount = phaseProgress(starts[index]!, ends[index]!)
   return {
-    opacity: amount <= 0 ? 0 : 1,
-    clipPath: `inset(0 ${((1 - amount) * 100).toFixed(2)}% 0 0)`
+    'opacity': amount <= 0 ? 0 : 1,
+    'clipPath': `inset(0 ${((1 - amount) * 100).toFixed(2)}% 0 0)`,
+    '--wipe': amount.toFixed(4),
+    '--seam': amount > 0 && amount < 1 ? 1 : 0
   }
 }
 </script>
@@ -90,15 +100,7 @@ const layerStyle = (index: number) => {
                 />
               </div>
               <div class="home-material-story__media-shade" />
-            </div>
-
-            <div
-              class="home-material-story__measure"
-              aria-hidden="true"
-            >
-              <span>00</span>
-              <span>{{ String(Math.round(progress * 100)).padStart(2, '0') }}</span>
-              <span>100</span>
+              <div class="home-material-story__seam" />
             </div>
           </div>
 
@@ -135,7 +137,7 @@ const layerStyle = (index: number) => {
                 <h3 class="home-material-story__stage-title home-card-heading mt-5 text-ink-950">
                   {{ t(stage.title) }}
                 </h3>
-                <p class="home-material-story__stage-desc mt-4 text-sm leading-[1.7] text-ink-600 md:text-base">
+                <p class="home-material-story__stage-desc mt-4 text-base leading-[1.7] text-ink-600">
                   {{ t(stage.description) }}
                 </p>
               </div>
@@ -205,8 +207,10 @@ const layerStyle = (index: number) => {
 
 @media (min-width: 768px) {
   .home-material-story[data-enhanced="true"] {
-    height: 220vh;
-    min-height: 1800px;
+    /* 180vh: the four states keep ~140px of scroll each at a 900px viewport (the copy swap and
+       the wipes are timed in progress, not pixels), without the long dead stretch of 220vh. */
+    height: 180vh;
+    min-height: 1500px;
   }
 
   .home-material-story[data-enhanced="true"] .home-material-story__sticky {
@@ -243,7 +247,9 @@ const layerStyle = (index: number) => {
   .home-material-story__stage {
     display: grid;
     min-height: 0;
-    grid-template-columns: minmax(0, 3fr) minmax(17rem, 1fr);
+    /* A wider rail than 3fr:1fr: the copy is what the visitor reads while the wipe plays, so it
+       gets a measure of about 40 characters instead of 30. */
+    grid-template-columns: minmax(0, 2.5fr) minmax(20rem, 1fr);
     gap: clamp(1.5rem, 3vw, 3rem);
     margin-top: clamp(2rem, 4vh, 3.5rem);
   }
@@ -301,18 +307,17 @@ const layerStyle = (index: number) => {
     background: linear-gradient(90deg, transparent 65%, rgb(11 10 9 / 0.12));
   }
 
-  .home-material-story__measure {
+  /* The leading edge of the wipe: a 1px Workshop Bronze column at x = --wipe of the frame. A
+     full-size bronze fill clipped to that one column, so it moves with clip-path alone (no
+     layout, no transform, no will-change) and rides inside its layer's own clip. Absent
+     (opacity 0) before the wipe starts and once it has finished. */
+  .home-material-story__seam {
     position: absolute;
-    z-index: 10;
-    inset-inline: 1rem;
-    bottom: 0.8rem;
-    display: flex;
-    justify-content: space-between;
-    color: var(--color-ink-700);
-    font-size: 0.75rem;
-    font-weight: 800;
-    letter-spacing: 0.18em;
-    text-shadow: 0 1px 2px rgb(255 255 255 / 0.8);
+    inset: 0;
+    background: var(--bronze);
+    clip-path: inset(0 calc((1 - var(--wipe, 1)) * 100%) 0 calc(var(--wipe, 1) * 100% - 1px));
+    opacity: var(--seam, 0);
+    pointer-events: none;
   }
 
   .home-material-story__copy {
@@ -324,6 +329,12 @@ const layerStyle = (index: number) => {
   .home-material-story[data-enhanced="true"] .home-material-story__copy-item {
     position: absolute;
     inset: 0;
+    /* The copy sits on the bottom edge of the frame, like a caption, instead of hanging from the
+       top of the rail: against a media frame this tall, a block pinned to the top left two thirds
+       of the column empty and unrelated to the photograph. */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     opacity: 0;
     transform: translateY(-0.25rem);
     /* Sequenced swap: the outgoing copy leaves first (120ms, exit curve), then the incoming
@@ -336,6 +347,21 @@ const layerStyle = (index: number) => {
     opacity: 1;
     transform: translateY(0);
     transition: opacity 240ms var(--ease-editorial) 120ms, transform 240ms var(--ease-editorial) 120ms;
+  }
+
+  /* The hairline belongs to the copy block, not to the empty column above it: a rule spanning
+     the whole rail framed a lot of nothing. It travels with the block through the copy swap. */
+  .home-material-story[data-enhanced="true"] .home-material-story__copy {
+    border-top: 0;
+  }
+
+  .home-material-story[data-enhanced="true"] .home-material-story__copy-item {
+    padding-top: 0;
+  }
+
+  .home-material-story[data-enhanced="true"] .home-material-story__copy-body {
+    border-top: 1px solid var(--color-ink-200);
+    padding-top: 1.25rem;
   }
 
   .home-material-story__copy-item {

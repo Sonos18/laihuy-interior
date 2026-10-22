@@ -781,6 +781,42 @@ test.describe('motion contract', () => {
     await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur())
     await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'running')
   })
+
+  test('MOTION-18 the material story has no numeric counter and a bronze seam that rides the wipe', async ({ page }) => {
+    await stubImages(page)
+    await page.goto(url('/'), { waitUntil: 'load' })
+    await waitForHydration(page)
+
+    const story = page.getByTestId('home-material-story')
+    await expect(story).toHaveAttribute('data-enhanced', 'true')
+    await expect(story.locator('.home-material-story__measure')).toHaveCount(0)
+    expect(await story.innerText()).not.toMatch(/\b100\b/)
+
+    const range = await story.evaluate((el) => {
+      const rect = el.getBoundingClientRect()
+      return { top: window.scrollY + rect.top, distance: rect.height - window.innerHeight }
+    })
+    // Mid-way through the second wipe (progress 0.25): layer 1 is part-revealed.
+    await page.evaluate(y => window.scrollTo(0, y), range.top + range.distance * 0.25)
+    const wipingLayer = story.locator('.home-material-story__layer').nth(1)
+    await expect.poll(() => wipingLayer.evaluate(el => (el as HTMLElement).style.getPropertyValue('--seam'))).toBe('1')
+
+    const seam = await story.locator('.home-material-story__layer').evaluateAll(layers => layers.map((layer) => {
+      const el = layer.querySelector('.home-material-story__seam')!
+      const style = getComputedStyle(el)
+      const wipe = Number.parseFloat((layer as HTMLElement).style.getPropertyValue('--wipe'))
+      return { opacity: style.opacity, background: style.backgroundColor, clip: style.clipPath, willChange: style.willChange, wipe }
+    }))
+    expect(seam.map(s => s.opacity), 'only the layer that is mid-wipe shows a seam').toEqual(['0', '1', '0', '0'])
+    expect(seam[1]!.background).toBe('rgb(184, 135, 90)')
+    expect(seam[1]!.willChange).toBe('auto')
+    // The seam is a 1px column at the wipe edge: its clip leaves `wipe` of the width on the left
+    // (minus the 1px) and the rest on the right.
+    const [, right, left] = seam[1]!.clip.match(/inset\(0px ([\d.]+)% 0px calc\(([\d.]+)% - 1px\)\)/) ?? []
+    expect(left, `clip-path ${seam[1]!.clip}`).toBeDefined()
+    expect(Number(left) / 100).toBeCloseTo(seam[1]!.wipe, 2)
+    expect(Number(right) / 100).toBeCloseTo(1 - seam[1]!.wipe, 2)
+  })
 })
 
 async function openDrawer(page: Page): Promise<void> {
