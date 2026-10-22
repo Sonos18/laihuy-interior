@@ -271,9 +271,9 @@ Warm and tactile: a soft bronze surface that warms further under the hand.
 - **Error:** Kiln Red border with the message in Deep Kiln Red, Inter 600 at 14px, phrased as how to fix the field.
 
 ### Navigation
-- **Header:** transparent over the hero with a soft obsidian scrim; after scrolling it becomes white glass at 92% with a 16px blur and a Plaster Line bottom hairline, and hides on scroll down and returns on scroll up. Desktop items appear from 1280px.
+- **Header:** transparent over the hero with a soft obsidian scrim (0.78 at the top edge, 0.62 at the nav row, gone by the bottom of its 160px, so it reads as a shadow and not a bar; the nav and language toggle clear 4.5:1 over the hero photographs); after scrolling it becomes white glass at 92% with a 16px blur and a Plaster Line bottom hairline, and hides on scroll down and returns on scroll up. Desktop items appear from 1280px.
 - **Pinned routes:** the legal pages and the error shell have no photograph (so no obsidian band; the legal masthead is a Raw Silk step) and the header is pinned in its navigation state from the first paint (server HTML included, so it holds with JavaScript off) and does not hide on scroll. A route opts in with `data-chrome-solid` on the root element (set through `useHead`, released on unmount) plus `useHeaderState().setSolid`; every other route keeps the cover-to-navigation behaviour above.
-- **Items:** Nav type, Walnut Grey on light glass (white at 72% over the hero), full color on hover and current, with a 1.5px underline that scales in over 240ms (the hover duration) on the editorial curve. The header hides and returns over about 280ms.
+- **Items:** Nav type, Walnut Grey on light glass (white at 92% over the hero; the unselected language option is white at 80%, the selected one full white), full color on hover and current, with a 1.5px underline that scales in over 240ms (the hover duration) on the editorial curve. The header hides and returns over about 280ms.
 - **Mobile:** a white drawer up to 336px wide over an obsidian overlay at 60% with an 8px blur; links in 24px Inter 600 with hairline dividers, current item in Deep Timber. The drawer opens over 300ms on the editorial curve and closes over 200ms on the exit curve.
 
 ### Metrics Band

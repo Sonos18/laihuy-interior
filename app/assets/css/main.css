@@ -218,14 +218,28 @@
   --surface-chrome: rgb(255 255 255 / 0.92);
   --surface-chrome-blur: 16px; /* the ONE blur radius                      */
   --header-border-a: 0.6;
-  --header-scrim-a1: 0.55;
-  --header-scrim-a2: 0.18;
+  /* The header sits on the lightest part of the hero photographs (ceilings, windows), so the
+     scrim is as dark as the nav row needs and falls away fast: 0.78 at the top edge, 0.62 at 30%
+     (the nav row), 0.24 at 62%, nothing at the bottom, so it reads as a shadow, not a bar.
+     Measured the same way as the hero copy (lightest pixel behind each nav link and language
+     option, text hidden), over /, /du-an/khach-san-eo-gio and /lien-he at 1440x900 and
+     1280x800, vi and en: every nav link and language option is at least 5.4:1 (need 4.5). */
+  --header-scrim-a1: 0.78;
+  --header-scrim-a2: 0.62;
+  --header-scrim-a3: 0.24;
   --scrim-chrome: linear-gradient(
     to bottom,
     rgb(11 10 9 / var(--header-scrim-a1)),
-    rgb(11 10 9 / var(--header-scrim-a2)) 45%,
+    rgb(11 10 9 / var(--header-scrim-a2)) 30%,
+    rgb(11 10 9 / var(--header-scrim-a3)) 62%,
     transparent
   );
+  /* Idle nav and chrome controls over the hero photograph. White at 92%, not the 72% muted
+     token: that one is tuned for the solid footer, and over a photograph it leaves too little. */
+  --fg-chrome-cover: rgb(255 255 255 / 0.92);
+  /* Unselected language option over the hero: raised from the 0.48 subtle token (2.2-3.7:1 over
+     the photographs) so it clears 4.5:1; the selected option stays full white. */
+  --fg-chrome-lang-idle: rgb(255 255 255 / 0.8);
   --header-blur-in: 0.05; /* p at which backdrop-filter engages       */
   --header-action-in: 0.5; /* p at which CTA/phone become focusable    */
 
@@ -809,7 +823,7 @@
   .chrome-nav-color {
     color: color-mix(
       in oklab,
-      var(--fg-dark-muted),
+      var(--fg-chrome-cover),
       var(--fg-light-muted) calc(var(--header-p) * 100%)
     );
   }
@@ -817,7 +831,7 @@
   /* C.2 — discrete fallback where color-mix() is unsupported. */
   @supports not (color: color-mix(in oklab, white, black)) {
     .chrome-nav-color {
-      color: var(--fg-dark-muted);
+      color: var(--fg-chrome-cover);
     }
 
     .app-header[data-chrome-state="nav"] .chrome-nav-color {
@@ -1177,7 +1191,7 @@
   /* `surface` is a PROP, never a detection — the parent knows the surface, the
      child is told (§26.5). */
   .lang-toggle-dark .lang-option {
-    color: var(--fg-dark-subtle);
+    color: var(--fg-chrome-lang-idle);
   }
 
   .lang-toggle-dark .lang-option:hover,
