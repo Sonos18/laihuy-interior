@@ -1,5 +1,6 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from './fixtures'
+import { MIN_SURFACE_LUMINANCE, SAWDUST_CEILING_LUMINANCE, nonEdgeRadii, surfaceLuminances } from './helpers/warm-surfaces'
 import { APP_ORIGIN } from './origin'
 
 /**
@@ -67,56 +68,14 @@ for (const route of ROUTES) {
       test(`WARM-01 no dark band ${tag}`, async ({ page }) => {
         await open(page, route, locale, width)
 
-        const surfaces = await page.evaluate(() => {
-          const parse = (value: string): number[] | null => {
-            const match = value.match(/^(?:rgba?|color)\(([^)]+)\)$/)
-            if (!match) return null
-            const parts = match[1]!.replace('srgb', '').split(/[,/\s]+/).filter(Boolean).map(Number)
-            const scale = value.startsWith('color(') ? 255 : 1
-            return [parts[0]! * scale, parts[1]! * scale, parts[2]! * scale, parts[3] ?? 1]
-          }
-          // Composite translucent layers up the tree until an opaque one, so a tinted surface is
-          // judged by what the reader sees.
-          const background = (el: Element): number[] => {
-            const layers: number[][] = []
-            let current: Element | null = el
-            while (current) {
-              const layer = parse(getComputedStyle(current).backgroundColor)
-              if (layer && layer[3]! > 0) {
-                layers.push(layer)
-                if (layer[3] === 1) break
-              }
-              current = current.parentElement
-            }
-            let result = [255, 255, 255]
-            for (const [r, g, b, a] of layers.reverse()) {
-              result = [r! * a! + result[0]! * (1 - a!), g! * a! + result[1]! * (1 - a!), b! * a! + result[2]! * (1 - a!)]
-            }
-            return result
-          }
-          const channel = (c: number) => {
-            const v = c / 255
-            return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)
-          }
-          const luminanceOf = (el: Element) => {
-            const [r, g, b] = background(el)
-            return 0.2126 * channel(r!) + 0.7152 * channel(g!) + 0.0722 * channel(b!)
-          }
-          return [...document.querySelectorAll('main section')]
-            .filter(el => !el.closest('.app-hero'))
-            .map(el => ({
-              label: `${el.tagName.toLowerCase()}.${String(el.className).slice(0, 40)}`,
-              luminance: luminanceOf(el)
-            }))
-        })
+        const surfaces = await surfaceLuminances(page, 'main section', { skipHero: true })
 
         expect(surfaces.length).toBeGreaterThan(0)
         for (const surface of surfaces) {
-          // Sawdust, the darkest allowed band, measures about 0.78.
-          expect(surface.luminance, `${surface.label} background is a dark band`).toBeGreaterThanOrEqual(0.7)
+          expect(surface.luminance, `${surface.label} background is a dark band`).toBeGreaterThanOrEqual(MIN_SURFACE_LUMINANCE)
         }
         // At most one Sawdust emphasis band per page.
-        expect(surfaces.filter(surface => surface.luminance < 0.85).length).toBeLessThanOrEqual(1)
+        expect(surfaces.filter(surface => surface.luminance < SAWDUST_CEILING_LUMINANCE).length).toBeLessThanOrEqual(1)
       })
 
       test(`WARM-02 headings and type ${tag}`, async ({ page }) => {
@@ -163,28 +122,7 @@ for (const route of ROUTES) {
       test(`WARM-03 radii ${tag}`, async ({ page }) => {
         await open(page, route, locale, width)
 
-        const offenders = await page.evaluate(() => {
-          const corners = [
-            'borderTopLeftRadius',
-            'borderTopRightRadius',
-            'borderBottomRightRadius',
-            'borderBottomLeftRadius'
-          ] as const
-          const found: string[] = []
-          for (const el of document.querySelectorAll('main *')) {
-            if (el.closest('.app-hero')) continue
-            const style = getComputedStyle(el)
-            for (const corner of corners) {
-              const raw = style[corner]
-              const value = parseFloat(raw)
-              const pill = raw.endsWith('%') ? value >= 50 : value >= 9000
-              if (!pill && value > 4) {
-                found.push(`${el.tagName.toLowerCase()}.${String(el.className).slice(0, 60)} ${corner}=${raw}`)
-              }
-            }
-          }
-          return found
-        })
+        const offenders = await nonEdgeRadii(page)
 
         expect(offenders).toEqual([])
       })
@@ -232,9 +170,71 @@ for (const locale of ['vi', 'en'] as const) {
       }
 
       // Selecting a chip moves the active state to it and filters the grid.
+      const cards = page.locator('[data-testid="projects-grid"] > a')
+      const unfilteredCount = await cards.count()
+      expect(unfilteredCount).toBeGreaterThan(1)
       await idle.click()
       await expect(idle).toHaveAttribute('aria-pressed', 'true')
       await expect(idle).toHaveCSS('background-color', 'rgb(24, 22, 20)')
+      await expect.poll(() => cards.count()).toBeLessThan(unfilteredCount)
+      expect(await cards.count()).toBeGreaterThan(0)
+    })
+
+    test(`WARM-06 project cards follow the card spec (projects ${locale} @ ${width})`, async ({ page }) => {
+      await open(page, ROUTES.find(route => route.name === 'projects')!, locale, width)
+
+      const card = page.locator('[data-testid="projects-grid"] > a').first()
+      await expect(card).toHaveCSS('background-color', 'rgb(255, 255, 255)')
+      await expect(card).toHaveCSS('border-top-color', 'rgb(216, 210, 202)')
+      await expect(card).toHaveCSS('border-top-left-radius', '4px')
+      // Rest lift is the last layer; Tailwind prepends its empty ring/shadow layers.
+      await expect(card).toHaveCSS('box-shadow', /rgba\(11, 10, 9, 0\.04\) 0px 2px 8px 0px$/)
+    })
+
+    test(`WARM-07 form fields follow DESIGN.md Inputs (contact ${locale} @ ${width})`, async ({ page }) => {
+      await open(page, ROUTES.find(route => route.name === 'contact')!, locale, width)
+
+      const fields = page.locator('[data-testid="contact-form"] :is(input, select, textarea)')
+      expect(await fields.count()).toBe(5)
+      for (const field of await fields.all()) {
+        await expect(field).toHaveCSS('background-color', 'rgb(255, 255, 255)')
+        await expect(field).toHaveCSS('border-top-color', 'rgb(216, 210, 202)')
+        await expect(field).toHaveCSS('border-top-width', '1px')
+        await expect(field).toHaveCSS('border-top-left-radius', '4px')
+        await expect(field).toHaveCSS('font-size', '16px')
+        await expect(field).toHaveCSS('padding-top', '12px')
+        await expect(field).toHaveCSS('padding-left', '16px')
+      }
+      const labels = page.locator('[data-testid="contact-form"] label')
+      for (const label of await labels.all()) {
+        await expect(label).toHaveCSS('font-size', '14px')
+        await expect(label).toHaveCSS('font-weight', '700')
+      }
+
+      // Focus: Mid Timber border. Error: Kiln Red border and a Deep Kiln Red message.
+      await page.locator('#contact-name').focus()
+      await expect(page.locator('#contact-name')).toHaveCSS('border-top-color', 'rgb(155, 106, 67)')
+
+      await page.click('[data-testid="contact-form"] button[type="submit"]')
+      const email = page.locator('#contact-email')
+      await expect(email).toHaveCSS('border-top-color', 'rgb(178, 60, 42)')
+      const message = page.locator('#contact-email-error')
+      await expect(message).toHaveCSS('color', 'rgb(138, 46, 31)')
+      await expect(message).toHaveCSS('font-size', '14px')
+      await expect(message).toHaveCSS('font-weight', '600')
+    })
+  }
+}
+
+test('WARM-08 legal pages pin the header to its navigation chrome and release it on leaving', async ({ page }) => {
+  await open(page, ROUTES.find(route => route.name === 'privacy')!, 'vi', 1440)
+
+  const header = page.locator('header.app-header')
+  await expect(header).toHaveAttribute('data-chrome-state', 'nav')
+
+  await page.locator('header.app-header a[href="/"]').first().click()
+  await page.waitForURL(`${TEST_ORIGIN}/`)
+  await expect(header).toHaveAttribute('data-chrome-state', 'cover')
   // Unhead removed the pin with the page that set it: nothing may stay behind to force the next
   // cover into NAVIGATION.
   await expect(page.locator('html')).not.toHaveAttribute('data-chrome-solid', /.*/)
@@ -327,62 +327,4 @@ test('WARM-08 privacy to terms keeps navigation chrome, back to home restores th
   await expect(header).toHaveAttribute('data-chrome-state', 'cover')
   await expect(html).not.toHaveAttribute('data-chrome-solid', /.*/)
   await expect(header).toHaveCSS('--header-p', '0')
-      expect(await page.locator('main .grid.gap-7 > a').count()).toBeLessThan(11)
-    })
-
-    test(`WARM-06 project cards follow the card spec (projects ${locale} @ ${width})`, async ({ page }) => {
-      await open(page, ROUTES.find(route => route.name === 'projects')!, locale, width)
-
-      const card = page.locator('main .grid.gap-7 > a').first()
-      await expect(card).toHaveCSS('background-color', 'rgb(255, 255, 255)')
-      await expect(card).toHaveCSS('border-top-color', 'rgb(216, 210, 202)')
-      await expect(card).toHaveCSS('border-top-left-radius', '4px')
-      // Rest lift is the last layer; Tailwind prepends its empty ring/shadow layers.
-      await expect(card).toHaveCSS('box-shadow', /rgba\(11, 10, 9, 0\.04\) 0px 2px 8px 0px$/)
-    })
-
-    test(`WARM-07 form fields follow DESIGN.md Inputs (contact ${locale} @ ${width})`, async ({ page }) => {
-      await open(page, ROUTES.find(route => route.name === 'contact')!, locale, width)
-
-      const fields = page.locator('[data-testid="contact-form"] :is(input, select, textarea)')
-      expect(await fields.count()).toBe(5)
-      for (const field of await fields.all()) {
-        await expect(field).toHaveCSS('background-color', 'rgb(255, 255, 255)')
-        await expect(field).toHaveCSS('border-top-color', 'rgb(216, 210, 202)')
-        await expect(field).toHaveCSS('border-top-width', '1px')
-        await expect(field).toHaveCSS('border-top-left-radius', '4px')
-        await expect(field).toHaveCSS('font-size', '16px')
-        await expect(field).toHaveCSS('padding-top', '12px')
-        await expect(field).toHaveCSS('padding-left', '16px')
-      }
-      const labels = page.locator('[data-testid="contact-form"] label')
-      for (const label of await labels.all()) {
-        await expect(label).toHaveCSS('font-size', '14px')
-        await expect(label).toHaveCSS('font-weight', '700')
-      }
-
-      // Focus: Mid Timber border. Error: Kiln Red border and a Deep Kiln Red message.
-      await page.locator('#contact-name').focus()
-      await expect(page.locator('#contact-name')).toHaveCSS('border-top-color', 'rgb(155, 106, 67)')
-
-      await page.click('[data-testid="contact-form"] button[type="submit"]')
-      const email = page.locator('#contact-email')
-      await expect(email).toHaveCSS('border-top-color', 'rgb(178, 60, 42)')
-      const message = page.locator('#contact-email-error')
-      await expect(message).toHaveCSS('color', 'rgb(138, 46, 31)')
-      await expect(message).toHaveCSS('font-size', '14px')
-      await expect(message).toHaveCSS('font-weight', '600')
-    })
-  }
-}
-
-test('WARM-08 legal pages pin the header to its navigation chrome and release it on leaving', async ({ page }) => {
-  await open(page, ROUTES.find(route => route.name === 'privacy')!, 'vi', 1440)
-
-  const header = page.locator('header.app-header')
-  await expect(header).toHaveAttribute('data-chrome-state', 'nav')
-
-  await page.locator('header.app-header a[href="/"]').first().click()
-  await page.waitForURL(`${TEST_ORIGIN}/`)
-  await expect(header).toHaveAttribute('data-chrome-state', 'cover')
 })

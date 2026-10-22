@@ -227,7 +227,7 @@ usePageSeo({
           data-testid="contact-primary"
           class="grid gap-12 lg:grid-cols-[1fr_0.9fr]"
         >
-          <div class="rounded-[4px] border border-ink-200 bg-white p-6 shadow-[var(--shadow-rest)] md:p-8">
+          <div class="card p-6 md:p-8">
             <p class="eyebrow">
               {{ t(uiText.contactForm.eyebrow) }}
             </p>
@@ -456,7 +456,7 @@ usePageSeo({
                 :href="address.mapUrl"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="block rounded-[4px] border border-ink-200 bg-white p-5 shadow-[var(--shadow-rest)] transition-[border-color,box-shadow] duration-[var(--dur-hover)] ease-[var(--ease-editorial)] hover:border-ink-500 hover:shadow-[var(--shadow-hover)] focus-visible:border-ink-500 focus-visible:shadow-[var(--shadow-hover)] motion-reduce:transition-none"
+                class="block card-link p-5"
               >
                 <strong class="text-ink-950">{{ t(address.label) }}</strong>
                 <span class="mt-2 block text-base leading-[1.7] text-ink-600">
@@ -479,7 +479,7 @@ usePageSeo({
           <article
             v-for="card in contactCards"
             :key="card.title"
-            class="rounded-[4px] border border-ink-200 bg-white p-6 shadow-[var(--shadow-rest)]"
+            class="card p-6"
           >
             <Icon
               :name="card.icon"

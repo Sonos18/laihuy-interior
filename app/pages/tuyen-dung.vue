@@ -86,7 +86,7 @@ usePageSeo({
             <div
               v-for="benefit in careerBenefits"
               :key="benefit.vi"
-              class="flex gap-3 rounded-[4px] border border-ink-200 bg-white p-4 text-base font-semibold leading-[1.7] text-ink-700 shadow-[var(--shadow-rest)]"
+              class="flex gap-3 card p-4 text-base font-semibold leading-[1.7] text-ink-700"
             >
               <Icon
                 name="i-lucide-check"
@@ -115,7 +115,7 @@ usePageSeo({
           <article
             v-for="job in jobs"
             :key="job.id"
-            class="rounded-[4px] border border-ink-200 bg-white p-6 shadow-[var(--shadow-rest)] lg:p-7"
+            class="card p-6 lg:p-7"
           >
             <!-- Location and type are facts about the role, not controls, so they take the 4px
                  content edge rather than the pill reserved for things you press. -->

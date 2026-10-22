@@ -61,7 +61,7 @@ const sequence = (index: number) => String(index + 1).padStart(2, '0')
             :key="group.id"
             v-reveal="index * 70"
             data-testid="factory-process-group"
-            class="reveal flex flex-col rounded-[4px] border border-ink-200 bg-white p-6 shadow-[var(--shadow-rest)]"
+            class="reveal flex flex-col card p-6"
           >
             <span class="home-eyebrow-text block text-wood-600">
               {{ sequence(index) }}

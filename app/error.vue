@@ -176,7 +176,7 @@ const recoveryLinks = [
               v-for="link in recoveryLinks"
               :key="link.to"
               :to="link.to"
-              class="group rounded-[4px] border border-ink-200 bg-white p-6 shadow-[var(--shadow-rest)] transition-[border-color,box-shadow] duration-[var(--dur-hover)] ease-[var(--ease-editorial)] hover:border-ink-500 hover:shadow-[var(--shadow-hover)] focus-visible:border-ink-500 focus-visible:shadow-[var(--shadow-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-wood-500 motion-reduce:transition-none lg:p-7"
+              class="group card-link p-6 lg:p-7"
             >
               <Icon
                 :name="link.icon"

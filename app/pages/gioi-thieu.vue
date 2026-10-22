@@ -289,7 +289,7 @@ usePageSeo({
             v-for="(item, index) in aboutPageContent.fit.items"
             :key="t(item)"
             v-reveal="index * 70"
-            class="reveal rounded-[4px] border border-ink-200 bg-white p-6 shadow-[var(--shadow-rest)] md:p-8"
+            class="reveal card p-6 md:p-8"
           >
             <p class="home-nested-heading font-display font-medium tracking-tight text-ink-950">
               {{ t(item) }}

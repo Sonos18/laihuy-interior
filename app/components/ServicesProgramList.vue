@@ -51,11 +51,11 @@ const sequence = (index: number) => String(props.startAt + index).padStart(2, '0
           :key="service.id"
           v-reveal="index * 70"
           data-testid="services-programme"
-          class="group reveal scroll-mt-[calc(var(--header-h)+1rem)] rounded-[4px] border border-ink-200 bg-white shadow-[var(--shadow-rest)] transition-[border-color,box-shadow] duration-[var(--dur-hover)] ease-[var(--ease-editorial)] hover:border-ink-500 hover:shadow-[var(--shadow-hover)] focus-within:border-ink-500 focus-within:shadow-[var(--shadow-hover)] motion-reduce:transition-none"
+          class="group reveal scroll-mt-[calc(var(--header-h)+1rem)] card-link"
         >
           <NuxtLink
             to="/lien-he"
-            class="block rounded-[4px] px-6 py-8 focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-wood-500 md:px-10"
+            class="block rounded-[4px] px-6 py-8 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-wood-500 md:px-10"
           >
             <div
               data-testid="services-programme-row"

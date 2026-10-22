@@ -130,12 +130,15 @@ usePageSeo({
           }) }}
         </p>
 
-        <div class="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+        <div
+          data-testid="projects-grid"
+          class="grid gap-7 sm:grid-cols-2 lg:grid-cols-3"
+        >
           <NuxtLink
             v-for="{ project, cover } in filteredProjects"
             :key="project.slug"
             :to="`/du-an/${project.slug}`"
-            class="group flex flex-col overflow-hidden rounded-[4px] border border-ink-200 bg-white shadow-[var(--shadow-rest)] transition-[border-color,box-shadow] duration-[var(--dur-hover)] ease-[var(--ease-editorial)] hover:border-ink-500 hover:shadow-[var(--shadow-hover)] focus-visible:border-ink-500 focus-visible:shadow-[var(--shadow-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-wood-500 motion-reduce:transition-none"
+            class="group flex flex-col overflow-hidden card-link"
           >
             <div
               v-if="cover"

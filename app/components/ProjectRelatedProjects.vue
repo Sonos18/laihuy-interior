@@ -44,7 +44,7 @@ const { t } = useLanguage()
           :key="item.slug"
           v-reveal="index * 100"
           :to="`/du-an/${item.slug}`"
-          class="group reveal block overflow-hidden rounded-[4px] border border-ink-200 bg-white shadow-[var(--shadow-rest)] transition-[border-color,box-shadow] duration-[var(--dur-hover)] ease-[var(--ease-editorial)] hover:border-ink-500 hover:shadow-[var(--shadow-hover)] focus-visible:border-ink-500 focus-visible:shadow-[var(--shadow-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-wood-500 motion-reduce:transition-none"
+          class="group reveal block overflow-hidden card-link"
         >
           <div
             v-if="cover"

@@ -1,5 +1,6 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from './fixtures'
+import { MIN_SURFACE_LUMINANCE, SAWDUST_CEILING_LUMINANCE, nonEdgeRadii, surfaceLuminances } from './helpers/warm-surfaces'
 import { APP_ORIGIN } from './origin'
 
 const TEST_ORIGIN = process.env.DENSITY_TEST_ORIGIN ?? APP_ORIGIN
@@ -384,53 +385,17 @@ for (const locale of ['vi', 'en'] as const) {
     test(`FX-WARM-01 no dark band ${tag}`, async ({ page }) => {
       await openFactory(page, locale, width)
 
-      const surfaces = await page.evaluate((testIds) => {
-        const parse = (value: string): number[] | null => {
-          const match = value.match(/^(?:rgba?|color)\(([^)]+)\)$/)
-          if (!match) return null
-          const parts = match[1]!.replace('srgb', '').split(/[,/\s]+/).filter(Boolean).map(Number)
-          const scale = value.startsWith('color(') ? 255 : 1
-          return [parts[0]! * scale, parts[1]! * scale, parts[2]! * scale, parts[3] ?? 1]
-        }
-        // Composite translucent layers up the tree until an opaque one, so a tinted surface is
-        // judged by what the reader sees.
-        const background = (el: Element): number[] => {
-          const layers: number[][] = []
-          let current: Element | null = el
-          while (current) {
-            const layer = parse(getComputedStyle(current).backgroundColor)
-            if (layer && layer[3]! > 0) {
-              layers.push(layer)
-              if (layer[3] === 1) break
-            }
-            current = current.parentElement
-          }
-          let result = [255, 255, 255]
-          for (const [r, g, b, a] of layers.reverse()) {
-            result = [r! * a! + result[0]! * (1 - a!), g! * a! + result[1]! * (1 - a!), b! * a! + result[2]! * (1 - a!)]
-          }
-          return result
-        }
-        const channel = (c: number) => {
-          const v = c / 255
-          return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)
-        }
-        const luminanceOf = (el: Element) => {
-          const [r, g, b] = background(el)
-          return 0.2126 * channel(r!) + 0.7152 * channel(g!) + 0.0722 * channel(b!)
-        }
-        return testIds.map(id => ({
-          id,
-          luminance: luminanceOf(document.querySelector(`[data-testid="${id}"]`)!)
-        }))
-      }, warmSections)
+      const surfaces = await surfaceLuminances(
+        page,
+        warmSections.map(id => `[data-testid="${id}"]`).join(', '),
+        { nameAttribute: 'data-testid' }
+      )
 
       for (const surface of surfaces) {
-        // Sawdust, the darkest allowed band, measures about 0.78.
-        expect(surface.luminance, `${surface.id} background is a dark band`).toBeGreaterThanOrEqual(0.7)
+        expect(surface.luminance, `${surface.name} background is a dark band`).toBeGreaterThanOrEqual(MIN_SURFACE_LUMINANCE)
       }
       // Sawdust is the emphasis band: the process chapter, and nothing else.
-      const sawdust = surfaces.filter(surface => surface.luminance < 0.85).map(surface => surface.id)
+      const sawdust = surfaces.filter(surface => surface.luminance < SAWDUST_CEILING_LUMINANCE).map(surface => surface.name)
       expect(sawdust).toEqual(['factory-process'])
     })
 
@@ -486,28 +451,7 @@ for (const locale of ['vi', 'en'] as const) {
     test(`FX-WARM-03 radii ${tag}`, async ({ page }) => {
       await openFactory(page, locale, width)
 
-      const offenders = await page.evaluate(() => {
-        const corners = [
-          'borderTopLeftRadius',
-          'borderTopRightRadius',
-          'borderBottomRightRadius',
-          'borderBottomLeftRadius'
-        ] as const
-        const found: string[] = []
-        for (const el of document.querySelectorAll('main *')) {
-          if (el.closest('.app-hero')) continue
-          const style = getComputedStyle(el)
-          for (const corner of corners) {
-            const raw = style[corner]
-            const value = parseFloat(raw)
-            const pill = raw.endsWith('%') ? value >= 50 : value >= 9000
-            if (!pill && value > 4) {
-              found.push(`${el.tagName.toLowerCase()}.${String(el.className).slice(0, 60)} ${corner}=${raw}`)
-            }
-          }
-        }
-        return found
-      })
+      const offenders = await nonEdgeRadii(page)
 
       expect(offenders).toEqual([])
     })

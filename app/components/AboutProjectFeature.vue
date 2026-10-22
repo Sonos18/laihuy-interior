@@ -20,7 +20,7 @@ const scope = computed(() => props.project.scope ? ta(props.project.scope).join(
     :to="`/du-an/${project.slug}`"
     data-testid="about-project-feature"
     :data-project-slug="project.slug"
-    class="group block overflow-hidden rounded-[4px] border border-ink-200 bg-white text-ink-950 shadow-[var(--shadow-rest)] transition-[border-color,box-shadow] duration-[var(--dur-hover)] ease-[var(--ease-editorial)] hover:border-ink-500 hover:shadow-[var(--shadow-hover)] focus-visible:border-ink-500 focus-visible:shadow-[var(--shadow-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-wood-500 motion-reduce:transition-none"
+    class="group block overflow-hidden card-link text-ink-950"
   >
     <article>
       <MediaImage

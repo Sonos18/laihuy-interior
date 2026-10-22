@@ -1779,6 +1779,42 @@
 }
 
 @layer components {
+  /* ── CARDS ────────────────────────────────────────────────────────────────
+     DESIGN.md "Cards / Containers": Paper White on the linen canvas, a 1px Plaster Line border,
+     the 4px edge and the Rest lift. Padding and overflow differ per card and stay as utilities on
+     the element.
+
+     .card is the static container. .card-link is a card that is itself the link (or contains the
+     only link): border darkens to Dust Grey and the Hover lift appears on hover and keyboard
+     focus, with one focus ring (2px Mid Timber, 4px offset) so a ring never touches a card edge.
+     `:has(:focus-visible)` covers a card whose inner link fills it and carries the ring. */
+  .card,
+  .card-link {
+    @apply rounded-[4px] border border-ink-200 bg-white shadow-[var(--shadow-rest)];
+  }
+
+  .card-link {
+    transition: border-color var(--dur-hover) var(--ease-editorial), box-shadow var(--dur-hover) var(--ease-editorial);
+  }
+
+  .card-link:hover,
+  .card-link:focus-visible,
+  .card-link:has(:focus-visible) {
+    border-color: var(--color-ink-500);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .card-link:focus-visible {
+    outline: 2px solid var(--color-wood-500);
+    outline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card-link {
+      transition: none;
+    }
+  }
+
   /* Responsive typography — fluid scale so headings stay premium on desktop
      and never overflow / oversize on small screens. */
   .text-hero {

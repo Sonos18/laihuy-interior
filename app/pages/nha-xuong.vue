@@ -199,7 +199,7 @@ usePageSeo({
             v-for="audience in factoryAudiences"
             :key="audience.id"
             data-testid="factory-audience"
-            class="rounded-[4px] border border-ink-200 bg-white p-6 shadow-[var(--shadow-rest)] md:p-8"
+            class="card p-6 md:p-8"
           >
             <h3 class="home-card-heading text-ink-950">
               {{ t(audience.title) }}
@@ -240,7 +240,7 @@ usePageSeo({
           <details
             v-for="faq in factoryFaqs"
             :key="faq.id"
-            class="group rounded-[4px] border border-ink-200 bg-white px-6 shadow-[var(--shadow-rest)] transition-[border-color] duration-[var(--dur-hover)] ease-[var(--ease-editorial)] hover:border-ink-500 open:border-ink-500 motion-reduce:transition-none"
+            class="group card px-6 transition-[border-color] duration-[var(--dur-hover)] ease-[var(--ease-editorial)] hover:border-ink-500 open:border-ink-500 motion-reduce:transition-none"
           >
             <summary class="home-nested-heading flex cursor-pointer list-none items-center justify-between gap-4 py-5 font-display font-medium text-ink-950 [&::-webkit-details-marker]:hidden">
               {{ t(faq.question) }}
