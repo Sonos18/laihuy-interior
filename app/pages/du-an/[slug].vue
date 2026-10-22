@@ -232,12 +232,13 @@ usePageSeo({
       :data-inline-media="filteredGallery.length"
     >
       <div class="shell">
-        <!-- Split when the room filters sit beside the heading, stacked otherwise. -->
-        <div
-          class="mb-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between"
-          :data-head="showGalleryFilters ? 'split' : 'stacked'"
-        >
-          <div class="max-w-2xl">
+        <!-- A stacked head; the room filters are one row of their own below it, at the full
+             measure, so more of the rooms show before the row has to scroll. -->
+        <div class="mb-8">
+          <div
+            class="max-w-2xl"
+            data-head="stacked"
+          >
             <p
               v-reveal.head
               class="eyebrow reveal"
@@ -252,21 +253,19 @@ usePageSeo({
             </h2>
           </div>
 
-          <div
+          <!-- One row of room chips (DESIGN.md Chips): every room stays reachable and the row
+               scrolls sideways instead of wrapping into several lines. -->
+          <ChipRow
             v-if="showGalleryFilters"
             v-reveal
             data-gallery-filters
-            class="reveal flex flex-wrap gap-2"
+            class="reveal mt-6"
+            :label="t({ vi: 'Lọc ảnh theo phòng', en: 'Filter photos by room' })"
           >
-            <button
+            <FilterChip
               v-for="tab in galleryTabs"
               :key="tab.value"
-              type="button"
-              class="inline-flex items-center gap-2 min-h-11 rounded-full border px-5 py-2.5 text-sm font-semibold transition-colors duration-[var(--dur-hover)] ease-[var(--ease-editorial)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wood-500 motion-reduce:transition-none"
-              :class="activeGalleryTab === tab.value
-                ? 'border-ink-900 bg-ink-900 text-wood-50'
-                : 'border-ink-200 text-ink-600 hover:border-wood-500 hover:text-wood-600'"
-              :aria-pressed="activeGalleryTab === tab.value"
+              :pressed="activeGalleryTab === tab.value"
               @click="activeGalleryTab = tab.value"
             >
               {{ tab.label }}
@@ -274,8 +273,8 @@ usePageSeo({
                 class="text-xs font-semibold"
                 :class="activeGalleryTab === tab.value ? 'text-wood-50/80' : 'text-ink-600'"
               >{{ tab.count }}</span>
-            </button>
-          </div>
+            </FilterChip>
+          </ChipRow>
         </div>
 
         <Transition

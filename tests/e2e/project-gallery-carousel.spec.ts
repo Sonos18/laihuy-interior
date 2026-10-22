@@ -162,7 +162,7 @@ test('changing a room filter resets the carousel and lightbox pauses autoplay', 
   await expect(carousel).toHaveAttribute('data-gallery-active-index', '1')
   // That manual step ended this pass; a new room filter is a new set and starts a fresh one.
   await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'ended')
-  await page.locator('[data-gallery-filters] button').nth(1).click()
+  await page.locator('[data-gallery-filters] button[aria-pressed]').nth(1).click()
   await expect(carousel).toHaveAttribute('data-gallery-active-index', '0')
 
   await carousel.locator('[data-gallery-position="active"] button').click()
@@ -182,7 +182,7 @@ test('explicit pause persists when a room filter changes', async ({ page }) => {
   const initialCount = await carousel.getAttribute('data-gallery-count')
 
   await carousel.getByRole('button', { name: 'Tạm dừng trình chiếu' }).click()
-  await page.locator('[data-gallery-filters] button').nth(1).click()
+  await page.locator('[data-gallery-filters] button[aria-pressed]').nth(1).click()
 
   await expect.poll(() => carousel.getAttribute('data-gallery-count')).not.toBe(initialCount)
   await expect(carousel).toHaveAttribute('data-gallery-active-index', '0')

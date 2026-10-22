@@ -452,7 +452,7 @@ for (const locale of ['vi', 'en'] as const) {
     expect(heading).toBe(await resolveToken('--fg-light', 'color'))
 
     // Filter tabs: active is Charcoal Ink with Linen text; idle is a Plaster border with Walnut Grey text
-    const filterTabs = gallery.locator('[data-gallery-filters] button')
+    const filterTabs = gallery.locator('[data-gallery-filters] button[aria-pressed]')
     if (await filterTabs.count() > 0) {
       const active = await gallery.locator('[data-gallery-filters] button[aria-pressed="true"]').evaluate((el) => {
         const style = getComputedStyle(el)
@@ -562,7 +562,7 @@ for (const width of [390, 1280] as const) {
     await expect(carousel).toHaveAttribute('data-gallery-active-index', '0')
 
     // Filters still work where available
-    const filterTabs = page.locator('[data-gallery-filters] button')
+    const filterTabs = page.locator('[data-gallery-filters] button[aria-pressed]')
     const tabCount = await filterTabs.count()
     if (tabCount > 1) {
       const secondTab = filterTabs.nth(1)
