@@ -7,7 +7,7 @@ const { t } = useLanguage()
 </script>
 
 <template>
-  <div class="border-b border-ink-200 bg-white">
+  <div class="border-b border-[var(--rule-light)] bg-wood-50">
     <div class="shell">
       <dl
         data-testid="about-proof-grid"
@@ -19,17 +19,17 @@ const { t } = useLanguage()
           v-reveal="index * 70"
           data-testid="about-proof-stat"
           :data-stat-id="stat.id"
-          class="reveal border-b border-ink-200 py-6 md:border-b-0 md:border-r md:px-6 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
+          class="reveal border-b border-[var(--rule-light)] py-6 md:border-b-0 md:border-r md:px-6 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
         >
           <Icon
             :name="stat.icon"
             class="h-5 w-5 text-wood-600"
             aria-hidden="true"
           />
-          <dt class="mt-4 text-xs font-bold uppercase tracking-[0.14em] text-ink-600">
+          <dt class="home-eyebrow-text mt-4 text-ink-600">
             {{ t(stat.label) }}
           </dt>
-          <dd class="mt-2 text-2xl font-black text-ink-950 md:text-3xl">
+          <dd class="home-stat-value mt-2 font-display font-medium tracking-tight text-ink-950">
             {{ t(stat.value) }}
           </dd>
         </div>

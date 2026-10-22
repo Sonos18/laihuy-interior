@@ -66,7 +66,11 @@ usePageSeo({
 </script>
 
 <template>
-  <div class="bg-white">
+  <!-- `home-page` only supplies the shared Headline/Title/Label type tokens that
+       `.home-section-heading` and friends read. Below the hero the page is one warm-light
+       canvas: Linen and Raw Silk in steps, one Sawdust band (the production workflow) and
+       Plaster hairlines. -->
+  <div class="home-page bg-wood-50 text-ink-950">
     <div data-about-chapter="promise">
       <AppHero
         data-testid="about-hero"
@@ -103,7 +107,7 @@ usePageSeo({
 
     <section
       data-about-chapter="problem"
-      class="section-y bg-ink-50"
+      class="section-y border-t border-[var(--rule-light)] bg-[var(--color-ivory)]"
     >
       <div class="shell">
         <p
@@ -114,13 +118,13 @@ usePageSeo({
         </p>
         <h2
           v-reveal="80"
-          class="text-section-title reveal mt-4 max-w-4xl font-black uppercase text-ink-950"
+          class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
         >
           {{ t(aboutPageContent.problem.title) }}
         </h2>
         <p
           v-reveal="140"
-          class="measure-lead reveal mt-5 text-ink-600"
+          class="measure-lead home-lead-text reveal mt-5 text-ink-600"
         >
           {{ t(aboutPageContent.problem.description) }}
         </p>
@@ -128,28 +132,25 @@ usePageSeo({
         <div class="mt-12 grid gap-10 xl:grid-cols-[0.72fr_1.28fr] xl:gap-16">
           <p
             v-reveal
-            class="reveal border-l-2 border-wood-500 pl-6 text-xl font-black leading-8 text-ink-950"
+            class="home-card-heading reveal text-ink-950"
           >
             {{ t(aboutPageContent.problem.lead) }}
           </p>
-          <ol class="border-t border-ink-200">
+          <ul class="border-t border-[var(--rule-light)]">
             <li
               v-for="(response, index) in aboutPageContent.problem.responses"
               :key="response.id"
               v-reveal="index * 70"
-              class="reveal grid gap-3 border-b border-ink-200 py-6 sm:grid-cols-[3rem_0.8fr_1.2fr] sm:gap-6"
+              class="reveal grid gap-3 border-b border-[var(--rule-light)] py-6 sm:grid-cols-[0.8fr_1.2fr] sm:gap-8"
             >
-              <span class="text-xs font-black tracking-[0.16em] text-wood-600">
-                {{ String(index + 1).padStart(2, '0') }}
-              </span>
-              <h3 class="text-lg font-black text-ink-950">
+              <h3 class="home-card-heading text-ink-950">
                 {{ t(response.title) }}
               </h3>
-              <p class="text-sm leading-6 text-ink-600">
+              <p class="text-base leading-[1.7] text-ink-600">
                 {{ t(response.description) }}
               </p>
             </li>
-          </ol>
+          </ul>
         </div>
       </div>
     </section>
@@ -161,7 +162,7 @@ usePageSeo({
 
     <section
       data-about-chapter="factory"
-      class="section-y bg-white"
+      class="section-y border-t border-[var(--rule-light)] bg-wood-50"
     >
       <div class="shell">
         <p
@@ -172,13 +173,13 @@ usePageSeo({
         </p>
         <h2
           v-reveal="80"
-          class="text-section-title reveal mt-4 max-w-4xl font-black uppercase text-ink-950"
+          class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
         >
           {{ t(aboutPageContent.factory.title) }}
         </h2>
         <p
           v-reveal="140"
-          class="measure-lead reveal mt-5 text-ink-600"
+          class="measure-lead home-lead-text reveal mt-5 text-ink-600"
         >
           {{ t(aboutPageContent.factory.description) }}
         </p>
@@ -190,20 +191,20 @@ usePageSeo({
           <MediaImage
             :image="factoryImages.main"
             sizes="sm:100vw md:58vw"
-            class="min-h-72 rounded-2xl md:min-h-full"
+            class="min-h-72 rounded-[4px] bg-ink-100 md:min-h-full"
             img-class="object-center"
           />
           <div class="grid gap-5">
             <MediaImage
               :image="factoryImages.machinery"
               sizes="sm:100vw md:42vw"
-              class="aspect-[16/10] rounded-2xl"
+              class="aspect-[16/10] rounded-[4px] bg-ink-100"
               img-class="object-center"
             />
             <MediaImage
               :image="factoryImages.craft"
               sizes="sm:100vw md:42vw"
-              class="aspect-[16/10] rounded-2xl"
+              class="aspect-[16/10] rounded-[4px] bg-ink-100"
               img-class="object-center"
             />
           </div>
@@ -212,7 +213,7 @@ usePageSeo({
         <NuxtLink
           v-reveal="120"
           to="/nha-xuong"
-          class="btn-dark reveal mt-8"
+          class="btn-outline reveal mt-8"
         >
           {{ t(aboutPageContent.factory.cta) }}
           <Icon
@@ -227,7 +228,7 @@ usePageSeo({
     <section
       v-if="projectFeatures.length"
       data-about-chapter="projects"
-      class="section-y bg-ink-50"
+      class="section-y border-t border-[var(--rule-light)] bg-[var(--color-ivory)]"
     >
       <div class="shell">
         <p
@@ -238,13 +239,13 @@ usePageSeo({
         </p>
         <h2
           v-reveal="80"
-          class="text-section-title reveal mt-4 max-w-4xl font-black uppercase text-ink-950"
+          class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
         >
           {{ t(aboutPageContent.projects.title) }}
         </h2>
         <p
           v-reveal="140"
-          class="measure-lead reveal mt-5 text-ink-600"
+          class="measure-lead home-lead-text reveal mt-5 text-ink-600"
         >
           {{ t(aboutPageContent.projects.description) }}
         </p>
@@ -268,7 +269,7 @@ usePageSeo({
 
     <section
       data-about-chapter="fit"
-      class="section-y bg-white"
+      class="section-y border-t border-[var(--rule-light)] bg-wood-50"
     >
       <div class="shell">
         <p
@@ -279,52 +280,49 @@ usePageSeo({
         </p>
         <h2
           v-reveal="80"
-          class="text-section-title reveal mt-4 max-w-4xl font-black uppercase text-ink-950"
+          class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
         >
           {{ t(aboutPageContent.fit.title) }}
         </h2>
-        <ol class="mt-10 grid border-l border-t border-ink-200 md:grid-cols-3">
+        <ul class="mt-10 grid gap-5 md:grid-cols-3">
           <li
             v-for="(item, index) in aboutPageContent.fit.items"
             :key="t(item)"
             v-reveal="index * 70"
-            class="reveal border-b border-r border-ink-200 p-6"
+            class="reveal rounded-[4px] border border-ink-200 bg-white p-6 shadow-[var(--shadow-rest)] md:p-8"
           >
-            <span class="text-xs font-black tracking-[0.16em] text-wood-600">
-              {{ String(index + 1).padStart(2, '0') }}
-            </span>
-            <p class="mt-5 text-base font-black leading-7 text-ink-950">
+            <p class="home-nested-heading font-display font-medium tracking-tight text-ink-950">
               {{ t(item) }}
             </p>
           </li>
-        </ol>
+        </ul>
       </div>
     </section>
 
     <section
       data-about-chapter="contact"
-      class="section-y bg-ink-950 text-white"
+      class="section-cta"
     >
       <div class="shell text-center">
-        <p class="eyebrow text-wood-200">
+        <p class="eyebrow">
           {{ t(aboutPageContent.contact.eyebrow) }}
         </p>
-        <h2 class="mx-auto mt-4 max-w-4xl text-3xl font-black uppercase leading-tight md:text-5xl">
+        <h2 class="home-section-heading mx-auto mt-4 max-w-4xl text-ink-950">
           {{ t(aboutPageContent.contact.title) }}
         </h2>
-        <p class="mx-auto mt-5 max-w-2xl text-lg leading-8 text-white/70">
+        <p class="home-lead-text mx-auto mt-5 max-w-2xl text-ink-600">
           {{ t(aboutPageContent.contact.description) }}
         </p>
         <div class="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
           <NuxtLink
             to="/lien-he"
-            class="btn-primary"
+            class="btn-bronze"
           >
             {{ t(aboutPageContent.contact.primaryCta) }}
           </NuxtLink>
           <a
             :href="phoneHref"
-            class="btn-secondary"
+            class="btn-outline"
           >
             {{ t(aboutPageContent.contact.phoneCta) }} · {{ company.phone }}
           </a>
