@@ -29,7 +29,7 @@ const scope = computed(() => props.project.scope ? ta(props.project.scope).join(
         :sizes="emphasis === 'primary' ? 'sm:100vw xl:60vw' : 'sm:100vw xl:40vw'"
         class="bg-ink-100"
         :class="emphasis === 'primary' ? 'aspect-[16/10]' : 'aspect-[4/3]'"
-        img-class="transition-transform duration-700 ease-out group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+        img-class="transition-transform duration-[var(--dur-image)] ease-[var(--ease-editorial)] group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
       />
       <div class="p-6 md:p-8">
         <p class="home-eyebrow-text text-wood-600">
@@ -74,7 +74,7 @@ const scope = computed(() => props.project.scope ? ta(props.project.scope).join(
           {{ t(labels.view) }}
           <Icon
             name="i-lucide-arrow-right"
-            class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none"
+            class="h-4 w-4 transition-transform duration-[var(--dur-hover)] ease-[var(--ease-editorial)] group-hover:translate-x-1 motion-reduce:transition-none"
             aria-hidden="true"
           />
         </span>

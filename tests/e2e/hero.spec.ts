@@ -205,12 +205,10 @@ async function settleHero(page: import('@playwright/test').Page) {
  * SYMPTOM, G1 (the floor binds) is the mechanism. G1 failing explains G2 failing, so reporting
  * them from one place loses nothing — the assertion messages still say which invariant broke.
  */
-function heroGate(cover: { name: string, path: string, floorBinds?: boolean }, vp: { name: string, width: number, height: number }) {
-  // floorBinds defaults true for every cover, home included: the metrics band lives below the
-  // hero (HomeMetricsBand), so nothing but the copy sits inside the section and the floor binds.
-  const floorBinds = cover.floorBinds !== false
-  const g1 = floorBinds ? 'floor binds (G1) and ' : ''
-  test(`${cover.name} @ ${vp.name} — ${g1}crop is locale-independent (G2)`, async ({ page }) => {
+function heroGate(cover: { name: string, path: string }, vp: { name: string, width: number, height: number }) {
+  // The floor binds for every cover, home included: the metrics band lives below the hero
+  // (HomeMetricsBand), so nothing but the copy sits inside the section.
+  test(`${cover.name} @ ${vp.name} — floor binds (G1) and crop is locale-independent (G2)`, async ({ page }) => {
     await blockImages(page)
     await page.setViewportSize({ width: vp.width, height: vp.height })
 
@@ -219,7 +217,6 @@ function heroGate(cover: { name: string, path: string, floorBinds?: boolean }, v
       await gotoIn(page, cover.path, locale)
       measured[locale] = await heroGeometry(page)
 
-      if (!floorBinds) continue
       // G1 — the mechanism. Asserted per locale, because the floor can stop binding in one
       // locale while still holding in the other; that asymmetry IS the bug.
       const { sectionHeight, floor } = measured[locale]!

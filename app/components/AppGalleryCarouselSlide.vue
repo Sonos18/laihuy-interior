@@ -49,7 +49,7 @@ const accessibleName = computed(() => {
         :image="image"
         :preset="preset"
         class="h-full w-full"
-        img-class="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03] motion-reduce:transition-none"
+        img-class="object-cover transition-transform duration-[var(--dur-image)] ease-[var(--ease-editorial)] group-hover:scale-[1.03] motion-reduce:transition-none"
       />
       <span
         v-if="isActive && selectable"

@@ -246,7 +246,7 @@ usePageSeo({
               {{ t(faq.question) }}
               <Icon
                 name="i-lucide-plus"
-                class="h-5 w-5 shrink-0 text-wood-600 transition-transform duration-300 group-open:rotate-45 motion-reduce:transition-none"
+                class="h-5 w-5 shrink-0 text-wood-600 transition-transform duration-[var(--dur-hover)] ease-[var(--ease-editorial)] group-open:rotate-45 motion-reduce:transition-none"
                 aria-hidden="true"
               />
             </summary>

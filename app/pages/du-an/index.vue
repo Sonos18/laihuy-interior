@@ -151,7 +151,7 @@ usePageSeo({
                 :height="cover.height"
                 sizes="sm:100vw md:50vw lg:33vw"
                 loading="lazy"
-                class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] group-focus-visible:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100 motion-reduce:group-focus-visible:scale-100"
+                class="h-full w-full object-cover transition-transform duration-[var(--dur-image)] ease-[var(--ease-editorial)] group-hover:scale-[1.03] group-focus-visible:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100 motion-reduce:group-focus-visible:scale-100"
               />
               <div class="home-eyebrow-text absolute left-4 top-4 rounded-[4px] bg-white/92 px-3 py-1.5 text-ink-950">
                 {{ t(categoryDefinitions[project.category].label) }}

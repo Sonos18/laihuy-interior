@@ -193,7 +193,7 @@ const recoveryLinks = [
                 {{ t({ vi: 'Xem', en: 'View' }) }}
                 <Icon
                   name="i-lucide-arrow-right"
-                  class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
+                  class="h-4 w-4 transition-transform duration-[var(--dur-hover)] ease-[var(--ease-editorial)] group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
                   aria-hidden="true"
                 />
               </span>

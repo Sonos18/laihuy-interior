@@ -61,7 +61,7 @@ const { t } = useLanguage()
             {{ t(homePageContent.hero.primaryCta) }}
             <Icon
               name="i-lucide-arrow-up-right"
-              class="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              class="h-4 w-4 transition-transform duration-[var(--dur-hover)] ease-[var(--ease-editorial)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
             />
           </NuxtLink>
           <NuxtLink

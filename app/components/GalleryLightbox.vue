@@ -263,7 +263,7 @@ onUnmounted(() => {
           :height="current.height"
           sizes="sm:100vw md:90vw lg:80vw"
           loading="eager"
-          class="max-h-full max-w-full rounded-lg object-contain transition-transform duration-300 ease-out"
+          class="max-h-full max-w-full rounded-lg object-contain transition-transform duration-[var(--dur-state)] ease-[var(--ease-editorial)]"
           :style="{ transform: zoomed ? 'scale(1.8)' : 'scale(1)', transformOrigin: origin }"
         />
       </div>
