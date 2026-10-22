@@ -181,7 +181,6 @@ export const productionWorkflow: ProductionStep[] = [
 
 export type FactoryStat = {
   id: 'footprint' | 'throughput' | 'end-to-end' | 'reach'
-  icon: string
   value: LocalizedText
   label: LocalizedText
   /** The value is a figure (Stat role); a phrase value uses the Title role (DESIGN.md "Facts Band"). */
@@ -293,10 +292,10 @@ export const factoryPageContent: FactoryPageContent = {
 }
 
 export const factoryStats: readonly FactoryStat[] = [
-  { id: 'footprint', icon: 'i-lucide-warehouse', value: { vi: '3.000 m²', en: '3,000 m²' }, label: { vi: 'Xưởng & kho', en: 'Workshop & warehouse' }, figure: true },
-  { id: 'throughput', icon: 'i-lucide-gauge', value: { vi: 'Đến 50', en: 'Up to 50' }, label: { vi: 'Phòng / tháng', en: 'Rooms / month' }, figure: true },
-  { id: 'end-to-end', icon: 'i-lucide-workflow', value: { vi: 'Trọn gói', en: 'End-to-end' }, label: { vi: 'Thiết kế → lắp đặt', en: 'Design → install' } },
-  { id: 'reach', icon: 'i-lucide-globe', value: { vi: 'Toàn quốc', en: 'Nationwide' }, label: { vi: 'Giao lắp & xuất khẩu', en: 'Delivery & export' } }
+  { id: 'footprint', value: { vi: '3.000 m²', en: '3,000 m²' }, label: { vi: 'Xưởng & kho', en: 'Workshop & warehouse' }, figure: true },
+  { id: 'throughput', value: { vi: 'Đến 50', en: 'Up to 50' }, label: { vi: 'Phòng / tháng', en: 'Rooms / month' }, figure: true },
+  { id: 'end-to-end', value: { vi: 'Trọn gói', en: 'End-to-end' }, label: { vi: 'Thiết kế → lắp đặt', en: 'Design → install' } },
+  { id: 'reach', value: { vi: 'Toàn quốc', en: 'Nationwide' }, label: { vi: 'Giao lắp & xuất khẩu', en: 'Delivery & export' } }
 ]
 
 export const factoryPillars: readonly FactoryPillar[] = [
