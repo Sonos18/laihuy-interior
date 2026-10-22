@@ -78,9 +78,10 @@ const updatedAt = computed(() =>
 
     <section class="section-y">
       <div class="shell">
-        <!-- max-w-3xl (768px) is a reading measure, not the rail: legal prose set across the
-             full 1280px rail runs to ~150 characters a line and stops being readable. -->
-        <div class="max-w-3xl">
+        <!-- 68ch is the DESIGN.md body measure (never beyond 75 characters a line), set on the
+             wrapper so the lead, clause headings, paragraphs and list items share one rail. The
+             old max-w-3xl (768px) still ran about 100 characters a line at body size. -->
+        <div class="max-w-[68ch]">
           <p class="home-lead-text text-ink-700">
             {{ t(document.intro) }}
           </p>

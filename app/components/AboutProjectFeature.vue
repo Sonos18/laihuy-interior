@@ -36,10 +36,7 @@ const scope = computed(() => props.project.scope ? ta(props.project.scope).join(
           {{ t(categoryDefinitions[project.category].label) }}
           <span v-if="scope"> · {{ scope }}</span>
         </p>
-        <h3
-          class="home-card-heading mt-4 text-ink-950"
-          :class="emphasis === 'primary' ? 'md:text-[1.75rem]' : ''"
-        >
+        <h3 class="home-card-heading mt-4 text-ink-950">
           {{ t(project.name) }}
         </h3>
         <p class="mt-4 text-base leading-[1.7] text-ink-600">

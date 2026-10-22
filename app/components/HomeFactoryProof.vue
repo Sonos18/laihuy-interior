@@ -142,10 +142,9 @@ const metricCapacity = computed(() => props.capabilities?.[1])
             class="home-card-heading mt-4 text-ink-950"
           >
             {{ pillar.title }}
-            <span
-              v-if="pillar.accent"
-              class="text-wood-600"
-            >{{ pillar.accent }}</span>
+            <!-- Kept as a span for structure; it takes the heading colour, because a bronze word
+                 mid-heading reads as a link. -->
+            <span v-if="pillar.accent">{{ pillar.accent }}</span>
           </h3>
           <p
             :data-testid="pillar.descriptionTestId"
