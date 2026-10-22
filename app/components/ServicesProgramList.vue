@@ -17,7 +17,7 @@ const sequence = (index: number) => String(props.startAt + index).padStart(2, '0
 <template>
   <section
     data-services-chapter="programmes"
-    class="section-y bg-ink-50"
+    class="section-y bg-[var(--color-ivory)]"
   >
     <div class="shell">
       <p
@@ -28,13 +28,13 @@ const sequence = (index: number) => String(props.startAt + index).padStart(2, '0
       </p>
       <h2
         v-reveal="80"
-        class="text-section-title reveal mt-4 max-w-4xl font-black uppercase text-ink-950"
+        class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
       >
         {{ t(content.title) }}
       </h2>
       <p
         v-reveal="140"
-        class="measure-lead reveal mt-5 text-ink-600"
+        class="measure-lead home-lead-text reveal mt-5 text-ink-600"
       >
         {{ t(content.description) }}
       </p>
@@ -50,11 +50,11 @@ const sequence = (index: number) => String(props.startAt + index).padStart(2, '0
           :key="service.id"
           v-reveal="index * 70"
           data-testid="services-programme"
-          class="group reveal scroll-mt-[calc(var(--header-h)+1rem)] bg-white transition-colors duration-500 hover:bg-wood-600 hover:text-white focus-within:bg-wood-600 focus-within:text-white"
+          class="group reveal scroll-mt-[calc(var(--header-h)+1rem)] rounded-[4px] border border-ink-200 bg-white shadow-[var(--shadow-rest)] transition-[border-color,box-shadow] duration-[var(--dur-hover)] ease-[var(--ease-editorial)] hover:border-ink-500 hover:shadow-[var(--shadow-hover)] focus-within:border-ink-500 focus-within:shadow-[var(--shadow-hover)] motion-reduce:transition-none"
         >
           <NuxtLink
             to="/lien-he"
-            class="block px-6 py-8 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white md:px-10"
+            class="block rounded-[4px] px-6 py-8 focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-wood-500 md:px-10"
           >
             <div
               data-testid="services-programme-row"
@@ -62,23 +62,23 @@ const sequence = (index: number) => String(props.startAt + index).padStart(2, '0
             >
               <span
                 data-testid="services-sequence"
-                class="text-2xl font-black text-ink-200 transition-colors group-hover:text-white/35 group-focus-within:text-white/35"
+                class="home-eyebrow-text text-wood-600"
               >
                 {{ sequence(index) }}
               </span>
 
-              <h3 class="text-xl font-black uppercase leading-tight text-ink-950 transition-colors group-hover:text-white group-focus-within:text-white">
+              <h3 class="home-card-heading text-ink-950">
                 {{ t(service.title) }}
               </h3>
 
               <div>
                 <p
                   data-testid="services-programme-description"
-                  class="text-sm leading-6 text-ink-600 transition-colors group-hover:text-white/80 group-focus-within:text-white/80"
+                  class="text-base leading-[1.7] text-ink-600"
                 >
                   {{ t(service.description) }}
                 </p>
-                <ul class="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-xs leading-5 text-ink-500 transition-colors group-hover:text-white/70 group-focus-within:text-white/70">
+                <ul class="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm leading-[1.7] text-ink-600">
                   <li
                     v-for="detail in ta(service.details)"
                     :key="detail"
@@ -91,7 +91,7 @@ const sequence = (index: number) => String(props.startAt + index).padStart(2, '0
               <Icon
                 data-testid="services-programme-arrow"
                 name="i-lucide-arrow-up-right"
-                class="h-6 w-6 text-wood-600 transition-colors group-hover:text-white group-focus-within:text-white"
+                class="h-6 w-6 text-wood-600 transition-transform duration-[var(--dur-hover)] ease-[var(--ease-editorial)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-focus-within:translate-x-0.5 group-focus-within:-translate-y-0.5 motion-reduce:transform-none motion-reduce:transition-none"
                 aria-hidden="true"
               />
             </div>

@@ -97,7 +97,10 @@ usePageSeo({
 </script>
 
 <template>
-  <div class="bg-white">
+  <!-- `home-page` only supplies the shared Headline/Title/Label type tokens that
+       `.home-section-heading` and friends read. Below the hero the page is one warm-light
+       canvas: Linen, Raw Silk and one Sawdust proof band, stepped by tone and hairlines. -->
+  <div class="home-page bg-wood-50 text-ink-950">
     <div data-services-chapter="promise">
       <AppHero
         :topic="t(servicesPageContent.hero.topic)"
@@ -126,7 +129,7 @@ usePageSeo({
 
     <section
       data-services-chapter="documents"
-      class="section-y bg-white"
+      class="section-y bg-wood-50"
     >
       <div
         data-testid="services-document-layout"
@@ -141,24 +144,24 @@ usePageSeo({
           </p>
           <h2
             v-reveal="80"
-            class="text-section-title reveal mt-4 max-w-3xl font-black uppercase text-ink-950"
+            class="home-section-heading reveal mt-4 max-w-3xl text-ink-950"
           >
             {{ t(servicesPageContent.documents.title) }}
           </h2>
           <p
             v-reveal="140"
-            class="measure-lead reveal mt-5 text-ink-600"
+            class="measure-lead home-lead-text reveal mt-5 text-ink-600"
           >
             {{ t(servicesPageContent.documents.description) }}
           </p>
 
           <div
             v-reveal="180"
-            class="reveal mt-9 flex flex-col gap-3 sm:flex-row"
+            class="reveal mt-9 flex flex-col items-start gap-3 sm:flex-row md:flex-col xl:flex-row"
           >
             <NuxtLink
               to="/lien-he"
-              class="btn-dark"
+              class="btn-bronze"
             >
               {{ t(servicesPageContent.documents.primaryCta) }}
               <Icon
@@ -178,22 +181,24 @@ usePageSeo({
 
         <div
           data-testid="services-document-grid"
-          class="grid border-l border-ink-200 pl-8 md:pl-10 xl:pl-12"
+          class="grid border-l border-[var(--rule-light)] pl-8 md:pl-10 xl:pl-12"
         >
           <article
             v-for="(item, index) in servicesPageContent.documents.items"
             :key="item.id"
             v-reveal="index * 70"
-            class="reveal flex gap-6 border-b border-ink-200 py-7 first:border-t"
+            class="reveal flex gap-5 border-b border-[var(--rule-light)] py-7 first:border-t"
           >
-            <span class="pt-1 text-3xl font-black text-ink-200">
-              {{ String(index + 1).padStart(2, '0') }}
-            </span>
+            <Icon
+              :name="item.icon"
+              class="mt-1 h-6 w-6 shrink-0 text-wood-600"
+              aria-hidden="true"
+            />
             <div>
-              <h3 class="text-xl font-black uppercase text-ink-950">
+              <h3 class="home-card-heading text-ink-950">
                 {{ t(item.title) }}
               </h3>
-              <p class="mt-3 text-sm leading-6 text-ink-600">
+              <p class="mt-3 text-base leading-[1.7] text-ink-600">
                 {{ t(item.description) }}
               </p>
             </div>
@@ -210,7 +215,7 @@ usePageSeo({
 
     <section
       data-services-chapter="proof"
-      class="section-y overflow-hidden bg-ink-950 text-white"
+      class="section-y overflow-hidden border-t border-[var(--rule-light)] bg-wood-100 text-ink-950"
     >
       <div
         data-testid="services-proof-grid"
@@ -219,19 +224,19 @@ usePageSeo({
         <div>
           <p
             v-reveal
-            class="eyebrow reveal text-wood-300"
+            class="eyebrow reveal"
           >
             {{ t(servicesPageContent.proof.eyebrow) }}
           </p>
           <h2
             v-reveal="80"
-            class="text-section-title reveal mt-4 max-w-3xl font-black uppercase"
+            class="home-section-heading reveal mt-4 max-w-3xl text-ink-950"
           >
             {{ t(servicesPageContent.proof.title) }}
           </h2>
           <p
             v-reveal="140"
-            class="mt-5 max-w-2xl text-lg leading-8 text-white/70"
+            class="home-lead-text mt-5 max-w-2xl text-ink-600"
           >
             {{ t(servicesPageContent.proof.description) }}
           </p>
@@ -241,15 +246,15 @@ usePageSeo({
               v-for="(item, index) in servicesPageContent.proof.items"
               :key="item.id"
               v-reveal="index * 70"
-              class="reveal border-t border-white/15 pt-6"
+              class="reveal border-t border-ink-200 pt-6"
             >
-              <p class="text-xs font-black uppercase tracking-[0.16em] text-wood-200">
+              <p class="home-eyebrow-text text-wood-600">
                 {{ t(item.label) }}
               </p>
-              <h3 class="mt-3 text-xl font-black">
+              <h3 class="home-card-heading mt-3 text-ink-950">
                 {{ t(item.title) }}
               </h3>
-              <p class="mt-3 text-sm leading-6 text-white/70">
+              <p class="mt-3 text-base leading-[1.7] text-ink-600">
                 {{ t(item.description) }}
               </p>
             </article>
@@ -258,7 +263,7 @@ usePageSeo({
           <NuxtLink
             v-reveal="160"
             to="/nha-xuong"
-            class="btn-secondary reveal mt-9"
+            class="btn-outline reveal mt-9"
           >
             {{ t(servicesPageContent.proof.cta) }}
             <Icon
@@ -273,15 +278,15 @@ usePageSeo({
           v-reveal="100"
           :image="proofImage"
           sizes="sm:100vw md:50vw"
-          class="reveal aspect-[4/5] min-h-[32rem] bg-ink-900"
-          img-class="object-center grayscale opacity-80"
+          class="reveal aspect-[4/5] min-h-[32rem] rounded-[4px] bg-ink-100"
+          img-class="object-center"
         />
       </div>
     </section>
 
     <section
       data-services-chapter="evidence"
-      class="bg-white py-10 md:py-12"
+      class="bg-wood-50 py-10 md:py-12"
     >
       <div
         data-testid="services-evidence-grid"
@@ -293,7 +298,7 @@ usePageSeo({
           v-reveal="index * 60"
           :image="image"
           sizes="sm:50vw md:25vw"
-          class="reveal aspect-[8/5] bg-ink-50"
+          class="reveal aspect-[8/5] rounded-[4px] bg-ink-100"
           img-class="object-center"
         />
       </div>
@@ -307,7 +312,7 @@ usePageSeo({
 
     <section
       data-services-chapter="contact"
-      class="section-y border-t border-ink-100 bg-white text-ink-950"
+      class="section-cta"
     >
       <div class="shell grid gap-10 xl:grid-cols-[1.2fr_0.8fr] xl:items-end xl:gap-16">
         <div>
@@ -319,13 +324,13 @@ usePageSeo({
           </p>
           <h2
             v-reveal="80"
-            class="text-section-title reveal mt-4 max-w-4xl font-black uppercase"
+            class="home-section-heading reveal mt-4 max-w-4xl text-ink-950"
           >
             {{ t(servicesPageContent.contact.title) }}
           </h2>
           <p
             v-reveal="140"
-            class="measure-lead reveal mt-5 text-ink-600"
+            class="measure-lead home-lead-text reveal mt-5 text-ink-600"
           >
             {{ t(servicesPageContent.contact.description) }}
           </p>
@@ -337,7 +342,7 @@ usePageSeo({
         >
           <NuxtLink
             to="/lien-he"
-            class="btn-dark"
+            class="btn-bronze"
           >
             {{ t(servicesPageContent.contact.primaryCta) }}
             <Icon

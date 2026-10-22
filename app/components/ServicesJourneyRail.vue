@@ -16,37 +16,36 @@ if (services.length !== images.length) {
 const { t, ta } = useLanguage()
 const sequence = (index: number) => String(index + 1).padStart(2, '0')
 
+// Copy and photograph alternate sides from 1280px; below it the stage stacks copy then image.
 const stageGridClass = (index: number) => index % 2 === 1
-  ? 'xl:grid-cols-[minmax(0,3fr)_minmax(15rem,1.5fr)_minmax(11rem,0.8fr)]'
-  : 'xl:grid-cols-[minmax(11rem,0.8fr)_minmax(15rem,1.5fr)_minmax(0,3fr)]'
-
-const numberClass = (index: number) => index % 2 === 1
-  ? 'xl:col-start-3 xl:row-start-1 xl:text-right'
-  : 'xl:col-start-1 xl:row-start-1'
+  ? 'xl:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]'
+  : 'xl:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)]'
 
 const copyClass = (index: number) => index % 2 === 1
-  ? 'xl:col-start-2 xl:row-start-1 xl:text-right'
-  : 'xl:col-start-2 xl:row-start-1'
+  ? 'xl:col-start-2 xl:row-start-1'
+  : 'xl:col-start-1 xl:row-start-1'
 
 const mediaClass = (index: number) => index % 2 === 1
-  ? 'xl:col-start-1 xl:row-start-1 xl:aspect-[16/10]'
-  : 'xl:col-start-3 xl:row-start-1 xl:aspect-[4/5]'
+  ? 'xl:col-start-1 xl:row-start-1'
+  : 'xl:col-start-2 xl:row-start-1'
 </script>
 
 <template>
   <section
     id="delivery-journey"
     data-services-chapter="journey"
-    class="scroll-mt-[calc(var(--header-h)+1rem)] bg-white py-20 md:py-28"
+    class="section-y scroll-mt-[calc(var(--header-h)+1rem)] border-t border-[var(--rule-light)] bg-[var(--color-ivory)]"
   >
     <div class="sr-only">
-      <h2>{{ t(content.title) }}</h2>
+      <h2 class="home-section-heading">
+        {{ t(content.title) }}
+      </h2>
       <p>{{ t(content.description) }}</p>
     </div>
 
     <ol
       data-testid="services-journey-layout"
-      class="shell grid grid-cols-1 gap-24 md:gap-32"
+      class="shell grid grid-cols-1 gap-16 md:gap-24"
     >
       <li
         v-for="(service, index) in services"
@@ -54,40 +53,34 @@ const mediaClass = (index: number) => index % 2 === 1
         :key="service.id"
         v-reveal="index * 80"
         data-testid="services-core-stage"
-        class="reveal grid scroll-mt-[calc(var(--header-h)+1rem)] grid-cols-1 gap-8 xl:items-center xl:gap-12"
+        class="reveal grid scroll-mt-[calc(var(--header-h)+1rem)] grid-cols-1 gap-8 xl:items-center xl:gap-16"
         :class="stageGridClass(index)"
       >
-        <span
-          data-testid="services-sequence"
-          class="text-[clamp(6rem,10vw,9rem)] font-black leading-[0.78] tracking-[-0.06em] text-ink-200"
-          :class="numberClass(index)"
-        >
-          {{ sequence(index) }}
-        </span>
-
         <div
-          class="max-w-md"
-          :class="[copyClass(index), index % 2 === 1 ? 'xl:ml-auto' : '']"
+          class="max-w-xl"
+          :class="copyClass(index)"
         >
-          <h3 class="text-3xl font-black uppercase leading-tight text-ink-950">
+          <span
+            data-testid="services-sequence"
+            class="home-eyebrow-text block text-wood-600"
+          >
+            {{ sequence(index) }}
+          </span>
+          <h3 class="home-card-heading mt-3 text-ink-950">
             {{ t(service.title) }}
           </h3>
-          <p class="mt-6 text-base leading-7 text-ink-600">
+          <p class="mt-5 text-base leading-[1.7] text-ink-600">
             {{ t(service.description) }}
           </p>
-          <ul
-            class="mt-8 space-y-3 text-xs font-bold uppercase tracking-[0.14em] text-wood-600"
-            :class="index % 2 === 1 ? 'xl:flex xl:flex-col xl:items-end' : ''"
-          >
+          <ul class="mt-7 space-y-3 border-t border-[var(--rule-light)] pt-6 text-base leading-[1.7] text-ink-950">
             <li
               v-for="detail in ta(service.details)"
               :key="detail"
-              class="flex max-w-sm items-start gap-3 leading-5"
-              :class="index % 2 === 1 ? 'xl:flex-row-reverse' : ''"
+              class="flex max-w-sm items-start gap-3"
             >
               <Icon
                 name="i-lucide-minus"
-                class="mt-0.5 h-4 w-4 shrink-0"
+                class="mt-[0.4rem] h-4 w-4 shrink-0 text-wood-600"
                 aria-hidden="true"
               />
               <span>{{ detail }}</span>
@@ -98,7 +91,7 @@ const mediaClass = (index: number) => index % 2 === 1
         <MediaImage
           :image="images[index]!"
           sizes="sm:100vw xl:55vw"
-          class="aspect-[4/3] bg-ink-50"
+          class="aspect-[4/3] rounded-[4px] bg-ink-100 xl:aspect-[16/10]"
           :class="mediaClass(index)"
           img-class="object-center"
         />
