@@ -3,8 +3,10 @@ import { expect, test } from './fixtures'
 import { APP_ORIGIN } from './origin'
 
 const VIEWPORT_HEIGHT = 900
-const EXPECTED_PROJECTS = 11
-const GRID_SELECTOR = 'main .grid.gap-7'
+// The archive grid: the 11 projects minus the 3 that cover design, production and construction,
+// which are the featured composition above it.
+const EXPECTED_PROJECTS = 8
+const GRID_SELECTOR = '[data-testid="projects-grid"]'
 const TEST_ORIGIN = process.env.DENSITY_TEST_ORIGIN ?? APP_ORIGIN
 
 const BREAKPOINT_CASES = [
@@ -15,7 +17,7 @@ const BREAKPOINT_CASES = [
   { width: 1023, columns: 2 },
   { width: 1024, columns: 3 },
   { width: 1279, columns: 3 },
-  { width: 1280, columns: 3 }
+  { width: 1280, columns: 4 }
 ] as const
 
 const TRANSPARENT_PNG = Buffer.from(
@@ -99,7 +101,7 @@ async function projectGridGeometry(page: Page) {
     }
 
     const textClipping = cards.flatMap((card, index) =>
-      Array.from(card.querySelectorAll<HTMLElement>('h2, p'))
+      Array.from(card.querySelectorAll<HTMLElement>('h3, p'))
         .filter(element => element.scrollWidth > element.clientWidth + 1
           || element.scrollHeight > element.clientHeight + 1)
         .map(element => `${index}:${element.tagName.toLowerCase()}`)
@@ -117,6 +119,7 @@ async function projectGridGeometry(page: Page) {
         .map((card, index) => ({ index, href: card.getAttribute('href'), tabIndex: card.tabIndex }))
         .filter(card => !card.href?.startsWith('/du-an/') || card.tabIndex < 0),
       pageHeight: document.documentElement.scrollHeight,
+      gridHeight: grid.getBoundingClientRect().height,
       horizontalOverflow: document.documentElement.scrollWidth > window.innerWidth + 1
     }
   })
@@ -142,12 +145,15 @@ for (const viewport of BREAKPOINT_CASES) {
   })
 }
 
-test('/du-an no longer has a material one-pixel page-height cliff at 767/768', async ({ page }) => {
+// The featured composition above the archive changes shape at 768 by design (one column below,
+// lead + satellites from 768: see PI-01), so the page height steps there. The archive grid is two
+// columns on both sides of the boundary and must not.
+test('/du-an archive grid has no material one-pixel height cliff at 767/768', async ({ page }) => {
   const heights: number[] = []
 
   for (const width of [767, 768]) {
     await prepareProjectsPage(page, width)
-    heights.push((await projectGridGeometry(page)).pageHeight)
+    heights.push((await projectGridGeometry(page)).gridHeight)
   }
 
   const [height767, height768] = heights as [number, number]
