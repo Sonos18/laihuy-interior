@@ -10,37 +10,38 @@ export const projects: Project[] = [
     category: 'hotel',
     name: { vi: 'Khách sạn Eo Gió', en: 'Eo Gio Hotel' },
     shortDescription: {
-      vi: 'Tổ hợp khách sạn căn hộ dịch vụ với nhiều loại hình lưu trú, gỗ sáng, đá tự nhiên và hệ khung thép mảnh.',
-      en: 'A serviced-apartment hotel spanning studios to suites — pale oak, natural stone and slim steel detailing.'
+      vi: 'Khách sạn căn hộ dịch vụ 44–45 phòng, từ phòng đơn đến căn hộ ba phòng ngủ: gỗ công nghiệp tông sáng, đá vân nhẹ và kệ khung thép mảnh.',
+      en: 'A 44–45-room serviced-apartment hotel, from single rooms to three-bedroom apartments: pale laminate joinery, light-veined stone and slim steel shelving.'
     },
     client: { vi: 'Anh Huy', en: 'Mr. Huy' },
     location: { vi: 'Vĩnh Long', en: 'Vinh Long' },
     area: { vi: '1.670 m²', en: '1,670 m²' },
     year: { vi: '2026', en: '2026' },
     style: { vi: 'Hiện đại', en: 'Modern' },
-    scope: { vi: ['Thiết kế', 'Sản xuất', 'Thi công'], en: ['Design', 'Production', 'Construction'] },
+    scope: { vi: ['Thiết kế', 'Sản xuất', 'Thi công'], en: ['Design', 'Production', 'Fit-out'] },
+    rooms: { vi: '44–45 phòng', en: '44–45 rooms' },
     // Human-readable names for the gallery folder groups (else the tabs show the raw slug).
     galleryLabels: {
       'sanh-don': { vi: 'Sảnh đón', en: 'Lobby' },
-      'phong-don-dien-hinh': { vi: 'Phòng đơn điển hình', en: 'Signature single room' },
-      'phong-doi-dien-hinh': { vi: 'Phòng đôi điển hình', en: 'Signature double room' },
+      'phong-don-dien-hinh': { vi: 'Phòng đơn điển hình', en: 'Typical single room' },
+      'phong-doi-dien-hinh': { vi: 'Phòng đôi điển hình', en: 'Typical double room' },
       'phong-studio-01': { vi: 'Phòng studio 1', en: 'Studio room 1' },
       'phong-studio-02': { vi: 'Phòng studio 2', en: 'Studio room 2' },
-      'can-ho-1-phong-ngu': { vi: 'Căn hộ 1 phòng ngủ', en: 'One-bedroom suite' },
-      'can-ho-3-phong-ngu': { vi: 'Căn hộ 3 phòng ngủ', en: 'Three-bedroom suite' }
+      'can-ho-1-phong-ngu': { vi: 'Căn hộ 1 phòng ngủ', en: 'One-bedroom apartment' },
+      'can-ho-3-phong-ngu': { vi: 'Căn hộ 3 phòng ngủ', en: 'Three-bedroom apartment' }
     },
     content: {
       overview: {
-        vi: 'Eo Gió là một tổ hợp lưu trú tại Vĩnh Long, tập hợp nhiều loại phòng trong cùng một ngôn ngữ thiết kế: từ phòng đơn, phòng đôi tiêu chuẩn đến studio và căn hộ một, ba phòng ngủ có bếp riêng — tất cả giữ trong bảng màu gỗ sáng, đá tự nhiên và ánh sáng ấm.',
-        en: 'Eo Gio is a stay complex in Vinh Long that gathers many room types under one design language — from standard single and double rooms to studios and one- and three-bedroom apartments with their own kitchens — all held in a palette of pale oak, natural stone and warm light.'
+        vi: 'Eo Gió là một tổ hợp lưu trú tại Vĩnh Long, tập hợp nhiều loại phòng trong cùng một ngôn ngữ thiết kế: từ phòng đơn, phòng đôi tiêu chuẩn đến studio và căn hộ một, ba phòng ngủ có bếp riêng — tất cả giữ trong bảng màu gỗ sáng, đá vân nhẹ và ánh sáng ấm.',
+        en: 'Eo Gio is a stay complex in Vinh Long that gathers many room types under one design language — from standard single and double rooms to studios and one- and three-bedroom apartments with their own kitchens — all held in a palette of pale wood tones, light-veined stone and warm light.'
       },
       challenge: {
         vi: 'Bài toán nằm ở việc để mỗi loại phòng vận hành độc lập nhưng vẫn thuộc về một tổng thể; một đêm nghỉ ngắn và một kỳ lưu trú dài phải cùng chung một cảm giác.',
         en: 'The task was to let each room type work on its own yet still belong to a single whole — a one-night stay and an extended residency sharing the same feeling.'
       },
       solution: {
-        vi: 'Một bộ chi tiết được lặp lại ở nhiều tỉ lệ khác nhau: hệ kệ khung thép mảnh làm vách ngăn nhẹ, các hốc tủ bo cong, quầy và bếp gỗ sáng trên mặt đá. Bếp đầy đủ cho căn hộ dịch vụ, khu nghỉ gọn gàng cho phòng khách sạn.',
-        en: 'A single kit of parts recurs at different scales: slim steel shelving that divides space lightly, softly rounded storage niches, pale-oak counters and kitchens on stone tops. Full kitchens serve the serviced apartments; the hotel rooms keep a compact resting layout.'
+        vi: 'Một bộ chi tiết được lặp lại ở nhiều tỉ lệ khác nhau: hệ kệ khung thép mảnh làm vách ngăn nhẹ, các hốc tủ bo cong, quầy và bếp gỗ công nghiệp tông sáng trên mặt đá vân nhẹ. Bếp đầy đủ cho căn hộ dịch vụ, khu nghỉ gọn gàng cho phòng khách sạn.',
+        en: 'A single kit of parts recurs at different scales: slim steel shelving that divides space lightly, softly rounded storage niches, pale laminate counters and kitchens on light-veined stone tops. Full kitchens serve the serviced apartments; the hotel rooms keep a compact resting layout.'
       },
       designHighlights: {
         vi: [
@@ -56,7 +57,7 @@ export const projects: Project[] = [
           'Slim black-steel shelving both stores and divides space',
           'Rounded niches and cabinets soften the compact rooms',
           'Fitted kitchens for the serviced-apartment units',
-          'Rust-leather chairs mark warm accents against pale oak',
+          'Rust-leather chairs add warm accents against pale wood tones',
           'A lounge of curved sofas opens to full-height glazing'
         ]
       },
@@ -75,8 +76,8 @@ export const projects: Project[] = [
         ]
       },
       craftsmanship: {
-        vi: 'Với gói thầu thiết kế, sản xuất và thi công, Lai Huy kiểm soát từ bộ tủ bếp, hệ giường tủ đến quầy lễ tân uốn cong và hệ kệ thép — giữ chi tiết đồng nhất giữa hàng loạt phòng.',
-        en: 'Delivered as design, production and construction, Lai Huy carried the kitchens, bed-and-wardrobe sets, the curved reception desk and the steel shelving in-house — holding detail consistent across a large number of rooms.'
+        vi: 'Với gói thầu thiết kế, sản xuất và thi công, Lai Huy kiểm soát từ bộ tủ bếp, hệ giường tủ đến quầy lễ tân uốn cong và hệ kệ thép — giữ chi tiết đồng nhất trên cả 44–45 phòng.',
+        en: 'Delivered as design, production and fit-out, Lai Huy carried the kitchens, bed-and-wardrobe sets, the curved reception desk and the steel shelving in-house — holding detail consistent across all 44–45 rooms.'
       },
       experience: {
         vi: 'Khách bước vào những căn phòng sáng, ấm và ngăn nắp; người ở vài đêm hay ở cả tuần đều tìm thấy sự tiện nghi vừa đủ, không phô trương.',
@@ -84,9 +85,14 @@ export const projects: Project[] = [
       }
     },
     seo: {
+      title: { vi: 'Nội thất khách sạn Eo Gió, Vĩnh Long — thiết kế, sản xuất, thi công', en: 'Eo Gio Hotel Interiors, Vinh Long — Design, Production, Fit-out' },
+      description: {
+        vi: 'Khách sạn căn hộ dịch vụ 44–45 phòng tại Vĩnh Long, 1.670 m², do Lai Huy thiết kế, sản xuất và thi công nội thất: hệ tủ, giường, bếp, quầy lễ tân.',
+        en: 'A 44–45-room serviced-apartment hotel in Vinh Long, 1,670 m². Lai Huy designed, produced and fitted out the joinery, beds, kitchens and reception desk.'
+      },
       keywords: {
         vi: ['khách sạn Eo Gió', 'thiết kế khách sạn Vĩnh Long', 'căn hộ dịch vụ', 'nội thất khách sạn gỗ sáng'],
-        en: ['Eo Gio hotel', 'hotel interior design Vinh Long', 'serviced apartment interior', 'pale oak hospitality interior']
+        en: ['Eo Gio hotel', 'hotel interior design Vinh Long', 'serviced apartment interior', 'light-wood hotel interior']
       }
     },
     featured: true
@@ -98,7 +104,7 @@ export const projects: Project[] = [
     name: { vi: 'Khách sạn Codi Boutique', en: 'Codi Boutique Hotel' },
     shortDescription: {
       vi: 'Khách sạn boutique với ba loại phòng đặc trưng, tông màu ấm và các mảng vòm mềm mại tạo trải nghiệm lưu trú nhẹ nhàng.',
-      en: 'A boutique hotel of three signature room types, warm two-tone palettes and soft arched forms for a calm stay.'
+      en: 'A boutique hotel of three distinct room types, warm two-tone palettes and soft arches for a calm stay.'
     },
     coverImage: 'phong-dien-hinh-2/p8-01.webp',
     client: { vi: 'Anh Huy', en: 'Mr. Huy' },
@@ -106,13 +112,13 @@ export const projects: Project[] = [
     area: { vi: '556 m²', en: '556 m²' },
     year: { vi: '2024', en: '2024' },
     style: { vi: 'Hiện đại', en: 'Modern' },
-    scope: { vi: ['Thiết kế'], en: ['Design'] },
+    scope: { vi: ['Thiết kế', 'Sản xuất', 'Thi công'], en: ['Design', 'Production', 'Fit-out'] },
     // Human-readable names for the gallery folder groups (else the tabs show the raw slug).
     galleryLabels: {
       'sanh-don': { vi: 'Sảnh đón', en: 'Lobby' },
-      'phong-dien-hinh-1': { vi: 'Phòng điển hình 1', en: 'Signature room 1' },
-      'phong-dien-hinh-2': { vi: 'Phòng điển hình 2', en: 'Signature room 2' },
-      'phong-dien-hinh-3': { vi: 'Phòng điển hình 3', en: 'Signature room 3' }
+      'phong-dien-hinh-1': { vi: 'Phòng điển hình 1', en: 'Typical room 1' },
+      'phong-dien-hinh-2': { vi: 'Phòng điển hình 2', en: 'Typical room 2' },
+      'phong-dien-hinh-3': { vi: 'Phòng điển hình 3', en: 'Typical room 3' }
     },
     content: {
       overview: {
@@ -159,12 +165,21 @@ export const projects: Project[] = [
           'A woven rattan screen and slim black-metal details'
         ]
       },
+      craftsmanship: {
+        vi: 'Với phạm vi thiết kế, sản xuất và thi công, hệ đầu giường liền bàn làm việc và tủ phòng bằng gỗ công nghiệp phủ Melamine/Laminate được sản xuất tại xưởng Lai Huy và lắp đặt cho cả ba loại phòng.',
+        en: 'Delivered as design, production and fit-out: the integrated headboard-and-desk units and room cabinetry, in melamine/laminate engineered wood, were made in Lai Huy’s factory and installed across all three room types.'
+      },
       experience: {
         vi: 'Phòng ở Codi không cố gây ấn tượng; chúng nhẹ, sáng và dễ chịu, để lại cảm giác về một nơi được chăm chút hơn là một nơi được trang trí.',
         en: 'Codi’s rooms do not try to impress; they are light, calm and easy, leaving the sense of a place that was cared for rather than decorated.'
       }
     },
     seo: {
+      title: { vi: 'Nội thất khách sạn Codi Boutique, Vĩnh Long — thiết kế, sản xuất, thi công', en: 'Codi Boutique Hotel Interiors, Vinh Long — Design, Production, Fit-out' },
+      description: {
+        vi: 'Khách sạn boutique 556 m² tại Vĩnh Long với ba loại phòng; Lai Huy thiết kế, sản xuất và thi công nội thất gỗ công nghiệp phủ Melamine/Laminate.',
+        en: 'A 556 m² boutique hotel in Vinh Long with three room types. Lai Huy designed, produced and fitted out its melamine and laminate panel joinery.'
+      },
       keywords: {
         vi: ['khách sạn Codi Boutique', 'thiết kế khách sạn boutique', 'nội thất khách sạn tông ấm'],
         en: ['Codi Boutique hotel', 'boutique hotel interior design', 'warm-toned hotel rooms']
@@ -178,19 +193,20 @@ export const projects: Project[] = [
     category: 'villa',
     name: { vi: 'Codi Villa Phan Thiết', en: 'Codi Villa, Phan Thiet' },
     shortDescription: {
-      vi: 'Bốn căn villa biển theo phong cách Industrial Modern: bê tông, khung thép sơn tĩnh điện và điểm nhấn đỏ đất đầy cá tính.',
-      en: 'Four beachfront villas in industrial-modern character — concrete, powder-coated steel and confident oxblood accents.'
+      vi: 'Bốn căn villa nghỉ dưỡng tại NovaWorld Phan Thiết, phong cách công nghiệp hiện đại: bê tông, khung thép sơn tĩnh điện và điểm nhấn đỏ đất.',
+      en: 'Four resort villas at NovaWorld Phan Thiet in an industrial-modern style: concrete, powder-coated steel and oxblood accents.'
     },
     client: { vi: 'Anh Huy', en: 'Mr. Huy' },
     location: { vi: 'NovaWorld Phan Thiết, Bình Thuận', en: 'NovaWorld Phan Thiet, Binh Thuan' },
     area: { vi: '120 m² × 4 căn', en: '120 m² × 4 units' },
     year: { vi: '2025', en: '2025' },
-    style: { vi: 'Công nghiệp hiện đại', en: 'Industrial Modern' },
-    scope: { vi: ['Thiết kế', 'Sản xuất', 'Thi công'], en: ['Design', 'Production', 'Construction'] },
+    style: { vi: 'Công nghiệp hiện đại', en: 'Industrial modern' },
+    scope: { vi: ['Thiết kế', 'Sản xuất', 'Thi công'], en: ['Design', 'Production', 'Fit-out'] },
+    rooms: { vi: '20–25 phòng', en: '20–25 rooms' },
     content: {
       overview: {
-        vi: 'Codi Villa gồm bốn căn nhà nghỉ biển tại NovaWorld Phan Thiết, chọn một hướng đi ít gặp cho loại hình này: tinh thần công nghiệp. Bê tông để trần, khung thép đen và sắc đỏ đất chạy xuyên suốt cả bốn căn.',
-        en: 'Codi Villa is four beachfront houses at NovaWorld Phan Thiet that take an uncommon route for the type: an industrial spirit. Bare concrete, black steel and an oxblood red run through all four units.'
+        vi: 'Codi Villa gồm bốn căn villa nghỉ dưỡng tại NovaWorld Phan Thiết, chọn một hướng đi ít gặp cho loại hình này: tinh thần công nghiệp. Bê tông để trần, khung thép đen và sắc đỏ đất chạy xuyên suốt cả bốn căn.',
+        en: 'Codi Villa is four resort villas at NovaWorld Phan Thiet that take an uncommon route for the type: an industrial spirit. Bare concrete, black steel and an oxblood red run through all four units.'
       },
       challenge: {
         vi: 'Ngôn ngữ công nghiệp thường lạnh; ở đây nó phải trở thành một ngôi nhà nghỉ ấm áp cho gia đình, nơi vật liệu thô vẫn mời gọi người ở.',
@@ -233,8 +249,8 @@ export const projects: Project[] = [
         ]
       },
       craftsmanship: {
-        vi: 'Thiết kế, sản xuất và thi công cùng một đầu mối cho phép kiểm soát những chi tiết khó: khung thép cho tủ và vách kính, mặt tủ lưới, và hệ giường tầng plywood của phòng trẻ.',
-        en: 'Design, production and construction under one roof made the harder details controllable: the steel framing for wardrobes and glazed partitions, the mesh cabinet fronts, and the plywood bunk of the children’s room.'
+        vi: 'Thiết kế, sản xuất và thi công do cùng một đội đảm nhận nên kiểm soát được những chi tiết khó: khung thép cho tủ và vách kính, mặt tủ lưới, và hệ giường tầng plywood của phòng trẻ.',
+        en: 'With design, production and fit-out in one team’s hands, the harder details stayed controllable: the steel framing for wardrobes and glazed partitions, the mesh cabinet fronts, and the plywood bunk of the children’s room.'
       },
       experience: {
         vi: 'Bước vào villa là bước vào một kỳ nghỉ có cá tính rõ ràng — mát, thô mộc mà vẫn ấm; trẻ có góc riêng, người lớn có một không gian không giống bất kỳ căn hộ nghỉ nào khác.',
@@ -242,9 +258,14 @@ export const projects: Project[] = [
       }
     },
     seo: {
+      title: { vi: 'Nội thất Codi Villa Phan Thiết — thiết kế, sản xuất, thi công', en: 'Codi Villa Interiors, Phan Thiet — Design, Production, Fit-out' },
+      description: {
+        vi: 'Bốn villa nghỉ dưỡng 120 m² tại NovaWorld Phan Thiết, 20–25 phòng, phong cách công nghiệp; Lai Huy thiết kế, sản xuất và thi công nội thất.',
+        en: 'Four 120 m² resort villas at NovaWorld Phan Thiet, 20–25 rooms, in an industrial style. Lai Huy designed, produced and fitted out the interiors.'
+      },
       keywords: {
-        vi: ['Codi Villa Phan Thiết', 'villa biển NovaWorld', 'nội thất villa phong cách công nghiệp'],
-        en: ['Codi Villa Phan Thiet', 'NovaWorld beach villa', 'industrial modern villa interior']
+        vi: ['Codi Villa Phan Thiết', 'villa nghỉ dưỡng NovaWorld', 'nội thất villa phong cách công nghiệp'],
+        en: ['Codi Villa Phan Thiet', 'NovaWorld resort villa', 'industrial modern villa interior']
       }
     },
     featured: true
@@ -263,7 +284,7 @@ export const projects: Project[] = [
     area: { vi: '215 m²', en: '215 m²' },
     year: { vi: '2023', en: '2023' },
     style: { vi: 'Tân cổ điển', en: 'Neo-Classic' },
-    scope: { vi: ['Thiết kế'], en: ['Design'] },
+    scope: { vi: ['Thiết kế', 'Sản xuất', 'Thi công'], en: ['Design', 'Production', 'Fit-out'] },
     content: {
       overview: {
         vi: 'Nhà vườn Chi Ly là một dinh thự tân cổ điển dành cho gia đình, nơi phào chỉ, đèn chùm và sàn đá được tiết chế để giữ sự trang trọng mà không nặng nề. Các phòng chung theo ngôn ngữ cổ điển, trong khi phòng của các bé lại mở ra một thế giới khác hẳn.',
@@ -309,12 +330,21 @@ export const projects: Project[] = [
           'Crystal, plated metal and classic upholstery'
         ]
       },
+      craftsmanship: {
+        vi: 'Hệ tủ bếp cánh soi chỉ và các mảng ốp gỗ công nghiệp sơn được sản xuất tại xưởng Lai Huy và lắp đặt tại công trình, cùng hệ phào chỉ PU cho tường và trần.',
+        en: 'The shaker-profile kitchen and the painted engineered-wood panelling were made in Lai Huy’s factory and installed on site, together with the PU mouldings on walls and ceilings.'
+      },
       experience: {
         vi: 'Không gian chung mang lại cảm giác chỉn chu, đủ trang trọng để tiếp khách; còn với các bé, mỗi tối trở về là bước vào căn phòng của riêng mình — chi tiết khiến một ngôi nhà cổ điển trở nên rất đời.',
         en: 'The shared rooms feel composed, formal enough to receive guests; for the children, each evening ends in a room that is unmistakably their own — the detail that keeps a classical house genuinely lived-in.'
       }
     },
     seo: {
+      title: { vi: 'Nội thất nhà vườn Chi Ly, Vĩnh Long — thiết kế, sản xuất, thi công', en: 'Chi Ly Garden Villa Interiors, Vinh Long — Design, Production, Fit-out' },
+      description: {
+        vi: 'Nhà vườn tân cổ điển 215 m² tại Vĩnh Long: phào chỉ PU, tủ bếp soi chỉ, hai phòng trẻ chủ đề xe đua. Lai Huy thiết kế, sản xuất, thi công nội thất.',
+        en: 'A 215 m² neo-classical garden villa in Vinh Long: PU mouldings, a shaker kitchen, two racing-themed children’s rooms. Designed, made and fitted by Lai Huy.'
+      },
       keywords: {
         vi: ['nhà vườn tân cổ điển', 'thiết kế biệt thự cổ điển', 'nội thất tân cổ điển Vĩnh Long'],
         en: ['neo-classical villa interior', 'classic garden villa design', 'neo-classic residential interior']
@@ -336,7 +366,7 @@ export const projects: Project[] = [
     area: { vi: '152 m²', en: '152 m²' },
     year: { vi: '2025', en: '2025' },
     style: { vi: 'Hiện đại', en: 'Modern' },
-    scope: { vi: ['Thiết kế'], en: ['Design'] },
+    scope: { vi: ['Thiết kế', 'Sản xuất', 'Thi công'], en: ['Design', 'Production', 'Fit-out'] },
     content: {
       overview: {
         vi: 'Một căn nhà phố tại Quận 8 được làm mới toàn bộ phần nội thất, chuyển từ bố cục cũ sang một không gian sống hiện đại, sáng và liền mạch hơn.',
@@ -380,12 +410,21 @@ export const projects: Project[] = [
           'Glass and indirect LED lighting'
         ]
       },
+      craftsmanship: {
+        vi: 'Hệ tủ MDF phủ Melamine/Laminate, tủ rượu dưới gầm thang và giường bệ nổi được sản xuất tại xưởng Lai Huy và lắp đặt tại công trình.',
+        en: 'The MDF melamine/laminate cabinetry, the under-stair wine cabinet and the floating bed base were made in Lai Huy’s factory and installed on site.'
+      },
       experience: {
         vi: 'Từ khu ăn dưới gầm thang đến phòng ngủ, ngôi nhà được đọc như một mạch liên tục thay vì các phòng rời; gỗ ấm giữ cảm giác gần gũi, còn đá sáng và ánh sáng hắt giúp chiều ngang nhà phố thoáng hơn.',
         en: 'From the dining nook beneath the stair to the bedroom, the house reads as one continuous sequence rather than a set of separate rooms; warm wood keeps it familiar, while pale stone and indirect light make the townhouse feel more open.'
       }
     },
     seo: {
+      title: { vi: 'Cải tạo nội thất nhà phố Quận 8, TP.HCM — thiết kế, sản xuất, thi công', en: 'District 8 Townhouse Renovation, HCMC — Design, Production, Fit-out' },
+      description: {
+        vi: 'Cải tạo nội thất nhà phố 152 m² tại Quận 8, TP.HCM: góc ăn dưới gầm thang, tủ rượu, giường bệ nổi. Lai Huy thiết kế, sản xuất và thi công.',
+        en: 'A 152 m² townhouse renovation in District 8, HCMC: an under-stair dining nook, wine cabinet and floating bed, designed, produced and fitted by Lai Huy.'
+      },
       keywords: {
         vi: ['cải tạo nhà phố', 'thiết kế nội thất nhà phố Quận 8', 'nhà phố hiện đại'],
         en: ['townhouse renovation', 'townhouse interior design District 8', 'modern townhouse interior']
@@ -396,7 +435,7 @@ export const projects: Project[] = [
     mediaId: 'nha-anh-nam',
     slug: 'nha-anh-nam',
     category: 'house',
-    name: { vi: 'Nhà phố anh Nam', en: 'Anh Nam Townhouse' },
+    name: { vi: 'Nhà phố anh Nam', en: 'Mr. Nam’s Townhouse' },
     shortDescription: {
       vi: 'Nhà phố hiện đại với thông tầng, cầu thang lam đứng và hệ nội thất treo tối giản, ấm áp.',
       en: 'A modern townhouse with a double-height core, batten staircase and warm, minimal floating joinery.'
@@ -407,11 +446,11 @@ export const projects: Project[] = [
     area: { vi: '200 m²', en: '200 m²' },
     year: { vi: '2025', en: '2025' },
     style: { vi: 'Hiện đại', en: 'Modern' },
-    scope: { vi: ['Thiết kế'], en: ['Design'] },
+    scope: { vi: ['Thiết kế', 'Sản xuất', 'Thi công'], en: ['Design', 'Production', 'Fit-out'] },
     content: {
       overview: {
         vi: 'Nhà anh Nam là một căn nhà phố hiện đại lấy khoảng thông tầng làm trung tâm, nơi ánh sáng và tầm nhìn được kéo lên theo chiều cao thay vì trải theo chiều ngang.',
-        en: 'Anh Nam is a modern townhouse built around a double-height core, where light and sightlines are drawn upward through height rather than spread across the floor.'
+        en: 'Mr. Nam’s townhouse is a modern home built around a double-height core, where light and sightlines are drawn upward through height rather than spread across the floor.'
       },
       challenge: {
         vi: 'Trong mặt bằng nhà phố, chiều sâu và các khối nội thất dễ làm không gian nặng; ưu tiên thiết kế là đưa ánh sáng đi theo khoảng thông tầng và giữ mặt sàn càng liền mạch càng tốt.',
@@ -453,12 +492,21 @@ export const projects: Project[] = [
           'Indirect light and geometric feature lighting to articulate the height'
         ]
       },
+      craftsmanship: {
+        vi: 'Hệ tủ, kệ TV treo và giường bệ nổi được sản xuất tại xưởng Lai Huy và lắp đặt tại công trình, giữ mặt sàn thông thoáng như thiết kế.',
+        en: 'The cabinetry, floating media unit and floating bed bases were made in Lai Huy’s factory and installed on site, keeping the floor clear as designed.'
+      },
       experience: {
         vi: 'Đứng ở phòng khách, người ở cảm nhận được cả chiều cao của ngôi nhà; các chi tiết được giữ tối giản để khoảng trống và ánh sáng trở thành phần trang trí chính.',
         en: 'Standing in the living room, you feel the full height of the house; details are kept minimal so that void and light become the main ornament.'
       }
     },
     seo: {
+      title: { vi: 'Nội thất nhà phố anh Nam, Vĩnh Long — thiết kế, sản xuất, thi công', en: 'Mr. Nam’s Townhouse Interiors, Vinh Long — Design, Production, Fit-out' },
+      description: {
+        vi: 'Nhà phố 200 m² tại Vĩnh Long với khoảng thông tầng, cầu thang lam thép và hệ tủ treo; Lai Huy thiết kế, sản xuất và thi công nội thất.',
+        en: 'A 200 m² townhouse in Vinh Long with a double-height void, steel batten stair and floating joinery, designed, produced and fitted out by Lai Huy.'
+      },
       keywords: {
         vi: ['thiết kế nhà phố hiện đại', 'nhà phố thông tầng', 'nội thất tối giản ấm'],
         en: ['modern townhouse design', 'double-height townhouse', 'warm minimal interior']
@@ -480,7 +528,7 @@ export const projects: Project[] = [
     area: { vi: '32 m²', en: '32 m²' },
     year: { vi: '2026', en: '2026' },
     style: { vi: 'Hiện đại', en: 'Modern' },
-    scope: { vi: ['Thiết kế', 'Thi công'], en: ['Design', 'Construction'] },
+    scope: { vi: ['Thiết kế', 'Thi công'], en: ['Design', 'Fit-out'] },
     content: {
       overview: {
         vi: 'Một không gian nghỉ nhỏ 32 m² tại Tà Đùng, nơi vật liệu tự nhiên được để mộc: gỗ thông, tường vữa và khung thép đen, thay cho mọi lớp trang trí thừa.',
@@ -524,7 +572,7 @@ export const projects: Project[] = [
       },
       craftsmanship: {
         vi: 'Trong phạm vi thiết kế và thi công, các mối gặp giữa gỗ thông, khung thép và bề mặt vữa được xử lý như một hệ thống duy nhất; chi tiết được giữ gọn để công năng không làm mất chất mộc của không gian.',
-        en: 'Across the design-and-construction scope, the junctions between pine, steel frames and plaster surfaces are resolved as one system; details stay restrained so function does not dilute the retreat’s raw character.'
+        en: 'Across the design-and-fit-out scope, the junctions between pine, steel frames and plaster surfaces are resolved as one system; details stay restrained so function does not dilute the retreat’s raw character.'
       },
       experience: {
         vi: 'Trong một diện tích nhỏ, cảm giác lại rộng và tĩnh; những đường vòm, ánh sáng thấp và bề mặt mộc khiến nơi này giống một chốn lui về hơn là một căn phòng.',
@@ -532,6 +580,11 @@ export const projects: Project[] = [
       }
     },
     seo: {
+      title: { vi: 'Nội thất nghỉ dưỡng Tà Đùng — thiết kế, thi công', en: 'Ta Dung Retreat Interior — Design, Fit-out' },
+      description: {
+        vi: 'Không gian nghỉ 32 m² tại Tà Đùng: tủ, kệ và giường gỗ thông, khung thép mở, tường vữa. Lai Huy thiết kế và thi công nội thất.',
+        en: 'A 32 m² retreat in Ta Dung with pine cabinetry, shelving and bed, open steel frames and plaster walls. Interior designed and fitted out by Lai Huy.'
+      },
       keywords: {
         vi: ['nghỉ dưỡng Tà Đùng', 'thiết kế không gian nghỉ nhỏ', 'nội thất gỗ thông mộc'],
         en: ['Ta Dung retreat', 'compact retreat interior', 'natural pine interior']
@@ -545,7 +598,7 @@ export const projects: Project[] = [
     name: { vi: 'Phòng giám đốc — Công ty 12 Tháng 05', en: 'Executive Office — 12/05 Company' },
     shortDescription: {
       vi: 'Cải tạo phòng giám đốc với gỗ ốp, ánh sáng tạo hình và góc tiếp khách, thể hiện sự chững chạc và tinh tế.',
-      en: 'A director’s office renovation in warm timber, sculptural lighting and a lounge corner — assured and refined.'
+      en: 'A director’s office renovation in warm timber, sculptural lighting and a lounge corner: assured and refined.'
     },
     coverImage: '3.webp',
     client: { vi: 'Công ty 12 Tháng 05', en: '12/05 Company' },
@@ -553,15 +606,15 @@ export const projects: Project[] = [
     area: { vi: '37 m²', en: '37 m²' },
     year: { vi: '2022', en: '2022' },
     style: { vi: 'Hiện đại', en: 'Modern' },
-    scope: { vi: ['Thiết kế'], en: ['Design'] },
+    scope: { vi: ['Thiết kế', 'Sản xuất', 'Thi công'], en: ['Design', 'Production', 'Fit-out'] },
     content: {
       overview: {
-        vi: 'Một phòng giám đốc 37 m² được cải tạo tại Quận 7, tổ chức đủ ba chức năng — làm việc, tiếp khách nhỏ và nghỉ ngơi — trong một không gian gọn nhưng có chiều sâu và sự chững chạc.',
-        en: 'A 37 m² director’s office reworked in District 7, holding three functions — working, small meetings and a place to sit — inside a compact room that still reads deep and composed.'
+        vi: 'Một phòng giám đốc 37 m² tại Quận 7 được cải tạo để chứa ba chức năng trong một không gian gọn mà vẫn có chiều sâu: làm việc, họp nhỏ và tiếp khách.',
+        en: 'A 37 m² director’s office in District 7, reworked to hold three functions in one compact, composed room: focused work, small meetings and receiving guests.'
       },
       challenge: {
         vi: 'Ba nhu cầu — làm việc, họp nhỏ và tiếp khách — cùng nằm trong 37 m²; ưu tiên là tạo ranh giới đủ rõ mà không chia căn phòng thành những khoang chật.',
-        en: 'Three needs — focused work, small meetings and receiving guests — share 37 m²; the priority was to make each zone legible without dividing the room into tight compartments.'
+        en: 'Focused work, small meetings and receiving guests all share 37 m²; the priority was to make each zone legible without dividing the room into tight compartments.'
       },
       solution: {
         vi: 'Bàn giám đốc giữ trục chính, được bao bởi mảng gỗ ốp và hệ tủ âm để tạo chiều sâu. Bàn họp nhỏ và sofa lùi về hai vùng phụ, trong khi đèn thả tạo hình cùng nền tường tối liên kết cả ba chức năng bằng một sắc thái chững chạc.',
@@ -599,12 +652,21 @@ export const projects: Project[] = [
           'Warm lighting against the darker wall planes'
         ]
       },
+      craftsmanship: {
+        vi: 'Mảng gỗ ốp lam, hệ tủ sách âm tường và kệ trưng bày được sản xuất tại xưởng Lai Huy và lắp đặt tại công trình.',
+        en: 'The slatted timber panelling, recessed bookcase and display shelving were made in Lai Huy’s factory and installed on site.'
+      },
       experience: {
         vi: 'Người ngồi ở bàn có cảm giác kiểm soát cả căn phòng; khách được tiếp ở một góc riêng, và cùng một không gian vẫn đủ chỗ để lùi lại, nhìn ra thành phố sau một cuộc họp.',
-        en: 'From the desk, the occupant commands the whole room; guests are received in a separate corner, and the same space still allows a step back — a view over the city after a meeting.'
+        en: 'From the desk, the occupant commands the whole room; guests are received in a separate corner, and there is still room to step back and look over the city after a meeting.'
       }
     },
     seo: {
+      title: { vi: 'Nội thất phòng giám đốc Công ty 12 Tháng 05, Quận 7 — thiết kế, sản xuất, thi công', en: 'Executive Office for 12/05 Company, District 7 — Design, Production, Fit-out' },
+      description: {
+        vi: 'Phòng giám đốc 37 m² tại Quận 7, TP.HCM: gỗ ốp lam, tủ sách âm tường, góc họp và tiếp khách. Lai Huy thiết kế, sản xuất và thi công nội thất.',
+        en: 'A 37 m² director’s office in District 7, HCMC, with slatted timber, a recessed bookcase and meeting corner, designed, made and fitted out by Lai Huy.'
+      },
       keywords: {
         vi: ['thiết kế phòng giám đốc', 'nội thất phòng giám đốc', 'phòng làm việc giám đốc'],
         en: ['executive office design', 'director office interior', 'modern executive office']
@@ -626,7 +688,7 @@ export const projects: Project[] = [
     area: { vi: '170 m²', en: '170 m²' },
     year: { vi: '2022', en: '2022' },
     style: { vi: 'Hiện đại', en: 'Modern' },
-    scope: { vi: ['Thiết kế'], en: ['Design'] },
+    scope: { vi: ['Thiết kế', 'Sản xuất', 'Thi công'], en: ['Design', 'Production', 'Fit-out'] },
     content: {
       overview: {
         vi: 'Một văn phòng 170 m² tại Quận 7 được tổ chức quanh hai cực: một phòng họp kính cho các buổi làm việc tập trung, và các khối bàn mở cho từng phòng ban.',
@@ -655,7 +717,7 @@ export const projects: Project[] = [
           'Bench desking for each department',
           'Graphic walls and a logo building identity',
           'Carpet flooring and glass partitions dividing lightly',
-          'Oak accent panels warming a white base'
+          'Timber accent panels warming a white base'
         ]
       },
       materials: {
@@ -672,12 +734,21 @@ export const projects: Project[] = [
           'Carpet flooring to support zoning and soften the workplace'
         ]
       },
+      craftsmanship: {
+        vi: 'Tủ hồ sơ gỗ, bàn làm việc liền dãy và các mảng gỗ ốp được sản xuất tại xưởng Lai Huy và lắp đặt tại công trình.',
+        en: 'The timber filing wall, bench desks and accent panelling were made in Lai Huy’s factory and installed on site.'
+      },
       experience: {
         vi: 'Từ bàn làm việc, các phòng ban vẫn đọc được nhịp chung của văn phòng; bước vào phòng họp, lớp kính giữ sự tập trung nhưng không cắt đứt ánh sáng và kết nối thị giác với bên ngoài.',
         en: 'From the workstations, departments still read as part of one office rhythm; inside the meeting room, glass supports focus without cutting off daylight or visual connection to the wider workplace.'
       }
     },
     seo: {
+      title: { vi: 'Nội thất văn phòng Quận 7, TP.HCM — thiết kế, sản xuất, thi công', en: 'District 7 Office Interiors, HCMC — Design, Production, Fit-out' },
+      description: {
+        vi: 'Văn phòng 170 m² tại Quận 7, TP.HCM: phòng họp vách kính, tủ hồ sơ gỗ, bàn liền dãy theo phòng ban. Lai Huy thiết kế, sản xuất và thi công nội thất.',
+        en: 'A 170 m² office in District 7, HCMC: a glass meeting room, timber filing wall and bench desks, designed, produced and fitted out by Lai Huy.'
+      },
       keywords: {
         vi: ['thiết kế văn phòng công ty', 'nội thất văn phòng Quận 7', 'thiết kế phòng họp'],
         en: ['office interior design', 'company office design', 'meeting room design']
@@ -691,7 +762,7 @@ export const projects: Project[] = [
     name: { vi: 'Cải tạo văn phòng Quận 4', en: 'District 4 Office Renovation' },
     shortDescription: {
       vi: 'Cải tạo văn phòng theo hướng xanh: hệ kệ gỗ tích hợp cây, vách lam than chì và khung thép, gần gũi và chuyên nghiệp.',
-      en: 'A biophilic office renovation — oak storage integrated with planting, charcoal fluting and steel framing.'
+      en: 'A biophilic office renovation: timber storage with built-in planting, charcoal fluting and steel framing.'
     },
     coverImage: '2.webp',
     client: { vi: 'Công ty TNHH Thanh Kim Long', en: 'Thanh Kim Long Co., Ltd' },
@@ -699,7 +770,7 @@ export const projects: Project[] = [
     area: { vi: '70 m²', en: '70 m²' },
     year: { vi: '2021', en: '2021' },
     style: { vi: 'Hiện đại', en: 'Modern' },
-    scope: { vi: ['Thiết kế', 'Sản xuất', 'Thi công'], en: ['Design', 'Production', 'Construction'] },
+    scope: { vi: ['Thiết kế', 'Sản xuất', 'Thi công'], en: ['Design', 'Production', 'Fit-out'] },
     content: {
       overview: {
         vi: 'Một văn phòng 70 m² tại Quận 4 được cải tạo theo hướng đưa cây xanh vào không gian làm việc, thay lớp vỏ cũ bằng gỗ ấm, mảng lam than chì và khung thép mở ra ánh sáng.',
@@ -711,7 +782,7 @@ export const projects: Project[] = [
       },
       solution: {
         vi: 'Hệ kệ gỗ chạy dọc tường tích hợp các hốc trồng cây, đưa mảng xanh vào giữa khu lưu trữ. Vách lam than chì và khung thép đen mở ra mặt kính, giúp không gian vừa ấm vừa thoáng.',
-        en: 'Oak shelving runs along the walls with planting niches built in, threading green through the storage. Charcoal fluted panels and black steel frames open to glazing, keeping the room both warm and light.'
+        en: 'Timber shelving runs along the walls with planting niches built in, threading green through the storage. Charcoal fluted panels and black steel frames open to glazing, keeping the room both warm and light.'
       },
       designHighlights: {
         vi: [
@@ -722,7 +793,7 @@ export const projects: Project[] = [
           'Sàn thảm và mảng gỗ giữ tông ấm'
         ],
         en: [
-          'Oak shelving with integrated planting along the walls',
+          'Timber shelving with integrated planting along the walls',
           'A charcoal fluted wall behind the director’s desk',
           'Black steel frames opening to glazing and a city view',
           'A meeting table and work area fitted into a small floorplate',
@@ -745,7 +816,7 @@ export const projects: Project[] = [
       },
       craftsmanship: {
         vi: 'Trong gói thiết kế, sản xuất và thi công, hệ kệ gỗ tích hợp hốc cây được triển khai như một mô-đun liên tục; các mối nối với lam than chì và khung thép được kiểm soát để mảng lưu trữ vẫn nhẹ trong mặt bằng 70 m².',
-        en: 'Within the design, production and construction scope, the timber shelving and planting niches were delivered as one continuous module; its junctions with charcoal fluting and steel frames were controlled so the storage stayed light within 70 m².'
+        en: 'Within the design, production and fit-out scope, the timber shelving and planting niches were delivered as one continuous module; its junctions with charcoal fluting and steel frames were controlled so the storage stayed light within 70 m².'
       },
       experience: {
         vi: 'Cây xanh xuất hiện ngay trong hệ lưu trữ thay vì như lớp trang trí thêm vào; nhờ vậy, nơi làm việc nhỏ vẫn có nhịp thở, còn các mảng gỗ và than chì giữ sự chuyên nghiệp cần thiết.',
@@ -753,6 +824,11 @@ export const projects: Project[] = [
       }
     },
     seo: {
+      title: { vi: 'Cải tạo văn phòng Quận 4, TP.HCM — thiết kế, sản xuất, thi công', en: 'District 4 Office Renovation, HCMC — Design, Production, Fit-out' },
+      description: {
+        vi: 'Cải tạo văn phòng 70 m² tại Quận 4, TP.HCM: kệ gỗ tích hợp cây xanh, vách lam than chì, khung thép. Lai Huy thiết kế, sản xuất và thi công.',
+        en: 'A 70 m² office renovation in District 4, HCMC: timber shelving with planting, charcoal fluting and steel frames, designed, made and fitted by Lai Huy.'
+      },
       keywords: {
         vi: ['cải tạo văn phòng', 'thiết kế văn phòng xanh', 'nội thất văn phòng Quận 4'],
         en: ['office renovation', 'biophilic office design', 'green office interior']
@@ -763,21 +839,21 @@ export const projects: Project[] = [
     mediaId: 'nha-xuong-anh-cuong',
     slug: 'nha-xuong-anh-cuong',
     category: 'commercial',
-    name: { vi: 'Nhà xưởng & văn phòng anh Cường', en: 'Anh Cuong Factory & Office' },
+    name: { vi: 'Nhà xưởng & văn phòng anh Cường', en: 'Mr. Cuong’s Factory & Office' },
     shortDescription: {
       vi: 'Văn phòng đặt trong nhà xưởng: sàn terrazzo, vách panel và hệ kệ gỗ, gắn với hình ảnh thương hiệu.',
-      en: 'An office set within a warehouse — terrazzo floors, panel partitions and oak shelving woven with brand identity.'
+      en: 'An office set within a warehouse — terrazzo floors, panel partitions and pale timber shelving woven with brand identity.'
     },
     client: { vi: 'Anh Cường', en: 'Mr. Cường' },
     location: { vi: 'Vĩnh Long', en: 'Vinh Long' },
     area: { vi: '320 m²', en: '320 m²' },
     year: { vi: '2025', en: '2025' },
     style: { vi: 'Công nghiệp', en: 'Industrial' },
-    scope: { vi: ['Thiết kế', 'Thi công'], en: ['Design', 'Construction'] },
+    scope: { vi: ['Thiết kế', 'Thi công'], en: ['Design', 'Fit-out'] },
     content: {
       overview: {
         vi: 'Nhà xưởng anh Cường là một công trình 320 m² kết hợp sản xuất và văn phòng, nơi khối làm việc được đặt ngay trong không gian nhà xưởng thay vì tách rời khỏi nó.',
-        en: 'Anh Cuong is a 320 m² project combining production and office, where the workspace sits inside the warehouse rather than apart from it.'
+        en: 'Mr. Cuong’s factory office is a 320 m² project combining production and office, where the workspace sits inside the warehouse rather than apart from it.'
       },
       challenge: {
         vi: 'Khối văn phòng cần đủ sạch, sáng và dễ nhận diện để làm việc tập trung, nhưng vẫn phải ở trong nhịp vận hành của nhà xưởng; ranh giới vì thế cần bảo vệ mà không tách rời.',
@@ -785,7 +861,7 @@ export const projects: Project[] = [
       },
       solution: {
         vi: 'Khu văn phòng được dựng bằng hệ vách panel và kính trên nền sàn terrazzo, giữ sự sạch sẽ và sáng sủa giữa một vỏ công nghiệp. Bàn làm việc chung, hệ kệ gỗ và mảng đồ hoạ thương hiệu tạo một môi trường làm việc rõ ràng ngay cạnh khu sản xuất.',
-        en: 'The office is built from panel and glass partitions on a terrazzo floor, keeping it clean and bright inside an industrial shell. Shared desks, oak shelving and brand graphics create a legible workplace right beside production.'
+        en: 'The office is built from panel and glass partitions on a terrazzo floor, keeping it clean and bright inside an industrial shell. Shared desks, pale timber shelving and brand graphics create a legible workplace right beside production.'
       },
       designHighlights: {
         vi: [
@@ -797,7 +873,7 @@ export const projects: Project[] = [
         en: [
           'Panel and glass partitions form a bright office insert within the industrial shell',
           'Terrazzo marks the workplace with one clean, continuous floor surface',
-          'Shared desks and oak shelving organise work without weighing down the plan',
+          'Shared desks and pale timber shelving organise work without weighing down the plan',
           'Brand graphics make the office legible from the warehouse side'
         ]
       },
@@ -817,7 +893,7 @@ export const projects: Project[] = [
       },
       craftsmanship: {
         vi: 'Với gói thầu thiết kế và thi công, hệ vách panel, kệ gỗ và khu làm việc được dựng trực tiếp trong nhà xưởng — một phần hoàn thiện đặt cạnh phần thô của công trình.',
-        en: 'Delivered as design and construction, the panel partitions, oak shelving and work area were built directly within the warehouse — a finished insert set against the raw fabric of the building.'
+        en: 'Delivered as design and fit-out, the panel partitions, pale timber shelving and work area were built directly within the warehouse — a finished insert set against the raw fabric of the building.'
       },
       experience: {
         vi: 'Nhân viên làm việc trong một không gian gọn và sáng, nhưng vẫn ở ngay trong nhịp sản xuất; ranh giới giữa xưởng và văn phòng được giữ mỏng một cách có chủ đích.',
@@ -825,6 +901,11 @@ export const projects: Project[] = [
       }
     },
     seo: {
+      title: { vi: 'Nội thất nhà xưởng & văn phòng anh Cường, Vĩnh Long — thiết kế, thi công', en: 'Mr. Cuong’s Factory Office, Vinh Long — Design, Fit-out' },
+      description: {
+        vi: 'Văn phòng 320 m² đặt trong nhà xưởng tại Vĩnh Long: vách panel và kính, sàn terrazzo, kệ gỗ. Lai Huy thiết kế và thi công nội thất.',
+        en: 'A 320 m² office inside a factory in Vinh Long: panel and glass partitions, terrazzo floors and timber shelving. Interior designed and fitted by Lai Huy.'
+      },
       keywords: {
         vi: ['thiết kế văn phòng nhà xưởng', 'nội thất nhà xưởng kết hợp văn phòng', 'thiết kế văn phòng công nghiệp'],
         en: ['factory office design', 'warehouse office interior', 'industrial office design']

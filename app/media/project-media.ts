@@ -38,9 +38,57 @@ export const projectCover = (
   return asset ? withAlt(asset, alt) : undefined
 }
 
-export const projectImages = (mediaId: ProjectMediaId | undefined, alt: LocalizedText | ''): MediaImage[] => {
+/** Human labels for a project's gallery folder slugs (`Project.galleryLabels`). */
+export type GalleryLabels = Readonly<Record<string, LocalizedText>>
+
+/** Alt for an image that belongs to a labelled room: "{project}: {room}". */
+export const roomImageAlt = (name: LocalizedText, room: LocalizedText): LocalizedText => ({
+  vi: `${name.vi}: ${room.vi}`,
+  en: `${name.en}: ${room.en}`
+})
+
+/** Alt for an image with no room label: "{project}: hình {i}/{n}" (`position` is 1-based). */
+export const sequenceImageAlt = (name: LocalizedText, position: number, total: number): LocalizedText => ({
+  vi: `${name.vi}: hình ${position}/${total}`,
+  en: `${name.en}: image ${position}/${total}`
+})
+
+/** One alt per catalog path, shared by the carousel, the lightbox and every other place the image
+ *  is rendered. An image in a labelled gallery folder is named by its room; every other image is
+ *  named by its place in the project's whole image set. */
+const altByPath = (
+  media: ProjectMedia,
+  name: LocalizedText,
+  galleryLabels: GalleryLabels | undefined
+): Map<string, LocalizedText> => {
+  const alts = new Map<string, LocalizedText>()
+  media.images.forEach((asset, index) => {
+    alts.set(asset.path, sequenceImageAlt(name, index + 1, media.images.length))
+  })
+  for (const [slug, assets] of Object.entries(media.galleries)) {
+    const room = galleryLabels?.[slug]
+    if (!room) continue
+    for (const asset of assets) {
+      alts.set(asset.path, roomImageAlt(name, room))
+    }
+  }
+  return alts
+}
+
+const imageWithAlt = (asset: MediaAsset, alts: ReadonlyMap<string, LocalizedText>, name: LocalizedText): MediaImage =>
+  withAlt(asset, alts.get(asset.path) ?? name)
+
+export const projectImages = (
+  mediaId: ProjectMediaId | undefined,
+  name: LocalizedText,
+  galleryLabels?: GalleryLabels
+): MediaImage[] => {
   const media = getProjectMedia(mediaId)
-  return media ? media.images.map(asset => withAlt(asset, alt)) : []
+  if (!media) {
+    return []
+  }
+  const alts = altByPath(media, name, galleryLabels)
+  return media.images.map(asset => imageWithAlt(asset, alts, name))
 }
 
 /** A named sub-gallery (media catalog folder group) paired with alt text. */
@@ -54,15 +102,17 @@ export type ProjectGalleryGroup = {
  *  project folder — the caller then falls back to a single flat gallery. */
 export const projectGalleryGroups = (
   mediaId: ProjectMediaId | undefined,
-  alt: LocalizedText | ''
+  name: LocalizedText,
+  galleryLabels?: GalleryLabels
 ): ProjectGalleryGroup[] => {
   const media = getProjectMedia(mediaId)
   if (!media) {
     return []
   }
+  const alts = altByPath(media, name, galleryLabels)
   return Object.entries(media.galleries).map(([slug, assets]) => ({
     slug,
-    images: assets.map(asset => withAlt(asset, alt))
+    images: assets.map(asset => imageWithAlt(asset, alts, name))
   }))
 }
 
@@ -84,6 +134,14 @@ const uniqueMediaByPath = (images: readonly MediaImage[]): MediaImage[] => {
     return true
   })
 }
+
+/** What the gallery's first filter chip counts. It counts what the carousel shows under it: the
+ *  curated highlights of a long set (the whole set is counted on the "view all" button instead),
+ *  or every image of a short one. */
+export const galleryHeadline = (flow: ProjectMediaFlow): { kind: 'highlights' | 'all', count: number } =>
+  flow.isLongMedia
+    ? { kind: 'highlights', count: flow.inline.length }
+    : { kind: 'all', count: flow.eligible.length }
 
 /**
  * Derive the project-story gallery without mutating catalog or project data.

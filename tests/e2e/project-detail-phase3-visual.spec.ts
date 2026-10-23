@@ -805,17 +805,18 @@ for (const locale of ['vi', 'en'] as const) {
       } else {
         expect(combinedScope).toContain('Design')
         expect(combinedScope).toContain('Production')
-        expect(combinedScope).toContain('Installation')
+        expect(combinedScope).toContain('Fit-out')
       }
 
       // Rich fixture has exactly 3 execution proofs
       expect(await richDelivery.locator('[data-execution-proof]').count()).toBe(3)
 
-      // Design-only fixture: /du-an/nha-vuon-chily
+      // No-production fixture: /du-an/nha-ta-dung (design + fit-out). Every other project now
+      // covers all three scopes, so this is the one whose scope has no factory in it.
       await openProject(
         page,
         locale,
-        '/du-an/nha-vuon-chily',
+        '/du-an/nha-ta-dung',
         width,
         width === 390 ? 844 : 900
       )
@@ -832,12 +833,12 @@ for (const locale of ['vi', 'en'] as const) {
         expect(designCombinedScope).toContain('Design')
       }
 
-      // Design-only fixture has strictly 0 execution proofs
-      expect(await designDelivery.locator('[data-execution-proof]').count()).toBe(0)
+      // Without a production scope only the on-site team proof remains
+      expect(await designDelivery.locator('[data-execution-proof]').count()).toBe(1)
 
-      // No manufacturing proof, no craft proof, no factory claims
+      // No manufacturing proof, no factory claims
       expect(await designDelivery.locator('[data-execution-proof="direct-factory"]').count()).toBe(0)
-      expect(await designDelivery.locator('[data-execution-proof="craft"]').count()).toBe(0)
+      expect(await designDelivery.locator('[data-execution-proof="craft"]').count()).toBe(1)
       expect(await designDelivery.locator('[data-execution-proof="quality"]').count()).toBe(0)
 
       const deliverySectionText = (await designDelivery.textContent()) || ''

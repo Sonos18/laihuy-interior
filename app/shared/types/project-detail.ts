@@ -1,7 +1,7 @@
 import type { MediaAsset } from '~/shared/media/types'
 import type { Project } from '~/shared/types/project'
 
-export type ProjectFactKey = 'area' | 'year' | 'style' | 'scope' | 'location'
+export type ProjectFactKey = 'area' | 'rooms' | 'year' | 'style' | 'scope' | 'location'
 export type ProjectScopeKey = 'Thiết kế' | 'Sản xuất' | 'Thi công'
 export type ProjectDeliveryPhaseKey
   = | 'consultation'
