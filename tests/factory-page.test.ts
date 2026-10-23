@@ -33,6 +33,7 @@ describe('factory proof-first page data', () => {
     expect(factoryFaqs.map(item => item.id)).toEqual([
       'lead-time',
       'make-to-drawing',
+      'preliminary-boq',
       'materials-quality',
       'nationwide-installation'
     ])

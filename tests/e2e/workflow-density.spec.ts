@@ -21,15 +21,15 @@ const WORKFLOW_COPY = {
       'Điều phối dự án',
       'Sản xuất tại xưởng',
       'QC trước khi giao hàng',
-      'Thi công tại công trình'
+      'Lắp đặt tại công trình'
     ],
     descriptions: [
-      'Rà soát hồ sơ, phạm vi công việc, vật liệu, tiến độ và tiêu chuẩn hoàn thiện trước khi triển khai.',
+      'Rà soát bản vẽ, BOQ (bảng khối lượng), phạm vi, vật liệu và tiêu chuẩn hoàn thiện; khảo sát hiện trạng khi cần. Chưa có bản vẽ thì Lai Huy thiết kế trước.',
       'Chuyển đổi bản vẽ thiết kế thành hồ sơ sản xuất, danh mục vật tư và kế hoạch triển khai.',
       'Theo dõi tiến độ sản xuất, giao hàng và phối hợp thi công theo từng giai đoạn dự án.',
       'Sản xuất module nội thất theo hồ sơ kỹ thuật, kiểm soát kích thước, vật liệu và chất lượng hoàn thiện.',
       'Kiểm tra kích thước, bề mặt, phụ kiện và phân loại theo từng khu vực trước khi giao hàng.',
-      'Đội lắp dựng triển khai theo mặt bằng, phối hợp với các bộ môn và xử lý nghiệm thu.'
+      'Đội lắp đặt làm theo mặt bằng, phối hợp với các bộ môn và nghiệm thu từng khu vực.'
     ],
     qcBullets: [
       'Kiểm tra vật tư đầu vào theo chủng loại, màu sắc và tiêu chuẩn dự án',
@@ -50,7 +50,7 @@ const WORKFLOW_COPY = {
       'On-site installation'
     ],
     descriptions: [
-      'Documents, scope of work, materials, schedule and finish standards are reviewed before anything moves.',
+      'Drawings, BOQ (bill of quantities), scope, materials and finish standards are reviewed, with a site survey where needed. No drawings yet? Lai Huy designs first.',
       'Design drawings are converted into production documents, material schedules and an execution plan.',
       'Production progress, deliveries and installation are tracked and coordinated stage by stage.',
       'Interior modules are produced to the technical documents, with dimensions, materials and finish quality controlled.',
