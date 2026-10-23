@@ -24,7 +24,7 @@ const { t } = useLanguage()
         layout="rail"
         statement
         :eyebrow="t({ vi: 'Câu chuyện dự án', en: 'Project story' })"
-        :title="t({ vi: 'Bối cảnh và lời giải', en: 'Context and response' })"
+        :title="t({ vi: 'Bối cảnh và giải pháp', en: 'Context and solution' })"
       />
 
       <div
@@ -62,7 +62,7 @@ const { t } = useLanguage()
           data-story-beat="solution"
         >
           <p class="home-eyebrow-text text-wood-600">
-            03 · {{ t({ vi: 'Lời giải', en: 'Response' }) }}
+            03 · {{ t({ vi: 'Giải pháp', en: 'Solution' }) }}
           </p>
           <p class="home-lead-text mt-4 text-ink-600">
             {{ solution }}

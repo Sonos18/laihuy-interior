@@ -11,11 +11,11 @@ const TRANSPARENT_PNG = Buffer.from(
 
 const MEDIA_COPY = {
   vi: {
-    disclosure: 'Xem toàn bộ hình ảnh',
+    disclosure: 'Xem đủ',
     viewer: 'Trình xem ảnh'
   },
   en: {
-    disclosure: 'View all project images',
+    disclosure: 'View all',
     viewer: 'Image viewer'
   }
 } as const
@@ -66,8 +66,11 @@ for (const locale of ['vi', 'en'] as const) {
 
     const disclosure = gallery.getByRole('button', { name: new RegExp(`^${MEDIA_COPY[locale].disclosure}`) })
     await expect(disclosure).toHaveCount(1)
-    await expect(disclosure).toContainText('21')
-    await expect(gallery.locator('[data-project-full-gallery]')).toContainText('21')
+    // The button names the whole set (30), the same total as the lightbox counter below; there is
+    // no "+21" remainder, and the first chip counts the 9 highlights the carousel shows.
+    await expect(disclosure).toHaveText(locale === 'vi' ? 'Xem đủ 30 hình' : 'View all 30 images')
+    await expect(gallery.locator('[data-project-full-gallery]')).not.toContainText('+21')
+    await expect(gallery.locator('[data-gallery-filters] button[aria-pressed]').first()).toContainText('9')
 
     await disclosure.focus()
     await expect(disclosure).toBeFocused()

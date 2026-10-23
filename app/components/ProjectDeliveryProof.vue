@@ -27,10 +27,10 @@ const timelineStyle = computed(() => ({ '--phase-count': String(props.phases.len
       <SectionHead
         layout="rail"
         :eyebrow="t({ vi: 'Triển khai', en: 'Delivery' })"
-        :title="t({ vi: 'Từng bước đã làm', en: 'Step by step' })"
+        :title="t({ vi: 'Từng bước đã làm', en: 'The steps we took' })"
         :lead="t({
-          vi: `Từ chiến lược thiết kế, ${projectName} được triển khai theo đúng phạm vi đã xác nhận, với từng bước nối tiếp đến bàn giao.`,
-          en: `From the design response, ${projectName} moves through its verified scope as one connected sequence toward handover.`
+          vi: `Các bước Lai Huy đã thực hiện ở ${projectName}, từ tiếp nhận hồ sơ đến bàn giao.`,
+          en: `The steps Lai Huy carried out on ${projectName}, from brief to handover.`
         })"
       />
 
@@ -79,7 +79,7 @@ const timelineStyle = computed(() => ({ '--phase-count': String(props.phases.len
         class="mt-14 border-t border-[var(--rule-light)] pt-8"
       >
         <p class="home-eyebrow-text text-wood-600">
-          {{ t({ vi: 'Bằng chứng thực hiện phù hợp phạm vi', en: 'Execution proof aligned to scope' }) }}
+          {{ t({ vi: 'Năng lực đứng sau phạm vi này', en: 'What stands behind this scope' }) }}
         </p>
         <div class="mt-6 grid gap-8 md:grid-cols-3">
           <article

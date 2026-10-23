@@ -9,6 +9,7 @@ import { uiText } from '~/data/ui'
 import { caseStudyBreath } from '~/media/breath-media'
 import {
   buildProjectMediaFlow,
+  galleryHeadline,
   projectCoverAsset,
   projectGalleryGroups,
   projectImages,
@@ -16,7 +17,7 @@ import {
 } from '~/media/project-media'
 import type { MediaImage } from '~/shared/media/types'
 import type { LocalizedText } from '~/shared/types/localization'
-import { buildProjectDetailViewModel } from '~/utils/project-detail-view-model'
+import { buildProjectDetailViewModel, projectStatusText } from '~/utils/project-detail-view-model'
 
 // Remount this component on every path change. `project` and everything derived from it are
 // read once from route.params.slug, so related-project navigation must recreate the instance.
@@ -36,12 +37,17 @@ if (!project) {
 const categoryLabel = categoryDefinitions[project.category].label
 
 // Media joins stay route-owned because they drive gallery tabs, lightbox state and SEO images.
+// The hero names the project and where it is; every other image is named by its room (or its place
+// in the set), so the carousel, the lightbox and the story images all read the same alt.
+const heroAlt: LocalizedText = project.location
+  ? { vi: `${project.name.vi}, ${project.location.vi}`, en: `${project.name.en}, ${project.location.en}` }
+  : project.name
 const heroImage = computed<MediaImage>(() =>
-  withAlt(projectCoverAsset(project.mediaId, project.coverImage) ?? siteImages.bannerHome, project.name)
+  withAlt(projectCoverAsset(project.mediaId, project.coverImage) ?? siteImages.bannerHome, heroAlt)
 )
-const allImages: MediaImage[] = projectImages(project.mediaId, project.name)
+const allImages: MediaImage[] = projectImages(project.mediaId, project.name, project.galleryLabels)
 const leadImage = computed<MediaImage | undefined>(() => allImages[0])
-const galleryGroups = projectGalleryGroups(project.mediaId, project.name)
+const galleryGroups = projectGalleryGroups(project.mediaId, project.name, project.galleryLabels)
 const hasGalleryGroups = galleryGroups.length > 0
 const mediaFlow = buildProjectMediaFlow(allImages, galleryGroups)
 const showGalleryFilters = computed(() =>
@@ -70,8 +76,13 @@ const breathImage = caseStudyBreath(allImages)
 const prettifySlug = (value: string): string =>
   value.replace(/-/g, ' ').replace(/\b\w/g, char => char.toUpperCase())
 
+const headline = galleryHeadline(mediaFlow)
 const galleryTabs = computed(() => [
-  { value: 'all', label: t({ vi: 'Tất cả', en: 'All' }), count: mediaFlow.eligible.length },
+  {
+    value: 'all',
+    label: headline.kind === 'highlights' ? t({ vi: 'Tiêu biểu', en: 'Highlights' }) : t({ vi: 'Tất cả', en: 'All' }),
+    count: headline.count
+  },
   ...galleryGroups.map(group => ({
     value: group.slug,
     label: project.galleryLabels?.[group.slug]
@@ -113,9 +124,14 @@ watch(activeGalleryTab, () => {
   lightboxOpen.value = false
 })
 
-const statusText = computed(() =>
-  project.year ? t({ vi: `Hoàn thành ${t(project.year)}`, en: `Completed ${t(project.year)}` }) : ''
-)
+// "Completed" only when the scope includes the build; a design-only project shows "Design year".
+const statusText = computed(() => projectStatusText(project, locale.value))
+
+// The full-gallery button names the whole set, so its count matches the lightbox counter.
+const fullGalleryLabel = computed(() => t({
+  vi: `Xem đủ ${mediaFlow.eligible.length} hình`,
+  en: `View all ${mediaFlow.eligible.length} images`
+}))
 
 const relatedCards = computed(() => detail.value.relatedProjects.map(item => ({
   item,
@@ -298,16 +314,9 @@ usePageSeo({
           <button
             type="button"
             class="btn-outline"
-            :aria-label="`${t(uiText.cta.allProjectImages)} (${mediaFlow.remaining.length})`"
             @click="openFullGallery"
           >
-            {{ t(uiText.cta.allProjectImages) }}
-            <span
-              aria-hidden="true"
-              class="text-xs font-semibold text-current"
-            >
-              +{{ mediaFlow.remaining.length }}
-            </span>
+            {{ fullGalleryLabel }}
           </button>
         </div>
       </div>

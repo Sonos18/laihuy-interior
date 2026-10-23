@@ -28,12 +28,12 @@ const phoneHref = computed(() => `tel:${props.phone.replaceAll(' ', '')}`)
       <div class="grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
         <div data-head="stacked">
           <h2 class="home-section-heading max-w-3xl text-ink-950">
-            {{ t({ vi: 'Dự án của bạn cần một lời giải liền mạch?', en: 'Does your project need one connected response?' }) }}
+            {{ t({ vi: 'Cần báo giá cho một dự án tương tự?', en: 'Need a quote for a similar project?' }) }}
           </h2>
           <p class="home-lead-text mt-4 max-w-2xl text-ink-600">
             {{ t({
-              vi: 'Trao đổi với Lai Huy về bối cảnh, phạm vi và cách đưa ý tưởng thành một kế hoạch triển khai rõ ràng.',
-              en: 'Talk with Lai Huy about the context, scope and a clear path from design intent to delivery.'
+              vi: 'Gửi bản vẽ, hoặc mô tả quy mô, số phòng và vật liệu mong muốn. Báo giá trong 24 giờ làm việc kể từ khi nhận đủ bản vẽ hoặc thông tin dự án.',
+              en: 'Send drawings, or describe the scale, room count and materials you have in mind. We quote within 24 working hours of receiving complete drawings or project details.'
             }) }}
           </p>
         </div>

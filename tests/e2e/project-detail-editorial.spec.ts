@@ -9,8 +9,9 @@ const TRANSPARENT_PNG = Buffer.from(
 )
 
 const copy = {
-  vi: { disclosure: 'Xem toàn bộ hình ảnh', viewer: 'Trình xem ảnh' },
-  en: { disclosure: 'View all project images', viewer: 'Image viewer' }
+  // Eo Gió's full set is 30 images; the button names that total.
+  vi: { disclosure: 'Xem đủ 30 hình', viewer: 'Trình xem ảnh' },
+  en: { disclosure: 'View all 30 images', viewer: 'Image viewer' }
 } as const
 
 async function openProject(
@@ -53,7 +54,7 @@ for (const locale of ['vi', 'en'] as const) {
     await expect(page.locator('[data-project-facts] [data-project-fact]')).toHaveCount(5)
     expect(await page.locator('[data-project-fact]').evaluateAll(elements =>
       elements.map(element => element.getAttribute('data-fact-key'))
-    )).toEqual(['area', 'year', 'style', 'scope', 'location'])
+    )).toEqual(['area', 'rooms', 'year', 'scope', 'location'])
     await expect(page.locator('#story [data-story-beat]')).toHaveCount(3)
   })
 }
@@ -64,9 +65,13 @@ test('PD-EDITORIAL-02 delivery proof follows the verified project scope', async 
   await expect(page.locator('[data-execution-proof="quality"]')).toHaveCount(1)
   await expect(page.locator('[data-execution-proof="craft"]')).toHaveCount(1)
 
-  await openProject(page, 'vi', '/du-an/nha-vuon-chily', 1280)
+  // Tà Đùng is design + fit-out: no production scope, so no factory or QC proof, only the site team.
+  await openProject(page, 'vi', '/du-an/nha-ta-dung', 1280)
   await expect(page.locator('#delivery [data-scope-key="Thiết kế"]')).toHaveCount(1)
-  await expect(page.locator('#delivery [data-execution-proof]')).toHaveCount(0)
+  await expect(page.locator('#delivery [data-scope-key="Sản xuất"]')).toHaveCount(0)
+  await expect(page.locator('#delivery [data-execution-proof]')).toHaveCount(1)
+  await expect(page.locator('[data-execution-proof="direct-factory"]')).toHaveCount(0)
+  await expect(page.locator('[data-execution-proof="quality"]')).toHaveCount(0)
 })
 
 test('PD-EDITORIAL-03 rich and sparse projects share the approved chapter order', async ({ page }) => {

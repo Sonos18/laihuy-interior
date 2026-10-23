@@ -15,21 +15,21 @@ export const projectsPageContent: {
   galleryFilterLabel: LocalizedText
 } = {
   featured: {
-    eyebrow: { vi: 'Thiết kế · Sản xuất · Thi công', en: 'Design · Production · Construction' },
-    title: { vi: 'Một đầu mối cho cả công trình', en: 'One team for the whole build' },
+    eyebrow: { vi: 'Thiết kế · Sản xuất · Thi công', en: 'Design · Production · Fit-out' },
+    title: { vi: 'Làm trọn từ thiết kế đến lắp đặt', en: 'Designed, made and installed by Lai Huy' },
     lead: {
       vi: 'Những công trình do Lai Huy thiết kế, sản xuất tại xưởng và thi công tại công trình.',
-      en: 'Projects Lai Huy designed, produced in its own factory and built on site.'
+      en: 'Projects Lai Huy designed, produced in its own factory and installed on site.'
     }
   },
   archive: {
-    eyebrow: { vi: 'Lưu trữ', en: 'Archive' },
+    eyebrow: { vi: 'Theo loại hình', en: 'By type' },
     title: { vi: 'Các dự án khác', en: 'More projects' },
     lead: {
-      vi: 'Khách sạn, nhà ở, văn phòng và công trình khác, theo từng phạm vi công việc.',
-      en: 'Hotels, homes, offices and other work, by scope of services.'
+      vi: 'Lọc theo loại hình; mỗi thẻ ghi diện tích và phạm vi Lai Huy đảm nhận.',
+      en: 'Filter by type; each card shows the floor area and the scope Lai Huy delivered.'
     }
   },
   filterLabel: { vi: 'Lọc dự án theo loại hình', en: 'Filter projects by type' },
-  galleryFilterLabel: { vi: 'Lọc ảnh theo phòng', en: 'Filter photos by room' }
+  galleryFilterLabel: { vi: 'Lọc ảnh theo phòng', en: 'Filter images by room' }
 }

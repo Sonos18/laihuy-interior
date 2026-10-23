@@ -37,13 +37,13 @@ const materialImage = computed(() => props.images[3] ?? props.images[0])
             v-reveal.head
             class="eyebrow reveal"
           >
-            {{ t({ vi: 'Câu chuyện vật liệu', en: 'Material story' }) }}
+            {{ t({ vi: 'Vật liệu', en: 'Materials' }) }}
           </p>
           <h2
             v-reveal.head
             class="home-section-heading reveal mt-4 text-ink-950"
           >
-            {{ t({ vi: 'Quyết định trở thành trải nghiệm', en: 'Decisions made tangible' }) }}
+            {{ t({ vi: 'Vật liệu và chi tiết', en: 'Materials and details' }) }}
           </h2>
         </div>
         <p
@@ -72,7 +72,7 @@ const materialImage = computed(() => props.images[3] ?? props.images[0])
         class="grid gap-8 md:grid-cols-[0.65fr_1.35fr]"
       >
         <p class="home-eyebrow-text text-wood-600">
-          {{ t({ vi: 'Chi tiết chứng minh', en: 'Proof in the details' }) }}
+          {{ t({ vi: 'Chi tiết thiết kế', en: 'Design details' }) }}
         </p>
         <ul class="divide-y divide-[var(--rule-light)] border-y border-[var(--rule-light)]">
           <li
@@ -126,7 +126,7 @@ const materialImage = computed(() => props.images[3] ?? props.images[0])
         class="grid gap-6 border-t border-[var(--rule-light)] pt-10 md:grid-cols-[0.65fr_1.35fr]"
       >
         <p class="home-eyebrow-text text-wood-600">
-          {{ t({ vi: 'Thiết kế được hiện thực hóa', en: 'Design made real' }) }}
+          {{ t({ vi: 'Sản xuất và lắp đặt', en: 'How it was made and installed' }) }}
         </p>
         <div>
           <p class="measure-lead home-lead-text text-ink-600">
