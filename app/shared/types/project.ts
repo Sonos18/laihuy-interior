@@ -96,5 +96,4 @@ export type Project = {
   beforeAfter?: ProjectBeforeAfter[]
   content?: ProjectContent
   seo?: ProjectSeo
-  featured?: boolean
 }

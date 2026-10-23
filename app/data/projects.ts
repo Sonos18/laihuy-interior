@@ -94,8 +94,7 @@ export const projects: Project[] = [
         vi: ['khách sạn Eo Gió', 'thiết kế khách sạn Vĩnh Long', 'căn hộ dịch vụ', 'nội thất khách sạn gỗ sáng'],
         en: ['Eo Gio hotel', 'hotel interior design Vinh Long', 'serviced apartment interior', 'light-wood hotel interior']
       }
-    },
-    featured: true
+    }
   },
   {
     mediaId: 'codi-boutique-hotel',
@@ -184,8 +183,7 @@ export const projects: Project[] = [
         vi: ['khách sạn Codi Boutique', 'thiết kế khách sạn boutique', 'nội thất khách sạn tông ấm'],
         en: ['Codi Boutique hotel', 'boutique hotel interior design', 'warm-toned hotel rooms']
       }
-    },
-    featured: true
+    }
   },
   {
     mediaId: 'codi-villa-phan-thiet',
@@ -267,8 +265,7 @@ export const projects: Project[] = [
         vi: ['Codi Villa Phan Thiết', 'villa nghỉ dưỡng NovaWorld', 'nội thất villa phong cách công nghiệp'],
         en: ['Codi Villa Phan Thiet', 'NovaWorld resort villa', 'industrial modern villa interior']
       }
-    },
-    featured: true
+    }
   },
   {
     mediaId: 'nha-vuon-chily',

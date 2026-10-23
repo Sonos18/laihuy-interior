@@ -330,7 +330,9 @@ test('an empty optional field is written as a dash and an unset scope as "not sp
 const LONG_MESSAGE = 'Phòng ngủ có tủ âm tường. '.repeat(120).trim()
 
 for (const locale of ['vi', 'en'] as const) {
-  test(`a message too long for a mailto goes to the clipboard, whole, and the email marks where to paste it, in ${locale}`, async ({ page, context }) => {
+  test(`a message too long for a mailto goes to the clipboard, whole, and the email marks where to paste it, in ${locale}`, async ({ page, context, browserName }) => {
+    // Clipboard permissions can only be granted in Chromium; the other engines cover the error path.
+    test.skip(browserName !== 'chromium', 'clipboard permissions are Chromium-only')
     await context.grantPermissions(['clipboard-read', 'clipboard-write'])
     await captureMailtos(page)
     await open(page, 1440, locale)
@@ -346,7 +348,7 @@ for (const locale of ['vi', 'en'] as const) {
     expect(body).toContain(locale === 'vi' ? 'Dán nội dung đã sao chép vào đây' : 'Paste the copied details here')
     expect(body).not.toContain('Phòng ngủ có tủ âm tường.')
     expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(LONG_MESSAGE)
-    await expect(page.locator('[data-testid="contact-mail-opened"]')).toContainText(locale === 'vi' ? 'dán (Ctrl+V)' : 'paste them (Ctrl+V)')
+    await expect(page.locator('[data-testid="contact-mail-opened"]')).toContainText(locale === 'vi' ? 'dán (Ctrl+V' : 'paste them (Ctrl+V')
     await expect(page.locator('#contact-message-error')).toHaveCount(0)
   })
 }

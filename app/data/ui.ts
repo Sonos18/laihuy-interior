@@ -244,8 +244,8 @@ export const uiText = {
     },
     /** As `opened`, when the message was too long for the mailto URL and went to the clipboard. */
     openedPaste: {
-      vi: 'Ứng dụng email của bạn đang mở. Phần thông tin dự án dài nên đã được sao chép: dán (Ctrl+V) vào chỗ đánh dấu trong email. Lai Huy chỉ nhận được yêu cầu sau khi bạn bấm Gửi.',
-      en: 'Your email app should now be open. The project details were too long to fill in, so they are on your clipboard: paste them (Ctrl+V) where the email marks. Lai Huy receives your request only once you press Send.'
+      vi: 'Ứng dụng email của bạn đang mở. Phần thông tin dự án dài nên đã được sao chép: dán (Ctrl+V, trên Mac ⌘+V) vào chỗ đánh dấu trong email. Lai Huy chỉ nhận được yêu cầu sau khi bạn bấm Gửi.',
+      en: 'Your email app should now be open. The project details were too long to fill in, so they are on your clipboard: paste them (Ctrl+V, or ⌘+V on a Mac) where the email marks. Lai Huy receives your request only once you press Send.'
     },
     required: { vi: 'bắt buộc', en: 'required' },
     /** The pieces of the prefilled email, in the visitor's language. See buildQuoteMailto. */
@@ -267,8 +267,8 @@ export const uiText = {
       attachments: { vi: 'Hồ sơ đính kèm (bản vẽ, BOQ hoặc link Drive):', en: 'Attachments (drawings, BOQ or a Drive link):' },
       /** Stands in for a message too long for the mailto URL; the page copies the message to the clipboard. */
       messageMoved: {
-        vi: '[Dán nội dung đã sao chép vào đây: Ctrl+V]',
-        en: '[Paste the copied details here: Ctrl+V]'
+        vi: '[Dán nội dung đã sao chép vào đây]',
+        en: '[Paste the copied details here]'
       }
     },
     errors: {

@@ -91,9 +91,8 @@ export const coversEndToEnd = (project: Project): boolean => {
 const completedLabel: LocalizedText = { vi: 'Hoàn thành', en: 'Completed' }
 const designYearLabel: LocalizedText = { vi: 'Năm thiết kế', en: 'Design year' }
 
-/** The year is a completion year only when the scope includes the build ("Thi công"); a project
- *  Lai Huy only designed carries a design year instead. */
-/** "Hoàn thành" when the scope includes fit-out, else "Năm thiết kế": one rule for every year label. */
+/** One rule for every year label: "Hoàn thành" (a completion year) when the scope includes the
+ *  build ("Thi công"), else "Năm thiết kế" (a design year). */
 export const yearLabelFor = (project: Project, locale: Locale): string =>
   textFor(resolveScope(project, 'vi').some(item => item.key === 'Thi công') ? completedLabel : designYearLabel, locale)
 
