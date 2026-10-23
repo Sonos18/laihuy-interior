@@ -27,7 +27,7 @@ const timelineStyle = computed(() => ({ '--phase-count': String(props.phases.len
       <SectionHead
         layout="rail"
         :eyebrow="t({ vi: 'Triển khai', en: 'Delivery' })"
-        :title="t({ vi: 'Quá trình triển khai', en: 'How it was delivered' })"
+        :title="t({ vi: 'Từng bước đã làm', en: 'Step by step' })"
         :lead="t({
           vi: `Từ chiến lược thiết kế, ${projectName} được triển khai theo đúng phạm vi đã xác nhận, với từng bước nối tiếp đến bàn giao.`,
           en: `From the design response, ${projectName} moves through its verified scope as one connected sequence toward handover.`

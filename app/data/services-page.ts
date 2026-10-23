@@ -68,8 +68,8 @@ export const servicesPageContent = {
     title: { vi: 'Ba dịch vụ,', en: 'Three services,' },
     specialTitle: { vi: 'một đầu mối', en: 'one accountable team' },
     subtitle: {
-      vi: 'Một đầu mối cho triển khai kỹ thuật, sản xuất tại xưởng và thi công nội thất theo yêu cầu của từng dự án.',
-      en: 'One accountable partner for technical development, in-house production and interior contracting around each project brief.'
+      vi: 'Triển khai kỹ thuật, sản xuất tại xưởng và thi công nội thất theo yêu cầu của từng dự án.',
+      en: 'Technical development, in-house production and interior contracting around each project brief.'
     }
   },
   documents: {
