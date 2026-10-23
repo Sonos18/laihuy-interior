@@ -10,6 +10,8 @@ export type ServiceId
 
 export type Service = {
   id: ServiceId
+  /** The element id on /dich-vu; the footer and other pages link to `/dich-vu#<anchor>`. */
+  anchor: string
   icon: string
   title: LocalizedText
   description: LocalizedText
@@ -19,16 +21,17 @@ export type Service = {
 export const services: Service[] = [
   {
     id: 'design',
+    anchor: 'thiet-ke',
     icon: 'i-lucide-pencil-ruler',
     title: { vi: 'Thiết kế & triển khai kỹ thuật', en: 'Design & technical development' },
     description: {
-      vi: 'Triển khai concept, shopdrawing và hồ sơ kỹ thuật phục vụ sản xuất và thi công nội thất dự án.',
+      vi: 'Triển khai concept, shop drawing và hồ sơ kỹ thuật phục vụ sản xuất và thi công nội thất dự án.',
       en: 'Concept development, shop drawings and technical documents for interior production and contracting.'
     },
     details: {
       vi: [
         'Định hướng concept, bố trí công năng và vật liệu',
-        'Shopdrawing, bản vẽ 2D và phối cảnh 3D',
+        'Shop drawing, bản vẽ 2D và phối cảnh 3D',
         'Hồ sơ kỹ thuật phục vụ sản xuất và thi công'
       ],
       en: [
@@ -40,8 +43,9 @@ export const services: Service[] = [
   },
   {
     id: 'factory-production',
+    anchor: 'san-xuat',
     icon: 'i-lucide-factory',
-    title: { vi: 'Sản xuất nội thất tại xưởng', en: 'In-house furniture production' },
+    title: { vi: 'Sản xuất tại xưởng', en: 'In-house production' },
     description: {
       vi: 'Gia công trực tiếp tại xưởng với quy trình kiểm soát vật liệu, tiến độ và chất lượng hoàn thiện.',
       en: 'Produced directly at our own workshop, with materials, schedule and finish quality under control.'
@@ -61,20 +65,21 @@ export const services: Service[] = [
   },
   {
     id: 'construction',
+    anchor: 'thi-cong',
     icon: 'i-lucide-hard-hat',
-    title: { vi: 'Thi công nội thất dự án', en: 'Project interior contracting' },
+    title: { vi: 'Thi công & lắp đặt', en: 'Fit-out & installation' },
     description: {
-      vi: 'Triển khai thi công và lắp dựng nội thất khách sạn, resort và căn hộ theo tiến độ công trình.',
-      en: 'Interior fit-out and installation for hotels, resorts and apartments, delivered to the project schedule.'
+      vi: 'Lắp đặt nội thất tại công trình cho khách sạn, villa, căn hộ và văn phòng, theo tiến độ chung của dự án.',
+      en: 'On-site interior installation for hotels, villas, apartments and offices, to the project’s overall schedule.'
     },
     details: {
       vi: [
-        'Khảo sát hiện trạng và lập kế hoạch thi công',
+        'Đo kiểm mặt bằng và lập kế hoạch lắp đặt',
         'Tổ chức nhân sự theo tiến độ công trình',
         'Xử lý hoàn thiện, nghiệm thu và bàn giao'
       ],
       en: [
-        'Site survey and installation planning',
+        'Site check and installation planning',
         'Crews organised around the construction schedule',
         'Finishing, sign-off and handover'
       ]
@@ -82,6 +87,7 @@ export const services: Service[] = [
   },
   {
     id: 'hotel-interior',
+    anchor: 'khach-san',
     icon: 'i-lucide-building-2',
     title: { vi: 'Nội thất khách sạn & resort', en: 'Hotel & resort interiors' },
     description: {
@@ -91,22 +97,23 @@ export const services: Service[] = [
     details: {
       vi: [
         'Phòng ngủ, sảnh, lễ tân, hành lang và khu tiện ích',
-        'Sản xuất theo module để kiểm soát số lượng lớn',
+        'Sản xuất theo module để các phòng giống nhau đồng nhất',
         'Bàn giao đồng bộ theo phòng, tầng hoặc giai đoạn dự án'
       ],
       en: [
         'Guest rooms, lobby, reception, corridors and amenities',
-        'Module-based production to control large quantities',
+        'Module-based production so identical rooms match',
         'Handover by room, floor or project stage'
       ]
     }
   },
   {
     id: 'commercial-projects',
+    anchor: 'van-phong',
     icon: 'i-lucide-briefcase-business',
-    title: { vi: 'Nội thất thương mại', en: 'Commercial interiors' },
+    title: { vi: 'Nội thất văn phòng & thương mại', en: 'Office & commercial interiors' },
     description: {
-      vi: 'Thi công showroom, văn phòng, retail và không gian thương mại theo yêu cầu vận hành.',
+      vi: 'Thi công showroom, văn phòng, cửa hàng và không gian thương mại theo cách doanh nghiệp vận hành.',
       en: 'Showrooms, offices and retail spaces, built around how the business operates.'
     },
     details: {
@@ -124,11 +131,12 @@ export const services: Service[] = [
   },
   {
     id: 'export-oem',
+    anchor: 'oem-xuat-khau',
     icon: 'i-lucide-container',
-    title: { vi: 'Gia công theo hồ sơ kỹ thuật / xuất khẩu', en: 'OEM & export production' },
+    title: { vi: 'Gia công OEM & xuất khẩu', en: 'OEM & export production' },
     description: {
-      vi: 'Nhận gia công theo bản vẽ kỹ thuật, đơn hàng dự án và đơn hàng xuất khẩu.',
-      en: 'Production from technical drawings, project orders and export orders.'
+      vi: 'OEM (sản xuất theo thiết kế và tiêu chuẩn của bên đặt hàng): nhận gia công theo bản vẽ kỹ thuật cho dự án và đơn hàng xuất khẩu.',
+      en: 'OEM production to the buyer’s design and specification, for project and export orders.'
     },
     details: {
       vi: [

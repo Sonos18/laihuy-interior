@@ -103,7 +103,7 @@ for (const locale of locales) {
     for (const [index, id] of orderedIds.entries()) {
       const service = services.find(item => item.id === id)!
       const rendered = renderedServices.nth(index)
-      await expect(rendered).toHaveAttribute('id', id)
+      await expect(rendered).toHaveAttribute('id', service.anchor)
       await expect(rendered.getByTestId('services-sequence'))
         .toHaveText(String(index + 1).padStart(2, '0'))
       await expect(rendered.getByRole('heading')).toHaveText(service.title[locale])
@@ -125,7 +125,7 @@ for (const locale of locales) {
     }
 
     const documents = page.locator('[data-services-chapter="documents"]')
-    await expect(documents.locator('a[href="/lien-he"]')).toHaveCount(1)
+    await expect(documents.locator('a[href="/lien-he#cach-gui-ho-so"]')).toHaveCount(1)
     await expect(documents.locator('a[href="#delivery-journey"]')).toHaveCount(1)
 
     const proof = page.locator('[data-services-chapter="proof"]')
@@ -136,7 +136,7 @@ for (const locale of locales) {
     await expect(evidence.locator('img')).toHaveCount(4)
 
     const contact = page.locator('[data-services-chapter="contact"]')
-    await expect(contact.locator('a[href="/lien-he"]')).toHaveCount(1)
+    await expect(contact.locator('a[href="/lien-he#cach-gui-ho-so"]')).toHaveCount(1)
     await expect(contact.locator('a[href="tel:+84903102012"]')).toHaveCount(1)
     await expect(contact).not.toContainText(/đã gửi|đã nhận|gửi thành công|sent successfully|received/i)
     await expect(page.locator('main input[type="file"]')).toHaveCount(0)
@@ -212,7 +212,7 @@ test('services preserves SEO, focus and reduced-motion behavior', async ({ page 
     (entry: { item: { name: string } }) => entry.item.name
   )).toEqual(services.map(service => service.title.vi))
 
-  const contactLink = page.locator('[data-services-chapter="contact"] a[href="/lien-he"]')
+  const contactLink = page.locator('[data-services-chapter="contact"] a[href="/lien-he#cach-gui-ho-so"]')
   await contactLink.focus()
   await expect(contactLink).toBeFocused()
 })
@@ -338,7 +338,7 @@ for (const locale of locales) {
       await openServices(page, locale, width)
 
       for (const chapter of ['documents', 'contact'] as const) {
-        const primary = page.locator(`[data-services-chapter="${chapter}"] a[href="/lien-he"]`)
+        const primary = page.locator(`[data-services-chapter="${chapter}"] a[href="/lien-he#cach-gui-ho-so"]`)
         await expect(primary).toHaveCount(1)
         await expect(primary).toHaveClass(/\bbtn-bronze\b/)
         // Bronze Edge Rule: on a light surface the bronze fill carries the Deep Timber border.

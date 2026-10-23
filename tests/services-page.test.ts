@@ -35,6 +35,17 @@ describe('services delivery-journey page data', () => {
       .toEqual(services.map(service => service.id))
   })
 
+  it('gives each service the anchor the footer and other pages link to', () => {
+    expect(Object.fromEntries(services.map(service => [service.id, service.anchor]))).toEqual({
+      'design': 'thiet-ke',
+      'factory-production': 'san-xuat',
+      'construction': 'thi-cong',
+      'hotel-interior': 'khach-san',
+      'commercial-projects': 'van-phong',
+      'export-oem': 'oem-xuat-khau'
+    })
+  })
+
   it('contains no mojibake in editorial or media copy', () => {
     const strings = [
       ...collectStrings(servicesPageContent),
@@ -49,6 +60,7 @@ describe('services delivery-journey page data', () => {
     expect(Object.keys(servicesMediaAlt)).toEqual([
       'hero',
       'design',
+      'evidence',
       'factory',
       'construction',
       'quality'

@@ -50,7 +50,7 @@ const mediaClass = (index: number) => index % 2 === 1
     >
       <li
         v-for="(service, index) in services"
-        :id="service.id"
+        :id="service.anchor"
         :key="service.id"
         v-reveal.item.image
         data-testid="services-core-stage"
