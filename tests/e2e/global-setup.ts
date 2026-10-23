@@ -28,4 +28,15 @@ export default async function globalSetup(): Promise<void> {
       + `(HTTP ${response.status}, title "${title}"). ${hint}`
     )
   }
+
+  // The owner's `pnpm dev` holds the default port and passes the title check, so a run without
+  // PLAYWRIGHT_PORT silently tested the dev server. Dev renders differently from the build CI
+  // ships (it keeps template comments, serves fonts and CSS through Vite), and 22 visual
+  // baselines approved that way disagreed with production by up to 16% of their pixels.
+  if (html.includes('/_nuxt/@vite/client')) {
+    throw new Error(
+      `[playwright] ${APP_ORIGIN}/ is a \`nuxt dev\` server; the suites assert the production `
+      + `build. ${hint}`
+    )
+  }
 }
