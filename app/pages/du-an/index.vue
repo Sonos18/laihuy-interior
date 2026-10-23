@@ -13,7 +13,10 @@ import { splitProjectIndex } from '~/utils/project-index'
 
 const { t, ta } = useLanguage()
 
-const heroImage = withAlt(projectMedia['codi-villa-phan-thiet'].cover, '')
+const heroImage = withAlt(projectMedia['codi-villa-phan-thiet'].cover, {
+  vi: 'Codi Villa Phan Thiết, NovaWorld Phan Thiết',
+  en: 'Codi Villa, NovaWorld Phan Thiet'
+})
 
 type CategoryFilter = 'all' | ProjectCategory
 
@@ -100,8 +103,8 @@ usePageSeo({
     <AppHero
       :topic="t(uiText.labels.caseStudies)"
       :title="t({ vi: 'Khách sạn, villa', en: 'Hotels, villas' })"
-      :special-title="t({ vi: 'và công trình lớn', en: 'and large-scale builds' })"
-      :subtitle="t({ vi: 'Các dự án được trình bày theo hướng năng lực triển khai: phạm vi công việc, vật liệu, tiến độ và chất lượng bàn giao.', en: 'Projects are presented as delivery case studies, showing scope, materials, schedule, and handover quality.' })"
+      :special-title="t({ vi: 'và không gian thương mại', en: 'and commercial spaces' })"
+      :subtitle="t({ vi: 'Mỗi dự án ghi rõ phạm vi Lai Huy đảm nhận, diện tích, vật liệu chính và hình ảnh từng không gian.', en: 'Each project shows the scope Lai Huy delivered, floor area, main materials and images of every space.' })"
       :image="heroImage"
       mode="caption"
       atmosphere="dark"
@@ -191,7 +194,7 @@ usePageSeo({
             >
               <NuxtImg
                 :src="cover.path"
-                :alt="t(project.name)"
+                alt=""
                 :width="cover.width"
                 :height="cover.height"
                 sizes="sm:100vw md:50vw lg:33vw xl:25vw"
@@ -228,10 +231,10 @@ usePageSeo({
       <div class="shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
         <div>
           <p class="eyebrow">
-            {{ t(uiText.cta.hotelConsult) }}
+            {{ t({ vi: 'Dự án tiếp theo', en: 'Your next project' }) }}
           </p>
           <h2 class="home-section-heading mt-4 max-w-3xl text-ink-950">
-            {{ t({ vi: 'Bạn cần đội ngũ sản xuất và thi công cho dự án tiếp theo?', en: 'Need a production and contracting team for your next project?' }) }}
+            {{ t({ vi: 'Đang chuẩn bị nội thất cho khách sạn, villa hay văn phòng?', en: 'Planning the interiors for a hotel, villa or office?' }) }}
           </h2>
         </div>
         <NuxtLink
@@ -239,7 +242,7 @@ usePageSeo({
           class="btn-bronze"
           data-testid="projects-cta"
         >
-          {{ t(uiText.cta.sendDrawings) }}
+          {{ t(uiText.cta.quote24h) }}
         </NuxtLink>
       </div>
     </section>
