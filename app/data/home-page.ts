@@ -5,6 +5,8 @@ export type HomeCapabilityId = 'technical' | 'manufacturing' | 'fitout'
 
 export type HomeStoryStage = {
   id: HomeStoryStageId
+  /** The canonical six-step workflow step(s) this stage condenses, e.g. '03–05'. */
+  step: string
   label: LocalizedText
   title: LocalizedText
   description: LocalizedText
@@ -72,7 +74,8 @@ export const homePageContent = {
 export const homeStoryStages: readonly HomeStoryStage[] = [
   {
     id: 'existing',
-    label: { vi: 'Bước 01 · Tiếp nhận hồ sơ', en: 'Step 01 · Intake' },
+    step: '01',
+    label: { vi: 'Tiếp nhận hồ sơ', en: 'Intake' },
     title: {
       vi: 'Đối chiếu bản vẽ với hiện trạng',
       en: 'Check the drawings against the site'
@@ -84,7 +87,8 @@ export const homeStoryStages: readonly HomeStoryStage[] = [
   },
   {
     id: 'drawing',
-    label: { vi: 'Bước 02 · Bóc tách kỹ thuật', en: 'Step 02 · Take-off' },
+    step: '02',
+    label: { vi: 'Bóc tách kỹ thuật', en: 'Take-off' },
     title: { vi: 'Bóc tách trước khi cắt ván', en: 'Take-off before the first cut' },
     description: {
       vi: 'Bản vẽ được bóc tách thành BOQ (bảng khối lượng), danh mục vật tư và shop drawing (bản vẽ triển khai sản xuất); điểm giao cắt với các bộ môn khác được chốt ở bước này.',
@@ -93,7 +97,8 @@ export const homeStoryStages: readonly HomeStoryStage[] = [
   },
   {
     id: 'material',
-    label: { vi: 'Bước 03–05 · Mẫu, sản xuất, QC', en: 'Steps 03–05 · Samples, production, QC' },
+    step: '03–05',
+    label: { vi: 'Mẫu, sản xuất, QC', en: 'Samples, production, QC' },
     title: { vi: 'Duyệt mẫu rồi mới sản xuất hàng loạt', en: 'Approve the sample, then produce in volume' },
     description: {
       vi: 'Màu, vân gỗ, phụ kiện và cấu tạo được duyệt trên mẫu; sau đó xưởng sản xuất theo module và kiểm tra trước khi đóng gói.',
@@ -102,7 +107,8 @@ export const homeStoryStages: readonly HomeStoryStage[] = [
   },
   {
     id: 'space',
-    label: { vi: 'Bước 06 · Lắp đặt & bàn giao', en: 'Step 06 · Installation & handover' },
+    step: '06',
+    label: { vi: 'Lắp đặt & bàn giao', en: 'Installation & handover' },
     title: { vi: 'Lắp đặt và nghiệm thu từng khu vực', en: 'Installed and signed off area by area' },
     description: {
       vi: 'Đội lắp đặt của Lai Huy lắp theo mặt bằng, phối hợp với các bộ môn tại công trình và nghiệm thu theo từng khu vực.',

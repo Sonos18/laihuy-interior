@@ -128,10 +128,12 @@ const layerStyle = (index: number) => {
               />
               <div class="home-material-story__copy-body">
                 <div class="flex items-center gap-4">
+                  <!-- The numeral is the workflow step, not the stage index: four stages condense
+                       the six-step workflow, so a bare 01–04 would contradict "Bước 06". -->
                   <span
+                    data-stage-step
                     class="home-material-story__number home-meta-text"
-                    aria-hidden="true"
-                  >{{ String(index + 1).padStart(2, '0') }}</span>
+                  ><span class="sr-only">{{ t({ vi: 'Bước ', en: stage.step.includes('–') ? 'Steps ' : 'Step ' }) }}</span>{{ stage.step }}</span>
                   <span
                     data-stage-label
                     class="home-material-story__label home-meta-text"

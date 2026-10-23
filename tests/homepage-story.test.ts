@@ -56,7 +56,8 @@ describe('homepage material story', () => {
     })
     expect(homeStoryStages[0]).toEqual({
       id: 'existing',
-      label: { vi: 'Bước 01 · Tiếp nhận hồ sơ', en: 'Step 01 · Intake' },
+      step: '01',
+      label: { vi: 'Tiếp nhận hồ sơ', en: 'Intake' },
       title: {
         vi: 'Đối chiếu bản vẽ với hiện trạng',
         en: 'Check the drawings against the site'

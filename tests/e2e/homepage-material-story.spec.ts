@@ -11,14 +11,16 @@ const COPY = {
   vi: {
     hero: 'Nội thất khách sạn và dự án, sản xuất tại xưởng của chính Lai Huy',
     story: 'Không chuyển tay giữa các nhà thầu',
-    stages: ['Bước 01 · Tiếp nhận hồ sơ', 'Bước 02 · Bóc tách kỹ thuật', 'Bước 03–05 · Mẫu, sản xuất, QC', 'Bước 06 · Lắp đặt & bàn giao'],
+    steps: ['Bước 01', 'Bước 02', 'Bước 03–05', 'Bước 06'],
+    stages: ['Tiếp nhận hồ sơ', 'Bóc tách kỹ thuật', 'Mẫu, sản xuất, QC', 'Lắp đặt & bàn giao'],
     capabilities: ['Thiết kế & triển khai kỹ thuật', 'Sản xuất tại xưởng', 'Thi công & lắp đặt'],
     cta: 'Gửi bản vẽ, nhận BOQ sơ bộ'
   },
   en: {
     hero: 'Hotel and project interiors, made in our own factory',
     story: 'No hand-offs between contractors',
-    stages: ['Step 01 · Intake', 'Step 02 · Take-off', 'Steps 03–05 · Samples, production, QC', 'Step 06 · Installation & handover'],
+    steps: ['Step 01', 'Step 02', 'Steps 03–05', 'Step 06'],
+    stages: ['Intake', 'Take-off', 'Samples, production, QC', 'Installation & handover'],
     capabilities: ['Design & technical development', 'In-house production', 'Fit-out & installation'],
     cta: 'Send drawings for a preliminary BOQ'
   }
@@ -65,6 +67,8 @@ for (const locale of ['vi', 'en'] as const) {
     await expect(story.getByRole('heading', { level: 2, name: copy.story, exact: true })).toHaveCount(1)
     await expect(story.getByTestId('home-story-stage')).toHaveCount(4)
     await expect(story.locator('[data-stage-label]')).toHaveText(copy.stages)
+    // The numeral is the workflow step the stage condenses, never the bare 01–04 stage index.
+    await expect(story.locator('[data-stage-step]')).toHaveText(copy.steps)
     expect(await story.locator('[data-stage-id]').evaluateAll(elements =>
       elements.map(element => element.getAttribute('data-stage-id'))
     )).toEqual(['existing', 'drawing', 'material', 'space'])
