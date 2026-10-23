@@ -70,13 +70,13 @@ const recoveryLinks = [
     to: '/du-an',
     icon: 'i-lucide-layout-grid',
     label: { vi: 'Dự án', en: 'Projects' },
-    description: { vi: 'Khách sạn, villa và công trình lớn', en: 'Hotels, villas and large-scale builds' }
+    description: { vi: 'Khách sạn, villa, nhà phố và văn phòng', en: 'Hotels, villas, townhouses and offices' }
   },
   {
     to: '/dich-vu',
     icon: 'i-lucide-hard-hat',
     label: { vi: 'Dịch vụ', en: 'Services' },
-    description: { vi: 'Thiết kế, sản xuất và thi công', en: 'Design, production and contracting' }
+    description: { vi: 'Thiết kế, sản xuất và thi công', en: 'Design, production and fit-out' }
   },
   {
     to: '/lien-he',
@@ -166,7 +166,7 @@ const recoveryLinks = [
                 :href="`tel:${company.phone.replaceAll(' ', '')}`"
                 class="btn-outline"
               >
-                {{ t(uiText.labels.callNow) }} · {{ company.phone }}
+                {{ t(uiText.labels.callNow) }}
               </a>
             </div>
           </div>

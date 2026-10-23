@@ -170,7 +170,7 @@ const updatedAt = computed(() =>
                     :href="`tel:${company.phone.replaceAll(' ', '')}`"
                     class="text-wood-600 underline underline-offset-4 transition-colors duration-[var(--dur-hover)] hover:text-wood-700 motion-reduce:transition-none"
                   >
-                    {{ company.phone }}
+                    {{ t(company.phoneDisplay) }}
                   </a>
                 </dd>
               </div>

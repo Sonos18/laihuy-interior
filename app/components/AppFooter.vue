@@ -97,19 +97,18 @@ const { t, ta } = useLanguage()
           <h2 class="footer-eyebrow">
             {{ t(uiText.labels.services) }}
           </h2>
-          <!-- These are LINKS, not labels. Five items that look like navigation and do nothing
-               is a dead end. /dich-vu has no per-service anchors, so all five resolve to the
-               page itself. -->
+          <!-- These are LINKS, not labels, and each lands on its own anchor on /dich-vu
+               (`company.footerServices[].to`), not on the top of the page. -->
           <ul class="footer-list">
             <li
-              v-for="service in ta(company.footerServices)"
-              :key="service"
+              v-for="service in company.footerServices"
+              :key="service.to"
             >
               <NuxtLink
-                to="/dich-vu"
+                :to="service.to"
                 class="footer-link"
               >
-                {{ service }}
+                {{ t(service.label) }}
               </NuxtLink>
             </li>
           </ul>
@@ -124,7 +123,7 @@ const { t, ta } = useLanguage()
                eyebrow above each value, which is what the reference shows and what lets three
                contact channels occupy three lines instead of six.
                The visually-hidden text is what keeps this honest: a sighted reader gets the
-               icon, a screen reader still hears "Điện thoại: +84 903 102 012" rather than a
+               icon, a screen reader still hears "Điện thoại: 0903 102 012" rather than a
                bare number with no field name. -->
           <dl class="footer-contact">
             <div>
@@ -141,7 +140,7 @@ const { t, ta } = useLanguage()
                   :href="`tel:${company.phone.replaceAll(' ', '')}`"
                   class="footer-link footer-link-lead"
                 >
-                  {{ company.phone }}
+                  {{ t(company.phoneDisplay) }}
                 </a>
               </dd>
             </div>

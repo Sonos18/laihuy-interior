@@ -152,7 +152,7 @@ watch(() => props.solid, value => setSolid(value))
         <a
           :href="`tel:${company.phone.replaceAll(' ', '')}`"
           class="chrome-trigger chrome-nav-color"
-          :aria-label="locale === 'vi' ? `Gọi ${company.phone}` : `Call ${company.phone}`"
+          :aria-label="t(uiText.labels.callNow)"
         >
           <Icon
             name="i-lucide-phone"
