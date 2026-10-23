@@ -37,20 +37,35 @@ usePageSeo({
       '@context': 'https://schema.org',
       '@type': 'JobPosting',
       'title': t(job.title),
-      'description': t(job.description),
+      'description': job.workNote ? `${t(job.description)} ${t(job.workNote)}` : t(job.description),
       'datePosted': jobsPostedDate,
       'employmentType': 'FULL_TIME',
       'hiringOrganization': { '@id': `${base}#organization` },
-      'jobLocation': {
+      // Structured places, not the display chip: Google needs a real locality and region.
+      'jobLocation': job.jobLocation.map(place => ({
         '@type': 'Place',
         'address': {
           '@type': 'PostalAddress',
-          'addressLocality': t(job.location),
+          'addressLocality': place.addressLocality,
+          'addressRegion': place.addressRegion,
           'addressCountry': 'VN'
         }
-      }
+      }))
     }))
   ]
+})
+
+// Every role is currently full-time, so the eyebrow states the count and the type together.
+const openPositionsEyebrow = computed(() => t({
+  vi: `${jobs.length} vị trí · toàn thời gian`,
+  en: `${jobs.length} roles · full-time`
+}))
+
+// The subject asks the applicant to name the role and themselves; the brackets are placeholders
+// they replace, so the mailbox can sort applications without opening each one.
+const applyMailto = computed(() => {
+  const subject = t({ vi: 'Ứng tuyển – [Vị trí] – [Họ tên]', en: 'Application – [Role] – [Your name]' })
+  return `mailto:${company.email}?subject=${encodeURIComponent(subject)}`
 })
 </script>
 
@@ -63,7 +78,7 @@ usePageSeo({
       :topic="t({ vi: 'Tuyển dụng', en: 'Careers' })"
       :title="t({ vi: 'Nơi tay nghề', en: 'Where craft' })"
       :special-title="t({ vi: 'làm nên công trình', en: 'builds real projects' })"
-      :subtitle="t({ vi: 'Gia nhập môi trường sản xuất và thi công nội thất dự án chuyên nghiệp, nơi thiết kế, kỹ thuật, xưởng và công trình làm việc cùng một mục tiêu.', en: 'Join a professional project interior environment where design, technical detailing, factory production, and on-site contracting work toward one delivery goal.' })"
+      :subtitle="t({ vi: 'Các vị trí đang tuyển ở xưởng Vĩnh Long, văn phòng Long Hậu (Tây Ninh) và tại công trình: sản xuất, kỹ thuật, thiết kế, giám sát và kinh doanh dự án.', en: 'Open roles at our Vinh Long factory, our Long Hau office (Tay Ninh) and on site: production, engineering, design, supervision and project sales.' })"
       :image="heroImage"
       focal="50% 40%"
     />
@@ -75,7 +90,7 @@ usePageSeo({
             {{ t({ vi: 'Môi trường làm việc', en: 'Work environment' }) }}
           </p>
           <h2 class="home-section-heading mt-4 text-ink-950">
-            {{ t({ vi: 'Cùng phát triển năng lực nội thất dự án', en: 'Build project interior capability with us' }) }}
+            {{ t({ vi: 'Làm việc giữa bản vẽ, xưởng và công trình', en: 'Work across drawings, workshop and site' }) }}
           </h2>
         </div>
         <div>
@@ -104,7 +119,7 @@ usePageSeo({
       <div class="shell">
         <div class="mb-12 max-w-3xl">
           <p class="eyebrow">
-            {{ t(uiText.labels.openPositions) }}
+            {{ openPositionsEyebrow }}
           </p>
           <h2 class="home-section-heading mt-4 text-ink-950">
             {{ t({ vi: 'Vị trí đang tuyển', en: 'Open positions' }) }}
@@ -159,14 +174,14 @@ usePageSeo({
             {{ t({ vi: 'Ứng tuyển', en: 'Apply' }) }}
           </p>
           <h2 class="home-section-heading mt-4 max-w-3xl text-ink-950">
-            {{ t({ vi: 'Gửi hồ sơ để cùng Lai Huy triển khai những dự án lớn hơn', en: 'Send your profile and help Lai Huy deliver larger projects' }) }}
+            {{ t({ vi: 'Gửi CV, ghi rõ vị trí ứng tuyển', en: 'Send your CV and name the role' }) }}
           </h2>
           <p class="home-lead-text mt-4 text-ink-600">
-            {{ t({ vi: 'Email tuyển dụng hiện dùng chung với kênh liên hệ công ty.', en: 'Recruitment applications currently use the company contact email.' }) }}
+            {{ t({ vi: `Gửi CV (và portfolio nếu có) tới ${company.email}, tiêu đề: Ứng tuyển – [Vị trí] – [Họ tên].`, en: `Email your CV (and portfolio, if any) to ${company.email} with the subject: Application – [Role] – [Your name].` }) }}
           </p>
         </div>
         <a
-          :href="`mailto:${company.email}?subject=${encodeURIComponent(t({ vi: 'Ứng tuyển Lai Huy Interior', en: 'Career application - Lai Huy Interior' }))}`"
+          :href="applyMailto"
           class="btn-bronze"
           data-testid="careers-apply"
         >

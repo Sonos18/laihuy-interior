@@ -1,9 +1,24 @@
 import type { LocalizedArray, LocalizedText } from '~/shared/types/localization'
 
+/**
+ * A structured work place for the JobPosting JSON-LD. Kept apart from the display chip
+ * (`Job.location`): the chip is a human label ("Công trình toàn quốc"), whereas Google needs a
+ * real locality and region. These are proper names, so they are not localised.
+ */
+export type JobPlace = {
+  addressLocality: string
+  addressRegion: string
+}
+
 export type Job = {
   id: string
   title: LocalizedText
+  /** Display chip only. Structured data comes from `jobLocation`. */
   location: LocalizedText
+  /** Where the role is based, for the JobPosting JSON-LD. */
+  jobLocation: JobPlace[]
+  /** Extra sentence for the JSON-LD description when the role also works away from its base. */
+  workNote?: LocalizedText
   type: LocalizedText
   description: LocalizedText
   requirements: LocalizedArray
@@ -14,11 +29,15 @@ export type Job = {
  * Long Hậu IP, Tây Ninh. Earlier copies of this file said "Bến Tre", which no longer matches
  * the published company addresses. */
 
+const factoryPlace: JobPlace = { addressLocality: 'Phường Phú Khương', addressRegion: 'Vĩnh Long' }
+const officePlace: JobPlace = { addressLocality: 'Xã Cần Giuộc', addressRegion: 'Tây Ninh' }
+
 export const jobs: Job[] = [
   {
     id: 'quan-doc-xuong',
     title: { vi: 'Quản đốc xưởng', en: 'Workshop foreman' },
     location: { vi: 'Nhà xưởng — Vĩnh Long', en: 'Factory — Vinh Long' },
+    jobLocation: [factoryPlace],
     type: { vi: 'Toàn thời gian', en: 'Full-time' },
     description: {
       vi: 'Quản lý tiến độ sản xuất, nhân sự xưởng và chất lượng đầu ra cho các hạng mục nội thất dự án.',
@@ -41,6 +60,7 @@ export const jobs: Job[] = [
     id: 'ky-thuat-san-xuat',
     title: { vi: 'Kỹ thuật sản xuất', en: 'Production engineer' },
     location: { vi: 'Nhà xưởng — Vĩnh Long', en: 'Factory — Vinh Long' },
+    jobLocation: [factoryPlace],
     type: { vi: 'Toàn thời gian', en: 'Full-time' },
     description: {
       vi: 'Bóc tách bản vẽ, triển khai chi tiết sản xuất và phối hợp xưởng trong quá trình gia công nội thất.',
@@ -62,7 +82,8 @@ export const jobs: Job[] = [
   {
     id: 'thiet-ke-noi-that',
     title: { vi: 'Nhân viên thiết kế nội thất', en: 'Interior designer' },
-    location: { vi: 'VP Long Hậu / Xưởng Vĩnh Long', en: 'Long Hau office / Vinh Long factory' },
+    location: { vi: 'VP Long Hậu, Tây Ninh / Xưởng Vĩnh Long', en: 'Long Hau office, Tay Ninh / Vinh Long factory' },
+    jobLocation: [officePlace, factoryPlace],
     type: { vi: 'Toàn thời gian', en: 'Full-time' },
     description: {
       vi: 'Phát triển concept, phối cảnh và hồ sơ thiết kế cho khách sạn, villa, căn hộ và dự án thương mại.',
@@ -85,6 +106,7 @@ export const jobs: Job[] = [
     id: 'tho-moc-lap-dat',
     title: { vi: 'Thợ mộc / thợ thi công', en: 'Carpenter / installer' },
     location: { vi: 'Xưởng Vĩnh Long / công trình', en: 'Vinh Long factory / on site' },
+    jobLocation: [factoryPlace],
     type: { vi: 'Toàn thời gian', en: 'Full-time' },
     description: {
       vi: 'Gia công, hoàn thiện và thi công các hạng mục nội thất tại xưởng hoặc công trình theo bản vẽ.',
@@ -106,7 +128,9 @@ export const jobs: Job[] = [
   {
     id: 'giam-sat-cong-trinh',
     title: { vi: 'Giám sát công trình', en: 'Site supervisor' },
-    location: { vi: 'Toàn quốc theo dự án', en: 'Nationwide, by project' },
+    location: { vi: 'Công trình toàn quốc', en: 'Project sites nationwide' },
+    jobLocation: [officePlace],
+    workNote: { vi: 'Làm việc tại công trình trên toàn quốc.', en: 'Works at project sites across the country.' },
     type: { vi: 'Toàn thời gian', en: 'Full-time' },
     description: {
       vi: 'Giám sát tiến độ thi công, phối hợp hiện trường và nghiệm thu hạng mục nội thất dự án.',
@@ -128,7 +152,8 @@ export const jobs: Job[] = [
   {
     id: 'kinh-doanh-du-an',
     title: { vi: 'Nhân viên kinh doanh dự án', en: 'Project sales executive' },
-    location: { vi: 'VP Long Hậu / linh hoạt', en: 'Long Hau office / flexible' },
+    location: { vi: 'VP Long Hậu, Tây Ninh / linh hoạt', en: 'Long Hau office, Tay Ninh / flexible' },
+    jobLocation: [officePlace],
     type: { vi: 'Toàn thời gian', en: 'Full-time' },
     description: {
       vi: 'Phát triển khách hàng B2B, tiếp nhận yêu cầu báo giá và phối hợp nội bộ để tư vấn giải pháp dự án.',
@@ -163,8 +188,8 @@ export const careerBenefits: LocalizedText[] = [
     en: 'Hands-on project production and installation environment'
   },
   {
-    vi: 'Cơ hội tham gia khách sạn, villa và công trình quy mô lớn',
-    en: 'Work on hotels, villas and large-scale projects'
+    vi: 'Tham gia dự án khách sạn, villa, căn hộ và văn phòng',
+    en: 'Work on hotel, villa, apartment and office projects'
   },
   {
     vi: 'Lộ trình phát triển kỹ năng kỹ thuật, quản lý và vận hành',
