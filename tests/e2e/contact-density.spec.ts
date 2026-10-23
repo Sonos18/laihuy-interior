@@ -11,20 +11,20 @@ const TRANSPARENT_PNG = Buffer.from(
 
 const CONTACT_COPY = {
   vi: {
-    call: 'Gọi ngay',
-    form: 'Gửi thông tin công trình',
-    action: 'Gửi yêu cầu tư vấn',
-    forbidden: ['Đã nhận yêu cầu', 'sẽ liên hệ', 'phản hồi trong vòng 24 giờ']
+    call: 'Gọi 0903 102 012',
+    email: 'Gửi email',
+    action: 'Soạn email với thông tin này',
+    forbidden: ['Đã nhận yêu cầu', 'đã gửi', 'sẽ liên hệ', 'phản hồi trong vòng 24 giờ']
   },
   en: {
-    call: 'Call now',
-    form: 'Share project information',
-    action: 'Send consultation request',
-    forbidden: ['received your request', 'will be in touch', 'within one business day']
+    call: 'Call +84 903 102 012',
+    email: 'Email us',
+    action: 'Compose an email with these details',
+    forbidden: ['received your request', 'has been sent', 'will be in touch', 'within one business day']
   }
 } as const
 
-async function prepareContentPage(page: Page, locale: 'vi' | 'en', width = 1024) {
+async function prepareContentPage(page: Page, locale: 'vi' | 'en', width = 1024, hash = '') {
   const consoleErrors: string[] = []
   const pageErrors: string[] = []
 
@@ -48,7 +48,7 @@ async function prepareContentPage(page: Page, locale: 'vi' | 'en', width = 1024)
   })
 
   await page.setViewportSize({ width, height: VIEWPORT_HEIGHT })
-  await page.goto(new URL('/lien-he', TEST_ORIGIN).toString(), { waitUntil: 'load' })
+  await page.goto(new URL(`/lien-he${hash}`, TEST_ORIGIN).toString(), { waitUntil: 'load' })
   await page.waitForFunction(() => Boolean(
     (document.querySelector('#__nuxt') as HTMLElement & { __vue_app__?: unknown })?.__vue_app__
   ))
@@ -66,22 +66,22 @@ for (const locale of ['vi', 'en'] as const) {
       const errors = await prepareContentPage(page, locale, width)
       const hero = page.locator('.hero-image').locator('xpath=ancestor::section[1]')
       const phone = hero.getByRole('link', { name: CONTACT_COPY[locale].call, exact: true })
-      const formLink = hero.getByRole('link', { name: CONTACT_COPY[locale].form, exact: true })
+      const emailLink = hero.getByRole('link', { name: CONTACT_COPY[locale].email, exact: true })
 
       await expect(hero.getByRole('heading', { level: 1 })).toBeVisible()
       await expect(phone).toHaveAttribute('href', /^tel:\+\d{8,15}$/)
-      await expect(formLink).toHaveAttribute('href', '#contact-form')
+      await expect(emailLink).toHaveAttribute('href', /^mailto:noithatlaihuy@gmail\.com\?subject=/)
 
-      const [heroBox, phoneBox, formLinkBox] = await Promise.all([
+      const [heroBox, phoneBox, emailBox] = await Promise.all([
         hero.boundingBox(),
         phone.boundingBox(),
-        formLink.boundingBox()
+        emailLink.boundingBox()
       ])
       expect(heroBox).not.toBeNull()
       expect(phoneBox).not.toBeNull()
-      expect(formLinkBox).not.toBeNull()
+      expect(emailBox).not.toBeNull()
       expect(phoneBox!.y + phoneBox!.height).toBeLessThanOrEqual(heroBox!.y + heroBox!.height + 1)
-      expect(formLinkBox!.y + formLinkBox!.height).toBeLessThanOrEqual(heroBox!.y + heroBox!.height + 1)
+      expect(emailBox!.y + emailBox!.height).toBeLessThanOrEqual(heroBox!.y + heroBox!.height + 1)
       if (width <= 430) {
         expect(phoneBox!.y + phoneBox!.height).toBeLessThanOrEqual(VIEWPORT_HEIGHT)
       }
@@ -91,14 +91,8 @@ for (const locale of ['vi', 'en'] as const) {
     })
   }
 
-  test(`DENS-CONTACT-01 form action clears sticky chrome in ${locale}`, async ({ page }) => {
-    const errors = await prepareContentPage(page, locale, 390)
-    const hero = page.locator('.hero-image').locator('xpath=ancestor::section[1]')
-    const formLink = hero.getByRole('link', { name: CONTACT_COPY[locale].form, exact: true })
-
-    await formLink.focus()
-    await expect(formLink).toBeFocused()
-    await page.keyboard.press('Enter')
+  test(`DENS-CONTACT-01 the #contact-form anchor clears sticky chrome in ${locale}`, async ({ page }) => {
+    const errors = await prepareContentPage(page, locale, 390, '#contact-form')
     await expect(page).toHaveURL(/\/lien-he#contact-form$/)
 
     const geometry = await page.locator('#contact-form').evaluate((form) => {
@@ -117,7 +111,7 @@ for (const locale of ['vi', 'en'] as const) {
     expect(errors.pageErrors).toEqual([])
   })
 
-  test(`contact form exposes the future submit action without delivery claims in ${locale}`, async ({ page }) => {
+  test(`contact form exposes the compose-email action without delivery claims in ${locale}`, async ({ page }) => {
     await prepareContentPage(page, locale)
     const form = page.getByTestId('contact-form')
     await expect(form.getByRole('button', { name: CONTACT_COPY[locale].action, exact: true })).toBeVisible()

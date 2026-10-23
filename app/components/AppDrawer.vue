@@ -241,7 +241,7 @@ onScopeDispose(() => {
           :href="`tel:${company.phone.replaceAll(' ', '')}`"
           class="drawer-phone mb-4 block"
         >
-          {{ company.phone }}
+          {{ t(company.phoneDisplay) }}
         </a>
         <NuxtLink
           to="/lien-he"

@@ -1,24 +1,25 @@
 <script setup lang="ts">
-import { company } from '~/data/company'
+import { company, quoteMailto } from '~/data/company'
 import { uiText } from '~/data/ui'
 import { projectMedia } from '~/media/catalog.generated'
 import { withAlt } from '~/media/project-media'
 import type { LocalizedText } from '~/shared/types/localization'
+import { buildQuoteMailto, type QuoteMailtoCopy } from '~/utils/contact-mailto'
 
-const { t, ta } = useLanguage()
+const { locale, t, ta } = useLanguage()
 
 // Hero: an inviting residential living room — see docs/hero-art-direction.md §10
-// (Contact · Conversation). Compact height, then flows into the contact form.
+// (Contact · Conversation). Compact height, then flows into the contact details.
 const heroAsset = projectMedia['nha-vuon-chily'].images.find(
   image => image.path.endsWith('nha-vuon-chily/5.webp')
 ) ?? projectMedia['nha-vuon-chily'].cover
-const heroImage = withAlt(heroAsset, {
-  vi: 'Phòng khách trong dự án nhà vườn Chi Ly',
-  en: 'Living room in the Chi Ly garden villa project'
-})
+const heroImage = withAlt(heroAsset, uiText.contactPage.heroImageAlt)
 
+/** Required fields: validated, in DOM order, announced with aria-required. */
 type ContactField = 'name' | 'phone' | 'email' | 'projectType' | 'message'
-type ContactDraft = Record<ContactField, string>
+/** Optional fields: never validated, still written into the email. */
+type OptionalField = 'company' | 'scope'
+type ContactDraft = Record<ContactField | OptionalField, string>
 
 /** Field order is the DOM order — `focusFirstError` walks it to land focus on the topmost
  *  invalid field, which is the only order a sighted keyboard user expects. */
@@ -26,50 +27,13 @@ const FIELD_ORDER: ContactField[] = ['name', 'phone', 'email', 'projectType', 'm
 
 const form = reactive<ContactDraft>({
   name: '',
+  company: '',
   phone: '',
   email: '',
   projectType: '',
+  scope: '',
   message: ''
 })
-
-const contactCards = computed(() => [
-  ...company.addresses.map(address => ({
-    icon: 'i-lucide-map-pin',
-    title: t(address.label),
-    lines: [t(address.address)],
-    href: address.mapUrl,
-    action: t(uiText.labels.openMaps)
-  })),
-  {
-    icon: 'i-lucide-phone',
-    title: t(uiText.labels.phone),
-    lines: [company.phone],
-    href: `tel:${company.phone.replaceAll(' ', '')}`,
-    action: t(uiText.labels.callNow)
-  },
-  {
-    icon: 'i-lucide-mail',
-    title: t(uiText.labels.email),
-    lines: [company.email],
-    href: `mailto:${company.email}`,
-    action: t(uiText.labels.sendEmail)
-  },
-  {
-    icon: 'i-lucide-clock',
-    title: t(uiText.labels.workingHours),
-    lines: ta(company.workingHours),
-    href: '',
-    action: ''
-  }
-])
-
-const projectTypes = computed(() => [
-  t({ vi: 'Thi công nội thất khách sạn', en: 'Hotel interior contracting' }),
-  t({ vi: 'Sản xuất nội thất tại xưởng', en: 'Factory furniture production' }),
-  t({ vi: 'Villa / căn hộ / nhà phố', en: 'Villa / apartment / townhouse' }),
-  t({ vi: 'Thương mại / văn phòng', en: 'Commercial / office' }),
-  t({ vi: 'Gia công theo bản vẽ / xuất khẩu', en: 'Production from drawings / export' })
-])
 
 // Keyless Google Maps embed pointed at the factory address (the vi string is what Maps
 // resolves). No API key or backend needed; the iframe lazy-loads below the fold.
@@ -84,8 +48,10 @@ type FieldErrors = Partial<Record<ContactField, LocalizedText>>
 // that has become valid cannot leave a stale message behind.
 const errors = ref<FieldErrors>({})
 const formEl = ref<HTMLFormElement | null>(null)
+/** True after a valid submit has handed the draft to the visitor's mail client. */
+const mailOpened = ref(false)
 
-const fieldId = (field: ContactField) => `contact-${field}`
+const fieldId = (field: ContactField | OptionalField) => `contact-${field}`
 const errorId = (field: ContactField) => `contact-${field}-error`
 
 const digitsIn = (value: string) => value.replace(/\D/g, '')
@@ -148,16 +114,78 @@ const clearError = (field: ContactField) => {
   errors.value = next
 }
 
+const labelOf = (options: readonly { id: string, label: LocalizedText }[], id: string) =>
+  t(options.find(option => option.id === id)?.label)
+
+const mailtoCopy = computed<QuoteMailtoCopy>(() => {
+  const copy = uiText.contactForm.mailto
+  return {
+    subjectTag: t(copy.subjectTag),
+    greeting: t(copy.greeting),
+    intro: t(copy.intro),
+    labels: {
+      name: t(copy.labels.name),
+      company: t(copy.labels.company),
+      phone: t(copy.labels.phone),
+      email: t(copy.labels.email),
+      projectType: t(copy.labels.projectType),
+      scope: t(copy.labels.scope),
+      details: t(copy.labels.details)
+    },
+    emptyValue: '—',
+    attachments: t(copy.attachments),
+    footer: t(copy.footer)
+  }
+})
+
+// The site has no transport, so the hand-off to the visitor's own mail client IS the submit. An
+// anchor click rather than `window.location.href = …`: the same hand-off, but a Location
+// assignment cannot be intercepted by a test while a click can.
+const openMailClient = (href: string) => {
+  const link = document.createElement('a')
+  link.href = href
+  link.hidden = true
+  document.body.append(link)
+  link.click()
+  link.remove()
+}
+
 const submitForm = async () => {
+  mailOpened.value = false
   if (!validate()) {
     await focusFirstError()
     return
   }
 
-  console.log('dữ liệu', form)
+  const { href, tooLong } = buildQuoteMailto(company.email, mailtoCopy.value, {
+    name: form.name,
+    company: form.company,
+    phone: form.phone,
+    email: form.email,
+    projectType: labelOf(uiText.contactForm.projectTypes, form.projectType),
+    scope: form.scope
+      ? labelOf(uiText.contactForm.scopes, form.scope)
+      : t(uiText.contactForm.scopeUnspecified),
+    message: form.message
+  })
+
+  // A URL past the mail-client limit would be cut mid-sentence. Say so instead.
+  if (tooLong) {
+    errors.value = { message: uiText.contactForm.errors.messageTooLong }
+    await focusFirstError()
+    return
+  }
+
+  openMailClient(href)
+  mailOpened.value = true
 }
 
 const hasErrors = computed(() => FIELD_ORDER.some(field => errors.value[field]))
+
+const inputClass = (invalid: boolean) => [
+  'mt-2 w-full rounded-[4px] border bg-white px-4 py-3 text-base text-ink-950 transition-colors duration-[var(--dur-hover)] placeholder:text-ink-500 motion-reduce:transition-none',
+  invalid ? 'border-alert-500 focus:border-alert-500' : 'border-ink-200 focus:border-wood-500'
+]
 
 const seoTitle = computed(() => t(company.seo.contact.title))
 const seoDescription = computed(() => t(company.seo.contact.description))
@@ -190,13 +218,17 @@ usePageSeo({
 <template>
   <div class="home-page bg-wood-50 text-ink-950">
     <!-- `home-page` only supplies the shared Headline/Title/Label type tokens. Below the hero the
-         page is one Linen surface; the form panel, map frame and info cards are Paper White 4px
-         containers with a Plaster border (DESIGN.md Cards / Inputs). -->
+         page is one Linen surface; the contact blocks, form panel and map frame are Paper White
+         4px containers with a Plaster border (DESIGN.md Cards / Inputs).
+
+         Order is the visitor's order of need (copy deck B-06): the two channels that work today
+         (phone, email) come first, then what to send, then the form that composes the email,
+         then where the company is. -->
     <AppHero
       :topic="t({ vi: 'Liên hệ', en: 'Contact' })"
       :title="t({ vi: 'Bắt đầu dự án', en: 'Start a project' })"
       :special-title="t({ vi: 'cùng Lai Huy', en: 'with Lai Huy' })"
-      :subtitle="t({ vi: 'Chia sẻ thông tin công trình để Lai Huy chuẩn bị nội dung tư vấn phù hợp với nhu cầu của bạn.', en: 'Share your project information so Lai Huy can prepare consultation around your needs.' })"
+      :subtitle="t(uiText.contactPage.lead)"
       :image="heroImage"
       atmosphere="warm"
       focal="50% 42%"
@@ -213,10 +245,10 @@ usePageSeo({
           />
         </a>
         <a
-          href="#contact-form"
+          :href="t(quoteMailto)"
           class="btn-luxury-outline"
         >
-          {{ t(uiText.contactForm.heroAction) }}
+          {{ t(uiText.labels.sendEmail) }}
         </a>
       </template>
     </AppHero>
@@ -224,8 +256,110 @@ usePageSeo({
     <section class="section-y">
       <div class="shell">
         <div
+          data-testid="contact-intake"
+          class="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-12"
+        >
+          <div
+            data-testid="contact-direct"
+            class="card p-6 md:p-8"
+          >
+            <h2 class="eyebrow">
+              {{ t(uiText.contactPage.direct.eyebrow) }}
+            </h2>
+            <dl class="mt-6 space-y-5">
+              <!-- A <dl> group may hold only <dt> and <dd> (axe: definition-list), so the glyph
+                   lives inside the <dt> and the <dd> is indented to sit under the label. -->
+              <div>
+                <dt class="flex items-center gap-3 text-sm font-bold text-ink-800">
+                  <Icon
+                    name="i-lucide-phone"
+                    class="h-5 w-5 shrink-0 text-wood-600"
+                    aria-hidden="true"
+                  />
+                  {{ t(uiText.labels.phone) }}
+                </dt>
+                <dd class="mt-1 pl-8">
+                  <a
+                    :href="`tel:${company.phone.replaceAll(' ', '')}`"
+                    class="home-card-heading inline-flex min-h-11 items-center text-ink-950 underline-offset-4 hover:underline"
+                  >{{ t(company.phoneDisplay) }}</a>
+                </dd>
+              </div>
+              <div>
+                <dt class="flex items-center gap-3 text-sm font-bold text-ink-800">
+                  <Icon
+                    name="i-lucide-mail"
+                    class="h-5 w-5 shrink-0 text-wood-600"
+                    aria-hidden="true"
+                  />
+                  {{ t(uiText.labels.email) }}
+                </dt>
+                <dd class="mt-1 pl-8">
+                  <a
+                    :href="t(quoteMailto)"
+                    class="inline-flex min-h-11 items-center break-all text-lg font-semibold text-ink-950 underline-offset-4 hover:underline"
+                  >{{ company.email }}</a>
+                </dd>
+              </div>
+              <div>
+                <dt class="flex items-center gap-3 text-sm font-bold text-ink-800">
+                  <Icon
+                    name="i-lucide-clock"
+                    class="h-5 w-5 shrink-0 text-wood-600"
+                    aria-hidden="true"
+                  />
+                  {{ t(uiText.labels.workingHours) }}
+                </dt>
+                <dd class="mt-1 pl-8 text-base leading-[1.7] text-ink-600">
+                  <span
+                    v-for="line in ta(company.workingHours)"
+                    :key="line"
+                    class="block"
+                  >{{ line }}</span>
+                </dd>
+              </div>
+            </dl>
+            <p class="mt-6 border-t border-ink-200 pt-5 text-sm leading-[1.7] text-ink-600">
+              {{ t(uiText.contactPage.direct.note) }}
+            </p>
+          </div>
+
+          <div
+            id="cach-gui-ho-so"
+            data-testid="contact-send-docs"
+            class="card scroll-mt-[calc(var(--header-h)+1rem)] p-6 md:p-8"
+          >
+            <h2 class="home-section-heading text-ink-950">
+              {{ t(uiText.contactPage.sendDocs.heading) }}
+            </h2>
+            <p class="mt-4 text-base leading-[1.7] text-ink-600">
+              {{ t(uiText.contactPage.sendDocs.lead) }}
+            </p>
+            <ol class="mt-5 list-decimal space-y-2 pl-5 text-base leading-[1.7] text-ink-800 marker:font-semibold marker:text-wood-600">
+              <li
+                v-for="item in uiText.contactPage.sendDocs.items"
+                :key="item.vi"
+              >
+                {{ t(item) }}
+              </li>
+            </ol>
+            <div class="mt-6 space-y-2 border-t border-ink-200 pt-5 text-sm leading-[1.7] text-ink-600">
+              <p>
+                <span class="font-bold text-ink-800">{{ t(uiText.contactPage.sendDocs.subjectLabel) }}:</span>
+                <code class="ml-1 inline-block rounded-[4px] bg-wood-100 px-2 py-1 text-ink-950 [overflow-wrap:anywhere]">{{ t(uiText.contactPage.sendDocs.subjectTemplate) }}</code>
+              </p>
+              <p v-if="uiText.contactPage.sendDocs.subjectExample[locale]">
+                <span class="font-bold text-ink-800">{{ t(uiText.contactPage.sendDocs.exampleLabel) }}:</span>
+                <code class="ml-1 inline-block rounded-[4px] bg-wood-100 px-2 py-1 text-ink-950 [overflow-wrap:anywhere]">{{ t(uiText.contactPage.sendDocs.subjectExample) }}</code>
+              </p>
+              <p>{{ t(uiText.contactPage.sendDocs.confidentiality) }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div
           data-testid="contact-primary"
-          class="grid gap-12 lg:grid-cols-[1fr_0.9fr]"
+          class="mt-16 grid gap-12 md:mt-20 lg:grid-cols-[1fr_0.9fr]"
         >
           <div class="card p-6 md:p-8">
             <p class="eyebrow">
@@ -239,6 +373,9 @@ usePageSeo({
               class="mt-4 text-base leading-[1.7] text-ink-600"
             >
               {{ t(uiText.contactForm.note) }}
+            </p>
+            <p class="mt-2 text-sm text-ink-600">
+              {{ t(uiText.contactForm.requiredNote) }}
             </p>
 
             <form
@@ -255,20 +392,16 @@ usePageSeo({
                   <label
                     :for="fieldId('name')"
                     class="text-sm font-bold text-ink-800"
-                  >{{ t(uiText.contactForm.fields.name) }}</label>
+                  >{{ t(uiText.contactForm.fields.name) }}<span aria-hidden="true"> *</span><span class="sr-only"> ({{ t(uiText.contactForm.required) }})</span></label>
                   <input
                     :id="fieldId('name')"
                     v-model="form.name"
                     type="text"
                     autocomplete="name"
+                    aria-required="true"
                     :aria-invalid="errors.name ? 'true' : undefined"
                     :aria-describedby="errors.name ? errorId('name') : undefined"
-                    :class="[
-                      'mt-2 w-full rounded-[4px] border bg-white px-4 py-3 text-base text-ink-950 transition-colors duration-[var(--dur-hover)] placeholder:text-ink-500 motion-reduce:transition-none',
-                      errors.name
-                        ? 'border-alert-500 focus:border-alert-500'
-                        : 'border-ink-200 focus:border-wood-500'
-                    ]"
+                    :class="inputClass(Boolean(errors.name))"
                     :placeholder="t(uiText.contactForm.placeholders.name)"
                     @input="clearError('name')"
                   >
@@ -285,21 +418,17 @@ usePageSeo({
                   <label
                     :for="fieldId('phone')"
                     class="text-sm font-bold text-ink-800"
-                  >{{ t(uiText.labels.phone) }}</label>
+                  >{{ t(uiText.labels.phone) }}<span aria-hidden="true"> *</span><span class="sr-only"> ({{ t(uiText.contactForm.required) }})</span></label>
                   <input
                     :id="fieldId('phone')"
                     v-model="form.phone"
                     type="tel"
                     autocomplete="tel"
+                    aria-required="true"
                     :aria-invalid="errors.phone ? 'true' : undefined"
                     :aria-describedby="errors.phone ? errorId('phone') : undefined"
-                    :class="[
-                      'mt-2 w-full rounded-[4px] border bg-white px-4 py-3 text-base text-ink-950 transition-colors duration-[var(--dur-hover)] placeholder:text-ink-500 motion-reduce:transition-none',
-                      errors.phone
-                        ? 'border-alert-500 focus:border-alert-500'
-                        : 'border-ink-200 focus:border-wood-500'
-                    ]"
-                    placeholder="+84..."
+                    :class="inputClass(Boolean(errors.phone))"
+                    :placeholder="t(uiText.contactForm.placeholders.phone)"
                     @input="clearError('phone')"
                   >
                   <p
@@ -317,20 +446,16 @@ usePageSeo({
                   <label
                     :for="fieldId('email')"
                     class="text-sm font-bold text-ink-800"
-                  >{{ t(uiText.labels.email) }}</label>
+                  >{{ t(uiText.labels.email) }}<span aria-hidden="true"> *</span><span class="sr-only"> ({{ t(uiText.contactForm.required) }})</span></label>
                   <input
                     :id="fieldId('email')"
                     v-model="form.email"
                     type="email"
                     autocomplete="email"
+                    aria-required="true"
                     :aria-invalid="errors.email ? 'true' : undefined"
                     :aria-describedby="errors.email ? errorId('email') : undefined"
-                    :class="[
-                      'mt-2 w-full rounded-[4px] border bg-white px-4 py-3 text-base text-ink-950 transition-colors duration-[var(--dur-hover)] placeholder:text-ink-500 motion-reduce:transition-none',
-                      errors.email
-                        ? 'border-alert-500 focus:border-alert-500'
-                        : 'border-ink-200 focus:border-wood-500'
-                    ]"
+                    :class="inputClass(Boolean(errors.email))"
                     :placeholder="t(uiText.contactForm.placeholders.email)"
                     @input="clearError('email')"
                   >
@@ -345,31 +470,44 @@ usePageSeo({
 
                 <div class="block">
                   <label
+                    :for="fieldId('company')"
+                    class="text-sm font-bold text-ink-800"
+                  >{{ t(uiText.contactForm.fields.company) }}</label>
+                  <input
+                    :id="fieldId('company')"
+                    v-model="form.company"
+                    type="text"
+                    autocomplete="organization"
+                    :class="inputClass(false)"
+                    :placeholder="t(uiText.contactForm.placeholders.company)"
+                  >
+                </div>
+              </div>
+
+              <div class="grid gap-5 md:grid-cols-2">
+                <div class="block">
+                  <label
                     :for="fieldId('projectType')"
                     class="text-sm font-bold text-ink-800"
-                  >{{ t(uiText.contactForm.fields.projectType) }}</label>
+                  >{{ t(uiText.contactForm.fields.projectType) }}<span aria-hidden="true"> *</span><span class="sr-only"> ({{ t(uiText.contactForm.required) }})</span></label>
                   <select
                     :id="fieldId('projectType')"
                     v-model="form.projectType"
+                    aria-required="true"
                     :aria-invalid="errors.projectType ? 'true' : undefined"
                     :aria-describedby="errors.projectType ? errorId('projectType') : undefined"
-                    :class="[
-                      'mt-2 w-full rounded-[4px] border bg-white px-4 py-3 text-base text-ink-950 transition-colors duration-[var(--dur-hover)] motion-reduce:transition-none',
-                      errors.projectType
-                        ? 'border-alert-500 focus:border-alert-500'
-                        : 'border-ink-200 focus:border-wood-500'
-                    ]"
+                    :class="inputClass(Boolean(errors.projectType))"
                     @change="clearError('projectType')"
                   >
                     <option value="">
                       {{ t(uiText.contactForm.placeholders.projectType) }}
                     </option>
                     <option
-                      v-for="type in projectTypes"
-                      :key="type"
-                      :value="type"
+                      v-for="type in uiText.contactForm.projectTypes"
+                      :key="type.id"
+                      :value="type.id"
                     >
-                      {{ type }}
+                      {{ t(type.label) }}
                     </option>
                   </select>
                   <p
@@ -380,25 +518,44 @@ usePageSeo({
                     {{ t(errors.projectType) }}
                   </p>
                 </div>
+
+                <div class="block">
+                  <label
+                    :for="fieldId('scope')"
+                    class="text-sm font-bold text-ink-800"
+                  >{{ t(uiText.contactForm.fields.scope) }}</label>
+                  <select
+                    :id="fieldId('scope')"
+                    v-model="form.scope"
+                    :class="inputClass(false)"
+                  >
+                    <option value="">
+                      {{ t(uiText.contactForm.scopeUnspecified) }}
+                    </option>
+                    <option
+                      v-for="scope in uiText.contactForm.scopes"
+                      :key="scope.id"
+                      :value="scope.id"
+                    >
+                      {{ t(scope.label) }}
+                    </option>
+                  </select>
+                </div>
               </div>
 
               <div class="block">
                 <label
                   :for="fieldId('message')"
                   class="text-sm font-bold text-ink-800"
-                >{{ t(uiText.contactForm.fields.message) }}</label>
+                >{{ t(uiText.contactForm.fields.message) }}<span aria-hidden="true"> *</span><span class="sr-only"> ({{ t(uiText.contactForm.required) }})</span></label>
                 <textarea
                   :id="fieldId('message')"
                   v-model="form.message"
                   rows="6"
+                  aria-required="true"
                   :aria-invalid="errors.message ? 'true' : undefined"
                   :aria-describedby="errors.message ? errorId('message') : undefined"
-                  :class="[
-                    'mt-2 w-full rounded-[4px] border bg-white px-4 py-3 text-base text-ink-950 transition-colors duration-[var(--dur-hover)] placeholder:text-ink-500 motion-reduce:transition-none',
-                    errors.message
-                      ? 'border-alert-500 focus:border-alert-500'
-                      : 'border-ink-200 focus:border-wood-500'
-                  ]"
+                  :class="inputClass(Boolean(errors.message))"
                   :placeholder="t(uiText.contactForm.placeholders.message)"
                   @input="clearError('message')"
                 />
@@ -414,9 +571,16 @@ usePageSeo({
               <button
                 type="submit"
                 class="btn-bronze w-full"
+                aria-describedby="submit-hint"
               >
                 {{ t(uiText.contactForm.submit) }}
               </button>
+              <p
+                id="submit-hint"
+                class="text-sm leading-[1.7] text-ink-600"
+              >
+                {{ t(uiText.contactForm.submitHint) }}
+              </p>
 
               <!-- Field errors are announced by aria-describedby when focus lands on the first
                    invalid field; this live region also exposes the form-level summary. -->
@@ -429,26 +593,43 @@ usePageSeo({
                   {{ t(uiText.contactForm.errors.summary) }}
                 </template>
               </p>
+
+              <!-- Visible, because a visitor with no mail client configured sees nothing else
+                   happen. It says the email app is open, never that anything was sent: the
+                   request exists only once the visitor presses Send there. -->
+              <p
+                data-testid="contact-mail-opened"
+                role="status"
+                aria-live="polite"
+                :class="mailOpened ? 'rounded-[4px] border border-ink-200 bg-wood-100 p-4 text-sm leading-[1.7] text-ink-800' : ''"
+              >
+                <template v-if="mailOpened">
+                  {{ t(uiText.contactForm.opened) }}
+                </template>
+              </p>
             </form>
           </div>
 
           <div>
             <p class="eyebrow">
-              {{ t({ vi: 'Bản đồ', en: 'Map' }) }}
+              {{ t(uiText.contactPage.map.eyebrow) }}
             </p>
             <h2 class="home-section-heading mt-4 text-ink-950">
-              {{ t({ vi: 'Văn phòng và nhà xưởng', en: 'Office and factory' }) }}
+              {{ t(uiText.contactPage.map.heading) }}
             </h2>
             <div class="mt-8 overflow-hidden rounded-[4px] border border-ink-200 bg-white">
               <iframe
                 :src="mapEmbedUrl"
-                :title="t({ vi: 'Bản đồ nhà xưởng Lai Huy Interior', en: 'Map to the Lai Huy Interior workshop' })"
+                :title="t(uiText.contactPage.map.iframeTitle)"
                 class="h-80 w-full border-0"
                 loading="lazy"
                 referrerpolicy="no-referrer-when-downgrade"
                 allowfullscreen
               />
             </div>
+            <p class="mt-3 text-sm leading-[1.7] text-ink-600">
+              {{ t(uiText.contactPage.map.caption) }}
+            </p>
             <div class="mt-6 space-y-4">
               <a
                 v-for="address in company.addresses"
@@ -462,50 +643,17 @@ usePageSeo({
                 <span class="mt-2 block text-base leading-[1.7] text-ink-600">
                   {{ t(address.address) }}
                 </span>
+                <span class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-wood-600">
+                  {{ t(address.mapAction) }}
+                  <Icon
+                    name="i-lucide-arrow-up-right"
+                    class="h-4 w-4"
+                    aria-hidden="true"
+                  />
+                </span>
               </a>
             </div>
           </div>
-        </div>
-
-        <!-- The five info cards close the band. 64px / 80px off the form+map block: an
-             intra-band step, sitting at or just below the --section-py rhythm (64/80 here
-             against 64/88 for --section-py), because this is not a section boundary. Five
-             equal columns from --bp-xl; below that the long Long Hậu address makes a
-             five-up row too narrow to read (3 + 2 instead). -->
-        <div
-          data-testid="contact-cards"
-          class="mt-16 grid gap-5 md:mt-20 md:grid-cols-3 xl:grid-cols-5"
-        >
-          <article
-            v-for="card in contactCards"
-            :key="card.title"
-            class="card p-6"
-          >
-            <Icon
-              :name="card.icon"
-              class="h-7 w-7 text-wood-600"
-              aria-hidden="true"
-            />
-            <h3 class="home-card-heading mt-5 text-ink-950">
-              {{ card.title }}
-            </h3>
-            <p
-              v-for="line in card.lines"
-              :key="line"
-              class="mt-2 text-base leading-[1.7] text-ink-600"
-            >
-              {{ line }}
-            </p>
-            <a
-              v-if="card.href"
-              :href="card.href"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="mt-5 inline-flex min-h-11 items-center text-sm font-semibold text-wood-600 underline-offset-4 hover:underline"
-            >
-              {{ card.action }}
-            </a>
-          </article>
         </div>
       </div>
     </section>

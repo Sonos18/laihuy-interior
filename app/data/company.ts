@@ -2,12 +2,6 @@ import { brandMedia, companyMedia, projectMedia } from '~/media/catalog.generate
 import type { LocalizedArray, LocalizedText } from '~/shared/types/localization'
 import type { MediaAsset } from '~/shared/media/types'
 
-export type CtaLink = {
-  label: LocalizedText
-  to: string
-  variant?: 'primary' | 'secondary' | 'dark' | 'light'
-}
-
 export type SeoEntry = {
   title: LocalizedText
   description: LocalizedText
@@ -18,6 +12,8 @@ export type AddressEntry = {
   label: LocalizedText
   address: LocalizedText
   mapUrl: string
+  /** The action label on the map link. One per address: two links named alike point two places. */
+  mapAction: LocalizedText
   /**
    * The glyph for footer band 2. Data, not template: the two entries take DIFFERENT icons (a pin
    * for the office, a factory for the workshop), and the footer previously hardcoded `map-pin`
@@ -37,14 +33,14 @@ export type TrustSignal = {
   label: LocalizedText
 }
 
-// --- Optional About-page content. Every field renders conditionally and stays
-// empty until authored with authentic content — never fabricated. -------------
-export type CompanyValue = {
-  icon: string
-  title: LocalizedText
-  description: LocalizedText
+/** One footer services link: the label and the /dich-vu anchor it jumps to. */
+export type FooterServiceLink = {
+  label: LocalizedText
+  to: string
 }
 
+// --- Optional About-page content. Every field renders conditionally and stays
+// empty until authored with authentic content — never fabricated. -------------
 export type CompanyMilestone = {
   year: string
   title: LocalizedText
@@ -90,62 +86,31 @@ const factoryAddress = {
 
 export const company = {
   name: 'Lai Huy Interior',
+  /** Canonical number: drives every `tel:` link and the JSON-LD. Never shown as-is. */
   phone: '+84 903 102 012',
+  /** What visitors read: Vietnamese local format, English international format. */
+  phoneDisplay: { vi: '0903 102 012', en: '+84 903 102 012' } satisfies LocalizedText,
   email: 'noithatlaihuy@gmail.com',
   facebook: 'https://www.facebook.com/noithatlaihuy',
-  tagline: {
-    vi: 'Xưởng sản xuất trực tiếp - Kiểm soát chất lượng - An toàn tiến độ',
-    en: 'Direct factory production - Quality control - On-time delivery'
-  },
   positioning: {
-    vi: 'Nhà thầu sản xuất và thi công nội thất khách sạn, villa và căn hộ cao cấp với hệ thống xưởng trực tiếp và quy trình kiểm soát chất lượng đồng bộ.',
-    en: 'A factory-direct contractor that manufactures and builds interiors for hotels, villas, and premium apartments, backed by an integrated quality control process.'
-  },
-  shortPositioning: {
-    vi: 'Sản xuất và thi công nội thất khách sạn, villa, căn hộ và dự án thương mại với năng lực nhà xưởng trực tiếp.',
-    en: 'Factory-direct manufacturing and contracting for hotels, villas, apartments, and commercial interior projects.'
+    vi: 'Thiết kế, sản xuất và thi công nội thất cho khách sạn, villa, căn hộ và văn phòng, từ xưởng riêng tại Vĩnh Long.',
+    en: 'Interior design, production and fit-out for hotels, villas, apartments and offices, from our own factory in Vinh Long.'
   },
   // --- Optional About-page content (renders only when authored) --------------
   /** Founding year — enables "Since …" cues once set. */
   foundingYear: undefined as string | undefined,
   mission: undefined as LocalizedText | undefined,
   vision: undefined as LocalizedText | undefined,
-  /** Core values — migrated from the original About page copy, now bilingual. */
-  coreValues: [
-    {
-      icon: 'i-lucide-factory',
-      title: { vi: 'Sản xuất trực tiếp', en: 'Direct production' },
-      description: {
-        vi: 'Chủ động xưởng giúp kiểm soát vật liệu, tiến độ và chất lượng hoàn thiện cho từng hạng mục nội thất.',
-        en: 'Owning the workshop lets us control materials, schedule and finishing quality on every interior package.'
-      }
-    },
-    {
-      icon: 'i-lucide-list-checks',
-      title: { vi: 'Quản lý dự án rõ ràng', en: 'Clear project management' },
-      description: {
-        vi: 'Quy trình phối hợp giữa thiết kế, kỹ thuật, sản xuất, QC và thi công giúp giảm sai lệch khi triển khai.',
-        en: 'A coordinated flow across design, engineering, production, QC and installation reduces gaps during delivery.'
-      }
-    },
-    {
-      icon: 'i-lucide-hard-hat',
-      title: { vi: 'Thi công thực chiến', en: 'Hands-on installation' },
-      description: {
-        vi: 'Đội ngũ lắp dựng làm việc tại công trình, phối hợp hiện trường và nghiệm thu theo từng giai đoạn.',
-        en: 'Our installation teams work on site, coordinating in the field and signing off stage by stage.'
-      }
-    }
-  ] satisfies CompanyValue[],
   milestones: [] as CompanyMilestone[],
   founder: undefined as CompanyFounder | undefined,
   team: [] as CompanyTeamMember[],
   certifications: undefined as LocalizedArray | undefined,
   awards: undefined as LocalizedArray | undefined,
   testimonials: [] as CompanyTestimonial[],
+  /* One line per locale. Still an array so consumers can join or stack lines without a type change. */
   workingHours: {
-    vi: ['Từ 8:00 - 17:00', 'Từ thứ 2 đến thứ 7'],
-    en: ['8:00 - 17:00', 'Monday to Saturday']
+    vi: ['8:00–17:00, thứ 2 – thứ 7'],
+    en: ['8:00–17:00, Monday–Saturday (UTC+7)']
   } satisfies LocalizedArray,
   addresses: [
     {
@@ -153,66 +118,32 @@ export const company = {
       address: representativeOffice,
       // Map queries stay on the Vietnamese address: that is the string Google Maps resolves.
       mapUrl: buildMapUrl(representativeOffice.vi),
+      mapAction: { vi: 'Mở bản đồ văn phòng', en: 'Open office map' },
       icon: 'i-lucide-map-pin'
     },
     {
       label: { vi: 'Nhà xưởng', en: 'Factory' },
       address: factoryAddress,
       mapUrl: buildMapUrl(factoryAddress.vi),
+      mapAction: { vi: 'Mở bản đồ nhà xưởng', en: 'Open factory map' },
       icon: 'i-lucide-factory'
     }
   ] satisfies AddressEntry[],
-  primaryCtas: [
-    {
-      label: { vi: 'Nhận báo giá trong 24h', en: 'Get a quote within 24h' },
-      to: '/lien-he',
-      variant: 'primary'
-    },
-    {
-      label: { vi: 'Xem năng lực nhà xưởng', en: 'View factory capability' },
-      to: '/nha-xuong',
-      variant: 'secondary'
-    }
-  ] satisfies CtaLink[],
-  markets: {
-    vi: [
-      'Khách sạn 3-5 sao',
-      'Villa và biệt thự nghỉ dưỡng',
-      'Căn hộ cao cấp',
-      'Dự án thương mại',
-      'Gia công theo bản vẽ',
-      'Đơn hàng xuất khẩu'
-    ],
-    en: [
-      '3-5 star hotels',
-      'Villas and resort residences',
-      'Premium apartments',
-      'Commercial projects',
-      'Shop drawings and OEM production',
-      'Export-ready orders'
-    ]
-  } satisfies LocalizedArray,
-  footerServices: {
-    vi: [
-      'Thiết kế nội thất khách sạn',
-      'Sản xuất nội thất tại xưởng',
-      'Thi công nội thất toàn quốc',
-      'Gia công theo bản vẽ',
-      'Kiểm soát chất lượng dự án'
-    ],
-    en: [
-      'Hotel interior design',
-      'Factory-direct furniture production',
-      'Nationwide interior contracting',
-      'Production from technical drawings',
-      'Project quality control'
-    ]
-  } satisfies LocalizedArray,
+  /* The six names of the services taxonomy (copy deck 2.3): three services, then three sectors
+     and models. Each links to its anchor on /dich-vu, so the footer never lands on the top of
+     a page and leaves the visitor to find the item. */
+  footerServices: [
+    { label: { vi: 'Thiết kế & triển khai kỹ thuật', en: 'Design & technical development' }, to: '/dich-vu#thiet-ke' },
+    { label: { vi: 'Sản xuất tại xưởng', en: 'In-house production' }, to: '/dich-vu#san-xuat' },
+    { label: { vi: 'Thi công & lắp đặt', en: 'Fit-out & installation' }, to: '/dich-vu#thi-cong' },
+    { label: { vi: 'Nội thất khách sạn & resort', en: 'Hotel & resort interiors' }, to: '/dich-vu#khach-san' },
+    { label: { vi: 'Nội thất văn phòng & thương mại', en: 'Office & commercial interiors' }, to: '/dich-vu#van-phong' },
+    { label: { vi: 'Gia công OEM & xuất khẩu', en: 'OEM & export production' }, to: '/dich-vu#oem-xuat-khau' }
+  ] satisfies FooterServiceLink[],
   /* The footer's trust layer. NOT new claims: every entry is a phrase this company already
-     publishes about itself, lifted verbatim in meaning from `seo.home.description` below
-     ("xưởng trực tiếp, kiểm soát chất lượng, thi công toàn quốc" / "own factory, in-house QC,
-     nationwide") and from `footerServices` above. Discrete strings because a footer strip cannot
-     render a sentence, not because anything here is newly asserted.
+     publishes about itself (own factory, in-house QC, nationwide installation — the confirmed
+     claims in PRODUCT.md) and the services in `footerServices` above. Discrete strings because a
+     footer strip cannot render a sentence, not because anything here is newly asserted.
 
      The line that governs this field is the one at the top of this file: fields stay empty until
      authored with authentic content, never fabricated. A fifth signal — a construction warranty —
@@ -227,85 +158,85 @@ export const company = {
      its own iconography for claims the site already illustrates is a second visual vocabulary. */
   trustSignals: [
     { icon: 'i-lucide-factory', label: { vi: 'Xưởng sản xuất trực tiếp', en: 'Own production factory' } },
-    { icon: 'i-lucide-workflow', label: { vi: 'Thiết kế & sản xuất đồng bộ', en: 'Design and production in-house' } },
+    { icon: 'i-lucide-workflow', label: { vi: 'Thiết kế & sản xuất đồng bộ', en: 'Design and production under one team' } },
     { icon: 'i-lucide-shield-check', label: { vi: 'Kiểm soát chất lượng', en: 'In-house quality control' } },
-    { icon: 'i-lucide-truck', label: { vi: 'Thi công toàn quốc', en: 'Nationwide installation' } }
+    { icon: 'i-lucide-truck', label: { vi: 'Lắp đặt toàn quốc', en: 'Nationwide installation' } }
   ] satisfies TrustSignal[],
   seo: {
     home: {
       title: {
-        vi: 'Sản xuất & thi công nội thất khách sạn | Lai Huy Interior',
-        en: 'Hotel Interior Manufacturer & Contractor | Lai Huy Interior'
+        vi: 'Nội thất khách sạn & dự án, xưởng riêng tại Vĩnh Long | Lai Huy Interior',
+        en: 'Hotel & Project Interiors from Our Vinh Long Factory | Lai Huy Interior'
       },
       description: {
-        vi: 'Lai Huy Interior thiết kế, sản xuất và thi công nội thất khách sạn, villa, căn hộ và dự án lớn — xưởng trực tiếp, kiểm soát chất lượng, thi công toàn quốc.',
-        en: 'Lai Huy Interior designs, manufactures and installs interiors for hotels, villas, apartments and large-scale projects — own factory, in-house QC, nationwide.'
+        vi: 'Lai Huy thiết kế, sản xuất tại xưởng Vĩnh Long và thi công nội thất khách sạn, villa, căn hộ, văn phòng. Sản xuất theo bản vẽ cho thiết kế và tổng thầu.',
+        en: 'Lai Huy designs, makes in its Vinh Long factory and fits out hotels, villas, apartments and offices, and builds to designers’ and contractors’ drawings.'
       },
       ogImage: brandMedia.bannerHome
     },
     projects: {
       title: {
-        vi: 'Dự án nội thất khách sạn & công trình lớn | Lai Huy Interior',
-        en: 'Hotel & Large-Scale Interior Case Studies | Lai Huy Interior'
+        vi: 'Dự án nội thất khách sạn, villa, văn phòng | Lai Huy Interior',
+        en: 'Hotel, Villa & Office Interior Projects | Lai Huy Interior'
       },
       description: {
-        vi: 'Xem các case study thiết kế, sản xuất và thi công nội thất khách sạn, villa, căn hộ, nhà phố và không gian thương mại của Lai Huy Interior.',
-        en: 'Explore Lai Huy Interior case studies across hotel, villa, apartment, townhouse, and commercial interior projects.'
+        vi: 'Dự án nội thất Lai Huy đã thực hiện: khách sạn, villa, nhà phố, văn phòng tại Vĩnh Long, TP.HCM, Phan Thiết, ghi rõ phạm vi, diện tích và vật liệu.',
+        en: 'Interior projects by Lai Huy: hotels, villas, townhouses and offices in Vinh Long, Ho Chi Minh City and Phan Thiet, with scope, area and materials.'
       },
       ogImage: projectMedia['khach-san-eo-gio'].cover
     },
     factory: {
       title: {
-        vi: 'Năng lực nhà xưởng nội thất khách sạn | Lai Huy Interior',
-        en: 'Factory Capability For Hotel Interiors | Lai Huy Interior'
+        vi: 'Xưởng sản xuất nội thất tại Vĩnh Long | Lai Huy Interior',
+        en: 'Interior Furniture Factory in Vinh Long | Lai Huy Interior'
       },
       description: {
-        vi: 'Khám phá năng lực xưởng sản xuất nội thất trực tiếp của Lai Huy Interior: máy móc, quy trình sản xuất, kiểm soát chất lượng và đội thi công.',
-        en: 'Discover Lai Huy Interior direct production capability: machinery, workflow, quality control, and on-site contracting.'
+        vi: 'Xưởng và kho 3.000 m² tại Vĩnh Long: CNC nesting, khoan CNC, dán cạnh tự động, ép nguội, 4 điểm QC; công suất đến 50 phòng khách sạn mỗi tháng.',
+        en: 'A 3,000 m² factory and warehouse in Vinh Long: CNC nesting and boring, automatic edge banding, cold pressing, four QC checks, up to 50 hotel rooms a month.'
       },
       ogImage: companyMedia.aboutWorkspace
     },
     services: {
       title: {
-        vi: 'Dịch vụ sản xuất & thi công nội thất | Lai Huy Interior',
-        en: 'Interior Production & Fit-out Services | Lai Huy Interior'
+        vi: 'Thiết kế, sản xuất & thi công nội thất | Lai Huy Interior',
+        en: 'Interior Design, Production & Fit-out | Lai Huy Interior'
       },
       description: {
-        vi: 'Dịch vụ thiết kế, sản xuất tại xưởng, thi công nội thất khách sạn 3-5 sao, villa, căn hộ, thương mại và gia công xuất khẩu.',
-        en: 'Design, factory production, contracting, hotel interiors, villas, apartments, commercial projects, and export-ready manufacturing services.'
+        vi: 'Ba dịch vụ: thiết kế & triển khai kỹ thuật, sản xuất tại xưởng, thi công & lắp đặt; cho khách sạn, văn phòng, thương mại và đơn hàng OEM, xuất khẩu.',
+        en: 'Three services: design and technical development, in-house production, fit-out and installation, for hotels, offices, commercial and OEM or export orders.'
       },
       ogImage: projectMedia['codi-boutique-hotel'].cover
     },
     about: {
       title: {
-        vi: 'Giới thiệu Lai Huy | Xưởng nội thất khách sạn & dự án',
-        en: 'About Lai Huy Interior | Hotel Interior Factory & Contractor'
+        vi: 'Giới thiệu: nhà thầu nội thất có xưởng riêng | Lai Huy Interior',
+        en: 'About: An Interior Contractor with Its Own Factory | Lai Huy Interior'
       },
       description: {
-        vi: 'Lai Huy Interior là đơn vị sản xuất và thi công nội thất dự án với xưởng trực tiếp, đội ngũ kỹ thuật và kinh nghiệm triển khai khách sạn, villa, căn hộ.',
-        en: 'Lai Huy Interior is a factory-direct interior manufacturer and contractor for hotels, villas, apartments, and large-scale projects.'
+        vi: 'Lai Huy là nhà thầu nội thất có xưởng riêng tại Vĩnh Long: thiết kế, sản xuất, kiểm tra chất lượng và lắp đặt cho khách sạn, villa, căn hộ, văn phòng.',
+        en: 'Lai Huy is an interior contractor with its own factory in Vinh Long: design, production, quality control and installation for hotels, villas and offices.'
       },
       ogImage: companyMedia.companyStory
     },
     careers: {
       title: {
-        vi: 'Tuyển dụng ngành nội thất dự án | Lai Huy Interior',
-        en: 'Careers In Project Interior Manufacturing | Lai Huy Interior'
+        vi: 'Tuyển dụng: xưởng Vĩnh Long, văn phòng Long Hậu | Lai Huy Interior',
+        en: 'Careers at Our Vinh Long Factory & Long Hau Office | Lai Huy Interior'
       },
       description: {
-        vi: 'Gia nhập Lai Huy Interior để làm việc trong môi trường sản xuất và thi công nội thất chuyên nghiệp cho khách sạn, villa và dự án quy mô lớn.',
-        en: 'Join Lai Huy Interior and work in a professional factory and project environment for hotels, villas, and large-scale interiors.'
+        vi: 'Tuyển quản đốc xưởng, kỹ thuật sản xuất, thiết kế nội thất, thợ mộc, giám sát công trình và kinh doanh dự án tại xưởng Vĩnh Long, văn phòng Long Hậu.',
+        en: 'Hiring: workshop foreman, production engineer, interior designer, carpenter, site supervisor, project sales, at our Vinh Long factory and Long Hau office.'
       },
       ogImage: companyMedia.aboutWorkspace
     },
     contact: {
       title: {
-        vi: 'Liên hệ thi công nội thất khách sạn | Lai Huy Interior',
-        en: 'Contact Hotel Interior Contractor | Lai Huy Interior'
+        vi: 'Liên hệ & nhận báo giá nội thất | Lai Huy Interior',
+        en: 'Contact & Request an Interior Quote | Lai Huy Interior'
       },
       description: {
-        vi: 'Liên hệ Lai Huy Interior để nhận tư vấn, báo giá và gửi bản vẽ cho dự án nội thất khách sạn, villa, căn hộ hoặc công trình thương mại.',
-        en: 'Contact Lai Huy Interior for consultation, quotation, and preliminary BOQ review for hotel, villa, apartment, or commercial interior projects.'
+        vi: 'Gọi 0903 102 012 hoặc gửi bản vẽ PDF/DWG qua email để nhận BOQ sơ bộ và báo giá nội thất khách sạn, villa, văn phòng. 8:00–17:00, thứ 2 – thứ 7.',
+        en: 'Call +84 903 102 012 or email PDF/DWG drawings for a preliminary BOQ and a quote on hotel, villa or office interiors. 8:00–17:00, Mon–Sat (UTC+7).'
       },
       ogImage: companyMedia.mapAddress
     },
@@ -339,6 +270,12 @@ export const company = {
   } satisfies Record<string, SeoEntry>
 }
 
-export const quoteMailto = `mailto:${company.email}?subject=${encodeURIComponent(
-  'Yêu cầu báo giá nội thất dự án'
-)}`
+/**
+ * The generic "Email us" link. Localised because the subject line is read by the visitor in their
+ * mail client before they send. The form on /lien-he builds its own, richer message with
+ * `buildQuoteMailto`.
+ */
+export const quoteMailto = {
+  vi: `mailto:${company.email}?subject=${encodeURIComponent('[Báo giá] Yêu cầu báo giá nội thất')}`,
+  en: `mailto:${company.email}?subject=${encodeURIComponent('[Quote request] Interior quote')}`
+} satisfies LocalizedText

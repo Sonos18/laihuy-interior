@@ -52,7 +52,7 @@ const { t } = useLanguage()
           <a :href="`tel:${company.phone.replaceAll(' ', '')}`"><Icon
             name="i-lucide-phone"
             class="h-4 w-4 text-wood-600"
-          />{{ company.phone }}</a>
+          />{{ t(company.phoneDisplay) }}</a>
         </div>
       </div>
     </div>

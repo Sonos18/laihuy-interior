@@ -141,7 +141,7 @@ export const buildOrganizationLd = (base: string, t: Translate): JsonLdNode => (
   'telephone': company.phone,
   'email': company.email,
   'sameAs': [company.facebook],
-  'areaServed': t({ vi: 'Việt Nam và xuất khẩu', en: 'Vietnam and export' }),
+  'areaServed': { '@type': 'Country', 'name': t({ vi: 'Việt Nam', en: 'Vietnam' }) },
   'address': company.addresses.map(address => ({
     '@type': 'PostalAddress',
     'name': t(address.label),

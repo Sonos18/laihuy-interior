@@ -45,7 +45,7 @@ const phoneHref = computed(() => `tel:${props.phone.replaceAll(' ', '')}`)
           <a
             :href="phoneHref"
             class="btn-outline"
-          >{{ phone }}</a>
+          >{{ t(uiText.labels.callNow) }}</a>
         </div>
       </div>
     </div>
