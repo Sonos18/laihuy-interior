@@ -37,7 +37,7 @@ const { t } = useLanguage()
         class="home-project-cta__actions reveal"
       >
         <NuxtLink
-          to="/lien-he"
+          to="/lien-he#cach-gui-ho-so"
           class="btn-bronze"
         >{{ t(homePageContent.cta.primaryCta) }}</NuxtLink>
         <NuxtLink

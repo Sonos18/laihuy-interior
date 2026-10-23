@@ -44,26 +44,26 @@ describe('homepage material story', () => {
 
   it('starts the story from the surveyed existing condition', () => {
     expect(homePageContent.story).toEqual({
-      eyebrow: { vi: 'Một hành trình, một đầu mối', en: 'One journey, one accountable team' },
+      eyebrow: { vi: 'Quy trình 6 bước, tóm trong 4 chặng', en: 'Our six-step process, in four stages' },
       title: {
         vi: 'Không chuyển tay giữa các nhà thầu',
         en: 'No hand-offs between contractors'
       },
       description: {
-        vi: 'Một đầu mối xuyên suốt từ khảo sát hiện trạng, triển khai hồ sơ, chốt vật liệu đến nghiệm thu không gian hoàn thiện.',
-        en: 'One accountable team leads the work from the existing-condition survey through documentation, material approval, and final sign-off.'
+        vi: 'Cùng một đội chịu trách nhiệm từ lúc nhận bản vẽ, đo hiện trạng, sản xuất đến nghiệm thu tại công trình.',
+        en: 'The same team is responsible from drawing intake and site measurement through production to sign-off on site.'
       }
     })
     expect(homeStoryStages[0]).toEqual({
       id: 'existing',
-      label: { vi: 'Hiện trạng', en: 'Existing condition' },
+      label: { vi: 'Bước 01 · Tiếp nhận hồ sơ', en: 'Step 01 · Intake' },
       title: {
-        vi: 'Đọc đúng mặt bằng trước khi thiết kế',
-        en: 'Read the space before designing'
+        vi: 'Đối chiếu bản vẽ với hiện trạng',
+        en: 'Check the drawings against the site'
       },
       description: {
-        vi: 'Kích thước, cao độ, kết cấu và các đầu chờ MEP được khảo sát để khóa ràng buộc ngay từ đầu.',
-        en: 'Dimensions, levels, structure, and MEP interfaces are surveyed so site constraints are understood from the outset.'
+        vi: 'Bản vẽ, BOQ và tiêu chuẩn hoàn thiện được rà soát; khi cần, kích thước, cao độ, kết cấu và các vị trí chờ điện, nước, điều hòa (MEP) được đo tại công trình.',
+        en: 'Drawings, BOQ and finish standards are reviewed; where needed, dimensions, levels, structure and MEP connections are measured on site.'
       }
     })
   })

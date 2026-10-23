@@ -16,7 +16,7 @@ const { t } = useLanguage()
   >
     <NuxtImg
       :src="image.path"
-      :alt="t({ vi: 'Không gian nội thất khách sạn do Lai Huy hoàn thiện', en: 'Hotel interior completed by Lai Huy' })"
+      :alt="t({ vi: 'Khách sạn Eo Gió, Vĩnh Long: nội thất do Lai Huy thiết kế, sản xuất và thi công', en: 'Eo Gio Hotel, Vinh Long: interiors designed, produced and fitted out by Lai Huy' })"
       :width="image.width"
       :height="image.height"
       sizes="1536px xl:100vw"
@@ -55,7 +55,7 @@ const { t } = useLanguage()
           class="reveal mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
         >
           <NuxtLink
-            to="/du-an"
+            to="/lien-he"
             class="btn-bronze btn-bronze--on-dark group"
           >
             {{ t(homePageContent.hero.primaryCta) }}
@@ -65,7 +65,7 @@ const { t } = useLanguage()
             />
           </NuxtLink>
           <NuxtLink
-            to="/lien-he"
+            to="/lien-he#cach-gui-ho-so"
             class="btn-luxury-outline"
           >
             {{ t(homePageContent.hero.secondaryCta) }}
