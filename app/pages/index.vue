@@ -15,17 +15,18 @@ import { homeMaterialStoryMedia } from '~/media/home-media'
 import { projectCoverAsset } from '~/media/project-media'
 import type { MediaAsset } from '~/shared/media/types'
 import type { Project } from '~/shared/types/project'
+import { splitProjectIndex } from '~/utils/project-index'
 
 const { t } = useLanguage()
 
 const heroImage = projectMedia['khach-san-eo-gio'].cover
 
+// The same rule as /du-an's featured row (end-to-end scope, cover present), so the heading above
+// it ("Ba dự án làm trọn từ thiết kế đến lắp đặt") stays true whatever a project's flags say.
 const featuredProjects = computed(() =>
-  projects
-    .filter(project => project.featured)
+  splitProjectIndex(projects, project => projectCoverAsset(project.mediaId, project.coverImage) !== undefined).featured
     .map(project => ({ project, cover: projectCoverAsset(project.mediaId, project.coverImage) }))
     .filter((entry): entry is { project: Project, cover: MediaAsset } => entry.cover !== undefined)
-    .slice(0, 3)
 )
 
 // The band shows the shared factory stats, the same facts /nha-xuong shows, so a fact has one

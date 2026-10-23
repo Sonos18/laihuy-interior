@@ -6,7 +6,7 @@ import { withAlt } from '~/media/project-media'
 import type { LocalizedText } from '~/shared/types/localization'
 import { buildQuoteMailto, type QuoteMailtoCopy } from '~/utils/contact-mailto'
 
-const { locale, t, ta } = useLanguage()
+const { t, ta } = useLanguage()
 
 // Hero: an inviting residential living room — see docs/hero-art-direction.md §10
 // (Contact · Conversation). Compact height, then flows into the contact details.
@@ -48,8 +48,9 @@ type FieldErrors = Partial<Record<ContactField, LocalizedText>>
 // that has become valid cannot leave a stale message behind.
 const errors = ref<FieldErrors>({})
 const formEl = ref<HTMLFormElement | null>(null)
-/** True after a valid submit has handed the draft to the visitor's mail client. */
-const mailOpened = ref(false)
+/** Set after a valid submit has handed the draft to the visitor's mail client; `paste` when the
+ * message went to the clipboard because it was too long for the mailto URL. */
+const mailState = ref<'idle' | 'opened' | 'paste'>('idle')
 
 const fieldId = (field: ContactField | OptionalField) => `contact-${field}`
 const errorId = (field: ContactField) => `contact-${field}-error`
@@ -121,7 +122,6 @@ const mailtoCopy = computed<QuoteMailtoCopy>(() => {
   const copy = uiText.contactForm.mailto
   return {
     subjectTag: t(copy.subjectTag),
-    greeting: t(copy.greeting),
     intro: t(copy.intro),
     labels: {
       name: t(copy.labels.name),
@@ -134,7 +134,7 @@ const mailtoCopy = computed<QuoteMailtoCopy>(() => {
     },
     emptyValue: '—',
     attachments: t(copy.attachments),
-    footer: t(copy.footer)
+    messageMoved: t(copy.messageMoved)
   }
 })
 
@@ -151,13 +151,15 @@ const openMailClient = (href: string) => {
 }
 
 const submitForm = async () => {
-  mailOpened.value = false
+  // Reset and let the DOM settle, so a second submit re-announces the status line.
+  mailState.value = 'idle'
+  await nextTick()
   if (!validate()) {
     await focusFirstError()
     return
   }
 
-  const { href, tooLong } = buildQuoteMailto(company.email, mailtoCopy.value, {
+  const { href, messageMoved, tooLong } = buildQuoteMailto(company.email, mailtoCopy.value, {
     name: form.name,
     company: form.company,
     phone: form.phone,
@@ -169,7 +171,17 @@ const submitForm = async () => {
     message: form.message
   })
 
-  // A URL past the mail-client limit would be cut mid-sentence. Say so instead.
+  // A message too long for the URL is never cut: it goes to the clipboard and the email marks
+  // where to paste it. Only when that hand-off is impossible does the visitor get an error.
+  if (messageMoved && !tooLong) {
+    try {
+      await navigator.clipboard.writeText(form.message.trim())
+    } catch {
+      errors.value = { message: uiText.contactForm.errors.messageTooLong }
+      await focusFirstError()
+      return
+    }
+  }
   if (tooLong) {
     errors.value = { message: uiText.contactForm.errors.messageTooLong }
     await focusFirstError()
@@ -177,8 +189,14 @@ const submitForm = async () => {
   }
 
   openMailClient(href)
-  mailOpened.value = true
+  mailState.value = messageMoved ? 'paste' : 'opened'
 }
+
+// The status line describes the draft that was handed over; once the visitor edits the form it no
+// longer does.
+watch(form, () => {
+  mailState.value = 'idle'
+})
 
 const hasErrors = computed(() => FIELD_ORDER.some(field => errors.value[field]))
 
@@ -263,7 +281,7 @@ usePageSeo({
             data-testid="contact-direct"
             class="card p-6 md:p-8"
           >
-            <h2 class="eyebrow">
+            <h2 class="home-card-heading text-ink-950">
               {{ t(uiText.contactPage.direct.eyebrow) }}
             </h2>
             <dl class="mt-6 space-y-5">
@@ -348,7 +366,7 @@ usePageSeo({
                 <span class="font-bold text-ink-800">{{ t(uiText.contactPage.sendDocs.subjectLabel) }}:</span>
                 <code class="ml-1 inline-block rounded-[4px] bg-wood-100 px-2 py-1 text-ink-950 [overflow-wrap:anywhere]">{{ t(uiText.contactPage.sendDocs.subjectTemplate) }}</code>
               </p>
-              <p v-if="uiText.contactPage.sendDocs.subjectExample[locale]">
+              <p>
                 <span class="font-bold text-ink-800">{{ t(uiText.contactPage.sendDocs.exampleLabel) }}:</span>
                 <code class="ml-1 inline-block rounded-[4px] bg-wood-100 px-2 py-1 text-ink-950 [overflow-wrap:anywhere]">{{ t(uiText.contactPage.sendDocs.subjectExample) }}</code>
               </p>
@@ -601,10 +619,13 @@ usePageSeo({
                 data-testid="contact-mail-opened"
                 role="status"
                 aria-live="polite"
-                :class="mailOpened ? 'rounded-[4px] border border-ink-200 bg-wood-100 p-4 text-sm leading-[1.7] text-ink-800' : ''"
+                :class="mailState !== 'idle' ? 'rounded-[4px] border border-ink-200 bg-wood-100 p-4 text-sm leading-[1.7] text-ink-800' : ''"
               >
-                <template v-if="mailOpened">
+                <template v-if="mailState === 'opened'">
                   {{ t(uiText.contactForm.opened) }}
+                </template>
+                <template v-else-if="mailState === 'paste'">
+                  {{ t(uiText.contactForm.openedPaste) }}
                 </template>
               </p>
             </form>

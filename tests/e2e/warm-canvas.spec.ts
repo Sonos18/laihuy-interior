@@ -31,7 +31,9 @@ type Route = {
 
 const ROUTES: Route[] = [
   { name: 'careers', path: '/tuyen-dung', minHeadings: 7, primary: '[data-testid="careers-apply"]' },
-  { name: 'contact', path: '/lien-he', minHeadings: 7, primary: '[data-testid="contact-form"] button[type="submit"]' },
+  // h1, direct contact, how to send documents, form and map: the five office/factory cards went
+  // with the contact-first layout (copy deck B-06).
+  { name: 'contact', path: '/lien-he', minHeadings: 4, primary: '[data-testid="contact-form"] button[type="submit"]' },
   { name: 'projects', path: '/du-an', minHeadings: 12, primary: '[data-testid="projects-cta"]' },
   { name: 'privacy', path: '/privacy-policy', minHeadings: 3 },
   { name: 'terms', path: '/terms-of-use', minHeadings: 3 },
@@ -195,7 +197,8 @@ for (const locale of ['vi', 'en'] as const) {
       await open(page, ROUTES.find(route => route.name === 'contact')!, locale, width)
 
       const fields = page.locator('[data-testid="contact-form"] :is(input, select, textarea)')
-      expect(await fields.count()).toBe(5)
+      // Five required fields plus the optional company and scope (copy deck B-10).
+      expect(await fields.count()).toBe(7)
       for (const field of await fields.all()) {
         await expect(field).toHaveCSS('background-color', 'rgb(255, 255, 255)')
         await expect(field).toHaveCSS('border-top-color', 'rgb(216, 210, 202)')

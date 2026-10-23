@@ -285,14 +285,14 @@ for (const locale of ['vi', 'en'] as const) {
     const subject = url.searchParams.get('subject')!
     const body = url.searchParams.get('body')!
     if (locale === 'vi') {
-      expect(subject).toBe('[Báo giá] Khách sạn & resort – Nguyễn Văn A / Công ty ABC')
-      expect(body).toContain('Kính gửi Lai Huy Interior,')
+      expect(subject).toBe('[Báo giá] Khách sạn & resort – Nguyễn Văn A')
+      expect(body).toContain('Tôi cần báo giá cho dự án sau.')
       expect(body).toContain('Loại dự án: Khách sạn & resort')
       expect(body).toContain('Phạm vi cần báo giá: Sản xuất theo bản vẽ')
       expect(body).toContain('Công ty / đơn vị: Công ty ABC')
     } else {
-      expect(subject).toBe('[Quote request] Hotel & resort – Nguyễn Văn A / Công ty ABC')
-      expect(body).toContain('Dear Lai Huy Interior,')
+      expect(subject).toBe('[Quote request] Hotel & resort – Nguyễn Văn A')
+      expect(body).toContain('I would like a quote for the following project.')
       expect(body).toContain('Project type: Hotel & resort')
       expect(body).toContain('Scope to quote: Production to drawings')
       expect(body).toContain('Company: Công ty ABC')
@@ -327,19 +327,59 @@ test('an empty optional field is written as a dash and an unset scope as "not sp
   expect(url.searchParams.get('subject')).toBe('[Báo giá] Văn phòng & thương mại – Nguyễn Văn A')
 })
 
+const LONG_MESSAGE = 'Phòng ngủ có tủ âm tường. '.repeat(120).trim()
+
 for (const locale of ['vi', 'en'] as const) {
-  test(`a message too long for a mailto is refused with an error, not truncated, in ${locale}`, async ({ page }) => {
+  test(`a message too long for a mailto goes to the clipboard, whole, and the email marks where to paste it, in ${locale}`, async ({ page, context }) => {
+    await context.grantPermissions(['clipboard-read', 'clipboard-write'])
     await captureMailtos(page)
     await open(page, 1440, locale)
     await fillValid(page)
-    await page.fill('#contact-message', 'Phòng ngủ có tủ âm tường. '.repeat(120))
+    await page.fill('#contact-message', LONG_MESSAGE)
 
     await submit(page)
 
-    await expect(page.locator('#contact-message-error')).toBeVisible()
-    await expect(page.locator('#contact-message-error')).toContainText('noithatlaihuy@gmail.com')
-    await expect(page.locator('#contact-message')).toBeFocused()
-    await expect(page.locator('[data-testid="contact-mail-opened"]')).toBeEmpty()
-    expect(await mailtos(page)).toEqual([])
+    await expect.poll(async () => (await mailtos(page)).length).toBe(1)
+    const href = (await mailtos(page))[0]!
+    expect(href.length).toBeLessThanOrEqual(2000)
+    const body = new URL(href).searchParams.get('body')!
+    expect(body).toContain(locale === 'vi' ? 'Dán nội dung đã sao chép vào đây' : 'Paste the copied details here')
+    expect(body).not.toContain('Phòng ngủ có tủ âm tường.')
+    expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(LONG_MESSAGE)
+    await expect(page.locator('[data-testid="contact-mail-opened"]')).toContainText(locale === 'vi' ? 'dán (Ctrl+V)' : 'paste them (Ctrl+V)')
+    await expect(page.locator('#contact-message-error')).toHaveCount(0)
   })
 }
+
+test('when the clipboard is unavailable an over-long message is refused with an error, not truncated', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'clipboard', {
+      value: { writeText: () => Promise.reject(new Error('denied')) },
+      configurable: true
+    })
+  })
+  await captureMailtos(page)
+  await open(page, 1440)
+  await fillValid(page)
+  await page.fill('#contact-message', LONG_MESSAGE)
+
+  await submit(page)
+
+  await expect(page.locator('#contact-message-error')).toBeVisible()
+  await expect(page.locator('#contact-message-error')).toContainText('noithatlaihuy@gmail.com')
+  await expect(page.locator('#contact-message')).toBeFocused()
+  await expect(page.locator('[data-testid="contact-mail-opened"]')).toBeEmpty()
+  expect(await mailtos(page)).toEqual([])
+})
+
+test('the status line clears once the visitor edits the form again', async ({ page }) => {
+  await captureMailtos(page)
+  await open(page, 1440)
+  await fillValid(page)
+  await submit(page)
+  await expect(page.locator('[data-testid="contact-mail-opened"]')).not.toBeEmpty()
+
+  await page.fill('#contact-name', 'Nguyễn Văn B')
+
+  await expect(page.locator('[data-testid="contact-mail-opened"]')).toBeEmpty()
+})

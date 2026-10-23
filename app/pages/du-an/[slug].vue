@@ -214,7 +214,7 @@ usePageSeo({
     <nav
       data-project-subnav
       class="subnav-anchor sticky z-30 border-b border-[var(--rule-light)] bg-[var(--surface-chrome)] text-ink-950 backdrop-blur-lg"
-      :aria-label="t({ vi: 'Mục lục dự án', en: 'Case study sections' })"
+      :aria-label="t({ vi: 'Mục lục dự án', en: 'Project sections' })"
     >
       <div class="shell flex gap-1 overflow-x-auto py-3">
         <a

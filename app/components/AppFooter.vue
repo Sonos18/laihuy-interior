@@ -18,6 +18,7 @@
 // used to live here is gone with the two-column navigation split, so the component is back to
 // zero logic, which is the contract this file is supposed to hold.
 import { company } from '~/data/company'
+import { services } from '~/data/services'
 import { legalLinks, navLinks, uiText } from '~/data/ui'
 
 const { t, ta } = useLanguage()
@@ -98,17 +99,18 @@ const { t, ta } = useLanguage()
             {{ t(uiText.labels.services) }}
           </h2>
           <!-- These are LINKS, not labels, and each lands on its own anchor on /dich-vu
-               (`company.footerServices[].to`), not on the top of the page. -->
+               (`services[].anchor`), not on the top of the page. Read from the services data itself
+               so a renamed service or anchor cannot leave the footer behind. -->
           <ul class="footer-list">
             <li
-              v-for="service in company.footerServices"
-              :key="service.to"
+              v-for="service in services"
+              :key="service.id"
             >
               <NuxtLink
-                :to="service.to"
+                :to="`/dich-vu#${service.anchor}`"
                 class="footer-link"
               >
-                {{ t(service.label) }}
+                {{ t(service.title) }}
               </NuxtLink>
             </li>
           </ul>

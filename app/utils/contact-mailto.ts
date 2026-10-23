@@ -5,16 +5,16 @@
  */
 
 /**
- * Mail clients and browsers truncate or reject long mailto URLs (the practical ceiling is a little
- * over 2,000 characters). An over-long message is reported to the visitor, never silently cut:
- * a quote request that loses its tail is worse than one that is not sent.
+ * Mail clients and browsers truncate or reject long mailto URLs: Windows hands protocol URLs over
+ * with a 2,083-character ceiling (INTERNET_MAX_URL_LENGTH). The budget is spent on the
+ * percent-encoded URL, where every Vietnamese letter with a diacritic costs 6–9 characters, so the
+ * fixed part of the body is kept to labels and the subject does not repeat the company.
  */
-export const MAILTO_MAX_LENGTH = 1800
+export const MAILTO_MAX_LENGTH = 2000
 
 export type QuoteMailtoCopy = {
   /** Prefix of the subject line, e.g. "[Báo giá]". */
   subjectTag: string
-  greeting: string
   intro: string
   labels: {
     name: string
@@ -27,8 +27,10 @@ export type QuoteMailtoCopy = {
   }
   /** Stands in for an empty optional field so the body keeps a stable shape. */
   emptyValue: string
+  /** A bare label the visitor completes by attaching files in their mail client. */
   attachments: string
-  footer: string
+  /** Replaces a message too long for the URL; the page puts the message on the clipboard. */
+  messageMoved: string
 }
 
 export type QuoteMailtoInput = {
@@ -43,24 +45,21 @@ export type QuoteMailtoInput = {
 
 export type QuoteMailto = {
   href: string
+  /** The message did not fit, so the body carries `copy.messageMoved` in its place. */
+  messageMoved: boolean
+  /** Even without the message the URL is over budget (absurdly long name or company). */
   tooLong: boolean
 }
 
 const CRLF = '\r\n'
 
-export const buildQuoteMailto = (
-  to: string,
-  copy: QuoteMailtoCopy,
-  input: QuoteMailtoInput
-): QuoteMailto => {
+const compose = (to: string, copy: QuoteMailtoCopy, input: QuoteMailtoInput, details: string) => {
   const name = input.name.trim()
   const company = input.company.trim()
 
-  const subject = `${copy.subjectTag} ${input.projectType} – ${name}${company ? ` / ${company}` : ''}`
+  const subject = `${copy.subjectTag} ${input.projectType} – ${name}`
 
   const body = [
-    copy.greeting,
-    '',
     copy.intro,
     '',
     `${copy.labels.name}: ${name}`,
@@ -71,14 +70,26 @@ export const buildQuoteMailto = (
     `${copy.labels.scope}: ${input.scope}`,
     '',
     `${copy.labels.details}:`,
-    input.message.trim().replace(/\r?\n/g, CRLF),
+    details,
     '',
-    copy.attachments,
-    '',
-    copy.footer
+    copy.attachments
   ].join(CRLF)
 
-  const href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+  return `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+}
 
-  return { href, tooLong: href.length > MAILTO_MAX_LENGTH }
+/**
+ * A message is never cut: one that does not fit the URL is replaced by `copy.messageMoved`, and
+ * the caller is told so it can hand the full text over another way (the clipboard).
+ */
+export const buildQuoteMailto = (
+  to: string,
+  copy: QuoteMailtoCopy,
+  input: QuoteMailtoInput
+): QuoteMailto => {
+  const full = compose(to, copy, input, input.message.trim().replace(/\r?\n/g, CRLF))
+  if (full.length <= MAILTO_MAX_LENGTH) return { href: full, messageMoved: false, tooLong: false }
+
+  const moved = compose(to, copy, input, copy.messageMoved)
+  return { href: moved, messageMoved: true, tooLong: moved.length > MAILTO_MAX_LENGTH }
 }

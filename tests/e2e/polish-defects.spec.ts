@@ -147,13 +147,14 @@ test.describe('case study', () => {
     await expect(page.locator('[data-project-chapter="finale"] [data-testid="project-fact"]')).toHaveCount(4)
     await expect(page.locator('[data-project-chapter="finale"] [data-testid="project-facts-band"]')).toContainText('Trọn gói')
 
-    await open(page, '/du-an/phong-hop-quan-7', 1440)
+    // Tà Đùng is design + fit-out, no production: the one shape left without the cell.
+    await open(page, '/du-an/nha-ta-dung', 1440)
     await expect(page.locator('[data-project-chapter="finale"] [data-testid="project-fact"]')).toHaveCount(3)
     await expect(page.locator('[data-project-chapter="finale"] [data-testid="project-facts-band"]')).not.toContainText('Trọn gói')
   })
 
-  test('the "end-to-end" cell is omitted in English on a design-only project', async ({ page }) => {
-    await open(page, '/du-an/phong-hop-quan-7', 1440, 'en')
+  test('the "end-to-end" cell is omitted in English on a project without production', async ({ page }) => {
+    await open(page, '/du-an/nha-ta-dung', 1440, 'en')
     await expect(page.locator('[data-project-chapter="finale"] [data-testid="project-facts-band"]')).not.toContainText('End-to-end')
   })
 })

@@ -25,18 +25,11 @@ export type AddressEntry = {
 
 /**
  * One line of the footer's quality-commitment column: a glyph and a label, and nothing else.
- * Deliberately NOT `CompanyValue` — that type carries a `description`, and a footer column that
- * renders a paragraph per item stops being a column.
+ * No `description`: a footer column that renders a paragraph per item stops being a column.
  */
 export type TrustSignal = {
   icon: string
   label: LocalizedText
-}
-
-/** One footer services link: the label and the /dich-vu anchor it jumps to. */
-export type FooterServiceLink = {
-  label: LocalizedText
-  to: string
 }
 
 // --- Optional About-page content. Every field renders conditionally and stays
@@ -129,20 +122,9 @@ export const company = {
       icon: 'i-lucide-factory'
     }
   ] satisfies AddressEntry[],
-  /* The six names of the services taxonomy (copy deck 2.3): three services, then three sectors
-     and models. Each links to its anchor on /dich-vu, so the footer never lands on the top of
-     a page and leaves the visitor to find the item. */
-  footerServices: [
-    { label: { vi: 'Thiết kế & triển khai kỹ thuật', en: 'Design & technical development' }, to: '/dich-vu#thiet-ke' },
-    { label: { vi: 'Sản xuất tại xưởng', en: 'In-house production' }, to: '/dich-vu#san-xuat' },
-    { label: { vi: 'Thi công & lắp đặt', en: 'Fit-out & installation' }, to: '/dich-vu#thi-cong' },
-    { label: { vi: 'Nội thất khách sạn & resort', en: 'Hotel & resort interiors' }, to: '/dich-vu#khach-san' },
-    { label: { vi: 'Nội thất văn phòng & thương mại', en: 'Office & commercial interiors' }, to: '/dich-vu#van-phong' },
-    { label: { vi: 'Gia công OEM & xuất khẩu', en: 'OEM & export production' }, to: '/dich-vu#oem-xuat-khau' }
-  ] satisfies FooterServiceLink[],
   /* The footer's trust layer. NOT new claims: every entry is a phrase this company already
      publishes about itself (own factory, in-house QC, nationwide installation — the confirmed
-     claims in PRODUCT.md) and the services in `footerServices` above. Discrete strings because a
+     claims in PRODUCT.md) and the services in `services.ts`. Discrete strings because a
      footer strip cannot render a sentence, not because anything here is newly asserted.
 
      The line that governs this field is the one at the top of this file: fields stay empty until

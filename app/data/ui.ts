@@ -150,11 +150,11 @@ export const uiText = {
       subjectLabel: { vi: 'Tiêu đề email mẫu', en: 'Subject template' },
       subjectTemplate: {
         vi: '[Báo giá] Loại dự án – Tên dự án – Họ tên / Công ty',
-        en: '[Quote] Project type – Project name – Your name / Company'
+        en: '[Quote request] Project type – Project name – Your name / Company'
       },
       subjectExample: {
         vi: '[Báo giá] Khách sạn – 40 phòng tại Đà Nẵng – Công ty ABC',
-        en: ''
+        en: '[Quote request] Hotel – 40 rooms in Da Nang – ABC Company'
       },
       exampleLabel: { vi: 'Ví dụ', en: 'Example' },
       confidentiality: {
@@ -242,11 +242,15 @@ export const uiText = {
       vi: 'Ứng dụng email của bạn đang mở với nội dung soạn sẵn. Lai Huy chỉ nhận được yêu cầu sau khi bạn bấm Gửi trong ứng dụng email.',
       en: 'Your email app should now be open with the details filled in. Lai Huy receives your request only once you press Send there.'
     },
+    /** As `opened`, when the message was too long for the mailto URL and went to the clipboard. */
+    openedPaste: {
+      vi: 'Ứng dụng email của bạn đang mở. Phần thông tin dự án dài nên đã được sao chép: dán (Ctrl+V) vào chỗ đánh dấu trong email. Lai Huy chỉ nhận được yêu cầu sau khi bạn bấm Gửi.',
+      en: 'Your email app should now be open. The project details were too long to fill in, so they are on your clipboard: paste them (Ctrl+V) where the email marks. Lai Huy receives your request only once you press Send.'
+    },
     required: { vi: 'bắt buộc', en: 'required' },
     /** The pieces of the prefilled email, in the visitor's language. See buildQuoteMailto. */
     mailto: {
       subjectTag: { vi: '[Báo giá]', en: '[Quote request]' },
-      greeting: { vi: 'Kính gửi Lai Huy Interior,', en: 'Dear Lai Huy Interior,' },
       intro: {
         vi: 'Tôi cần báo giá cho dự án sau.',
         en: 'I would like a quote for the following project.'
@@ -260,13 +264,11 @@ export const uiText = {
         scope: { vi: 'Phạm vi cần báo giá', en: 'Scope to quote' },
         details: { vi: 'Thông tin dự án', en: 'Project details' }
       },
-      attachments: {
-        vi: 'Hồ sơ đính kèm: [đính kèm bản vẽ PDF/DWG, BOQ, tiêu chuẩn hoàn thiện nếu có, hoặc dán link Google Drive]',
-        en: 'Attachments: [attach PDF/DWG drawings, BOQ and finish standards if available, or paste a Google Drive link]'
-      },
-      footer: {
-        vi: '(Email soạn từ trang Liên hệ của noithatlaihuy.vn)',
-        en: '(Drafted from the Contact page at noithatlaihuy.vn)'
+      attachments: { vi: 'Hồ sơ đính kèm (bản vẽ, BOQ hoặc link Drive):', en: 'Attachments (drawings, BOQ or a Drive link):' },
+      /** Stands in for a message too long for the mailto URL; the page copies the message to the clipboard. */
+      messageMoved: {
+        vi: '[Dán nội dung đã sao chép vào đây: Ctrl+V]',
+        en: '[Paste the copied details here: Ctrl+V]'
       }
     },
     errors: {
@@ -295,8 +297,8 @@ export const uiText = {
         en: 'Tell us a little more (at least 10 characters).'
       },
       messageTooLong: {
-        vi: 'Nội dung quá dài để soạn email tự động. Hãy rút gọn, hoặc gửi email trực tiếp tới noithatlaihuy@gmail.com.',
-        en: 'That’s too long to pre-fill an email. Shorten it, or email noithatlaihuy@gmail.com directly.'
+        vi: 'Không soạn được email tự động với nội dung này. Hãy rút gọn, hoặc gửi email trực tiếp tới noithatlaihuy@gmail.com.',
+        en: 'We couldn’t pre-fill an email with this. Shorten it, or email noithatlaihuy@gmail.com directly.'
       }
     }
   },

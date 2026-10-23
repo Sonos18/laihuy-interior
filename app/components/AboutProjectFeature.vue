@@ -3,6 +3,7 @@ import type { AboutProjectLabels } from '~/data/about'
 import { categoryDefinitions } from '~/data/categories'
 import type { MediaImage } from '~/shared/media/types'
 import type { Project } from '~/shared/types/project'
+import { yearLabelFor } from '~/utils/project-detail-view-model'
 
 const props = defineProps<{
   project: Project
@@ -11,7 +12,7 @@ const props = defineProps<{
   emphasis: 'primary' | 'secondary'
 }>()
 
-const { t, ta } = useLanguage()
+const { t, ta, locale } = useLanguage()
 const scope = computed(() => props.project.scope ? ta(props.project.scope).join(' · ') : '')
 </script>
 
@@ -62,7 +63,7 @@ const scope = computed(() => props.project.scope ? ta(props.project.scope).join(
           </div>
           <div v-if="project.year">
             <dt class="home-eyebrow-text text-ink-500">
-              {{ t(labels.year) }}
+              {{ yearLabelFor(project, locale) }}
             </dt>
             <dd class="mt-1 text-base font-semibold text-ink-950">
               {{ t(project.year) }}

@@ -16,7 +16,6 @@ type AboutResponse = {
 export type AboutProjectLabels = {
   area: LocalizedText
   location: LocalizedText
-  year: LocalizedText
   view: LocalizedText
 }
 
@@ -146,7 +145,6 @@ export const aboutPageContent = {
     labels: {
       area: { vi: 'Diện tích', en: 'Area' },
       location: { vi: 'Địa điểm', en: 'Location' },
-      year: { vi: 'Hoàn thành', en: 'Completed' },
       view: { vi: 'Xem chi tiết dự án', en: 'View project' }
     }
   },

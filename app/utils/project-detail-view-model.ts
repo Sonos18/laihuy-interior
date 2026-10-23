@@ -93,7 +93,8 @@ const designYearLabel: LocalizedText = { vi: 'Năm thiết kế', en: 'Design ye
 
 /** The year is a completion year only when the scope includes the build ("Thi công"); a project
  *  Lai Huy only designed carries a design year instead. */
-const yearLabelFor = (project: Project, locale: Locale): string =>
+/** "Hoàn thành" when the scope includes fit-out, else "Năm thiết kế": one rule for every year label. */
+export const yearLabelFor = (project: Project, locale: Locale): string =>
   textFor(resolveScope(project, 'vi').some(item => item.key === 'Thi công') ? completedLabel : designYearLabel, locale)
 
 /** The hero status chip ("Hoàn thành 2026" / "Design year 2022"): the same label as the year fact. */
