@@ -26,16 +26,24 @@ export type LegalDocument = {
  * becomes false with age, and a stale "last updated" on a privacy policy is a compliance problem
  * rather than a cosmetic one.
  */
-export const legalUpdatedAt = '2026-07-31'
+export const legalUpdatedAt = '2026-10-23'
 
 /*
  * ── A NOTE ON THIS FILE ────────────────────────────────────────────────────────
  * This content is written to be accurate about what THIS website actually does:
- * it describes the contact form, the language-preference cookie, and the media
- * host, because those are the only mechanisms the codebase actually has. It does
- * not describe analytics, advertising pixels, remarketing, or newsletter
- * processing — none of which this site runs. If any of those are added later,
- * the corresponding clause has to be added here in the same commit.
+ *  - the contact form does not send or store anything: after validation it opens
+ *    the visitor's own email client with a pre-filled message (mailto), and Lai
+ *    Huy receives the enquiry only when the visitor sends that email;
+ *  - enquiries and drawings arrive by email (Gmail), phone, or a Google Drive link;
+ *  - one technical cookie remembers the display language;
+ *  - Google Maps is embedded on /lien-he, a third party that may set its own
+ *    cookies and log technical data;
+ *  - the website and its images are served by hosting and media providers.
+ * Those are the only mechanisms the codebase actually has. It does not describe
+ * analytics, advertising pixels, remarketing, or newsletter processing — none of
+ * which this site runs. If any of those are added later, or the form gains a
+ * real transport, the corresponding clause has to be added here in the same
+ * commit.
  *
  * Deliberately NOT asserted anywhere below: business registration number, tax
  * code, or a named data protection officer. Those are real registry facts that
@@ -57,8 +65,8 @@ export const privacyPolicy: LegalDocument = {
     {
       heading: { vi: '1. Phạm vi áp dụng', en: '1. Scope' },
       body: {
-        vi: 'Chính sách này áp dụng cho toàn bộ dữ liệu cá nhân mà Lai Huy Interior thu thập thông qua website, biểu mẫu liên hệ, email, điện thoại và các kênh trao đổi trực tiếp phục vụ hoạt động tư vấn, báo giá, sản xuất và thi công nội thất. Chính sách không áp dụng cho các website của bên thứ ba mà bạn truy cập qua đường dẫn đặt trên website này.',
-        en: 'This policy applies to all personal data that Lai Huy Interior collects through the website, contact forms, email, telephone, and direct correspondence in the course of consulting, quoting, manufacturing, and installing interiors. It does not apply to third-party websites you reach through links published here.'
+        vi: 'Chính sách này áp dụng cho toàn bộ dữ liệu cá nhân mà Lai Huy Interior thu thập thông qua website, email (kể cả email soạn từ biểu mẫu trên trang Liên hệ), điện thoại và các kênh trao đổi trực tiếp phục vụ hoạt động tư vấn, báo giá, sản xuất và thi công nội thất. Chính sách không áp dụng cho các website của bên thứ ba mà bạn truy cập qua đường dẫn đặt trên website này.',
+        en: 'This policy applies to all personal data that Lai Huy Interior collects through the website, email (including emails drafted with the Contact page form), telephone, and direct correspondence in the course of consulting, quoting, manufacturing, and installing interiors. It does not apply to third-party websites you reach through links published here.'
       }
     },
     {
@@ -69,13 +77,15 @@ export const privacyPolicy: LegalDocument = {
       },
       items: {
         vi: [
-          'Thông tin bạn chủ động cung cấp: họ tên, số điện thoại, địa chỉ email, tên công ty, nội dung yêu cầu và các tài liệu dự án bạn gửi kèm (bản vẽ, danh mục hạng mục, hình ảnh tham khảo).',
+          'Thông tin bạn chủ động cung cấp: họ tên, số điện thoại, địa chỉ email, tên công ty (nếu có), nội dung yêu cầu và các tài liệu dự án bạn gửi kèm (bản vẽ, BOQ, tiêu chuẩn hoàn thiện, hình ảnh tham khảo).',
+          'Biểu mẫu trên trang Liên hệ không gửi hay lưu dữ liệu trên máy chủ của website: nó chỉ mở ứng dụng email của bạn với nội dung soạn sẵn. Lai Huy nhận thông tin khi bạn gửi email đó.',
           'Thông tin trao đổi trong quá trình làm việc: nội dung email, tin nhắn, biên bản khảo sát và các thống nhất liên quan đến dự án.',
           'Dữ liệu kỹ thuật cơ bản do máy chủ ghi nhận khi bạn truy cập website: địa chỉ IP, loại trình duyệt, thiết bị và thời điểm truy cập, phục vụ mục đích vận hành và bảo mật hệ thống.',
           'Tùy chọn ngôn ngữ hiển thị được lưu trong cookie trên trình duyệt của bạn.'
         ],
         en: [
-          'Information you actively provide: full name, telephone number, email address, company name, the substance of your enquiry, and any project documents you attach (drawings, scope schedules, reference images).',
+          'Information you actively provide: full name, telephone number, email address, company name (if given), the substance of your enquiry, and any project documents you attach (drawings, BOQ, finish standards, reference images).',
+          'The Contact page form does not send or store data on the website’s servers; it only opens your email app with a pre-filled message. Lai Huy receives the information when you send that email.',
           'Information exchanged during the engagement: emails, messages, site survey records, and agreed project decisions.',
           'Basic technical data logged by the server when you visit the website: IP address, browser type, device, and time of access, used for operating and securing the system.',
           'Your display language preference, stored in a cookie in your browser.'
@@ -88,7 +98,7 @@ export const privacyPolicy: LegalDocument = {
         vi: [
           'Tiếp nhận, tư vấn và phản hồi yêu cầu báo giá hoặc hợp tác của bạn.',
           'Lập báo giá, hợp đồng, hồ sơ kỹ thuật và triển khai sản xuất, thi công nội thất theo thỏa thuận.',
-          'Liên hệ trao đổi tiến độ, nghiệm thu và bảo hành hạng mục đã thực hiện.',
+          'Liên hệ trao đổi tiến độ, nghiệm thu và bàn giao hạng mục đã thực hiện.',
           'Xử lý hồ sơ ứng tuyển đối với thông tin do ứng viên gửi qua kênh tuyển dụng.',
           'Vận hành, bảo trì và bảo vệ an toàn cho website.',
           'Thực hiện nghĩa vụ kế toán, thuế và các nghĩa vụ pháp lý khác theo quy định của pháp luật Việt Nam.'
@@ -96,7 +106,7 @@ export const privacyPolicy: LegalDocument = {
         en: [
           'Receiving, advising on, and responding to your quotation or partnership enquiry.',
           'Preparing quotations, contracts, and technical documentation, and carrying out the agreed manufacturing and installation work.',
-          'Communicating about schedule, handover, and warranty for completed scope.',
+          'Communicating about schedule, sign-off and handover of completed scope.',
           'Processing job applications, for information submitted through our recruitment channel.',
           'Operating, maintaining, and securing the website.',
           'Meeting accounting, tax, and other legal obligations under Vietnamese law.'
@@ -120,13 +130,13 @@ export const privacyPolicy: LegalDocument = {
         vi: [
           'Với nhân sự nội bộ trực tiếp phụ trách tư vấn, thiết kế, sản xuất, thi công hoặc kế toán cho yêu cầu của bạn.',
           'Với nhà thầu phụ, đơn vị vận chuyển hoặc đối tác kỹ thuật, chỉ trong phạm vi thông tin cần thiết để hoàn thành hạng mục đã thỏa thuận.',
-          'Với nhà cung cấp dịch vụ hạ tầng lưu trữ website và lưu trữ hình ảnh, phục vụ vận hành kỹ thuật.',
+          'Với nhà cung cấp hạ tầng lưu trữ website và hình ảnh; và với Google, đơn vị cung cấp dịch vụ email (Gmail) Lai Huy dùng để nhận email và bản đồ Google Maps nhúng ở trang Liên hệ.',
           'Khi có yêu cầu hợp pháp từ cơ quan nhà nước có thẩm quyền theo quy định của pháp luật.'
         ],
         en: [
           'With the internal staff directly handling consultation, design, production, installation, or accounting for your request.',
           'With subcontractors, logistics providers, or technical partners, limited to the information required to complete the agreed scope.',
-          'With the infrastructure providers hosting this website and its image assets, for technical operation.',
+          'With the providers hosting this website and its images; and with Google, which provides the email service (Gmail) Lai Huy uses to receive email and the Google Maps embed on the Contact page.',
           'Where lawfully requested by a competent state authority in accordance with the law.'
         ]
       }
@@ -134,15 +144,15 @@ export const privacyPolicy: LegalDocument = {
     {
       heading: { vi: '6. Thời gian lưu trữ', en: '6. Retention' },
       body: {
-        vi: 'Dữ liệu liên hệ và hồ sơ dự án được lưu trong thời gian cần thiết để phục vụ tư vấn, thực hiện hợp đồng và nghĩa vụ bảo hành, sau đó được lưu tiếp theo thời hạn mà pháp luật về kế toán và lưu trữ yêu cầu. Hồ sơ ứng tuyển không trúng tuyển được lưu tối đa 12 tháng kể từ ngày nhận, trừ khi ứng viên yêu cầu xóa sớm hơn.',
-        en: 'Contact details and project records are kept for as long as needed to advise you, perform the contract, and honour warranty obligations, and thereafter for the periods required by accounting and records-retention law. Unsuccessful job applications are kept for at most 12 months from receipt, unless the candidate asks us to delete them sooner.'
+        vi: 'Dữ liệu liên hệ và hồ sơ dự án được lưu trong thời gian cần thiết để phục vụ tư vấn, thực hiện hợp đồng và các nghĩa vụ theo hợp đồng, sau đó được lưu tiếp theo thời hạn mà pháp luật về kế toán và lưu trữ yêu cầu. Hồ sơ ứng tuyển không trúng tuyển được lưu tối đa 12 tháng kể từ ngày nhận, trừ khi ứng viên yêu cầu xóa sớm hơn.',
+        en: 'Contact details and project records are kept for as long as needed to advise you, perform the contract and meet our contractual obligations, and thereafter for the periods required by accounting and records-retention law. Unsuccessful job applications are kept for at most 12 months from receipt, unless the candidate asks us to delete them sooner.'
       }
     },
     {
       heading: { vi: '7. Bảo mật dữ liệu', en: '7. Data security' },
       body: {
-        vi: 'Chúng tôi áp dụng các biện pháp kỹ thuật và quản lý hợp lý để bảo vệ dữ liệu cá nhân khỏi việc truy cập, tiết lộ, thay đổi hoặc phá hủy trái phép, bao gồm mã hóa kết nối HTTPS cho toàn bộ website và giới hạn quyền truy cập dữ liệu theo phạm vi công việc. Tuy nhiên, không có phương thức truyền tải qua Internet nào an toàn tuyệt đối; bạn nên cân nhắc trước khi gửi các tài liệu có tính bảo mật cao qua email không mã hóa.',
-        en: 'We apply reasonable technical and organisational measures to protect personal data against unauthorised access, disclosure, alteration, or destruction, including HTTPS encryption across the whole website and access limited to what each role requires. No method of transmission over the Internet is entirely secure, however, so please consider this before sending highly confidential documents by unencrypted email.'
+        vi: 'Chúng tôi áp dụng các biện pháp kỹ thuật và quản lý hợp lý để bảo vệ dữ liệu cá nhân khỏi việc truy cập, tiết lộ, thay đổi hoặc phá hủy trái phép, bao gồm mã hóa kết nối HTTPS cho toàn bộ website và giới hạn quyền truy cập dữ liệu theo phạm vi công việc. Email là kênh chính để gửi bản vẽ và hồ sơ dự án cho Lai Huy. Không có phương thức truyền qua Internet nào an toàn tuyệt đối; với tài liệu cần bảo mật, bạn có thể gửi link Google Drive giới hạn quyền xem cho noithatlaihuy@gmail.com, và ghi rõ yêu cầu bảo mật trong email.',
+        en: 'We apply reasonable technical and organisational measures to protect personal data against unauthorised access, disclosure, alteration, or destruction, including HTTPS encryption across the whole website and access limited to what each role requires. Email is the main channel for sending drawings and project documents to Lai Huy. No transmission over the Internet is entirely secure; for confidential documents you can share a Google Drive link restricted to noithatlaihuy@gmail.com and state your confidentiality requirement in the email.'
       }
     },
     {
@@ -173,8 +183,8 @@ export const privacyPolicy: LegalDocument = {
     {
       heading: { vi: '9. Cookie', en: '9. Cookies' },
       body: {
-        vi: 'Website sử dụng cookie kỹ thuật để ghi nhớ tùy chọn ngôn ngữ hiển thị của bạn giữa các lần truy cập. Cookie này không dùng để theo dõi hành vi, không phục vụ quảng cáo và không chia sẻ với bên thứ ba. Bạn có thể xóa hoặc chặn cookie trong cài đặt trình duyệt; khi đó website vẫn hoạt động bình thường nhưng sẽ hiển thị theo ngôn ngữ mặc định.',
-        en: 'This website uses a technical cookie to remember your display language between visits. It is not used for behavioural tracking or advertising and is not shared with third parties. You can delete or block cookies in your browser settings; the site will continue to work, but it will open in the default language.'
+        vi: 'Website dùng một cookie kỹ thuật để ghi nhớ ngôn ngữ hiển thị; cookie này không dùng để theo dõi, không phục vụ quảng cáo và không chia sẻ với bên thứ ba. Trang Liên hệ nhúng bản đồ Google Maps: khi bản đồ tải, Google có thể đặt cookie và ghi nhận dữ liệu kỹ thuật (như địa chỉ IP) theo chính sách quyền riêng tư của Google. Bạn có thể xóa hoặc chặn cookie trong cài đặt trình duyệt; website vẫn hoạt động nhưng sẽ hiển thị bằng ngôn ngữ mặc định.',
+        en: 'This website uses one technical cookie to remember your display language; it is not used for tracking or advertising and is not shared with third parties. The Contact page embeds a Google Maps map: when it loads, Google may set cookies and log technical data (such as your IP address) under Google’s privacy policy. You can delete or block cookies in your browser settings; the site will still work but will open in the default language.'
       }
     },
     {
@@ -197,15 +207,15 @@ export const termsOfUse: LegalDocument = {
     {
       heading: { vi: '1. Chấp nhận điều khoản', en: '1. Acceptance of terms' },
       body: {
-        vi: 'Việc truy cập, duyệt nội dung hoặc gửi yêu cầu qua website này đồng nghĩa với việc bạn chấp nhận các điều khoản sử dụng hiện hành. Nếu bạn không đồng ý với bất kỳ nội dung nào dưới đây, vui lòng ngừng sử dụng website.',
-        en: 'Accessing, browsing, or submitting an enquiry through this website means you accept the terms of use in force at that time. If you do not agree with any part of them, please stop using the website.'
+        vi: 'Việc truy cập, duyệt nội dung hoặc dùng biểu mẫu trên website này đồng nghĩa với việc bạn chấp nhận các điều khoản sử dụng hiện hành. Nếu bạn không đồng ý với bất kỳ nội dung nào dưới đây, vui lòng ngừng sử dụng website.',
+        en: 'Accessing, browsing or using the forms on this website means you accept the terms of use in force at that time. If you do not agree with any part of them, please stop using the website.'
       }
     },
     {
       heading: { vi: '2. Nội dung và phạm vi dịch vụ', en: '2. Content and scope of services' },
       body: {
-        vi: 'Lai Huy Interior cung cấp dịch vụ thiết kế, sản xuất tại xưởng và thi công nội thất cho khách sạn, villa, căn hộ và công trình thương mại. Thông tin trên website mang tính giới thiệu năng lực và tham khảo. Phạm vi công việc, vật liệu, tiến độ, giá trị và điều kiện bảo hành cụ thể của từng dự án chỉ có hiệu lực khi được xác lập bằng báo giá và hợp đồng ký kết giữa hai bên.',
-        en: 'Lai Huy Interior provides interior design, factory production, and installation services for hotels, villas, apartments, and commercial projects. The information on this website is presented to introduce our capability and for reference. The scope, materials, schedule, price, and warranty terms of any particular project take effect only once set out in a quotation and a contract signed by both parties.'
+        vi: 'Lai Huy Interior cung cấp dịch vụ thiết kế, sản xuất tại xưởng và thi công nội thất cho khách sạn, villa, căn hộ và công trình thương mại. Thông tin trên website mang tính giới thiệu năng lực và tham khảo. Phạm vi công việc, vật liệu, tiến độ, giá trị và các điều kiện khác của từng dự án chỉ có hiệu lực khi được xác lập bằng báo giá và hợp đồng ký kết giữa hai bên.',
+        en: 'Lai Huy Interior provides interior design, factory production, and installation services for hotels, villas, apartments, and commercial projects. The information on this website is presented to introduce our capability and for reference. The scope, materials, schedule, price and other terms of any particular project take effect only once set out in a quotation and a contract signed by both parties.'
       }
     },
     {
@@ -233,14 +243,14 @@ export const termsOfUse: LegalDocument = {
       heading: { vi: '4. Quyền sở hữu trí tuệ', en: '4. Intellectual property' },
       body: {
         vi: 'Toàn bộ nội dung trên website — bao gồm logo, tên thương hiệu, văn bản, bố cục, hình ảnh dự án, bản vẽ và tài liệu kỹ thuật — thuộc quyền sở hữu của Lai Huy Interior hoặc được chúng tôi sử dụng hợp pháp. Bạn không được sao chép, phân phối lại, chỉnh sửa hoặc sử dụng cho mục đích thương mại nếu không có sự chấp thuận bằng văn bản của chúng tôi. Việc trích dẫn cho mục đích phi thương mại cần ghi rõ nguồn và kèm đường dẫn về website này.',
-        en: 'All content on this website — including the logo, brand name, text, layout, project photography, drawings, and technical documents — is owned by Lai Huy Interior or used by us under licence. You may not copy, redistribute, modify, or use it commercially without our prior written consent. Non-commercial citation must credit the source and link back to this website.'
+        en: 'All content on this website — including the logo, brand name, text, layout, project images, drawings, and technical documents — is owned by Lai Huy Interior or used by us under licence. You may not copy, redistribute, modify, or use it commercially without our prior written consent. Non-commercial citation must credit the source and link back to this website.'
       }
     },
     {
       heading: { vi: '5. Hình ảnh dự án', en: '5. Project imagery' },
       body: {
-        vi: 'Hình ảnh dự án được đăng tải nhằm minh họa năng lực thi công thực tế. Một số hình ảnh có thể được chụp tại các thời điểm khác nhau của quá trình hoàn thiện, hoặc đã được điều chỉnh ánh sáng và bố cục cho mục đích trình bày. Chi tiết vật liệu, màu sắc và hoàn thiện của sản phẩm thực tế được xác định theo mẫu duyệt và hồ sơ kỹ thuật của từng hợp đồng.',
-        en: 'Project images are published to illustrate real delivered work. Some were taken at different stages of completion, or have had lighting and framing adjusted for presentation. The material, colour, and finish of any actual product are governed by the approved samples and technical documentation of the relevant contract.'
+        vi: 'Hình ảnh dự án minh họa không gian và giải pháp nội thất Lai Huy đã thực hiện cho từng dự án. Ánh sáng, góc nhìn và bố cục có thể đã được xử lý cho mục đích trình bày. Vật liệu, màu sắc và hoàn thiện của sản phẩm thực tế được xác định theo mẫu duyệt và hồ sơ kỹ thuật của từng hợp đồng.',
+        en: 'Project images illustrate the spaces and interior solutions Lai Huy delivered on each project. Lighting, viewpoint and composition may have been adjusted for presentation. The materials, colours and finishes of any actual product are governed by the approved samples and technical documents of the relevant contract.'
       }
     },
     {
@@ -260,8 +270,8 @@ export const termsOfUse: LegalDocument = {
     {
       heading: { vi: '8. Giới hạn trách nhiệm', en: '8. Limitation of liability' },
       body: {
-        vi: 'Chúng tôi nỗ lực bảo đảm thông tin trên website là chính xác và cập nhật, nhưng không cam kết website luôn hoạt động liên tục, không có lỗi hoặc không bị gián đoạn vì lý do kỹ thuật, bảo trì hay sự kiện bất khả kháng. Trong phạm vi pháp luật cho phép, Lai Huy Interior không chịu trách nhiệm đối với thiệt hại gián tiếp phát sinh từ việc sử dụng hoặc không thể sử dụng website. Điều khoản này không giới hạn trách nhiệm của chúng tôi theo các hợp đồng thi công đã ký kết.',
-        en: 'We work to keep the information on this website accurate and current, but we do not warrant that it will operate continuously, without error, or without interruption for technical, maintenance, or force majeure reasons. To the extent permitted by law, Lai Huy Interior is not liable for indirect loss arising from the use of, or inability to use, this website. Nothing in this clause limits our obligations under any signed construction contract.'
+        vi: 'Chúng tôi nỗ lực bảo đảm thông tin trên website là chính xác và cập nhật, nhưng không cam kết website luôn hoạt động liên tục, không có lỗi hoặc không bị gián đoạn vì lý do kỹ thuật, bảo trì hay sự kiện bất khả kháng. Trong phạm vi pháp luật cho phép, Lai Huy Interior không chịu trách nhiệm đối với thiệt hại gián tiếp phát sinh từ việc sử dụng hoặc không thể sử dụng website. Điều khoản này không giới hạn trách nhiệm của chúng tôi theo các hợp đồng đã ký kết.',
+        en: 'We work to keep the information on this website accurate and current, but we do not warrant that it will operate continuously, without error, or without interruption for technical, maintenance, or force majeure reasons. To the extent permitted by law, Lai Huy Interior is not liable for indirect loss arising from the use of, or inability to use, this website. Nothing in this clause limits our obligations under any signed contract.'
       }
     },
     {
