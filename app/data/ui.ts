@@ -64,9 +64,6 @@ export const uiText = {
     callNow: { vi: 'Gọi 0903 102 012', en: 'Call +84 903 102 012' },
     sendEmail: { vi: 'Gửi email', en: 'Email us' },
     caseStudies: { vi: 'Dự án đã thực hiện', en: 'Our projects' },
-    openPositions: { vi: 'Vị trí đang tuyển', en: 'Open positions' },
-    /** Careers eyebrow; `{n}` is replaced with the number of open roles. */
-    openPositionsCount: { vi: '{n} vị trí · toàn thời gian', en: '{n} roles · full-time' },
     all: { vi: 'Tất cả', en: 'All' },
     gallery: { vi: 'Thư viện ảnh dự án', en: 'Project gallery' },
     completedImages: { vi: 'Hình ảnh', en: 'Images' },
@@ -83,24 +80,11 @@ export const uiText = {
       en: 'If you have a question or a request relating to this document, please contact us through any of the channels below:'
     }
   },
-  /* One label per action (copy deck 2.1). `quote24h` keeps its historical key although the
-     label no longer carries the 24h promise: it is imported by name across the site. The promise
-     now lives in a full sentence on /lien-he, the home CTA block and the project finale. */
+  /* One label per action (copy deck 2.1). The quote label carries no 24h promise: that lives
+     in a full sentence on /lien-he, the home CTA block and the project finale. */
   cta: {
-    quote24h: { vi: 'Nhận báo giá', en: 'Request a quote' },
-    sendDrawings: {
-      vi: 'Gửi bản vẽ, nhận BOQ sơ bộ',
-      en: 'Send drawings for a preliminary BOQ'
-    },
-    hotelConsult: {
-      vi: 'Tư vấn thi công khách sạn',
-      en: 'Consult hotel interior solutions'
-    },
-    factory: { vi: 'Xem năng lực nhà xưởng', en: 'View factory capability' },
-    contact: { vi: 'Nhận báo giá', en: 'Request a quote' },
+    quote: { vi: 'Nhận báo giá', en: 'Request a quote' },
     allProjects: { vi: 'Xem tất cả dự án', en: 'View all projects' },
-    /** `{n}` is replaced with the total number of images in the lightbox. */
-    allProjectImages: { vi: 'Xem đủ {n} hình', en: 'View all {n} images' },
     sendCv: { vi: 'Gửi CV qua email', en: 'Send your CV by email' }
   },
   galleryCarousel: {
@@ -221,7 +205,7 @@ export const uiText = {
     },
     placeholders: {
       name: { vi: 'Tên của bạn', en: 'Your name' },
-      company: { vi: 'Tên công ty hoặc văn phòng thiết kế', en: 'Company or design studio' },
+      company: { vi: 'Công ty / văn phòng thiết kế', en: 'Company or design studio' },
       phone: { vi: '0903 123 456', en: '+84 903 123 456' },
       email: { vi: 'ten@congty.com', en: 'name@company.com' },
       projectType: { vi: 'Chọn loại dự án', en: 'Select a project type' },

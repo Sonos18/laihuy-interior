@@ -88,7 +88,7 @@ usePageSeo({
             'description': t(service.description),
             'serviceType': t(service.title),
             'provider': { '@id': `${base}#organization` },
-            'areaServed': t({ vi: 'Việt Nam và xuất khẩu', en: 'Vietnam and export' })
+            'areaServed': { '@type': 'Country', 'name': t({ vi: 'Việt Nam', en: 'Vietnam' }) }
           }
         }))
       }
@@ -323,7 +323,7 @@ usePageSeo({
             :href="phoneHref"
             class="btn-outline"
           >
-            {{ t(servicesPageContent.contact.phoneCta) }} {{ company.phone }}
+            {{ t(servicesPageContent.contact.phoneCta) }} {{ t(company.phoneDisplay) }}
           </a>
         </div>
       </div>

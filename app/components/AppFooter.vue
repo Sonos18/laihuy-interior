@@ -56,7 +56,7 @@ const { t, ta } = useLanguage()
             to="/lien-he"
             class="btn-bronze btn-bronze--on-dark footer-cta"
           >
-            {{ t(uiText.cta.contact) }}
+            {{ t(uiText.cta.quote) }}
           </NuxtLink>
         </div>
 

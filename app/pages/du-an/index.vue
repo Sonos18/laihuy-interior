@@ -242,7 +242,7 @@ usePageSeo({
           class="btn-bronze"
           data-testid="projects-cta"
         >
-          {{ t(uiText.cta.quote24h) }}
+          {{ t(uiText.cta.quote) }}
         </NuxtLink>
       </div>
     </section>

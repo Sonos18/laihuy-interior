@@ -41,7 +41,7 @@ const phoneHref = computed(() => `tel:${props.phone.replaceAll(' ', '')}`)
           <NuxtLink
             to="/lien-he"
             class="btn-bronze"
-          >{{ t(uiText.cta.quote24h) }}</NuxtLink>
+          >{{ t(uiText.cta.quote) }}</NuxtLink>
           <a
             :href="phoneHref"
             class="btn-outline"

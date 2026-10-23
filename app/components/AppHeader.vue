@@ -124,7 +124,7 @@ watch(() => props.solid, value => setSolid(value))
             to="/lien-he"
             class="btn-bronze"
           >
-            {{ t(uiText.cta.quote24h) }}
+            {{ t(uiText.cta.quote) }}
           </NuxtLink>
         </div>
       </div>

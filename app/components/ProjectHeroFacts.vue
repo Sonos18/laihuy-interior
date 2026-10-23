@@ -71,7 +71,7 @@ const { t } = useLanguage()
           to="/lien-he"
           class="btn-bronze btn-bronze--on-dark"
         >
-          {{ t(uiText.cta.quote24h) }}
+          {{ t(uiText.cta.quote) }}
           <Icon
             name="i-lucide-arrow-right"
             class="h-4 w-4"

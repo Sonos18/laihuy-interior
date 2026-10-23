@@ -306,7 +306,7 @@ usePageSeo({
             :href="phoneHref"
             class="btn-outline"
           >
-            {{ t(aboutPageContent.contact.phoneCta) }} {{ company.phone }}
+            {{ t(aboutPageContent.contact.phoneCta) }} {{ t(company.phoneDisplay) }}
           </a>
         </div>
       </div>

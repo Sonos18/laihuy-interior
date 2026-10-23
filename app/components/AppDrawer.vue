@@ -247,7 +247,7 @@ onScopeDispose(() => {
           to="/lien-he"
           class="btn-bronze w-full"
         >
-          {{ t(uiText.cta.quote24h) }}
+          {{ t(uiText.cta.quote) }}
         </NuxtLink>
       </div>
     </div>
