@@ -18,16 +18,16 @@ export const projectsPageContent: {
     eyebrow: { vi: 'Thiết kế · Sản xuất · Thi công', en: 'Design · Production · Construction' },
     title: { vi: 'Một đầu mối cho cả công trình', en: 'One team for the whole build' },
     lead: {
-      vi: 'Những công trình do Lai Huy thiết kế, sản xuất tại xưởng và thi công đến bàn giao.',
-      en: 'Projects Lai Huy designed, produced in its own factory and built through to handover.'
+      vi: 'Những công trình do Lai Huy thiết kế, sản xuất tại xưởng và thi công tại công trình.',
+      en: 'Projects Lai Huy designed, produced in its own factory and built on site.'
     }
   },
   archive: {
     eyebrow: { vi: 'Lưu trữ', en: 'Archive' },
     title: { vi: 'Các dự án khác', en: 'More projects' },
     lead: {
-      vi: 'Nhà ở, văn phòng và công trình thương mại, theo từng phạm vi công việc.',
-      en: 'Homes, offices and commercial work, by scope of services.'
+      vi: 'Khách sạn, nhà ở, văn phòng và công trình khác, theo từng phạm vi công việc.',
+      en: 'Hotels, homes, offices and other work, by scope of services.'
     }
   },
   filterLabel: { vi: 'Lọc dự án theo loại hình', en: 'Filter projects by type' },

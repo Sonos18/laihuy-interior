@@ -66,8 +66,8 @@ export const aboutProjectSlugs = [
 export const aboutPageContent = {
   hero: {
     topic: { vi: 'Nhà thầu nội thất dự án', en: 'Project interior contractor' },
-    title: { vi: 'Từ bản vẽ đến', en: 'From drawings to' },
-    specialTitle: { vi: 'công trình hoàn thiện', en: 'finished interiors' },
+    title: { vi: 'Nhà thầu nội thất', en: 'An interior contractor' },
+    specialTitle: { vi: 'có xưởng riêng', en: 'with its own factory' },
     subtitle: {
       vi: 'Một đầu mối cho phát triển kỹ thuật, sản xuất tại xưởng, kiểm soát chất lượng và lắp dựng tại công trình.',
       en: 'One accountable partner for technical development, in-house production, quality control and on-site installation.'

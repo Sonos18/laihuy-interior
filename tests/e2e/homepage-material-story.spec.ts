@@ -10,14 +10,14 @@ const TRANSPARENT_PNG = Buffer.from(
 const COPY = {
   vi: {
     hero: 'Biến hồ sơ kỹ thuật thành không gian hoàn thiện',
-    story: 'Từ hiện trạng đến không gian hoàn thiện',
+    story: 'Không chuyển tay giữa các nhà thầu',
     stages: ['Hiện trạng', 'Hồ sơ kỹ thuật', 'Vật liệu & mẫu', 'Không gian hoàn thiện'],
     capabilities: ['Thiết kế kỹ thuật', 'Sản xuất trực tiếp', 'Thi công & bàn giao'],
     cta: 'Gửi hồ sơ dự án'
   },
   en: {
     hero: 'Turning technical documents into completed spaces',
-    story: 'From existing condition to completed space',
+    story: 'No hand-offs between contractors',
     stages: ['Existing condition', 'Technical documents', 'Materials & samples', 'Completed space'],
     capabilities: ['Technical design', 'Direct manufacturing', 'Fit-out & handover'],
     cta: 'Send project documents'

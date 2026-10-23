@@ -46,8 +46,8 @@ describe('homepage material story', () => {
     expect(homePageContent.story).toEqual({
       eyebrow: { vi: 'Một hành trình, một đầu mối', en: 'One journey, one accountable team' },
       title: {
-        vi: 'Từ hiện trạng đến không gian hoàn thiện',
-        en: 'From existing condition to completed space'
+        vi: 'Không chuyển tay giữa các nhà thầu',
+        en: 'No hand-offs between contractors'
       },
       description: {
         vi: 'Một đầu mối xuyên suốt từ khảo sát hiện trạng, triển khai hồ sơ, chốt vật liệu đến nghiệm thu không gian hoàn thiện.',

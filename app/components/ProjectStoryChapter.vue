@@ -24,7 +24,7 @@ const { t } = useLanguage()
         layout="rail"
         statement
         :eyebrow="t({ vi: 'Câu chuyện dự án', en: 'Project story' })"
-        :title="t({ vi: 'Từ bối cảnh đến lời giải', en: 'From context to response' })"
+        :title="t({ vi: 'Bối cảnh và lời giải', en: 'Context and response' })"
       />
 
       <div
