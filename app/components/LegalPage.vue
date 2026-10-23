@@ -57,8 +57,8 @@ const updatedAt = computed(() =>
 </script>
 
 <template>
-  <!-- `home-page` only supplies the shared Headline/Title/Label type tokens. -->
   <div class="home-page bg-wood-50 text-ink-950">
+    <!-- `home-page` only supplies the shared Headline/Title/Label type tokens. -->
     <!-- The header is `position: fixed` and there is no hero photograph to sit beneath it, so
          this band clears the chrome itself. --header-h tracks the breakpoint (72/88px), which is
          why the clearance is expressed against the token rather than a literal. -->

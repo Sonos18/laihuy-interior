@@ -92,11 +92,11 @@ usePageSeo({
 </script>
 
 <template>
-  <!-- `home-page` only supplies the shared Headline/Title/Label type tokens. Below the hero the
-       index is two chapters: the end-to-end projects as the editorial lead + satellites
-       composition on Linen, then a quieter archive grid on Raw Silk with the category filter. The
-       closing CTA is the shared `.section-cta` band. -->
   <div class="home-page bg-wood-50 text-ink-950">
+    <!-- `home-page` only supplies the shared Headline/Title/Label type tokens. Below the hero the
+         index is two chapters: the end-to-end projects as the editorial lead + satellites
+         composition on Linen, then a quieter archive grid on Raw Silk with the category filter. The
+         closing CTA is the shared `.section-cta` band. -->
     <AppHero
       :topic="t(uiText.labels.caseStudies)"
       :title="t({ vi: 'Khách sạn, villa', en: 'Hotels, villas' })"

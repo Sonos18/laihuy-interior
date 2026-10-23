@@ -183,9 +183,9 @@ usePageSeo({
 </script>
 
 <template>
-  <!-- `home-page` only supplies the shared Headline/Title/Label type tokens that
-       `.home-section-heading` and friends read; the case study stays one warm-light canvas. -->
   <div class="home-page bg-wood-50 text-ink-950">
+    <!-- `home-page` only supplies the shared Headline/Title/Label type tokens that
+         `.home-section-heading` and friends read; the case study stays one warm-light canvas. -->
     <ProjectHeroFacts
       :title="t(project.name)"
       :image="heroImage"

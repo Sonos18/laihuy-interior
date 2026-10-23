@@ -55,10 +55,10 @@ usePageSeo({
 </script>
 
 <template>
-  <!-- `home-page` only supplies the shared Headline/Title/Label type tokens that
-       `.home-section-heading` and friends read. Below the hero the page is one warm-light
-       canvas: Linen, one Raw Silk step for the open positions, Plaster hairlines between. -->
   <div class="home-page bg-wood-50 text-ink-950">
+    <!-- `home-page` only supplies the shared Headline/Title/Label type tokens that
+         `.home-section-heading` and friends read. Below the hero the page is one warm-light
+         canvas: Linen, one Raw Silk step for the open positions, Plaster hairlines between. -->
     <AppHero
       :topic="t({ vi: 'Tuyển dụng', en: 'Careers' })"
       :title="t({ vi: 'Nơi tay nghề', en: 'Where craft' })"

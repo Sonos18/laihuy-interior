@@ -47,11 +47,11 @@ usePageSeo({
 </script>
 
 <template>
-  <!-- `home-page` only supplies the shared Headline/Title/Label type tokens that
-       `.home-section-heading` and friends read. Below the hero the page is one warm-light
-       canvas: Linen and Raw Silk in steps, one Sawdust band (the production proof chapter) and
-       Plaster hairlines. -->
   <div class="home-page bg-wood-50 text-ink-950">
+    <!-- `home-page` only supplies the shared Headline/Title/Label type tokens that
+         `.home-section-heading` and friends read. Below the hero the page is one warm-light
+         canvas: Linen and Raw Silk in steps, one Sawdust band (the production proof chapter) and
+         Plaster hairlines. -->
     <AppHero
       data-testid="factory-hero"
       :topic="t(factoryPageContent.hero.topic)"

@@ -188,10 +188,10 @@ usePageSeo({
 </script>
 
 <template>
-  <!-- `home-page` only supplies the shared Headline/Title/Label type tokens. Below the hero the
-       page is one Linen surface; the form panel, map frame and info cards are Paper White 4px
-       containers with a Plaster border (DESIGN.md Cards / Inputs). -->
   <div class="home-page bg-wood-50 text-ink-950">
+    <!-- `home-page` only supplies the shared Headline/Title/Label type tokens. Below the hero the
+         page is one Linen surface; the form panel, map frame and info cards are Paper White 4px
+         containers with a Plaster border (DESIGN.md Cards / Inputs). -->
     <AppHero
       :topic="t({ vi: 'Liên hệ', en: 'Contact' })"
       :title="t({ vi: 'Bắt đầu dự án', en: 'Start a project' })"
