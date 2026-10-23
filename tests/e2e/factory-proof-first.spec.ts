@@ -12,15 +12,15 @@ const FACTORY_MAP_URL = 'https://www.google.com/maps/search/?api=1&query=557E1%2
 
 const copy = {
   vi: {
-    topic: 'Năng lực nhà xưởng',
+    topic: 'Nhà xưởng Vĩnh Long',
     heading: 'Sản xuất trực tiếp. Kiểm soát đến cùng.',
-    subtitle: 'Xưởng 3.000 m², hệ thống máy đồng bộ và quy trình QC phục vụ nội thất khách sạn, villa, căn hộ và sản xuất theo bản vẽ.',
-    primary: 'Đặt lịch tham quan',
-    secondary: 'Xem năng lực',
+    subtitle: 'Xưởng tại Phú Khương, Vĩnh Long: máy CNC, dán cạnh tự động, ép nguội và bốn điểm kiểm tra chất lượng, phục vụ khách sạn, villa, căn hộ và sản xuất theo bản vẽ.',
+    primary: 'Gọi đặt lịch tham quan',
+    secondary: 'Xem số liệu nhà xưởng',
     legacyCapacityHeading: 'Năng lực sản xuất',
     visit: {
-      phone: 'Gọi đặt lịch',
-      map: 'Mở bản đồ'
+      phone: 'Gọi đặt lịch tham quan',
+      map: 'Mở bản đồ nhà xưởng'
     },
     faqs: [
       {
@@ -30,6 +30,10 @@ const copy = {
       {
         question: 'Lai Huy có nhận sản xuất theo thiết kế hoặc bản vẽ riêng không?',
         answer: 'Có. Lai Huy nhận gia công theo bản vẽ/OEM và có thể bóc tách, triển khai shop drawing cần thiết trước khi đưa vào sản xuất.'
+      },
+      {
+        question: 'Lai Huy có lập BOQ sơ bộ từ bản vẽ của chúng tôi không?',
+        answer: 'Có. Gửi bản vẽ PDF hoặc DWG tới noithatlaihuy@gmail.com; Lai Huy bóc tách khối lượng, lập BOQ sơ bộ (bảng khối lượng) và gửi kèm báo giá. File lớn có thể gửi qua link Google Drive.'
       },
       {
         question: 'Vật liệu và chất lượng được kiểm soát như thế nào?',
@@ -42,21 +46,21 @@ const copy = {
     ],
     stats: [
       { label: 'Xưởng & kho', value: '3.000 m²' },
-      { label: 'Phòng / tháng', value: 'Đến 50' },
+      { label: 'Phòng khách sạn / tháng', value: 'Đến 50' },
       { label: 'Thiết kế → lắp đặt', value: 'Trọn gói' },
       { label: 'Giao lắp & xuất khẩu', value: 'Toàn quốc' }
     ]
   },
   en: {
-    topic: 'Factory capability',
+    topic: 'Our Vinh Long factory',
     heading: 'Direct manufacturing. Controlled end to end.',
-    subtitle: 'A 3,000 m² workshop, coordinated machinery and quality control for hotels, villas, apartments and make-to-drawing production.',
-    primary: 'Arrange a factory visit',
-    secondary: 'View our capability',
+    subtitle: 'Our factory in Phu Khuong, Vinh Long: CNC machining, automatic edge banding, cold pressing and four quality checkpoints, for hotels, villas, apartments and make-to-drawing production.',
+    primary: 'Call to book a visit',
+    secondary: 'See the factory figures',
     legacyCapacityHeading: 'Production capacity',
     visit: {
-      phone: 'Call to arrange',
-      map: 'Open map'
+      phone: 'Call to book a visit',
+      map: 'Open factory map'
     },
     faqs: [
       {
@@ -68,6 +72,10 @@ const copy = {
         answer: 'Yes. Lai Huy provides make-to-drawing/OEM production and can prepare the technical take-off and shop drawings needed before manufacturing.'
       },
       {
+        question: 'Can Lai Huy prepare a preliminary BOQ from our drawings?',
+        answer: 'Yes. Email PDF or DWG drawings to noithatlaihuy@gmail.com; Lai Huy does the take-off, prepares a preliminary BOQ (bill of quantities) and sends it with the quote. Large files can be shared as a Google Drive link.'
+      },
+      {
         question: 'How are materials and quality controlled?',
         answer: 'Materials are checked for type, colour and project standard; dimensions, edges, surfaces and hardware are verified during production and before packing.'
       },
@@ -77,8 +85,8 @@ const copy = {
       }
     ],
     stats: [
-      { label: 'Workshop & warehouse', value: '3,000 m²' },
-      { label: 'Rooms / month', value: 'Up to 50' },
+      { label: 'Factory & warehouse', value: '3,000 m²' },
+      { label: 'Hotel rooms / month', value: 'Up to 50' },
       { label: 'Design → install', value: 'End-to-end' },
       { label: 'Delivery & export', value: 'Nationwide' }
     ]
@@ -311,7 +319,7 @@ for (const locale of ['vi', 'en'] as const) {
       .toHaveAttribute('content', locale === 'en' ? 'en_US' : 'vi_VN')
 
     const details = page.locator('[data-testid="factory-faq"] details')
-    await expect(details).toHaveCount(4)
+    await expect(details).toHaveCount(5)
 
     const visibleFaqs: { question: string, answer: string }[] = []
     for (const [index, expectedFaq] of copy[locale].faqs.entries()) {

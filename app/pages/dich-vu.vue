@@ -48,7 +48,7 @@ const coreStageImages = [
 
 const proofImage = withAlt(workshopFactoryAsset, servicesMediaAlt.factory)
 const evidenceImages = [
-  withAlt(requireCodiAsset('/phong-dien-hinh-2/p8-04.webp'), ''),
+  withAlt(requireCodiAsset('/phong-dien-hinh-2/p8-04.webp'), servicesMediaAlt.evidence),
   withAlt(workshopQualityAsset, ''),
   withAlt(workshopFactoryAsset, ''),
   withAlt(heroAsset, '')
@@ -117,7 +117,7 @@ usePageSeo({
             to="/lien-he"
             class="btn-bronze btn-bronze--on-dark"
           >
-            {{ t(servicesPageContent.documents.primaryCta) }}
+            {{ t(servicesPageContent.hero.primaryCta) }}
             <Icon
               name="i-lucide-arrow-right"
               class="h-4 w-4"
@@ -151,7 +151,7 @@ usePageSeo({
             class="reveal mt-9 flex flex-col items-start gap-3 sm:flex-row md:flex-col xl:flex-row"
           >
             <NuxtLink
-              to="/lien-he"
+              to="/lien-he#cach-gui-ho-so"
               class="btn-bronze"
             >
               {{ t(servicesPageContent.documents.primaryCta) }}
@@ -309,7 +309,7 @@ usePageSeo({
           class="reveal flex flex-col gap-3 sm:flex-row sm:flex-wrap xl:justify-end"
         >
           <NuxtLink
-            to="/lien-he"
+            to="/lien-he#cach-gui-ho-so"
             class="btn-bronze"
           >
             {{ t(servicesPageContent.contact.primaryCta) }}
@@ -323,7 +323,7 @@ usePageSeo({
             :href="phoneHref"
             class="btn-outline"
           >
-            {{ t(servicesPageContent.contact.phoneCta) }} · {{ company.phone }}
+            {{ t(servicesPageContent.contact.phoneCta) }} {{ company.phone }}
           </a>
         </div>
       </div>

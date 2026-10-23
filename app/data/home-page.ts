@@ -18,54 +18,53 @@ export type HomeCapability = {
 
 export const homePageContent = {
   hero: {
-    eyebrow: { vi: 'Thiết kế · Sản xuất · Thi công', en: 'Design · Manufacture · Fit-out' },
-    title: { vi: 'Biến hồ sơ kỹ thuật thành không gian hoàn thiện', en: 'Turning technical documents into completed spaces' },
-    accent: { vi: 'Nội thất dự án, được kiểm soát từ xưởng.', en: 'Project interiors, controlled from our own factory.' },
+    eyebrow: { vi: 'Thiết kế · Sản xuất · Thi công', en: 'Design · Production · Fit-out' },
+    title: { vi: 'Nội thất khách sạn và dự án, sản xuất tại xưởng của chính Lai Huy', en: 'Hotel and project interiors, made in our own factory' },
     description: {
-      vi: 'Lai Huy đồng hành cùng chủ đầu tư và tổng thầu từ bóc tách bản vẽ, vật liệu, sản xuất đến lắp đặt tại công trình.',
-      en: 'Lai Huy works with owners and main contractors from drawing take-off and materials through manufacturing and on-site installation.'
+      vi: 'Chủ đầu tư có một đầu mối từ thiết kế đến lắp đặt. Đơn vị thiết kế và tổng thầu có một xưởng sản xuất đúng bản vẽ, kèm bóc tách, BOQ sơ bộ và shop drawing. Lắp đặt trên toàn quốc.',
+      en: 'Owners get one accountable team from design to installation. Designers and main contractors get a factory that builds to their drawings, with take-off, a preliminary BOQ and shop drawings. Installation nationwide.'
     },
-    primaryCta: { vi: 'Xem dự án tiêu biểu', en: 'View selected work' },
-    secondaryCta: { vi: 'Gửi hồ sơ dự án', en: 'Send project documents' }
+    primaryCta: { vi: 'Nhận báo giá', en: 'Request a quote' },
+    secondaryCta: { vi: 'Gửi bản vẽ, nhận BOQ sơ bộ', en: 'Send drawings for a preliminary BOQ' }
   },
   story: {
-    eyebrow: { vi: 'Một hành trình, một đầu mối', en: 'One journey, one accountable team' },
+    eyebrow: { vi: 'Quy trình 6 bước, tóm trong 4 chặng', en: 'Our six-step process, in four stages' },
     title: { vi: 'Không chuyển tay giữa các nhà thầu', en: 'No hand-offs between contractors' },
     description: {
-      vi: 'Một đầu mối xuyên suốt từ khảo sát hiện trạng, triển khai hồ sơ, chốt vật liệu đến nghiệm thu không gian hoàn thiện.',
-      en: 'One accountable team leads the work from the existing-condition survey through documentation, material approval, and final sign-off.'
+      vi: 'Cùng một đội chịu trách nhiệm từ lúc nhận bản vẽ, đo hiện trạng, sản xuất đến nghiệm thu tại công trình.',
+      en: 'The same team is responsible from drawing intake and site measurement through production to sign-off on site.'
     }
   },
   capabilities: {
-    eyebrow: { vi: 'Ba năng lực cốt lõi', en: 'Three core capabilities' },
-    title: { vi: 'Một hệ thống chịu trách nhiệm đến cùng', en: 'One system accountable through completion' }
+    eyebrow: { vi: 'Ba dịch vụ', en: 'Three services' },
+    title: { vi: 'Thiết kế, sản xuất, thi công: một đội làm cả ba', en: 'Design, production, fit-out: one team does all three' }
   },
   projects: {
-    eyebrow: { vi: 'Công trình tiêu biểu', en: 'Selected work' },
-    title: { vi: 'Những không gian Lai Huy đã thực hiện', en: 'Spaces Lai Huy has delivered' },
-    allCta: { vi: 'Xem toàn bộ dự án', en: 'View all projects' },
+    eyebrow: { vi: 'Dự án tiêu biểu', en: 'Selected projects' },
+    title: { vi: 'Ba dự án làm trọn từ thiết kế đến lắp đặt', en: 'Three projects designed, made and installed by Lai Huy' },
+    allCta: { vi: 'Xem tất cả dự án', en: 'View all projects' },
     locationLabel: { vi: 'Địa điểm', en: 'Location' },
     scopeLabel: { vi: 'Phạm vi', en: 'Scope' },
-    materialsLabel: { vi: 'Vật liệu chính', en: 'Materials' },
-    heroCta: { vi: 'Xem chi tiết case study', en: 'View case study' },
-    cardCta: { vi: 'Xem chi tiết', en: 'View details' }
+    materialsLabel: { vi: 'Vật liệu chính', en: 'Main materials' },
+    heroCta: { vi: 'Xem chi tiết dự án', en: 'View project' },
+    cardCta: { vi: 'Xem chi tiết dự án', en: 'View project' }
   },
   factory: {
-    eyebrow: { vi: 'Năng lực sản xuất trực tiếp', en: 'Direct production capability' },
+    eyebrow: { vi: 'Xưởng Vĩnh Long', en: 'Our Vinh Long factory' },
     title: { vi: 'Kiểm soát tại nguồn, trước khi ra công trình', en: 'Control at the source, before work reaches site' },
     description: {
-      vi: 'Xưởng trực tiếp, hệ thống máy đồng bộ và đội ngũ kỹ thuật giúp vật liệu, kích thước, bề mặt và tiến độ được kiểm tra xuyên suốt.',
-      en: 'An own factory, coordinated machinery, and technical teams keep materials, dimensions, finishes, and schedule under continuous control.'
+      vi: 'Ván được cắt CNC, khoan, dán cạnh và ép ngay tại xưởng; vật liệu, kích thước và bề mặt được kiểm tra ở bốn điểm trước khi giao.',
+      en: 'Panels are CNC-cut, bored, edge-banded and pressed in our own factory; materials, dimensions and surfaces are checked at four points before delivery.'
     }
   },
   cta: {
-    eyebrow: { vi: 'Bắt đầu bằng hồ sơ của bạn', en: 'Start with your project documents' },
-    title: { vi: 'Gửi bản vẽ để cùng làm rõ vật liệu, tiến độ và phạm vi thi công', en: 'Send your drawings to clarify materials, schedule, and contracting scope' },
+    eyebrow: { vi: 'Có bản vẽ?', en: 'Have drawings?' },
+    title: { vi: 'Gửi bản vẽ, nhận BOQ sơ bộ và báo giá', en: 'Send your drawings for a preliminary BOQ and a quote' },
     description: {
-      vi: 'Đội ngũ kỹ thuật sẽ rà soát thông tin và trao đổi phương án phù hợp trước khi xác lập báo giá hoặc kế hoạch triển khai.',
-      en: 'Our technical team will review the information and discuss a suitable approach before any quotation or delivery plan is established.'
+      vi: 'Gửi bản vẽ PDF hoặc DWG tới noithatlaihuy@gmail.com. Đội kỹ thuật bóc tách khối lượng và lập BOQ sơ bộ. Báo giá trong 24 giờ làm việc kể từ khi nhận đủ bản vẽ hoặc thông tin dự án. Chưa có bản vẽ? Gọi 0903 102 012.',
+      en: 'Email PDF or DWG drawings to noithatlaihuy@gmail.com. Our technical team does the take-off and prepares a preliminary BOQ. We quote within 24 working hours of receiving complete drawings or project details. No drawings yet? Call +84 903 102 012.'
     },
-    primaryCta: { vi: 'Gửi hồ sơ dự án', en: 'Send project documents' },
+    primaryCta: { vi: 'Gửi bản vẽ, nhận BOQ sơ bộ', en: 'Send drawings for a preliminary BOQ' },
     secondaryCta: { vi: 'Xem năng lực nhà xưởng', en: 'View factory capability' }
   }
 } as const
@@ -73,41 +72,41 @@ export const homePageContent = {
 export const homeStoryStages: readonly HomeStoryStage[] = [
   {
     id: 'existing',
-    label: { vi: 'Hiện trạng', en: 'Existing condition' },
+    label: { vi: 'Bước 01 · Tiếp nhận hồ sơ', en: 'Step 01 · Intake' },
     title: {
-      vi: 'Đọc đúng mặt bằng trước khi thiết kế',
-      en: 'Read the space before designing'
+      vi: 'Đối chiếu bản vẽ với hiện trạng',
+      en: 'Check the drawings against the site'
     },
     description: {
-      vi: 'Kích thước, cao độ, kết cấu và các đầu chờ MEP được khảo sát để khóa ràng buộc ngay từ đầu.',
-      en: 'Dimensions, levels, structure, and MEP interfaces are surveyed so site constraints are understood from the outset.'
+      vi: 'Bản vẽ, BOQ và tiêu chuẩn hoàn thiện được rà soát; khi cần, kích thước, cao độ, kết cấu và các vị trí chờ điện, nước, điều hòa (MEP) được đo tại công trình.',
+      en: 'Drawings, BOQ and finish standards are reviewed; where needed, dimensions, levels, structure and MEP connections are measured on site.'
     }
   },
   {
     id: 'drawing',
-    label: { vi: 'Hồ sơ kỹ thuật', en: 'Technical documents' },
-    title: { vi: 'Đọc đúng trước khi làm', en: 'Read it right before making' },
+    label: { vi: 'Bước 02 · Bóc tách kỹ thuật', en: 'Step 02 · Take-off' },
+    title: { vi: 'Bóc tách trước khi cắt ván', en: 'Take-off before the first cut' },
     description: {
-      vi: 'Bản vẽ, BOQ, tiêu chuẩn hoàn thiện và giao diện các bộ môn được rà soát để khóa phạm vi ngay từ đầu.',
-      en: 'Drawings, BOQ, finish standards, and trade interfaces are reviewed to define the scope from the outset.'
+      vi: 'Bản vẽ được bóc tách thành BOQ (bảng khối lượng), danh mục vật tư và shop drawing (bản vẽ triển khai sản xuất); điểm giao cắt với các bộ môn khác được chốt ở bước này.',
+      en: 'Drawings become a BOQ (bill of quantities), a material schedule and shop drawings (production drawings); interfaces with other trades are settled here.'
     }
   },
   {
     id: 'material',
-    label: { vi: 'Vật liệu & mẫu', en: 'Materials & samples' },
-    title: { vi: 'Chạm vào quyết định thiết kế', en: 'Make the design decision tangible' },
+    label: { vi: 'Bước 03–05 · Mẫu, sản xuất, QC', en: 'Steps 03–05 · Samples, production, QC' },
+    title: { vi: 'Duyệt mẫu rồi mới sản xuất hàng loạt', en: 'Approve the sample, then produce in volume' },
     description: {
-      vi: 'Màu sắc, vân gỗ, phụ kiện và cấu tạo được đối chiếu trên mẫu trước khi sản xuất số lượng.',
-      en: 'Colour, grain, hardware, and construction are checked on samples before volume production.'
+      vi: 'Màu, vân gỗ, phụ kiện và cấu tạo được duyệt trên mẫu; sau đó xưởng sản xuất theo module và kiểm tra trước khi đóng gói.',
+      en: 'Colour, grain, hardware and construction are approved on a sample; the factory then produces in modules and inspects before packing.'
     }
   },
   {
     id: 'space',
-    label: { vi: 'Không gian hoàn thiện', en: 'Completed space' },
-    title: { vi: 'Bản vẽ trở thành trải nghiệm', en: 'The drawing becomes an experience' },
+    label: { vi: 'Bước 06 · Lắp đặt & bàn giao', en: 'Step 06 · Installation & handover' },
+    title: { vi: 'Lắp đặt và nghiệm thu từng khu vực', en: 'Installed and signed off area by area' },
     description: {
-      vi: 'Các module được lắp đặt, phối hợp hiện trường và nghiệm thu để giữ đúng ý đồ đến chi tiết cuối cùng.',
-      en: 'Modules are installed, coordinated on site, and signed off so the intent survives through the final detail.'
+      vi: 'Đội lắp đặt của Lai Huy lắp theo mặt bằng, phối hợp với các bộ môn tại công trình và nghiệm thu theo từng khu vực.',
+      en: 'Lai Huy’s installation team works to the floor plan, coordinates with the other trades on site and signs off each area.'
     }
   }
 ]
@@ -115,7 +114,7 @@ export const homeStoryStages: readonly HomeStoryStage[] = [
 export const homeCapabilities: readonly HomeCapability[] = [
   {
     id: 'technical',
-    title: { vi: 'Thiết kế kỹ thuật', en: 'Technical design' },
+    title: { vi: 'Thiết kế & triển khai kỹ thuật', en: 'Design & technical development' },
     description: {
       vi: 'Bóc tách, shop drawing và giải pháp cấu tạo được làm rõ trước khi sản xuất.',
       en: 'Take-off, shop drawings, and construction details are resolved before manufacturing.'
@@ -123,15 +122,15 @@ export const homeCapabilities: readonly HomeCapability[] = [
   },
   {
     id: 'manufacturing',
-    title: { vi: 'Sản xuất trực tiếp', en: 'Direct manufacturing' },
+    title: { vi: 'Sản xuất tại xưởng', en: 'In-house production' },
     description: {
-      vi: 'Chủ động vật liệu, tiến độ và chất lượng hoàn thiện tại xưởng của Lai Huy.',
-      en: 'Materials, schedule, and finish quality are controlled in Lai Huy’s own workshop.'
+      vi: 'Vật liệu, tiến độ và chất lượng hoàn thiện do chính xưởng Lai Huy tại Vĩnh Long kiểm soát.',
+      en: 'Materials, schedule and finish quality are controlled in Lai Huy’s own factory in Vinh Long.'
     }
   },
   {
     id: 'fitout',
-    title: { vi: 'Thi công & bàn giao', en: 'Fit-out & handover' },
+    title: { vi: 'Thi công & lắp đặt', en: 'Fit-out & installation' },
     description: {
       vi: 'Điều phối giao lắp, xử lý hiện trường và nghiệm thu theo từng khu vực dự án.',
       en: 'Delivery, site resolution, and sign-off are coordinated area by area.'

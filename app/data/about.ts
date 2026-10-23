@@ -69,21 +69,21 @@ export const aboutPageContent = {
     title: { vi: 'Nhà thầu nội thất', en: 'An interior contractor' },
     specialTitle: { vi: 'có xưởng riêng', en: 'with its own factory' },
     subtitle: {
-      vi: 'Một đầu mối cho phát triển kỹ thuật, sản xuất tại xưởng, kiểm soát chất lượng và lắp dựng tại công trình.',
-      en: 'One accountable partner for technical development, in-house production, quality control and on-site installation.'
+      vi: 'Lai Huy thiết kế, sản xuất tại xưởng ở Vĩnh Long, kiểm tra chất lượng và lắp đặt tại công trình cho khách sạn, villa, căn hộ và văn phòng.',
+      en: 'Lai Huy designs, produces in its own Vinh Long factory, inspects and installs on site for hotels, villas, apartments and offices.'
     },
-    primaryCta: { vi: 'Trao đổi hồ sơ dự án', en: 'Discuss your project documents' },
-    secondaryCta: { vi: 'Xem dự án đã thực hiện', en: 'View delivered work' }
+    primaryCta: { vi: 'Nhận báo giá', en: 'Request a quote' },
+    secondaryCta: { vi: 'Xem tất cả dự án', en: 'View all projects' }
   },
   problem: {
     eyebrow: { vi: 'Bài toán của chủ đầu tư', en: 'The owner’s delivery challenge' },
     title: {
-      vi: 'Một thiết kế đẹp chỉ có giá trị khi triển khai được',
-      en: 'A good design creates value only when it can be delivered'
+      vi: 'Bản vẽ đẹp chưa đủ: phải sản xuất được và lắp khớp hiện trạng',
+      en: 'A good drawing is not enough: it has to be buildable and fit the site'
     },
     description: {
-      vi: 'Giá trị của hồ sơ thiết kế được quyết định bởi khả năng chuyển thành sản phẩm, phối hợp tại hiện trường và nghiệm thu đúng yêu cầu.',
-      en: 'The value of a design is decided by whether it can become a finished product, coordinate on site and pass the agreed sign-off.'
+      vi: 'Hồ sơ thiết kế chỉ có giá trị khi sản xuất được, lắp khớp với công trình và nghiệm thu đúng yêu cầu.',
+      en: 'A design is only worth what can be produced, fitted to the building and signed off as agreed.'
     },
     lead: {
       vi: 'Chủ đầu tư cần kiểm soát đồng thời chất lượng, tiến độ và tính nhất quán giữa bản vẽ với hiện trường.',
@@ -111,43 +111,43 @@ export const aboutPageContent = {
         title: { vi: 'Phối hợp hiện trường', en: 'Site coordination' },
         description: {
           vi: 'Tổ chức giao lắp, phối hợp bộ môn và nghiệm thu theo từng giai đoạn.',
-          en: 'Coordinate delivery, other trades and sign-off through each project stage.'
+          en: 'Coordinate delivery, installation, other trades and sign-off at each project stage.'
         }
       }
     ]
   },
   workflow: {
-    eyebrow: { vi: 'Mô hình triển khai', en: 'Delivery model' },
-    title: { vi: 'Sáu bước, một luồng trách nhiệm', en: 'Six stages, one line of responsibility' },
+    eyebrow: { vi: 'Quy trình 6 bước', en: 'Our six-step process' },
+    title: { vi: 'Sáu bước từ bản vẽ đến bàn giao', en: 'Six steps from drawings to handover' },
     description: {
-      vi: 'Từ tiếp nhận bản vẽ và BOQ đến sản xuất, QC, lắp dựng và bàn giao, thông tin được chuyển tiếp trong một quy trình thống nhất.',
-      en: 'From drawing and BOQ intake through production, QC, installation and handover, information moves through one coordinated process.'
+      vi: 'Từ tiếp nhận bản vẽ và BOQ đến sản xuất, QC, lắp đặt và bàn giao, cùng một đội nắm thông tin xuyên suốt.',
+      en: 'From drawing and BOQ intake through production, QC, installation and handover, the same team holds the information throughout.'
     }
   },
   factory: {
-    eyebrow: { vi: 'Năng lực nhìn thấy được', en: 'Capability you can see' },
+    eyebrow: { vi: 'Nhà xưởng', en: 'The factory' },
     title: {
-      vi: 'Xưởng, máy móc và tay nghề trong cùng một bằng chứng',
-      en: 'Workshop, machinery and craft in one body of evidence'
+      vi: 'Xưởng, máy và thợ của chính Lai Huy',
+      en: 'Our own workshop, machines and craftspeople'
     },
     description: {
       vi: 'Sản xuất trực tiếp giúp các quyết định về vật liệu, kỹ thuật và hoàn thiện được kiểm tra tại nguồn trước khi chuyển ra công trình.',
       en: 'Direct production lets material, technical and finishing decisions be checked at the source before work moves to site.'
     },
-    cta: { vi: 'Xem đầy đủ năng lực nhà xưởng', en: 'Explore the full factory capability' }
+    cta: { vi: 'Xem năng lực nhà xưởng', en: 'View factory capability' }
   },
   projects: {
     eyebrow: { vi: 'Dự án tiêu biểu', en: 'Selected work' },
-    title: { vi: 'Dự án nói thay năng lực', en: 'Delivered work is the evidence' },
+    title: { vi: 'Hai dự án, hai quy mô', en: 'Two projects, two scales' },
     description: {
-      vi: 'Hai quy mô khác nhau cho thấy cách Lai Huy giữ thiết kế, sản xuất và thi công trong cùng một phạm vi trách nhiệm.',
-      en: 'Two different project scales show how Lai Huy keeps design, production and construction within one accountable scope.'
+      vi: 'Khách sạn Eo Gió (1.670 m², 44–45 phòng) và Codi Villa Phan Thiết (bốn căn, 20–25 phòng): cả hai do Lai Huy thiết kế, sản xuất và thi công.',
+      en: 'Eo Gio Hotel (1,670 m², 44–45 rooms) and Codi Villa, Phan Thiet (four villas, 20–25 rooms): both designed, produced and fitted out by Lai Huy.'
     },
     labels: {
       area: { vi: 'Diện tích', en: 'Area' },
       location: { vi: 'Địa điểm', en: 'Location' },
-      year: { vi: 'Năm', en: 'Year' },
-      view: { vi: 'Xem case study', en: 'View case study' }
+      year: { vi: 'Hoàn thành', en: 'Completed' },
+      view: { vi: 'Xem chi tiết dự án', en: 'View project' }
     }
   },
   fit: {
@@ -159,27 +159,27 @@ export const aboutPageContent = {
         en: 'Hospitality interiors with multiple room types that need consistent delivery.'
       },
       {
-        vi: 'Villa hoặc căn hộ cần kiểm soát chi tiết từ bản vẽ đến lắp dựng.',
+        vi: 'Villa hoặc căn hộ cần kiểm soát chi tiết từ bản vẽ đến lắp đặt.',
         en: 'Villas or apartments requiring detail control from drawings through installation.'
       },
       {
-        vi: 'Gia công theo bản vẽ, OEM hoặc đơn hàng cần tổ chức sản xuất rõ ràng.',
-        en: 'Make-to-drawing, OEM or export-ready orders requiring a clear production system.'
+        vi: 'Gia công theo bản vẽ hoặc OEM (sản xuất theo thiết kế và tiêu chuẩn của bên đặt hàng), kể cả đơn hàng xuất khẩu.',
+        en: 'Make-to-drawing or OEM production (made to the buyer’s design and specification), including export orders.'
       }
     ]
   },
   contact: {
-    eyebrow: { vi: 'Bắt đầu từ hồ sơ hiện có', en: 'Start with what you have' },
+    eyebrow: { vi: 'Bước tiếp theo', en: 'Next step' },
     title: {
-      vi: 'Trao đổi bản vẽ, BOQ hoặc yêu cầu dự án',
-      en: 'Discuss your drawings, BOQ or project requirements'
+      vi: 'Có bản vẽ hay mới có ý tưởng, đều có thể bắt đầu',
+      en: 'Drawings or just an idea: either is a place to start'
     },
     description: {
-      vi: 'Xem thông tin liên hệ hoặc gọi trực tiếp để trao đổi phạm vi sản xuất và thi công phù hợp.',
-      en: 'View the contact details or call directly to discuss an appropriate production and installation scope.'
+      vi: 'Gửi bản vẽ để nhận BOQ sơ bộ và báo giá, hoặc gọi để trao đổi phạm vi khi dự án chưa có bản vẽ.',
+      en: 'Send drawings for a preliminary BOQ and a quote, or call to talk through the scope if there are no drawings yet.'
     },
-    primaryCta: { vi: 'Xem thông tin liên hệ', en: 'View contact details' },
-    phoneCta: { vi: 'Gọi trực tiếp', en: 'Call directly' }
+    primaryCta: { vi: 'Nhận báo giá', en: 'Request a quote' },
+    phoneCta: { vi: 'Gọi', en: 'Call' }
   }
 } as const satisfies AboutPageContent
 

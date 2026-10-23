@@ -44,7 +44,7 @@ const sequence = (index: number) => String(props.startAt + index).padStart(2, '0
       >
         <li
           v-for="(service, index) in services"
-          :id="service.id"
+          :id="service.anchor"
           :key="service.id"
           v-reveal.item
           data-testid="services-programme"

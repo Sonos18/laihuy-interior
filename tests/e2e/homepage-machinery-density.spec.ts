@@ -19,7 +19,7 @@ const COPY = {
       'Đội ngũ triển khai dự án'
     ],
     // Evidence blocks that moved to /nha-xuong and must not return to the home page.
-    removedEvidence: ['Tiếp nhận bản vẽ & BOQ', 'Cắt & tạo hình', 'Khoan & liên kết', 'Dán cạnh & hoàn thiện', 'Xử lý bề mặt & ép', 'Điều phối dự án', 'QC trước khi giao hàng', 'Thi công tại công trình'],
+    removedEvidence: ['Tiếp nhận bản vẽ & BOQ', 'Cắt & tạo hình', 'Khoan & liên kết', 'Dán cạnh & hoàn thiện', 'Xử lý bề mặt & ép', 'Điều phối dự án', 'QC trước khi giao hàng', 'Lắp đặt tại công trình'],
     machines: [
       'CNC Nesting',
       'Cưa bàn trượt',
@@ -33,11 +33,11 @@ const COPY = {
     cta: 'Xem năng lực nhà xưởng'
   },
   en: {
-    heading: 'Machinery system for project interior manufacturing',
+    heading: 'Machinery built for project interiors',
     description: 'The workshop uses a coordinated machinery line across four core stages, controlling precision, surface quality, and schedule for hotel, villa, and premium apartment projects.',
     pillars: [
       'Technical take-off',
-      'Machinery system for project interior manufacturing',
+      'Machinery built for project interiors',
       'Project delivery team'
     ],
     removedEvidence: ['Drawing & BOQ intake', 'Cutting & shaping', 'Boring & connections', 'Edge banding & finishing', 'Surface treatment & pressing', 'Project coordination', 'Pre-delivery QC', 'On-site installation'],

@@ -9,18 +9,18 @@ const TRANSPARENT_PNG = Buffer.from(
 
 const COPY = {
   vi: {
-    hero: 'Biến hồ sơ kỹ thuật thành không gian hoàn thiện',
+    hero: 'Nội thất khách sạn và dự án, sản xuất tại xưởng của chính Lai Huy',
     story: 'Không chuyển tay giữa các nhà thầu',
-    stages: ['Hiện trạng', 'Hồ sơ kỹ thuật', 'Vật liệu & mẫu', 'Không gian hoàn thiện'],
-    capabilities: ['Thiết kế kỹ thuật', 'Sản xuất trực tiếp', 'Thi công & bàn giao'],
-    cta: 'Gửi hồ sơ dự án'
+    stages: ['Bước 01 · Tiếp nhận hồ sơ', 'Bước 02 · Bóc tách kỹ thuật', 'Bước 03–05 · Mẫu, sản xuất, QC', 'Bước 06 · Lắp đặt & bàn giao'],
+    capabilities: ['Thiết kế & triển khai kỹ thuật', 'Sản xuất tại xưởng', 'Thi công & lắp đặt'],
+    cta: 'Gửi bản vẽ, nhận BOQ sơ bộ'
   },
   en: {
-    hero: 'Turning technical documents into completed spaces',
+    hero: 'Hotel and project interiors, made in our own factory',
     story: 'No hand-offs between contractors',
-    stages: ['Existing condition', 'Technical documents', 'Materials & samples', 'Completed space'],
-    capabilities: ['Technical design', 'Direct manufacturing', 'Fit-out & handover'],
-    cta: 'Send project documents'
+    stages: ['Step 01 · Intake', 'Step 02 · Take-off', 'Steps 03–05 · Samples, production, QC', 'Step 06 · Installation & handover'],
+    capabilities: ['Design & technical development', 'In-house production', 'Fit-out & installation'],
+    cta: 'Send drawings for a preliminary BOQ'
   }
 } as const
 
@@ -79,7 +79,7 @@ for (const locale of ['vi', 'en'] as const) {
 
     const ctaLinks = page.getByTestId('home-project-cta').getByRole('link', { name: copy.cta, exact: true })
     await expect(ctaLinks).toHaveCount(1)
-    await expect(ctaLinks).toHaveAttribute('href', '/lien-he')
+    await expect(ctaLinks).toHaveAttribute('href', '/lien-he#cach-gui-ho-so')
 
     expect(errors.consoleErrors).toEqual([])
     expect(errors.pageErrors).toEqual([])

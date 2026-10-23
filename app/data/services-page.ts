@@ -21,7 +21,7 @@ type ProofItem = {
   description: LocalizedText
 }
 
-type ServicesMediaKey = 'hero' | 'design' | 'construction' | ProofItem['id']
+type ServicesMediaKey = 'hero' | 'design' | 'construction' | 'evidence' | ProofItem['id']
 
 export type ServicesPageContent = {
   hero: {
@@ -29,6 +29,7 @@ export type ServicesPageContent = {
     title: LocalizedText
     specialTitle: LocalizedText
     subtitle: LocalizedText
+    primaryCta: LocalizedText
   }
   documents: SectionIntro & {
     items: readonly DocumentInput[]
@@ -68,9 +69,10 @@ export const servicesPageContent = {
     title: { vi: 'Ba dịch vụ,', en: 'Three services,' },
     specialTitle: { vi: 'một đầu mối', en: 'one accountable team' },
     subtitle: {
-      vi: 'Triển khai kỹ thuật, sản xuất tại xưởng và thi công nội thất theo yêu cầu của từng dự án.',
-      en: 'Technical development, in-house production and interior contracting around each project brief.'
-    }
+      vi: 'Thiết kế & triển khai kỹ thuật, sản xuất tại xưởng, thi công & lắp đặt: nhận trọn gói, hoặc chỉ sản xuất theo bản vẽ của bạn.',
+      en: 'Design & technical development, in-house production, fit-out & installation: take the full package, or just production to your drawings.'
+    },
+    primaryCta: { vi: 'Nhận báo giá', en: 'Request a quote' }
   },
   documents: {
     eyebrow: { vi: 'Hồ sơ đầu vào', en: 'Starting documents' },
@@ -79,8 +81,8 @@ export const servicesPageContent = {
       en: 'Start with the drawings and requirements you already have'
     },
     description: {
-      vi: 'Lai Huy tiếp nhận hồ sơ ở nhiều mức độ hoàn thiện để cùng xác định phạm vi kỹ thuật, sản xuất và thi công phù hợp.',
-      en: 'Lai Huy can review documents at different stages to define an appropriate technical, production and installation scope.'
+      vi: 'Lai Huy nhận hồ sơ ở mọi mức: từ mặt bằng hiện trạng và yêu cầu sử dụng đến bộ shop drawing hoàn chỉnh.',
+      en: 'Lai Huy works from documents at any stage, from a site plan and a brief to a complete set of shop drawings.'
     },
     items: [
       {
@@ -95,10 +97,10 @@ export const servicesPageContent = {
       {
         id: 'technical',
         icon: 'i-lucide-clipboard-list',
-        title: { vi: 'Hồ sơ kỹ thuật & BOQ', en: 'Technical documents & BOQ' },
+        title: { vi: 'Hồ sơ kỹ thuật & BOQ (bảng khối lượng)', en: 'Technical documents & BOQ (bill of quantities)' },
         description: {
-          vi: 'Shop drawing, chi tiết cấu tạo, danh mục khối lượng hoặc phạm vi mời thầu.',
-          en: 'Shop drawings, construction details, bill of quantities or tender scope.'
+          vi: 'Shop drawing (bản vẽ triển khai sản xuất), chi tiết cấu tạo hoặc phạm vi mời thầu. Chưa có BOQ thì Lai Huy lập BOQ sơ bộ từ bản vẽ.',
+          en: 'Shop drawings (production drawings), construction details or tender scope. No BOQ yet? Lai Huy prepares a preliminary one from the drawings.'
         }
       },
       {
@@ -111,22 +113,22 @@ export const servicesPageContent = {
         }
       }
     ],
-    primaryCta: { vi: 'Trao đổi hồ sơ dự án', en: 'Discuss project documents' },
-    secondaryCta: { vi: 'Xem hành trình triển khai', en: 'See the delivery journey' }
+    primaryCta: { vi: 'Gửi bản vẽ, nhận BOQ sơ bộ', en: 'Send drawings for a preliminary BOQ' },
+    secondaryCta: { vi: 'Xem các bước triển khai', en: 'See how delivery works' }
   },
   journey: {
-    eyebrow: { vi: 'Hệ thống thực thi', en: 'Delivery system' },
+    eyebrow: { vi: 'Thứ tự triển khai', en: 'How delivery runs' },
     title: {
-      vi: 'Ba chặng chính, một luồng trách nhiệm',
-      en: 'Three core stages, one line of responsibility'
+      vi: 'Ba dịch vụ, sáu bước',
+      en: 'Three services, six steps'
     },
     description: {
-      vi: 'Thiết kế kỹ thuật, sản xuất tại xưởng và thi công được kết nối thành một hành trình có thứ tự rõ ràng.',
-      en: 'Technical development, workshop production and site contracting connect as one clearly ordered journey.'
+      vi: 'Thiết kế & triển khai kỹ thuật gồm bước 01–02; sản xuất tại xưởng gồm điều phối, sản xuất và QC (bước 03–05); thi công & lắp đặt là bước 06.',
+      en: 'Design & technical development covers steps 01–02; in-house production covers coordination, production and QC (steps 03–05); fit-out & installation is step 06.'
     }
   },
   proof: {
-    eyebrow: { vi: 'Bằng chứng vận hành', en: 'Operating proof' },
+    eyebrow: { vi: 'Tại xưởng Vĩnh Long', en: 'At our Vinh Long factory' },
     title: {
       vi: 'Năng lực sản xuất phải nhìn thấy và kiểm tra được',
       en: 'Production capability should be visible and verifiable'
@@ -138,8 +140,8 @@ export const servicesPageContent = {
     items: [
       {
         id: 'factory',
-        label: { vi: 'Năng lực vận hành', en: 'Operating capacity' },
-        title: { vi: 'Sản xuất theo quy mô dự án', en: 'Production organised around project scale' },
+        label: { vi: 'Công suất', en: 'Capacity' },
+        title: { vi: 'Đến 50 phòng khách sạn mỗi tháng', en: 'Up to 50 hotel rooms a month' },
         description: {
           vi: 'Mặt bằng xưởng và hệ thống máy hỗ trợ tổ chức gia công theo hạng mục, module và giai đoạn giao hàng.',
           en: 'Workshop space and machinery support production by package, module and delivery stage.'
@@ -150,55 +152,59 @@ export const servicesPageContent = {
         label: { vi: 'Kiểm soát chất lượng', en: 'Quality control' },
         title: { vi: 'Kiểm soát tại nguồn', en: 'Control at the source' },
         description: {
-          vi: 'Hồ sơ, vật liệu và chi tiết hoàn thiện được đối chiếu trong quá trình sản xuất trước khi giao lắp.',
-          en: 'Documents, materials and finishing details are checked during production before delivery and installation.'
+          vi: 'Bốn điểm kiểm tra: vật tư đầu vào, đối chiếu bản vẽ, trong sản xuất và trước khi giao.',
+          en: 'Four checkpoints: incoming materials, drawing cross-check, in production and before delivery.'
         }
       }
     ],
-    cta: { vi: 'Xem năng lực nhà xưởng', en: 'Explore the factory capability' }
+    cta: { vi: 'Xem năng lực nhà xưởng', en: 'View factory capability' }
   },
   programmes: {
-    eyebrow: { vi: 'Lĩnh vực & loại hình hợp tác', en: 'Sectors & engagement models' },
+    eyebrow: { vi: 'Lĩnh vực', en: 'Sectors' },
     title: {
-      vi: 'Một hệ thống triển khai cho nhiều loại dự án',
-      en: 'One delivery system for different project types'
+      vi: 'Khách sạn, văn phòng và đơn hàng OEM',
+      en: 'Hotels, offices and OEM orders'
     },
     description: {
-      vi: 'Năng lực cốt lõi được tổ chức theo yêu cầu vận hành của khách sạn, không gian thương mại và đơn hàng gia công.',
-      en: 'The core capability adapts to hospitality, commercial interiors and production-from-drawings orders.'
+      vi: 'Cùng ba dịch vụ trên, tổ chức theo cách vận hành của từng loại dự án.',
+      en: 'The same three services, organised around how each type of project operates.'
     }
   },
   contact: {
-    eyebrow: { vi: 'Bắt đầu từ hồ sơ hiện có', en: 'Start with what you have' },
+    eyebrow: { vi: 'Bước tiếp theo', en: 'Next step' },
     title: {
-      vi: 'Có bản vẽ hoặc BOQ? Cùng xác định phạm vi phù hợp',
-      en: 'Have drawings or a BOQ? Let’s define the right scope'
+      vi: 'Có bản vẽ? Gửi để nhận BOQ sơ bộ và báo giá',
+      en: 'Have drawings? Send them for a preliminary BOQ and a quote'
     },
     description: {
-      vi: 'Xem thông tin liên hệ hoặc gọi trực tiếp để trao đổi yêu cầu kỹ thuật, sản xuất và thi công của dự án.',
-      en: 'View the contact details or call directly to discuss the project’s technical, production and installation requirements.'
+      vi: 'Gửi bản vẽ PDF hoặc DWG qua email, hoặc gọi để trao đổi nếu dự án chưa có bản vẽ.',
+      en: 'Email PDF or DWG drawings, or call to talk it through if there are no drawings yet.'
     },
-    primaryCta: { vi: 'Xem thông tin liên hệ', en: 'View contact details' },
-    phoneCta: { vi: 'Gọi trực tiếp', en: 'Call directly' }
+    primaryCta: { vi: 'Gửi bản vẽ, nhận BOQ sơ bộ', en: 'Send drawings for a preliminary BOQ' },
+    phoneCta: { vi: 'Gọi', en: 'Call' }
   }
 } as const satisfies ServicesPageContent
 
 export const servicesMediaAlt = {
   hero: {
-    vi: 'Cầu thang và tiểu cảnh trong dự án nội thất Codi',
-    en: 'Staircase and interior garden in the Codi interior project'
+    vi: 'Khách sạn Codi Boutique: cầu thang và tiểu cảnh ở sảnh đón',
+    en: 'Codi Boutique Hotel: lobby staircase and planting'
   },
   design: {
-    vi: 'Không gian phòng điển hình trong dự án nội thất Codi Boutique Hotel',
-    en: 'Typical guest room interior in the Codi Boutique Hotel project'
+    vi: 'Khách sạn Codi Boutique: phòng điển hình 1',
+    en: 'Codi Boutique Hotel: typical room 1'
+  },
+  evidence: {
+    vi: 'Khách sạn Codi Boutique: phòng điển hình 2',
+    en: 'Codi Boutique Hotel: typical room 2'
   },
   factory: {
     vi: 'Không gian sản xuất trực tiếp tại xưởng nội thất Lai Huy',
     en: 'The directly operated Lai Huy interior production workshop'
   },
   construction: {
-    vi: 'Không gian nội thất hoàn thiện trong dự án Codi Boutique Hotel',
-    en: 'Completed interior space in the Codi Boutique Hotel project'
+    vi: 'Khách sạn Codi Boutique: phòng điển hình 2, nội thất do Lai Huy sản xuất và lắp đặt',
+    en: 'Codi Boutique Hotel: typical room 2, interiors made and installed by Lai Huy'
   },
   quality: {
     vi: 'Hệ thống máy gia công trong xưởng nội thất Lai Huy',

@@ -28,7 +28,7 @@ export type ProductionStep = {
 
 export const factoryCapabilities: Capability[] = [
   {
-    label: { vi: 'Hệ thống nhà xưởng & kho', en: 'Workshop & warehouse' },
+    label: { vi: 'Nhà xưởng & kho', en: 'Factory & warehouse' },
     value: { vi: '3.000 m²', en: '3,000 m²' },
     description: {
       vi: 'Không gian sản xuất trực tiếp cho đồ gỗ công nghiệp, hệ tủ và hạng mục nội thất dự án.',
@@ -36,8 +36,8 @@ export const factoryCapabilities: Capability[] = [
     }
   },
   {
-    label: { vi: 'Năng lực sản xuất & thi công', en: 'Production & installation capacity' },
-    value: { vi: 'Lên đến 50 phòng khách sạn/tháng', en: 'Up to 50 hotel rooms/month' },
+    label: { vi: 'Công suất', en: 'Capacity' },
+    value: { vi: 'Đến 50 phòng khách sạn / tháng', en: 'Up to 50 hotel rooms / month' },
     description: {
       vi: 'Phù hợp các dự án khách sạn, căn hộ dịch vụ và villa cần tiến độ sản xuất ổn định.',
       en: 'Suited to hotel, serviced-apartment and villa projects that need a steady production schedule.'
@@ -45,7 +45,7 @@ export const factoryCapabilities: Capability[] = [
   },
   {
     label: { vi: 'Đội ngũ triển khai dự án', en: 'Project delivery team' },
-    value: { vi: 'Sản xuất, thiết kế và thi công', en: 'Design, production & contracting' },
+    value: { vi: 'Thiết kế, sản xuất và thi công', en: 'Design, production & fit-out' },
     description: {
       vi: 'Phối hợp xuyên suốt từ bóc tách bản vẽ, sản xuất, kiểm soát chất lượng đến thi công thực tế tại công trình.',
       en: 'End-to-end coordination from drawing take-off and production through quality control to on-site installation.'
@@ -64,11 +64,11 @@ export const factoryCapabilities: Capability[] = [
 export const machinerySectionContent: MachinerySectionContent = {
   titleLead: {
     vi: 'Hệ thống máy phục vụ sản xuất',
-    en: 'Machinery system for'
+    en: 'Machinery built for'
   },
   titleAccent: {
     vi: 'nội thất dự án',
-    en: 'project interior manufacturing'
+    en: 'project interiors'
   },
   description: {
     vi: 'Xưởng ứng dụng hệ thống máy đồng bộ theo bốn công đoạn chính, giúp kiểm soát độ chính xác, chất lượng bề mặt và tiến độ cho các dự án khách sạn, villa và căn hộ cao cấp.',
@@ -76,7 +76,7 @@ export const machinerySectionContent: MachinerySectionContent = {
   },
   photoCaption: {
     vi: 'Hình ảnh thực tế tại xưởng',
-    en: 'Real workshop photograph'
+    en: 'Photographed in our workshop'
   },
   lineCaption: {
     vi: 'Hệ thống máy sản xuất',
@@ -138,8 +138,8 @@ export const productionWorkflow: ProductionStep[] = [
   {
     title: { vi: 'Tiếp nhận bản vẽ & BOQ', en: 'Drawing & BOQ intake' },
     description: {
-      vi: 'Rà soát hồ sơ, phạm vi công việc, vật liệu, tiến độ và tiêu chuẩn hoàn thiện trước khi triển khai.',
-      en: 'Documents, scope of work, materials, schedule and finish standards are reviewed before anything moves.'
+      vi: 'Rà soát bản vẽ, BOQ (bảng khối lượng), phạm vi, vật liệu và tiêu chuẩn hoàn thiện; khảo sát hiện trạng khi cần. Chưa có bản vẽ thì Lai Huy thiết kế trước.',
+      en: 'Drawings, BOQ (bill of quantities), scope, materials and finish standards are reviewed, with a site survey where needed. No drawings yet? Lai Huy designs first.'
     }
   },
   {
@@ -171,9 +171,9 @@ export const productionWorkflow: ProductionStep[] = [
     }
   },
   {
-    title: { vi: 'Thi công tại công trình', en: 'On-site installation' },
+    title: { vi: 'Lắp đặt tại công trình', en: 'On-site installation' },
     description: {
-      vi: 'Đội lắp dựng triển khai theo mặt bằng, phối hợp với các bộ môn và xử lý nghiệm thu.',
+      vi: 'Đội lắp đặt làm theo mặt bằng, phối hợp với các bộ môn và nghiệm thu từng khu vực.',
       en: 'Installation teams work to the floor plan, coordinate with the other trades and handle sign-off.'
     }
   }
@@ -201,7 +201,7 @@ export type FactoryAudience = {
 }
 
 export type FactoryFaq = {
-  id: 'lead-time' | 'make-to-drawing' | 'materials-quality' | 'nationwide-installation'
+  id: 'lead-time' | 'make-to-drawing' | 'preliminary-boq' | 'materials-quality' | 'nationwide-installation'
   question: LocalizedText
   answer: LocalizedText
 }
@@ -233,27 +233,27 @@ export type FactoryPageContent = {
 
 export const factoryPageContent: FactoryPageContent = {
   hero: {
-    topic: { vi: 'Năng lực nhà xưởng', en: 'Factory capability' },
+    topic: { vi: 'Nhà xưởng Vĩnh Long', en: 'Our Vinh Long factory' },
     title: { vi: 'Sản xuất trực tiếp.', en: 'Direct manufacturing.' },
     specialTitle: { vi: 'Kiểm soát đến cùng.', en: 'Controlled end to end.' },
     subtitle: {
-      vi: 'Xưởng 3.000 m², hệ thống máy đồng bộ và quy trình QC phục vụ nội thất khách sạn, villa, căn hộ và sản xuất theo bản vẽ.',
-      en: 'A 3,000 m² workshop, coordinated machinery and quality control for hotels, villas, apartments and make-to-drawing production.'
+      vi: 'Xưởng tại Phú Khương, Vĩnh Long: máy CNC, dán cạnh tự động, ép nguội và bốn điểm kiểm tra chất lượng, phục vụ khách sạn, villa, căn hộ và sản xuất theo bản vẽ.',
+      en: 'Our factory in Phu Khuong, Vinh Long: CNC machining, automatic edge banding, cold pressing and four quality checkpoints, for hotels, villas, apartments and make-to-drawing production.'
     },
-    primaryCta: { vi: 'Đặt lịch tham quan', en: 'Arrange a factory visit' },
-    secondaryCta: { vi: 'Xem năng lực', en: 'View our capability' }
+    primaryCta: { vi: 'Gọi đặt lịch tham quan', en: 'Call to book a visit' },
+    secondaryCta: { vi: 'Xem số liệu nhà xưởng', en: 'See the factory figures' }
   },
   pillars: {
-    eyebrow: { vi: 'Năng lực tại nguồn', en: 'Capability at the source' },
-    title: { vi: 'Bốn nền tảng để dự án đi đúng kế hoạch', en: 'Four foundations for dependable delivery' },
+    eyebrow: { vi: 'Tại xưởng', en: 'At the factory' },
+    title: { vi: 'Bốn điều bạn kiểm tra được khi đến xưởng', en: 'Four things you can check on a visit' },
     description: {
-      vi: 'Mỗi nền tảng trả lời một câu hỏi thực tế về chất lượng, tiến độ và khả năng phối hợp.',
-      en: 'Each foundation answers a practical question about quality, schedule and coordination.'
+      vi: 'Xưởng, máy, đội thợ và quy trình QC ở cùng một địa điểm tại Vĩnh Long.',
+      en: 'The workshop, machines, craftspeople and QC process are all on one site in Vinh Long.'
     }
   },
   process: {
-    eyebrow: { vi: 'Hệ thống sản xuất', en: 'Production system' },
-    title: { vi: 'Bốn công đoạn, một dòng kiểm soát', en: 'Four stages, one controlled line' },
+    eyebrow: { vi: 'Bước 04 · Sản xuất tại xưởng', en: 'Step 04 · In-house production' },
+    title: { vi: 'Bốn công đoạn máy trong bước sản xuất', en: 'Four machine stages inside production' },
     description: {
       vi: 'Máy móc được tổ chức theo dòng công việc để giữ kích thước, bề mặt và tiến độ ổn định.',
       en: 'Machinery is organised as one workflow to keep dimensions, surfaces and schedule consistent.'
@@ -268,51 +268,52 @@ export const factoryPageContent: FactoryPageContent = {
     }
   },
   audiences: {
-    eyebrow: { vi: 'Đối tác phù hợp', en: 'Built for project partners' },
-    title: { vi: 'Một năng lực, hai góc nhìn ra quyết định', en: 'One capability, two decision perspectives' },
+    eyebrow: { vi: 'Hai nhóm khách hàng', en: 'Two kinds of client' },
+    title: { vi: 'Chủ đầu tư và đơn vị thiết kế cần kiểm tra những gì', en: 'What owners and design teams need to check' },
     description: {
-      vi: 'Thông tin được trình bày theo điều chủ đầu tư và đối tác triển khai cần kiểm chứng.',
-      en: 'The same capability is framed around what owners and delivery partners need to verify.'
+      vi: 'Chủ đầu tư hỏi về chất lượng, tiến độ và công suất; đơn vị thiết kế và tổng thầu hỏi xưởng có làm đúng bản vẽ không.',
+      en: 'Owners ask about quality, schedule and capacity; designers and main contractors ask whether the factory builds to the drawings.'
     }
   },
   faq: {
     eyebrow: { vi: 'Thông tin trước khi trao đổi', en: 'Before we talk' },
-    title: { vi: 'Bốn câu hỏi thường gặp', en: 'Four common questions' }
+    title: { vi: 'Câu hỏi thường gặp', en: 'Common questions' }
   },
   visit: {
     eyebrow: { vi: 'Tham quan nhà xưởng', en: 'Factory visit' },
-    title: { vi: 'Đến xem năng lực thực tế', en: 'See the capability first-hand' },
+    title: { vi: 'Đến xem xưởng ở Vĩnh Long', en: 'Visit the factory in Vinh Long' },
     description: {
       vi: 'Gọi trước để Lai Huy sắp xếp người phụ trách và chuẩn bị nội dung phù hợp với dự án của bạn.',
       en: 'Call ahead so Lai Huy can arrange the right host and prepare around your project needs.'
     },
-    phoneCta: { vi: 'Gọi đặt lịch', en: 'Call to arrange' },
-    mapCta: { vi: 'Mở bản đồ', en: 'Open map' }
+    phoneCta: { vi: 'Gọi đặt lịch tham quan', en: 'Call to book a visit' },
+    mapCta: { vi: 'Mở bản đồ nhà xưởng', en: 'Open factory map' }
   }
 }
 
 export const factoryStats: readonly FactoryStat[] = [
-  { id: 'footprint', value: { vi: '3.000 m²', en: '3,000 m²' }, label: { vi: 'Xưởng & kho', en: 'Workshop & warehouse' }, figure: true },
-  { id: 'throughput', value: { vi: 'Đến 50', en: 'Up to 50' }, label: { vi: 'Phòng / tháng', en: 'Rooms / month' }, figure: true },
+  { id: 'footprint', value: { vi: '3.000 m²', en: '3,000 m²' }, label: { vi: 'Xưởng & kho', en: 'Factory & warehouse' }, figure: true },
+  { id: 'throughput', value: { vi: 'Đến 50', en: 'Up to 50' }, label: { vi: 'Phòng khách sạn / tháng', en: 'Hotel rooms / month' }, figure: true },
   { id: 'end-to-end', value: { vi: 'Trọn gói', en: 'End-to-end' }, label: { vi: 'Thiết kế → lắp đặt', en: 'Design → install' } },
   { id: 'reach', value: { vi: 'Toàn quốc', en: 'Nationwide' }, label: { vi: 'Giao lắp & xuất khẩu', en: 'Delivery & export' } }
 ]
 
 export const factoryPillars: readonly FactoryPillar[] = [
   { id: 'direct-factory', icon: 'i-lucide-factory', title: { vi: 'Xưởng sản xuất trực tiếp', en: 'Directly operated factory' }, description: { vi: 'Chủ động vật liệu, tiến độ và xử lý kỹ thuật ngay tại nguồn.', en: 'Materials, schedule and technical resolution controlled at the source.' } },
-  { id: 'machinery', icon: 'i-lucide-cpu', title: { vi: 'Hệ thống máy đồng bộ', en: 'Coordinated machinery' }, description: { vi: 'Các công đoạn nối tiếp giúp kích thước và bề mặt ổn định trên số lượng lớn.', en: 'Connected stages keep dimensions and surfaces consistent at project scale.' } },
+  { id: 'machinery', icon: 'i-lucide-cpu', title: { vi: 'Hệ thống máy đồng bộ', en: 'Coordinated machinery' }, description: { vi: 'Các công đoạn nối tiếp giữ kích thước và bề mặt đồng nhất giữa nhiều phòng giống nhau.', en: 'Connected stages keep dimensions and surfaces consistent at project scale.' } },
   { id: 'craft', icon: 'i-lucide-hard-hat', title: { vi: 'Đội ngũ tay nghề', en: 'Skilled project team' }, description: { vi: 'Thợ và kỹ thuật viên phối hợp từ shop drawing đến hoàn thiện tại công trình.', en: 'Craftspeople and technicians coordinate from shop drawings to site finishing.' } },
   { id: 'quality', icon: 'i-lucide-shield-check', title: { vi: 'Kiểm soát chất lượng', en: 'Quality control' }, description: { vi: 'Vật tư, gia công và thành phẩm được đối chiếu theo hồ sơ dự án.', en: 'Materials, machining and finished work are checked against project documents.' } }
 ]
 
 export const factoryAudiences: readonly FactoryAudience[] = [
   { id: 'owners', title: { vi: 'Dành cho chủ đầu tư', en: 'For project owners' }, points: [{ vi: 'Kiểm soát chất lượng và tiến độ tại nguồn', en: 'Quality and schedule controlled at the source' }, { vi: 'Một đầu mối từ thiết kế đến lắp đặt', en: 'One accountable team from design to installation' }, { vi: 'Năng lực ổn định cho dự án nhiều phòng', en: 'Steady capacity for multi-room projects' }] },
-  { id: 'design-contractors', title: { vi: 'Dành cho thiết kế & tổng thầu', en: 'For designers & main contractors' }, points: [{ vi: 'Sản xuất theo hồ sơ, bản vẽ riêng và OEM', en: 'Make-to-drawing and OEM production' }, { vi: 'Hỗ trợ bóc tách và triển khai shop drawing', en: 'Technical take-off and shop-drawing support' }, { vi: 'Giao lắp toàn quốc và nhận đơn xuất khẩu', en: 'Nationwide installation and export orders' }] }
+  { id: 'design-contractors', title: { vi: 'Dành cho thiết kế & tổng thầu', en: 'For designers & main contractors' }, points: [{ vi: 'Sản xuất đúng bản vẽ của bạn, kể cả OEM (theo thiết kế và tiêu chuẩn của bên đặt hàng)', en: 'Built to your drawings, including OEM (to the buyer’s design and specification)' }, { vi: 'Bóc tách, BOQ sơ bộ và shop drawing (bản vẽ triển khai sản xuất)', en: 'Take-off, preliminary BOQ and shop drawings (production drawings)' }, { vi: 'Giao lắp toàn quốc và nhận đơn xuất khẩu', en: 'Nationwide installation and export orders' }] }
 ]
 
 export const factoryFaqs: readonly FactoryFaq[] = [
   { id: 'lead-time', question: { vi: 'Thời gian sản xuất mất bao lâu?', en: 'How long does production take?' }, answer: { vi: 'Tiến độ phụ thuộc quy mô, vật liệu và hồ sơ kỹ thuật. Năng lực xưởng đạt đến khoảng 50 phòng khách sạn mỗi tháng; lịch cụ thể được xác nhận sau khi rà soát bản vẽ và BOQ.', en: 'Timing depends on scale, materials and technical documents. Workshop capacity reaches about 50 hotel rooms per month; the exact programme is confirmed after drawings and BOQ review.' } },
   { id: 'make-to-drawing', question: { vi: 'Lai Huy có nhận sản xuất theo thiết kế hoặc bản vẽ riêng không?', en: 'Can Lai Huy manufacture to our own design or drawings?' }, answer: { vi: 'Có. Lai Huy nhận gia công theo bản vẽ/OEM và có thể bóc tách, triển khai shop drawing cần thiết trước khi đưa vào sản xuất.', en: 'Yes. Lai Huy provides make-to-drawing/OEM production and can prepare the technical take-off and shop drawings needed before manufacturing.' } },
+  { id: 'preliminary-boq', question: { vi: 'Lai Huy có lập BOQ sơ bộ từ bản vẽ của chúng tôi không?', en: 'Can Lai Huy prepare a preliminary BOQ from our drawings?' }, answer: { vi: 'Có. Gửi bản vẽ PDF hoặc DWG tới noithatlaihuy@gmail.com; Lai Huy bóc tách khối lượng, lập BOQ sơ bộ (bảng khối lượng) và gửi kèm báo giá. File lớn có thể gửi qua link Google Drive.', en: 'Yes. Email PDF or DWG drawings to noithatlaihuy@gmail.com; Lai Huy does the take-off, prepares a preliminary BOQ (bill of quantities) and sends it with the quote. Large files can be shared as a Google Drive link.' } },
   { id: 'materials-quality', question: { vi: 'Vật liệu và chất lượng được kiểm soát như thế nào?', en: 'How are materials and quality controlled?' }, answer: { vi: 'Vật tư được kiểm tra theo chủng loại, màu sắc và tiêu chuẩn dự án; kích thước, cạnh, bề mặt và phụ kiện được đối chiếu trong sản xuất và trước khi đóng gói.', en: 'Materials are checked for type, colour and project standard; dimensions, edges, surfaces and hardware are verified during production and before packing.' } },
   { id: 'nationwide-installation', question: { vi: 'Lai Huy có giao lắp toàn quốc không?', en: 'Does Lai Huy install nationwide?' }, answer: { vi: 'Có. Đội thi công triển khai tại công trình trên toàn quốc; xưởng đồng thời nhận các đơn hàng gia công xuất khẩu theo phạm vi thống nhất.', en: 'Yes. Installation teams work at project sites nationwide, and the factory also accepts export production orders within an agreed scope.' } }
 ]
