@@ -58,6 +58,9 @@ interface HeaderState {
   chromeState: Readonly<Ref<'cover' | 'nav'>>
   /** §5.1 — the drawer is one of the four state dimensions, so the machine owns it. */
   drawerOpen: Readonly<Ref<boolean>>
+  /** The floating bar is dark (owner, 2026-10-27), so the lang toggle's `surface` needs it.
+   *  Flips once per crossing of FLOAT_AT_PX, like `chromeState`. */
+  floating: Readonly<Ref<boolean>>
 }
 
 let singleton: HeaderState | null = null
@@ -67,6 +70,7 @@ function create(): HeaderState {
   // making `p` reactive would re-render the header on every frame of every scroll.
   const chromeState = shallowRef<'cover' | 'nav'>('cover')
   const drawerOpenRef = shallowRef(false)
+  const floatingRef = shallowRef(false)
 
   let el: HTMLElement | null = null
   let pEnd = P_END_CAP
@@ -103,6 +107,7 @@ function create(): HeaderState {
     const next = y > FLOAT_AT_PX
     if (next === floating || !el) return
     floating = next
+    floatingRef.value = next
     el.dataset.float = next ? 'on' : 'off'
   }
 
@@ -486,7 +491,8 @@ function create(): HeaderState {
     setDrawerOpen,
     setSolid,
     chromeState: chromeState as Readonly<Ref<'cover' | 'nav'>>,
-    drawerOpen: drawerOpenRef as Readonly<Ref<boolean>>
+    drawerOpen: drawerOpenRef as Readonly<Ref<boolean>>,
+    floating: floatingRef as Readonly<Ref<boolean>>
   }
 }
 
@@ -503,7 +509,8 @@ function serverStub(): HeaderState {
     setDrawerOpen: () => {},
     setSolid: () => {},
     chromeState: shallowRef<'cover' | 'nav'>('cover'),
-    drawerOpen: shallowRef(false)
+    drawerOpen: shallowRef(false),
+    floating: shallowRef(false)
   }
 }
 

@@ -23,7 +23,7 @@ const emit = defineEmits<{ openMenu: [] }>()
 
 const { locale, t } = useLanguage()
 const { isActive } = useActiveLink()
-const { register, setSolid, chromeState, drawerOpen } = useHeaderState()
+const { register, setSolid, chromeState, drawerOpen, floating } = useHeaderState()
 
 const headerEl = ref<HTMLElement | null>(null)
 
@@ -107,7 +107,8 @@ watch(() => props.solid, value => setSolid(value))
       <div class="chrome-right hidden xl:flex">
         <!-- §9 — VI/EN is part of the masthead at rest. Phone and CTA are not: the hero below
              already carries the single primary action. They arrive on scroll. -->
-        <AppLangToggle :surface="chromeState === 'nav' ? 'light' : 'dark'" />
+        <!-- Light only on the full-bleed glass: the floating bar is Obsidian (2026-10-27). -->
+        <AppLangToggle :surface="chromeState === 'nav' && !floating ? 'light' : 'dark'" />
 
         <!-- I8 — never tab into an invisible control. `opacity: 0` alone is not hiding (FG-09):
              inert + aria-hidden while p < 0.5.
