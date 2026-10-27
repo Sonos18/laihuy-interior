@@ -152,6 +152,7 @@
   --ease-exit: cubic-bezier(0.4, 0, 1, 1);
   --dur-hover: 240ms;
   --dur-state: 280ms; /* chrome only: header, subnav anchor and drawer underline (the nav-link underline uses --dur-hover) */
+  --dur-float: 400ms; /* the header glass detaching into its floating bar (and back) */
   --dur-drawer: 300ms;
   --dur-drawer-exit: 200ms; /* closing is quicker than opening */
   --dur-reveal: 600ms;
@@ -186,6 +187,8 @@
   /* ── L2 · Header (consumed in Phase 4) ──────────────────────────────── */
   --header-h: 4.5rem; /*  72px  < xl                              */
   --header-h-xl: 5.5rem; /*  88px  ≥ xl                              */
+  --header-float-inset: 0.5rem; /*  8px gap round the floating bar < xl   */
+  --header-float-inset-xl: 0.75rem; /* 12px                     ≥ xl   */
   --header-scrim-h: 10rem; /* 160px                                    */
   --logo-h-header: 2.5rem; /*  40px OPTICAL (trimmed) < xl             */
   --logo-h-header-xl: 3rem; /*  48px OPTICAL (trimmed) ≥ xl             */
@@ -438,6 +441,7 @@
 @media (min-width: 80rem) {
   :root {
     --header-h: var(--header-h-xl);
+    --header-float-inset: var(--header-float-inset-xl);
   }
 }
 
@@ -694,6 +698,28 @@
     background: var(--surface-chrome);
     border-bottom: 1px solid var(--rule-light);
     opacity: var(--header-p);
+    transition:
+      inset var(--dur-float) var(--ease-editorial),
+      border-radius var(--dur-float) var(--ease-editorial),
+      border-color var(--dur-float) var(--ease-editorial);
+  }
+
+  /* Floating bar (owner, 2026-10-27). Once the page leaves its top the glass detaches
+     from the viewport edges: inset on every side, a full Plaster Line hairline and the
+     4px content edge, sized to the `.shell` box so the logo, nav and CTA inside it do
+     not move by a pixel — only the surface behind them changes shape. The scrim stays
+     full-bleed: it protects the photograph, not the bar. `data-float` is a discrete
+     toggle written by useHeaderState, so the geometry animates once per crossing on a
+     CSS transition instead of being re-laid-out every scroll frame. */
+  .app-header[data-float="on"] .chrome-glass,
+  :root[data-chrome="nav"] .app-header .chrome-glass {
+    inset-block: var(--header-float-inset);
+    inset-inline: max(
+      var(--header-float-inset),
+      calc((100% - var(--shell-measure)) / 2 - var(--shell-gutter))
+    );
+    border: 1px solid var(--rule-light);
+    border-radius: 4px;
   }
 
   /* Blur is a DISCRETE TOGGLE, never an interpolated radius (§8.2, §25.2).
@@ -892,6 +918,11 @@
 
     .chrome-actions {
       transform: none !important;
+    }
+
+    /* The floating bar's change of shape is motion: it snaps. */
+    .chrome-glass {
+      transition: none;
     }
   }
 
