@@ -44,10 +44,10 @@ describe('homepage material story', () => {
 
   it('starts the story from the surveyed existing condition', () => {
     expect(homePageContent.story).toEqual({
-      eyebrow: { vi: 'Quy trình 6 bước, tóm trong 4 chặng', en: 'Our six-step process, in four stages' },
+      eyebrow: { vi: 'Cách Lai Huy làm', en: 'How we work' },
       title: {
-        vi: 'Không chuyển tay giữa các nhà thầu',
-        en: 'No hand-offs between contractors'
+        vi: 'Không gian qua thiết kế của Lai Huy',
+        en: 'Spaces shaped by Lai Huy’s design'
       },
       description: {
         vi: 'Cùng một đội chịu trách nhiệm từ lúc nhận bản vẽ, đo hiện trạng, sản xuất đến nghiệm thu tại công trình.',
@@ -56,7 +56,6 @@ describe('homepage material story', () => {
     })
     expect(homeStoryStages[0]).toEqual({
       id: 'existing',
-      step: '01',
       label: { vi: 'Tiếp nhận hồ sơ', en: 'Intake' },
       title: {
         vi: 'Đối chiếu bản vẽ với hiện trạng',

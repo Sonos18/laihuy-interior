@@ -1,10 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import {
-  factoryCapabilities,
-  machineryProcessGroups,
-  machinerySectionContent,
-  productionWorkflow
-} from '../app/data/factory'
+import { machineryProcessGroups } from '../app/data/factory'
 
 const EXPECTED_IDS = [
   'cutting-shaping',
@@ -34,8 +29,8 @@ const EXPECTED_MACHINES = {
   ]
 } as const
 
-// The machinery groups and machine lists are rendered by /nha-xuong. The home page no longer
-// shows them: each of its three factory pillars is one fact plus one supporting line.
+// The machinery groups and machine lists are rendered by /nha-xuong. The home page shows only
+// the factory head, one photograph and a link there.
 describe('factory machinery content', () => {
   it('defines the approved four production stages in order', () => {
     expect(machineryProcessGroups.map(group => group.id)).toEqual(EXPECTED_IDS)
@@ -51,30 +46,7 @@ describe('factory machinery content', () => {
     expect(new Set(machineNames).size).toBe(7)
   })
 
-  it.each(['vi', 'en'] as const)('provides the strings behind the three home pillars in %s', (locale) => {
-    const pillarSources = [
-      productionWorkflow[1]?.title,
-      productionWorkflow[1]?.description,
-      machinerySectionContent.titleLead,
-      machinerySectionContent.titleAccent,
-      machinerySectionContent.description,
-      factoryCapabilities[2]?.label,
-      factoryCapabilities[2]?.description
-    ]
-
-    expect(pillarSources).toHaveLength(7)
-    for (const source of pillarSources) {
-      expect(source?.[locale]).toBeTruthy()
-    }
-  })
-
-  it.each(['vi', 'en'] as const)('provides complete intro and caption copy in %s', (locale) => {
-    expect(machinerySectionContent.titleLead[locale]).not.toBe('')
-    expect(machinerySectionContent.titleAccent[locale]).not.toBe('')
-    expect(machinerySectionContent.description[locale]).not.toBe('')
-    expect(machinerySectionContent.photoCaption[locale]).not.toBe('')
-    expect(machinerySectionContent.lineCaption[locale]).not.toBe('')
-
+  it.each(['vi', 'en'] as const)('provides complete stage copy in %s', (locale) => {
     for (const group of machineryProcessGroups) {
       expect(group.title[locale]).not.toBe('')
       expect(group.benefit[locale]).not.toBe('')

@@ -13,12 +13,7 @@ const COPY = {
   vi: {
     heading: 'Hệ thống máy phục vụ sản xuất nội thất dự án',
     description: 'Xưởng ứng dụng hệ thống máy đồng bộ theo bốn công đoạn chính, giúp kiểm soát độ chính xác, chất lượng bề mặt và tiến độ cho các dự án khách sạn, villa và căn hộ cao cấp.',
-    pillars: [
-      'Bóc tách kỹ thuật',
-      'Hệ thống máy phục vụ sản xuất nội thất dự án',
-      'Đội ngũ triển khai dự án'
-    ],
-    // Evidence blocks that moved to /nha-xuong and must not return to the home page.
+    // Evidence blocks that live on /nha-xuong and must not return to the home page.
     removedEvidence: ['Tiếp nhận bản vẽ & BOQ', 'Cắt & tạo hình', 'Khoan & liên kết', 'Dán cạnh & hoàn thiện', 'Xử lý bề mặt & ép', 'Điều phối dự án', 'QC trước khi giao hàng', 'Lắp đặt tại công trình'],
     machines: [
       'CNC Nesting',
@@ -30,16 +25,14 @@ const COPY = {
       'Máy ép nguội thủy lực'
     ],
     imageAlt: 'Toàn cảnh hệ thống máy sản xuất tại xưởng Lai Huy',
+    title: 'Kiểm soát tại nguồn',
+    detailsTitle: 'Xưởng Lai Huy · Vĩnh Long',
+    detailLabels: ['Diện tích', 'Vị trí', 'Công suất', 'Máy móc', 'Kiểm tra chất lượng'],
     cta: 'Xem năng lực nhà xưởng'
   },
   en: {
     heading: 'Machinery built for project interiors',
     description: 'The workshop uses a coordinated machinery line across four core stages, controlling precision, surface quality, and schedule for hotel, villa, and premium apartment projects.',
-    pillars: [
-      'Technical take-off',
-      'Machinery built for project interiors',
-      'Project delivery team'
-    ],
     removedEvidence: ['Drawing & BOQ intake', 'Cutting & shaping', 'Boring & connections', 'Edge banding & finishing', 'Surface treatment & pressing', 'Project coordination', 'Pre-delivery QC', 'On-site installation'],
     machines: [
       'CNC nesting router',
@@ -51,6 +44,9 @@ const COPY = {
       'Hydraulic cold press'
     ],
     imageAlt: 'Overview of the machinery line inside the Lai Huy workshop',
+    title: 'Control at the source',
+    detailsTitle: 'Lai Huy factory · Vinh Long',
+    detailLabels: ['Area', 'Location', 'Capacity', 'Machinery', 'Quality checks'],
     cta: 'View factory capability'
   }
 } as const
@@ -90,41 +86,35 @@ async function prepareHome(page: Page, locale: MachineryLocale, width: number) {
 for (const locale of ['vi', 'en'] as const) {
   const copy = COPY[locale]
 
-  test(`MACHINERY-CONTENT renders three-pillar Trinity proof in ${locale}`, async ({ page }) => {
+  // Owner decisions (2026-10-23/24): the home factory section is a title, one photograph with
+  // the factory facts on it, and a link. No eyebrow, monument, pillars or machinery evidence.
+  test(`MACHINERY-CONTENT is head, photograph with facts, and link in ${locale}`, async ({ page }) => {
     const errors = await prepareHome(page, locale, 1440)
     const section = page.getByTestId('homepage-machinery')
-    const pillars = section.getByTestId('homepage-machinery-pillar')
 
-    await expect(pillars).toHaveCount(3)
+    await expect(section.getByRole('heading', { level: 2 })).toHaveText(copy.title)
+    await expect(section.locator('[data-head]')).toHaveAttribute('data-head', 'stacked')
+    await expect(section.locator('.section-head__eyebrow')).toHaveCount(0)
+    // The facts are always in the accessibility tree, whether or not the panel is raised.
+    const details = section.getByTestId('homepage-machinery-details')
+    await expect(details.getByRole('heading', { level: 3 })).toHaveText(copy.detailsTitle)
+    await expect(details.locator('dt')).toHaveText(copy.detailLabels)
+    await expect(details.locator('dd')).toHaveCount(copy.detailLabels.length)
+    expect(await details.evaluate(el => el.closest('[aria-hidden="true"]') === null)).toBe(true)
+    await expect(section.getByTestId('homepage-machinery-pillar')).toHaveCount(0)
+    await expect(section.locator('[data-monument]')).toHaveCount(0)
 
-    const titles = pillars.locator('[data-testid="homepage-machinery-pillar-title"]')
-    await expect(titles).toHaveCount(3)
-    for (let i = 0; i < copy.pillars.length; i += 1) {
-      await expect(titles.nth(i)).toHaveText(copy.pillars[i])
-      await expect(pillars.nth(i).getByRole('heading', { level: 3 })).toHaveCount(1)
-    }
-
-    // Distilled contract: one fact + one line per pillar; the evidence lives on /nha-xuong.
     const sectionText = (await section.textContent()) ?? ''
     for (const item of copy.removedEvidence) expect(sectionText).not.toContain(item)
     for (const machine of copy.machines) expect(sectionText).not.toContain(machine)
 
-    // Factory real image
     const image = section.getByRole('img', { name: copy.imageAlt, exact: true })
     await expect(image).toHaveAttribute(
       'src',
       /(?:company\/workshop\/3(?:-w\d+)?\.webp|\/images\/hinh-xuong-lai-huy\/3\.jpg)/
     )
-    await expect(section.getByTestId('homepage-machinery-caption')).toHaveAttribute('aria-hidden', 'true')
+    await expect(section.getByTestId('homepage-machinery-caption')).toHaveCount(0)
 
-    // Sequence numbers
-    const sequences = section.locator('[data-machinery-sequence]')
-    await expect(sequences).toHaveCount(3)
-    expect(await sequences.evaluateAll(nodes =>
-      nodes.every(node => node.getAttribute('aria-hidden') === 'true')
-    )).toBe(true)
-
-    // CTA link
     const cta = section.getByRole('link', { name: copy.cta, exact: true })
     await expect(cta).toHaveAttribute('href', '/nha-xuong')
     await cta.focus()
@@ -135,47 +125,36 @@ for (const locale of ['vi', 'en'] as const) {
   })
 
   for (const width of WIDTHS) {
-    test(`MACHINERY-LAYOUT keeps the approved geometry at ${width}px in ${locale}`, async ({ page }) => {
+    test(`MACHINERY-LAYOUT keeps head, photograph and link in order at ${width}px in ${locale}`, async ({ page }) => {
       const errors = await prepareHome(page, locale, width)
       const section = page.getByTestId('homepage-machinery')
       const geometry = await section.evaluate((element) => {
-        const rect = (selector: string) => {
-          const target = element.matches(selector)
-            ? element as HTMLElement
-            : element.querySelector<HTMLElement>(selector)
-          if (!target) throw new Error(`Missing machinery selector: ${selector}`)
+        const rect = (target: Element) => {
           const box = target.getBoundingClientRect()
-          return { top: box.top, right: box.right, bottom: box.bottom, left: box.left, width: box.width, height: box.height }
+          return { top: box.top, bottom: box.bottom, left: box.left, right: box.right, height: box.height }
         }
-
+        const shell = element.querySelector<HTMLElement>('.shell')!
+        const shellStyle = getComputedStyle(shell)
+        const shellBox = shell.getBoundingClientRect()
         return {
-          block: rect('[data-testid="homepage-machinery"]'),
-          image: rect('[data-testid="homepage-machinery-image"]'),
-          pillars: Array.from(element.querySelectorAll<HTMLElement>('[data-testid="homepage-machinery-pillar"]')).map((pillar) => {
-            const box = pillar.getBoundingClientRect()
-            return { top: box.top, bottom: box.bottom, left: box.left, right: box.right, width: box.width, height: box.height }
-          }),
+          block: rect(element),
+          heading: rect(element.querySelector('h2')!),
+          image: rect(element.querySelector('[data-testid="homepage-machinery-image"]')!),
+          cta: rect(element.querySelector('[data-testid="homepage-machinery-cta"]')!),
+          railLeft: shellBox.left + Number.parseFloat(shellStyle.paddingLeft),
+          railRight: shellBox.right - Number.parseFloat(shellStyle.paddingRight),
           documentWidth: document.documentElement.scrollWidth,
           viewportWidth: document.documentElement.clientWidth
         }
       })
 
       expect(geometry.documentWidth).toBeLessThanOrEqual(geometry.viewportWidth)
-      expect(geometry.pillars).toHaveLength(3)
-
-      if (width < 1024) {
-        // Stacked Trinity contract
-        for (let i = 1; i < geometry.pillars.length; i += 1) {
-          expect(Math.abs(geometry.pillars[i]!.left - geometry.pillars[0]!.left)).toBeLessThanOrEqual(2)
-          expect(geometry.pillars[i]!.top).toBeGreaterThan(geometry.pillars[i - 1]!.bottom - 1)
-        }
-      } else {
-        // 3-column Trinity contract
-        expect(Math.abs(geometry.pillars[0]!.top - geometry.pillars[1]!.top)).toBeLessThanOrEqual(2)
-        expect(Math.abs(geometry.pillars[1]!.top - geometry.pillars[2]!.top)).toBeLessThanOrEqual(2)
-        expect(geometry.pillars[0]!.left).toBeLessThan(geometry.pillars[1]!.left)
-        expect(geometry.pillars[1]!.left).toBeLessThan(geometry.pillars[2]!.left)
-      }
+      expect(geometry.image.top).toBeGreaterThan(geometry.heading.bottom)
+      expect(geometry.cta.top).toBeGreaterThan(geometry.image.bottom)
+      expect(Math.abs(geometry.image.left - geometry.railLeft)).toBeLessThanOrEqual(1)
+      expect(Math.abs(geometry.image.right - geometry.railRight)).toBeLessThanOrEqual(1)
+      // The section stays about one screen tall on desktop (it was close to two).
+      if (width >= 1280) expect(geometry.block.height).toBeLessThanOrEqual(1100)
 
       expect(errors.consoleErrors).toEqual([])
       expect(errors.pageErrors).toEqual([])
@@ -183,40 +162,55 @@ for (const locale of ['vi', 'en'] as const) {
   }
 }
 
-const HFP_WIDTHS = [375, 768, 1280, 1440] as const
-
-for (const locale of ['vi', 'en'] as const) {
-  for (const width of HFP_WIDTHS) {
-    test(`HFP-01 each pillar is one title and one supporting line at ${width}px in ${locale}`, async ({ page }) => {
-      const errors = await prepareHome(page, locale, width)
-      const pillars = page.getByTestId('homepage-machinery').getByTestId('homepage-machinery-pillar')
-      await expect(pillars).toHaveCount(3)
-
-      const shapes = await pillars.evaluateAll(nodes => nodes.map(node => ({
-        h3: node.querySelectorAll('h3').length,
-        h4: node.querySelectorAll('h4').length,
-        paragraphs: [...node.querySelectorAll('p')].map((paragraph) => {
-          const style = getComputedStyle(paragraph)
-          const fontSize = Number.parseFloat(style.fontSize)
-          return { fontSize, ratio: Number.parseFloat(style.lineHeight) / fontSize }
-        })
-      })))
-
-      for (const shape of shapes) {
-        expect(shape.h3).toBe(1)
-        expect(shape.h4).toBe(0)
-        expect(shape.paragraphs.length).toBeLessThanOrEqual(1)
-        for (const paragraph of shape.paragraphs) {
-          expect(paragraph.fontSize).toBeGreaterThanOrEqual(14)
-          expect(paragraph.ratio).toBeGreaterThanOrEqual(1.65)
-        }
-      }
-
-      expect(errors.consoleErrors).toEqual([])
-      expect(errors.pageErrors).toEqual([])
+// From 768px on a hover-capable pointer the facts sit on the photograph: only the panel's
+// heading strip shows at rest, the panel rises on hover and on keyboard focus. On a phone (or
+// any touch-only pointer) the panel is a static list below the photograph.
+for (const width of [768, 1440] as const) {
+  test(`HFP-03 the factory facts rise over the photograph on hover and focus at ${width}px`, async ({ page }) => {
+    const errors = await prepareHome(page, 'vi', width)
+    const section = page.getByTestId('homepage-machinery')
+    const details = section.getByTestId('homepage-machinery-details')
+    const frame = section.locator('[role="group"][tabindex="0"]')
+    const visibleShare = () => details.evaluate((el) => {
+      const panel = el.getBoundingClientRect()
+      const photo = el.parentElement!.querySelector('[data-testid="homepage-machinery-image"]')!.getBoundingClientRect()
+      return (photo.bottom - Math.max(panel.top, photo.top)) / panel.height
     })
-  }
+
+    await section.getByRole('heading', { level: 2 }).scrollIntoViewIfNeeded()
+    expect(await details.evaluate(el => getComputedStyle(el).position)).toBe('absolute')
+    expect(await visibleShare()).toBeLessThan(0.5)
+
+    await frame.hover()
+    await expect.poll(visibleShare).toBeGreaterThan(0.99)
+
+    await page.mouse.move(0, 0)
+    await expect.poll(visibleShare).toBeLessThan(0.5)
+    await frame.focus()
+    await expect.poll(visibleShare).toBeGreaterThan(0.99)
+
+    expect(errors.consoleErrors).toEqual([])
+    expect(errors.pageErrors).toEqual([])
+  })
 }
+
+test('HFP-04 on a phone the factory facts are a static list below the photograph', async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 375, height: VIEWPORT_HEIGHT }, hasTouch: true, isMobile: true })
+  const page = await context.newPage()
+  await prepareHome(page, 'vi', 375)
+  const section = page.getByTestId('homepage-machinery')
+  const geometry = await section.evaluate((el) => {
+    const details = el.querySelector<HTMLElement>('[data-testid="homepage-machinery-details"]')!
+    return {
+      position: getComputedStyle(details).position,
+      detailsTop: details.getBoundingClientRect().top,
+      photoBottom: el.querySelector('[data-testid="homepage-machinery-image"]')!.getBoundingClientRect().bottom
+    }
+  })
+  expect(geometry.position).toBe('static')
+  expect(geometry.detailsTop).toBeGreaterThanOrEqual(geometry.photoBottom)
+  await context.close()
+})
 
 /** Visible text elements under `root` whose computed font-size is below 12px. */
 async function findTinyText(page: Page, rootSelector: string) {

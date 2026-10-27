@@ -1,19 +1,5 @@
 import type { LocalizedText } from '~/shared/types/localization'
 
-export type Capability = {
-  label: LocalizedText
-  value: LocalizedText
-  description: LocalizedText
-}
-
-export type MachinerySectionContent = {
-  titleLead: LocalizedText
-  titleAccent: LocalizedText
-  description: LocalizedText
-  photoCaption: LocalizedText
-  lineCaption: LocalizedText
-}
-
 export type MachineryProcessGroup = {
   id: string
   title: LocalizedText
@@ -24,64 +10,6 @@ export type MachineryProcessGroup = {
 export type ProductionStep = {
   title: LocalizedText
   description: LocalizedText
-}
-
-export const factoryCapabilities: Capability[] = [
-  {
-    label: { vi: 'Nhà xưởng & kho', en: 'Factory & warehouse' },
-    value: { vi: '3.000 m²', en: '3,000 m²' },
-    description: {
-      vi: 'Không gian sản xuất trực tiếp cho đồ gỗ công nghiệp, hệ tủ và hạng mục nội thất dự án.',
-      en: 'Direct production space for panel furniture, cabinetry systems and project interior packages.'
-    }
-  },
-  {
-    label: { vi: 'Công suất', en: 'Capacity' },
-    value: { vi: 'Đến 50 phòng khách sạn / tháng', en: 'Up to 50 hotel rooms / month' },
-    description: {
-      vi: 'Phù hợp các dự án khách sạn, căn hộ dịch vụ và villa cần tiến độ sản xuất ổn định.',
-      en: 'Suited to hotel, serviced-apartment and villa projects that need a steady production schedule.'
-    }
-  },
-  {
-    label: { vi: 'Đội ngũ triển khai dự án', en: 'Project delivery team' },
-    value: { vi: 'Thiết kế, sản xuất và thi công', en: 'Design, production & fit-out' },
-    description: {
-      vi: 'Phối hợp xuyên suốt từ bóc tách bản vẽ, sản xuất, kiểm soát chất lượng đến thi công thực tế tại công trình.',
-      en: 'End-to-end coordination from drawing take-off and production through quality control to on-site installation.'
-    }
-  },
-  {
-    label: { vi: 'Thị trường', en: 'Markets' },
-    value: { vi: 'Trong nước và xuất khẩu', en: 'Domestic & export' },
-    description: {
-      vi: 'Khách sạn, resort, căn hộ cao cấp và đơn hàng xuất khẩu theo yêu cầu.',
-      en: 'Hotels, resorts, premium apartments and made-to-order export orders.'
-    }
-  }
-]
-
-export const machinerySectionContent: MachinerySectionContent = {
-  titleLead: {
-    vi: 'Hệ thống máy phục vụ sản xuất',
-    en: 'Machinery built for'
-  },
-  titleAccent: {
-    vi: 'nội thất dự án',
-    en: 'project interiors'
-  },
-  description: {
-    vi: 'Xưởng ứng dụng hệ thống máy đồng bộ theo bốn công đoạn chính, giúp kiểm soát độ chính xác, chất lượng bề mặt và tiến độ cho các dự án khách sạn, villa và căn hộ cao cấp.',
-    en: 'The workshop uses a coordinated machinery line across four core stages, controlling precision, surface quality, and schedule for hotel, villa, and premium apartment projects.'
-  },
-  photoCaption: {
-    vi: 'Hình ảnh thực tế tại xưởng',
-    en: 'Photographed in our workshop'
-  },
-  lineCaption: {
-    vi: 'Hệ thống máy sản xuất',
-    en: 'Production machinery line'
-  }
 }
 
 export const machineryProcessGroups: readonly MachineryProcessGroup[] = [

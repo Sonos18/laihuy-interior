@@ -62,7 +62,7 @@ const layerStyle = (index: number) => {
       <div class="shell home-material-story__shell">
         <div
           class="home-material-story__heading"
-          data-head="split"
+          data-head="stacked"
         >
           <p class="eyebrow home-eyebrow-text text-wood-600">
             {{ t(homePageContent.story.eyebrow) }}
@@ -70,9 +70,6 @@ const layerStyle = (index: number) => {
           <h2 class="home-material-story__title home-section-heading mt-4 text-ink-950">
             {{ t(homePageContent.story.title) }}
           </h2>
-          <p class="home-material-story__intro-desc home-lead-text mt-5 max-w-2xl text-ink-600">
-            {{ t(homePageContent.story.description) }}
-          </p>
         </div>
 
         <div class="home-material-story__stage">
@@ -107,47 +104,51 @@ const layerStyle = (index: number) => {
             </div>
           </div>
 
-          <ol
-            class="home-material-story__copy"
-            role="list"
-          >
-            <li
-              v-for="(stage, index) in stages"
-              :key="stage.id"
-              data-testid="home-story-stage"
-              data-mobile-frame
-              :data-stage-id="stage.id"
-              :class="{ 'is-active': activeIndex === index }"
-              class="home-material-story__copy-item"
+          <div class="home-material-story__aside">
+            <p class="home-material-story__intro-desc home-lead-text mt-5 text-ink-600">
+              {{ t(homePageContent.story.description) }}
+            </p>
+
+            <ol
+              class="home-material-story__copy"
+              role="list"
             >
-              <MediaImage
-                :image="images[stage.id]"
-                sizes="100vw"
-                class="home-material-story__mobile-media"
-                :img-class="stage.id === 'drawing' ? 'grayscale contrast-125' : ''"
-              />
-              <div class="home-material-story__copy-body">
-                <div class="flex items-center gap-4">
-                  <!-- The numeral is the workflow step, not the stage index: four stages condense
-                       the six-step workflow, so a bare 01–04 would contradict "Bước 06". -->
-                  <span
-                    data-stage-step
-                    class="home-material-story__number home-meta-text"
-                  ><span class="sr-only">{{ t({ vi: 'Bước ', en: stage.step.includes('–') ? 'Steps ' : 'Step ' }) }}</span>{{ stage.step }}</span>
-                  <span
-                    data-stage-label
-                    class="home-material-story__label home-meta-text"
-                  >{{ t(stage.label) }}</span>
+              <li
+                v-for="(stage, index) in stages"
+                :key="stage.id"
+                data-testid="home-story-stage"
+                data-mobile-frame
+                :data-stage-id="stage.id"
+                :class="{ 'is-active': activeIndex === index }"
+                class="home-material-story__copy-item"
+              >
+                <MediaImage
+                  :image="images[stage.id]"
+                  sizes="100vw"
+                  class="home-material-story__mobile-media"
+                  :img-class="stage.id === 'drawing' ? 'grayscale contrast-125' : ''"
+                />
+                <div class="home-material-story__copy-body">
+                  <div class="flex items-center gap-4">
+                    <span
+                      aria-hidden="true"
+                      class="home-material-story__number home-meta-text"
+                    >{{ String(index + 1).padStart(2, '0') }}</span>
+                    <span
+                      data-stage-label
+                      class="home-material-story__label home-meta-text"
+                    >{{ t(stage.label) }}</span>
+                  </div>
+                  <h3 class="home-material-story__stage-title home-card-heading mt-5 text-ink-950">
+                    {{ t(stage.title) }}
+                  </h3>
+                  <p class="home-material-story__stage-desc mt-4 text-base leading-[1.7] text-ink-600">
+                    {{ t(stage.description) }}
+                  </p>
                 </div>
-                <h3 class="home-material-story__stage-title home-card-heading mt-5 text-ink-950">
-                  {{ t(stage.title) }}
-                </h3>
-                <p class="home-material-story__stage-desc mt-4 text-base leading-[1.7] text-ink-600">
-                  {{ t(stage.description) }}
-                </p>
-              </div>
-            </li>
-          </ol>
+              </li>
+            </ol>
+          </div>
         </div>
       </div>
     </div>
@@ -172,16 +173,21 @@ const layerStyle = (index: number) => {
 }
 
 .home-material-story__stage {
-  margin-top: 3rem;
+  margin-top: 0;
 }
 
 .home-material-story__media {
   display: none;
 }
 
+.home-material-story__intro-desc {
+  max-width: 28rem;
+}
+
 .home-material-story__copy {
   display: grid;
   gap: 3rem;
+  margin-top: 3rem;
 }
 
 .home-material-story__copy-item {
@@ -234,21 +240,6 @@ const layerStyle = (index: number) => {
     padding-block: clamp(4.5rem, 8vh, 7rem) 2rem;
   }
 
-  .home-material-story__heading {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
-    column-gap: 3rem;
-    align-items: end;
-  }
-
-  .home-material-story__heading > p:first-child {
-    grid-column: 1 / -1;
-  }
-
-  .home-material-story__heading > p:last-child {
-    align-self: end;
-  }
-
   .home-material-story__stage {
     display: grid;
     min-height: 0;
@@ -257,6 +248,18 @@ const layerStyle = (index: number) => {
     grid-template-columns: minmax(0, 2.5fr) minmax(20rem, 1fr);
     gap: clamp(1.5rem, 3vw, 3rem);
     margin-top: clamp(2rem, 4vh, 3.5rem);
+  }
+
+  .home-material-story__intro-desc {
+    margin-top: 0;
+  }
+
+  .home-material-story[data-enhanced="true"] .home-material-story__aside {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    min-height: 0;
   }
 
   .home-material-story__media {
@@ -358,6 +361,7 @@ const layerStyle = (index: number) => {
      the whole rail framed a lot of nothing. It travels with the block through the copy swap. */
   .home-material-story[data-enhanced="true"] .home-material-story__copy {
     border-top: 0;
+    margin-top: 0;
   }
 
   .home-material-story[data-enhanced="true"] .home-material-story__copy-item {
@@ -386,6 +390,7 @@ const layerStyle = (index: number) => {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.5rem;
+    margin-top: 2rem;
   }
 }
 

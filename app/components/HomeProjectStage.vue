@@ -53,6 +53,7 @@ const { t } = useLanguage()
       <!-- Asymmetric editorial composition: one dominant case study and two satellites. -->
       <ProjectStage
         :projects="projects"
+        :numbered="false"
         class="mt-10 md:mt-12 lg:mt-16"
       />
     </div>

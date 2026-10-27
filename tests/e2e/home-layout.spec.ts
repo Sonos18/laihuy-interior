@@ -86,7 +86,7 @@ for (const width of [320, 375, 767, 768, 1023, 1024, 1279, 1280, 1440]) {
 
 for (const locale of ['vi', 'en'] as const) {
   for (const width of [320, 375, 640, 768, 1024, 1280, 1440]) {
-    test(`HL-06 tag pill and number badge never overlap (${locale}, ${width}px)`, async ({ page }) => {
+    test(`HL-06 home project cards carry no number badge and the tag pill stays in the frame (${locale}, ${width}px)`, async ({ page }) => {
       await openHome(page, width, locale)
       const media = await page.locator('.home-projects__media').evaluateAll(
         elements => elements.map((element) => {
@@ -106,12 +106,11 @@ for (const locale of ['vi', 'en'] as const) {
       )
       expect(media).toHaveLength(3)
       for (const { frame, pill, badge } of media) {
-        expect(badge).not.toBeNull()
-        if (!pill || !badge) continue
-        // Horizontal separation is what matters: both sit on the same top row of the media.
-        expect(pill.right).toBeLessThanOrEqual(badge.left)
+        // The owner dropped the 01–03 numerals on home; /du-an keeps them.
+        expect(badge).toBeNull()
+        if (!pill) continue
         expect(pill.left).toBeGreaterThanOrEqual(frame.left)
-        expect(badge.right).toBeLessThanOrEqual(frame.right)
+        expect(pill.right).toBeLessThanOrEqual(frame.right)
       }
     })
   }
@@ -145,10 +144,11 @@ for (const width of [375, 1440]) {
   })
 }
 
-// The proof band is the first content band of the Linen canvas, not a box inside the hero.
+// The proof band follows the hero on the Linen canvas, never inside it. On home it is the
+// contained variant: a framed Linen grid on the shell rail, set a little below the hero.
 for (const locale of ['vi', 'en'] as const) {
   for (const width of [375, 768, 1440]) {
-    test(`HL-07 metrics band sits below the hero on Linen with aligned cells (${locale}, ${width}px)`, async ({ page }) => {
+    test(`HL-07 metrics band sits below the hero, contained on the rail, with aligned cells (${locale}, ${width}px)`, async ({ page }) => {
       await openHome(page, width, locale)
       const hero = page.getByTestId('home-hero')
       const band = page.getByTestId('home-metrics')
@@ -159,6 +159,11 @@ for (const locale of ['vi', 'en'] as const) {
         const heroBox = document.querySelector('[data-testid=home-hero]')!.getBoundingClientRect()
         const bandEl = document.querySelector<HTMLElement>('[data-testid=home-metrics]')!
         const bandBox = bandEl.getBoundingClientRect()
+        const grid = bandEl.querySelector('dl')!
+        const gridBox = grid.getBoundingClientRect()
+        const shell = bandEl.querySelector<HTMLElement>('.shell')!
+        const shellStyle = getComputedStyle(shell)
+        const shellBox = shell.getBoundingClientRect()
         const baselineOf = (element: Element) => {
           const probe = document.createElement('span')
           probe.style.cssText = 'display:inline-block;width:0;height:0'
@@ -187,13 +192,23 @@ for (const locale of ['vi', 'en'] as const) {
         probe.remove()
         return {
           gap: bandBox.top - heroBox.bottom,
-          background: getComputedStyle(bandEl).backgroundColor,
+          gridGap: gridBox.top - heroBox.bottom,
+          railLeft: shellBox.left + Number.parseFloat(shellStyle.paddingLeft),
+          railRight: shellBox.right - Number.parseFloat(shellStyle.paddingRight),
+          grid: { left: gridBox.left, right: gridBox.right },
+          gridBorder: getComputedStyle(grid).borderTopWidth,
+          background: getComputedStyle(grid).backgroundColor,
           linen,
           cells
         }
       })
 
       expect(Math.abs(geometry.gap)).toBeLessThanOrEqual(1)
+      // Contained: a gap above the frame, and the frame sits on the shell rail, not full-bleed.
+      expect(geometry.gridGap).toBeGreaterThanOrEqual(24)
+      expect(Math.abs(geometry.grid.left - geometry.railLeft)).toBeLessThanOrEqual(1)
+      expect(Math.abs(geometry.grid.right - geometry.railRight)).toBeLessThanOrEqual(1)
+      expect(geometry.gridBorder).toBe('1px')
       expect(geometry.background).toBe(geometry.linen)
       expect(geometry.cells).toHaveLength(4)
       for (const cell of geometry.cells) expect(cell.valueLines).toBeLessThanOrEqual(2)
