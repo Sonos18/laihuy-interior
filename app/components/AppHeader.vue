@@ -41,6 +41,7 @@ watch(() => props.solid, value => setSolid(value))
     ref="headerEl"
     class="app-header"
     data-blur="off"
+    data-float="off"
     data-chrome-state="cover"
   >
     <!-- Two prebuilt layers, animated by opacity alone (ADR-006b). Complementary, never

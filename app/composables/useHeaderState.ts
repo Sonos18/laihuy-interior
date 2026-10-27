@@ -38,6 +38,11 @@ const REVEAL_DELTA = 4
 const ACTION_IN = 0.5
 const BLUR_IN = 0.05
 
+/** Past this scroll offset the glass detaches into a floating bar inset from the viewport edges
+ *  (owner, 2026-10-27). A pixel offset, not a `p`, so a pinned (`solid`) route still starts
+ *  full-bleed at the top of the page and floats once it scrolls, like every other route. */
+const FLOAT_AT_PX = 16
+
 interface HeaderState {
   /** AppHeader hands over its root element; the composable touches no DOM outside it (§2). */
   register: (el: HTMLElement) => void
@@ -86,6 +91,16 @@ function create(): HeaderState {
   let finePointerQuery: MediaQueryList | null = null
 
   let blurOn = false
+  let floating = false
+
+  // A discrete toggle like blur: the bar's geometry changes once, on a CSS transition, rather
+  // than per frame — interpolating its inset from `p` would re-lay out the glass every frame.
+  const writeFloat = (y: number) => {
+    const next = y > FLOAT_AT_PX
+    if (next === floating || !el) return
+    floating = next
+    el.dataset.float = next ? 'on' : 'off'
+  }
 
   const writeP = (next: number) => {
     if (next === p || !el) return
@@ -159,6 +174,7 @@ function create(): HeaderState {
 
     // The ONLY layout-affecting read in the hot path (§23.1, A.2).
     const y = window.scrollY
+    writeFloat(y)
 
     if (!solid) {
       // M2 — the clamp is load-bearing, not defensive: iOS rubber-band drives scrollY negative.
@@ -227,6 +243,7 @@ function create(): HeaderState {
     } else {
       writeP(clamp(lastY / pEnd, 0, 1))
     }
+    writeFloat(lastY)
     writeShift(false)
 
     // §34.2 — the pre-hydration guard has done its job; take over via --header-p.
@@ -348,6 +365,7 @@ function create(): HeaderState {
     footerVisible = false
     zone = lastY < pEnd ? 'cover' : 'content'
     if (!solid) writeP(clamp(lastY / pEnd, 0, 1))
+    writeFloat(lastY)
 
     // Phase 4 — the DOUBLE rAF is load-bearing. Removing the class in the same frame the vars
     // are written lets the browser coalesce both into one style recalc and animate the change
