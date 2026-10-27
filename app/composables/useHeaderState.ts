@@ -70,6 +70,10 @@ function create(): HeaderState {
 
   let el: HTMLElement | null = null
   let pEnd = P_END_CAP
+  // Where the cover zone ends: the bottom of the page's hero when it has one, else P_END.
+  // The header never hides before this point (owner, 2026-10-27: "hide only once the hero
+  // has scrolled past"). Measured with pEnd, never in the hot path.
+  let coverEnd = P_END_CAP
   let p = 0
   let revealed = true
   let hidden = false
@@ -181,7 +185,7 @@ function create(): HeaderState {
       writeP(clamp(y / pEnd, 0, 1))
     }
 
-    zone = y < pEnd ? 'cover' : footerVisible ? 'footer' : 'content'
+    zone = y < coverEnd ? 'cover' : footerVisible ? 'footer' : 'content'
 
     const delta = y - lastY
     lastY = y
@@ -222,6 +226,12 @@ function create(): HeaderState {
    */
   const measure = () => {
     pEnd = Math.min(0.5 * window.innerHeight, P_END_CAP)
+    // The one place the machine looks at the page: the hero's bottom edge, in document
+    // coordinates. A layout read, so it runs here (mount, route settle, orientationchange),
+    // never per scroll frame.
+    const hero = document.querySelector('.home-hero, .app-hero')
+    const heroEnd = hero ? hero.getBoundingClientRect().bottom + window.scrollY : 0
+    coverEnd = Math.max(pEnd, heroEnd)
   }
 
   const onFocusIn = () => reveal() // I2
@@ -363,7 +373,7 @@ function create(): HeaderState {
     lastY = window.scrollY
     accum = 0
     footerVisible = false
-    zone = lastY < pEnd ? 'cover' : 'content'
+    zone = lastY < coverEnd ? 'cover' : 'content'
     if (!solid) writeP(clamp(lastY / pEnd, 0, 1))
     writeFloat(lastY)
 
