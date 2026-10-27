@@ -116,17 +116,6 @@ test.describe('home lead project card', () => {
   })
 })
 
-test('home factory pillar accent takes the heading colour, not a link-like bronze', async ({ page }) => {
-  await open(page, '/', 1440)
-  const pairs = await page.locator('[data-testid="homepage-machinery-pillar-title"]').evaluateAll(headings =>
-    headings.flatMap((heading) => {
-      const accent = heading.querySelector('span')
-      return accent ? [{ heading: getComputedStyle(heading).color, accent: getComputedStyle(accent).color }] : []
-    }))
-  expect(pairs.length).toBeGreaterThan(0)
-  for (const pair of pairs) expect(pair.accent).toBe(pair.heading)
-})
-
 test.describe('case study', () => {
   test('delivery timeline numerals sit on their own line above the icon', async ({ page }) => {
     await open(page, '/du-an/khach-san-eo-gio', 1440)

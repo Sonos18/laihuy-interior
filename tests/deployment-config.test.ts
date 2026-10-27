@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { projects } from '../app/data/projects'
 
@@ -108,25 +109,18 @@ describe('production deployment config', () => {
         styles: ['normal']
       }
     ])
+    // The faces are imported from one local file: bare package ids in `css` made the dev
+    // server render <link>s it could not serve (404 on every page).
     expect(config.css).toEqual([
       '~/assets/css/layers.css',
-      '@fontsource/inter/400.css',
-      '@fontsource/inter/500.css',
-      '@fontsource/inter/600.css',
-      '@fontsource/inter/700.css',
-      '@fontsource/inter/900.css',
-      '@fontsource/outfit/300.css',
-      '@fontsource/outfit/400.css',
-      '@fontsource/outfit/500.css',
-      '@fontsource/outfit/600.css',
-      '@fontsource/outfit/700.css',
-      '@fontsource/syne/400.css',
-      '@fontsource/syne/500.css',
-      '@fontsource/syne/600.css',
-      '@fontsource/syne/700.css',
-      '@fontsource/syne/800.css',
+      '~/assets/css/fonts.css',
       '~/assets/css/main.css'
     ])
+
+    const fontsCss = readFileSync(new URL('../app/assets/css/fonts.css', import.meta.url), 'utf8')
+    const imports = [...fontsCss.matchAll(/@import "([^"]+)";/g)].map(match => match[1])
+    expect(imports).toEqual(config.fonts.families.flatMap(family =>
+      family.weights.map(weight => `@fontsource/${family.name.toLowerCase()}/${weight}.css`)))
   })
 
   it('does not load external runtime font stylesheets from Google Fonts', async () => {

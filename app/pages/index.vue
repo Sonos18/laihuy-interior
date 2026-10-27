@@ -1,16 +1,10 @@
 <script setup lang="ts">
 import { company } from '~/data/company'
-import {
-  factoryCapabilities,
-  factoryStats,
-  machinerySectionContent,
-  productionWorkflow
-} from '~/data/factory'
+import { factoryStats } from '~/data/factory'
 import { homeCapabilities, homeStoryStages } from '~/data/home-page'
 import { projects } from '~/data/projects'
 import { siteImages } from '~/data/site-images'
 import { projectMedia } from '~/media/catalog.generated'
-import { breathMedia } from '~/media/breath-media'
 import { homeMaterialStoryMedia } from '~/media/home-media'
 import { projectCoverAsset } from '~/media/project-media'
 import type { MediaAsset } from '~/shared/media/types'
@@ -63,19 +57,16 @@ usePageSeo({
       :facts="homeMetrics"
       testid="home-metrics"
       cell-testid="home-metric"
+      contained
     />
     <HomeMaterialStory
       :stages="homeStoryStages"
       :images="homeMaterialStoryMedia"
     />
     <HomeCapabilities :capabilities="homeCapabilities" />
-    <BreathImage :image="breathMedia.home" />
     <HomeProjectStage :projects="featuredProjects" />
     <HomeFactoryProof
-      :capabilities="factoryCapabilities"
-      :content="machinerySectionContent"
       :image="siteImages.machineryOverview"
-      :steps="productionWorkflow"
     />
     <HomeProjectCta />
   </div>

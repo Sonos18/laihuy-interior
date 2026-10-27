@@ -1,0 +1,19 @@
+/* Self-hosted @fontsource faces, imported here rather than listed as bare package ids in
+   nuxt.config `css`. Listed there, Nuxt's dev server also rendered a <link> for each bare id
+   (`/_nuxt/@fontsource/inter/400.css`) that it cannot serve, so every page logged 404s.
+   Imported from one local file, Vite resolves and inlines them. */
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/inter/900.css";
+@import "@fontsource/outfit/300.css";
+@import "@fontsource/outfit/400.css";
+@import "@fontsource/outfit/500.css";
+@import "@fontsource/outfit/600.css";
+@import "@fontsource/outfit/700.css";
+@import "@fontsource/syne/400.css";
+@import "@fontsource/syne/500.css";
+@import "@fontsource/syne/600.css";
+@import "@fontsource/syne/700.css";
+@import "@fontsource/syne/800.css";

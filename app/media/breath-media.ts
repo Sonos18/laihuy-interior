@@ -17,8 +17,6 @@ function requireProjectAsset(id: ProjectMediaId, path: string): MediaAsset {
 }
 
 export const breathMedia = {
-  /** Home: the Eo Gió lounge, the featured hotel whose rooms open the page. */
-  home: decorative(requireProjectAsset('khach-san-eo-gio', 'projects/khach-san-eo-gio/sanh-don/14.webp')),
   /** About: an Eo Gió studio, the first project the about page features. */
   about: decorative(requireProjectAsset('khach-san-eo-gio', 'projects/khach-san-eo-gio/phong-studio-02/1.webp')),
   /** Services: the Codi Boutique Hotel reception, the project the services page is art-directed

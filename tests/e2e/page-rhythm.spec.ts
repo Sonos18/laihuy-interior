@@ -8,7 +8,8 @@ import { APP_ORIGIN } from './origin'
  *
  * RH-01  at most one Monument per page, set in the Monument role, AA against its surface.
  * RH-02  at most one Statement heading per page.
- * RH-03  the Facts Band renders with identical computed styles on all four routes that use it.
+ * RH-03  the Facts Band renders with identical type on all four routes that use it, and one
+ *        surface per variant (full-bleed band, or the contained frame on home).
  * RH-04  no two consecutive section heads share a layout, and each head's geometry matches the
  *        layout it declares (split: something beside the heading; rail: the eyebrow in a column
  *        of its own; stacked: one column).
@@ -116,7 +117,12 @@ for (const page_ of ALL_PAGES) {
   })
 }
 
-for (const [path, expected] of [['/', '3.000 m²'], ['/nha-xuong', '3.000 m²'], ['/gioi-thieu', 'Đến 50']] as const) {
+test('RH-01 / carries no Monument: its factory section is head, photograph and link', async ({ page }) => {
+  await open(page, '/', 1440)
+  await expect(page.locator('[data-monument]')).toHaveCount(0)
+})
+
+for (const [path, expected] of [['/nha-xuong', '3.000 m²'], ['/gioi-thieu', 'Đến 50']] as const) {
   test(`RH-01 ${path} carries its Monument and it fits at 375`, async ({ page }) => {
     await open(page, path, 375)
     const monument = page.locator('[data-monument] .monument-value')
@@ -145,14 +151,17 @@ async function bandStyles(page: Page) {
     const figure = band.querySelector('dd.home-stat-value')
     const phrase = band.querySelector('dd.home-card-heading')
     return {
+      contained: band.classList.contains('facts-band--contained'),
       count: cells.length,
       icons: band.querySelectorAll('svg, .iconify, [class*="i-lucide"]').length,
       band: pick(band, ['background-color', 'border-bottom-width', 'border-bottom-color', 'border-bottom-style']),
-      firstCell: pick(cells[0] ?? null, ['padding-top', 'padding-bottom', 'padding-left', 'border-right-width', 'border-right-color', 'row-gap']),
-      middleCell: pick(cells[1] ?? null, ['padding-top', 'padding-bottom', 'padding-left', 'padding-right', 'border-right-width']),
-      label: pick(band.querySelector('dt'), type),
-      figure: pick(figure, type),
-      phrase: pick(phrase, type)
+      grid: pick(band.querySelector('dl'), ['background-color', 'border-top-width', 'border-top-color', 'border-radius']),
+      type: {
+        cell: pick(cells[0] ?? null, ['padding-top', 'padding-bottom', 'border-right-width', 'border-right-color', 'row-gap']),
+        label: pick(band.querySelector('dt'), type),
+        figure: pick(figure, type),
+        phrase: pick(phrase, type)
+      }
     }
   })
 }
@@ -166,19 +175,28 @@ test('RH-03 the Facts Band has one treatment on all four routes', async ({ page 
   }
 
   const [reference, ...others] = samples
-  expect(reference!.styles.figure, 'the home band shows a figure').not.toBeNull()
-  expect(reference!.styles.phrase, 'the home band shows a phrase').not.toBeNull()
+  expect(reference!.styles.type.figure, 'the home band shows a figure').not.toBeNull()
+  expect(reference!.styles.type.phrase, 'the home band shows a phrase').not.toBeNull()
   for (const sample of samples) {
     expect(sample.styles.icons, `${sample.path} band carries no icons`).toBe(0)
     expect(sample.styles.count, `${sample.path} band shows three or four facts`).toBeGreaterThanOrEqual(3)
-    // Linen with a Plaster hairline under it.
-    expect(sample.styles.band!['background-color']).toBe('rgb(250, 246, 240)')
-    expect(sample.styles.band!['border-bottom-width']).toBe('1px')
+    // Home is the contained variant: the Linen frame sits on the rail. Elsewhere the band itself
+    // is Linen, full-bleed, with a Plaster hairline under it.
+    expect(sample.styles.contained, `${sample.path} band variant`).toBe(sample.path === '/')
+    if (sample.styles.contained) {
+      expect(sample.styles.grid!['background-color']).toBe('rgb(250, 246, 240)')
+      expect(sample.styles.grid!['border-top-width']).toBe('1px')
+    } else {
+      expect(sample.styles.band!['background-color']).toBe('rgb(250, 246, 240)')
+      expect(sample.styles.band!['border-bottom-width']).toBe('1px')
+    }
   }
   for (const sample of others) {
-    const { count: _count, ...styles } = sample.styles
-    const { count: _referenceCount, ...expected } = reference!.styles
-    expect(styles, `${sample.path} band matches the home band`).toEqual(expected)
+    expect(sample.styles.type, `${sample.path} band type matches the home band`).toEqual(reference!.styles.type)
+  }
+  const fullBleed = samples.filter(sample => !sample.styles.contained)
+  for (const sample of fullBleed.slice(1)) {
+    expect(sample.styles.band, `${sample.path} band surface matches ${fullBleed[0]!.path}`).toEqual(fullBleed[0]!.styles.band)
   }
 })
 
@@ -241,6 +259,9 @@ for (const page_ of LONG_PAGES) {
       expect(heads.length).toBeGreaterThanOrEqual(3)
       for (const head of heads) expect(['stacked', 'split', 'rail'], head.text).toContain(head.layout)
       for (let index = 1; index < heads.length; index += 1) {
+        // Owner exception (DESIGN.md "No-Echo Rule", 2026-10-24): on home the material story and
+        // the capabilities heads are both stacked. Only that pair, only on home.
+        if (page_.path === '/' && index === 1 && heads[0]!.layout === 'stacked' && heads[1]!.layout === 'stacked') continue
         expect(
           heads[index]!.layout,
           `"${heads[index - 1]!.text}" and "${heads[index]!.text}" share the ${heads[index]!.layout} layout`
@@ -277,7 +298,7 @@ for (const page_ of LONG_PAGES) {
 
 // ─── RH-05 ──────────────────────────────────────────────────────────────────────────────────
 
-const BREATH_PAGES = ['/', '/gioi-thieu', '/dich-vu', '/du-an/khach-san-eo-gio'] as const
+const BREATH_PAGES = ['/gioi-thieu', '/dich-vu', '/du-an/khach-san-eo-gio'] as const
 
 for (const path of BREATH_PAGES) {
   for (const width of [1440, 390] as const) {
@@ -325,7 +346,9 @@ for (const path of BREATH_PAGES) {
   }
 }
 
-test('RH-05 the factory page and a sparse case study carry no breath', async ({ page }) => {
+test('RH-05 home, the factory page and a sparse case study carry no breath', async ({ page }) => {
+  await open(page, '/', 1440)
+  await expect(page.locator('[data-breath]')).toHaveCount(0)
   await open(page, '/nha-xuong', 1440)
   await expect(page.locator('[data-breath]')).toHaveCount(0)
   await open(page, '/du-an/phong-hop-quan-7', 1440)
@@ -352,6 +375,8 @@ for (const page_ of LONG_PAGES) {
         const above = blocks[index - 1]!
         const below = blocks[index]!
         if (isPhoto(above) || isPhoto(below)) continue
+        // The contained Facts Band is a framed grid on the canvas, not a band: it has no seam.
+        if (above.matches('.facts-band--contained') || below.matches('.facts-band--contained')) continue
         // A section that ends on a breath photograph meets the next one at the photograph.
         if (above.lastElementChild?.matches('[data-breath]')) continue
         // A section that opens on the Facts Band meets the previous one at the band's own seam.

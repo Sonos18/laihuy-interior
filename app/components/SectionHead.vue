@@ -9,7 +9,7 @@
 type SectionHeadLayout = 'stacked' | 'split' | 'rail'
 
 const props = withDefaults(defineProps<{
-  eyebrow: string
+  eyebrow?: string
   title: string
   lead?: string
   layout: SectionHeadLayout
@@ -21,6 +21,7 @@ const props = withDefaults(defineProps<{
   titleClass?: string
   leadClass?: string
 }>(), {
+  eyebrow: undefined,
   lead: undefined,
   statement: false,
   reveal: true,
@@ -40,6 +41,7 @@ const headingClass = computed(() => props.statement ? 'home-statement-heading' :
   >
     <template v-if="reveal">
       <p
+        v-if="eyebrow"
         v-reveal.head
         class="section-head__eyebrow reveal"
         :class="eyebrowClass"
@@ -71,6 +73,7 @@ const headingClass = computed(() => props.statement ? 'home-statement-heading' :
     </template>
     <template v-else>
       <p
+        v-if="eyebrow"
         class="section-head__eyebrow"
         :class="eyebrowClass"
       >
@@ -98,3 +101,9 @@ const headingClass = computed(() => props.statement ? 'home-statement-heading' :
     </template>
   </div>
 </template>
+
+<style scoped>
+.section-head > .section-head__title:first-child {
+  margin-top: 0;
+}
+</style>

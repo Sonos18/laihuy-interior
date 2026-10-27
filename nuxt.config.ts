@@ -32,21 +32,7 @@ export default defineNuxtConfig({
   // comment in that file for the defect it fixes.
   css: [
     '~/assets/css/layers.css',
-    '@fontsource/inter/400.css',
-    '@fontsource/inter/500.css',
-    '@fontsource/inter/600.css',
-    '@fontsource/inter/700.css',
-    '@fontsource/inter/900.css',
-    '@fontsource/outfit/300.css',
-    '@fontsource/outfit/400.css',
-    '@fontsource/outfit/500.css',
-    '@fontsource/outfit/600.css',
-    '@fontsource/outfit/700.css',
-    '@fontsource/syne/400.css',
-    '@fontsource/syne/500.css',
-    '@fontsource/syne/600.css',
-    '@fontsource/syne/700.css',
-    '@fontsource/syne/800.css',
+    '~/assets/css/fonts.css',
     '~/assets/css/main.css'
   ],
 

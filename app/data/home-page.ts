@@ -5,8 +5,6 @@ export type HomeCapabilityId = 'technical' | 'manufacturing' | 'fitout'
 
 export type HomeStoryStage = {
   id: HomeStoryStageId
-  /** The canonical six-step workflow step(s) this stage condenses, e.g. '03–05'. */
-  step: string
   label: LocalizedText
   title: LocalizedText
   description: LocalizedText
@@ -18,10 +16,15 @@ export type HomeCapability = {
   description: LocalizedText
 }
 
+export type HomeFactoryDetail = {
+  label: LocalizedText
+  value: LocalizedText
+}
+
 export const homePageContent = {
   hero: {
     eyebrow: { vi: 'Thiết kế · Sản xuất · Thi công', en: 'Design · Production · Fit-out' },
-    title: { vi: 'Nội thất khách sạn và dự án, sản xuất tại xưởng của chính Lai Huy', en: 'Hotel and project interiors, made in our own factory' },
+    title: { vi: 'Biến hồ sơ kỹ thuật thành không gian hoàn thiện', en: 'Turning technical documents into completed spaces' },
     description: {
       vi: 'Chủ đầu tư có một đầu mối từ thiết kế đến lắp đặt. Đơn vị thiết kế và tổng thầu có một xưởng sản xuất đúng bản vẽ, kèm bóc tách, BOQ sơ bộ và shop drawing. Lắp đặt trên toàn quốc.',
       en: 'Owners get one accountable team from design to installation. Designers and main contractors get a factory that builds to their drawings, with take-off, a preliminary BOQ and shop drawings. Installation nationwide.'
@@ -30,8 +33,8 @@ export const homePageContent = {
     secondaryCta: { vi: 'Gửi bản vẽ, nhận BOQ sơ bộ', en: 'Send drawings for a preliminary BOQ' }
   },
   story: {
-    eyebrow: { vi: 'Quy trình 6 bước, tóm trong 4 chặng', en: 'Our six-step process, in four stages' },
-    title: { vi: 'Không chuyển tay giữa các nhà thầu', en: 'No hand-offs between contractors' },
+    eyebrow: { vi: 'Cách Lai Huy làm', en: 'How we work' },
+    title: { vi: 'Không gian qua thiết kế của Lai Huy', en: 'Spaces shaped by Lai Huy’s design' },
     description: {
       vi: 'Cùng một đội chịu trách nhiệm từ lúc nhận bản vẽ, đo hiện trạng, sản xuất đến nghiệm thu tại công trình.',
       en: 'The same team is responsible from drawing intake and site measurement through production to sign-off on site.'
@@ -52,19 +55,41 @@ export const homePageContent = {
     cardCta: { vi: 'Xem chi tiết dự án', en: 'View project' }
   },
   factory: {
-    eyebrow: { vi: 'Xưởng Vĩnh Long', en: 'Our Vinh Long factory' },
-    title: { vi: 'Kiểm soát tại nguồn, trước khi ra công trình', en: 'Control at the source, before work reaches site' },
+    title: { vi: 'Kiểm soát tại nguồn', en: 'Control at the source' },
     description: {
       vi: 'Ván được cắt CNC, khoan, dán cạnh và ép ngay tại xưởng; vật liệu, kích thước và bề mặt được kiểm tra ở bốn điểm trước khi giao.',
       en: 'Panels are CNC-cut, bored, edge-banded and pressed in our own factory; materials, dimensions and surfaces are checked at four points before delivery.'
-    }
+    },
+    detailsTitle: { vi: 'Xưởng Lai Huy · Vĩnh Long', en: 'Lai Huy factory · Vinh Long' },
+    details: [
+      {
+        label: { vi: 'Diện tích', en: 'Area' },
+        value: { vi: '3.000 m² xưởng và kho', en: '3,000 m² factory and warehouse' }
+      },
+      {
+        label: { vi: 'Vị trí', en: 'Location' },
+        value: { vi: 'Phường Phú Khương, Vĩnh Long', en: 'Phu Khuong Ward, Vinh Long' }
+      },
+      {
+        label: { vi: 'Công suất', en: 'Capacity' },
+        value: { vi: 'Đến 50 phòng khách sạn mỗi tháng', en: 'Up to 50 hotel rooms a month' }
+      },
+      {
+        label: { vi: 'Máy móc', en: 'Machinery' },
+        value: { vi: 'CNC nesting, khoan CNC, dán cạnh tự động, ép nguội', en: 'CNC nesting and boring, automatic edge banding, cold pressing' }
+      },
+      {
+        label: { vi: 'Kiểm tra chất lượng', en: 'Quality checks' },
+        value: { vi: '4 điểm kiểm tra trước khi giao', en: 'Four checks before delivery' }
+      }
+    ]
   },
   cta: {
     eyebrow: { vi: 'Có bản vẽ?', en: 'Have drawings?' },
     title: { vi: 'Gửi bản vẽ, nhận BOQ sơ bộ và báo giá', en: 'Send your drawings for a preliminary BOQ and a quote' },
     description: {
-      vi: 'Gửi bản vẽ PDF hoặc DWG tới noithatlaihuy@gmail.com. Đội kỹ thuật bóc tách khối lượng và lập BOQ sơ bộ. Báo giá trong 24 giờ làm việc kể từ khi nhận đủ bản vẽ hoặc thông tin dự án. Chưa có bản vẽ? Gọi 0903 102 012.',
-      en: 'Email PDF or DWG drawings to noithatlaihuy@gmail.com. Our technical team does the take-off and prepares a preliminary BOQ. We quote within 24 working hours of receiving complete drawings or project details. No drawings yet? Call +84 903 102 012.'
+      vi: 'Đội kỹ thuật bóc tách và lập BOQ sơ bộ, báo giá trong 24 giờ làm việc kể từ khi nhận đủ hồ sơ.',
+      en: 'Our technical team does the take-off and a preliminary BOQ, and quotes within 24 working hours of receiving complete documents.'
     },
     primaryCta: { vi: 'Gửi bản vẽ, nhận BOQ sơ bộ', en: 'Send drawings for a preliminary BOQ' },
     secondaryCta: { vi: 'Xem năng lực nhà xưởng', en: 'View factory capability' }
@@ -74,7 +99,6 @@ export const homePageContent = {
 export const homeStoryStages: readonly HomeStoryStage[] = [
   {
     id: 'existing',
-    step: '01',
     label: { vi: 'Tiếp nhận hồ sơ', en: 'Intake' },
     title: {
       vi: 'Đối chiếu bản vẽ với hiện trạng',
@@ -87,7 +111,6 @@ export const homeStoryStages: readonly HomeStoryStage[] = [
   },
   {
     id: 'drawing',
-    step: '02',
     label: { vi: 'Bóc tách kỹ thuật', en: 'Take-off' },
     title: { vi: 'Bóc tách trước khi cắt ván', en: 'Take-off before the first cut' },
     description: {
@@ -97,7 +120,6 @@ export const homeStoryStages: readonly HomeStoryStage[] = [
   },
   {
     id: 'material',
-    step: '03–05',
     label: { vi: 'Mẫu, sản xuất, QC', en: 'Samples, production, QC' },
     title: { vi: 'Duyệt mẫu rồi mới sản xuất hàng loạt', en: 'Approve the sample, then produce in volume' },
     description: {
@@ -107,7 +129,6 @@ export const homeStoryStages: readonly HomeStoryStage[] = [
   },
   {
     id: 'space',
-    step: '06',
     label: { vi: 'Lắp đặt & bàn giao', en: 'Installation & handover' },
     title: { vi: 'Lắp đặt và nghiệm thu từng khu vực', en: 'Installed and signed off area by area' },
     description: {
