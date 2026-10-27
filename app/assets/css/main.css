@@ -743,7 +743,7 @@
      cover, which is the property that actually matters: it removes the blur from
      the LCP frame entirely (§12, A.4). */
   .app-header[data-blur="on"]:not([data-float="on"]) .chrome-glass,
-  .app-header[data-blur="on"][data-float="on"] .chrome-bar::before {
+  .app-header[data-float="on"] .chrome-bar::before {
     backdrop-filter: blur(var(--surface-chrome-blur));
   }
 
@@ -775,18 +775,15 @@
     justify-content: space-between;
     gap: var(--header-group-gap);
     height: var(--header-h);
-    /* Lets `width` transition to fit-content where supported; elsewhere it snaps. */
-    interpolate-size: allow-keywords;
-    transition:
-      width var(--dur-float) var(--ease-editorial),
-      height var(--dur-float) var(--ease-editorial),
-      margin-top var(--dur-float) var(--ease-editorial),
-      padding var(--dur-float) var(--ease-editorial),
-      gap var(--dur-float) var(--ease-editorial);
+    /* No layout transitions here: the compact layout is applied in ONE frame and
+       useHeaderState animates the change with FLIP (transform only), so the row never
+       re-lays out per frame under a live backdrop blur — that is what made it stutter. */
   }
 
   /* The floating bar's own glass: behind the bar's content (z-index -1 inside the
-     bar's isolated stacking context), invisible until --header-float rises. */
+     bar's isolated stacking context), invisible until --header-float rises. It is fully
+     opaque as soon as the bar floats, over the hero too, so the bar reads as one object
+     from its first frame. */
   .chrome-bar::before {
     content: "";
     position: absolute;
@@ -795,7 +792,7 @@
     border: 1px solid var(--rule-chrome-float);
     border-radius: 4px;
     background: var(--surface-chrome-float);
-    opacity: calc(var(--header-p) * var(--header-float));
+    opacity: var(--header-float);
     pointer-events: none;
   }
 
@@ -829,12 +826,8 @@
     position: relative;
     display: block;
     flex: none;
-    overflow: hidden;
     height: var(--logo-h);
     width: var(--logo-w);
-    transition:
-      width var(--dur-float) var(--ease-editorial),
-      height var(--dur-float) var(--ease-editorial);
   }
 
   @media (min-width: 80rem) {
@@ -844,8 +837,8 @@
   }
 
   /* Floating bar: the box narrows to the mark alone and steps down (40/48px -> 28/32px),
-     so the wordmark leaves by being cropped, and the bar can close up behind it. The
-     link's accessible name is unchanged. */
+     and the image crops its wordmark away (clip-path, transitioned), so the bar can close
+     up behind it. The link's accessible name is unchanged. */
   .app-header[data-float="on"] .chrome-logo,
   :root[data-chrome="nav"] .app-header .chrome-logo {
     --logo-h: 1.75rem;
@@ -869,6 +862,14 @@
     /* Natural 2:1 width at the box height, never squeezed into a narrowed box. */
     width: auto;
     max-width: none;
+    clip-path: inset(0 0 0 0);
+    transition: clip-path var(--dur-float) var(--ease-editorial);
+  }
+
+  /* The mark ends at 114 of the asset's 424px: a 72% right inset keeps it with a little air. */
+  .app-header[data-float="on"] .chrome-logo-img,
+  :root[data-chrome="nav"] .app-header .chrome-logo-img {
+    clip-path: inset(0 72% 0 0);
   }
 
   .chrome-logo-white {
@@ -892,12 +893,17 @@
   }
 
   /* §31.1 — CTA + phone arrive on scroll, once the hero's own CTA has left the
-     viewport and the header must take over conversion (§9). */
+     viewport and the header must take over conversion (§9). Amended 2026-10-27 (owner):
+     the CTA is part of the floating bar, so it arrives with it (--header-float) rather
+     than waiting for p ≥ 0.5 — otherwise the compact bar carries an empty CTA slot. */
   .chrome-actions {
-    --actions-in: clamp(
-      0,
-      calc((var(--header-p) - var(--header-action-in)) / 0.5),
-      1
+    --actions-in: max(
+      clamp(
+        0,
+        calc((var(--header-p) - var(--header-action-in)) / 0.5),
+        1
+      ),
+      var(--header-float)
     );
 
     display: flex;
@@ -920,10 +926,7 @@
     transition:
       background-color var(--dur-hover) var(--ease-editorial),
       border-color var(--dur-hover) var(--ease-editorial),
-      transform 160ms var(--ease-editorial),
-      min-height var(--dur-float) var(--ease-editorial),
-      padding var(--dur-float) var(--ease-editorial),
-      font-size var(--dur-float) var(--ease-editorial);
+      transform 160ms var(--ease-editorial);
   }
 
   /* Floating bar: the CTA steps down to 36px with tighter padding (still well above the
@@ -982,9 +985,7 @@
     line-height: var(--type-nav-leading);
     text-transform: uppercase;
     transition:
-      color var(--dur-hover) var(--ease-editorial),
-      font-size var(--dur-float) var(--ease-editorial),
-      padding var(--dur-float) var(--ease-editorial);
+      color var(--dur-hover) var(--ease-editorial);
   }
 
   .nav-link::after {
@@ -1028,20 +1029,10 @@
       transform: none !important;
     }
 
-    /* The floating bar's change of shape, logo, nav and CTA size is motion: it snaps. */
-    .chrome-bar,
-    .chrome-logo {
+    /* The floating bar's change of shape is motion: it snaps (useHeaderState also skips
+       its FLIP here). */
+    .chrome-logo-img {
       transition: none;
-    }
-
-    .nav-link {
-      transition: color var(--dur-hover) var(--ease-editorial);
-    }
-
-    .app-header .btn-bronze {
-      transition:
-        background-color var(--dur-hover) var(--ease-editorial),
-        border-color var(--dur-hover) var(--ease-editorial);
     }
   }
 

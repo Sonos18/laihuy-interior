@@ -43,6 +43,18 @@ const BLUR_IN = 0.05
  *  full-bleed at the top of the page and floats once it scrolls, like every other route. */
 const FLOAT_AT_PX = 16
 
+/** The floating bar's FLIP: `--dur-float` and `--ease-editorial`, mirrored like ACTION_IN. */
+const FLOAT_MS = 400
+const FLOAT_EASE = 'cubic-bezier(0.22, 0.61, 0.36, 1)'
+/** What moves when the bar compacts, and how each one scales: the logo by height (its box
+ *  also narrows to the mark, which the image's own clip-path animates), the rest by width. */
+const FLIP_TARGETS: Array<[selector: string, by: 'height' | 'width' | 'none']> = [
+  ['.chrome-logo', 'height'],
+  ['.chrome-nav', 'width'],
+  ['.chrome-right', 'width'],
+  ['.chrome-triggers', 'none']
+]
+
 interface HeaderState {
   /** AppHeader hands over its root element; the composable touches no DOM outside it (§2). */
   register: (el: HTMLElement) => void
@@ -101,14 +113,63 @@ function create(): HeaderState {
   let blurOn = false
   let floating = false
 
-  // A discrete toggle like blur: the bar's geometry changes once, on a CSS transition, rather
-  // than per frame — interpolating its inset from `p` would re-lay out the glass every frame.
-  const writeFloat = (y: number) => {
+  let flips: Animation[] = []
+
+  // A discrete toggle like blur. The compact layout is applied in ONE frame and the change is
+  // played back with FLIP: measure every moving part, flip the attribute, measure again, then
+  // animate each part from where it was with transform alone. Transitioning the layout itself
+  // (width, gaps, font sizes) re-laid out the whole row every frame under a live backdrop blur,
+  // which is what made it stutter. The two rect reads force one layout per CROSSING, never per
+  // scroll frame (§23.1 still holds for the hot path).
+  const writeFloat = (y: number, animate = false) => {
     const next = y > FLOAT_AT_PX
     if (next === floating || !el) return
     floating = next
     floatingRef.value = next
+
+    const play = animate && !reduceMotionQuery?.matches
+      && typeof el.animate === 'function'
+    const bar = play ? el.querySelector<HTMLElement>('.chrome-bar') : null
+    const parts = play
+      ? FLIP_TARGETS.flatMap(([selector, by]) => {
+          const node = el!.querySelector<HTMLElement>(selector)
+          return node ? [{ node, by, first: node.getBoundingClientRect() }] : []
+        })
+      : []
+    const barFirst = bar?.getBoundingClientRect()
+
+    for (const animation of flips) animation.cancel()
+    flips = []
     el.dataset.float = next ? 'on' : 'off'
+    if (!play) return
+
+    const timing: KeyframeAnimationOptions = { duration: FLOAT_MS, easing: FLOAT_EASE }
+    const from = (first: DOMRect, last: DOMRect, sx: number, sy: number) => [
+      {
+        transformOrigin: '0 0',
+        transform: `translate(${first.left - last.left}px, ${first.top - last.top}px) scale(${sx}, ${sy})`
+      },
+      { transformOrigin: '0 0', transform: 'none' }
+    ]
+
+    for (const { node, by, first } of parts) {
+      const last = node.getBoundingClientRect()
+      if (!first.width || !last.width) continue // hidden at this breakpoint
+      const scale = by === 'height'
+        ? first.height / last.height
+        : by === 'width' ? first.width / last.width : 1
+      flips.push(node.animate(from(first, last, scale, scale), timing))
+    }
+
+    if (bar && barFirst) {
+      const last = bar.getBoundingClientRect()
+      if (last.width && last.height) {
+        flips.push(bar.animate(
+          from(barFirst, last, barFirst.width / last.width, barFirst.height / last.height),
+          { ...timing, pseudoElement: '::before' }
+        ))
+      }
+    }
   }
 
   const writeP = (next: number) => {
@@ -183,7 +244,7 @@ function create(): HeaderState {
 
     // The ONLY layout-affecting read in the hot path (§23.1, A.2).
     const y = window.scrollY
-    writeFloat(y)
+    writeFloat(y, true)
 
     if (!solid) {
       // M2 — the clamp is load-bearing, not defensive: iOS rubber-band drives scrollY negative.
@@ -306,6 +367,8 @@ function create(): HeaderState {
     el?.removeEventListener('focusin', onFocusIn)
     el?.removeEventListener('pointerenter', onPointerEnter)
     if (frame) cancelAnimationFrame(frame)
+    for (const animation of flips) animation.cancel()
+    flips = []
     observer?.disconnect()
     observer = null
     el = null

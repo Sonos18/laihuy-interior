@@ -120,8 +120,8 @@ watch(() => props.solid, value => setSolid(value))
              the header takes over conversion with. See --nav-item-px in main.css. -->
         <div
           class="chrome-actions"
-          :inert="chromeState === 'cover'"
-          :aria-hidden="chromeState === 'cover'"
+          :inert="chromeState === 'cover' && !floating"
+          :aria-hidden="chromeState === 'cover' && !floating"
         >
           <NuxtLink
             to="/lien-he"
@@ -151,7 +151,7 @@ watch(() => props.solid, value => setSolid(value))
                 the point here is PERSISTENCE. `chrome-nav-color` keeps it legible over both
                 the cover and the glass by the same colour-mix the menu trigger uses, so it
                 needs no state gating to stay readable. -->
-      <div class="flex items-center gap-1 xl:hidden">
+      <div class="chrome-triggers flex items-center gap-1 xl:hidden">
         <a
           :href="`tel:${company.phone.replaceAll(' ', '')}`"
           class="chrome-trigger chrome-nav-color"
