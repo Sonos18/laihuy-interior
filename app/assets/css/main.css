@@ -790,7 +790,9 @@
     inset: 0;
     z-index: -1;
     border: 1px solid var(--rule-chrome-float);
-    border-radius: 4px;
+    /* Owner, 2026-10-27: a softer 16px corner, after the reference template. The one
+       radius outside the two shape words: it marks the bar as floating chrome. */
+    border-radius: 1rem;
     background: var(--surface-chrome-float);
     opacity: var(--header-float);
     pointer-events: none;
