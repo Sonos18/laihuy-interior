@@ -13,8 +13,10 @@ import type { Project } from '~/shared/types/project'
 const props = withDefaults(defineProps<{
   projects: readonly { project: Project, cover: MediaAsset }[]
   badges?: boolean
+  numbered?: boolean
 }>(), {
-  badges: true
+  badges: true,
+  numbered: true
 })
 
 const { t, ta } = useLanguage()
@@ -55,6 +57,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
             </template>
           </div>
           <span
+            v-if="numbered"
             class="home-projects__index"
             aria-hidden="true"
           >01</span>
@@ -169,6 +172,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
             </template>
           </div>
           <span
+            v-if="numbered"
             class="home-projects__index"
             aria-hidden="true"
           >0{{ index + 2 }}</span>

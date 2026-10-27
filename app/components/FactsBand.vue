@@ -24,11 +24,14 @@ withDefaults(defineProps<{
   cellTestid?: string
   /** Anchor id for in-page links to the band. */
   anchor?: string
+  /** Keep background, top/bottom hairlines and cell dividers inside the shell width. */
+  contained?: boolean
 }>(), {
   testid: 'facts-band',
   gridTestid: undefined,
   cellTestid: 'fact',
-  anchor: undefined
+  anchor: undefined,
+  contained: false
 })
 </script>
 
@@ -37,7 +40,12 @@ withDefaults(defineProps<{
     :id="anchor"
     data-facts-band
     :data-testid="testid"
-    class="facts-band scroll-mt-[calc(var(--header-h)+1rem)] border-b border-[var(--rule-light)] bg-wood-50 text-ink-950"
+    class="facts-band scroll-mt-[calc(var(--header-h)+1rem)] text-ink-950"
+    :class="[
+      contained
+        ? 'facts-band--contained'
+        : 'border-b border-[var(--rule-light)] bg-wood-50'
+    ]"
   >
     <div class="shell">
       <!-- The band reveals as ONE unit (DESIGN.md "Motion"): its hairlines and its figures arrive
@@ -80,6 +88,24 @@ withDefaults(defineProps<{
   grid-auto-rows: auto;
 }
 
+/* Outer cells sit flush with the rail on the full-bleed band; inside the contained box they
+   keep an inset so the figures do not touch its border. */
+.facts-band {
+  --facts-edge: 0;
+}
+
+.facts-band--contained {
+  --facts-edge: 1.25rem;
+  padding-top: 2rem;
+}
+
+/* Contained: the background and hairlines stay inside the shell width. */
+.facts-band--contained .facts-band__grid {
+  background-color: var(--color-wood-50);
+  border: 1px solid var(--rule-light);
+  border-radius: 4px;
+}
+
 .facts-band__cell {
   display: grid;
   grid-row: span 2;
@@ -97,12 +123,12 @@ withDefaults(defineProps<{
 
 /* Four facts, 2-up: hairline between columns, and between the two rows. */
 .facts-band__grid[data-count='4'] > .facts-band__cell:nth-child(odd) {
-  padding-left: 0;
+  padding-left: var(--facts-edge);
   border-right-width: 1px;
 }
 
 .facts-band__grid[data-count='4'] > .facts-band__cell:nth-child(even) {
-  padding-right: 0;
+  padding-right: var(--facts-edge);
 }
 
 .facts-band__grid[data-count='4'] > .facts-band__cell:nth-child(n + 3) {
@@ -115,7 +141,7 @@ withDefaults(defineProps<{
 }
 
 .facts-band__grid[data-count='3'] > .facts-band__cell {
-  padding-inline: 0;
+  padding-inline: var(--facts-edge);
 }
 
 .facts-band__grid[data-count='3'] > .facts-band__cell + .facts-band__cell {
@@ -124,6 +150,11 @@ withDefaults(defineProps<{
 
 /* N across: a hairline between neighbours, the outer cells flush with the rail. */
 @media (min-width: 768px) {
+  .facts-band--contained {
+    --facts-edge: 1.5rem;
+    padding-top: 3rem;
+  }
+
   .facts-band__grid[data-count='3'] {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -136,11 +167,11 @@ withDefaults(defineProps<{
   }
 
   .facts-band__grid[data-count='3'] > .facts-band__cell:first-child {
-    padding-left: 0;
+    padding-left: var(--facts-edge);
   }
 
   .facts-band__grid[data-count='3'] > .facts-band__cell:last-child {
-    padding-right: 0;
+    padding-right: var(--facts-edge);
     border-right-width: 0;
   }
 }
@@ -159,11 +190,11 @@ withDefaults(defineProps<{
   }
 
   .facts-band__grid[data-count='4'] > .facts-band__cell:first-child {
-    padding-left: 0;
+    padding-left: var(--facts-edge);
   }
 
   .facts-band__grid[data-count='4'] > .facts-band__cell:last-child {
-    padding-right: 0;
+    padding-right: var(--facts-edge);
     border-right-width: 0;
   }
 }
