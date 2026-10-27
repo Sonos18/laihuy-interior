@@ -783,6 +783,22 @@
     inset: 0;
     height: 100%;
     width: 100%;
+    transform-origin: left center;
+    clip-path: inset(0 0 0 0);
+    transition:
+      transform var(--dur-float) var(--ease-editorial),
+      clip-path var(--dur-float) var(--ease-editorial);
+  }
+
+  /* Floating bar (owner, 2026-10-27): the logo steps down to its mark. The wordmark is
+     clipped away (the mark ends at 114 of the asset's 424px, so a 72% right inset keeps
+     it with a little air) and the whole lockup scales to 80% from its left edge. Both are
+     compositor-friendly (transform, clip-path), the box keeps its size, so nothing in the
+     bar reflows and the link's accessible name is unchanged. */
+  .app-header[data-float="on"] .chrome-logo-img,
+  :root[data-chrome="nav"] .app-header .chrome-logo-img {
+    transform: scale(0.8);
+    clip-path: inset(0 72% 0 0);
   }
 
   .chrome-logo-white {
@@ -877,7 +893,16 @@
     letter-spacing: var(--type-nav-track);
     line-height: var(--type-nav-leading);
     text-transform: uppercase;
-    transition: color var(--dur-hover) var(--ease-editorial);
+    transition:
+      color var(--dur-hover) var(--ease-editorial),
+      font-size var(--dur-float) var(--ease-editorial);
+  }
+
+  /* Floating bar: the nav steps down one size (13px -> 12px) with the logo. Only ever
+     smaller than the rest state, so the 1280 overflow budget (V11) can only gain room. */
+  .app-header[data-float="on"],
+  :root[data-chrome="nav"] .app-header {
+    --type-nav-size: 0.75rem;
   }
 
   .nav-link::after {
@@ -921,9 +946,14 @@
       transform: none !important;
     }
 
-    /* The floating bar's change of shape is motion: it snaps. */
-    .chrome-glass {
+    /* The floating bar's change of shape, logo and nav size is motion: it snaps. */
+    .chrome-glass,
+    .chrome-logo-img {
       transition: none;
+    }
+
+    .nav-link {
+      transition: color var(--dur-hover) var(--ease-editorial);
     }
   }
 
