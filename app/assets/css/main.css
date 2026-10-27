@@ -755,9 +755,10 @@
     height: var(--header-h);
   }
 
-  /* ADR-004 — the logo is an adaptive signature, not a coloured badge. Two mono
-     assets cross-fade by opacity; the colour master (1.86:1 over photography, a
-     live WCAG 1.4.11 failure) leaves the render path here.
+  /* ADR-004, amended 2026-10-27 — the logo shows its original brand colours. Two
+     derived assets cross-fade by opacity: over the cover, the reverse (blue ink -> white,
+     orange kept, since the blue sits at 1.86:1 over photography); on light chrome, the
+     master's own blue + orange. Both from scripts/brand/derive-logos.ts.
 
      --logo-h-* is OPTICAL height and the derived assets are TRIMMED, so the box
      IS the mark: no 42.4% padding to discount (V16). */
@@ -1026,7 +1027,7 @@
     border-bottom: 1px solid var(--rule-light);
   }
 
-  /* §35 — REUSES the header's mono-ink asset: same URL, already cached, zero
+  /* §35 — REUSES the header's full-colour asset: same URL, already cached, zero
      extra request (A.7). This is also where ADR-004's second lockup dies: the
      circular badge (/logo.png) was a different mark at a different aspect
      ratio, and it is now retired from the site. */

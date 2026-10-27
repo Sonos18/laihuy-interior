@@ -64,11 +64,12 @@ watch(() => props.solid, value => setSolid(value))
         class="chrome-logo"
         aria-label="Lai Huy Interior"
       >
-        <!-- §35 — mono-white is in the LCP viewport and must never pop in after the cover.
-             mono-ink is opacity:0 but must be DECODED before the user scrolls, or the
-             cross-fade flashes an empty box. Both carry explicit width/height (FG-15). -->
+        <!-- §35 — the reverse (white + orange) logo is in the LCP viewport and must never pop
+             in after the cover. The full-colour logo is opacity:0 but must be DECODED before the
+             user scrolls, or the cross-fade flashes an empty box. Both carry explicit
+             width/height (FG-15). Original brand colours replace the mono pair (2026-10-27). -->
         <img
-          src="/logo-mono-white.png"
+          src="/logo-color-reverse.png"
           alt="Lai Huy Interior"
           width="424"
           height="212"
@@ -77,7 +78,7 @@ watch(() => props.solid, value => setSolid(value))
           class="chrome-logo-img chrome-logo-white"
         >
         <img
-          src="/logo-mono-ink.png"
+          src="/logo-color.png"
           alt=""
           aria-hidden="true"
           width="424"

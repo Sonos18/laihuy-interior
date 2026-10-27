@@ -187,10 +187,10 @@ onScopeDispose(() => {
       :aria-label="t({ vi: 'Menu điều hướng', en: 'Navigation menu' })"
     >
       <div class="app-drawer-head">
-        <!-- §35 — reuses the header's mono-ink asset: same URL, already cached, zero extra
+        <!-- §35 — reuses the header's full-colour asset: same URL, already cached, zero extra
              request. Explicit width/height, like both header logos (FG-15). -->
         <img
-          src="/logo-mono-ink.png"
+          src="/logo-color.png"
           alt="Lai Huy Interior"
           width="424"
           height="212"

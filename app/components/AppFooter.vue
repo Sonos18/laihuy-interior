@@ -40,7 +40,7 @@ const { t, ta } = useLanguage()
           <!-- §35 — below fold, always: lazy + fetchpriority auto. Explicit width/height like
                every other logo in the system (FG-15). -->
           <img
-            src="/logo-mono-white.png"
+            src="/logo-color-reverse.png"
             alt="Lai Huy Interior"
             width="424"
             height="212"

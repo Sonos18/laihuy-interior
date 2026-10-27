@@ -39,26 +39,47 @@ import sharp from 'sharp'
 /** The colour master. Also a brand-archive asset — see the header note. */
 const SOURCE = 'public/logo-white.png'
 
+type Rgb = readonly [number, number, number]
+
 type Variant = {
   /** Output path, per Appendix D.2. */
   readonly file: string
-  /** The fill applied to the alpha mask. */
-  readonly fill: { readonly r: number, readonly g: number, readonly b: number }
-  /** Token this fill corresponds to, for the log line. */
+  /** Maps each master pixel's RGB to the output RGB; alpha always survives untouched. */
+  readonly recolour: (rgb: Rgb) => Rgb
+  /** What the recolour does, for the log line. */
   readonly token: string
 }
+
+/** The master holds exactly two inks: slate blue (~#495d80) and orange. Orange is the red-led one. */
+const isOrange = ([r, , b]: Rgb) => r > b
 
 const VARIANTS: readonly Variant[] = [
   {
     file: 'public/logo-mono-white.png',
-    fill: { r: 0xff, g: 0xff, b: 0xff },
-    token: '#fff (--fg-dark)'
+    recolour: () => [0xff, 0xff, 0xff],
+    token: 'filled #fff (--fg-dark)'
   },
   {
     file: 'public/logo-mono-ink.png',
     // main.css @theme --color-ink-950: #0b0a09
-    fill: { r: 0x0b, g: 0x0a, b: 0x09 },
-    token: '#0b0a09 (--color-ink-950)'
+    recolour: () => [0x0b, 0x0a, 0x09],
+    token: 'filled #0b0a09 (--color-ink-950)'
+  },
+  // 2026-10-27 — the owner asked for the logo in its original colours on the site. These two
+  // supersede the mono pair in the render path; the mono pair is still derived for reference.
+  {
+    // Light surfaces (scrolled header, drawer): the master's own blue + orange, trimmed.
+    file: 'public/logo-color.png',
+    recolour: rgb => rgb,
+    token: 'master colours (blue + orange)'
+  },
+  {
+    // Dark surfaces (header over the cover, footer): the blue ink would sit at 1.86:1 over
+    // photography, so it turns white and the orange stays — the same treatment the brand's
+    // own badge (public/logo.png) gives the mark on its blue disc.
+    file: 'public/logo-color-reverse.png',
+    recolour: rgb => (isOrange(rgb) ? rgb : [0xff, 0xff, 0xff]),
+    token: 'blue → #fff, orange kept'
   }
 ]
 
@@ -95,12 +116,13 @@ const ASPECT_TOLERANCE = 0.001
 const MIN_3X_HEIGHT = 64 * 3
 
 async function derive(variant: Variant, source: Buffer, width: number, height: number) {
-  // Replace RGB wholesale, keep alpha: the mask IS the mark (ADR-004).
+  // Recolour RGB, keep alpha: the mask IS the mark (ADR-004).
   const masked = Buffer.alloc(source.length)
   for (let i = 0; i < source.length; i += 4) {
-    masked[i] = variant.fill.r
-    masked[i + 1] = variant.fill.g
-    masked[i + 2] = variant.fill.b
+    const [r, g, b] = variant.recolour([source[i]!, source[i + 1]!, source[i + 2]!])
+    masked[i] = r
+    masked[i + 1] = g
+    masked[i + 2] = b
     masked[i + 3] = source[i + 3]!
   }
 
@@ -143,7 +165,7 @@ async function main() {
     const ok = bytes <= MAX_BYTES
     console.log(
       `derived  ${variant.file} → ${width}x${height}, ${(bytes / 1024).toFixed(2)}KB `
-      + `filled ${variant.token} ${ok ? '✔' : '✘'}`
+      + `${variant.token} ${ok ? '✔' : '✘'}`
     )
     if (!ok) {
       failures.push(`${variant.file} is ${(bytes / 1024).toFixed(2)}KB > 8KB (Appendix A.7)`)
