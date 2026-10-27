@@ -61,8 +61,10 @@ jobs:
       # differences between the runner and the approver's machine, or push the team toward
       # rubber-stamping baselines to get green. Neither is the workflow §41 designed.
       #
-      # NUXT_PUBLIC_USE_SUPABASE_MEDIA is left false so the gates resolve images from
-      # /public: they measure layout, and hero/typography abort image requests outright.
+      # NUXT_PUBLIC_USE_SUPABASE_MEDIA is left false, and `public/images/` is gitignored, so
+      # on this runner every image URL 404s. That is fine because no gate here needs pixels:
+      # hero/typography abort image requests, alignment and contact-layout stub them with a
+      # placeholder, and a11y does not wait for images.
       #
       # SPLIT INTO THREE INVOCATIONS ON PURPOSE — the grouping is by IMAGE BEHAVIOUR, not by
       # subject. `alignment.spec.ts` and `a11y.spec.ts` both call `settle()`, which forces every

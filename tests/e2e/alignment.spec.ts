@@ -23,6 +23,14 @@ const SHELL_MEASURE = 1280
 const gutterFor = (vw: number) => (vw >= 768 ? 32 : 24)
 
 /**
+ * Stand-in for every image. NOT the 1x1 PNG other specs use: with a `w` srcset the browser
+ * divides the intrinsic width by the candidate's density, and 1px / (538w ÷ 390px) rounds to a
+ * naturalWidth of 0 — which `settle()` correctly reads as an image that never arrived. 100px
+ * stays above zero for any density this site's srcsets produce.
+ */
+const PLACEHOLDER_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"/>'
+
+/**
  * The rail, derived from the tokens rather than hardcoded — if `.shell` and this disagree, one
  * of them is wrong, and the test says which.
  *
@@ -42,6 +50,16 @@ for (const vw of VIEWPORTS) {
   for (const page_ of PAGES) {
     test(`${page_.name} @ ${vw} — one left edge, one measure`, async ({ page }) => {
       await page.setViewportSize({ width: vw, height: 900 })
+      // The rail is geometry, never pixels, so images are stubbed. Without this the gate needs the
+      // real media: `public/images/` is gitignored, so on CI every /public fallback 404s, `settle()`
+      // waits for an image that can never arrive, and all 40 cases time out.
+      await page.route('**/*', async (route) => {
+        if (route.request().resourceType() === 'image') {
+          await route.fulfill({ status: 200, contentType: 'image/svg+xml', body: PLACEHOLDER_SVG })
+          return
+        }
+        await route.continue()
+      })
       await page.goto(page_.path, { waitUntil: 'load' })
       await settle(page)
 
