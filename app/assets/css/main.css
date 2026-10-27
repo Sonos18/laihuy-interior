@@ -189,6 +189,9 @@
   --header-h-xl: 5.5rem; /*  88px  ≥ xl                              */
   --header-float-inset: 0.5rem; /*  8px gap round the floating bar < xl   */
   --header-float-inset-xl: 0.75rem; /* 12px                     ≥ xl   */
+  --header-float-h: 3.25rem; /*  52px floating bar height < xl          */
+  --header-float-h-xl: 3.5rem; /*  56px                     ≥ xl          */
+  --logo-mark-ratio: 0.557; /* the mark alone: 118 × 212 of the 424 × 212 asset */
   --header-scrim-h: 10rem; /* 160px                                    */
   --logo-h-header: 2.5rem; /*  40px OPTICAL (trimmed) < xl             */
   --logo-h-header-xl: 3rem; /*  48px OPTICAL (trimmed) ≥ xl             */
@@ -442,6 +445,7 @@
   :root {
     --header-h: var(--header-h-xl);
     --header-float-inset: var(--header-float-inset-xl);
+    --header-float-h: var(--header-float-h-xl);
   }
 }
 
@@ -458,6 +462,14 @@
    the invalidation never escapes the subtree either way. Reported, not silently
    diverged. */
 @property --header-p {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+/* 0 = full-bleed bar, 1 = floating bar. Registered so it can TRANSITION: it cross-fades
+   the full-bleed glass into the floating one while the bar compacts (owner, 2026-10-27). */
+@property --header-float {
   syntax: "<number>";
   inherits: true;
   initial-value: 0;
@@ -629,7 +641,9 @@
     top: 0;
     z-index: var(--z-header);
     transform: translateY(var(--header-shift));
-    transition: transform var(--dur-state) var(--ease-editorial);
+    transition:
+      transform var(--dur-state) var(--ease-editorial),
+      --header-float var(--dur-float) var(--ease-editorial);
     /* §33.2 — notch safety. */
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
@@ -697,29 +711,22 @@
   .chrome-glass {
     background: var(--surface-chrome);
     border-bottom: 1px solid var(--rule-light);
-    opacity: var(--header-p);
-    transition:
-      inset var(--dur-float) var(--ease-editorial),
-      border-radius var(--dur-float) var(--ease-editorial),
-      border-color var(--dur-float) var(--ease-editorial);
+    opacity: calc(var(--header-p) * (1 - var(--header-float)));
   }
 
-  /* Floating bar (owner, 2026-10-27). Once the page leaves its top the glass detaches
-     from the viewport edges: inset on every side, a full Plaster Line hairline and the
-     4px content edge, sized to the `.shell` box so the logo, nav and CTA inside it do
-     not move by a pixel — only the surface behind them changes shape. The scrim stays
-     full-bleed: it protects the photograph, not the bar. `data-float` is a discrete
-     toggle written by useHeaderState, so the geometry animates once per crossing on a
-     CSS transition instead of being re-laid-out every scroll frame. */
-  .app-header[data-float="on"] .chrome-glass,
-  :root[data-chrome="nav"] .app-header .chrome-glass {
-    inset-block: var(--header-float-inset);
-    inset-inline: max(
-      var(--header-float-inset),
-      calc((100% - var(--shell-measure)) / 2 - var(--shell-gutter))
-    );
-    border: 1px solid var(--rule-light);
-    border-radius: 4px;
+  /* Floating bar (owner, 2026-10-27). Once the page leaves its top (`data-float`, a
+     discrete toggle written by useHeaderState) the bar compacts: it drops 8/12px from the
+     top, shrinks to 52/56px tall, hugs its content from 1280px (logo mark, nav, language,
+     CTA with tighter gaps) and sits on its own glass with a full Plaster Line hairline and
+     the 4px edge. The full-bleed glass cross-fades out as that one fades in, through
+     --header-float. The scrim stays full-bleed: it protects the photograph, not the bar. */
+  .app-header[data-float="on"],
+  :root[data-chrome="nav"] .app-header {
+    --header-float: 1;
+    --type-nav-size: 0.6875rem;
+    --nav-item-px: 0.375rem;
+    --header-group-gap: 1.25rem;
+    --header-action-gap: 0.5rem;
   }
 
   /* Blur is a DISCRETE TOGGLE, never an interpolated radius (§8.2, §25.2).
@@ -727,32 +734,74 @@
      imperceptible, and gating it this way keeps `backdrop-filter: none` on the
      cover, which is the property that actually matters: it removes the blur from
      the LCP frame entirely (§12, A.4). */
-  .app-header[data-blur="on"] .chrome-glass {
+  .app-header[data-blur="on"]:not([data-float="on"]) .chrome-glass,
+  .app-header[data-blur="on"][data-float="on"] .chrome-bar::before {
     backdrop-filter: blur(var(--surface-chrome-blur));
   }
 
   /* C.2 — never leave the glass translucent-without-blur: text over a moving
      photo at α 0.92 with no blur fails contrast. */
   @supports not (backdrop-filter: blur(1px)) {
-    .chrome-glass {
+    .chrome-glass,
+    .chrome-bar::before {
       background: rgb(255 255 255 / 0.98);
     }
   }
 
   /* FG-12 / V14 — screen-wide budget: ≤ 1 backdrop blur on screen. The drawer
      overlay owns the blur while it is open, so the header gives its up. */
-  .app-header[data-drawer="open"] .chrome-glass {
+  .app-header[data-drawer="open"] .chrome-glass,
+  .app-header[data-drawer="open"] .chrome-bar::before {
     backdrop-filter: none;
   }
 
   /* The bar itself. `.shell` supplies the rail (ADR-001); this supplies height. */
   .chrome-bar {
     position: relative;
+    isolation: isolate;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--header-group-gap);
     height: var(--header-h);
+    /* Lets `width` transition to fit-content where supported; elsewhere it snaps. */
+    interpolate-size: allow-keywords;
+    transition:
+      width var(--dur-float) var(--ease-editorial),
+      height var(--dur-float) var(--ease-editorial),
+      margin-top var(--dur-float) var(--ease-editorial),
+      padding var(--dur-float) var(--ease-editorial),
+      gap var(--dur-float) var(--ease-editorial);
+  }
+
+  /* The floating bar's own glass: behind the bar's content (z-index -1 inside the
+     bar's isolated stacking context), invisible until --header-float rises. */
+  .chrome-bar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border: 1px solid var(--rule-light);
+    border-radius: 4px;
+    background: var(--surface-chrome);
+    opacity: calc(var(--header-p) * var(--header-float));
+    pointer-events: none;
+  }
+
+  .app-header[data-float="on"] .chrome-bar,
+  :root[data-chrome="nav"] .app-header .chrome-bar {
+    width: calc(100% - 2 * var(--header-float-inset));
+    height: var(--header-float-h);
+    margin-top: var(--header-float-inset);
+    padding-inline: 1rem;
+  }
+
+  @media (min-width: 80rem) {
+    .app-header[data-float="on"] .chrome-bar,
+    :root[data-chrome="nav"] .app-header .chrome-bar {
+      width: fit-content;
+      padding-inline: 1.25rem;
+    }
   }
 
   /* ADR-004, amended 2026-10-27 — the logo shows its original brand colours. Two
@@ -763,16 +812,39 @@
      --logo-h-* is OPTICAL height and the derived assets are TRIMMED, so the box
      IS the mark: no 42.4% padding to discount (V16). */
   .chrome-logo {
+    --logo-h: var(--logo-h-header);
+    --logo-w: calc(var(--logo-h) * 2); /* --logo-aspect, 2 / 1 */
+
     position: relative;
     display: block;
     flex: none;
-    height: var(--logo-h-header);
-    aspect-ratio: var(--logo-aspect);
+    overflow: hidden;
+    height: var(--logo-h);
+    width: var(--logo-w);
+    transition:
+      width var(--dur-float) var(--ease-editorial),
+      height var(--dur-float) var(--ease-editorial);
   }
 
   @media (min-width: 80rem) {
     .chrome-logo {
-      height: var(--logo-h-header-xl);
+      --logo-h: var(--logo-h-header-xl);
+    }
+  }
+
+  /* Floating bar: the box narrows to the mark alone and steps down (40/48px -> 28/32px),
+     so the wordmark leaves by being cropped, and the bar can close up behind it. The
+     link's accessible name is unchanged. */
+  .app-header[data-float="on"] .chrome-logo,
+  :root[data-chrome="nav"] .app-header .chrome-logo {
+    --logo-h: 1.75rem;
+    --logo-w: calc(var(--logo-h) * var(--logo-mark-ratio));
+  }
+
+  @media (min-width: 80rem) {
+    .app-header[data-float="on"] .chrome-logo,
+    :root[data-chrome="nav"] .app-header .chrome-logo {
+      --logo-h: 2rem;
     }
   }
 
@@ -780,25 +852,12 @@
      cannot otherwise contribute CLS, so a non-zero chrome CLS is always this bug. */
   .chrome-logo-img {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
     height: 100%;
-    width: 100%;
-    transform-origin: left center;
-    clip-path: inset(0 0 0 0);
-    transition:
-      transform var(--dur-float) var(--ease-editorial),
-      clip-path var(--dur-float) var(--ease-editorial);
-  }
-
-  /* Floating bar (owner, 2026-10-27): the logo steps down to its mark. The wordmark is
-     clipped away (the mark ends at 114 of the asset's 424px, so a 72% right inset keeps
-     it with a little air) and the whole lockup scales to 80% from its left edge. Both are
-     compositor-friendly (transform, clip-path), the box keeps its size, so nothing in the
-     bar reflows and the link's accessible name is unchanged. */
-  .app-header[data-float="on"] .chrome-logo-img,
-  :root[data-chrome="nav"] .app-header .chrome-logo-img {
-    transform: scale(0.8);
-    clip-path: inset(0 72% 0 0);
+    /* Natural 2:1 width at the box height, never squeezed into a narrowed box. */
+    width: auto;
+    max-width: none;
   }
 
   .chrome-logo-white {
@@ -847,6 +906,22 @@
   .app-header .btn-bronze {
     min-height: var(--nav-item-min-h);
     padding-block: 0.75rem;
+    transition:
+      background-color var(--dur-hover) var(--ease-editorial),
+      border-color var(--dur-hover) var(--ease-editorial),
+      transform 160ms var(--ease-editorial),
+      min-height var(--dur-float) var(--ease-editorial),
+      padding var(--dur-float) var(--ease-editorial),
+      font-size var(--dur-float) var(--ease-editorial);
+  }
+
+  /* Floating bar: the CTA steps down to 36px with tighter padding (still well above the
+     24px target-size floor). */
+  .app-header[data-float="on"] .btn-bronze,
+  :root[data-chrome="nav"] .app-header .btn-bronze {
+    min-height: 2.25rem;
+    padding: 0.5rem 1.125rem;
+    font-size: 0.8125rem;
   }
 
   /* §33.5 — 44×44 minimum. */
@@ -895,14 +970,8 @@
     text-transform: uppercase;
     transition:
       color var(--dur-hover) var(--ease-editorial),
-      font-size var(--dur-float) var(--ease-editorial);
-  }
-
-  /* Floating bar: the nav steps down one size (13px -> 12px) with the logo. Only ever
-     smaller than the rest state, so the 1280 overflow budget (V11) can only gain room. */
-  .app-header[data-float="on"],
-  :root[data-chrome="nav"] .app-header {
-    --type-nav-size: 0.75rem;
+      font-size var(--dur-float) var(--ease-editorial),
+      padding var(--dur-float) var(--ease-editorial);
   }
 
   .nav-link::after {
@@ -946,14 +1015,20 @@
       transform: none !important;
     }
 
-    /* The floating bar's change of shape, logo and nav size is motion: it snaps. */
-    .chrome-glass,
-    .chrome-logo-img {
+    /* The floating bar's change of shape, logo, nav and CTA size is motion: it snaps. */
+    .chrome-bar,
+    .chrome-logo {
       transition: none;
     }
 
     .nav-link {
       transition: color var(--dur-hover) var(--ease-editorial);
+    }
+
+    .app-header .btn-bronze {
+      transition:
+        background-color var(--dur-hover) var(--ease-editorial),
+        border-color var(--dur-hover) var(--ease-editorial);
     }
   }
 
@@ -973,6 +1048,12 @@
     .chrome-glass {
       opacity: 1;
       background: Canvas;
+      backdrop-filter: none;
+    }
+
+    .chrome-bar::before {
+      background: Canvas;
+      border-color: CanvasText;
       backdrop-filter: none;
     }
 

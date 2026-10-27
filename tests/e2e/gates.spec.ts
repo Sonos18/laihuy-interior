@@ -186,7 +186,8 @@ for (const width of [1280, 1440] as const) {
     await settle(page)
     // NAVIGATION: p = 1, so phone + CTA are present (§5.2, §9).
     await page.evaluate(() => window.scrollTo(0, 600))
-    await page.waitForTimeout(400)
+    // Past the floating bar's 400ms compaction (--dur-float), so the row is at its final size.
+    await page.waitForTimeout(700)
 
     const row = await page.evaluate(() => {
       const q = (s: string) => document.querySelector(s) as HTMLElement
@@ -203,9 +204,17 @@ for (const width of [1280, 1440] as const) {
       }
       const groupGap = parseFloat(getComputedStyle(q('.chrome-bar')).columnGap) || 32
       const required = w('.chrome-logo') + w('.chrome-nav') + w('.chrome-right') + 2 * groupGap
-      const available = q('.chrome-bar').clientWidth
-        - parseFloat(getComputedStyle(q('.chrome-bar')).paddingLeft)
-        - parseFloat(getComputedStyle(q('.chrome-bar')).paddingRight)
+      // NAVIGATION is the floating bar, which hugs its content (owner, 2026-10-27), so its own
+      // width always equals `required`. The budget is the widest it may grow: the viewport less
+      // its inset on both sides, capped by the shell.
+      const bar = getComputedStyle(q('.chrome-bar'))
+      const root = getComputedStyle(document.documentElement)
+      const px = (v: string) => parseFloat(v) * (v.trim().endsWith('rem') ? parseFloat(root.fontSize) : 1)
+      const inset = px(root.getPropertyValue('--header-float-inset'))
+      const maxWidth = parseFloat(bar.maxWidth) || Infinity
+      const available = Math.min(document.documentElement.clientWidth - 2 * inset, maxWidth)
+        - parseFloat(bar.paddingLeft)
+        - parseFloat(bar.paddingRight)
 
       style.remove()
       return {
