@@ -23,7 +23,8 @@
 //   the band is on screen. Each row of cells carries a pair of beams with fading tails that set
 //   off together from the top and bottom edges of its first cell and run left to right in a
 //   zigzag: at every divider they swap sides (top goes down, bottom goes up), crossing at its
-//   middle, so between them they trace every cell's outline. They then start again. The beams
+//   middle, so between them they trace every cell's outline. At the far end they turn and come
+//   back the same way to where they set off, and round again, never leaving the band. The beams
 //   are one SVG over the grid (a `<dl>` may only hold its dt/dd groups); the paths are built
 //   from the cells' measured boxes and rebuilt when the grid resizes.
 // Under reduced motion none of this runs.
@@ -80,10 +81,15 @@ const grid = ref<HTMLElement>()
 /** Each cell's box in the frame's coordinates; empty until measured on the client. */
 const cellBoxes = ref<CellBox[]>([])
 
+type Point = [number, number]
+
 /**
- * The zigzag pair for each row of cells: one path starting on the first cell's top edge, its
- * mirror on the bottom edge. Along a row each path runs one cell's edge, then crosses to the
- * other edge down (or up) the divider, and ends down (or up) the row's last outer edge.
+ * The beam pair for each row of cells. Both beams ride one closed loop: out along the zigzag
+ * that starts on the first cell's top edge (one cell's edge, then across to the other edge down
+ * or up the divider, then down or up the row's outer right edge), and back along the mirror
+ * zigzag to the first cell's bottom-left corner, closing up its left edge. One beam rides it
+ * from the top-left corner, the other the opposite way from the bottom-left corner, so they set
+ * off together, cross at every divider, meet at the far end and come back round.
  */
 const beamPaths = computed(() => {
   const rows = new Map<number, CellBox[]>()
@@ -93,28 +99,33 @@ const beamPaths = computed(() => {
     rows.set(key, [...(rows.get(key) ?? []), cell])
   }
 
+  const toPath = (points: Point[]) =>
+    `M ${points.map(([x, y]) => `${x} ${y}`).join(' L ')} Z`
+
   return [...rows.values()].flatMap((row, rowIndex) => {
     const cells = [...row].sort((a, b) => a.x - b.x)
     const first = cells[0]!
     const top = first.y
     const bottom = first.y + first.height
-    const zigzag = (startOnTop: boolean) => {
+    const zigzag = (startOnTop: boolean): Point[] => {
       let onTop = startOnTop
-      let d = `M ${first.x} ${onTop ? top : bottom}`
+      const points: Point[] = [[first.x, onTop ? top : bottom]]
 
       for (const cell of cells) {
         const right = cell.x + cell.width
-        d += ` H ${right}`
+        points.push([right, onTop ? top : bottom])
         onTop = !onTop
-        d += ` V ${onTop ? top : bottom}`
+        points.push([right, onTop ? top : bottom])
       }
 
-      return d
+      return points
     }
+    // The way back is the mirror zigzag reversed, less the outer right edge the way out already ran.
+    const loop = [...zigzag(true), ...zigzag(false).reverse().slice(2)]
 
     return [
-      { key: `${rowIndex}-top`, d: zigzag(true) },
-      { key: `${rowIndex}-bottom`, d: zigzag(false) }
+      { key: `${rowIndex}-top`, d: toPath(loop) },
+      { key: `${rowIndex}-bottom`, d: toPath([...loop].reverse()) }
     ]
   })
 })
@@ -358,13 +369,12 @@ watch(() => props.facts, () => {
   position: relative;
 }
 
-/* The bronze beams: an SVG laid over the grid's border box, the zigzag paths on the cells'
-   edges. Each path is normalised to 100 units (pathLength), so each layer is one dash of N units
-   and a gap long enough (200 - N) that only one dash is ever on the path. A run moves the dash
-   from just before the start (leading edge at 0, offset N) until the longest layer has left
-   the end (leading edge at 124, offset N - 124), at an even speed, then rests briefly before the
-   next. The two paths of a pair have the same length, so they cross every divider together.
-   Linear timing: a loop has no start or end to ease into. */
+/* The bronze beams: an SVG laid over the grid's border box, the closed loops on the cells'
+   edges. Each loop is normalised to 100 units (pathLength), so each layer is one dash of N units
+   and a gap of 100 - N, and moving the offset from N to N - 100 is one lap with the leading edge
+   going from the start back to the start, so the next lap follows on seamlessly. The two paths
+   of a pair are the same loop run in opposite directions, so they cross every divider
+   together. Linear timing: a loop has no start or end to ease into. */
 .facts-band__frame {
   position: relative;
 }
@@ -389,17 +399,17 @@ watch(() => props.facts, () => {
 
 .facts-band__beam-tail {
   stroke-width: 2px;
-  stroke-dasharray: 24 176;
+  stroke-dasharray: 12 88;
 }
 
 .facts-band__beam-body {
   stroke-width: 2px;
-  stroke-dasharray: 14 186;
+  stroke-dasharray: 7 93;
 }
 
 .facts-band__beam-head {
   stroke-width: 2.5px;
-  stroke-dasharray: 6 194;
+  stroke-dasharray: 3 97;
 }
 
 [data-line='run'] .facts-band__beam-tail {
@@ -415,7 +425,7 @@ watch(() => props.facts, () => {
 }
 
 [data-line='run'] .facts-band__beam path {
-  animation-duration: 5s;
+  animation-duration: 7s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 }
@@ -433,35 +443,32 @@ watch(() => props.facts, () => {
 }
 
 @keyframes facts-beam-tail {
-  0% {
-    stroke-dashoffset: 24;
+  from {
+    stroke-dashoffset: 12;
   }
 
-  88%,
-  100% {
-    stroke-dashoffset: -100;
+  to {
+    stroke-dashoffset: -88;
   }
 }
 
 @keyframes facts-beam-body {
-  0% {
-    stroke-dashoffset: 14;
+  from {
+    stroke-dashoffset: 7;
   }
 
-  88%,
-  100% {
-    stroke-dashoffset: -110;
+  to {
+    stroke-dashoffset: -93;
   }
 }
 
 @keyframes facts-beam-head {
-  0% {
-    stroke-dashoffset: 6;
+  from {
+    stroke-dashoffset: 3;
   }
 
-  88%,
-  100% {
-    stroke-dashoffset: -118;
+  to {
+    stroke-dashoffset: -97;
   }
 }
 
