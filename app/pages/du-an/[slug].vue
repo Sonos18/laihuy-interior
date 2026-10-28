@@ -157,6 +157,42 @@ onMounted(() => {
   onUnmounted(() => observer.disconnect())
 })
 
+// Reading progress (DESIGN.md "Motion", Progress): 0 when the first section reaches the top of the
+// viewport, 1 when the last one's end reaches the bottom. Under reduced motion it rests complete.
+const readingProgress = ref(0)
+onMounted(() => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    readingProgress.value = 1
+    return
+  }
+
+  let frame = 0
+  const measure = () => {
+    frame = 0
+    const sections = detail.value.navSections
+    const first = document.getElementById(sections[0]?.id ?? '')
+    const last = document.getElementById(sections[sections.length - 1]?.id ?? '')
+    if (!first || !last) return
+
+    const start = first.getBoundingClientRect().top
+    const span = last.getBoundingClientRect().bottom - start - window.innerHeight
+    readingProgress.value = span > 0 ? Math.min(1, Math.max(0, -start / span)) : 1
+  }
+  const schedule = () => {
+    if (!frame) frame = requestAnimationFrame(measure)
+  }
+
+  window.addEventListener('scroll', schedule, { passive: true })
+  window.addEventListener('resize', schedule, { passive: true })
+  measure()
+
+  onUnmounted(() => {
+    window.removeEventListener('scroll', schedule)
+    window.removeEventListener('resize', schedule)
+    cancelAnimationFrame(frame)
+  })
+})
+
 // Keep the existing SEO fallback chain and schema shape intact.
 const seoName = computed(() => t(project.seo?.title ?? project.name))
 const seoTitle = computed(() => `${seoName.value} | Lai Huy Interior`)
@@ -230,6 +266,12 @@ usePageSeo({
           {{ section.label }}
         </a>
       </div>
+      <span
+        data-project-progress
+        class="reading-progress"
+        aria-hidden="true"
+        :style="{ transform: `scaleX(${readingProgress})` }"
+      />
     </nav>
 
     <ProjectStoryChapter

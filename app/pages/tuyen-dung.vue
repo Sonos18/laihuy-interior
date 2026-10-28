@@ -130,7 +130,7 @@ const applyMailto = computed(() => {
           <article
             v-for="job in jobs"
             :key="job.id"
-            class="card p-6 lg:p-7"
+            class="card card-hover p-6 lg:p-7"
           >
             <!-- Location and type are facts about the role, not controls, so they take the 4px
                  content edge rather than the pill reserved for things you press. -->

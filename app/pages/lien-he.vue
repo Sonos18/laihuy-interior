@@ -201,7 +201,7 @@ watch(form, () => {
 const hasErrors = computed(() => FIELD_ORDER.some(field => errors.value[field]))
 
 const inputClass = (invalid: boolean) => [
-  'mt-2 w-full rounded-[4px] border bg-white px-4 py-3 text-base text-ink-950 transition-colors duration-[var(--dur-hover)] placeholder:text-ink-500 motion-reduce:transition-none',
+  'field-line mt-2 w-full rounded-[4px] border bg-white px-4 py-3 text-base text-ink-950 placeholder:text-ink-500',
   invalid ? 'border-alert-500 focus:border-alert-500' : 'border-ink-200 focus:border-wood-500'
 ]
 
@@ -619,7 +619,7 @@ usePageSeo({
                 data-testid="contact-mail-opened"
                 role="status"
                 aria-live="polite"
-                :class="mailState !== 'idle' ? 'rounded-[4px] border border-ink-200 bg-wood-100 p-4 text-sm leading-[1.7] text-ink-800' : ''"
+                :class="mailState !== 'idle' ? 'status-rise rounded-[4px] border border-ink-200 bg-wood-100 p-4 text-sm leading-[1.7] text-ink-800' : ''"
               >
                 <template v-if="mailState === 'opened'">
                   {{ t(uiText.contactForm.opened) }}
