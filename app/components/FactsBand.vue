@@ -19,10 +19,13 @@
 //   (transparent while the count runs over it), so the cell never changes width and assistive
 //   technology always reads the final figure. A band the server already painted in view at
 //   hydration keeps its figures still (they must not blink to 0).
-// - The bronze line, the one looping motion on the site (owner decision), running only while
-//   the band is on screen. On the contained (home) frame it is a beam with a fading tail that
-//   travels round the frame's border at an even pace; the full-bleed band has no frame to go
-//   round, so there a short glint crosses its top edge instead.
+// - The bronze beams, the one looping motion on the site (owner decision), running only while
+//   the band is on screen. Each row of cells carries a pair of beams with fading tails that set
+//   off together from the top and bottom edges of its first cell and run left to right in a
+//   zigzag: at every divider they swap sides (top goes down, bottom goes up), crossing at its
+//   middle, so between them they trace every cell's outline. They then start again. The beams
+//   are one SVG over the grid (a `<dl>` may only hold its dt/dd groups); the paths are built
+//   from the cells' measured boxes and rebuilt when the grid resizes.
 // Under reduced motion none of this runs.
 import type { Fact } from '~/utils/facts'
 
@@ -68,8 +71,72 @@ const counts = ref<Record<string, string>>({})
 /** True while the band is on screen and motion is allowed: the bronze line runs. */
 const lineRunning = ref(false)
 
-/** The beam is three strokes of falling length, front-aligned, so it reads as a head and a tail. */
+/** A beam is three strokes of falling length, front-aligned, so it reads as a head and a tail. */
 const BEAM_LAYERS = ['tail', 'body', 'head'] as const
+
+type CellBox = { id: string, x: number, y: number, width: number, height: number }
+
+const grid = ref<HTMLElement>()
+/** Each cell's box in the frame's coordinates; empty until measured on the client. */
+const cellBoxes = ref<CellBox[]>([])
+
+/**
+ * The zigzag pair for each row of cells: one path starting on the first cell's top edge, its
+ * mirror on the bottom edge. Along a row each path runs one cell's edge, then crosses to the
+ * other edge down (or up) the divider, and ends down (or up) the row's last outer edge.
+ */
+const beamPaths = computed(() => {
+  const rows = new Map<number, CellBox[]>()
+
+  for (const cell of cellBoxes.value) {
+    const key = Math.round(cell.y)
+    rows.set(key, [...(rows.get(key) ?? []), cell])
+  }
+
+  return [...rows.values()].flatMap((row, rowIndex) => {
+    const cells = [...row].sort((a, b) => a.x - b.x)
+    const first = cells[0]!
+    const top = first.y
+    const bottom = first.y + first.height
+    const zigzag = (startOnTop: boolean) => {
+      let onTop = startOnTop
+      let d = `M ${first.x} ${onTop ? top : bottom}`
+
+      for (const cell of cells) {
+        const right = cell.x + cell.width
+        d += ` H ${right}`
+        onTop = !onTop
+        d += ` V ${onTop ? top : bottom}`
+      }
+
+      return d
+    }
+
+    return [
+      { key: `${rowIndex}-top`, d: zigzag(true) },
+      { key: `${rowIndex}-bottom`, d: zigzag(false) }
+    ]
+  })
+})
+
+function measureCells() {
+  const el = grid.value
+
+  if (!el) {
+    return
+  }
+
+  // Cells are positioned against the grid's padding box; the SVG covers its border box.
+  cellBoxes.value = Array.from(el.children)
+    .filter((cell): cell is HTMLElement => cell instanceof HTMLElement)
+    .map(cell => ({
+      id: cell.dataset.fact ?? '',
+      x: el.clientLeft + cell.offsetLeft,
+      y: el.clientTop + cell.offsetTop,
+      width: cell.offsetWidth,
+      height: cell.offsetHeight
+    }))
+}
 
 /** Splits "3.000 m²" / "Đến 50" / "Up to 50" around its one number; null when there is none. */
 function parseFigure(value: string): Figure | null {
@@ -111,6 +178,7 @@ function clearCounts() {
 let frame = 0
 let observer: IntersectionObserver | null = null
 let lineObserver: IntersectionObserver | null = null
+let resizeObserver: ResizeObserver | null = null
 
 function runCount(list: [string, Figure][]) {
   const start = performance.now() + COUNT_DELAY_MS
@@ -151,6 +219,12 @@ onMounted(() => {
   })
   lineObserver.observe(el)
 
+  resizeObserver = new ResizeObserver(measureCells)
+
+  if (grid.value) {
+    resizeObserver.observe(grid.value)
+  }
+
   const rect = el.getBoundingClientRect()
 
   if (nuxtApp.isHydrating && rect.top < window.innerHeight && rect.bottom > 0) {
@@ -180,6 +254,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   observer?.disconnect()
   lineObserver?.disconnect()
+  resizeObserver?.disconnect()
   cancelAnimationFrame(frame)
 })
 
@@ -191,6 +266,9 @@ watch(() => props.facts, () => {
     clearCounts()
     arrival.value = 'idle'
   }
+
+  // The cells' set or wrapping may change with the copy.
+  nextTick(measureCells)
 })
 </script>
 
@@ -215,23 +293,26 @@ watch(() => props.facts, () => {
            frame for long. -->
       <div class="facts-band__frame">
         <svg
-          v-if="contained"
+          v-if="cellBoxes.length"
           class="facts-band__beam"
           aria-hidden="true"
           focusable="false"
         >
-          <rect
-            v-for="layer in BEAM_LAYERS"
-            :key="layer"
-            :class="`facts-band__beam-${layer}`"
-            width="100%"
-            height="100%"
-            rx="4"
-            ry="4"
-            pathLength="100"
-          />
+          <g
+            v-for="beam in beamPaths"
+            :key="beam.key"
+          >
+            <path
+              v-for="layer in BEAM_LAYERS"
+              :key="layer"
+              :class="`facts-band__beam-${layer}`"
+              :d="beam.d"
+              pathLength="100"
+            />
+          </g>
         </svg>
         <dl
+          ref="grid"
           v-reveal
           :data-testid="gridTestid"
           :data-count="facts.length === 3 ? 3 : 4"
@@ -277,55 +358,13 @@ watch(() => props.facts, () => {
   position: relative;
 }
 
-/* The bronze line, full-bleed band: a 1px strip on the grid's top edge carrying one glint, a bronze segment about a third of the width that fades out at both ends.
-   The glint is a background moved by background-position, so it is clipped to the strip and
-   never spills past the frame; repainting a 1px strip costs next to nothing. Absent when the
-   line is not running. */
-.facts-band__grid::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 1px;
-  background-image: linear-gradient(90deg, transparent, var(--color-bronze-warm) 50%, transparent);
-  background-repeat: no-repeat;
-  background-size: 30% 100%;
-  background-position: -43% 0;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.facts-band--contained .facts-band__grid::before {
-  content: none;
-}
-
-/* One crossing takes 3.2s on the sheen's in-out curve (on-screen travel, not the front-loaded
-   editorial curve), then the edge rests for 1.3s before the next. -43% and 143% put a 30%-wide
-   glint just off the left and right ends. */
-[data-line='run'] .facts-band__grid::before {
-  animation: facts-line 4500ms cubic-bezier(0.45, 0, 0.25, 1) infinite;
-}
-
-@keyframes facts-line {
-  0% {
-    background-position: -43% 0;
-  }
-
-  71% {
-    background-position: 143% 0;
-  }
-
-  100% {
-    background-position: 143% 0;
-  }
-}
-
-/* The bronze line, contained frame: an SVG laid over the grid's border box, its rect on the
-   border's outer edge. The rect's path is normalised to 100 units (pathLength), so each layer is
-   one dash of N units and a gap of 100 - N, and shifting the dash offset by 100 is one lap at an
-   even speed whatever the frame's proportions. Linear timing: a loop has no start or end to ease
-   into. Each layer starts (24 - N) units back so the three dashes share a leading edge. */
+/* The bronze beams: an SVG laid over the grid's border box, the zigzag paths on the cells'
+   edges. Each path is normalised to 100 units (pathLength), so each layer is one dash of N units
+   and a gap long enough (200 - N) that only one dash is ever on the path. A run moves the dash
+   from just before the start (leading edge at 0, offset N) until the longest layer has left
+   the end (leading edge at 124, offset N - 124), at an even speed, then rests briefly before the
+   next. The two paths of a pair have the same length, so they cross every divider together.
+   Linear timing: a loop has no start or end to ease into. */
 .facts-band__frame {
   position: relative;
 }
@@ -340,26 +379,27 @@ watch(() => props.facts, () => {
   z-index: 1;
 }
 
-.facts-band__beam rect {
+.facts-band__beam path {
   fill: none;
   stroke: var(--color-bronze-warm);
   stroke-linecap: round;
+  stroke-linejoin: round;
   opacity: 0;
 }
 
 .facts-band__beam-tail {
   stroke-width: 2px;
-  stroke-dasharray: 24 76;
+  stroke-dasharray: 24 176;
 }
 
 .facts-band__beam-body {
   stroke-width: 2px;
-  stroke-dasharray: 14 86;
+  stroke-dasharray: 14 186;
 }
 
 .facts-band__beam-head {
   stroke-width: 2.5px;
-  stroke-dasharray: 6 94;
+  stroke-dasharray: 6 194;
 }
 
 [data-line='run'] .facts-band__beam-tail {
@@ -374,8 +414,8 @@ watch(() => props.facts, () => {
   opacity: 1;
 }
 
-[data-line='run'] .facts-band__beam rect {
-  animation-duration: 7s;
+[data-line='run'] .facts-band__beam path {
+  animation-duration: 5s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 }
@@ -393,31 +433,34 @@ watch(() => props.facts, () => {
 }
 
 @keyframes facts-beam-tail {
-  from {
-    stroke-dashoffset: 0;
+  0% {
+    stroke-dashoffset: 24;
   }
 
-  to {
+  88%,
+  100% {
     stroke-dashoffset: -100;
   }
 }
 
 @keyframes facts-beam-body {
-  from {
-    stroke-dashoffset: -10;
+  0% {
+    stroke-dashoffset: 14;
   }
 
-  to {
+  88%,
+  100% {
     stroke-dashoffset: -110;
   }
 }
 
 @keyframes facts-beam-head {
-  from {
-    stroke-dashoffset: -18;
+  0% {
+    stroke-dashoffset: 6;
   }
 
-  to {
+  88%,
+  100% {
     stroke-dashoffset: -118;
   }
 }
