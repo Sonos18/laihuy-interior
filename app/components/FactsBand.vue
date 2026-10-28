@@ -278,8 +278,11 @@ watch(() => props.facts, () => {
     arrival.value = 'idle'
   }
 
-  // The cells' set or wrapping may change with the copy.
-  nextTick(measureCells)
+  // The cells' set or wrapping may change with the copy. Only re-measured where the beams run
+  // (the resize observer exists only then): measuring under reduced motion would draw them.
+  if (resizeObserver) {
+    nextTick(measureCells)
+  }
 })
 </script>
 
