@@ -153,7 +153,8 @@ async function bandStyles(page: Page) {
     return {
       contained: band.classList.contains('facts-band--contained'),
       count: cells.length,
-      icons: band.querySelectorAll('svg, .iconify, [class*="i-lucide"]').length,
+      // The decorative bronze beam round the home frame is an aria-hidden SVG, not an icon.
+      icons: band.querySelectorAll('svg:not(.facts-band__beam), .iconify, [class*="i-lucide"]').length,
       band: pick(band, ['background-color', 'border-bottom-width', 'border-bottom-color', 'border-bottom-style']),
       grid: pick(band.querySelector('dl'), ['background-color', 'border-top-width', 'border-top-color', 'border-radius']),
       type: {

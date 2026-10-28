@@ -19,9 +19,10 @@
 //   (transparent while the count runs over it), so the cell never changes width and assistive
 //   technology always reads the final figure. A band the server already painted in view at
 //   hydration keeps its figures still (they must not blink to 0).
-// - The bronze line: a short bronze glint that keeps travelling along the top edge, left to
-//   right, for as long as the band is on screen (the one looping motion on the site, by owner
-//   decision). It runs only while the band intersects the viewport.
+// - The bronze line, the one looping motion on the site (owner decision), running only while
+//   the band is on screen. On the contained (home) frame it is a beam with a fading tail that
+//   travels round the frame's border at an even pace; the full-bleed band has no frame to go
+//   round, so there a short glint crosses its top edge instead.
 // Under reduced motion none of this runs.
 import type { Fact } from '~/utils/facts'
 
@@ -66,6 +67,9 @@ const arrival = ref<ArrivalState>('idle')
 const counts = ref<Record<string, string>>({})
 /** True while the band is on screen and motion is allowed: the bronze line runs. */
 const lineRunning = ref(false)
+
+/** The beam is three strokes of falling length, front-aligned, so it reads as a head and a tail. */
+const BEAM_LAYERS = ['tail', 'body', 'head'] as const
 
 /** Splits "3.000 m²" / "Đến 50" / "Up to 50" around its one number; null when there is none. */
 function parseFigure(value: string): Figure | null {
@@ -209,40 +213,59 @@ watch(() => props.facts, () => {
       <!-- The frame takes the band's one scroll reveal (as a fade while the cells rise in
            sequence, see "Arrival" below), so a client-side navigation never shows an empty
            frame for long. -->
-      <dl
-        v-reveal
-        :data-testid="gridTestid"
-        :data-count="facts.length === 3 ? 3 : 4"
-        class="facts-band__grid reveal"
-      >
-        <div
-          v-for="fact in facts"
-          :key="fact.id"
-          :data-testid="cellTestid"
-          :data-fact="fact.id"
-          :data-stat-id="fact.id"
-          class="facts-band__cell"
-          :style="{ '--fact-index': facts.indexOf(fact) }"
+      <div class="facts-band__frame">
+        <svg
+          v-if="contained"
+          class="facts-band__beam"
+          aria-hidden="true"
+          focusable="false"
         >
-          <dt class="facts-band__label home-eyebrow-text text-ink-600">
-            {{ fact.label }}
-          </dt>
-          <dd
-            class="facts-band__value font-display font-medium tracking-tight text-ink-950"
-            :class="fact.figure ? 'home-stat-value' : 'home-card-heading'"
+          <rect
+            v-for="layer in BEAM_LAYERS"
+            :key="layer"
+            :class="`facts-band__beam-${layer}`"
+            width="100%"
+            height="100%"
+            rx="4"
+            ry="4"
+            pathLength="100"
+          />
+        </svg>
+        <dl
+          v-reveal
+          :data-testid="gridTestid"
+          :data-count="facts.length === 3 ? 3 : 4"
+          class="facts-band__grid reveal"
+        >
+          <div
+            v-for="fact in facts"
+            :key="fact.id"
+            :data-testid="cellTestid"
+            :data-fact="fact.id"
+            :data-stat-id="fact.id"
+            class="facts-band__cell"
+            :style="{ '--fact-index': facts.indexOf(fact) }"
           >
-            <span
-              class="facts-band__text"
-              :class="{ 'is-counting': counts[fact.id] }"
-            >{{ fact.value }}</span>
-            <span
-              v-if="counts[fact.id]"
-              class="facts-band__count"
-              aria-hidden="true"
-            >{{ counts[fact.id] }}</span>
-          </dd>
-        </div>
-      </dl>
+            <dt class="facts-band__label home-eyebrow-text text-ink-600">
+              {{ fact.label }}
+            </dt>
+            <dd
+              class="facts-band__value font-display font-medium tracking-tight text-ink-950"
+              :class="fact.figure ? 'home-stat-value' : 'home-card-heading'"
+            >
+              <span
+                class="facts-band__text"
+                :class="{ 'is-counting': counts[fact.id] }"
+              >{{ fact.value }}</span>
+              <span
+                v-if="counts[fact.id]"
+                class="facts-band__count"
+                aria-hidden="true"
+              >{{ counts[fact.id] }}</span>
+            </dd>
+          </div>
+        </dl>
+      </div>
     </div>
   </div>
 </template>
@@ -254,8 +277,7 @@ watch(() => props.facts, () => {
   position: relative;
 }
 
-/* The bronze line: a 1px strip on the grid's top edge (over the frame's border when contained)
-   carrying one glint, a bronze segment about a third of the width that fades out at both ends.
+/* The bronze line, full-bleed band: a 1px strip on the grid's top edge carrying one glint, a bronze segment about a third of the width that fades out at both ends.
    The glint is a background moved by background-position, so it is clipped to the strip and
    never spills past the frame; repainting a 1px strip costs next to nothing. Absent when the
    line is not running. */
@@ -275,9 +297,7 @@ watch(() => props.facts, () => {
 }
 
 .facts-band--contained .facts-band__grid::before {
-  top: -1px;
-  right: -1px;
-  left: -1px;
+  content: none;
 }
 
 /* One crossing takes 3.2s on the sheen's in-out curve (on-screen travel, not the front-loaded
@@ -298,6 +318,107 @@ watch(() => props.facts, () => {
 
   100% {
     background-position: 143% 0;
+  }
+}
+
+/* The bronze line, contained frame: an SVG laid over the grid's border box, its rect on the
+   border's outer edge. The rect's path is normalised to 100 units (pathLength), so each layer is
+   one dash of N units and a gap of 100 - N, and shifting the dash offset by 100 is one lap at an
+   even speed whatever the frame's proportions. Linear timing: a loop has no start or end to ease
+   into. Each layer starts (24 - N) units back so the three dashes share a leading edge. */
+.facts-band__frame {
+  position: relative;
+}
+
+.facts-band__beam {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.facts-band__beam rect {
+  fill: none;
+  stroke: var(--color-bronze-warm);
+  stroke-linecap: round;
+  opacity: 0;
+}
+
+.facts-band__beam-tail {
+  stroke-width: 2px;
+  stroke-dasharray: 24 76;
+}
+
+.facts-band__beam-body {
+  stroke-width: 2px;
+  stroke-dasharray: 14 86;
+}
+
+.facts-band__beam-head {
+  stroke-width: 2.5px;
+  stroke-dasharray: 6 94;
+}
+
+[data-line='run'] .facts-band__beam-tail {
+  opacity: 0.3;
+}
+
+[data-line='run'] .facts-band__beam-body {
+  opacity: 0.65;
+}
+
+[data-line='run'] .facts-band__beam-head {
+  opacity: 1;
+}
+
+[data-line='run'] .facts-band__beam rect {
+  animation-duration: 7s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+[data-line='run'] .facts-band__beam-tail {
+  animation-name: facts-beam-tail;
+}
+
+[data-line='run'] .facts-band__beam-body {
+  animation-name: facts-beam-body;
+}
+
+[data-line='run'] .facts-band__beam-head {
+  animation-name: facts-beam-head;
+}
+
+@keyframes facts-beam-tail {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+@keyframes facts-beam-body {
+  from {
+    stroke-dashoffset: -10;
+  }
+
+  to {
+    stroke-dashoffset: -110;
+  }
+}
+
+@keyframes facts-beam-head {
+  from {
+    stroke-dashoffset: -18;
+  }
+
+  to {
+    stroke-dashoffset: -118;
   }
 }
 
