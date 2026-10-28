@@ -13,6 +13,8 @@ defineProps<{
 }>()
 
 const { t } = useLanguage()
+
+const COUNTED_FACTS = new Set(['area', 'rooms'])
 </script>
 
 <template>
@@ -111,7 +113,11 @@ const { t } = useLanguage()
                 />
                 {{ fact.label }}
               </dt>
-              <dd class="home-card-heading mt-3 text-ink-900">
+              <!-- Only the figures count (DESIGN.md "Motion", Count); a year, scope or place stays. -->
+              <dd
+                v-count-up="COUNTED_FACTS.has(fact.key)"
+                class="home-card-heading mt-3 text-ink-900"
+              >
                 {{ fact.value }}
               </dd>
             </div>

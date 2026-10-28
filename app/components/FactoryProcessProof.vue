@@ -55,6 +55,7 @@ const sequence = (index: number) => String(index + 1).padStart(2, '0')
           img-class="object-center transition-transform duration-[var(--dur-image)] ease-[var(--ease-editorial)] group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
         />
         <div
+          v-trace
           data-testid="factory-process-groups"
           class="grid gap-4 md:grid-cols-2"
         >
@@ -66,6 +67,7 @@ const sequence = (index: number) => String(index + 1).padStart(2, '0')
             class="reveal flex flex-col card p-6"
           >
             <span
+              data-trace-number
               class="home-eyebrow-text block text-wood-600"
               aria-hidden="true"
             >
@@ -77,7 +79,10 @@ const sequence = (index: number) => String(index + 1).padStart(2, '0')
             <p class="mt-3 text-base leading-[1.7] text-ink-600">
               {{ t(group.benefit) }}
             </p>
-            <p class="mt-auto border-t border-[var(--rule-light)] pt-4 text-base font-medium leading-[1.7] text-ink-800">
+            <p
+              data-trace-rule
+              class="mt-auto border-t border-[var(--rule-light)] pt-4 text-base font-medium leading-[1.7] text-ink-800"
+            >
               {{ group.machines.map(machine => t(machine)).join(' · ') }}
             </p>
           </article>

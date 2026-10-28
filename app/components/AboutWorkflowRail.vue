@@ -46,6 +46,7 @@ const sequence = (index: number) => String(index + 1).padStart(2, '0')
         <!-- The six stages are a real order, so each keeps a Label-sized marker; the steps are
              tone-on-tone hairline cells on the Sawdust band rather than cards. -->
         <ol
+          v-trace
           role="list"
           data-testid="about-workflow-grid"
           class="grid border-l border-t border-ink-200 md:grid-cols-2"
@@ -58,6 +59,7 @@ const sequence = (index: number) => String(index + 1).padStart(2, '0')
             class="reveal border-b border-r border-ink-200 p-6 md:p-8"
           >
             <span
+              data-trace-number
               class="home-eyebrow-text block text-wood-600"
               aria-hidden="true"
             >

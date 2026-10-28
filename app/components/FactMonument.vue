@@ -23,7 +23,10 @@ defineProps<{
       <dt class="home-eyebrow-text text-ink-600">
         {{ label }}
       </dt>
-      <dd class="monument-value mt-4 text-ink-950">
+      <dd
+        v-count-up
+        class="monument-value mt-4 text-ink-950"
+      >
         {{ value }}
       </dd>
     </dl>
