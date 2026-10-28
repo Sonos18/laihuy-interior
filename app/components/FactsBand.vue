@@ -13,13 +13,16 @@
 // 1024px; three stack below 768px and run three across from 768px (a 2 + 1 block would orphan one
 // cell). The test ids are props so each route keeps the hooks its specs already address.
 //
-// Arrival (DESIGN.md "Facts Band", owner 2026-10-28): once, when the band scrolls into view, a
-// 1px bronze line crosses the top edge left to right, the cells follow it in reading order, and
-// each figure counts up from 0 to its value. The real value stays in the DOM the whole time
-// (transparent while the count runs over it), so the cell never changes width and assistive
-// technology always reads the final figure. A band the server already painted in view at
-// hydration keeps its figures still (they must not blink to 0) and only takes the line. Under
-// reduced motion nothing here runs.
+// Motion (DESIGN.md "Facts Band", owner 2026-10-28):
+// - Arrival, once, when the band scrolls into view: the cells rise in reading order and each
+//   figure counts up from 0 to its value. The real value stays in the DOM the whole time
+//   (transparent while the count runs over it), so the cell never changes width and assistive
+//   technology always reads the final figure. A band the server already painted in view at
+//   hydration keeps its figures still (they must not blink to 0).
+// - The bronze line: a short bronze glint that keeps travelling along the top edge, left to
+//   right, for as long as the band is on screen (the one looping motion on the site, by owner
+//   decision). It runs only while the band intersects the viewport.
+// Under reduced motion none of this runs.
 import type { Fact } from '~/utils/facts'
 
 const props = withDefaults(defineProps<{
@@ -43,18 +46,17 @@ const props = withDefaults(defineProps<{
 })
 
 /** How long a figure takes to count up to its value. */
-const COUNT_MS = 1400
+const COUNT_MS = 2400
 
-/** Lead before the count starts, so the line is already moving when the digits do. */
+/** Lead before the count starts, so the first cell has begun to rise when the digits move. */
 const COUNT_DELAY_MS = 120
 
 /**
- * `idle`: at rest, nothing animates (SSR, reduced motion, or after the arrival).
+ * `idle`: no arrival (SSR, reduced motion, painted in view at hydration, or after the arrival).
  * `armed`: below the fold, cells held hidden and figures parked at 0 until the band arrives.
- * `play`: the line, the cell sequence and the count are running.
- * `line`: painted in view at hydration, so only the line plays.
+ * `play`: the cell sequence and the count are running.
  */
-type ArrivalState = 'idle' | 'armed' | 'play' | 'line'
+type ArrivalState = 'idle' | 'armed' | 'play'
 
 type Figure = { prefix: string, suffix: string, target: number, separator: string }
 
@@ -62,6 +64,8 @@ const nuxtApp = useNuxtApp()
 const band = ref<HTMLElement>()
 const arrival = ref<ArrivalState>('idle')
 const counts = ref<Record<string, string>>({})
+/** True while the band is on screen and motion is allowed: the bronze line runs. */
+const lineRunning = ref(false)
 
 /** Splits "3.000 m²" / "Đến 50" / "Up to 50" around its one number; null when there is none. */
 function parseFigure(value: string): Figure | null {
@@ -102,14 +106,15 @@ function clearCounts() {
 
 let frame = 0
 let observer: IntersectionObserver | null = null
+let lineObserver: IntersectionObserver | null = null
 
 function runCount(list: [string, Figure][]) {
   const start = performance.now() + COUNT_DELAY_MS
 
   const tick = (now: number) => {
     const t = Math.min(1, Math.max(0, (now - start) / COUNT_MS))
-    // Ease-out quart: quick through the small numbers, settling slowly onto the real one.
-    const eased = 1 - (1 - t) ** 4
+    // Ease-out cubic: brisk through the small numbers, settling slowly onto the real one.
+    const eased = 1 - (1 - t) ** 3
 
     counts.value = Object.fromEntries(
       list.map(([id, figure]) => [id, formatFigure(figure, Math.round(figure.target * eased))])
@@ -133,10 +138,18 @@ onMounted(() => {
     return
   }
 
+  lineObserver = new IntersectionObserver((entries) => {
+    const entry = entries[entries.length - 1]
+
+    if (entry) {
+      lineRunning.value = entry.isIntersecting
+    }
+  })
+  lineObserver.observe(el)
+
   const rect = el.getBoundingClientRect()
 
   if (nuxtApp.isHydrating && rect.top < window.innerHeight && rect.bottom > 0) {
-    arrival.value = 'line'
     return
   }
 
@@ -146,7 +159,7 @@ onMounted(() => {
 
   arrival.value = 'armed'
 
-  // The same trigger as the band's own scroll reveal, so frame, line and figures start together.
+  // The same trigger as the band's own scroll reveal, so frame, cells and figures start together.
   observer = new IntersectionObserver((entries) => {
     if (!entries.some(entry => entry.isIntersecting)) {
       return
@@ -162,6 +175,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   observer?.disconnect()
+  lineObserver?.disconnect()
   cancelAnimationFrame(frame)
 })
 
@@ -174,13 +188,6 @@ watch(() => props.facts, () => {
     arrival.value = 'idle'
   }
 })
-
-/** The line-only arrival ends with the line itself (the grid's own reveal did not run). */
-function onLineEnd(event: AnimationEvent) {
-  if (event.pseudoElement === '::before' && arrival.value === 'line') {
-    arrival.value = 'idle'
-  }
-}
 </script>
 
 <template>
@@ -189,6 +196,7 @@ function onLineEnd(event: AnimationEvent) {
     ref="band"
     data-facts-band
     :data-arrival="arrival"
+    :data-line="lineRunning ? 'run' : undefined"
     :data-testid="testid"
     class="facts-band scroll-mt-[calc(var(--header-h)+1rem)] text-ink-950"
     :class="[
@@ -198,15 +206,14 @@ function onLineEnd(event: AnimationEvent) {
     ]"
   >
     <div class="shell">
-      <!-- The band reveals as ONE unit (DESIGN.md "Motion"): its hairlines and its figures arrive
-           together, so a client-side navigation never shows an empty frame first. The cells do
-           not stagger individually. -->
+      <!-- The frame takes the band's one scroll reveal (as a fade while the cells rise in
+           sequence, see "Arrival" below), so a client-side navigation never shows an empty
+           frame for long. -->
       <dl
         v-reveal
         :data-testid="gridTestid"
         :data-count="facts.length === 3 ? 3 : 4"
         class="facts-band__grid reveal"
-        @animationend.self="onLineEnd"
       >
         <div
           v-for="fact in facts"
@@ -247,8 +254,11 @@ function onLineEnd(event: AnimationEvent) {
   position: relative;
 }
 
-/* The bronze line: a 1px clip of a bronze fill on the grid's top edge (over the frame's border
-   when contained), absent at rest and before and after its one crossing. */
+/* The bronze line: a 1px strip on the grid's top edge (over the frame's border when contained)
+   carrying one glint, a bronze segment about a third of the width that fades out at both ends.
+   The glint is a background moved by background-position, so it is clipped to the strip and
+   never spills past the frame; repainting a 1px strip costs next to nothing. Absent when the
+   line is not running. */
 .facts-band__grid::before {
   content: '';
   position: absolute;
@@ -256,10 +266,10 @@ function onLineEnd(event: AnimationEvent) {
   right: 0;
   left: 0;
   height: 1px;
-  background-color: var(--color-bronze-warm);
-  opacity: 0;
-  transform: scaleX(0);
-  transform-origin: left;
+  background-image: linear-gradient(90deg, transparent, var(--color-bronze-warm) 50%, transparent);
+  background-repeat: no-repeat;
+  background-size: 30% 100%;
+  background-position: -43% 0;
   pointer-events: none;
   z-index: 1;
 }
@@ -270,32 +280,29 @@ function onLineEnd(event: AnimationEvent) {
   left: -1px;
 }
 
-/* Travel across the screen: the in-out curve of the button sheen, never the front-loaded
-   editorial curve. It holds at full width for a beat, then fades. */
-[data-arrival='play'] .facts-band__grid::before,
-[data-arrival='line'] .facts-band__grid::before {
-  animation: facts-line 1300ms cubic-bezier(0.45, 0, 0.25, 1) 80ms both;
+/* One crossing takes 3.2s on the sheen's in-out curve (on-screen travel, not the front-loaded
+   editorial curve), then the edge rests for 1.3s before the next. -43% and 143% put a 30%-wide
+   glint just off the left and right ends. */
+[data-line='run'] .facts-band__grid::before {
+  animation: facts-line 4500ms cubic-bezier(0.45, 0, 0.25, 1) infinite;
 }
 
 @keyframes facts-line {
   0% {
-    opacity: 1;
-    transform: scaleX(0);
+    background-position: -43% 0;
   }
 
-  65% {
-    opacity: 1;
-    transform: scaleX(1);
+  71% {
+    background-position: 143% 0;
   }
 
   100% {
-    opacity: 0;
-    transform: scaleX(1);
+    background-position: 143% 0;
   }
 }
 
-/* The cells follow the line in reading order, so the frame itself only fades in (one rise per
-   role: the cells rise, the frame does not). */
+/* The cells arrive in reading order, so the frame itself only fades in (one rise per role: the
+   cells rise, the frame does not). */
 [data-arrival='armed'] .facts-band__cell > * {
   opacity: 0;
 }
