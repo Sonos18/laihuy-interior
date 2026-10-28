@@ -29,6 +29,12 @@ const tileClass = (index: number) => {
 const label = (index: number) =>
   `${t(uiText.galleryTile.enlarge)} · ${t(uiText.galleryTile.image)} ${index + 1} / ${props.images.length}`
 
+// Under reduced motion the group runs without CSS, so a filter swaps the tiles in the same task.
+const reflow = ref(true)
+onMounted(() => {
+  reflow.value = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+})
+
 // A leaving tile is lifted out of the grid at the cell it held, so the others move at once.
 function holdLeavingTile(el: Element) {
   if (!(el instanceof HTMLElement)) return
@@ -46,6 +52,7 @@ function holdLeavingTile(el: Element) {
   <TransitionGroup
     tag="ul"
     name="archive"
+    :css="reflow"
     data-gallery-mosaic
     class="project-mosaic"
     :data-gallery-count="images.length"
