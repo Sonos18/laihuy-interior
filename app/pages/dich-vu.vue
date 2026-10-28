@@ -177,7 +177,7 @@ usePageSeo({
           <article
             v-for="item in servicesPageContent.documents.items"
             :key="item.id"
-            v-reveal.item
+            v-reveal.item.rule
             class="reveal flex gap-5 border-b border-[var(--rule-light)] py-7 first:border-t"
           >
             <Icon
@@ -225,7 +225,7 @@ usePageSeo({
             <article
               v-for="item in servicesPageContent.proof.items"
               :key="item.id"
-              v-reveal.item
+              v-reveal.item.rule
               class="reveal border-t border-ink-200 pt-6"
             >
               <p class="home-eyebrow-text text-wood-600">
@@ -255,7 +255,7 @@ usePageSeo({
         </div>
 
         <MediaImage
-          v-reveal.image
+          v-reveal.curtain
           :image="proofImage"
           sizes="sm:100vw md:50vw"
           class="reveal aspect-[4/5] min-h-[32rem] rounded-[4px] bg-ink-100"

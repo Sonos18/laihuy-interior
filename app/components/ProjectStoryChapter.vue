@@ -72,9 +72,10 @@ const { t } = useLanguage()
             class="mt-8 overflow-hidden rounded-[4px]"
           >
             <MediaImage
+              v-reveal.curtain
               :image="leadImage"
               preset="card"
-              class="aspect-[16/10] w-full"
+              class="reveal aspect-[16/10] w-full"
               img-class="rounded-[4px]"
             />
           </figure>

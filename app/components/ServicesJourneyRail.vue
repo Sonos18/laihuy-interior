@@ -91,9 +91,10 @@ const mediaClass = (index: number) => index % 2 === 1
         </div>
 
         <MediaImage
+          v-reveal.curtain
           :image="images[index]!"
           sizes="sm:100vw xl:55vw"
-          class="aspect-[4/3] rounded-[4px] bg-ink-100 xl:aspect-[16/10]"
+          class="reveal aspect-[4/3] rounded-[4px] bg-ink-100 xl:aspect-[16/10]"
           :class="mediaClass(index)"
           img-class="object-center"
         />

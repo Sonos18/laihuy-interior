@@ -250,6 +250,8 @@ The system is flat at rest. Depth comes from tone (paper white on linen, raw sil
 
 Motion is slow, editorial and one-shot: things arrive once, settle, and stay still. Nothing loops. Fewer things move, and each move has a job: a heading arrives as one thought, a grid arrives as one row of cards, a photograph arrives by developing and never by sliding.
 
+Motion is assigned by role, not by section (owner, 2026-10-28): a hero headline, a row's hairline, a large standalone photograph, a figure, a sequence of steps and a card each have one motion below, and any section built later that has that role takes that motion without being asked for it.
+
 ### Curves and durations
 - **Editorial** `cubic-bezier(0.22, 0.61, 0.36, 1)` (`--ease-editorial`): entrances and state changes.
 - **Exit** `cubic-bezier(0.4, 0, 1, 1)` (`--ease-exit`): anything leaving.
@@ -261,7 +263,10 @@ Motion is slow, editorial and one-shot: things arrive once, settle, and stay sti
   - **Section head** (`.head`): the eyebrow, headline and lead of one section reveal as one unit. They share a parent, trigger together (when any one of them scrolls into view, all of them do) and carry no delay. Opacity 0 to 1 with a 16px rise.
   - **Item** (`.item`): a card, row or cell of a grid or list. Only the first row staggers, in 70ms steps in reading order, capped at 320ms. Any later row reveals as it scrolls into view with no `animation-delay`, so a vertical list has no stagger beyond its first element. 16px rise.
   - **Image** (`.image`): a photograph, or a card whose substance is a photograph. Opacity only (0 to 1 over 600ms), never a translate: photographs do not slide. It composes with `.item` (first-row stagger) and carries no rise.
+  - **Curtain** (`.curtain`): a large photograph that stands alone (a service image, a factory panorama, a breath photograph, a story image), never a card in a grid or a thumbnail. Instead of fading, its frame opens left to right with a `clip-path` wipe over 1.1s on the sheen's in-out curve (`cubic-bezier(0.45, 0, 0.25, 1)`, `--dur-curtain`), and a 1px Workshop Bronze edge rides the wipe and fades as it lands, the same edge as the material story seam. The photograph itself does not move: the frame opens, the picture stays still. No delay, no rise.
+  - **Rule** (`.rule`, composes with `.item`): a list row or cell whose separator is a hairline. As it reveals, a 2px Workshop Bronze line (one step weightier than the hairline it covers) traces the hairline left to right over 900ms on the in-out curve, holds, and fades back to the Plaster Line over 400ms; the hairline is there throughout. It traces the row's bottom border when it has one, otherwise its top border, and takes the row's stagger.
   - **Block** (no modifier): any other single element (a button row, a filter bar, a Monument figure). 16px rise, no delay. The hero copy is the one place a numeric delay survives (`v-reveal="80"`, 0 to 240ms): the kicker, headline, lead and actions of a hero are one authored sequence.
+- **Hero headline.** Every hero headline (HomeHero, AppHero, project detail) arrives word by word: each word rises from behind its own mask (`translateY(110%)` to rest, 900ms, editorial curve), 120ms after paint plus 45ms per word in reading order, capped at 540ms, so the words read in order like lines being set. It is CSS from the first frame, so the server-painted headline is never shown and then hidden; the heading's own opacity never drops, and the full sentence is one accessible name. The hero kicker's 20px bronze rule draws out from the left over 700ms at the same moment. The headline carries no scroll reveal of its own.
 - **Hero image.** One-shot settle from `scale(1.04)` to `1` over 1.6s on the editorial curve. If the image arrives after the page is interactive, it is hidden only while undecoded and then fades in over 360ms, with the settle starting at that moment. No looping Ken Burns.
 - **Image arrival.** Every other photograph (`MediaImage`) fades in over `--dur-arrive` (400ms, editorial) when its bytes land, as a one-shot keyframe from opacity 0, on top of a static placeholder. It is hidden only while it has no decoded data at hydration or mount: an image that is already complete, or already partly decoded, is never hidden (a painted frame must not blink), and a failed image is released at once. The placeholder is released on the same curve and duration. Hover transitions on the image are untouched.
 - **Image hover zoom.** Scales to 1.02-1.03 over `--dur-image` on the editorial curve. An arrow nudge (a 2-4px translate on an icon) uses `--dur-hover` on the editorial curve.
@@ -278,9 +283,9 @@ Motion is slow, editorial and one-shot: things arrive once, settle, and stay sti
 
 **The Rest-State Rule.** No `will-change` is held at rest; promote a layer only while it animates.
 
-**The Few-Movers Rule.** A section never has more than one thing moving per role at once: one head, one first row, and photographs that only fade. Do not stagger what is already a row, and do not rise what is a photograph.
+**The Few-Movers Rule.** A section never has more than one thing moving per role at once: one head, one first row, and photographs that only fade or open as a curtain. Do not stagger what is already a row, and do not rise what is a photograph.
 
-**The Reduced-Motion Rule.** Under `prefers-reduced-motion: reduce` the scroll reveal, hero settle and fade, image arrival fade, page transition, copy-swap motion, carousel autoplay, Facts Band arrival and line, capabilities trace, button sheen and press-scale are all off, and the material story uses its static layout. Content is shown immediately, never hidden waiting for an animation.
+**The Reduced-Motion Rule.** Under `prefers-reduced-motion: reduce` the scroll reveal (curtain and rule trace included), hero headline words and kicker rule, hero settle and fade, image arrival fade, page transition, copy-swap motion, carousel autoplay, Facts Band arrival and line, capabilities trace, button sheen and press-scale are all off, and the material story uses its static layout. Content is shown immediately, never hidden waiting for an animation.
 
 ## Shapes
 

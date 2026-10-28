@@ -37,11 +37,9 @@ const { t } = useLanguage()
         >
           {{ t(homePageContent.hero.eyebrow) }}
         </p>
-        <h1
-          v-reveal="80"
-          class="home-hero__title home-display-title reveal font-display text-white"
-        >
-          {{ t(homePageContent.hero.title) }}
+        <!-- The headline arrives word by word in CSS (HeroWords), so it carries no scroll reveal. -->
+        <h1 class="home-hero__title home-display-title font-display text-white">
+          <HeroWords :text="t(homePageContent.hero.title)" />
         </h1>
         <p
           v-reveal="160"

@@ -15,7 +15,7 @@ defineProps<{ image: MediaImage }>()
     class="breath"
   >
     <MediaImage
-      v-reveal.image
+      v-reveal.curtain
       :image="image"
       preset="full"
       class="breath__frame reveal bg-ink-100"
