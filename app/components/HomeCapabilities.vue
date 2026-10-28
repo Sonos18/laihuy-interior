@@ -113,7 +113,8 @@ onBeforeUnmount(() => {
    only while the list is on screen (`data-trace`, set from the script) and never under reduced
    motion. Below 768px the cells stack, there are no dividers, and each top rule traces in turn.
 
-   Each line is a 1px strip scaled from 0 (transform only, so it never touches layout); the
+   Each line is a 2px strip (owner, 2026-10-28: one step weightier than the 1px hairline it
+   covers, so the bronze reads clearly) scaled from 0 (transform only, so it never touches layout); the
    cell's slot picks which fifth of the pass it draws in, and the fade is shared so every traced
    line clears in the same frame. */
 .home-capabilities__trace {
@@ -134,19 +135,21 @@ onBeforeUnmount(() => {
   top: 0;
   right: 0;
   left: 0;
-  height: 1px;
+  height: 2px;
   scale: 0 1;
   transform-origin: left;
 }
 
-/* The right-hand divider of a cell is the next cell's left border, one pixel past this cell. */
+/* The right-hand divider of a cell is the next cell's left border, one pixel past this cell;
+   the 2px strip covers it and the pixel inside this cell, as the top strip covers the rule and
+   the pixel below it. */
 .home-capabilities__trace::after {
   --cap-from: 1 0;
   display: none;
   top: 0;
   right: -1px;
   bottom: 0;
-  width: 1px;
+  width: 2px;
   scale: 1 0;
   transform-origin: bottom;
 }
