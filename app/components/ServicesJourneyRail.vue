@@ -34,7 +34,7 @@ const mediaClass = (index: number) => index % 2 === 1
   <section
     id="delivery-journey"
     data-services-chapter="journey"
-    class="section-y scroll-mt-[calc(var(--header-h)+1rem)] border-t border-[var(--rule-light)] bg-[var(--color-ivory)]"
+    class="section-y scroll-mt-[calc(var(--header-anchor)+1rem)] border-t border-[var(--rule-light)] bg-[var(--color-ivory)]"
   >
     <div class="sr-only">
       <h2 class="home-section-heading">
@@ -55,7 +55,7 @@ const mediaClass = (index: number) => index % 2 === 1
         :key="service.id"
         v-reveal.item.image
         data-testid="services-core-stage"
-        class="reveal grid scroll-mt-[calc(var(--header-h)+1rem)] grid-cols-1 gap-8 xl:items-center xl:gap-16"
+        class="reveal grid scroll-mt-[calc(var(--header-anchor)+1rem)] grid-cols-1 gap-8 xl:items-center xl:gap-16"
         :class="stageGridClass(index)"
       >
         <div

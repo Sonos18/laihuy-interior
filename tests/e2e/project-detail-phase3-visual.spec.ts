@@ -1307,7 +1307,7 @@ for (const locale of ['vi', 'en'] as const) {
           expectedWalnut,
           borderBottomColor: getComputedStyle(el).borderBottomColor,
           background: getComputedStyle(el).backgroundColor,
-          icons: el.querySelectorAll('svg, .iconify, [class*="i-lucide"]').length,
+          icons: el.querySelectorAll('svg:not(.facts-band__beam), .iconify, [class*="i-lucide"]').length,
           valueColor: getComputedStyle(el.querySelector('dd')!).color,
           labelColor: getComputedStyle(el.querySelector('dt')!).color
         }

@@ -294,7 +294,7 @@ watch(() => props.facts, () => {
     :data-arrival="arrival"
     :data-line="lineRunning ? 'run' : undefined"
     :data-testid="testid"
-    class="facts-band scroll-mt-[calc(var(--header-h)+1rem)] text-ink-950"
+    class="facts-band scroll-mt-[calc(var(--header-anchor)+1rem)] text-ink-950"
     :class="[
       contained
         ? 'facts-band--contained'

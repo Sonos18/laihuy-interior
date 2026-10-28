@@ -15,7 +15,7 @@ const sequence = (index: number) => String(index + 1).padStart(2, '0')
   <section
     id="production-workflow"
     data-about-chapter="workflow"
-    class="section-y scroll-mt-[calc(var(--header-h)+1rem)] border-t border-[var(--rule-light)] bg-wood-100 text-ink-950"
+    class="section-y scroll-mt-[calc(var(--header-anchor)+1rem)] border-t border-[var(--rule-light)] bg-wood-100 text-ink-950"
   >
     <div class="shell">
       <div

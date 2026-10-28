@@ -345,7 +345,7 @@ usePageSeo({
           <div
             id="cach-gui-ho-so"
             data-testid="contact-send-docs"
-            class="card scroll-mt-[calc(var(--header-h)+1rem)] p-6 md:p-8"
+            class="card scroll-mt-[calc(var(--header-anchor)+1rem)] p-6 md:p-8"
           >
             <h2 class="home-section-heading text-ink-950">
               {{ t(uiText.contactPage.sendDocs.heading) }}
@@ -400,7 +400,7 @@ usePageSeo({
               id="contact-form"
               ref="formEl"
               data-testid="contact-form"
-              class="mt-8 scroll-mt-[calc(var(--header-h)+1rem)] space-y-5"
+              class="mt-8 scroll-mt-[calc(var(--header-anchor)+1rem)] space-y-5"
               aria-describedby="form-note"
               novalidate
               @submit.prevent="submitForm"
