@@ -1184,6 +1184,90 @@ test.describe('motion contract', () => {
     await waitForHydration(page)
     await expect(page.locator('.trace-host')).toHaveCount(0)
   })
+
+  test('MOTION-24 a card draws its top edge in bronze and nudges its title on hover', async ({ page }) => {
+    await page.goto(url('/tuyen-dung'), { waitUntil: 'load' })
+    await waitForHydration(page)
+
+    const card = page.locator('main .card-hover').first()
+    const title = card.locator('.home-card-heading')
+    const edge = () => card.evaluate((el) => {
+      const before = getComputedStyle(el, '::before')
+      return { transform: before.transform, height: before.height, color: before.backgroundColor }
+    })
+    expect(await edge()).toEqual({ transform: 'matrix(0, 0, 0, 1, 0, 0)', height: '2px', color: 'rgb(184, 135, 90)' })
+
+    await card.scrollIntoViewIfNeeded()
+    await card.hover()
+    await expect.poll(async () => (await edge()).transform).toBe('matrix(1, 0, 0, 1, 0, 0)')
+    await expect.poll(() => title.evaluate(el => getComputedStyle(el).transform)).toBe('matrix(1, 0, 0, 1, 4, 0)')
+  })
+
+  test('MOTION-25 the project page bar grows with the part already read', async ({ page }) => {
+    await page.goto(url('/du-an/khach-san-eo-gio'), { waitUntil: 'load' })
+    await waitForHydration(page)
+
+    const bar = page.locator('[data-project-progress]')
+    const scale = () => bar.evaluate(el => new DOMMatrix(getComputedStyle(el).transform).a)
+    expect(await scale()).toBe(0)
+
+    await page.evaluate(() => {
+      const story = document.getElementById('story')!
+      window.scrollTo(0, story.getBoundingClientRect().top + scrollY + 1500)
+    })
+    await expect.poll(scale).toBeGreaterThan(0)
+    expect(await scale()).toBeLessThan(1)
+
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
+    await expect.poll(scale).toBe(1)
+    expect(await bar.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(184, 135, 90)')
+  })
+
+  test('MOTION-26 the archive filter reflows the grid: drop fades, stayers glide', async ({ page }) => {
+    await page.goto(url('/du-an'), { waitUntil: 'load' })
+    await waitForHydration(page)
+
+    const grid = page.locator('[data-testid="projects-grid"]')
+    await grid.scrollIntoViewIfNeeded()
+    await page.evaluate(() => {
+      const seen = { leave: false, move: false }
+      ;(window as unknown as { __reflow: typeof seen }).__reflow = seen
+      new MutationObserver(() => {
+        if (document.querySelector('[data-testid="projects-grid"] > .archive-leave-active')) seen.leave = true
+        if (document.querySelector('[data-testid="projects-grid"] > .archive-move')) seen.move = true
+      }).observe(document.querySelector('[data-testid="projects-grid"]')!, { subtree: true, attributes: true, attributeFilter: ['class'] })
+    })
+
+    await page.locator('main button[aria-pressed]').nth(1).click()
+    await expect.poll(() => page.evaluate(() => (window as unknown as { __reflow: { leave: boolean } }).__reflow.leave)).toBe(true)
+    const leaving = grid.locator('> .archive-leave-active').first()
+    if (await leaving.count()) {
+      expect(await leaving.evaluate(el => getComputedStyle(el).position), 'a leaving card is out of the flow').toBe('absolute')
+    }
+    await expect(grid.locator('> .archive-leave-active')).toHaveCount(0)
+    await expect(grid.locator('> .archive-move')).toHaveCount(0)
+  })
+
+  test('MOTION-26b the archive filter swaps at once under reduced motion', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.goto(url('/du-an'), { waitUntil: 'load' })
+    await waitForHydration(page)
+    const before = await page.locator('[data-testid="projects-grid"] > a').count()
+    await page.locator('main button[aria-pressed]').nth(1).click()
+    const after = await page.locator('[data-testid="projects-grid"] > a').count()
+    expect(after, 'the dropped cards are gone in the same task').toBeLessThan(before)
+  })
+
+  test('MOTION-27 a focused contact field draws a bronze line from the left', async ({ page }) => {
+    await page.goto(url('/lien-he'), { waitUntil: 'load' })
+    await waitForHydration(page)
+
+    const field = page.locator('#contact-name')
+    expect(await field.evaluate(el => getComputedStyle(el).backgroundSize)).toBe('0px 2px')
+    await field.focus()
+    await expect.poll(() => field.evaluate(el => getComputedStyle(el).backgroundSize)).toBe('100% 2px')
+    expect(await field.evaluate(el => getComputedStyle(el).transitionProperty)).toContain('background-size')
+  })
 })
 
 async function openDrawer(page: Page): Promise<void> {

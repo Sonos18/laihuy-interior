@@ -2044,6 +2044,192 @@
     }
   }
 
+  /* Card hover (DESIGN.md "Motion", Card): every link card, and the static cards that opt in with
+     `.card-hover`, answers the pointer the way the home capabilities do. A 2px bronze line draws
+     the card's top edge from the left (500ms editorial, back in 240ms on the exit curve) and the
+     card's title nudges 4px right. Pointer devices only, where :hover does not stick after a tap;
+     a link card also answers keyboard focus. Under reduced motion the line swaps instantly and
+     nothing nudges. */
+  .card-link,
+  .card-hover {
+    position: relative;
+  }
+
+  .card-link::before,
+  .card-hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    height: 2px;
+    pointer-events: none;
+    background: var(--bronze);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-hover) var(--ease-exit);
+  }
+
+  .card-link .home-card-heading,
+  .card-hover .home-card-heading {
+    transition: transform var(--dur-hover) var(--ease-editorial);
+  }
+
+  .card-link:focus-visible::before,
+  .card-link:has(:focus-visible)::before,
+  .card-hover:focus-visible::before {
+    transform: scaleX(1);
+    transition: transform 500ms var(--ease-editorial);
+  }
+
+  .card-link:focus-visible .home-card-heading,
+  .card-link:has(:focus-visible) .home-card-heading,
+  .card-hover:focus-visible .home-card-heading {
+    transform: translateX(4px);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .card-link:hover::before,
+    .card-hover:hover::before {
+      transform: scaleX(1);
+      transition: transform 500ms var(--ease-editorial);
+    }
+
+    .card-link:hover .home-card-heading,
+    .card-hover:hover .home-card-heading {
+      transform: translateX(4px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card-link::before,
+    .card-hover::before,
+    .card-link:hover::before,
+    .card-hover:hover::before,
+    .card-link:focus-visible::before,
+    .card-link:has(:focus-visible)::before,
+    .card-hover:focus-visible::before {
+      transition: none;
+    }
+
+    .card-link .home-card-heading,
+    .card-hover .home-card-heading,
+    .card-link:hover .home-card-heading,
+    .card-hover:hover .home-card-heading,
+    .card-link:focus-visible .home-card-heading,
+    .card-link:has(:focus-visible) .home-card-heading,
+    .card-hover:focus-visible .home-card-heading {
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* Reading progress (DESIGN.md "Motion", Progress): the project page's section bar carries a 2px
+     bronze line along its bottom edge that grows with the part of the case study already read. It
+     follows the scroll directly, so it has no transition of its own. */
+  .reading-progress {
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    pointer-events: none;
+    background: var(--bronze);
+    transform-origin: left;
+  }
+
+  /* Archive reflow (DESIGN.md "Motion", Filter): a card the filter drops fades out in 120ms, the
+     cards that stay glide to their new cells over 400ms, and the cards that join fade in once the
+     drop has cleared. A leaving card is lifted out of the grid flow (at the cell it held) so the
+     others can move at once. Without the transitions, Vue swaps the cards instantly. */
+  @media (prefers-reduced-motion: no-preference) {
+    .archive-leave-active {
+      position: absolute;
+      transition: opacity 120ms var(--ease-exit);
+    }
+
+    .archive-enter-active {
+      transition: opacity var(--dur-reveal) var(--ease-editorial) 120ms;
+    }
+
+    .archive-move {
+      transition: transform 400ms var(--ease-editorial);
+    }
+
+    .archive-enter-from,
+    .archive-leave-to {
+      opacity: 0;
+    }
+  }
+
+  /* Disclosure (DESIGN.md "Motion", Small interactions): an FAQ answer opens and closes by easing
+     its height (320ms editorial) where the browser can size `::details-content` to auto; elsewhere
+     it opens at once, as before. Its plus turns into a cross. */
+  @media (prefers-reduced-motion: no-preference) {
+    .disclosure {
+      interpolate-size: allow-keywords;
+    }
+
+    .disclosure::details-content {
+      block-size: 0;
+      overflow: hidden;
+      transition:
+        block-size 320ms var(--ease-editorial),
+        content-visibility 320ms allow-discrete;
+    }
+
+    .disclosure[open]::details-content {
+      block-size: auto;
+    }
+  }
+
+  /* Field focus: a 2px bronze line draws along the bottom of a text field from the left (400ms
+     editorial) while it has focus, alert red on a field with an error. A background layer, so it
+     costs no layout and leaves the border alone. */
+  .field-line {
+    transition: border-color var(--dur-hover) var(--ease-editorial);
+  }
+
+  .field-line:is(input, textarea) {
+    background-image: linear-gradient(var(--bronze), var(--bronze));
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    background-size: 0 2px;
+    transition:
+      border-color var(--dur-hover) var(--ease-editorial),
+      background-size 400ms var(--ease-editorial);
+  }
+
+  .field-line:is(input, textarea)[aria-invalid='true'] {
+    background-image: linear-gradient(var(--color-alert-500), var(--color-alert-500));
+  }
+
+  .field-line:is(input, textarea):focus {
+    background-size: 100% 2px;
+  }
+
+  /* Status line: a form's status box rises 6px into place as it appears (280ms editorial). */
+  @media (prefers-reduced-motion: no-preference) {
+    .status-rise {
+      animation: status-rise 280ms var(--ease-editorial) backwards;
+    }
+  }
+
+  @keyframes status-rise {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .field-line,
+    .field-line:is(input, textarea) {
+      transition: none;
+    }
+  }
+
   /* Responsive typography — fluid scale so headings stay premium on desktop
      and never overflow / oversize on small screens. */
   .text-hero {

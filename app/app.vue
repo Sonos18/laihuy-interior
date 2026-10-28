@@ -81,6 +81,14 @@ watch(isMobileMenuOpen, setDrawerOpen)
       {{ t({ vi: 'Đến nội dung chính', en: 'Skip to content' }) }}
     </a>
 
+    <!-- The route-loading line (DESIGN.md "Motion", Progress): 2px Workshop Bronze across the top
+         of the viewport, shown only when a page takes longer than 200ms to load. -->
+    <NuxtLoadingIndicator
+      color="var(--bronze)"
+      :height="2"
+      :throttle="200"
+    />
+
     <AppHeader @open-menu="isMobileMenuOpen = true" />
 
     <AppDrawer

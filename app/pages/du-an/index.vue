@@ -57,6 +57,19 @@ const filteredArchive = computed(() =>
 
 const scopeLine = (project: Project) => ta(project.scope).join(' · ')
 
+// A card leaving the archive is taken out of the grid flow so the others can move at once; it keeps
+// the box of the cell it held while it fades.
+function holdLeavingCell(el: Element) {
+  if (!(el instanceof HTMLElement)) return
+  const { offsetLeft, offsetTop, offsetWidth, offsetHeight } = el
+  Object.assign(el.style, {
+    left: `${offsetLeft}px`,
+    top: `${offsetTop}px`,
+    width: `${offsetWidth}px`,
+    height: `${offsetHeight}px`
+  })
+}
+
 const seoTitle = computed(() => t(company.seo.projects.title))
 const seoDescription = computed(() => t(company.seo.projects.description))
 
@@ -178,9 +191,14 @@ usePageSeo({
 
         <!-- One chip type per card: the category is the Label line; area and scope are plain
              meta text. -->
-        <div
+        <!-- A filter change reflows the archive instead of swapping it (DESIGN.md "Motion",
+             Filter). -->
+        <TransitionGroup
+          tag="div"
+          name="archive"
           data-testid="projects-grid"
-          class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+          class="relative mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+          @before-leave="holdLeavingCell"
         >
           <NuxtLink
             v-for="{ project, cover } in filteredArchive"
@@ -223,7 +241,7 @@ usePageSeo({
               </p>
             </div>
           </NuxtLink>
-        </div>
+        </TransitionGroup>
       </div>
     </section>
 

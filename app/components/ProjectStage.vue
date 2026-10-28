@@ -33,7 +33,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
       v-reveal.item.image
       data-project-card
       :to="`/du-an/${heroProject.project.slug}`"
-      class="home-projects__card home-projects__card--hero reveal group"
+      class="home-projects__card home-projects__card--hero card-hover reveal group"
     >
       <div class="home-projects__media home-projects__media--hero">
         <NuxtImg
@@ -148,7 +148,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
       v-reveal.item.image
       data-project-card
       :to="`/du-an/${project.slug}`"
-      class="home-projects__card home-projects__card--satellite reveal group"
+      class="home-projects__card home-projects__card--satellite card-hover reveal group"
     >
       <div class="home-projects__media home-projects__media--satellite">
         <NuxtImg
