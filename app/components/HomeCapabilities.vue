@@ -3,6 +3,31 @@ import { homePageContent, type HomeCapability } from '~/data/home-page'
 
 defineProps<{ capabilities: readonly HomeCapability[] }>()
 const { t } = useLanguage()
+
+// The bronze trace (DESIGN.md "Capabilities motion", owner 2026-10-28) loops for as long as the
+// list is on screen, and stops the moment it leaves. Reduced motion never starts it.
+const list = ref<HTMLElement>()
+const tracing = ref(false)
+let observer: IntersectionObserver | null = null
+
+onMounted(() => {
+  if (!list.value || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return
+  }
+
+  observer = new IntersectionObserver((entries) => {
+    const entry = entries[entries.length - 1]
+
+    if (entry) {
+      tracing.value = entry.isIntersecting
+    }
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' })
+  observer.observe(list.value)
+})
+
+onBeforeUnmount(() => {
+  observer?.disconnect()
+})
 </script>
 
 <template>
@@ -21,7 +46,9 @@ const { t } = useLanguage()
       />
 
       <ol
+        ref="list"
         class="home-capabilities__list mt-14"
+        :data-trace="tracing ? 'run' : undefined"
         role="list"
       >
         <li
@@ -35,6 +62,10 @@ const { t } = useLanguage()
             class="home-capabilities__number home-meta-text"
             aria-hidden="true"
           >{{ String(index + 1).padStart(2, '0') }}</span>
+          <span
+            class="home-capabilities__trace"
+            aria-hidden="true"
+          />
           <h3 class="home-capabilities__item-title home-card-heading mt-10 text-ink-950">
             {{ t(capability.title) }}
           </h3>
@@ -73,14 +104,95 @@ const { t } = useLanguage()
 }
 
 /* ── Motion (DESIGN.md "Capabilities motion") ──
-   The bronze line: when the list scrolls in, a 1px Workshop Bronze line draws over the items'
-   top rules, and each step rises as the line reaches it; once the line has crossed, it fades
-   back to the Plaster Line hairline, so the section rests exactly as it was drawn. It rides on
-   the items' own scroll reveal (`.is-visible`, plugins/reveal.ts), so it inherits that contract:
-   an item painted in view at hydration never replays, and under reduced motion `reveal-ready`
-   is never set and nothing here runs. Below 768px each stacked step draws its own line as it
-   arrives. */
-.home-capabilities__item::before,
+   The bronze trace, one cell after another, on a loop: in cell 01 a Workshop Bronze line runs
+   along the top rule (left to right) while another climbs its right-hand divider (bottom to
+   top), and the two meet at the top-right corner together; cell 02 does the same; cell 03, which
+   has no divider on its right, runs its top rule to the end. The traced lines hold, fade back to
+   the Plaster Line hairlines, and the next pass begins. One pass is 5s: 1s per cell on the
+   sheen's in-out curve (on-screen travel), a 0.7s hold, a 0.6s fade and a 0.7s rest. It runs
+   only while the list is on screen (`data-trace`, set from the script) and never under reduced
+   motion. Below 768px the cells stack, there are no dividers, and each top rule traces in turn.
+
+   Each line is a 1px strip scaled from 0 (transform only, so it never touches layout); the
+   cell's slot picks which fifth of the pass it draws in, and the fade is shared so every traced
+   line clears in the same frame. */
+.home-capabilities__trace {
+  position: absolute;
+  inset: -1px 0 0;
+  pointer-events: none;
+}
+
+.home-capabilities__trace::before,
+.home-capabilities__trace::after {
+  content: '';
+  position: absolute;
+  background: var(--color-bronze-warm);
+}
+
+.home-capabilities__trace::before {
+  --cap-from: 0 1;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 1px;
+  scale: 0 1;
+  transform-origin: left;
+}
+
+/* The right-hand divider of a cell is the next cell's left border, one pixel past this cell. */
+.home-capabilities__trace::after {
+  --cap-from: 1 0;
+  display: none;
+  top: 0;
+  right: -1px;
+  bottom: 0;
+  width: 1px;
+  scale: 1 0;
+  transform-origin: bottom;
+}
+
+[data-trace='run'] .home-capabilities__trace {
+  animation: capability-trace-fade 5000ms linear infinite;
+}
+
+[data-trace='run'] .home-capabilities__trace::before,
+[data-trace='run'] .home-capabilities__trace::after {
+  animation: capability-trace-1 5000ms linear infinite;
+}
+
+/* Literal names, not a custom property: scoped styles rename keyframes and rewrite only the
+   names they can see in `animation`. */
+[data-trace='run'] .home-capabilities__item:nth-child(2) .home-capabilities__trace::before,
+[data-trace='run'] .home-capabilities__item:nth-child(2) .home-capabilities__trace::after {
+  animation-name: capability-trace-2;
+}
+
+[data-trace='run'] .home-capabilities__item:nth-child(3) .home-capabilities__trace::before,
+[data-trace='run'] .home-capabilities__item:nth-child(3) .home-capabilities__trace::after {
+  animation-name: capability-trace-3;
+}
+
+@keyframes capability-trace-1 {
+  0% { scale: var(--cap-from); animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1); }
+  20%, 100% { scale: 1; }
+}
+
+@keyframes capability-trace-2 {
+  0%, 20% { scale: var(--cap-from); animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1); }
+  40%, 100% { scale: 1; }
+}
+
+@keyframes capability-trace-3 {
+  0%, 40% { scale: var(--cap-from); animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1); }
+  60%, 100% { scale: 1; }
+}
+
+@keyframes capability-trace-fade {
+  0%, 74% { opacity: 1; }
+  86%, 100% { opacity: 0; }
+}
+
+/* Hover acknowledgement line (see the hover block below). */
 .home-capabilities__item::after {
   content: '';
   position: absolute;
@@ -94,54 +206,14 @@ const { t } = useLanguage()
   pointer-events: none;
 }
 
-html.reveal-ready .home-capabilities__item.is-visible::before {
-  animation:
-    capability-line-draw var(--cap-draw, 900ms) var(--cap-draw-ease, var(--ease-editorial)) var(--cap-start, 0ms) both,
-    capability-line-rest 600ms var(--ease-editorial) var(--cap-rest, 1100ms) forwards;
-}
-
-@keyframes capability-line-draw {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
-}
-
-@keyframes capability-line-rest {
-  to { opacity: 0; }
-}
-
 @media (min-width: 768px) {
   .home-capabilities__list {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  /* One line runs 01 -> 02 -> 03 across the row as three chained segments: ease-in over the
-     first, constant speed through the second and ease-out over the third (quadratic curves, the
-     outer segments twice as long), so the velocity carries across the joins and the line reads
-     as a single stroke. Each step rises as the line reaches it (this replaces the 70ms item
-     stagger here), and all three segments fade together once the line has crossed. */
-  .home-capabilities__item {
-    --cap-rest: 1800ms;
-  }
-
-  .home-capabilities__item:nth-child(1) {
-    --cap-draw: 640ms;
-    --cap-draw-ease: cubic-bezier(0.33, 0, 0.67, 0.33);
-  }
-
-  .home-capabilities__item:nth-child(2) {
-    --cap-start: 640ms;
-    --cap-draw: 320ms;
-    --cap-draw-ease: linear;
-  }
-
-  .home-capabilities__item:nth-child(3) {
-    --cap-start: 960ms;
-    --cap-draw: 640ms;
-    --cap-draw-ease: cubic-bezier(0.33, 0.67, 0.67, 1);
-  }
-
-  html.reveal-ready .home-capabilities__item.is-visible {
-    animation-delay: var(--cap-start, 0ms);
+  /* Cells 01 and 02 trace their right-hand divider too; cell 03 has none. */
+  .home-capabilities__item:not(:last-child) .home-capabilities__trace::after {
+    display: block;
   }
 
   /* The grid stretches the three items to the tallest, so their rules already share one length
@@ -156,7 +228,7 @@ html.reveal-ready .home-capabilities__item.is-visible::before {
 
 /* Hover (pointer devices only, where :hover does not stick after a tap): the step's top rule
    turns bronze from the left and its number nudges right. The items are not links, so this is
-   acknowledgement only; it uses ::after so the arrival line's fill never holds it. */
+   acknowledgement only. */
 @media (hover: hover) and (pointer: fine) {
   .home-capabilities__item::after {
     transition: transform var(--dur-hover) var(--ease-exit);
@@ -180,6 +252,10 @@ html.reveal-ready .home-capabilities__item.is-visible::before {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .home-capabilities__trace {
+    display: none;
+  }
+
   .home-capabilities__item::after,
   .home-capabilities__number {
     transition: none;
