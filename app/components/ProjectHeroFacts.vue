@@ -22,6 +22,7 @@ const COUNTED_FACTS = new Set(['area', 'rooms'])
     <AppHero
       :title="title"
       :image="image"
+      :topic="status ? `${category} · ${status}` : category"
       mode="caption"
       atmosphere="dark"
       focal="50% 40%"
@@ -42,24 +43,6 @@ const COUNTED_FACTS = new Set(['area', 'rooms'])
             {{ t({ vi: 'Dự án', en: 'Projects' }) }}
           </NuxtLink>
         </nav>
-      </template>
-
-      <template #chips>
-        <div class="mb-5 flex flex-wrap items-center gap-3">
-          <span class="inline-flex items-center rounded-full border border-[var(--hairline-gold)] px-3 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-[var(--bronze-light)]">
-            {{ category }}
-          </span>
-          <span
-            v-if="status"
-            class="inline-flex items-center gap-1.5 rounded-full border border-[var(--hairline)] px-3 py-1.5 text-xs font-medium text-[var(--color-ivory)]"
-          >
-            <Icon
-              name="i-lucide-circle-check-big"
-              class="h-3.5 w-3.5 text-[var(--bronze-light)]"
-            />
-            {{ status }}
-          </span>
-        </div>
       </template>
 
       <template #meta>
@@ -88,42 +71,84 @@ const COUNTED_FACTS = new Set(['area', 'rooms'])
       </template>
     </AppHero>
 
+    <!-- The title block (DESIGN.md "Project facts"): one row of hairline cells, no box and no icons.
+         A figure takes the Stat role and counts; a year, scope or place is a phrase in Title. -->
     <div
       data-project-facts-zone
-      class="bg-[var(--color-ivory)]"
+      class="border-b border-[var(--rule-light)] bg-wood-50"
     >
-      <div class="shell py-6 md:py-8">
-        <div
-          data-project-facts
-          class="relative overflow-hidden rounded-[4px] border border-ink-200 bg-white text-ink-950"
-        >
-          <dl class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
-            <div
-              v-for="(fact, index) in facts"
-              :key="fact.key"
-              data-project-fact
-              :data-fact-key="fact.key"
-              class="border-b border-r border-[var(--rule-light)] px-4 py-6 md:px-6"
-              :class="facts.length % 2 === 1 && index === facts.length - 1 ? 'col-span-2 md:col-span-1' : ''"
+      <div
+        data-project-facts
+        class="shell"
+      >
+        <dl class="project-facts">
+          <div
+            v-for="(fact, index) in facts"
+            :key="fact.key"
+            v-reveal.item.rule
+            data-project-fact
+            :data-fact-key="fact.key"
+            class="project-facts__cell reveal"
+            :class="facts.length % 2 === 1 && index === facts.length - 1 ? 'project-facts__cell--wide' : ''"
+          >
+            <dt class="home-eyebrow-text text-ink-600">
+              {{ fact.label }}
+            </dt>
+            <dd
+              v-count-up="COUNTED_FACTS.has(fact.key)"
+              class="mt-3 text-ink-900"
+              :class="COUNTED_FACTS.has(fact.key) ? 'home-stat-value whitespace-nowrap' : 'home-card-heading'"
             >
-              <dt class="home-eyebrow-text flex items-center gap-2 text-ink-600">
-                <Icon
-                  :name="fact.icon"
-                  class="h-4 w-4 text-wood-600"
-                />
-                {{ fact.label }}
-              </dt>
-              <!-- Only the figures count (DESIGN.md "Motion", Count); a year, scope or place stays. -->
-              <dd
-                v-count-up="COUNTED_FACTS.has(fact.key)"
-                class="home-card-heading mt-3 text-ink-900"
-              >
-                {{ fact.value }}
-              </dd>
-            </div>
-          </dl>
-        </div>
+              {{ fact.value }}
+            </dd>
+          </div>
+        </dl>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Two cells a row below 768px, three to 1279px, the whole row from 1280px. Cells are divided by
+   Plaster Line hairlines; the row itself has no frame. */
+.project-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.project-facts__cell {
+  padding: 1.5rem 1rem 1.5rem 0;
+  border-bottom: 1px solid var(--rule-light);
+}
+
+.project-facts__cell--wide {
+  grid-column: span 2;
+}
+
+@media (min-width: 768px) {
+  .project-facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .project-facts__cell--wide {
+    grid-column: auto;
+  }
+}
+
+@media (min-width: 1280px) {
+  .project-facts {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .project-facts__cell {
+    padding: 2.25rem 1.5rem;
+    border-bottom: 0;
+    border-left: 1px solid var(--rule-light);
+  }
+
+  .project-facts__cell:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+</style>

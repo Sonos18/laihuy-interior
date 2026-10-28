@@ -207,6 +207,9 @@ function create(): HeaderState {
       '--header-shift',
       hidden ? 'calc(-1 * var(--header-h))' : '0px'
     )
+    // The same state as an attribute, for chrome that hides by its own distance (the project
+    // chapter ruler) or shows something only while the header is away (the ruler's quote CTA).
+    document.documentElement.toggleAttribute('data-header-hidden', hidden)
   }
 
   /**
@@ -499,6 +502,7 @@ function create(): HeaderState {
       revealed = true
       hidden = false
       document.documentElement.style.setProperty('--header-shift', '0px')
+      document.documentElement.removeAttribute('data-header-hidden')
 
       navigating = true
       target = to.path

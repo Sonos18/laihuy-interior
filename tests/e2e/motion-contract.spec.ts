@@ -916,68 +916,48 @@ test.describe('motion contract', () => {
     expect(colors.seen, 'the toggle does not pick up the light-surface colour early').toEqual([colors.before])
   })
 
-  test('MOTION-17 the gallery autoplay only runs in view, makes one pass and rests', async ({ page }) => {
-    await page.clock.install()
+  test('MOTION-17 the chapter ruler takes the header\'s place and its quote action', async ({ page }) => {
     await stubImages(page)
+    await page.setViewportSize({ width: 1440, height: 900 })
     await page.goto(url('/du-an/khach-san-eo-gio'), { waitUntil: 'load' })
     await waitForHydration(page)
 
-    const carousel = page.locator('[data-gallery-carousel]')
-    const total = Number(await carousel.getAttribute('data-gallery-count'))
-    expect(total).toBeGreaterThan(2)
+    const ruler = page.locator('nav[data-project-subnav]')
+    const cta = ruler.locator('a.project-ruler__cta')
+    await expect(cta).toBeHidden()
 
-    // Below the fold: it does not run, however long the page waits.
-    await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'paused')
-    await page.clock.fastForward(12_000)
-    await expect(carousel).toHaveAttribute('data-gallery-active-index', '0')
+    // Scrolling down past the hero hides the header: the ruler slides up and shows the CTA.
+    const story = await page.evaluate(() => document.getElementById('story')!.getBoundingClientRect().top + scrollY)
+    await page.evaluate(y => window.scrollTo(0, y), story + 600)
+    await page.mouse.wheel(0, 400)
+    await expect.poll(() => page.evaluate(() => document.documentElement.hasAttribute('data-header-hidden'))).toBe(true)
+    await expect(cta).toBeVisible()
+    await expect.poll(() => ruler.evaluate(el => el.getBoundingClientRect().top)).toBeLessThan(4)
 
-    // In view: it runs, one slide per 5 seconds.
-    await carousel.scrollIntoViewIfNeeded()
-    await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'running')
-    await page.clock.fastForward(5100)
-    await expect(carousel).toHaveAttribute('data-gallery-active-index', '1')
-
-    // Scrolled away it holds again.
-    await page.evaluate(() => window.scrollTo(0, 0))
-    await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'paused')
-    await page.clock.fastForward(12_000)
-    await expect(carousel).toHaveAttribute('data-gallery-active-index', '1')
-
-    // Back in view it finishes the pass, lands on the first slide and stops for good.
-    await carousel.scrollIntoViewIfNeeded()
-    await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'running')
-    for (let step = 0; step < total; step++) {
-      if ((await carousel.getAttribute('data-gallery-autoplay')) === 'ended') break
-      await page.clock.fastForward(5100)
-    }
-    await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'ended')
-    await expect(carousel).toHaveAttribute('data-gallery-active-index', '0')
-    await page.clock.fastForward(20_000)
-    await expect(carousel).toHaveAttribute('data-gallery-active-index', '0')
+    // Scrolling up brings the header back and takes the CTA away: one quote action on screen.
+    await page.mouse.wheel(0, -300)
+    await expect.poll(() => page.evaluate(() => document.documentElement.hasAttribute('data-header-hidden'))).toBe(false)
+    await expect(cta).toBeHidden()
   })
 
-  test('MOTION-17b the first manual navigation ends the gallery autoplay', async ({ page }) => {
-    await page.clock.install()
+  test('MOTION-17b the gallery filter reflows the mosaic: drop fades, stayers glide', async ({ page }) => {
     await stubImages(page)
     await page.goto(url('/du-an/khach-san-eo-gio'), { waitUntil: 'load' })
     await waitForHydration(page)
 
-    const carousel = page.locator('[data-gallery-carousel]')
-    await carousel.scrollIntoViewIfNeeded()
-    await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'running')
-    await carousel.getByRole('button', { name: 'Ảnh tiếp theo' }).click()
-    await page.mouse.move(0, 0)
-    await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'ended')
-    await expect(carousel).toHaveAttribute('data-gallery-active-index', '1')
-    await page.clock.fastForward(20_000)
-    await expect(carousel).toHaveAttribute('data-gallery-active-index', '1')
-
-    // The play button starts a fresh pass.
-    await carousel.getByRole('button', { name: 'Tiếp tục trình chiếu' }).click()
-    await page.mouse.move(0, 0)
-    // Focus within pauses it (a separate, existing rule); once focus leaves, the pass runs.
-    await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur())
-    await expect(carousel).toHaveAttribute('data-gallery-autoplay', 'running')
+    const mosaic = page.locator('[data-gallery-mosaic]')
+    await mosaic.scrollIntoViewIfNeeded()
+    await page.evaluate(() => {
+      const seen = { leave: false }
+      ;(window as unknown as { __reflow: typeof seen }).__reflow = seen
+      new MutationObserver(() => {
+        if (document.querySelector('[data-gallery-mosaic] > .archive-leave-active')) seen.leave = true
+      }).observe(document.querySelector('[data-gallery-mosaic]')!, { subtree: true, attributes: true, attributeFilter: ['class'] })
+    })
+    await page.locator('[data-gallery-filters] button[aria-pressed]').nth(1).click()
+    await expect.poll(() => page.evaluate(() => (window as unknown as { __reflow: { leave: boolean } }).__reflow.leave)).toBe(true)
+    await expect(mosaic.locator('> .archive-leave-active')).toHaveCount(0)
+    await expect(mosaic.locator('> .archive-move')).toHaveCount(0)
   })
 
   test('MOTION-18 the material story has no numeric counter and a bronze seam that rides the wipe', async ({ page }) => {
@@ -1203,24 +1183,30 @@ test.describe('motion contract', () => {
     await expect.poll(() => title.evaluate(el => getComputedStyle(el).transform)).toBe('matrix(1, 0, 0, 1, 4, 0)')
   })
 
-  test('MOTION-25 the project page bar grows with the part already read', async ({ page }) => {
+  test('MOTION-25 each chapter track fills with the part of its chapter already read', async ({ page }) => {
     await page.goto(url('/du-an/khach-san-eo-gio'), { waitUntil: 'load' })
     await waitForHydration(page)
 
-    const bar = page.locator('[data-project-progress]')
-    const scale = () => bar.evaluate(el => new DOMMatrix(getComputedStyle(el).transform).a)
-    expect(await scale()).toBe(0)
+    const tracks = page.locator('[data-project-progress]')
+    const scales = () => tracks.evaluateAll(elements =>
+      elements.map(el => new DOMMatrix(getComputedStyle(el).transform).a)
+    )
+    expect(await scales()).toEqual([0, 0, 0, 0])
 
+    // Inside the story: the first track is part-filled, the rest are empty.
     await page.evaluate(() => {
       const story = document.getElementById('story')!
-      window.scrollTo(0, story.getBoundingClientRect().top + scrollY + 1500)
+      window.scrollTo(0, story.getBoundingClientRect().top + scrollY - innerHeight * 0.4 + story.offsetHeight / 2)
     })
-    await expect.poll(scale).toBeGreaterThan(0)
-    expect(await scale()).toBeLessThan(1)
+    await expect.poll(async () => (await scales())[0]).toBeGreaterThan(0)
+    const mid = await scales()
+    expect(mid[0]).toBeLessThan(1)
+    expect(mid.slice(1)).toEqual([0, 0, 0])
+    await expect(page.locator('a[data-ruler-item="story"]')).toHaveAttribute('aria-current', 'location')
 
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
-    await expect.poll(scale).toBe(1)
-    expect(await bar.evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(184, 135, 90)')
+    await expect.poll(scales).toEqual([1, 1, 1, 1])
+    expect(await tracks.first().evaluate(el => getComputedStyle(el).backgroundColor)).toBe('rgb(184, 135, 90)')
   })
 
   test('MOTION-26 the archive filter reflows the grid: drop fades, stayers glide', async ({ page }) => {

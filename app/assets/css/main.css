@@ -392,31 +392,8 @@
   --type-meta-sm-size: 0.8125rem;
   --type-meta-sm-leading: 1.6;
 
-  /* ── L3 · Project sub-nav (page-owned, header-coupled) ──────────────── */
+  /* ── L3 · Project chapter ruler (page-owned, header-coupled) ───────── */
   --subnav-h: 3.5rem; /*  56px                                    */
-}
-
-/* Sub-nav chip tap target — WCAG 2.5.5 (44px). The visible pill renders 36px tall
-   (text-sm line box + py-2), which is the one control on the site below the 44px floor
-   the rest of it already meets (--nav-item-min-h).
-
-   Extended by a pseudo-element rather than by padding, because unlike `.footer-link`'s
-   pad-and-cancel these chips carry a VISIBLE background when active — padding would grow
-   the pill itself and the bar with it, which would also put the rendered sub-nav height
-   further out of step with --subnav-h (the token every scroll anchor on the page is
-   derived from). The overlay grows the hit area only: pill unchanged, bar unchanged,
-   token still honest. Chips are spaced horizontally, so the vertical extension cannot
-   create overlapping targets. */
-.subnav-chip {
-  position: relative;
-}
-
-.subnav-chip::after {
-  content: "";
-  position: absolute;
-  /* 36px + 2 × 4px = 44px */
-  inset-block: -4px;
-  inset-inline: 0;
 }
 
 /* Home's cover floor, tier 2 of 3. 22.5rem = 360px: below it the hero headline takes an
@@ -749,19 +726,31 @@
     transition: none;
   }
 
-  /* §6.4 — the project sub-nav is anchored to the header and MUST move with it.
-     Both consume the same tokens, so they move in lockstep by construction rather
-     than by two coincidentally-matching animations. If the header hides and the
-     sub-nav does not, an 88px gap opens above it (FG-11). */
-  .subnav-anchor {
-    top: var(--header-h);
-    transform: translateY(var(--header-shift));
+  /* §6.4 — the project chapter ruler is anchored to the header and MUST move with it.
+     By the time the ruler sticks the header is always its floating bar, so the ruler rests
+     8px below that bar (--ruler-top) rather than below the full-height header, leaving no
+     strip of content between the two. When the header hides (`data-header-hidden`, written
+     with --header-shift by the same composable) the ruler rises by exactly its own offset to
+     the top edge, over the header's duration and curve, so the two still move together. */
+  .project-ruler {
+    --ruler-top: calc(var(--header-float-inset) + var(--header-float-h) + 0.5rem);
+
+    top: var(--ruler-top);
     transition: transform var(--dur-state) var(--ease-editorial);
   }
 
+  @media (min-width: 80rem) {
+    .project-ruler {
+      --ruler-top: calc(var(--header-float-inset-xl) + var(--header-float-h-xl) + 0.5rem);
+    }
+  }
+
+  :root[data-header-hidden] .project-ruler {
+    transform: translateY(calc(-1 * var(--ruler-top)));
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .subnav-anchor {
-      transform: none;
+    .project-ruler {
       transition: none;
     }
   }

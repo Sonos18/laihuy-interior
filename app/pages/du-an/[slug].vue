@@ -46,7 +46,6 @@ const heroImage = computed<MediaImage>(() =>
   withAlt(projectCoverAsset(project.mediaId, project.coverImage) ?? siteImages.bannerHome, heroAlt)
 )
 const allImages: MediaImage[] = projectImages(project.mediaId, project.name, project.galleryLabels)
-const leadImage = computed<MediaImage | undefined>(() => allImages[0])
 const galleryGroups = projectGalleryGroups(project.mediaId, project.name, project.galleryLabels)
 const hasGalleryGroups = galleryGroups.length > 0
 const mediaFlow = buildProjectMediaFlow(allImages, galleryGroups)
@@ -69,9 +68,17 @@ const finaleFacts = computed(() => factsFromStats(
   t
 ))
 
+// Each image has one home (DESIGN.md "Case-study images"). The gallery mosaic shows the highlights;
+// only a long set has photographs left over, and only those dress the story (one per beat) and the
+// material chapter (two). A short set keeps both chapters as text.
+const storyImages = mediaFlow.remaining.slice(0, 3)
+const materialImages = mediaFlow.remaining.slice(3, 5)
+
 // The case study's one breath photograph (DESIGN.md "Breath"), between the material story and
-// the related projects; a project without a spare landscape photograph has none.
-const breathImage = caseStudyBreath(allImages)
+// the related projects: from the long set's still-unused photographs, or, for a short set, from
+// the gallery beyond its first four (a breath is decorative and may repeat one). A project
+// without a landscape in that pool has none.
+const breathImage = caseStudyBreath(mediaFlow.isLongMedia ? mediaFlow.remaining.slice(5) : allImages.slice(4))
 
 const prettifySlug = (value: string): string =>
   value.replace(/-/g, ' ').replace(/\b\w/g, char => char.toUpperCase())
@@ -138,61 +145,6 @@ const relatedCards = computed(() => detail.value.relatedProjects.map(item => ({
   cover: projectCoverAsset(item.mediaId, item.coverImage)
 })))
 
-const activeSection = ref('story')
-onMounted(() => {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) activeSection.value = entry.target.id
-      }
-    },
-    { rootMargin: '-45% 0px -50% 0px' }
-  )
-
-  for (const section of detail.value.navSections) {
-    const element = document.getElementById(section.id)
-    if (element) observer.observe(element)
-  }
-
-  onUnmounted(() => observer.disconnect())
-})
-
-// Reading progress (DESIGN.md "Motion", Progress): 0 when the first section reaches the top of the
-// viewport, 1 when the last one's end reaches the bottom. Under reduced motion it rests complete.
-const readingProgress = ref(0)
-onMounted(() => {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    readingProgress.value = 1
-    return
-  }
-
-  let frame = 0
-  const measure = () => {
-    frame = 0
-    const sections = detail.value.navSections
-    const first = document.getElementById(sections[0]?.id ?? '')
-    const last = document.getElementById(sections[sections.length - 1]?.id ?? '')
-    if (!first || !last) return
-
-    const start = first.getBoundingClientRect().top
-    const span = last.getBoundingClientRect().bottom - start - window.innerHeight
-    readingProgress.value = span > 0 ? Math.min(1, Math.max(0, -start / span)) : 1
-  }
-  const schedule = () => {
-    if (!frame) frame = requestAnimationFrame(measure)
-  }
-
-  window.addEventListener('scroll', schedule, { passive: true })
-  window.addEventListener('resize', schedule, { passive: true })
-  measure()
-
-  onUnmounted(() => {
-    window.removeEventListener('scroll', schedule)
-    window.removeEventListener('resize', schedule)
-    cancelAnimationFrame(frame)
-  })
-})
-
 // Keep the existing SEO fallback chain and schema shape intact.
 const seoName = computed(() => t(project.seo?.title ?? project.name))
 const seoTitle = computed(() => `${seoName.value} | Lai Huy Interior`)
@@ -247,38 +199,17 @@ usePageSeo({
       :facts="detail.facts"
     />
 
-    <nav
-      data-project-subnav
-      class="subnav-anchor sticky z-30 border-b border-[var(--rule-light)] bg-[var(--surface-chrome)] text-ink-950 backdrop-blur-lg"
-      :aria-label="t({ vi: 'Mục lục dự án', en: 'Project sections' })"
-    >
-      <div class="shell flex gap-1 overflow-x-auto py-3">
-        <a
-          v-for="section in detail.navSections"
-          :key="section.id"
-          :href="`#${section.id}`"
-          class="subnav-chip shrink-0 rounded-full border px-5 py-[7px] text-sm font-semibold transition-colors duration-[var(--dur-hover)] ease-[var(--ease-editorial)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wood-500 motion-reduce:transition-none"
-          :class="activeSection === section.id
-            ? 'border-ink-900 bg-ink-900 text-wood-50'
-            : 'border-ink-200 text-ink-600 hover:border-wood-500 hover:text-wood-600'"
-          :aria-current="activeSection === section.id ? 'location' : undefined"
-        >
-          {{ section.label }}
-        </a>
-      </div>
-      <span
-        data-project-progress
-        class="reading-progress"
-        aria-hidden="true"
-        :style="{ transform: `scaleX(${readingProgress})` }"
-      />
-    </nav>
+    <ProjectChapterRuler
+      :category="t(categoryLabel)"
+      :title="t(project.name)"
+      :sections="detail.navSections"
+    />
 
     <ProjectStoryChapter
       :overview="t(project.content?.overview)"
       :challenge="t(project.content?.challenge)"
       :solution="t(project.content?.solution)"
-      :lead-image="leadImage"
+      :images="storyImages"
     />
 
     <section
@@ -291,76 +222,63 @@ usePageSeo({
       :data-inline-media="filteredGallery.length"
     >
       <div class="shell">
-        <!-- A stacked head; the room filters are one row of their own below it, at the full
-             measure, so more of the rooms show before the row has to scroll. -->
-        <div class="mb-8">
-          <div
-            class="max-w-2xl"
-            data-head="stacked"
-          >
+        <!-- A split head: the full-set button sits on the heading's last line. The room filters
+             are one row of their own below it, at the full measure. -->
+        <SectionHead
+          layout="split"
+          :eyebrow="t(uiText.labels.completedImages)"
+          :title="t(uiText.labels.gallery)"
+        >
+          <template #aside>
+            <div
+              v-if="mediaFlow.isLongMedia"
+              data-project-full-gallery
+            >
+              <button
+                type="button"
+                class="btn-outline"
+                @click="openFullGallery"
+              >
+                {{ fullGalleryLabel }}
+              </button>
+            </div>
             <p
-              v-reveal.head
-              class="eyebrow reveal"
+              v-else
+              class="home-lead-text text-ink-600"
             >
-              {{ t(uiText.labels.completedImages) }}
+              {{ t({ vi: 'Chạm vào một ảnh để xem cỡ lớn.', en: 'Tap a photograph to see it full size.' }) }}
             </p>
-            <h2
-              v-reveal.head
-              class="home-section-heading reveal mt-4 text-ink-950"
-            >
-              {{ t(uiText.labels.gallery) }}
-            </h2>
-          </div>
+          </template>
+        </SectionHead>
 
-          <!-- One row of room chips (DESIGN.md Chips): every room stays reachable and the row
-               scrolls sideways instead of wrapping into several lines. -->
-          <ChipRow
-            v-if="showGalleryFilters"
-            v-reveal
-            data-gallery-filters
-            class="reveal mt-6"
-            :label="t(projectsPageContent.galleryFilterLabel)"
-          >
-            <FilterChip
-              v-for="tab in galleryTabs"
-              :key="tab.value"
-              :pressed="activeGalleryTab === tab.value"
-              @click="activeGalleryTab = tab.value"
-            >
-              {{ tab.label }}
-              <span
-                class="text-xs font-semibold"
-                :class="activeGalleryTab === tab.value ? 'text-wood-50/80' : 'text-ink-600'"
-              >{{ tab.count }}</span>
-            </FilterChip>
-          </ChipRow>
-        </div>
-
-        <Transition
-          name="fade"
-          mode="out-in"
+        <!-- One row of room chips (DESIGN.md Chips): every room stays reachable and the row
+             scrolls sideways instead of wrapping into several lines. -->
+        <ChipRow
+          v-if="showGalleryFilters"
+          v-reveal
+          data-gallery-filters
+          class="reveal mt-8"
+          :label="t(projectsPageContent.galleryFilterLabel)"
         >
-          <AppGalleryCarousel
-            :images="filteredGallery"
-            selectable
-            :paused="lightboxOpen"
-            @select="openLightbox"
-          />
-        </Transition>
-
-        <div
-          v-if="mediaFlow.isLongMedia"
-          data-project-full-gallery
-          class="mt-10 flex justify-center border-t border-[var(--rule-light)] pt-8"
-        >
-          <button
-            type="button"
-            class="btn-outline"
-            @click="openFullGallery"
+          <FilterChip
+            v-for="tab in galleryTabs"
+            :key="tab.value"
+            :pressed="activeGalleryTab === tab.value"
+            @click="activeGalleryTab = tab.value"
           >
-            {{ fullGalleryLabel }}
-          </button>
-        </div>
+            {{ tab.label }}
+            <span
+              class="text-xs font-semibold"
+              :class="activeGalleryTab === tab.value ? 'text-wood-50/80' : 'text-ink-600'"
+            >{{ tab.count }}</span>
+          </FilterChip>
+        </ChipRow>
+
+        <ProjectGalleryMosaic
+          class="mt-8"
+          :images="filteredGallery"
+          @select="openLightbox"
+        />
       </div>
     </section>
 
@@ -384,7 +302,7 @@ usePageSeo({
           role: t(project.testimonial.role)
         }
         : undefined"
-      :images="allImages"
+      :images="materialImages"
     />
 
     <BreathImage

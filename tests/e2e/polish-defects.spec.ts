@@ -117,17 +117,18 @@ test.describe('home lead project card', () => {
 })
 
 test.describe('case study', () => {
-  test('delivery timeline numerals sit on their own line above the icon', async ({ page }) => {
+  test('delivery timeline numerals sit on their own line above the label', async ({ page }) => {
     await open(page, '/du-an/khach-san-eo-gio', 1440)
     const items = await page.locator('[data-delivery-timeline] > li').evaluateAll(list =>
       list.map((li) => {
-        const numeral = li.querySelector('span')!.getBoundingClientRect()
-        const icon = li.querySelector('svg, [class*="i-lucide"], .iconify')!.getBoundingClientRect()
-        return { numeralBottom: numeral.bottom, iconTop: icon.top }
+        const numeral = li.querySelector('[data-trace-number]')!.getBoundingClientRect()
+        const label = li.querySelector('p')!.getBoundingClientRect()
+        return { numeralBottom: numeral.bottom, labelTop: label.top, icons: li.querySelectorAll('svg').length }
       }))
     expect(items.length).toBeGreaterThanOrEqual(3)
     for (const item of items) {
-      expect(item.iconTop - item.numeralBottom).toBeGreaterThanOrEqual(8)
+      expect(item.labelTop - item.numeralBottom).toBeGreaterThanOrEqual(8)
+      expect(item.icons).toBe(0)
     }
   })
 

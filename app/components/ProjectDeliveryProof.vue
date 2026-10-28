@@ -24,32 +24,45 @@ const timelineStyle = computed(() => ({ '--phase-count': String(props.phases.len
     class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] border-t border-[var(--rule-light)] bg-wood-50"
   >
     <div class="shell">
-      <SectionHead
-        layout="rail"
-        :eyebrow="t({ vi: 'Triển khai', en: 'Delivery' })"
-        :title="t({ vi: 'Từng bước đã làm', en: 'The steps we took' })"
-        :lead="t({
-          vi: `Các bước Lai Huy đã thực hiện ở ${projectName}, từ tiếp nhận hồ sơ đến bàn giao.`,
-          en: `The steps Lai Huy carried out on ${projectName}, from brief to handover.`
-        })"
-      />
-
-      <ul class="mt-10 flex flex-wrap border-y border-[var(--rule-light)]">
-        <li
-          v-for="scope in scopeItems"
-          :key="scope.key"
-          :data-scope-key="scope.key"
-          class="flex items-center gap-3 border-r border-[var(--rule-light)] px-5 py-4 text-sm font-semibold text-ink-950"
+      <!-- A stacked head; the lead names this project's scope, one entry per scope item. -->
+      <div
+        class="section-head max-w-3xl"
+        data-head="stacked"
+      >
+        <p
+          v-reveal.head
+          class="eyebrow reveal"
         >
-          <Icon
-            :name="scope.icon"
-            class="h-5 w-5 text-wood-600"
-          />
-          {{ scope.label }}
-        </li>
-      </ul>
+          {{ t({ vi: 'Triển khai', en: 'Delivery' }) }}
+        </p>
+        <h2
+          v-reveal.head
+          class="home-section-heading reveal mt-4 text-ink-950"
+        >
+          {{ t({ vi: 'Từng bước đã làm', en: 'The steps we took' }) }}
+        </h2>
+        <p
+          v-reveal.head
+          data-delivery-scope
+          class="home-lead-text measure-lead reveal mt-5 text-ink-600"
+        >
+          {{ t({ vi: `Phạm vi ở ${projectName}:`, en: `Scope on ${projectName}:` }) }}
+          <template
+            v-for="(scope, index) in scopeItems"
+            :key="scope.key"
+          >
+            <span
+              :data-scope-key="scope.key"
+              class="font-semibold text-ink-900"
+            >{{ scope.label }}</span>{{ index < scopeItems.length - 1 ? ' · ' : '.' }}
+          </template>
+        </p>
+      </div>
 
+      <!-- The steps as a traced sequence (DESIGN.md "Motion", Trace): the scroll draws a bronze
+           line along each step's top hairline, and a finished step's number warms. -->
       <ol
+        v-trace
         role="list"
         data-delivery-timeline
         class="project-delivery__timeline mt-12"
@@ -58,17 +71,14 @@ const timelineStyle = computed(() => ({ '--phase-count': String(props.phases.len
         <li
           v-for="(phase, index) in phases"
           :key="phase.key"
-          class="relative border-t border-[var(--rule-light)] py-5 md:border-l md:border-t-0 md:px-5"
+          class="trace-step project-delivery__step"
         >
           <span
-            class="home-eyebrow-text block text-wood-600"
+            data-trace-number
+            class="home-stat-value block text-wood-600"
             aria-hidden="true"
           >{{ String(index + 1).padStart(2, '0') }}</span>
-          <Icon
-            :name="phase.icon"
-            class="mt-4 block h-6 w-6 text-ink-950"
-          />
-          <p class="mt-3 text-sm font-semibold text-ink-950">
+          <p class="home-card-heading mt-3 text-ink-950">
             {{ phase.label }}
           </p>
         </li>
@@ -76,7 +86,7 @@ const timelineStyle = computed(() => ({ '--phase-count': String(props.phases.len
 
       <div
         v-if="executionProof.length"
-        class="mt-14 border-t border-[var(--rule-light)] pt-8"
+        class="mt-16"
       >
         <p class="home-eyebrow-text text-wood-600">
           {{ t({ vi: 'Năng lực đứng sau phạm vi này', en: 'What stands behind this scope' }) }}
@@ -85,14 +95,11 @@ const timelineStyle = computed(() => ({ '--phase-count': String(props.phases.len
           <article
             v-for="proof in executionProof"
             :key="proof.id"
+            v-reveal.item.rule
             :data-execution-proof="proof.id"
-            class="border-t-2 border-[var(--bronze)] pt-5"
+            class="reveal border-t border-[var(--rule-light)] pt-6"
           >
-            <Icon
-              :name="proof.icon"
-              class="h-6 w-6 text-wood-600"
-            />
-            <h3 class="home-card-heading mt-4 text-ink-950">
+            <h3 class="home-card-heading text-ink-950">
               {{ proof.title }}
             </h3>
             <p class="mt-3 text-sm leading-[1.7] text-ink-600">
@@ -111,9 +118,18 @@ const timelineStyle = computed(() => ({ '--phase-count': String(props.phases.len
   grid-template-columns: 1fr;
 }
 
+.project-delivery__step {
+  border-top: 1px solid var(--rule-light);
+  padding: 1.25rem 0;
+}
+
 @media (min-width: 768px) {
   .project-delivery__timeline {
     grid-template-columns: repeat(var(--phase-count), minmax(0, 1fr));
+  }
+
+  .project-delivery__step {
+    padding: 1.75rem 1.5rem 0 0;
   }
 }
 </style>

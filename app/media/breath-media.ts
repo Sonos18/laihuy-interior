@@ -24,22 +24,18 @@ export const breathMedia = {
   services: decorative(requireProjectAsset('codi-boutique-hotel', 'projects/codi-boutique-hotel/sanh-don/1.webp'))
 } as const
 
-/** The story and material chapters show a case study's images 0, 1 and 3; the breath starts after. */
-const FIRST_UNUSED_SLOT = 4
-
 /** The narrowest landscape a 21:9 crop can take without cutting the room to a strip. */
 const MIN_BREATH_ASPECT = 1.5
 
 const aspect = (image: MediaImage) => image.width / image.height
 
 /**
- * A case study's breath: the widest landscape photograph after the ones the story and material
- * chapters already use (the first of equals), so the 21:9 crop loses the least of the room. A
- * project without one has no breath (sparse records stay unchanged).
+ * A case study's breath: the widest landscape photograph among the ones the page does not show
+ * anywhere else (the first of equals), so the 21:9 crop loses the least of the room. The caller
+ * passes that unused pool; a project without a landscape in it has no breath.
  */
-export function caseStudyBreath(images: readonly MediaImage[]): MediaImage | undefined {
-  const found = images
-    .slice(FIRST_UNUSED_SLOT)
+export function caseStudyBreath(unused: readonly MediaImage[]): MediaImage | undefined {
+  const found = unused
     .filter(image => aspect(image) >= MIN_BREATH_ASPECT)
     .reduce<MediaImage | undefined>((widest, image) =>
       !widest || aspect(image) > aspect(widest) ? image : widest, undefined)
