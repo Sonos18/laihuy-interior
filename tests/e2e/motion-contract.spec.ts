@@ -160,6 +160,10 @@ test.describe('motion contract', () => {
           .getAnimations()
           .filter(a => a.effect?.getTiming().iterations === Infinity)
           .map(a => (a instanceof CSSAnimation ? a.animationName : a.constructor.name))
+          // DESIGN.md "The One-Shot Rule": the Facts Band beams and the home capabilities
+          // trace are the two owner exceptions (2026-10-28). Names are scoped, so match the
+          // prefix. Anything else that loops is still a failure.
+          .filter(name => !/^(facts-beam-|capability-trace-)/.test(name))
       )
       expect(infinite, 'infinite animations still running').toEqual([])
 
@@ -322,7 +326,9 @@ test.describe('motion contract', () => {
         underline: getComputedStyle(link, '::after').transitionDuration
       }
     })
-    expect(timing.header).toBe('0.28s')
+    // transform on --dur-state (280ms); --header-float, the floating bar's glass
+    // cross-fade, on --dur-float (400ms) — both inside DESIGN.md's 280-400ms for state.
+    expect(timing.header).toBe('0.28s, 0.4s')
     expect(timing.underline).toBe('0.24s')
 
     // Drawer: closing runs on 200ms, opening stays on its own (300ms) rule.

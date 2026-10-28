@@ -1,6 +1,6 @@
 import { expect, test } from './fixtures'
 import { deviation } from './color'
-import { settle } from './helpers'
+import { SCROLLED_Y, scrollTo, settle } from './helpers'
 
 /**
  * The numeric gates that pixels cannot catch — docs/header-footer-art-direction.md §14.1.
@@ -185,9 +185,19 @@ for (const width of [1280, 1440] as const) {
     await page.goto('/', { waitUntil: 'load' })
     await settle(page)
     // NAVIGATION: p = 1, so phone + CTA are present (§5.2, §9).
-    await page.evaluate(() => window.scrollTo(0, 600))
-    // Past the floating bar's 400ms compaction (--dur-float), so the row is at its final size.
-    await page.waitForTimeout(700)
+    //
+    // Waited on, never slept. The old fixed 700ms hoped hydration and the floating bar's
+    // compaction were both done by then; on a slower machine they were not, the row was read
+    // full-bleed (logo 96px instead of the ~18px mark) and the budget came back NaN. scrollTo()
+    // waits for hydration and for the state machine to settle; the bar must then actually be
+    // floating, and its FLIP / transitions must have finished, before anything is measured.
+    await scrollTo(page, SCROLLED_Y)
+    const header = page.locator('header')
+    await expect(header).toHaveAttribute('data-chrome-state', 'nav')
+    await expect(header, 'V11 measures the floating bar, so the header must have detached').toHaveAttribute('data-float', 'on')
+    await page.waitForFunction(() => document.querySelector('header')!
+      .getAnimations({ subtree: true })
+      .every(a => a.playState === 'finished'))
 
     const row = await page.evaluate(() => {
       const q = (s: string) => document.querySelector(s) as HTMLElement
@@ -235,6 +245,13 @@ for (const width of [1280, 1440] as const) {
       `V11 @${width} required=${row.required}px available=${row.available}px SLACK=${row.slack}px  `
       + `(logo ${row.logo} · nav ${row.nav} · lang ${row.lang} · phone ${row.phone} · cta ${row.cta})`
     )
+
+    // A NaN budget means a token the measurement reads is missing — most often a stale
+    // .output built before the floating bar existed. Say so instead of failing on NaN ≥ 8.
+    expect(
+      Number.isFinite(row.available),
+      `V11 — the available width is not a number (${row.available}). Is .output stale? Run \`pnpm build\`.`
+    ).toBe(true)
 
     expect(row.phone, 'O3 — the phone must not return to the NAVIGATION row (§9, FG-16)').toBe(0)
 

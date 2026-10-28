@@ -48,7 +48,7 @@ const sequence = (index: number) => String(props.startAt + index).padStart(2, '0
           :key="service.id"
           v-reveal.item
           data-testid="services-programme"
-          class="group reveal scroll-mt-[calc(var(--header-h)+1rem)] card-link"
+          class="group reveal scroll-mt-[calc(var(--header-anchor)+1rem)] card-link"
         >
           <NuxtLink
             to="/lien-he"
