@@ -2179,6 +2179,50 @@
     bottom: -1px;
   }
 
+  /* `v-count-up`: the real figure stays in place but transparent; the running count is drawn
+     over it from `data-count`. Text-fill, not colour, so the overlay keeps the figure's colour. */
+  .count-up.is-counting {
+    position: relative;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .count-up.is-counting::before {
+    content: attr(data-count);
+    content: attr(data-count) / '';
+    position: absolute;
+    inset: 0;
+    white-space: nowrap;
+    pointer-events: none;
+    font-variant-numeric: tabular-nums;
+    -webkit-text-fill-color: currentColor;
+  }
+
+  /* `v-trace`: the scroll draws a 2px bronze line over each step's hairline. The directive only
+     runs under no-preference, so without it `--trace` is unset and nothing is drawn. */
+  .trace-host {
+    position: relative;
+  }
+
+  .trace-host::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    left: 0;
+    height: 2px;
+    pointer-events: none;
+    background: var(--bronze);
+    transform: scaleX(var(--trace, 0));
+    transform-origin: left;
+  }
+
+  .trace-host--top::after {
+    top: -1px;
+  }
+
+  .trace-host--bottom::after {
+    bottom: -1px;
+  }
+
   /* ── Image arrival (MediaImage) ──────────────────────────────────────────
      MediaImage marks an <img> `is-pending` when it has no decoded data at mount and swaps it to
      `is-arriving` on load: a one-shot fade from 0 on top of the static placeholder. A keyframe,
@@ -2726,5 +2770,17 @@
     .breath__frame {
       aspect-ratio: 21 / 9;
     }
+  }
+}
+
+/* `v-trace`: a traced step's number warms to Bronze Dark. In the utilities layer because the number
+   carries a `text-*` colour utility of its own, which a component rule could never outrank. */
+@layer utilities {
+  .trace-step [data-trace-number] {
+    transition: color var(--dur-hover) var(--ease-editorial);
+  }
+
+  .trace-step[data-traced] [data-trace-number] {
+    color: var(--bronze-dark);
   }
 }

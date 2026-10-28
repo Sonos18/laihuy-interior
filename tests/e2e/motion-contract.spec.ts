@@ -1110,6 +1110,80 @@ test.describe('motion contract', () => {
     expect(probe.traceColor).toBe('rgb(184, 135, 90)')
     expect(probe.traceHeight).toBe('2px')
   })
+
+  test('MOTION-22 a standalone figure counts up over its real value and lands on it', async ({ page }) => {
+    await page.goto(url('/nha-xuong'), { waitUntil: 'load' })
+    await waitForHydration(page)
+
+    const figure = page.locator('[data-monument] dd')
+    await expect(figure).toHaveClass(/is-counting/)
+    const real = (await figure.textContent())?.trim()
+    expect(real).toBe('3.000 m²')
+    expect(await figure.getAttribute('data-count')).toBe('0 m²')
+    const width = (await figure.boundingBox())!.width
+
+    await figure.scrollIntoViewIfNeeded()
+    await expect.poll(async () => {
+      const count = await figure.getAttribute('data-count')
+      return count !== null && count !== '0 m²' && count !== real
+    }, { message: 'the figure passes through intermediate values' }).toBe(true)
+    expect((await figure.textContent())?.trim(), 'the real value stays in the DOM').toBe(real)
+    expect((await figure.boundingBox())!.width, 'the figure keeps its width').toBe(width)
+
+    await expect(figure).not.toHaveClass(/is-counting/, { timeout: 5000 })
+    expect(await figure.getAttribute('data-count')).toBeNull()
+  })
+
+  test('MOTION-22b a figure stays still under reduced motion', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.goto(url('/nha-xuong'), { waitUntil: 'load' })
+    await waitForHydration(page)
+    await expect(page.locator('.count-up, [data-count]:not([data-facts-band] *)')).toHaveCount(0)
+  })
+
+  test('MOTION-23 a sequence of steps is traced by the scroll, step after step', async ({ page }) => {
+    await page.goto(url('/nha-xuong'), { waitUntil: 'load' })
+    await waitForHydration(page)
+
+    const list = page.locator('[data-testid=factory-process-groups]')
+    const traces = () => list.evaluate(el =>
+      Array.from(el.children, step => Number((step as HTMLElement).style.getPropertyValue('--trace'))))
+    const scrollTo = (share: number) => list.evaluate((el, share) => {
+      const rect = el.getBoundingClientRect()
+      window.scrollBy(0, rect.top - innerHeight * 0.85 + (rect.height + innerHeight * 0.25) * share)
+    }, share)
+
+    await scrollTo(-0.2)
+    await expect.poll(traces).toEqual([0, 0, 0, 0])
+
+    await scrollTo(0.375)
+    await expect.poll(async () => {
+      const [a, b, c, d] = await traces()
+      return a === 1 && b! > 0 && b! < 1 && c === 0 && d === 0
+    }, { message: 'the first step is traced, the second half way, the rest not yet' }).toBe(true)
+    await expect(list.locator('[data-testid=factory-process-group]').first()).toHaveAttribute('data-traced', '')
+
+    const line = await list.locator('[data-trace-rule]').first().evaluate((el) => {
+      const after = getComputedStyle(el, '::after')
+      return { height: after.height, top: after.top, color: after.backgroundColor, animation: after.animationName }
+    })
+    expect(line).toEqual({ height: '2px', top: '-1px', color: 'rgb(184, 135, 90)', animation: 'none' })
+    await expect.poll(() => list.locator('[data-trace-number]').first().evaluate(el => getComputedStyle(el).color),
+      { message: 'a traced step warms its number to Bronze Dark' }).toBe('rgb(140, 98, 57)')
+
+    await scrollTo(1.1)
+    await expect.poll(traces).toEqual([1, 1, 1, 1])
+
+    await scrollTo(-0.2)
+    await expect.poll(traces, { message: 'scrolling back undraws the line' }).toEqual([0, 0, 0, 0])
+  })
+
+  test('MOTION-23b steps carry no trace under reduced motion', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.goto(url('/nha-xuong'), { waitUntil: 'load' })
+    await waitForHydration(page)
+    await expect(page.locator('.trace-host')).toHaveCount(0)
+  })
 })
 
 async function openDrawer(page: Page): Promise<void> {

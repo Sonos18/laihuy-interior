@@ -44,6 +44,7 @@ const mediaClass = (index: number) => index % 2 === 1
     </div>
 
     <ol
+      v-trace
       role="list"
       data-testid="services-journey-layout"
       class="shell grid grid-cols-1 gap-16 md:gap-24"
@@ -62,6 +63,7 @@ const mediaClass = (index: number) => index % 2 === 1
           :class="copyClass(index)"
         >
           <span
+            data-trace-number
             data-testid="services-sequence"
             class="home-eyebrow-text block text-wood-600"
             aria-hidden="true"
@@ -74,7 +76,10 @@ const mediaClass = (index: number) => index % 2 === 1
           <p class="mt-5 text-base leading-[1.7] text-ink-600">
             {{ t(service.description) }}
           </p>
-          <ul class="mt-7 space-y-3 border-t border-[var(--rule-light)] pt-6 text-base leading-[1.7] text-ink-950">
+          <ul
+            data-trace-rule
+            class="mt-7 space-y-3 border-t border-[var(--rule-light)] pt-6 text-base leading-[1.7] text-ink-950"
+          >
             <li
               v-for="detail in ta(service.details)"
               :key="detail"

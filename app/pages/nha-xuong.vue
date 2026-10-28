@@ -170,6 +170,7 @@ usePageSeo({
           <!-- The four QC checkpoints run in a fixed order (incoming materials → drawings →
                in production → sign-off), so they keep Label-size sequence markers. -->
           <ol
+            v-trace
             role="list"
             class="mt-8 grid gap-4"
           >
@@ -180,6 +181,7 @@ usePageSeo({
               class="flex gap-4 border-b border-[var(--rule-light)] pb-4"
             >
               <span
+                data-trace-number
                 class="home-eyebrow-text mt-1.5 shrink-0 tabular-nums text-wood-600"
                 aria-hidden="true"
               >
