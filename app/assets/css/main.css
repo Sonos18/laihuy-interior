@@ -195,6 +195,9 @@
   --header-float-inset-xl: 0.75rem; /* 12px                     ≥ xl   */
   --header-float-h: 3.25rem; /*  52px floating bar height < xl          */
   --header-float-h-xl: 3.5rem; /*  56px                     ≥ xl          */
+  /* Bottom of the floating bar. Any anchor jump leaves the page top, so the header has
+     floated by the time it lands: scroll anchors clear THIS, not --header-h. */
+  --header-anchor: calc(var(--header-float-inset) + var(--header-float-h));
   --logo-mark-ratio: 0.557; /* the mark alone: 118 × 212 of the 424 × 212 asset */
   --header-scrim-h: 10rem; /* 160px                                    */
   --logo-h-header: 2.5rem; /*  40px OPTICAL (trimmed) < xl             */
