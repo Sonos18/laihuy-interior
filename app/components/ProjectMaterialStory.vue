@@ -25,7 +25,7 @@ const materialImage = computed(() => props.images[1])
     v-if="experience || highlights.length || materials.length || craftsmanship || quote"
     id="materials"
     data-project-chapter="materials"
-    class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] border-t border-[var(--rule-light)] bg-[var(--color-ivory)] text-ink-950"
+    class="section-y scroll-mt-[calc(var(--header-anchor)+var(--subnav-h)+1.5rem)] border-t border-[var(--rule-light)] bg-[var(--color-ivory)] text-ink-950"
   >
     <div class="shell space-y-16">
       <!-- A split head (DESIGN.md "Section heads"); without the experience lead it is stacked. -->

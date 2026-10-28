@@ -53,7 +53,7 @@ onMounted(() => {
     v-if="beats.length"
     id="story"
     data-project-chapter="story"
-    class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] bg-wood-50"
+    class="section-y scroll-mt-[calc(var(--header-anchor)+var(--subnav-h)+1.5rem)] bg-wood-50"
   >
     <div class="shell">
       <!-- The case study's lead section: a rail head with the page's Statement heading. -->

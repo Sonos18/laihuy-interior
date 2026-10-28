@@ -216,7 +216,7 @@ usePageSeo({
       v-if="mediaFlow.eligible.length"
       id="gallery"
       data-project-chapter="gallery"
-      class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] border-t border-[var(--rule-light)] bg-[var(--color-ivory)] text-ink-950"
+      class="section-y scroll-mt-[calc(var(--header-anchor)+var(--subnav-h)+1.5rem)] border-t border-[var(--rule-light)] bg-[var(--color-ivory)] text-ink-950"
       :data-media-flow="mediaFlow.isLongMedia ? 'long' : 'short'"
       :data-eligible-media="mediaFlow.eligible.length"
       :data-inline-media="filteredGallery.length"

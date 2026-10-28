@@ -21,7 +21,7 @@ const timelineStyle = computed(() => ({ '--phase-count': String(props.phases.len
     v-if="scopeItems.length"
     id="delivery"
     data-project-chapter="delivery"
-    class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] border-t border-[var(--rule-light)] bg-wood-50"
+    class="section-y scroll-mt-[calc(var(--header-anchor)+var(--subnav-h)+1.5rem)] border-t border-[var(--rule-light)] bg-wood-50"
   >
     <div class="shell">
       <!-- A stacked head; the lead names this project's scope, one entry per scope item. -->
