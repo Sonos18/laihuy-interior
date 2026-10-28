@@ -160,6 +160,10 @@
   --dur-arrive: 400ms; /* a photograph (or its placeholder) arriving once its bytes land */
   --dur-page-out: 120ms; /* route change: old page out on --ease-exit... */
   --dur-page-in: 200ms; /* ...then the new page in on --ease-editorial */
+  --ease-travel: cubic-bezier(0.45, 0, 0.25, 1); /* on-screen travel: the sheen, the curtain, a rule trace */
+  --dur-curtain: 1100ms; /* a standalone photograph's frame opening (v-reveal.curtain) */
+  --dur-rule: 1300ms; /* a hairline traced in bronze (900ms) then faded back (400ms) */
+  --dur-hero-word: 900ms; /* one word of a hero headline rising from its mask */
 
   /* ── L1 · Radius / shadow ───────────────────────────────────────────── */
   --radius-pill: 9999px;
@@ -555,6 +559,72 @@
 @keyframes reveal-fade {
   from {
     opacity: 0;
+  }
+}
+
+/* `v-reveal.curtain`: the frame of a standalone photograph opens left to right. Opacity is
+   pinned to 1 in the `from` keyframe so the hidden state (opacity 0) hands over to the wipe. */
+@keyframes reveal-curtain {
+  from {
+    opacity: 1;
+    clip-path: inset(0 100% 0 0);
+  }
+
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* The 1px bronze edge that rides the curtain: the pseudo-element's right edge is the line, so a
+   translate from -100% to 0 puts it on the wipe's leading edge, then it fades as it lands. */
+@keyframes curtain-edge {
+  0% {
+    opacity: 1;
+    transform: translateX(-100%);
+  }
+
+  90% {
+    opacity: 1;
+    transform: none;
+  }
+
+  100% {
+    opacity: 0;
+    transform: none;
+  }
+}
+
+/* `v-reveal.rule`: a 2px bronze line traces the row's hairline, holds, and fades back to it. */
+@keyframes rule-trace {
+  0% {
+    opacity: 1;
+    transform: scaleX(0);
+    animation-timing-function: var(--ease-travel);
+  }
+
+  69% {
+    opacity: 1;
+    transform: scaleX(1);
+    animation-timing-function: var(--ease-exit);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scaleX(1);
+  }
+}
+
+/* A hero headline word rising from behind its mask; only a `from`, so it ends at rest. */
+@keyframes hero-word-rise {
+  from {
+    transform: translateY(110%);
+  }
+}
+
+/* The hero kicker's bronze rule drawing out from the left. */
+@keyframes kicker-rule {
+  from {
+    transform: scaleX(0);
   }
 }
 
@@ -2065,6 +2135,50 @@
     animation-name: reveal-fade;
   }
 
+  /* `v-reveal.curtain`: a large standalone photograph opens as a curtain instead of fading
+     (DESIGN.md "Motion", Curtain). The picture inside does not move. */
+  html.reveal-ready .reveal.reveal-curtain.is-visible {
+    animation-name: reveal-curtain;
+    animation-duration: var(--dur-curtain);
+    animation-timing-function: var(--ease-travel);
+  }
+
+  html.reveal-ready .reveal.reveal-curtain.is-visible::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(to right, transparent calc(100% - 1px), var(--bronze) calc(100% - 1px));
+    animation: curtain-edge var(--dur-curtain) var(--ease-travel) both;
+  }
+
+  /* `v-reveal.rule`: the row keeps its hairline; a 2px bronze line traces over it and fades. */
+  html.reveal-ready .reveal.reveal-rule {
+    position: relative;
+  }
+
+  html.reveal-ready .reveal.reveal-rule.is-visible::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    left: 0;
+    height: 2px;
+    pointer-events: none;
+    background: var(--bronze);
+    transform-origin: left;
+    animation: rule-trace var(--dur-rule) both;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  html.reveal-ready .reveal.reveal-rule--top.is-visible::after {
+    top: -1px;
+  }
+
+  html.reveal-ready .reveal.reveal-rule--bottom.is-visible::after {
+    bottom: -1px;
+  }
+
   /* ── Image arrival (MediaImage) ──────────────────────────────────────────
      MediaImage marks an <img> `is-pending` when it has no decoded data at mount and swaps it to
      `is-arriving` on load: a one-shot fade from 0 on top of the static placeholder. A keyframe,
@@ -2147,6 +2261,11 @@
 
     html.reveal-ready .reveal.is-visible {
       animation: none;
+    }
+
+    html.reveal-ready .reveal.reveal-curtain.is-visible::after,
+    html.reveal-ready .reveal.reveal-rule.is-visible::after {
+      content: none;
     }
 
     .hero-image {
@@ -2457,6 +2576,34 @@
     height: 1px;
     background: var(--bronze);
     flex-shrink: 0;
+    transform-origin: left;
+  }
+
+  /* Hero headline words (HeroWords.vue, DESIGN.md "Hero headline"). Each word is its own mask:
+     inline-flex, not inline-block, because an inline-block with hidden overflow takes its
+     baseline from its bottom margin edge and would lift every word off the line. The padding
+     (cancelled by the negative margin) keeps Vietnamese stacked diacritics and descenders inside
+     the mask. Pure CSS from the first frame: the server-painted headline never shows then hides. */
+  .hero-word {
+    display: inline-flex;
+    overflow: hidden;
+    margin: -0.18em -0.06em -0.14em;
+    padding: 0.18em 0.06em 0.14em;
+  }
+
+  .hero-word__inner {
+    display: inline-block;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-word__inner {
+      animation: hero-word-rise var(--dur-hero-word) var(--ease-editorial) backwards;
+      animation-delay: calc(120ms + min(var(--word, 0) * 45ms, 540ms));
+    }
+
+    .hero-kicker::before {
+      animation: kicker-rule 700ms var(--ease-editorial) 120ms backwards;
+    }
   }
 
   .home-meta-text {

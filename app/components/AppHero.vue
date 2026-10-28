@@ -39,6 +39,9 @@ const { t } = useLanguage()
 
 const altText = computed(() => (props.image.alt === '' ? '' : t(props.image.alt)))
 
+// The specialTitle continues the headline's word stagger where the title leaves off.
+const titleWordCount = computed(() => (props.title ?? '').trim().split(/\s+/).filter(Boolean).length)
+
 const isCentered = computed(() => props.anchor === 'bottom-center')
 
 // Every AppHero page shares the HOMEPAGE hero's height (--hero-min-h-home), so the photograph
@@ -211,14 +214,16 @@ const bottomWashClass = computed(() => {
             {{ topic }}
           </p>
 
+          <!-- The headline arrives word by word in CSS (HeroWords), so it carries no scroll reveal. -->
           <h1
             v-if="title"
-            v-reveal="80"
-            class="home-display-title reveal max-w-5xl font-display font-medium text-white"
+            class="home-display-title max-w-5xl font-display font-medium text-white"
           >
-            {{ title }}
-            <span v-if="specialTitle">
-              {{ specialTitle }}
+            <HeroWords :text="title" />{{ specialTitle ? ' ' : '' }}<span v-if="specialTitle">
+              <HeroWords
+                :text="specialTitle"
+                :start="titleWordCount"
+              />
             </span>
           </h1>
 

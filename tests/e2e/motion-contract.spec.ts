@@ -82,6 +82,7 @@ test.describe('motion contract', () => {
         hydratedInView: boolean
         isVisible: boolean
         isImage: boolean
+        isCurtain: boolean
         inlineTransitionDelay: string
         animationName: string
         revealDelay: string
@@ -98,6 +99,7 @@ test.describe('motion contract', () => {
           hydratedInView,
           isVisible: el.classList.contains('is-visible'),
           isImage: el.classList.contains('reveal-image'),
+          isCurtain: el.classList.contains('reveal-curtain'),
           inlineTransitionDelay: el.style.transitionDelay,
           animationName: getComputedStyle(el).animationName,
           revealDelay: el.style.getPropertyValue('--reveal-delay').trim()
@@ -117,8 +119,9 @@ test.describe('motion contract', () => {
         continue
       }
       expect(r.isVisible, `${r.label} never became visible`).toBe(true)
-      // Photographs fade, everything else rises (DESIGN.md "Motion", scroll reveal roles).
-      expect(r.animationName, `${r.label} animation`).toBe(r.isImage ? 'reveal-fade' : 'reveal-rise')
+      // Photographs fade, a standalone photograph opens as a curtain, everything else rises
+      // (DESIGN.md "Motion", scroll reveal roles).
+      expect(r.animationName, `${r.label} animation`).toBe(r.isCurtain ? 'reveal-curtain' : r.isImage ? 'reveal-fade' : 'reveal-rise')
       if (r.revealDelay !== '') {
         // The directive clamps every bound delay to 320ms.
         expect(Number.parseFloat(r.revealDelay), `${r.label} --reveal-delay`).toBeLessThanOrEqual(320)
@@ -1011,6 +1014,101 @@ test.describe('motion contract', () => {
     expect(left, `clip-path ${seam[1]!.clip}`).toBeDefined()
     expect(Number(left) / 100).toBeCloseTo(seam[1]!.wipe, 2)
     expect(Number(right) / 100).toBeCloseTo(1 - seam[1]!.wipe, 2)
+  })
+
+  test('MOTION-19 a hero headline arrives word by word, in reading order, from the first frame', async ({ page }) => {
+    await page.goto(url('/dich-vu'), { waitUntil: 'load' })
+    await waitForHydration(page)
+
+    const hero = await page.locator('main h1').evaluate((h1) => {
+      const words = Array.from(h1.querySelectorAll<HTMLElement>('.hero-word__inner'))
+      return {
+        text: h1.textContent?.replace(/\s+/g, ' ').trim(),
+        opacity: getComputedStyle(h1).opacity,
+        names: Array.from(new Set(words.map(w => getComputedStyle(w).animationName))),
+        delays: words.map(w => Number.parseFloat(getComputedStyle(w).animationDelay)),
+        masks: Array.from(new Set(words.map(w => getComputedStyle(w.parentElement!).overflow)))
+      }
+    })
+    // One sentence, word spacing intact (the title and its second half join with a space).
+    expect(hero.text).toBe('Ba dịch vụ, một đầu mối')
+    expect(hero.opacity).toBe('1')
+    expect(hero.names).toEqual(['hero-word-rise'])
+    expect(hero.masks).toEqual(['hidden'])
+    expect(hero.delays.length).toBeGreaterThan(2)
+    expect(hero.delays, 'each word starts after the one before it').toEqual([...hero.delays].sort((a, b) => a - b))
+    expect(Math.max(...hero.delays)).toBeLessThanOrEqual(0.66)
+  })
+
+  test('MOTION-19b the hero headline is still under reduced motion', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.goto(url('/'), { waitUntil: 'load' })
+    const names = await page.locator('main h1 .hero-word__inner').evaluateAll(words =>
+      Array.from(new Set(words.map(w => getComputedStyle(w).animationName))))
+    expect(names).toEqual(['none'])
+    expect(await page.locator('main .hero-kicker').evaluate(el => getComputedStyle(el, '::before').animationName)).toBe('none')
+  })
+
+  test('MOTION-20 a standalone photograph opens as a curtain with a bronze edge, the picture stays still', async ({ page }) => {
+    await stubImages(page)
+    await page.goto(url('/dich-vu'), { waitUntil: 'load' })
+    await waitForHydration(page)
+
+    await page.evaluate(() => document.querySelector('.reveal-curtain.reveal-hidden')?.setAttribute('data-test-curtain', ''))
+    const frame = page.locator('[data-test-curtain]')
+    await expect(frame).toHaveCount(1)
+    await frame.scrollIntoViewIfNeeded()
+    await expect(frame).toHaveClass(/is-visible/)
+
+    const probe = await frame.evaluate(async (el) => {
+      const img = el.querySelector('img')!
+      const samples: string[] = []
+      for (let i = 0; i < 12; i++) {
+        samples.push(getComputedStyle(img).transform)
+        await new Promise(resolve => requestAnimationFrame(resolve))
+      }
+      const edge = getComputedStyle(el, '::after')
+      return {
+        name: getComputedStyle(el).animationName,
+        edge: edge.animationName,
+        edgeImage: edge.backgroundImage,
+        imageTransforms: Array.from(new Set(samples))
+      }
+    })
+    expect(probe.name).toBe('reveal-curtain')
+    expect(probe.edge).toBe('curtain-edge')
+    expect(probe.edgeImage).toContain('rgb(184, 135, 90)')
+    expect(probe.imageTransforms, 'the photograph never moves').toEqual(['none'])
+  })
+
+  test('MOTION-21 a list row traces its hairline in bronze and keeps it', async ({ page }) => {
+    await page.goto(url('/gioi-thieu'), { waitUntil: 'load' })
+    await waitForHydration(page)
+
+    await page.evaluate(() => document.querySelector('.reveal-rule.reveal-hidden')?.setAttribute('data-test-rule', ''))
+    const row = page.locator('[data-test-rule]')
+    await expect(row).toHaveCount(1)
+    await row.scrollIntoViewIfNeeded()
+    await expect(row).toHaveClass(/is-visible/)
+
+    const probe = await row.evaluate((el) => {
+      const style = getComputedStyle(el)
+      const trace = getComputedStyle(el, '::after')
+      return {
+        side: el.classList.contains('reveal-rule--bottom') ? 'bottom' : 'top',
+        hairline: style.borderBottomWidth,
+        hairlineColor: style.borderBottomColor,
+        trace: trace.animationName,
+        traceColor: trace.backgroundColor,
+        traceHeight: trace.height
+      }
+    })
+    expect(probe.side).toBe('bottom')
+    expect(probe.hairline).toBe('1px')
+    expect(probe.hairlineColor, 'the hairline is never hidden').not.toBe('rgba(0, 0, 0, 0)')
+    expect(probe.trace).toBe('rule-trace')
+    expect(probe.traceColor).toBe('rgb(184, 135, 90)')
+    expect(probe.traceHeight).toBe('2px')
   })
 })
 

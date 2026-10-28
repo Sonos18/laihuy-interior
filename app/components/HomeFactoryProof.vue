@@ -35,9 +35,10 @@ const { t } = useLanguage()
         >
           <div class="relative aspect-[16/9] w-full md:aspect-[21/9]">
             <MediaImage
+              v-reveal.curtain
               :image="image"
               sizes="sm:100vw md:100vw lg:100vw xl:1280px"
-              class="absolute inset-0 h-full w-full"
+              class="reveal absolute inset-0 h-full w-full"
               img-class="object-cover object-center w-full h-full transition-transform duration-[var(--dur-image)] ease-[var(--ease-editorial)] hover:scale-[1.02]"
             />
           </div>

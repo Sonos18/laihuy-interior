@@ -20,6 +20,11 @@
 //                    element in reading order, capped); every later row reveals without delay.
 //   v-reveal.image   Opacity only, no rise: photographs never slide. Combine with `.item` for an
 //                    image-led card in a grid.
+//   v-reveal.curtain A large standalone photograph: its frame opens left to right with a bronze
+//                    edge riding the wipe, instead of fading. Never on a card or a thumbnail.
+//   v-reveal.rule    A list row or cell whose separator is a hairline: a bronze line traces that
+//                    hairline (the bottom border if the row has one, else the top) and fades
+//                    back. Composes with `.item` and takes its stagger.
 //   v-reveal         Any other single element: the rise, no delay. A numeric value
 //                    (`v-reveal="80"`) is the authored delay of a hero sequence and is the only
 //                    place a bound number is honoured.
@@ -79,6 +84,7 @@ function setDelay(el: HTMLElement, ms: number) {
 
 export default defineNuxtPlugin((nuxtApp) => {
   let observer: IntersectionObserver | null = null
+  let curtainObserver: IntersectionObserver | null = null
 
   if (import.meta.client) {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -123,6 +129,20 @@ export default defineNuxtPlugin((nuxtApp) => {
           })
         },
         { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+      )
+
+      // A curtain waits until a third of the photograph is on screen: started at the general
+      // 12% it would open mostly below the fold, where nobody sees the wipe.
+      curtainObserver = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting && entry.target instanceof HTMLElement) {
+              show(entry.target)
+              curtainObserver?.unobserve(entry.target)
+            }
+          }
+        },
+        { threshold: 0.33 }
       )
 
       // A hero photograph that has no decoded data yet is held at opacity 0 (`.is-pending`) so
@@ -170,7 +190,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         return
       }
 
-      const { head, item, image } = binding.modifiers
+      const { head, item, image, curtain, rule } = binding.modifiers
 
       // Painted by the server and in view right now: leave it visible, never observe it. An item
       // is still marked as a member of its grid, so a grid that straddles the fold is measured
@@ -187,8 +207,16 @@ export default defineNuxtPlugin((nuxtApp) => {
       // directive on a component root (which cannot always take a class) working too.
       el.classList.add('reveal', 'reveal-hidden')
 
-      if (image) {
+      if (curtain) {
+        el.classList.add('reveal-curtain')
+      } else if (image) {
         el.classList.add('reveal-image')
+      }
+
+      if (rule) {
+        // A style read, not a layout read: the trace follows whichever hairline the row draws.
+        const side = Number.parseFloat(getComputedStyle(el).borderBottomWidth) > 0 ? 'bottom' : 'top'
+        el.classList.add('reveal-rule', `reveal-rule--${side}`)
       }
 
       if (head) {
@@ -201,10 +229,15 @@ export default defineNuxtPlugin((nuxtApp) => {
         setDelay(el, Math.min(binding.value, MAX_REVEAL_DELAY_MS))
       }
 
-      observer.observe(el)
+      if (curtain) {
+        curtainObserver?.observe(el)
+      } else {
+        observer.observe(el)
+      }
     },
     unmounted(el: HTMLElement) {
       observer?.unobserve(el)
+      curtainObserver?.unobserve(el)
     }
   })
 })

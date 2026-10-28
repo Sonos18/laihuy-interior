@@ -141,7 +141,7 @@ usePageSeo({
             <li
               v-for="response in aboutPageContent.problem.responses"
               :key="response.id"
-              v-reveal.item
+              v-reveal.item.rule
               class="reveal grid gap-3 border-b border-[var(--rule-light)] py-6 sm:grid-cols-[0.8fr_1.2fr] sm:gap-8"
             >
               <h3 class="home-card-heading text-ink-950">
@@ -187,9 +187,10 @@ usePageSeo({
           class="mt-16 grid gap-5 md:mt-20 md:grid-cols-[1.15fr_0.85fr]"
         >
           <MediaImage
+            v-reveal.curtain
             :image="factoryImages.main"
             sizes="sm:100vw md:58vw"
-            class="min-h-72 rounded-[4px] bg-ink-100 md:min-h-full"
+            class="reveal min-h-72 rounded-[4px] bg-ink-100 md:min-h-full"
             img-class="object-center"
           />
           <div class="grid gap-5">

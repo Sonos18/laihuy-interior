@@ -99,8 +99,9 @@ usePageSeo({
           class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center"
         >
           <MediaImage
+            v-reveal.curtain
             :image="factoryMedia.facade"
-            class="rounded-[4px] bg-ink-100"
+            class="reveal rounded-[4px] bg-ink-100"
           />
           <div>
             <SectionHead
@@ -117,8 +118,9 @@ usePageSeo({
               <article
                 v-for="pillar in factoryPillars"
                 :key="pillar.id"
+                v-reveal.item.rule
                 data-testid="factory-pillar"
-                class="border-t border-ink-200 pt-5"
+                class="reveal border-t border-ink-200 pt-5"
               >
                 <Icon
                   :name="pillar.icon"
