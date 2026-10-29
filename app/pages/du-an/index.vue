@@ -57,6 +57,13 @@ const filteredArchive = computed(() =>
 
 const scopeLine = (project: Project) => ta(project.scope).join(' · ')
 
+// Under reduced motion the reflow has no transitions, so the group runs without CSS: Vue then
+// swaps the cards in the same task instead of holding the dropped ones for a frame.
+const reflow = ref(true)
+onMounted(() => {
+  reflow.value = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+})
+
 // A card leaving the archive is taken out of the grid flow so the others can move at once; it keeps
 // the box of the cell it held while it fades.
 function holdLeavingCell(el: Element) {
@@ -196,6 +203,7 @@ usePageSeo({
         <TransitionGroup
           tag="div"
           name="archive"
+          :css="reflow"
           data-testid="projects-grid"
           class="relative mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
           @before-leave="holdLeavingCell"

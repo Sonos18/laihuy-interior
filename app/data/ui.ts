@@ -87,13 +87,7 @@ export const uiText = {
     allProjects: { vi: 'Xem tất cả dự án', en: 'View all projects' },
     sendCv: { vi: 'Gửi CV qua email', en: 'Send your CV by email' }
   },
-  galleryCarousel: {
-    region: { vi: 'Bộ sưu tập hình ảnh', en: 'Image gallery' },
-    role: { vi: 'trình chiếu', en: 'carousel' },
-    previous: { vi: 'Ảnh trước', en: 'Previous image' },
-    next: { vi: 'Ảnh tiếp theo', en: 'Next image' },
-    pause: { vi: 'Tạm dừng trình chiếu', en: 'Pause slideshow' },
-    play: { vi: 'Tiếp tục trình chiếu', en: 'Resume slideshow' },
+  galleryTile: {
     enlarge: { vi: 'Phóng to ảnh', en: 'Enlarge image' },
     image: { vi: 'Ảnh', en: 'Image' }
   },

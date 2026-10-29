@@ -14,8 +14,10 @@ const props = defineProps<{
 }>()
 
 const { t } = useLanguage()
-const experienceImage = computed(() => props.images[1] ?? props.images[0])
-const materialImage = computed(() => props.images[3] ?? props.images[0])
+// Two photographs the rest of the page does not show (each image has one home). A short set has
+// none to spare, so the chapter is text only.
+const experienceImage = computed(() => props.images[0])
+const materialImage = computed(() => props.images[1])
 </script>
 
 <template>
@@ -23,7 +25,7 @@ const materialImage = computed(() => props.images[3] ?? props.images[0])
     v-if="experience || highlights.length || materials.length || craftsmanship || quote"
     id="materials"
     data-project-chapter="materials"
-    class="section-y scroll-mt-[calc(var(--header-h)+var(--subnav-h)+1rem)] border-t border-[var(--rule-light)] bg-[var(--color-ivory)] text-ink-950"
+    class="section-y scroll-mt-[calc(var(--header-anchor)+var(--subnav-h)+1.5rem)] border-t border-[var(--rule-light)] bg-[var(--color-ivory)] text-ink-950"
   >
     <div class="shell space-y-16">
       <!-- A split head (DESIGN.md "Section heads"); without the experience lead it is stacked. -->
@@ -60,9 +62,10 @@ const materialImage = computed(() => props.images[3] ?? props.images[0])
         class="overflow-hidden rounded-[4px]"
       >
         <MediaImage
+          v-reveal.curtain
           :image="experienceImage"
           preset="gallery"
-          class="aspect-[16/8] w-full"
+          class="reveal aspect-[16/8] w-full"
           img-class="rounded-[4px]"
         />
       </figure>
@@ -78,7 +81,8 @@ const materialImage = computed(() => props.images[3] ?? props.images[0])
           <li
             v-for="(highlight, index) in highlights"
             :key="highlight"
-            class="grid grid-cols-[3rem_1fr] gap-4 py-5"
+            v-reveal.item.rule
+            class="reveal grid grid-cols-[3rem_1fr] gap-4 py-5"
           >
             <span class="text-xs font-semibold text-wood-600">{{ String(index + 1).padStart(2, '0') }}</span>
             <span class="text-base leading-[1.7] text-ink-950">{{ highlight }}</span>
@@ -86,9 +90,12 @@ const materialImage = computed(() => props.images[3] ?? props.images[0])
         </ul>
       </div>
 
+      <!-- The material palette: beside its photograph when there is one, otherwise laid out like
+           the design details above (label column, list column). -->
       <div
         v-if="materials.length"
-        class="grid gap-10 md:grid-cols-2 md:items-start"
+        class="grid gap-10 md:items-start"
+        :class="materialImage ? 'md:grid-cols-2' : 'md:grid-cols-[0.65fr_1.35fr] gap-8'"
       >
         <figure
           v-if="materialImage"
@@ -101,21 +108,31 @@ const materialImage = computed(() => props.images[3] ?? props.images[0])
             img-class="rounded-[4px]"
           />
         </figure>
+        <p
+          v-if="!materialImage"
+          class="home-eyebrow-text text-wood-600"
+        >
+          {{ t({ vi: 'Bảng vật liệu', en: 'Material palette' }) }}
+        </p>
         <div>
-          <p class="home-eyebrow-text text-wood-600">
+          <p
+            v-if="materialImage"
+            class="home-eyebrow-text mb-5 text-wood-600"
+          >
             {{ t({ vi: 'Bảng vật liệu', en: 'Material palette' }) }}
           </p>
-          <ul class="mt-5 divide-y divide-[var(--rule-light)] border-y border-[var(--rule-light)]">
+          <ul class="divide-y divide-[var(--rule-light)] border-y border-[var(--rule-light)]">
             <li
-              v-for="material in materials"
+              v-for="(material, index) in materials"
               :key="material"
-              class="flex gap-3 py-4 text-base leading-[1.7] text-ink-600"
+              v-reveal.item.rule
+              class="reveal grid grid-cols-[3rem_1fr] gap-4 py-4 text-base leading-[1.7] text-ink-600"
             >
-              <Icon
-                name="i-lucide-square-stack"
-                class="mt-1 h-5 w-5 shrink-0 text-wood-600"
-              />
-              {{ material }}
+              <span
+                class="pt-1 text-xs font-semibold text-wood-600"
+                aria-hidden="true"
+              >{{ String.fromCharCode(65 + index) }}</span>
+              <span>{{ material }}</span>
             </li>
           </ul>
         </div>

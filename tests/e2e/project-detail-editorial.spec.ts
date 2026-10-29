@@ -80,7 +80,7 @@ test('PD-EDITORIAL-03 rich and sparse projects share the approved chapter order'
     expect(await page.locator('[data-project-chapter]').evaluateAll(elements =>
       elements.map(element => element.getAttribute('data-project-chapter'))
     )).toEqual(['hero', 'story', 'gallery', 'delivery', 'materials', 'related', 'finale'])
-    expect(await page.locator('[data-project-subnav] a').evaluateAll(elements =>
+    expect(await page.locator('[data-project-subnav] a[data-ruler-item]').evaluateAll(elements =>
       elements.map(element => element.getAttribute('href'))
     )).toEqual(['#story', '#gallery', '#delivery', '#materials'])
     await expect(page.locator('[data-project-chapter="finale"]'))

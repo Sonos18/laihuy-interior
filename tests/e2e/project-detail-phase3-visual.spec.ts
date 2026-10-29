@@ -104,94 +104,59 @@ for (const locale of ['vi', 'en'] as const) {
       900
     )
 
-    // The facts zone sits on Raw Silk (var(--color-ivory)) and the rail itself on Paper White:
-    // warm light below the hero photograph, never an obsidian band.
-    const { zoneBg, expectedRawSilk, stripColor, actualRailBg } = await page.evaluate(() => {
+    // The facts row sits on Linen under the hero photograph (DESIGN.md "Project facts"): warm
+    // light, never an obsidian band, and no boxed rail of its own.
+    const facts = await page.evaluate(() => {
       const rail = document.querySelector('[data-project-facts]')
       const zone = rail?.closest('[data-project-facts-zone]') ?? null
-
       const probe = document.createElement('div')
-      probe.style.backgroundColor = 'var(--color-ivory)'
-      document.body.appendChild(probe)
-      const expectedRawSilk = getComputedStyle(probe).backgroundColor
-      probe.remove()
-
-      // Sample the seam directly between AppHero and the facts rail (8px above the rail)
-      let stripColor = ''
-      if (rail) {
-        const rect = rail.getBoundingClientRect()
-        const el = document.elementFromPoint(rect.left + 24, rect.top - 8)
-        let cur: HTMLElement | null = el as HTMLElement
-        while (cur && cur !== document.documentElement) {
-          const bg = getComputedStyle(cur).backgroundColor
-          if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
-            stripColor = bg
-            break
-          }
-          cur = cur.parentElement
-        }
-      }
-
-      return {
-        zoneBg: zone ? getComputedStyle(zone).backgroundColor : '',
-        expectedRawSilk,
-        stripColor,
-        actualRailBg: rail ? getComputedStyle(rail).backgroundColor : ''
-      }
-    })
-
-    expect(zoneBg).toBe(expectedRawSilk)
-    expect(stripColor).toBe(expectedRawSilk)
-    expect(actualRailBg).toBe('rgb(255, 255, 255)')
-
-    // Specs rail: shell-bounded, Plaster Line hairline, 4px edge, flat at rest
-    const railMetrics = await page.evaluate(() => {
-      const rail = document.querySelector('[data-project-facts]')
-      if (!rail) return null
-      const rect = rail.getBoundingClientRect()
-      const style = getComputedStyle(rail)
-
-      return {
-        width: rect.width,
-        windowWidth: window.innerWidth,
-        borderColor: style.borderTopColor,
-        borderRadius: parseFloat(style.borderTopLeftRadius) || 0,
-        boxShadow: style.boxShadow
-      }
-    })
-
-    expect(railMetrics).not.toBeNull()
-    expect(railMetrics!.width).toBeLessThan(railMetrics!.windowWidth)
-    // Plaster Line #d8d2ca
-    expect(railMetrics!.borderColor).toBe('rgb(216, 210, 202)')
-    expect(railMetrics!.borderRadius).toBe(4)
-    expect(railMetrics!.boxShadow).toBe('none')
-
-    // Fact dividers resolve to the light-surface hairline (--rule-light)
-    const { actualBorder, expectedBorder } = await page.evaluate(() => {
-      const factEl = document.querySelector('[data-project-fact]')
-      const actualBorder = factEl ? getComputedStyle(factEl).borderBottomColor : ''
-      const probe = document.createElement('div')
+      probe.style.backgroundColor = 'var(--color-wood-50)'
       probe.style.borderBottomColor = 'var(--rule-light)'
       document.body.appendChild(probe)
-      const expectedBorder = getComputedStyle(probe).borderBottomColor
+      const expectedLinen = getComputedStyle(probe).backgroundColor
+      const expectedRule = getComputedStyle(probe).borderBottomColor
       probe.remove()
-      return { actualBorder, expectedBorder }
+      const zoneStyle = zone ? getComputedStyle(zone) : null
+      const second = document.querySelectorAll('[data-project-fact]')[1]
+      return {
+        zoneBg: zoneStyle?.backgroundColor ?? '',
+        zoneRule: zoneStyle?.borderBottomColor ?? '',
+        zoneRuleWidth: zoneStyle?.borderBottomWidth ?? '',
+        railBg: rail ? getComputedStyle(rail).backgroundColor : '',
+        railShadow: rail ? getComputedStyle(rail).boxShadow : '',
+        dividerColor: second ? getComputedStyle(second).borderLeftColor : '',
+        dividerWidth: second ? getComputedStyle(second).borderLeftWidth : '',
+        expectedLinen,
+        expectedRule
+      }
     })
-    expect(actualBorder).toBe(expectedBorder)
+    expect(facts.zoneBg).toBe(facts.expectedLinen)
+    expect(facts.zoneRule).toBe(facts.expectedRule)
+    expect(facts.zoneRuleWidth).toBe('1px')
+    expect(facts.railBg).toBe('rgba(0, 0, 0, 0)')
+    expect(facts.railShadow).toBe('none')
+    // From 1280px the five cells are divided by Plaster Line hairlines
+    expect(facts.dividerWidth).toBe('1px')
+    expect(facts.dividerColor).toBe(facts.expectedRule)
 
-    // Fact values are Charcoal Ink Title-role type, never weight 900
-    const value = await page.locator('[data-project-fact] dd').first().evaluate((el) => {
-      const style = getComputedStyle(el)
-      return { color: style.color, weight: style.fontWeight, family: style.fontFamily }
-    })
-    expect(value.color).toBe('rgb(24, 22, 20)')
-    expect(value.weight).toBe('500')
-    expect(value.family).toContain('Outfit')
+    // Fact values are Charcoal Ink, never weight 900: a figure (area, rooms) in the Stat role,
+    // a phrase in the Title role's display face
+    const values = await page.locator('[data-project-fact]').evaluateAll(elements =>
+      elements.map((el) => {
+        const style = getComputedStyle(el.querySelector('dd')!)
+        return { key: el.getAttribute('data-fact-key'), color: style.color, weight: style.fontWeight, family: style.fontFamily }
+      })
+    )
+    expect(values.length).toBeGreaterThan(0)
+    for (const value of values) {
+      expect(value.color).toBe('rgb(24, 22, 20)')
+      expect(value.weight).not.toBe('900')
+      expect(value.family).toContain(['area', 'rooms'].includes(value.key!) ? 'Inter' : 'Outfit')
+    }
 
     // Category treatment on the dark hero stays bronze/kicker-like
     const { actualColor, expectedColor } = await page.evaluate(() => {
-      const categoryEl = document.querySelector('[data-project-chapter="hero"] span.uppercase')
+      const categoryEl = document.querySelector('[data-project-chapter="hero"] .hero-kicker')
       const actualColor = categoryEl ? getComputedStyle(categoryEl).color : ''
       const probe = document.createElement('div')
       probe.style.color = 'var(--bronze-light)'
@@ -215,8 +180,8 @@ for (const locale of ['vi', 'en'] as const) {
     const subnav = page.locator('nav[data-project-subnav]')
     await expect(subnav).toBeVisible()
 
-    // Anchors remain exactly: #story, #gallery, #delivery, #materials
-    const hrefs = await subnav.locator('a').evaluateAll(links =>
+    // Chapter anchors remain exactly: #story, #gallery, #delivery, #materials
+    const hrefs = await subnav.locator('a[data-ruler-item]').evaluateAll(links =>
       links.map(a => a.getAttribute('href'))
     )
     expect(hrefs).toEqual(['#story', '#gallery', '#delivery', '#materials'])
@@ -263,7 +228,7 @@ for (const locale of ['vi', 'en'] as const) {
       const read = (el: Element | null) => (el ? getComputedStyle(el).fontWeight : '')
       return {
         active: read(document.querySelector('nav[data-project-subnav] a[aria-current="location"]')),
-        inactive: read(document.querySelector('nav[data-project-subnav] a:not([aria-current="location"])'))
+        inactive: read(document.querySelector('nav[data-project-subnav] a[data-ruler-item]:not([aria-current="location"])'))
       }
     })
     expect(weights.active).toBe('600')
@@ -280,7 +245,8 @@ for (const locale of ['vi', 'en'] as const) {
         844
       )
 
-      const shellOverflowX = await page.locator('nav[data-project-subnav] .shell').evaluate(
+      // Below 1024px the chapter list scrolls sideways inside the ruler
+      const shellOverflowX = await page.locator('nav[data-project-subnav] ol').evaluate(
         el => getComputedStyle(el).overflowX
       )
       expect(['auto', 'scroll']).toContain(shellOverflowX)
@@ -413,7 +379,7 @@ for (const locale of ['vi', 'en'] as const) {
     })
     expect(challengeStyle.borderLeftWidth).toBe('0px')
     expect(challengeStyle.borderTopWidth).toBe('1px')
-    expect(challengeStyle.borderTopColor).toBe('rgb(216, 210, 202)')
+    expect(challengeStyle.borderTopColor).toBe('rgba(216, 210, 202, 0.6)')
     expect(challengeStyle.statementWeight).toBe('500')
 
     // No quote pullquote or blockquote in story
@@ -483,27 +449,18 @@ for (const locale of ['vi', 'en'] as const) {
       expect(btn.radius).toBeGreaterThanOrEqual(9000)
     }
 
-    // AppGalleryCarousel track is visible
-    const carousel = gallery.locator('[data-gallery-carousel]')
-    await expect(carousel).toBeVisible()
-
-    // Carousel counter is light-tone (ink-700) at weight 600, not 900
-    const counter = carousel.locator('p[aria-live="polite"]')
-    await expect(counter).toBeVisible()
-    const counterStyle = await counter.evaluate((el) => {
-      const style = getComputedStyle(el)
-      return { color: style.color, weight: style.fontWeight }
+    // The mosaic (DESIGN.md "Project gallery mosaic"): photographs on 4px frames, every tile a
+    // button with a visible focus ring
+    const mosaic = gallery.locator('[data-gallery-mosaic]')
+    await expect(mosaic).toBeVisible()
+    const tile = mosaic.locator('button').first()
+    const frameRadius = await tile.locator('picture, img').first().evaluate((el) => {
+      const frame = el.closest('button')?.firstElementChild as HTMLElement | null
+      return frame ? parseFloat(getComputedStyle(frame).borderTopLeftRadius) : -1
     })
-    expect(counterStyle.color).toBe(await resolveToken('--color-ink-700', 'color'))
-    expect(counterStyle.weight).toBe('600')
-
-    // Carousel controls stay visible, pill-shaped and keyboard-focusable with a visible ring
-    const prevBtn = carousel.getByRole('button', { name: /trước|previous/i })
-    await expect(prevBtn).toBeVisible()
-    const nextBtn = carousel.getByRole('button', { name: /tiếp theo|next/i })
-    await expect(nextBtn).toBeVisible()
-    await prevBtn.focus()
-    const ring = await prevBtn.evaluate((el) => {
+    expect(frameRadius).toBe(4)
+    await tile.focus()
+    const ring = await tile.evaluate((el) => {
       const style = getComputedStyle(el)
       return { width: parseFloat(style.outlineWidth), style: style.outlineStyle }
     })
@@ -528,8 +485,9 @@ for (const width of [390, 1280] as const) {
     expect(await page.locator('[data-gallery-filters]').count()).toBe(0)
     expect(await page.locator('[data-project-full-gallery]').count()).toBe(0)
 
-    const carousel = gallery.locator('[data-gallery-carousel]')
-    await expect(carousel).toBeVisible()
+    const mosaic = gallery.locator('[data-gallery-mosaic]')
+    await expect(mosaic).toBeVisible()
+    await expect(mosaic.locator('li')).toHaveCount(Number(await gallery.getAttribute('data-inline-media')))
 
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)
@@ -545,21 +503,14 @@ for (const width of [390, 1280] as const) {
       width === 390 ? 844 : 900
     )
 
-    const carousel = page.locator('[data-gallery-carousel]')
-    await expect(carousel).toBeVisible()
-
-    // Next changes active index
-    await expect(carousel).toHaveAttribute('data-gallery-active-index', '0')
-    const nextBtn = carousel.getByRole('button', { name: /tiếp theo|next/i })
-    await expect(nextBtn).toBeVisible()
-    await nextBtn.click()
-    await expect(carousel).toHaveAttribute('data-gallery-active-index', '1')
-
-    // Previous restores / changes index appropriately
-    const prevBtn = carousel.getByRole('button', { name: /trước|previous/i })
-    await expect(prevBtn).toBeVisible()
-    await prevBtn.click()
-    await expect(carousel).toHaveAttribute('data-gallery-active-index', '0')
+    // Every tile opens the lightbox on its own photograph
+    const mosaic = page.locator('[data-gallery-mosaic]')
+    await expect(mosaic).toBeVisible()
+    await mosaic.locator('button').nth(1).click()
+    const lightbox = page.locator('div[role="dialog"]')
+    await expect(lightbox).toBeVisible()
+    await page.keyboard.press('Escape')
+    await expect(lightbox).toBeHidden()
 
     // Filters still work where available
     const filterTabs = page.locator('[data-gallery-filters] button[aria-pressed]')
@@ -568,6 +519,8 @@ for (const width of [390, 1280] as const) {
       const secondTab = filterTabs.nth(1)
       await secondTab.click()
       await expect(secondTab).toHaveAttribute('aria-pressed', 'true')
+      const count = Number((await secondTab.textContent())?.match(/(\d+)\D*$/)?.[1])
+      await expect(mosaic.locator('li')).toHaveCount(Math.min(count, 9))
     }
 
     // Full-gallery disclosure opens lightbox
@@ -693,38 +646,19 @@ for (const locale of ['vi', 'en'] as const) {
       })
       expect(actualHeading).toBe(expectedFg)
 
-      // Scope rail uses semantic light rules: border uses var(--rule-light)
-      const { scopeBorderTop, scopeItemBorderRight, expectedRuleLight } = await delivery.evaluate((el) => {
-        const scopeUl = el.querySelector('ul')
-        const scopeLi = el.querySelector('li[data-scope-key]')
-        const probe = document.createElement('div')
-        probe.style.borderColor = 'var(--rule-light)'
-        document.body.appendChild(probe)
-        const expectedRuleLight = getComputedStyle(probe).borderColor
-        probe.remove()
-        return {
-          scopeBorderTop: scopeUl ? getComputedStyle(scopeUl).borderTopColor : '',
-          scopeItemBorderRight: scopeLi ? getComputedStyle(scopeLi).borderRightColor : '',
-          expectedRuleLight
-        }
-      })
-      expect(scopeBorderTop).toBe(expectedRuleLight)
-      expect(scopeItemBorderRight).toBe(expectedRuleLight)
-
-      // Scope icons use accent (var(--accent-light))
-      const { actualScopeIcon, expectedScopeIcon } = await delivery.evaluate((el) => {
-        const icon = el.querySelector('li[data-scope-key] svg, li[data-scope-key] span')
-        const probe = document.createElement('div')
-        probe.style.color = 'var(--accent-light)'
-        document.body.appendChild(probe)
-        const expectedScopeIcon = getComputedStyle(probe).color
-        probe.remove()
-        return {
-          actualScopeIcon: icon ? getComputedStyle(icon).color : '',
-          expectedScopeIcon
-        }
-      })
-      expect(actualScopeIcon).toBe(expectedScopeIcon)
+      // The lead names the scope inline: each scope item in Charcoal Ink at 600, no icons
+      const scope = await delivery.locator('[data-delivery-scope] [data-scope-key]').evaluateAll(elements =>
+        elements.map((el) => {
+          const style = getComputedStyle(el)
+          return { color: style.color, weight: style.fontWeight, icons: el.querySelectorAll('svg').length }
+        })
+      )
+      expect(scope.length).toBeGreaterThan(0)
+      for (const item of scope) {
+        expect(item.color).toBe('rgb(24, 22, 20)')
+        expect(item.weight).toBe('600')
+        expect(item.icons).toBe(0)
+      }
 
       // Timeline dividers use semantic light rule (var(--rule-light))
       const { timelineBorder, expectedTimelineRule } = await delivery.evaluate((el) => {
@@ -756,30 +690,30 @@ for (const locale of ['vi', 'en'] as const) {
       })
       expect(actualPhaseNum).toBe(expectedPhaseNum)
 
-      // Execution proof blocks use restrained bronze top rule
+      // Execution proof blocks are hairline columns: a 1px Plaster Line top rule, flat, no icons
       const proofArticles = delivery.locator('[data-execution-proof]')
       const proofCount = await proofArticles.count()
       expect(proofCount).toBe(3)
 
-      const firstProof = proofArticles.first()
-      const proofMetrics = await firstProof.evaluate((el) => {
+      const proofMetrics = await proofArticles.first().evaluate((el) => {
         const style = getComputedStyle(el)
-        const probeBronze = document.createElement('div')
-        probeBronze.style.borderColor = 'var(--bronze)'
-        document.body.appendChild(probeBronze)
-        const expectedBronze = getComputedStyle(probeBronze).borderColor
-        probeBronze.remove()
-
+        const probe = document.createElement('div')
+        probe.style.borderColor = 'var(--rule-light)'
+        document.body.appendChild(probe)
+        const expectedRule = getComputedStyle(probe).borderColor
+        probe.remove()
         return {
           borderTopColor: style.borderTopColor,
-          borderTopWidth: parseFloat(style.borderTopWidth) || 0,
+          borderTopWidth: style.borderTopWidth,
           boxShadow: style.boxShadow,
-          expectedBronze
+          icons: el.querySelectorAll('svg').length,
+          expectedRule
         }
       })
-      expect(proofMetrics.borderTopWidth).toBeGreaterThanOrEqual(2)
-      expect(proofMetrics.borderTopColor).toBe(proofMetrics.expectedBronze)
-      expect(proofMetrics.boxShadow === 'none' || !proofMetrics.boxShadow.includes('50px')).toBe(true)
+      expect(proofMetrics.borderTopWidth).toBe('1px')
+      expect(proofMetrics.borderTopColor).toBe(proofMetrics.expectedRule)
+      expect(proofMetrics.boxShadow).toBe('none')
+      expect(proofMetrics.icons).toBe(0)
     })
 
     test(`P3-3-DELIVERY-03 scope safety ${locale} @ ${width}`, async ({ page }) => {
@@ -796,7 +730,7 @@ for (const locale of ['vi', 'en'] as const) {
       await expect(richDelivery).toBeVisible()
 
       // Scope items contain design, production, installation
-      const scopeTexts = await richDelivery.locator('li[data-scope-key]').allTextContents()
+      const scopeTexts = await richDelivery.locator('[data-scope-key]').allTextContents()
       const combinedScope = scopeTexts.join(' ')
       if (locale === 'vi') {
         expect(combinedScope).toContain('Thiết kế')
@@ -825,7 +759,7 @@ for (const locale of ['vi', 'en'] as const) {
       await expect(designDelivery).toBeVisible()
 
       // Design scope is visible
-      const designScopeTexts = await designDelivery.locator('li[data-scope-key]').allTextContents()
+      const designScopeTexts = await designDelivery.locator('[data-scope-key]').allTextContents()
       const designCombinedScope = designScopeTexts.join(' ')
       if (locale === 'vi') {
         expect(designCombinedScope).toContain('Thiết kế')
@@ -1398,7 +1332,6 @@ for (const locale of ['vi', 'en'] as const) {
 const WARM_SLUGS = ['khach-san-eo-gio', 'nha-xuong-anh-cuong'] as const
 const WARM_WIDTHS = [768, 1440] as const
 
-const LINEN = 'rgb(250, 246, 240)'
 const CHARCOAL_INK = 'rgb(24, 22, 20)'
 const WALNUT_GREY = 'rgb(93, 83, 73)'
 
@@ -1597,26 +1530,35 @@ for (const locale of ['vi', 'en'] as const) {
         expect(style.radius).toBeLessThanOrEqual(4)
       })
 
-      test(`PD-WARM-06 chips ${tag}`, async ({ page }) => {
+      test(`PD-WARM-06 chapter ruler ${tag}`, async ({ page }) => {
         await openProject(page, locale, `/du-an/${slug}`, width, 900)
 
-        const chips = await page.evaluate(() => {
+        // The ruler's entries are text on the glass (no filled chips): the current chapter in
+        // Charcoal Ink, the others in Walnut Grey, each with its own 2px track
+        const entries = await page.evaluate(() => {
           const read = (el: Element) => {
             const style = getComputedStyle(el)
-            return { background: style.backgroundColor, color: style.color }
+            const track = el.querySelector('[data-project-progress]')?.parentElement
+            return {
+              background: style.backgroundColor,
+              color: style.color,
+              track: track ? getComputedStyle(track).height : ''
+            }
           }
           const nav = document.querySelector('nav[data-project-subnav]')!
           return {
-            active: read(nav.querySelector('a[aria-current="location"]')!),
-            idle: [...nav.querySelectorAll('a:not([aria-current="location"])')].map(read)
+            active: read(nav.querySelector('a[data-ruler-item][aria-current="location"]')!),
+            idle: [...nav.querySelectorAll('a[data-ruler-item]:not([aria-current="location"])')].map(read)
           }
         })
 
-        expect(chips.active.background).toBe(CHARCOAL_INK)
-        expect(chips.active.color).toBe(LINEN)
-        expect(chips.idle.length).toBeGreaterThan(0)
-        for (const chip of chips.idle) {
-          expect(chip.color).toBe(WALNUT_GREY)
+        expect(entries.active.background).toBe('rgba(0, 0, 0, 0)')
+        expect(entries.active.color).toBe(CHARCOAL_INK)
+        expect(entries.active.track).toBe('2px')
+        expect(entries.idle.length).toBeGreaterThan(0)
+        for (const entry of entries.idle) {
+          expect(entry.color).toBe(WALNUT_GREY)
+          expect(entry.track).toBe('2px')
         }
       })
     }
