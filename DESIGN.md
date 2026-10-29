@@ -214,7 +214,7 @@ A warm, low-chroma palette of linen, timber and bronze, anchored by a near-black
 
 ## Layout
 
-Content sits on a single rail: `.shell` caps content at 1280px with 24px gutters (32px from 768px), and every shell on every page resolves to one left edge and one measure. Sections breathe on a fixed vertical rhythm of 64px (88px from 768px). The footer runs looser: 80px of bottom padding (112px from 768px).
+Content sits on a single rail: `.shell` caps content at 1280px with 24px gutters (32px from 768px), and every shell on every page resolves to one left edge and one measure. Sections breathe on a fixed vertical rhythm of 64px (88px from 768px). The footer is compact: 32px of padding above and below (40px from 768px).
 
 Composition favors editorial asymmetry over symmetric card walls: projects use one dominant case study and two satellites, split 1.35fr / 1fr from 768 to 1023px and 2.1fr / 1fr from 1024px (lead 16:10, satellites stacked 16:9); the factory introduction runs 1.15fr / 0.85fr from 1024px; the closing CTA runs 1.45fr / 0.55fr. The project index (`/du-an`) is two chapters, not one wall: the projects whose scope covers design, production and construction open it as that same lead + satellites composition (derived from the scope rule, never from a list of slugs), and every other project follows as a quieter archive grid that steps 1 → 2 → 3 → 4 columns (640, 1024 and 1280px). Collections that are genuinely uniform step the same way.
 

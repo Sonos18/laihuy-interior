@@ -310,28 +310,21 @@
        16px  between contact pairs        (item-gap doubled by `dd + dt`)
        32px  within a group               --footer-group-gap
        48px  between blocks               --footer-col-gap
-       40/56px   page -> footer           --footer-pt / -md
-       80/112px  footer -> page bottom    --footer-py / -md
+       32/40px   page -> footer           --footer-pt / -md
+       32/40px   footer -> page bottom    --footer-py / -md
 
-     --footer-py exceeds body spacing DELIBERATELY (§10): the finale should have more
-     air than an ordinary section, which the old py-16 denied it. The multiplier is the
-     point, not the number — 112/88 = 1.27x, matching the 144/112 = 1.29x this shipped
-     with when --section-py was still 112. When body rhythm changed to 64/88, holding
-     144 silently stretched the ratio to 1.64x. Re-derive this if --section-py moves. */
-  --footer-py: 5rem; /*  80px  < md  — 1.25x --section-py (64)   */
-  --footer-py-md: 7rem; /* 112px  ≥ md  — 1.27x --section-py (88)   */
-  /* The TOP edge is not symmetric with the bottom, and should not be: the band above the
-     footer already ends on its own --section-py, so the gap the eye reads there is the SUM
-     of the two, while the bottom pad is the last space on the page and answers to nothing.
-     Matching them spent 112px opening a region whose own first element is a 64px logo.
-     Held BELOW --footer-py so the finale still closes with more air than it opens with.
+     --footer-py matches the top edge (owner, 2026-10-29): the compact footer ends on its meta
+     line, and the old 80/112px of air under it read as a blank band, not as a finale. */
+  --footer-py: 2rem; /*  32px  < md */
+  --footer-py-md: 2.5rem; /*  40px  ≥ md */
+  /* The TOP edge: the band above the footer already ends on its own --section-py, so the gap
+     the eye reads there is the SUM of the two.
 
      Measured on the running build: `.section-cta` and the footer are ADJACENT (gap 0), so the
      void the eye reads at the seam is the sum of the CTA's 88px bottom pad and this one — 144px
      at desktop, for no information. The CTA band's own padding is not the footer's to spend: it
      sets the rhythm of six other pages. Cutting the footer's half is the part that belongs to
-     this component, and 40px still opens the finale with far less air than the 112px it closes
-     on, which is the asymmetry this token exists to hold. */
+     this component. */
   --footer-pt: 2rem; /*  32px  < md  — 0.50x --section-py (64)   */
   --footer-pt-md: 2.5rem; /*  40px  ≥ md  — 0.45x --section-py (88)   */
   /* WITHIN one group, wherever a group exists: logo -> statement -> action in the masthead, and
