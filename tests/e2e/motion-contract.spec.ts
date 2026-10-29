@@ -694,41 +694,40 @@ test.describe('motion contract', () => {
     expect(state.min, 'a painted image never drops below full opacity').toBe(1)
   })
 
-  test('MOTION-15 a route change is a 120ms + 200ms opacity crossfade, no translate', async ({ page }) => {
+  // Owner, 2026-10-29: the crossfade through Linen flashed a dark hero to near-white and back, so
+  // a route change is a straight cut. The page never drops below full opacity on the way.
+  test('MOTION-15 a route change is a straight cut: no page transition, no dip in opacity', async ({ page }) => {
     await page.goto(url('/'), { waitUntil: 'load' })
     await waitForHydration(page)
 
-    type PageEvent = { type: string, property: string, duration: string, t: number }
     await page.evaluate(() => {
-      const w = window as unknown as { __page: PageEvent[] }
+      const w = window as unknown as { __page: string[], __minOpacity: number, __watching: boolean }
       w.__page = []
-      const record = (event: Event) => {
-        const target = event.target as Element | null
-        if (!target || target.parentElement?.id !== 'main') return
-        w.__page.push({
-          type: event.type,
-          property: (event as TransitionEvent).propertyName,
-          duration: getComputedStyle(target).transitionDuration,
-          t: performance.now()
-        })
+      w.__minOpacity = 1
+      w.__watching = true
+      document.addEventListener('transitionrun', (event) => {
+        if ((event.target as Element).parentElement?.id === 'main') w.__page.push((event as TransitionEvent).propertyName)
+      }, true)
+      const sample = () => {
+        for (const child of Array.from(document.getElementById('main')?.children ?? [])) {
+          w.__minOpacity = Math.min(w.__minOpacity, Number(getComputedStyle(child).opacity))
+        }
+        if (w.__watching) requestAnimationFrame(sample)
       }
-      for (const type of ['transitionrun', 'transitionend']) document.addEventListener(type, record, true)
+      requestAnimationFrame(sample)
     })
     await page.locator('header.app-header a[href="/dich-vu"]').first().click()
     await page.waitForURL(url('/dich-vu'))
-    // Vue ends the leaving page on its own timer and removes it, so its transitionend may never
-    // be dispatched; the entering page's is the end of the whole crossfade.
-    await expect.poll(() => page.evaluate(() =>
-      (window as unknown as { __page: PageEvent[] }).__page.filter(e => e.type === 'transitionend').length
-    )).toBeGreaterThanOrEqual(1)
+    await expect(page.locator('main#main > *')).toHaveCount(1)
+    await page.waitForTimeout(400)
 
-    const events = await page.evaluate(() => (window as unknown as { __page: PageEvent[] }).__page)
-    const runs = events.filter(e => e.type === 'transitionrun')
-    expect(runs.map(e => e.property), 'opacity only: nothing translates').toEqual(['opacity', 'opacity'])
-    expect(runs.map(e => e.duration)).toEqual(['0.12s', '0.2s'])
-    const total = events.at(-1)!.t - runs[0]!.t
-    // 120 + 200 = 320ms of motion; the allowance covers the frame Vue waits before each phase.
-    expect(total, `crossfade took ${Math.round(total)}ms`).toBeLessThan(420)
+    const state = await page.evaluate(() => {
+      const w = window as unknown as { __page: string[], __minOpacity: number, __watching: boolean }
+      w.__watching = false
+      return { runs: w.__page, min: w.__minOpacity }
+    })
+    expect(state.runs, 'no transition runs on the page').toEqual([])
+    expect(state.min, 'the page never fades').toBe(1)
   })
 
   test('MOTION-15b reduced motion changes route without a transition', async ({ page }) => {
@@ -777,12 +776,12 @@ test.describe('motion contract', () => {
     await recordHeaderTransitions(page)
 
     // Legal (pinned header) to home (cover): the pin is released by the unmounting page, which
-    // happens after the old page has faded out, so the chrome must stay frozen until then.
+    // happens once the old page has left, so the chrome must stay frozen until then.
     await header.locator('a[href="/"]').first().click()
     await page.waitForURL(`${TEST_ORIGIN}/`)
     await expect(header).toHaveAttribute('data-chrome-state', 'cover')
     await expect(header).toHaveCSS('--header-p', '0')
-    // Settled by the swap, not by the 1.5s safety timer: 120 + 200ms of crossfade, two frames.
+    // Settled by the swap, not by the 1.5s safety timer: a straight cut, then two frames.
     await expect(header).not.toHaveClass(/chrome-no-transition/, { timeout: 600 })
     await page.waitForTimeout(500)
     expect(await headerTransitions(page)).toEqual([])

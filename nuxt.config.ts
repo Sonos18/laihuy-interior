@@ -20,9 +20,10 @@ export default defineNuxtConfig({
     enabled: false
   },
 
-  // Route continuity (DESIGN.md "Motion", page transition): an opacity crossfade through Linen.
-  // `out-in` so the two pages are never stacked, which would double the height of <main>. The
-  // durations and the reduced-motion switch-off live in main.css (`.page-*-active`).
+  // Route continuity (DESIGN.md "Motion", page transition): a straight cut. The transition is
+  // kept with no styles, so Vue swaps the pages at once while `page:transition:finish` still
+  // fires for the header settle (useHeaderState) and the hero pending mark (plugins/reveal.ts).
+  // `out-in` so the two pages are never stacked, which would double the height of <main>.
   app: {
     pageTransition: { name: 'page', mode: 'out-in' }
   },

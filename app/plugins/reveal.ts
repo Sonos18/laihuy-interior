@@ -177,7 +177,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       nuxtApp.hook('app:mounted', markPendingHeroes)
       nuxtApp.hook('page:finish', markPendingHeroes)
       // With a page transition the new page is not in the DOM at page:finish (it waits for the old
-      // one to fade out), so its hero is marked once it has been inserted, a frame after the swap.
+      // one to leave), so its hero is marked once it has been inserted, a frame after the swap.
       nuxtApp.hook('page:transition:finish', () => {
         requestAnimationFrame(markPendingHeroes)
       })
