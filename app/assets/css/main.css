@@ -158,8 +158,6 @@
   --dur-reveal: 600ms;
   --dur-image: 700ms; /* hover zoom of a photograph */
   --dur-arrive: 400ms; /* a photograph (or its placeholder) arriving once its bytes land */
-  --dur-page-out: 120ms; /* route change: old page out on --ease-exit... */
-  --dur-page-in: 200ms; /* ...then the new page in on --ease-editorial */
   --ease-travel: cubic-bezier(0.45, 0, 0.25, 1); /* on-screen travel: the sheen, the curtain, a rule trace */
   --dur-curtain: 1100ms; /* a standalone photograph's frame opening (v-reveal.curtain) */
   --dur-rule: 1300ms; /* a hairline traced in bronze (900ms) then faded back (400ms) */
@@ -2430,32 +2428,12 @@
   }
 
   /* ── Route continuity ───────────────────────────────────────────────────
-     nuxt.config `app.pageTransition` (name `page`, mode out-in): the old page fades out on the
-     exit curve, then the new page fades in on the editorial curve, through the Linen canvas
-     behind <main>. Opacity only, so no containing block is created for the sticky sub-nav and
-     nothing translates. Reduced motion routes change instantly. */
-  .page-leave-active {
-    transition: opacity var(--dur-page-out) var(--ease-exit);
-  }
-
-  .page-enter-active {
-    transition: opacity var(--dur-page-in) var(--ease-editorial);
-  }
-
-  .page-enter-from,
-  .page-leave-to {
-    opacity: 0;
-  }
-
+     A route change is a straight cut (owner, 2026-10-29): the `page` transition in nuxt.config
+     has no styles, so Vue swaps the pages at once. The earlier opacity crossfade went through
+     the Linen canvas, which flashed a dark hero to near-white and back on every navigation. The
+     new page's motion is its own hero: the photograph's settle and the headline words. */
   main#main {
     background-color: var(--color-wood-50);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .page-enter-active,
-    .page-leave-active {
-      transition: none;
-    }
   }
 
   /* One-shot settle for the hero photograph: 1.04 → 1 over 1.6s, then it stays put. The opacity

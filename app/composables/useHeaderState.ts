@@ -410,8 +410,8 @@ function create(): HeaderState {
 
   // Page transition (nuxt.config `app.pageTransition`, mode out-in). With Suspense and out-in,
   // `page:finish` fires as soon as the NEW page is ready and ALWAYS precedes
-  // `page:transition:finish`, which fires when the old page has finished fading out; the new page
-  // is not in the DOM until then, and the old page's unmount is what releases a pinned header
+  // `page:transition:finish`, which fires once the old page has left (at once: the transition has
+  // no styles); the new page is not in the DOM until then, and the old page's unmount is what releases a pinned header
   // (LegalPage -> setSolid(false)). Phases 3 and 4 must see the swapped DOM: run any earlier, `p`
   // is recomputed with the old pin still set and the chrome transitions come back while the
   // colours are about to flip, which is the melt (FG-06).
@@ -451,13 +451,17 @@ function create(): HeaderState {
     // Phase 4 — the DOUBLE rAF is load-bearing. Removing the class in the same frame the vars
     // are written lets the browser coalesce both into one style recalc and animate the change
     // anyway — the exact melt this prevents. The first frame commits the vars; the second
-    // re-enables transitions against them as the new baseline.
+    // re-enables transitions against them as the new baseline. A navigation that starts inside
+    // those two frames owns the class again: with the straight-cut route change a page can settle
+    // within a frame or two of the click, so a quick second click lands here.
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => el?.classList.remove('chrome-no-transition'))
+      requestAnimationFrame(() => {
+        if (!navigating) el?.classList.remove('chrome-no-transition')
+      })
     })
   }
 
-  /** The swap is complete: one page child in #main, and it is not the one fading out. */
+  /** The swap is complete: one page child in #main, and it is not the one leaving. */
   const swapDone = () => {
     const pages = document.getElementById('main')?.children
     return pages?.length === 1 && !/\bpage-leave/.test(pages[0]!.className)
