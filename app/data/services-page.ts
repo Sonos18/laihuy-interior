@@ -1,3 +1,4 @@
+import { quoteCtaContent } from './closing'
 import type { ServiceId } from './services'
 import type { LocalizedText } from '~/shared/types/localization'
 
@@ -170,19 +171,8 @@ export const servicesPageContent = {
       en: 'The same three services, organised around how each type of project operates.'
     }
   },
-  contact: {
-    eyebrow: { vi: 'Bước tiếp theo', en: 'Next step' },
-    title: {
-      vi: 'Có bản vẽ? Gửi để nhận BOQ sơ bộ và báo giá',
-      en: 'Have drawings? Send them for a preliminary BOQ and a quote'
-    },
-    description: {
-      vi: 'Gửi bản vẽ PDF hoặc DWG qua email, hoặc gọi để trao đổi nếu dự án chưa có bản vẽ.',
-      en: 'Email PDF or DWG drawings, or call to talk it through if there are no drawings yet.'
-    },
-    primaryCta: { vi: 'Gửi bản vẽ, nhận BOQ sơ bộ', en: 'Send drawings for a preliminary BOQ' },
-    phoneCta: { vi: 'Gọi', en: 'Call' }
-  }
+  // The site-wide quote CTA (app/data/closing.ts).
+  contact: quoteCtaContent
 } as const satisfies ServicesPageContent
 
 export const servicesMediaAlt = {

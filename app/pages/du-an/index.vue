@@ -4,16 +4,16 @@ import { categoryDefinitions, orderedCategories } from '~/data/categories'
 import { projects } from '~/data/projects'
 import { projectsPageContent } from '~/data/projects-page'
 import { uiText } from '~/data/ui'
-import { projectMedia } from '~/media/catalog.generated'
 import { projectCoverAsset, withAlt } from '~/media/project-media'
 import type { MediaAsset } from '~/shared/media/types'
 import type { LocalizedText } from '~/shared/types/localization'
 import type { Project, ProjectCategory } from '~/shared/types/project'
 import { splitProjectIndex } from '~/utils/project-index'
+import { pageHeroAssets } from '~/media/page-heroes'
 
 const { t, ta } = useLanguage()
 
-const heroImage = withAlt(projectMedia['codi-villa-phan-thiet'].cover, {
+const heroImage = withAlt(pageHeroAssets.projects, {
   vi: 'Codi Villa Phan Thiết, NovaWorld Phan Thiết',
   en: 'Codi Villa, NovaWorld Phan Thiet'
 })
@@ -253,24 +253,7 @@ usePageSeo({
       </div>
     </section>
 
-    <section class="section-cta">
-      <div class="shell grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
-        <div>
-          <p class="eyebrow">
-            {{ t({ vi: 'Dự án tiếp theo', en: 'Your next project' }) }}
-          </p>
-          <h2 class="home-section-heading mt-4 max-w-3xl text-ink-950">
-            {{ t({ vi: 'Đang chuẩn bị nội thất cho khách sạn, villa hay văn phòng?', en: 'Planning the interiors for a hotel, villa or office?' }) }}
-          </h2>
-        </div>
-        <NuxtLink
-          to="/lien-he"
-          class="btn-bronze"
-          data-testid="projects-cta"
-        >
-          {{ t(uiText.cta.quote) }}
-        </NuxtLink>
-      </div>
-    </section>
+    <QuoteCta data-testid="projects-cta" />
+    <PageDoor from="projects" />
   </div>
 </template>

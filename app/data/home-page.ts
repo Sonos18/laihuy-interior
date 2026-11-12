@@ -1,3 +1,4 @@
+import { quoteCtaContent } from './closing'
 import type { LocalizedText } from '~/shared/types/localization'
 
 export type HomeStoryStageId = 'existing' | 'drawing' | 'material' | 'space'
@@ -84,14 +85,10 @@ export const homePageContent = {
       }
     ]
   },
+  // The closing CTA is the site-wide quote CTA (app/data/closing.ts); the factory proof keeps
+  // its own link label here.
   cta: {
-    eyebrow: { vi: 'Có bản vẽ?', en: 'Have drawings?' },
-    title: { vi: 'Gửi bản vẽ, nhận BOQ sơ bộ và báo giá', en: 'Send your drawings for a preliminary BOQ and a quote' },
-    description: {
-      vi: 'Đội kỹ thuật bóc tách và lập BOQ sơ bộ, báo giá trong 24 giờ làm việc kể từ khi nhận đủ hồ sơ.',
-      en: 'Our technical team does the take-off and a preliminary BOQ, and quotes within 24 working hours of receiving complete documents.'
-    },
-    primaryCta: { vi: 'Gửi bản vẽ, nhận BOQ sơ bộ', en: 'Send drawings for a preliminary BOQ' },
+    ...quoteCtaContent,
     secondaryCta: { vi: 'Xem năng lực nhà xưởng', en: 'View factory capability' }
   }
 } as const

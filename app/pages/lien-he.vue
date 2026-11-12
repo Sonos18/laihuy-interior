@@ -1,18 +1,16 @@
 <script setup lang="ts">
 import { company, quoteMailto } from '~/data/company'
 import { uiText } from '~/data/ui'
-import { projectMedia } from '~/media/catalog.generated'
 import { withAlt } from '~/media/project-media'
 import type { LocalizedText } from '~/shared/types/localization'
 import { buildQuoteMailto, type QuoteMailtoCopy } from '~/utils/contact-mailto'
+import { pageHeroAssets } from '~/media/page-heroes'
 
 const { t, ta } = useLanguage()
 
 // Hero: an inviting residential living room — see docs/hero-art-direction.md §10
 // (Contact · Conversation). Compact height, then flows into the contact details.
-const heroAsset = projectMedia['nha-vuon-chily'].images.find(
-  image => image.path.endsWith('nha-vuon-chily/5.webp')
-) ?? projectMedia['nha-vuon-chily'].cover
+const heroAsset = pageHeroAssets.contact
 const heroImage = withAlt(heroAsset, uiText.contactPage.heroImageAlt)
 
 /** Required fields: validated, in DOM order, announced with aria-required. */

@@ -12,11 +12,12 @@ import { companyMedia } from '~/media/catalog.generated'
 import { breathMedia } from '~/media/breath-media'
 import { requireWorkshopAsset } from '~/media/factory-media'
 import { projectCover, withAlt } from '~/media/project-media'
+import { pageHeroAssets } from '~/media/page-heroes'
 
 const { t } = useLanguage()
 const { resolve: mediaUrl } = useMediaUrl()
 
-const heroImage = withAlt(requireWorkshopAsset('3.webp'), aboutMediaAlt.hero)
+const heroImage = withAlt(pageHeroAssets.about, aboutMediaAlt.hero)
 const factoryImages = {
   main: withAlt(requireWorkshopAsset('4.webp'), aboutMediaAlt.factory),
   machinery: withAlt(requireWorkshopAsset('8.webp'), aboutMediaAlt.machinery),
@@ -40,7 +41,6 @@ const projectFeatures = aboutProjectSlugs.flatMap((slug) => {
   return image ? [{ project, image }] : []
 })
 
-const phoneHref = `tel:${company.phone.replaceAll(' ', '')}`
 const seoTitle = computed(() => t(company.seo.about.title))
 const seoDescription = computed(() => t(company.seo.about.description))
 
@@ -280,37 +280,7 @@ usePageSeo({
       </div>
     </section>
 
-    <section
-      data-about-chapter="contact"
-      class="section-cta"
-    >
-      <div class="shell text-center">
-        <div data-head="stacked">
-          <p class="eyebrow">
-            {{ t(aboutPageContent.contact.eyebrow) }}
-          </p>
-          <h2 class="home-section-heading mx-auto mt-4 max-w-4xl text-ink-950">
-            {{ t(aboutPageContent.contact.title) }}
-          </h2>
-          <p class="home-lead-text mx-auto mt-5 max-w-2xl text-ink-600">
-            {{ t(aboutPageContent.contact.description) }}
-          </p>
-        </div>
-        <div class="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
-          <NuxtLink
-            to="/lien-he"
-            class="btn-bronze"
-          >
-            {{ t(aboutPageContent.contact.primaryCta) }}
-          </NuxtLink>
-          <a
-            :href="phoneHref"
-            class="btn-outline"
-          >
-            {{ t(aboutPageContent.contact.phoneCta) }} {{ t(company.phoneDisplay) }}
-          </a>
-        </div>
-      </div>
-    </section>
+    <QuoteCta data-about-chapter="contact" />
+    <PageDoor from="about" />
   </div>
 </template>

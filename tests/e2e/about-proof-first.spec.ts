@@ -193,7 +193,8 @@ test('about preserves SEO, focus, reduced motion and the seven-chapter structure
 
   const aboutPageRoot = page.locator('main > div')
   await expect(aboutPageRoot).toHaveCount(1)
-  const directChildren = aboutPageRoot.locator(':scope > *')
+  // The page door (DESIGN.md "Page door") closes the page after the seven chapters.
+  const directChildren = aboutPageRoot.locator(':scope > :not([data-page-door])')
   const chapters = aboutPageRoot.locator(':scope > [data-about-chapter]')
   await expect(directChildren).toHaveCount(7)
   await expect(chapters).toHaveCount(7)
@@ -215,7 +216,7 @@ test('about preserves SEO, focus, reduced motion and the seven-chapter structure
   await expect(contact.getByRole('link', {
     name: aboutPageContent.contact.primaryCta.vi,
     exact: true
-  })).toHaveAttribute('href', '/lien-he')
+  })).toHaveAttribute('href', '/lien-he#cach-gui-ho-so')
   await expect(contact.getByRole('link', {
     name: new RegExp(aboutPageContent.contact.phoneCta.vi)
   })).toHaveAttribute('href', 'tel:+84903102012')
@@ -312,7 +313,7 @@ for (const locale of locales) {
     test(`AB-WARM-04 actions ${tag}`, async ({ page }) => {
       await openAbout(page, locale, width)
 
-      const primary = page.locator('[data-about-chapter="contact"] a[href="/lien-he"]')
+      const primary = page.locator('[data-about-chapter="contact"] a[href="/lien-he#cach-gui-ho-so"]')
       await expect(primary).toHaveCount(1)
       await expect(primary).toHaveClass(/\bbtn-bronze\b/)
       // Bronze Edge Rule: on a light surface the bronze fill carries the Deep Timber border.

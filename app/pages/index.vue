@@ -4,16 +4,16 @@ import { factoryStats } from '~/data/factory'
 import { homeCapabilities, homeStoryStages } from '~/data/home-page'
 import { projects } from '~/data/projects'
 import { siteImages } from '~/data/site-images'
-import { projectMedia } from '~/media/catalog.generated'
 import { homeMaterialStoryMedia } from '~/media/home-media'
 import { projectCoverAsset } from '~/media/project-media'
 import type { MediaAsset } from '~/shared/media/types'
 import type { Project } from '~/shared/types/project'
 import { splitProjectIndex } from '~/utils/project-index'
+import { pageHeroAssets } from '~/media/page-heroes'
 
 const { t } = useLanguage()
 
-const heroImage = projectMedia['khach-san-eo-gio'].cover
+const heroImage = pageHeroAssets.home
 
 // The same rule as /du-an's featured row (end-to-end scope, cover present), so the heading above
 // it ("Ba dự án làm trọn từ thiết kế đến lắp đặt") stays true whatever a project's flags say.
@@ -68,6 +68,7 @@ usePageSeo({
     <HomeFactoryProof
       :image="siteImages.machineryOverview"
     />
-    <HomeProjectCta />
+    <QuoteCta data-testid="home-project-cta" />
+    <PageDoor from="home" />
   </div>
 </template>
