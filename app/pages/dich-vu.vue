@@ -11,6 +11,7 @@ import { projectMedia } from '~/media/catalog.generated'
 import { breathMedia } from '~/media/breath-media'
 import { requireWorkshopAsset } from '~/media/factory-media'
 import { withAlt } from '~/media/project-media'
+import { pageHeroAssets } from '~/media/page-heroes'
 
 const { t } = useLanguage()
 
@@ -34,7 +35,7 @@ const requireCodiAsset = (suffix: string) => {
 }
 
 // Keep the approved Services hero art direction while moving editorial alt text into app/data.
-const heroAsset = requireCodiAsset('/sanh-don/2.webp')
+const heroAsset = pageHeroAssets.services
 const heroImage = withAlt(heroAsset, servicesMediaAlt.hero)
 
 const workshopFactoryAsset = requireWorkshopAsset('4.webp')
@@ -54,7 +55,6 @@ const evidenceImages = [
   withAlt(heroAsset, '')
 ]
 
-const phoneHref = `tel:${company.phone.replaceAll(' ', '')}`
 const seoTitle = computed(() => t(company.seo.services.title))
 const seoDescription = computed(() => t(company.seo.services.description))
 
@@ -291,42 +291,10 @@ usePageSeo({
       :breath="breathMedia.services"
     />
 
-    <section
+    <QuoteCta
+      layout="stacked"
       data-services-chapter="contact"
-      class="section-cta"
-    >
-      <div class="shell grid gap-10 xl:grid-cols-[1.2fr_0.8fr] xl:items-end xl:gap-16">
-        <SectionHead
-          layout="stacked"
-          title-class="max-w-4xl"
-          :eyebrow="t(servicesPageContent.contact.eyebrow)"
-          :title="t(servicesPageContent.contact.title)"
-          :lead="t(servicesPageContent.contact.description)"
-        />
-
-        <div
-          v-reveal
-          class="reveal flex flex-col gap-3 sm:flex-row sm:flex-wrap xl:justify-end"
-        >
-          <NuxtLink
-            to="/lien-he#cach-gui-ho-so"
-            class="btn-bronze"
-          >
-            {{ t(servicesPageContent.contact.primaryCta) }}
-            <Icon
-              name="i-lucide-arrow-right"
-              class="h-4 w-4"
-              aria-hidden="true"
-            />
-          </NuxtLink>
-          <a
-            :href="phoneHref"
-            class="btn-outline"
-          >
-            {{ t(servicesPageContent.contact.phoneCta) }} {{ t(company.phoneDisplay) }}
-          </a>
-        </div>
-      </div>
-    </section>
+    />
+    <PageDoor from="services" />
   </div>
 </template>

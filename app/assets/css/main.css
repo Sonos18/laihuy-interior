@@ -2153,6 +2153,20 @@
     transition: none;
   }
 
+  /* The hero photograph's stand-in while its bytes are in flight: the same photograph at 32px
+     (app/media/placeholders.generated.ts), inlined and blurred, under the <img>. A pending hero
+     image is transparent, so the room's own colours show from the first paint instead of the
+     flat Obsidian box; the real photograph then fades in over it. Over-sized by 2rem so the blur
+     never shows a soft edge (the hero clips it). Static: it has no motion to reduce. */
+  .hero-placeholder {
+    position: absolute;
+    inset: -2rem;
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: blur(20px);
+    transform: scale(1.04);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     html.reveal-ready .reveal.reveal-hidden {
       opacity: 1;

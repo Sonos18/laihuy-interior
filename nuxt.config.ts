@@ -24,8 +24,17 @@ export default defineNuxtConfig({
   // kept with no styles, so Vue swaps the pages at once while `page:transition:finish` still
   // fires for the header settle (useHeaderState) and the hero pending mark (plugins/reveal.ts).
   // `out-in` so the two pages are never stacked, which would double the height of <main>.
+  //
+  // Photographs come from Supabase Storage, a second origin the browser only meets at the hero
+  // <img>. Opening that connection in <head> takes the DNS/TLS round trips off the hero's
+  // critical path. No `crossorigin`: the images are plain (non-CORS) requests.
   app: {
-    pageTransition: { name: 'page', mode: 'out-in' }
+    pageTransition: { name: 'page', mode: 'out-in' },
+    head: {
+      link: useSupabaseMedia
+        ? [{ rel: 'preconnect', href: new URL(supabaseUrl).origin }]
+        : []
+    }
   },
 
   // layers.css MUST precede main.css: it carries the cascade-layer order

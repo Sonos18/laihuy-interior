@@ -4,6 +4,7 @@
 // free style choice. Rendering budget: one localized gradient (the scrim), plus a
 // bottom wash below lg; no other overlays. Glass belongs in the #aside slot
 // only, never behind text.
+import { heroPlaceholders } from '~/media/placeholders.generated'
 import type { MediaImage } from '~/shared/media/types'
 
 type Anchor = 'bottom-left' | 'bottom-center' | 'center-left'
@@ -36,6 +37,8 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const { t } = useLanguage()
+
+const placeholder = computed(() => heroPlaceholders[props.image.path])
 
 const altText = computed(() => (props.image.alt === '' ? '' : t(props.image.alt)))
 
@@ -169,6 +172,12 @@ const bottomWashClass = computed(() => {
 
          Do NOT "fix" this by routing through mediaPresets.hero: that preset is 100vw at
          every breakpoint, which selects w400 on a phone for this height-bound box. -->
+    <div
+      v-if="placeholder"
+      class="hero-placeholder"
+      :style="{ backgroundImage: `url(${placeholder})`, backgroundPosition: focal }"
+      aria-hidden="true"
+    />
     <NuxtImg
       :src="image.path"
       :alt="altText"

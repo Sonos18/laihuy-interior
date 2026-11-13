@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { homePageContent } from '~/data/home-page'
+import { heroPlaceholders } from '~/media/placeholders.generated'
 import type { MediaAsset } from '~/shared/media/types'
 
-defineProps<{
+const props = defineProps<{
   image: MediaAsset
 }>()
+
+const placeholder = computed(() => heroPlaceholders[props.image.path])
 
 const { t } = useLanguage()
 </script>
@@ -14,6 +17,12 @@ const { t } = useLanguage()
     data-testid="home-hero"
     class="home-hero relative min-h-[var(--hero-min-h-home)] overflow-hidden bg-[var(--bg-dark)] text-[var(--text-main)]"
   >
+    <div
+      v-if="placeholder"
+      class="hero-placeholder home-hero__placeholder"
+      :style="{ backgroundImage: `url(${placeholder})` }"
+      aria-hidden="true"
+    />
     <NuxtImg
       :src="image.path"
       :alt="t({ vi: 'Khách sạn Eo Gió, Vĩnh Long: nội thất do Lai Huy thiết kế, sản xuất và thi công', en: 'Eo Gio Hotel, Vinh Long: interiors designed, produced and fitted out by Lai Huy' })"
@@ -118,13 +127,17 @@ const { t } = useLanguage()
    the horizontal position is free. On a phone the visible slice is about a quarter of the width,
    and the centre of the frame is the hallway and the ceiling; the furnished room (shelving,
    armchair and sofa) sits at 56 to 95% of the width. */
-.home-hero__image {
+.home-hero__image,
+.home-hero__placeholder {
   object-position: 50% 50%;
+  background-position: 50% 50%;
 }
 
 @media (max-width: 767px) {
-  .home-hero__image {
+  .home-hero__image,
+  .home-hero__placeholder {
     object-position: 78% 50%;
+    background-position: 78% 50%;
   }
 
   .home-hero__wash {

@@ -1,3 +1,4 @@
+import { quoteCtaContent } from './closing'
 import type { FactoryStat } from './factory'
 import type { LocalizedText } from '~/shared/types/localization'
 
@@ -166,19 +167,8 @@ export const aboutPageContent = {
       }
     ]
   },
-  contact: {
-    eyebrow: { vi: 'Bước tiếp theo', en: 'Next step' },
-    title: {
-      vi: 'Có bản vẽ hay mới có ý tưởng, đều có thể bắt đầu',
-      en: 'Drawings or just an idea: either is a place to start'
-    },
-    description: {
-      vi: 'Gửi bản vẽ để nhận BOQ sơ bộ và báo giá, hoặc gọi để trao đổi phạm vi khi dự án chưa có bản vẽ.',
-      en: 'Send drawings for a preliminary BOQ and a quote, or call to talk through the scope if there are no drawings yet.'
-    },
-    primaryCta: { vi: 'Nhận báo giá', en: 'Request a quote' },
-    phoneCta: { vi: 'Gọi', en: 'Call' }
-  }
+  // The site-wide quote CTA (app/data/closing.ts).
+  contact: quoteCtaContent
 } as const satisfies AboutPageContent
 
 export const aboutMediaAlt: Record<AboutMediaKey, LocalizedText> = {
