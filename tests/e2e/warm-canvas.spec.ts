@@ -34,7 +34,7 @@ const ROUTES: Route[] = [
   // h1, direct contact, how to send documents, form and map: the five office/factory cards went
   // with the contact-first layout (copy deck B-06).
   { name: 'contact', path: '/lien-he', minHeadings: 4, primary: '[data-testid="contact-form"] button[type="submit"]' },
-  { name: 'projects', path: '/du-an', minHeadings: 12, primary: '[data-testid="projects-cta"]' },
+  { name: 'projects', path: '/du-an', minHeadings: 12, primary: '[data-testid="projects-cta"] .btn-bronze' },
   { name: 'privacy', path: '/privacy-policy', minHeadings: 3 },
   { name: 'terms', path: '/terms-of-use', minHeadings: 3 },
   { name: 'error', path: '/this-route-does-not-exist', minHeadings: 4, primary: 'main#main button.btn-bronze', status: 404 }

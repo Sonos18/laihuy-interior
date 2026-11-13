@@ -217,7 +217,8 @@ for (const locale of ['vi', 'en'] as const) {
       all.filter(el => el.getBoundingClientRect().height > 0)
         .map(el => ({ layout: el.getAttribute('data-head') ?? '', size: el.getAttribute('data-head-size') })))
 
-    expect(heads.map(head => head.layout)).toEqual(['stacked', 'rail'])
+    // The third head is the shared closing quote CTA (DESIGN.md "Closing CTA").
+    expect(heads.map(head => head.layout)).toEqual(['stacked', 'rail', 'split'])
     // The featured section is the page's one lead: the Statement role.
     expect(heads[0]!.size).toBe('statement')
     expect(heads[1]!.size).toBe('headline')
