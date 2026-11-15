@@ -68,6 +68,7 @@ usePageSeo({
     <HomeFactoryProof
       :image="siteImages.machineryOverview"
     />
+    <HomeTrust />
     <HomeProjectCta />
   </div>
 </template>

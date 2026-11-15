@@ -107,5 +107,9 @@ watch(isMobileMenuOpen, setDrawerOpen)
     </main>
 
     <AppFooter />
+
+    <!-- After the footer in the DOM: it is the last stop in the tab order, and its layer
+         (--z-action-bar) sits under the header, drawer and lightbox. -->
+    <AppActionBar />
   </div>
 </template>

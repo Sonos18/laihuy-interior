@@ -43,7 +43,10 @@ export default defineNuxtConfig({
       useSupabaseMedia: false,
       // One normalized origin for canonical, Open Graph, JSON-LD, robots and sitemap URLs.
       // NUXT_PUBLIC_SITE_URL can override it per environment.
-      siteUrl
+      siteUrl,
+      // GA4 measurement ID (NUXT_PUBLIC_GA_ID). Empty by default: app/plugins/analytics.client.ts
+      // then loads nothing and every track() call is a no-op.
+      gaId: ''
     }
   },
 
