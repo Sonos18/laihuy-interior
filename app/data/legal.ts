@@ -1,4 +1,5 @@
 import type { LocalizedArray, LocalizedText } from '~/shared/types/localization'
+import { COMPANY_EMAIL } from './contact-email'
 
 /**
  * One section of a legal document: a heading, an optional lead paragraph, and an optional list.
@@ -26,7 +27,7 @@ export type LegalDocument = {
  * becomes false with age, and a stale "last updated" on a privacy policy is a compliance problem
  * rather than a cosmetic one.
  */
-export const legalUpdatedAt = '2026-10-23'
+export const legalUpdatedAt = '2026-11-15'
 
 /*
  * ── A NOTE ON THIS FILE ────────────────────────────────────────────────────────
@@ -34,22 +35,21 @@ export const legalUpdatedAt = '2026-10-23'
  *  - the contact form does not send or store anything: after validation it opens
  *    the visitor's own email client with a pre-filled message (mailto), and Lai
  *    Huy receives the enquiry only when the visitor sends that email;
- *  - enquiries and drawings arrive by email (Gmail), phone, or a Google Drive link;
+ *  - enquiries and drawings arrive by email (a mailbox on the company domain), phone,
+ *    Zalo, or a Google Drive link;
  *  - one technical cookie remembers the display language;
  *  - Google Maps is embedded on /lien-he, a third party that may set its own
  *    cookies and log technical data;
- *  - the website and its images are served by hosting and media providers.
+ *  - the website and its images are served by hosting and media providers;
+ *  - Google Analytics 4 measures visits and contact clicks once a measurement ID is
+ *    configured (owner, 2026-11-15); it receives no name, phone number or email.
  * Those are the only mechanisms the codebase actually has. It does not describe
- * analytics, advertising pixels, remarketing, or newsletter processing — none of
- * which this site runs. If any of those are added later, or the form gains a
- * real transport, the corresponding clause has to be added here in the same
- * commit.
+ * advertising pixels, remarketing, or newsletter processing — none of which this
+ * site runs. If any of those are added later, or the form gains a real transport,
+ * the corresponding clause has to be added here in the same commit.
  *
- * Deliberately NOT asserted anywhere below: business registration number, tax
- * code, or a named data protection officer. Those are real registry facts that
- * nothing in this repository records, and inventing them on a legal page is
- * worse than omitting them. Add them here once someone can point at the
- * certificate.
+ * The legal name and tax code (company.ts, owner-supplied 2026-11-15) appear in
+ * the footer. Still NOT asserted: a named data protection officer.
  *
  * This is a good-faith operational description, not a substitute for review by
  * a Vietnamese lawyer before launch.
@@ -81,14 +81,16 @@ export const privacyPolicy: LegalDocument = {
           'Biểu mẫu trên trang Liên hệ không gửi hay lưu dữ liệu trên máy chủ của website: nó chỉ mở ứng dụng email của bạn với nội dung soạn sẵn. Lai Huy nhận thông tin khi bạn gửi email đó.',
           'Thông tin trao đổi trong quá trình làm việc: nội dung email, tin nhắn, biên bản khảo sát và các thống nhất liên quan đến dự án.',
           'Dữ liệu kỹ thuật cơ bản do máy chủ ghi nhận khi bạn truy cập website: địa chỉ IP, loại trình duyệt, thiết bị và thời điểm truy cập, phục vụ mục đích vận hành và bảo mật hệ thống.',
-          'Tùy chọn ngôn ngữ hiển thị được lưu trong cookie trên trình duyệt của bạn.'
+          'Tùy chọn ngôn ngữ hiển thị được lưu trong cookie trên trình duyệt của bạn.',
+          'Số liệu thống kê truy cập qua Google Analytics: trang đã xem, nguồn truy cập, loại thiết bị, khu vực ước tính và các thao tác như bấm gọi, bấm Zalo hay bấm email. Số liệu này không gồm họ tên, số điện thoại, email hay nội dung bạn nhập.'
         ],
         en: [
           'Information you actively provide: full name, telephone number, email address, company name (if given), the substance of your enquiry, and any project documents you attach (drawings, BOQ, finish standards, reference images).',
           'The Contact page form does not send or store data on the website’s servers; it only opens your email app with a pre-filled message. Lai Huy receives the information when you send that email.',
           'Information exchanged during the engagement: emails, messages, site survey records, and agreed project decisions.',
           'Basic technical data logged by the server when you visit the website: IP address, browser type, device, and time of access, used for operating and securing the system.',
-          'Your display language preference, stored in a cookie in your browser.'
+          'Your display language preference, stored in a cookie in your browser.',
+          'Visit statistics through Google Analytics: pages viewed, how you arrived, device type, approximate region, and actions such as tapping call, Zalo or email. They do not include your name, phone number, email address or anything you type.'
         ]
       }
     },
@@ -101,6 +103,7 @@ export const privacyPolicy: LegalDocument = {
           'Liên hệ trao đổi tiến độ, nghiệm thu và bàn giao hạng mục đã thực hiện.',
           'Xử lý hồ sơ ứng tuyển đối với thông tin do ứng viên gửi qua kênh tuyển dụng.',
           'Vận hành, bảo trì và bảo vệ an toàn cho website.',
+          'Thống kê lượt truy cập và hiệu quả các kênh liên hệ để cải thiện website.',
           'Thực hiện nghĩa vụ kế toán, thuế và các nghĩa vụ pháp lý khác theo quy định của pháp luật Việt Nam.'
         ],
         en: [
@@ -109,6 +112,7 @@ export const privacyPolicy: LegalDocument = {
           'Communicating about schedule, sign-off and handover of completed scope.',
           'Processing job applications, for information submitted through our recruitment channel.',
           'Operating, maintaining, and securing the website.',
+          'Measuring visits and how well each contact channel works, to improve the website.',
           'Meeting accounting, tax, and other legal obligations under Vietnamese law.'
         ]
       }
@@ -130,13 +134,15 @@ export const privacyPolicy: LegalDocument = {
         vi: [
           'Với nhân sự nội bộ trực tiếp phụ trách tư vấn, thiết kế, sản xuất, thi công hoặc kế toán cho yêu cầu của bạn.',
           'Với nhà thầu phụ, đơn vị vận chuyển hoặc đối tác kỹ thuật, chỉ trong phạm vi thông tin cần thiết để hoàn thành hạng mục đã thỏa thuận.',
-          'Với nhà cung cấp hạ tầng lưu trữ website và hình ảnh; và với Google, đơn vị cung cấp dịch vụ email (Gmail) Lai Huy dùng để nhận email và bản đồ Google Maps nhúng ở trang Liên hệ.',
+          'Với nhà cung cấp hạ tầng lưu trữ website và hình ảnh, và nhà cung cấp dịch vụ email Lai Huy dùng để nhận email.',
+          'Với Google, đơn vị cung cấp bản đồ Google Maps nhúng ở trang Liên hệ và dịch vụ thống kê Google Analytics; với Zalo khi bạn chủ động nhắn tin cho Lai Huy qua Zalo.',
           'Khi có yêu cầu hợp pháp từ cơ quan nhà nước có thẩm quyền theo quy định của pháp luật.'
         ],
         en: [
           'With the internal staff directly handling consultation, design, production, installation, or accounting for your request.',
           'With subcontractors, logistics providers, or technical partners, limited to the information required to complete the agreed scope.',
-          'With the providers hosting this website and its images; and with Google, which provides the email service (Gmail) Lai Huy uses to receive email and the Google Maps embed on the Contact page.',
+          'With the providers hosting this website and its images, and the email provider Lai Huy uses to receive email.',
+          'With Google, which provides the Google Maps embed on the Contact page and the Google Analytics statistics service; and with Zalo when you choose to message Lai Huy on Zalo.',
           'Where lawfully requested by a competent state authority in accordance with the law.'
         ]
       }
@@ -151,8 +157,8 @@ export const privacyPolicy: LegalDocument = {
     {
       heading: { vi: '7. Bảo mật dữ liệu', en: '7. Data security' },
       body: {
-        vi: 'Chúng tôi áp dụng các biện pháp kỹ thuật và quản lý hợp lý để bảo vệ dữ liệu cá nhân khỏi việc truy cập, tiết lộ, thay đổi hoặc phá hủy trái phép, bao gồm mã hóa kết nối HTTPS cho toàn bộ website và giới hạn quyền truy cập dữ liệu theo phạm vi công việc. Email là kênh chính để gửi bản vẽ và hồ sơ dự án cho Lai Huy. Không có phương thức truyền qua Internet nào an toàn tuyệt đối; với tài liệu cần bảo mật, bạn có thể gửi link Google Drive giới hạn quyền xem cho noithatlaihuy@gmail.com, và ghi rõ yêu cầu bảo mật trong email.',
-        en: 'We apply reasonable technical and organisational measures to protect personal data against unauthorised access, disclosure, alteration, or destruction, including HTTPS encryption across the whole website and access limited to what each role requires. Email is the main channel for sending drawings and project documents to Lai Huy. No transmission over the Internet is entirely secure; for confidential documents you can share a Google Drive link restricted to noithatlaihuy@gmail.com and state your confidentiality requirement in the email.'
+        vi: `Chúng tôi áp dụng các biện pháp kỹ thuật và quản lý hợp lý để bảo vệ dữ liệu cá nhân khỏi việc truy cập, tiết lộ, thay đổi hoặc phá hủy trái phép, bao gồm mã hóa kết nối HTTPS cho toàn bộ website và giới hạn quyền truy cập dữ liệu theo phạm vi công việc. Email là kênh chính để gửi bản vẽ và hồ sơ dự án cho Lai Huy. Không có phương thức truyền qua Internet nào an toàn tuyệt đối; với tài liệu cần bảo mật, bạn có thể gửi link Google Drive giới hạn quyền xem cho ${COMPANY_EMAIL}, và ghi rõ yêu cầu bảo mật trong email.`,
+        en: `We apply reasonable technical and organisational measures to protect personal data against unauthorised access, disclosure, alteration, or destruction, including HTTPS encryption across the whole website and access limited to what each role requires. Email is the main channel for sending drawings and project documents to Lai Huy. No transmission over the Internet is entirely secure; for confidential documents you can share a Google Drive link restricted to ${COMPANY_EMAIL} and state your confidentiality requirement in the email.`
       }
     },
     {
@@ -183,8 +189,8 @@ export const privacyPolicy: LegalDocument = {
     {
       heading: { vi: '9. Cookie', en: '9. Cookies' },
       body: {
-        vi: 'Website dùng một cookie kỹ thuật để ghi nhớ ngôn ngữ hiển thị; cookie này không dùng để theo dõi, không phục vụ quảng cáo và không chia sẻ với bên thứ ba. Trang Liên hệ nhúng bản đồ Google Maps: khi bản đồ tải, Google có thể đặt cookie và ghi nhận dữ liệu kỹ thuật (như địa chỉ IP) theo chính sách quyền riêng tư của Google. Bạn có thể xóa hoặc chặn cookie trong cài đặt trình duyệt; website vẫn hoạt động nhưng sẽ hiển thị bằng ngôn ngữ mặc định.',
-        en: 'This website uses one technical cookie to remember your display language; it is not used for tracking or advertising and is not shared with third parties. The Contact page embeds a Google Maps map: when it loads, Google may set cookies and log technical data (such as your IP address) under Google’s privacy policy. You can delete or block cookies in your browser settings; the site will still work but will open in the default language.'
+        vi: 'Website dùng một cookie kỹ thuật để ghi nhớ ngôn ngữ hiển thị; cookie này không dùng để theo dõi, không phục vụ quảng cáo và không chia sẻ với bên thứ ba. Website dùng Google Analytics để thống kê lượt truy cập; dịch vụ này đặt cookie của Google (như _ga) để phân biệt các lượt truy cập, không dùng cho quảng cáo. Trang Liên hệ nhúng bản đồ Google Maps: khi bản đồ tải, Google có thể đặt cookie và ghi nhận dữ liệu kỹ thuật (như địa chỉ IP) theo chính sách quyền riêng tư của Google. Bạn có thể xóa hoặc chặn cookie trong cài đặt trình duyệt; website vẫn hoạt động nhưng sẽ hiển thị bằng ngôn ngữ mặc định.',
+        en: 'This website uses one technical cookie to remember your display language; it is not used for tracking or advertising and is not shared with third parties. The website uses Google Analytics to count visits; it sets Google cookies (such as _ga) to tell visits apart and is not used for advertising. The Contact page embeds a Google Maps map: when it loads, Google may set cookies and log technical data (such as your IP address) under Google’s privacy policy. You can delete or block cookies in your browser settings; the site will still work but will open in the default language.'
       }
     },
     {

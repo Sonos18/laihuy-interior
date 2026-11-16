@@ -113,8 +113,8 @@ test('phone and email in the direct block are real links that do not open a new 
 
   await expect(phone).toHaveAttribute('href', 'tel:+84903102012')
   await expect(phone).toHaveText('0903 102 012')
-  await expect(email).toHaveText('noithatlaihuy@gmail.com')
-  await expect(email).toHaveAttribute('href', /^mailto:noithatlaihuy@gmail\.com\?subject=/)
+  await expect(email).toHaveText('lienhe@noithatlaihuy.vn')
+  await expect(email).toHaveAttribute('href', /^mailto:lienhe@noithatlaihuy\.vn\?subject=/)
   await expect(phone).not.toHaveAttribute('target', /.+/)
   await expect(email).not.toHaveAttribute('target', /.+/)
 })
@@ -280,7 +280,7 @@ for (const locale of ['vi', 'en'] as const) {
 
     await expect.poll(async () => (await mailtos(page)).length).toBe(1)
     const url = new URL((await mailtos(page))[0]!)
-    expect(decodeURIComponent(url.pathname)).toBe('noithatlaihuy@gmail.com')
+    expect(decodeURIComponent(url.pathname)).toBe('lienhe@noithatlaihuy.vn')
 
     const subject = url.searchParams.get('subject')!
     const body = url.searchParams.get('body')!
@@ -368,7 +368,7 @@ test('when the clipboard is unavailable an over-long message is refused with an 
   await submit(page)
 
   await expect(page.locator('#contact-message-error')).toBeVisible()
-  await expect(page.locator('#contact-message-error')).toContainText('noithatlaihuy@gmail.com')
+  await expect(page.locator('#contact-message-error')).toContainText('lienhe@noithatlaihuy.vn')
   await expect(page.locator('#contact-message')).toBeFocused()
   await expect(page.locator('[data-testid="contact-mail-opened"]')).toBeEmpty()
   expect(await mailtos(page)).toEqual([])

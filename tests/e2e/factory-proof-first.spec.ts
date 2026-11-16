@@ -33,7 +33,7 @@ const copy = {
       },
       {
         question: 'Lai Huy có lập BOQ sơ bộ từ bản vẽ của chúng tôi không?',
-        answer: 'Có. Gửi bản vẽ PDF hoặc DWG tới noithatlaihuy@gmail.com; Lai Huy bóc tách khối lượng, lập BOQ sơ bộ (bảng khối lượng) và gửi kèm báo giá. File lớn có thể gửi qua link Google Drive.'
+        answer: 'Có. Gửi bản vẽ PDF hoặc DWG tới lienhe@noithatlaihuy.vn; Lai Huy bóc tách khối lượng, lập BOQ sơ bộ (bảng khối lượng) và gửi kèm báo giá. File lớn có thể gửi qua link Google Drive.'
       },
       {
         question: 'Vật liệu và chất lượng được kiểm soát như thế nào?',
@@ -73,7 +73,7 @@ const copy = {
       },
       {
         question: 'Can Lai Huy prepare a preliminary BOQ from our drawings?',
-        answer: 'Yes. Email PDF or DWG drawings to noithatlaihuy@gmail.com; Lai Huy does the take-off, prepares a preliminary BOQ (bill of quantities) and sends it with the quote. Large files can be shared as a Google Drive link.'
+        answer: 'Yes. Email PDF or DWG drawings to lienhe@noithatlaihuy.vn; Lai Huy does the take-off, prepares a preliminary BOQ (bill of quantities) and sends it with the quote. Large files can be shared as a Google Drive link.'
       },
       {
         question: 'How are materials and quality controlled?',

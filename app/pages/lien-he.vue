@@ -7,6 +7,7 @@ import type { LocalizedText } from '~/shared/types/localization'
 import { buildQuoteMailto, type QuoteMailtoCopy } from '~/utils/contact-mailto'
 
 const { t, ta } = useLanguage()
+const { track } = useAnalytics()
 
 // Hero: an inviting residential living room — see docs/hero-art-direction.md §10
 // (Contact · Conversation). Compact height, then flows into the contact details.
@@ -145,6 +146,8 @@ const openMailClient = (href: string) => {
   const link = document.createElement('a')
   link.href = href
   link.hidden = true
+  // Counted by the delegated GA4 listener as click_email, attributed to the form.
+  link.dataset.trackLocation = 'contact-form'
   document.body.append(link)
   link.click()
   link.remove()
@@ -189,6 +192,7 @@ const submitForm = async () => {
   }
 
   openMailClient(href)
+  track('compose_mailto', { project_type: form.projectType })
   mailState.value = messageMoved ? 'paste' : 'opened'
 }
 
@@ -301,6 +305,28 @@ usePageSeo({
                     :href="`tel:${company.phone.replaceAll(' ', '')}`"
                     class="home-card-heading inline-flex min-h-11 items-center text-ink-950 underline-offset-4 hover:underline"
                   >{{ t(company.phoneDisplay) }}</a>
+                </dd>
+              </div>
+              <div>
+                <dt class="flex items-center gap-3 text-sm font-bold text-ink-800">
+                  <Icon
+                    name="i-lucide-message-circle"
+                    class="h-5 w-5 shrink-0 text-wood-600"
+                    aria-hidden="true"
+                  />
+                  Zalo
+                </dt>
+                <dd class="mt-1 pl-8">
+                  <a
+                    :href="company.zalo"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex min-h-11 items-center text-lg font-semibold text-ink-950 underline-offset-4 hover:underline"
+                    :aria-label="t(uiText.labels.chatZalo)"
+                  >{{ t(company.phoneDisplay) }}</a>
+                  <p class="text-sm text-ink-600">
+                    {{ t(uiText.contactPage.direct.zaloNote) }}
+                  </p>
                 </dd>
               </div>
               <div>
