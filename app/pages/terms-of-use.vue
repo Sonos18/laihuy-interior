@@ -12,8 +12,8 @@ usePageSeo({
   title: seoTitle,
   description: seoDescription,
   imagePath: company.seo.terms.ogImage.path,
-  jsonLd: ({ base }) => [
-    buildBreadcrumbLd(base, t, [
+  jsonLd: ({ base, url }) => [
+    buildBreadcrumbLd(url, t, [
       { name: { vi: 'Trang chủ', en: 'Home' }, path: '/' },
       { name: termsOfUse.title, path: '/terms-of-use' }
     ]),

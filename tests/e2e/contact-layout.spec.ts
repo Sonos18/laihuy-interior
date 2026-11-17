@@ -1,6 +1,6 @@
 import type { ConsoleMessage, Page } from '@playwright/test'
 import { expect, test } from './fixtures'
-import { APP_ORIGIN } from './origin'
+import { localizePath } from '../../app/utils/locale-path'
 
 /**
  * /lien-he layout gate — copy deck B-06.
@@ -23,7 +23,6 @@ const TRANSPARENT_PNG = Buffer.from(
 
 async function open(page: Page, width: number, locale: 'vi' | 'en' = 'vi') {
   await page.setViewportSize({ width, height: 900 })
-  await page.context().addCookies([{ name: 'lai-huy-locale', value: locale, url: APP_ORIGIN }])
   // Geometry and behaviour only: images are stubbed so the gate does not depend on remote media
   // (AGENTS.md: browser tests can depend on Supabase images). Layout here never reads image pixels.
   await page.route('**/*', async (route) => {
@@ -36,7 +35,7 @@ async function open(page: Page, width: number, locale: 'vi' | 'en' = 'vi') {
   await page.route('https://maps.google.com/**', async (route) => {
     await route.fulfill({ status: 200, contentType: 'text/html', body: '<!doctype html><title>Map unavailable in test</title>' })
   })
-  await page.goto('/lien-he', { waitUntil: 'load' })
+  await page.goto(localizePath('/lien-he', locale), { waitUntil: 'load' })
   await page.waitForFunction(() => Boolean(
     (document.querySelector('#__nuxt') as HTMLElement & { __vue_app__?: unknown })?.__vue_app__
   ))

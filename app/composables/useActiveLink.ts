@@ -7,8 +7,12 @@
 export const useActiveLink = () => {
   const route = useRoute()
 
-  const isActive = (to: string) =>
-    to === '/' ? route.path === '/' : route.path.startsWith(to)
+  // Links are authored unprefixed (`/du-an`); the English route carries `/en`, so compare the
+  // path without its locale prefix.
+  const isActive = (to: string) => {
+    const path = stripLocalePrefix(route.path)
+    return to === '/' ? path === '/' : path.startsWith(to)
+  }
 
   return { isActive }
 }

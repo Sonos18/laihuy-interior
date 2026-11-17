@@ -6,7 +6,7 @@ defineProps<{
   image: MediaAsset
 }>()
 
-const { t } = useLanguage()
+const { t, localePath } = useLanguage()
 </script>
 
 <template>
@@ -53,7 +53,7 @@ const { t } = useLanguage()
           class="reveal mt-8 flex flex-col gap-3 sm:flex-row sm:items-center"
         >
           <NuxtLink
-            to="/lien-he"
+            :to="localePath('/lien-he')"
             class="btn-bronze btn-bronze--on-dark group"
           >
             {{ t(homePageContent.hero.primaryCta) }}
@@ -63,7 +63,7 @@ const { t } = useLanguage()
             />
           </NuxtLink>
           <NuxtLink
-            to="/lien-he#cach-gui-ho-so"
+            :to="localePath('/lien-he#cach-gui-ho-so')"
             class="btn-luxury-outline"
           >
             {{ t(homePageContent.hero.secondaryCta) }}

@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from './fixtures'
 import { APP_ORIGIN } from './origin'
+import { localizePath } from '../../app/utils/locale-path'
 
 const VIEWPORT_HEIGHT = 900
 const TEST_ORIGIN = process.env.DENSITY_TEST_ORIGIN ?? APP_ORIGIN
@@ -29,9 +30,6 @@ async function prepareContentPage(page: Page, locale: 'vi' | 'en', path: string)
   })
   page.on('pageerror', error => pageErrors.push(error.message))
 
-  await page.context().addCookies([
-    { name: 'lai-huy-locale', value: locale, url: TEST_ORIGIN }
-  ])
   await page.route('**/*', async (route) => {
     if (route.request().resourceType() === 'image') {
       await route.fulfill({ status: 200, contentType: 'image/png', body: TRANSPARENT_PNG })
@@ -41,7 +39,7 @@ async function prepareContentPage(page: Page, locale: 'vi' | 'en', path: string)
   })
 
   await page.setViewportSize({ width: 1024, height: VIEWPORT_HEIGHT })
-  await page.goto(new URL(path, TEST_ORIGIN).toString(), { waitUntil: 'load' })
+  await page.goto(new URL(localizePath(path, locale), TEST_ORIGIN).toString(), { waitUntil: 'load' })
   await page.waitForFunction(() => Boolean(
     (document.querySelector('#__nuxt') as HTMLElement & { __vue_app__?: unknown })?.__vue_app__
   ))
