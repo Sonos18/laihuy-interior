@@ -142,9 +142,9 @@ export const company = {
 
      The line that governs this field is the one at the top of this file: fields stay empty until
      authored with authentic content, never fabricated. A fifth signal — a construction warranty —
-     was requested and deliberately NOT added: nothing in this repository states that such a
-     warranty exists, and a footer is the last place a business should discover it is promising
-     something nobody authored. Add it here only when someone can point at the policy.
+     was requested and NOT added here: the owner's warranty terms (2026-11-17) live in the home
+     contractor file (`homePageContent.trust.warranty`); a footer badge for them is a separate,
+     unrequested change.
 
      The glyphs are REUSED, not chosen: three of the four labels have an exact title match in
      `differentiators` on /gioi-thieu and take that page's icon verbatim — factory, shield-check,
