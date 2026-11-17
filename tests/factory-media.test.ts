@@ -17,11 +17,11 @@ describe('factory media', () => {
       people: factoryMedia.people.path,
       visit: factoryMedia.visit.path
     }).toEqual({
-      hero: 'company/workshop/4.webp',
+      hero: 'company/workshop/4-v2.webp',
       facade: 'company/workshop/1.webp',
-      process: 'company/workshop/3.webp',
+      process: 'company/workshop/3-v2.webp',
       people: 'company/company-story.webp',
-      visit: 'company/workshop/2.webp'
+      visit: 'company/workshop/2-v2.webp'
     })
     const paths = Object.values(factoryMedia).map(image => image.path)
     expect(new Set(paths).size).toBe(paths.length)

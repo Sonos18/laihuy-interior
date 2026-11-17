@@ -10,6 +10,7 @@ import { projects } from '../../app/data/projects'
 import { expect, test } from './fixtures'
 import { MIN_SURFACE_LUMINANCE, nonEdgeRadii, surfaceLuminances } from './helpers/warm-surfaces'
 import { APP_ORIGIN } from './origin'
+import { localizePath } from '../../app/utils/locale-path'
 
 const TEST_ORIGIN = process.env.DENSITY_TEST_ORIGIN ?? APP_ORIGIN
 const TRANSPARENT_PNG = Buffer.from(
@@ -28,9 +29,6 @@ const chapterOrder = [
 ] as const
 
 async function openAbout(page: Page, locale: typeof locales[number], width = 1440) {
-  await page.context().addCookies([
-    { name: 'lai-huy-locale', value: locale, url: TEST_ORIGIN }
-  ])
   await page.route('**/*', async (route) => {
     if (route.request().resourceType() === 'image') {
       await route.fulfill({ status: 200, contentType: 'image/png', body: TRANSPARENT_PNG })
@@ -39,7 +37,7 @@ async function openAbout(page: Page, locale: typeof locales[number], width = 144
     await route.continue()
   })
   await page.setViewportSize({ width, height: 900 })
-  await page.goto(new URL('/gioi-thieu', TEST_ORIGIN).toString(), { waitUntil: 'load' })
+  await page.goto(new URL(localizePath('/gioi-thieu', locale), TEST_ORIGIN).toString(), { waitUntil: 'load' })
   await page.evaluate(() => document.fonts.ready)
 }
 
@@ -115,7 +113,7 @@ for (const locale of locales) {
     for (const [index, slug] of aboutProjectSlugs.entries()) {
       const project = projects.find(item => item.slug === slug)!
       const feature = features.nth(index)
-      await expect(feature).toHaveAttribute('href', `/du-an/${slug}`)
+      await expect(feature).toHaveAttribute('href', localizePath(`/du-an/${slug}`, locale))
       await expect(feature.getByRole('heading')).toHaveText(project.name[locale])
       await expect(feature.getByText([
         categoryDefinitions[project.category].label[locale],
@@ -313,14 +311,14 @@ for (const locale of locales) {
     test(`AB-WARM-04 actions ${tag}`, async ({ page }) => {
       await openAbout(page, locale, width)
 
-      const primary = page.locator('[data-about-chapter="contact"] a[href="/lien-he#cach-gui-ho-so"]')
+      const primary = page.locator(`[data-about-chapter="contact"] a[href="${localizePath('/lien-he', locale)}#cach-gui-ho-so"]`)
       await expect(primary).toHaveCount(1)
       await expect(primary).toHaveClass(/\bbtn-bronze\b/)
       // Bronze Edge Rule: on a light surface the bronze fill carries the Deep Timber border.
       await expect(primary).toHaveCSS('border-top-color', 'rgb(124, 80, 50)')
       await expect(page.locator('[data-about-chapter="contact"] a[href^="tel:"]'))
         .toHaveClass(/\bbtn-outline\b/)
-      await expect(page.locator('[data-about-chapter="factory"] a[href="/nha-xuong"]'))
+      await expect(page.locator(`[data-about-chapter="factory"] a[href="${localizePath('/nha-xuong', locale)}"]`))
         .toHaveClass(/\bbtn-outline\b/)
     })
   }

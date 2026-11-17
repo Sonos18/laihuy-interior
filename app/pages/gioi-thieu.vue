@@ -14,13 +14,13 @@ import { requireWorkshopAsset } from '~/media/factory-media'
 import { projectCover, withAlt } from '~/media/project-media'
 import { pageHeroAssets } from '~/media/page-heroes'
 
-const { t } = useLanguage()
+const { t, localePath } = useLanguage()
 const { resolve: mediaUrl } = useMediaUrl()
 
 const heroImage = withAlt(pageHeroAssets.about, aboutMediaAlt.hero)
 const factoryImages = {
-  main: withAlt(requireWorkshopAsset('4.webp'), aboutMediaAlt.factory),
-  machinery: withAlt(requireWorkshopAsset('8.webp'), aboutMediaAlt.machinery),
+  main: withAlt(requireWorkshopAsset('4-v2.webp'), aboutMediaAlt.factory),
+  machinery: withAlt(requireWorkshopAsset('8-v2.webp'), aboutMediaAlt.machinery),
   craft: withAlt(companyMedia.companyStory, aboutMediaAlt.craft)
 }
 
@@ -49,8 +49,8 @@ usePageSeo({
   title: seoTitle,
   description: seoDescription,
   imagePath: heroImage.path,
-  jsonLd: ({ base, canonical }) => [
-    buildBreadcrumbLd(base, t, [
+  jsonLd: ({ base, canonical, url }) => [
+    buildBreadcrumbLd(url, t, [
       { name: { vi: 'Trang chủ', en: 'Home' }, path: '/' },
       { name: { vi: 'Giới thiệu', en: 'About' }, path: '/gioi-thieu' }
     ]),
@@ -88,7 +88,7 @@ usePageSeo({
       >
         <template #actions>
           <NuxtLink
-            to="/lien-he"
+            :to="localePath('/lien-he')"
             class="btn-bronze btn-bronze--on-dark"
           >
             {{ t(aboutPageContent.hero.primaryCta) }}
@@ -99,7 +99,7 @@ usePageSeo({
             />
           </NuxtLink>
           <NuxtLink
-            to="/du-an"
+            :to="localePath('/du-an')"
             class="btn-luxury-outline"
           >
             {{ t(aboutPageContent.hero.secondaryCta) }}
@@ -211,7 +211,7 @@ usePageSeo({
 
         <NuxtLink
           v-reveal
-          to="/nha-xuong"
+          :to="localePath('/nha-xuong')"
           class="btn-outline reveal mt-8"
         >
           {{ t(aboutPageContent.factory.cta) }}

@@ -6,7 +6,7 @@ defineProps<{
   image: MediaImage
 }>()
 
-const { t } = useLanguage()
+const { t, localePath } = useLanguage()
 </script>
 
 <template>
@@ -72,7 +72,7 @@ const { t } = useLanguage()
       <div class="mt-8 md:mt-10 flex justify-start lg:justify-end">
         <NuxtLink
           data-testid="homepage-machinery-cta"
-          to="/nha-xuong"
+          :to="localePath('/nha-xuong')"
           class="btn-outline"
         >
           {{ t(homePageContent.cta.secondaryCta) }}

@@ -215,8 +215,8 @@ usePageSeo({
   title: seoTitle,
   description: seoDescription,
   imagePath: company.seo.contact.ogImage.path,
-  jsonLd: ({ base, canonical }) => [
-    buildBreadcrumbLd(base, t, [
+  jsonLd: ({ base, canonical, url }) => [
+    buildBreadcrumbLd(url, t, [
       { name: { vi: 'Trang chủ', en: 'Home' }, path: '/' },
       { name: { vi: 'Liên hệ', en: 'Contact' }, path: '/lien-he' }
     ]),

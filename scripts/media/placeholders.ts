@@ -22,9 +22,9 @@ const PLACEHOLDER_WIDTH = 32
 
 // Hero photographs that are not a project cover (see the `heroImage` of each page).
 const EXTRA_HERO_PATHS = [
-  'company/workshop/3.webp',
-  'company/workshop/4.webp',
-  'company/workshop/5.webp',
+  'company/workshop/3-v2.webp',
+  'company/workshop/4-v2.webp',
+  'company/workshop/5-v2.webp',
   'projects/codi-boutique-hotel/sanh-don/2.webp',
   'projects/nha-vuon-chily/5.webp'
 ]

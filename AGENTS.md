@@ -21,7 +21,7 @@ Do not silently resolve a material conflict. Record it, verify the current behav
 
 This is the bilingual Vietnamese-default/English marketing site for Lai Huy Interior, an interior design and manufacturing business. It presents services, company and workshop information, careers, contact details, and a data-driven project portfolio.
 
-Routes currently include `/`, `/gioi-thieu`, `/du-an`, `/du-an/[slug]`, `/nha-xuong`, `/dich-vu`, `/tuyen-dung`, `/lien-he`, `/privacy-policy`, and `/terms-of-use`. Unknown routes use the custom bilingual `app/error.vue` shell when that file is present in the working tree.
+Routes currently include `/`, `/gioi-thieu`, `/du-an`, `/du-an/[slug]`, `/nha-xuong`, `/dich-vu`, `/tuyen-dung`, `/lien-he`, `/privacy-policy`, and `/terms-of-use`, each also served in English under `/en` (for example `/en/du-an`). Unknown routes use the custom bilingual `app/error.vue` shell when that file is present in the working tree.
 
 ## Stack and Runtime
 
@@ -164,7 +164,7 @@ The current `/lien-he` submission is frontend-only: after client-side validation
 - `NUXT_PUBLIC_USE_SUPABASE_MEDIA=true` requires `NUXT_PUBLIC_SUPABASE_URL`; configuration fails early without it.
 - `SUPABASE_SERVICE_ROLE_KEY` is for local upload tooling only. Never commit it, expose it through `NUXT_PUBLIC_*`, log it, or add it to client/runtime/deployment configuration.
 - Do not read or print the ignored local `.env`. Use `.env.example` for variable names and safe placeholders.
-- Locale is cookie/state based with Vietnamese as default; there are no locale-prefixed URLs. Do not claim independently indexable English routes or `hreflang` coverage.
+- Locale lives in the URL: Vietnamese is the unprefixed default (`/du-an`), English is the same route under `/en` (`/en/du-an`, same slugs). `app/utils/locale-path.ts` owns the mapping, `nuxt.config.ts` (`pages:extend`) adds the `/en` copies, and `useLanguage().localePath()` must wrap every internal link. `usePageSeo` emits a self canonical plus `hreflang` vi/en/x-default, and the sitemap lists both versions. There is no cookie or browser-language redirect. In tests, open English pages by URL (`localizePath(path, 'en')`), not with a cookie.
 
 ## Testing and Verification Rules
 

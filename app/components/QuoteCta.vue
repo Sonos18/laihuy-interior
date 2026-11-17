@@ -11,7 +11,7 @@ import { quoteCtaContent } from '~/data/closing'
 
 withDefaults(defineProps<{ layout?: 'split' | 'stacked' }>(), { layout: 'split' })
 
-const { t } = useLanguage()
+const { t, localePath } = useLanguage()
 const phoneHref = `tel:${company.phone.replaceAll(' ', '')}`
 </script>
 
@@ -48,7 +48,7 @@ const phoneHref = `tel:${company.phone.replaceAll(' ', '')}`
         class="quote-cta__actions reveal"
       >
         <NuxtLink
-          to="/lien-he#cach-gui-ho-so"
+          :to="localePath('/lien-he#cach-gui-ho-so')"
           class="btn-bronze"
         >{{ t(quoteCtaContent.primaryCta) }}</NuxtLink>
         <a

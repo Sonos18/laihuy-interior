@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from './fixtures'
 import { APP_ORIGIN } from './origin'
+import { localizePath } from '../../app/utils/locale-path'
 
 /**
  * Small-defect guards from the 2026-10-22 critique: one measurable assertion per defect, so each
@@ -15,7 +16,6 @@ const TRANSPARENT_PNG = Buffer.from(
 )
 
 async function open(page: Page, path: string, width: number, locale: 'vi' | 'en' = 'vi', height = 900) {
-  await page.context().addCookies([{ name: 'lai-huy-locale', value: locale, url: TEST_ORIGIN }])
   await page.route('**/*', async (handler) => {
     if (handler.request().resourceType() === 'image') {
       await handler.fulfill({ status: 200, contentType: 'image/png', body: TRANSPARENT_PNG })
@@ -26,7 +26,7 @@ async function open(page: Page, path: string, width: number, locale: 'vi' | 'en'
   await page.route('https://maps.google.com/**', handler =>
     handler.fulfill({ status: 200, contentType: 'text/html', body: '<!doctype html><title>Map unavailable in test</title>' }))
   await page.setViewportSize({ width, height })
-  await page.goto(new URL(path, TEST_ORIGIN).toString(), { waitUntil: 'load' })
+  await page.goto(new URL(localizePath(path, locale), TEST_ORIGIN).toString(), { waitUntil: 'load' })
   await page.evaluate(() => document.fonts.ready)
 }
 

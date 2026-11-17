@@ -17,9 +17,9 @@ export const pageHeroAssets = {
   home: projectMedia['khach-san-eo-gio'].cover,
   projects: projectMedia['codi-villa-phan-thiet'].cover,
   services: requireProjectAsset('codi-boutique-hotel', '/sanh-don/2.webp'),
-  factory: requireWorkshopAsset('4.webp'),
-  about: requireWorkshopAsset('3.webp'),
-  careers: requireWorkshopAsset('5.webp'),
+  factory: requireWorkshopAsset('4-v2.webp'),
+  about: requireWorkshopAsset('3-v2.webp'),
+  careers: requireWorkshopAsset('5-v2.webp'),
   contact: requireProjectAsset('nha-vuon-chily', '/5.webp')
 } as const satisfies Record<string, MediaAsset>
 

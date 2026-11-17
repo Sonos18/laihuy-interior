@@ -9,7 +9,8 @@ export type JsonLdNode = Record<string, unknown>
 type Translate = (value?: LocalizedText | '', fallback?: string) => string
 
 export type PageSeoOptions = {
-  /** Absolute route path, e.g. '/dich-vu' or '/' — drives canonical and og:url. */
+  /** Unprefixed route path, e.g. '/dich-vu' or '/'. The locale prefix is added here, so it
+   *  drives canonical, og:url and the hreflang alternates of both languages. */
   path: string
   title: MaybeRefOrGetter<string>
   description: MaybeRefOrGetter<string>
@@ -23,13 +24,14 @@ export type PageSeoOptions = {
   /** og:type — 'website' for hubs, 'article' for a single case study. Defaults to 'website'. */
   ogType?: 'website' | 'article'
   /**
-   * JSON-LD builder. Receives the resolved `{ base, canonical }` so nodes can reference the
+   * JSON-LD builder. Receives the resolved `{ base, canonical, url }` (`url(path)` is an
+   * absolute URL in the page's locale) so nodes can reference the
    * same origin without the page re-deriving it (and without a used-before-assigned dance
    * around the composable's return value). Returns one node or an array of independent nodes —
    * each carrying its own @context — emitted as a single <script>; Google reads a top-level
    * array fine. Called inside a computed, so locale-dependent `t()` output stays reactive.
    */
-  jsonLd?: (ctx: { base: string, canonical: string }) => JsonLdNode | JsonLdNode[]
+  jsonLd?: (ctx: { base: string, canonical: string, url: (path: string) => string }) => JsonLdNode | JsonLdNode[]
 }
 
 /**
@@ -48,7 +50,12 @@ export const usePageSeo = (options: PageSeoOptions) => {
   const { public: { siteUrl } } = useRuntimeConfig()
 
   const base = String(siteUrl).replace(/\/+$/, '')
-  const canonical = options.path === '/' ? `${base}/` : `${base}${options.path}`
+  const absolute = (path: string) => (path === '/' ? `${base}/` : `${base}${path}`)
+  const urlIn = (path: string, target: Locale) => absolute(localizePath(path, target))
+  const url = (path: string) => urlIn(path, locale.value)
+  // Each language version is canonical to itself; the other is an hreflang alternate, never a
+  // canonical target (pointing canonical across languages tells Google they are duplicates).
+  const canonical = url(options.path)
 
   // Absolutise: mediaUrl returns a Supabase absolute URL in production (USE_SUPABASE_MEDIA=true),
   // but a relative /public path when the flag is off — and og:image MUST be absolute. This makes
@@ -68,18 +75,30 @@ export const usePageSeo = (options: PageSeoOptions) => {
     ogUrl: canonical,
     ogType: options.ogType ?? 'website',
     ogSiteName: company.name,
-    ogLocale: () => (locale.value === 'en' ? 'en_US' : 'vi_VN'),
+    ogLocale: () => OG_LOCALE[locale.value],
+    ogLocaleAlternate: () => LOCALES.filter(other => other !== locale.value).map(other => OG_LOCALE[other]),
     twitterCard: 'summary_large_image'
   })
 
   const jsonLd = options.jsonLd
   const structuredHead = computed(() => ({
-    link: [{ rel: 'canonical', href: canonical }],
+    link: [
+      { rel: 'canonical', href: canonical },
+      // hreflang: every language version lists all of them, itself included, plus x-default
+      // (the unprefixed Vietnamese page, which is what a visitor with no match is served).
+      ...LOCALES.map(target => ({
+        key: `hreflang-${target}`,
+        rel: 'alternate',
+        hreflang: HREFLANG[target],
+        href: urlIn(options.path, target)
+      })),
+      { key: 'hreflang-x-default', rel: 'alternate', hreflang: 'x-default', href: urlIn(options.path, DEFAULT_LOCALE) }
+    ],
     script: jsonLd
       ? [{
           key: 'page-structured-data',
           type: 'application/ld+json',
-          innerHTML: JSON.stringify(jsonLd({ base, canonical }))
+          innerHTML: JSON.stringify(jsonLd({ base, canonical, url }))
         }]
       : []
   }))
@@ -90,7 +109,7 @@ export const usePageSeo = (options: PageSeoOptions) => {
 
 /** A BreadcrumbList node from an ordered list of crumbs (last one is the current page). */
 export const buildBreadcrumbLd = (
-  base: string,
+  url: (path: string) => string,
   t: Translate,
   crumbs: { name: LocalizedText, path: string }[]
 ): JsonLdNode => ({
@@ -100,7 +119,7 @@ export const buildBreadcrumbLd = (
     '@type': 'ListItem',
     'position': index + 1,
     'name': t(crumb.name),
-    'item': crumb.path === '/' ? `${base}/` : `${base}${crumb.path}`
+    'item': url(crumb.path)
   }))
 })
 
@@ -108,9 +127,9 @@ const STRUCTURED_DATA_LOCALES: readonly Locale[] = ['vi', 'en']
 
 /**
  * A FAQPage node carrying every question in BOTH languages, each tagged with `inLanguage`.
- * Locale is a cookie preference on one URL, so following the active locale would make the
- * indexable output depend on a cookie a crawler never sends. One node (not one per locale)
- * avoids duplicate-FAQPage warnings in structured-data validators.
+ * Kept bilingual on both language URLs (it predates locale URLs, when language was a cookie a
+ * crawler never sent): the FAQ is the same entity either way, and one node (not one per
+ * locale) avoids duplicate-FAQPage warnings in structured-data validators.
  */
 export const buildBilingualFaqPageLd = (
   faqs: readonly { question: LocalizedText, answer: LocalizedText }[]

@@ -35,8 +35,8 @@ usePageSeo({
   title: seoTitle,
   description: seoDescription,
   imagePath: factoryMedia.hero.path,
-  jsonLd: ({ base }) => [
-    buildBreadcrumbLd(base, t, [
+  jsonLd: ({ base, url }) => [
+    buildBreadcrumbLd(url, t, [
       { name: { vi: 'Trang chủ', en: 'Home' }, path: '/' },
       { name: { vi: 'Nhà xưởng', en: 'Factory' }, path: '/nha-xuong' }
     ]),

@@ -4,6 +4,7 @@ import { projects } from '../../app/data/projects'
 import { FEATURED_LIMIT, splitProjectIndex } from '../../app/utils/project-index'
 import { coversEndToEnd } from '../../app/utils/project-detail-view-model'
 import { APP_ORIGIN } from './origin'
+import { localizePath } from '../../app/utils/locale-path'
 
 /**
  * PROJECT INDEX (`/du-an`) and the case-study room filter.
@@ -36,7 +37,6 @@ const ARCHIVE_COUNT = archive.length
 type Locale = 'vi' | 'en'
 
 async function open(page: Page, path: string, width: number, locale: Locale = 'vi') {
-  await page.context().addCookies([{ name: 'lai-huy-locale', value: locale, url: TEST_ORIGIN }])
   await page.route('**/*', async (route) => {
     if (route.request().resourceType() === 'image') {
       await route.fulfill({ status: 200, contentType: 'image/png', body: TRANSPARENT_PNG })
@@ -45,7 +45,7 @@ async function open(page: Page, path: string, width: number, locale: Locale = 'v
     await route.continue()
   })
   await page.setViewportSize({ width, height: 900 })
-  await page.goto(new URL(path, TEST_ORIGIN).toString(), { waitUntil: 'load' })
+  await page.goto(new URL(localizePath(path, locale), TEST_ORIGIN).toString(), { waitUntil: 'load' })
   await page.evaluate(() => document.fonts.ready)
 }
 
@@ -53,12 +53,13 @@ for (const locale of ['vi', 'en'] as const) {
   for (const width of [1440, 768, 390] as const) {
     test(`PI-01 the end-to-end projects are a lead + two satellites (${locale} @ ${width})`, async ({ page }) => {
       await open(page, '/du-an', width, locale)
+      const endToEnd = END_TO_END.map(href => localizePath(href, locale))
 
       const cards = page.locator('[data-testid="projects-featured"] [data-project-card]')
       // Up to FEATURED_LIMIT end-to-end projects are featured; the lead and satellites need three.
       expect(END_TO_END).toHaveLength(Math.min(FEATURED_LIMIT, projects.filter(coversEndToEnd).length))
       await expect(cards).toHaveCount(FEATURED_LIMIT)
-      expect(await cards.evaluateAll(links => links.map(link => link.getAttribute('href')))).toEqual(END_TO_END)
+      expect(await cards.evaluateAll(links => links.map(link => link.getAttribute('href')))).toEqual(endToEnd)
 
       const boxes = await cards.evaluateAll(links => links.map((link) => {
         const rect = link.getBoundingClientRect()
@@ -83,9 +84,9 @@ for (const locale of ['vi', 'en'] as const) {
       const archiveHrefs = await page.locator('[data-testid="projects-grid"] > a')
         .evaluateAll(links => links.map(link => link.getAttribute('href')))
       expect(archiveHrefs).toHaveLength(ARCHIVE_COUNT)
-      for (const href of END_TO_END) expect(archiveHrefs).not.toContain(href)
+      for (const href of endToEnd) expect(archiveHrefs).not.toContain(href)
       // None is lost: the featured and the archive cards together are the whole portfolio.
-      expect([...END_TO_END, ...archiveHrefs].sort()).toEqual(projects.map(project => `/du-an/${project.slug}`).sort())
+      expect([...endToEnd, ...archiveHrefs].sort()).toEqual(projects.map(project => localizePath(`/du-an/${project.slug}`, locale)).sort())
     })
   }
 }

@@ -13,7 +13,7 @@ import { heroPlaceholders } from '~/media/placeholders.generated'
 
 const props = defineProps<{ from: PageDoorFrom }>()
 
-const { t } = useLanguage()
+const { t, localePath } = useLanguage()
 const door = computed(() => pageDoors[props.from])
 const image = computed(() => pageHeroAssets[door.value.hero])
 const placeholder = computed(() => heroPlaceholders[image.value.path])
@@ -21,7 +21,7 @@ const placeholder = computed(() => heroPlaceholders[image.value.path])
 
 <template>
   <NuxtLink
-    :to="door.to"
+    :to="localePath(door.to)"
     data-page-door
     class="page-door group"
   >

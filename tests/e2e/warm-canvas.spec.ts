@@ -2,6 +2,7 @@ import type { Page } from '@playwright/test'
 import { expect, test } from './fixtures'
 import { MIN_SURFACE_LUMINANCE, SAWDUST_CEILING_LUMINANCE, nonEdgeRadii, surfaceLuminances } from './helpers/warm-surfaces'
 import { APP_ORIGIN } from './origin'
+import { localizePath } from '../../app/utils/locale-path'
 
 /**
  * WARM: the remaining interior routes sit on the warm-light canvas (DESIGN.md, Warm Light Rule).
@@ -43,9 +44,6 @@ const ROUTES: Route[] = [
 const WIDTHS = [768, 1440] as const
 
 async function open(page: Page, route: Route, locale: 'vi' | 'en', width: number) {
-  await page.context().addCookies([
-    { name: 'lai-huy-locale', value: locale, url: TEST_ORIGIN }
-  ])
   await page.route('**/*', async (handler) => {
     if (handler.request().resourceType() === 'image') {
       await handler.fulfill({ status: 200, contentType: 'image/png', body: TRANSPARENT_PNG })
@@ -57,7 +55,7 @@ async function open(page: Page, route: Route, locale: 'vi' | 'en', width: number
     await handler.fulfill({ status: 200, contentType: 'text/html', body: '<!doctype html><title>Map unavailable in test</title>' })
   })
   await page.setViewportSize({ width, height: 900 })
-  const response = await page.goto(route.path, { waitUntil: 'load' })
+  const response = await page.goto(localizePath(route.path, locale), { waitUntil: 'load' })
   expect(response?.status()).toBe(route.status ?? 200)
   await page.evaluate(() => document.fonts.ready)
 }
@@ -254,7 +252,6 @@ for (const route of ROUTES.filter(({ name }) => ['privacy', 'terms', 'error'].in
       reducedMotion: 'reduce'
     })
     try {
-      await context.addCookies([{ name: 'lai-huy-locale', value: 'vi', url: TEST_ORIGIN }])
       const page = await context.newPage()
       const response = await page.goto(`${TEST_ORIGIN}${route.path}`, { waitUntil: 'load' })
       expect(response?.status()).toBe(route.status ?? 200)
@@ -287,7 +284,6 @@ for (const route of ROUTES.filter(({ name }) => ['privacy', 'terms', 'error'].in
 test('WARM-08 no header transition runs while a legal page hydrates', async ({ page }) => {
   // Motion on: reduced-motion would switch the transitions off and make this vacuous.
   await page.emulateMedia({ reducedMotion: 'no-preference' })
-  await page.context().addCookies([{ name: 'lai-huy-locale', value: 'vi', url: TEST_ORIGIN }])
   await page.addInitScript(() => {
     const seen: string[] = []
     ;(window as unknown as { __headerTransitions: string[] }).__headerTransitions = seen

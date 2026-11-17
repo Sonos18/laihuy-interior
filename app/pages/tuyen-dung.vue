@@ -11,7 +11,7 @@ const { t, ta } = useLanguage()
 // docs/hero-art-direction.md §10, Recruitment · Culture). The workers photo is the
 // ideal "Culture" frame but too low-res for full-bleed; use a high-res hall until
 // authentic hero-resolution people photography exists (Hero Lifecycle §15).
-const workshopHero = workshopMedia.find(asset => asset.path.endsWith('/5.webp'))
+const workshopHero = workshopMedia.find(asset => asset.path.endsWith('/5-v2.webp'))
   ?? workshopMedia.find(asset => asset.width > asset.height)
   ?? brandMedia.bannerHome
 const heroImage = withAlt(workshopHero, {
@@ -27,8 +27,8 @@ usePageSeo({
   title: seoTitle,
   description: seoDescription,
   imagePath: company.seo.careers.ogImage.path,
-  jsonLd: ({ base }) => [
-    buildBreadcrumbLd(base, t, [
+  jsonLd: ({ base, url }) => [
+    buildBreadcrumbLd(url, t, [
       { name: { vi: 'Trang chủ', en: 'Home' }, path: '/' },
       { name: { vi: 'Tuyển dụng', en: 'Careers' }, path: '/tuyen-dung' }
     ]),

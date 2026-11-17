@@ -9,6 +9,7 @@ import { services } from '../../app/data/services'
 import { expect, test } from './fixtures'
 import { MIN_SURFACE_LUMINANCE, nonEdgeRadii, surfaceLuminances } from './helpers/warm-surfaces'
 import { APP_ORIGIN } from './origin'
+import { localizePath } from '../../app/utils/locale-path'
 
 const TEST_ORIGIN = process.env.DENSITY_TEST_ORIGIN ?? APP_ORIGIN
 const TRANSPARENT_PNG = Buffer.from(
@@ -31,9 +32,6 @@ async function openServices(
   locale: typeof locales[number],
   width = 1440
 ) {
-  await page.context().addCookies([
-    { name: 'lai-huy-locale', value: locale, url: TEST_ORIGIN }
-  ])
   await page.route('**/*', async (route) => {
     if (route.request().resourceType() === 'image') {
       await route.fulfill({
@@ -46,7 +44,7 @@ async function openServices(
     await route.continue()
   })
   await page.setViewportSize({ width, height: 900 })
-  await page.goto(new URL('/dich-vu', TEST_ORIGIN).toString(), { waitUntil: 'load' })
+  await page.goto(new URL(localizePath('/dich-vu', locale), TEST_ORIGIN).toString(), { waitUntil: 'load' })
   await page.evaluate(() => document.fonts.ready)
 }
 
@@ -125,18 +123,18 @@ for (const locale of locales) {
     }
 
     const documents = page.locator('[data-services-chapter="documents"]')
-    await expect(documents.locator('a[href="/lien-he#cach-gui-ho-so"]')).toHaveCount(1)
+    await expect(documents.locator(`a[href="${localizePath('/lien-he#cach-gui-ho-so', locale)}"]`)).toHaveCount(1)
     await expect(documents.locator('a[href="#delivery-journey"]')).toHaveCount(1)
 
     const proof = page.locator('[data-services-chapter="proof"]')
-    await expect(proof.locator('a[href="/nha-xuong"]')).toHaveCount(1)
+    await expect(proof.locator(`a[href="${localizePath('/nha-xuong', locale)}"]`)).toHaveCount(1)
     await expect(proof.locator('img')).toHaveCount(1)
 
     const evidence = page.locator('[data-services-chapter="evidence"]')
     await expect(evidence.locator('img')).toHaveCount(4)
 
     const contact = page.locator('[data-services-chapter="contact"]')
-    await expect(contact.locator('a[href="/lien-he#cach-gui-ho-so"]')).toHaveCount(1)
+    await expect(contact.locator(`a[href="${localizePath('/lien-he#cach-gui-ho-so', locale)}"]`)).toHaveCount(1)
     await expect(contact.locator('a[href="tel:+84903102012"]')).toHaveCount(1)
     await expect(contact).not.toContainText(/đã gửi|đã nhận|gửi thành công|sent successfully|received/i)
     await expect(page.locator('main input[type="file"]')).toHaveCount(0)
@@ -338,7 +336,7 @@ for (const locale of locales) {
       await openServices(page, locale, width)
 
       for (const chapter of ['documents', 'contact'] as const) {
-        const primary = page.locator(`[data-services-chapter="${chapter}"] a[href="/lien-he#cach-gui-ho-so"]`)
+        const primary = page.locator(`[data-services-chapter="${chapter}"] a[href="${localizePath('/lien-he#cach-gui-ho-so', locale)}"]`)
         await expect(primary).toHaveCount(1)
         await expect(primary).toHaveClass(/\bbtn-bronze\b/)
         // Bronze Edge Rule: on a light surface the bronze fill carries the Deep Timber border.
@@ -348,7 +346,7 @@ for (const locale of locales) {
         .toHaveClass(/\bbtn-outline\b/)
       await expect(page.locator('[data-services-chapter="contact"] a[href^="tel:"]'))
         .toHaveClass(/\bbtn-outline\b/)
-      await expect(page.locator('[data-services-chapter="proof"] a[href="/nha-xuong"]'))
+      await expect(page.locator(`[data-services-chapter="proof"] a[href="${localizePath('/nha-xuong', locale)}"]`))
         .toHaveClass(/\bbtn-outline\b/)
     })
   }

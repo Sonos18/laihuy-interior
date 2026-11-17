@@ -11,7 +11,7 @@ import type { Project, ProjectCategory } from '~/shared/types/project'
 import { splitProjectIndex } from '~/utils/project-index'
 import { pageHeroAssets } from '~/media/page-heroes'
 
-const { t, ta } = useLanguage()
+const { t, ta, localePath } = useLanguage()
 
 const heroImage = withAlt(pageHeroAssets.projects, {
   vi: 'Codi Villa Phan Thiết, NovaWorld Phan Thiết',
@@ -85,8 +85,8 @@ usePageSeo({
   title: seoTitle,
   description: seoDescription,
   imagePath: company.seo.projects.ogImage.path,
-  jsonLd: ({ base, canonical }) => [
-    buildBreadcrumbLd(base, t, [
+  jsonLd: ({ base, canonical, url }) => [
+    buildBreadcrumbLd(url, t, [
       { name: { vi: 'Trang chủ', en: 'Home' }, path: '/' },
       { name: { vi: 'Dự án', en: 'Projects' }, path: '/du-an' }
     ]),
@@ -106,7 +106,7 @@ usePageSeo({
           '@type': 'ListItem',
           'position': index + 1,
           'name': t(project.name),
-          'item': `${base}/du-an/${project.slug}`
+          'item': url(`/du-an/${project.slug}`)
         }))
       }
     }
@@ -211,7 +211,7 @@ usePageSeo({
           <NuxtLink
             v-for="{ project, cover } in filteredArchive"
             :key="project.slug"
-            :to="`/du-an/${project.slug}`"
+            :to="localePath(`/du-an/${project.slug}`)"
             class="group flex flex-col overflow-hidden card-link"
           >
             <div
