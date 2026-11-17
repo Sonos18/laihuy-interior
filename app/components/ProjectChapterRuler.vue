@@ -13,7 +13,7 @@ const props = defineProps<{
   sections: readonly ProjectNavSection[]
 }>()
 
-const { t } = useLanguage()
+const { t, localePath } = useLanguage()
 
 const active = ref('')
 const progress = ref<Record<string, number>>({})
@@ -106,7 +106,7 @@ onMounted(() => {
       <!-- Shown only while the header is hidden, so the screen always carries exactly one quote
            action. Hidden by `visibility`, so it also leaves the tab order and the a11y tree. -->
       <NuxtLink
-        to="/lien-he"
+        :to="localePath('/lien-he')"
         class="btn-bronze project-ruler__cta"
       >
         {{ t(uiText.cta.quote) }}

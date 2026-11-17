@@ -18,7 +18,7 @@
 import { company } from '~/data/company'
 import { legalLinks, navLinks, uiText } from '~/data/ui'
 
-const { t, ta } = useLanguage()
+const { t, ta, localePath } = useLanguage()
 </script>
 
 <template>
@@ -56,7 +56,7 @@ const { t, ta } = useLanguage()
               :key="link.to"
             >
               <NuxtLink
-                :to="link.to"
+                :to="localePath(link.to)"
                 class="footer-link"
               >
                 {{ t(link.label) }}
@@ -182,7 +182,7 @@ const { t, ta } = useLanguage()
             v-for="link in legalLinks"
             :key="link.to"
           >
-            <NuxtLink :to="link.to">
+            <NuxtLink :to="localePath(link.to)">
               {{ t(link.label) }}
             </NuxtLink>
           </li>

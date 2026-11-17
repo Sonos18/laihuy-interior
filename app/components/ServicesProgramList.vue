@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<{
   breath: undefined
 })
 
-const { t, ta } = useLanguage()
+const { t, ta, localePath } = useLanguage()
 const sequence = (index: number) => String(props.startAt + index).padStart(2, '0')
 </script>
 
@@ -51,7 +51,7 @@ const sequence = (index: number) => String(props.startAt + index).padStart(2, '0
           class="group reveal scroll-mt-[calc(var(--header-anchor)+1rem)] card-link"
         >
           <NuxtLink
-            to="/lien-he"
+            :to="localePath('/lien-he')"
             class="block rounded-[4px] px-6 py-8 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-wood-500 md:px-10"
           >
             <div

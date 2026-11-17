@@ -1,5 +1,6 @@
 import { expect, test } from './fixtures'
 import { APP_ORIGIN } from './origin'
+import { localizePath } from '../../app/utils/locale-path'
 
 /**
  * Home layout contract for the critique fixes: a lead project image that keeps its 16:10 frame,
@@ -8,12 +9,9 @@ import { APP_ORIGIN } from './origin'
  * pure geometry and computed-style checks.
  */
 
-const HOME = new URL('/', APP_ORIGIN).toString()
-
 async function openHome(page: import('@playwright/test').Page, width: number, locale: 'vi' | 'en' = 'vi') {
-  await page.context().addCookies([{ name: 'lai-huy-locale', value: locale, url: APP_ORIGIN }])
   await page.setViewportSize({ width, height: 900 })
-  await page.goto(HOME, { waitUntil: 'load' })
+  await page.goto(new URL(localizePath('/', locale), APP_ORIGIN).toString(), { waitUntil: 'load' })
   await page.evaluate(() => document.fonts.ready)
 }
 

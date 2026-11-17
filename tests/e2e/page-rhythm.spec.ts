@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from './fixtures'
 import { APP_ORIGIN } from './origin'
+import { localizePath } from '../../app/utils/locale-path'
 
 /**
  * RHYTHM: the contracts that keep the long pages from reading as one template
@@ -43,7 +44,6 @@ const ALL_PAGES = [
 ] as const
 
 async function open(page: Page, path: string, width: number, locale: 'vi' | 'en' = 'vi') {
-  await page.context().addCookies([{ name: 'lai-huy-locale', value: locale, url: TEST_ORIGIN }])
   await page.route('**/*', async (route) => {
     if (route.request().resourceType() === 'image') {
       await route.fulfill({ status: 200, contentType: 'image/png', body: TRANSPARENT_PNG })
@@ -54,7 +54,7 @@ async function open(page: Page, path: string, width: number, locale: 'vi' | 'en'
   await page.route('https://maps.google.com/**', route =>
     route.fulfill({ status: 200, contentType: 'text/html', body: '<!doctype html><title>Map unavailable in test</title>' }))
   await page.setViewportSize({ width, height: 900 })
-  await page.goto(new URL(path, TEST_ORIGIN).toString(), { waitUntil: 'load' })
+  await page.goto(new URL(localizePath(path, locale), TEST_ORIGIN).toString(), { waitUntil: 'load' })
   await page.evaluate(() => document.fonts.ready)
 }
 

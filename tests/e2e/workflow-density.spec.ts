@@ -4,6 +4,7 @@ import {
 } from '../../app/data/about'
 import { expect, test } from './fixtures'
 import { APP_ORIGIN } from './origin'
+import { localizePath } from '../../app/utils/locale-path'
 
 const VIEWPORT_HEIGHT = 900
 const TEST_ORIGIN = process.env.DENSITY_TEST_ORIGIN ?? APP_ORIGIN
@@ -78,9 +79,6 @@ async function prepareContentPage(page: Page, locale: WorkflowLocale, path: stri
   })
   page.on('pageerror', error => pageErrors.push(error.message))
 
-  await page.context().addCookies([
-    { name: 'lai-huy-locale', value: locale, url: TEST_ORIGIN }
-  ])
   await page.route('**/*', async (route) => {
     if (route.request().resourceType() === 'image') {
       await route.fulfill({ status: 200, contentType: 'image/png', body: TRANSPARENT_PNG })
@@ -90,7 +88,7 @@ async function prepareContentPage(page: Page, locale: WorkflowLocale, path: stri
   })
 
   await page.setViewportSize({ width, height: VIEWPORT_HEIGHT })
-  await page.goto(new URL(path, TEST_ORIGIN).toString(), { waitUntil: 'load' })
+  await page.goto(new URL(localizePath(path, locale), TEST_ORIGIN).toString(), { waitUntil: 'load' })
   await page.evaluate(() => document.fonts.ready)
 
   return {
@@ -129,7 +127,7 @@ for (const locale of ['vi', 'en'] as const) {
     expect(await countExactText(page, '#production-workflow p', copy.descriptions)).toBe(6)
     expect(await countExactText(page, 'main li span', copy.qcBullets)).toBe(0)
     await expect(page.getByText(copy.qcReference, { exact: true })).toHaveCount(1)
-    await expect(page.locator('main a[href="/nha-xuong"]')).not.toHaveCount(0)
+    await expect(page.locator(`main a[href="${localizePath('/nha-xuong', locale)}"]`)).not.toHaveCount(0)
     expect(errors.consoleErrors).toEqual([])
     expect(errors.pageErrors).toEqual([])
   })

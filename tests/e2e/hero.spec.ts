@@ -1,5 +1,5 @@
 import { expect, test } from './fixtures'
-import { APP_ORIGIN } from './origin'
+import { localizePath } from '../../app/utils/locale-path'
 
 /**
  * The hero locale-invariance gate — main.css §"THE hero floor" (--hero-min-h-home).
@@ -150,18 +150,14 @@ async function blockImages(page: import('@playwright/test').Page) {
 }
 
 async function gotoIn(page: import('@playwright/test').Page, path: string, locale: string) {
-  // The locale is a cookie (useLanguage → useCookie('lai-huy-locale')), so it must be set
-  // BEFORE navigation: SSR reads it to pick which copy is rendered, and a post-load switch
-  // would measure a client-patched DOM instead of the delivered page.
-  await page.context().addCookies([
-    { name: 'lai-huy-locale', value: locale, url: APP_ORIGIN }
-  ])
+  // The locale is the URL (`/en/...`, app/utils/locale-path.ts), so SSR delivers each language
+  // directly and the gate measures the delivered page, not a client-patched DOM.
   // `domcontentloaded`, NOT `load`: `load` blocks on every subresource on the page, including
   // the dozens of below-the-fold Supabase-hosted images this gate never looks at. That wait —
   // not the assertions — is what made the suite take 9 minutes and time out under its own load.
   // settleHero() below waits on the two things that actually decide the geometry, so waiting
   // for `load` first is redundant as well as slow.
-  await page.goto(path, { waitUntil: 'domcontentloaded' })
+  await page.goto(localizePath(path, locale as 'vi' | 'en'), { waitUntil: 'domcontentloaded' })
   await settleHero(page)
 }
 

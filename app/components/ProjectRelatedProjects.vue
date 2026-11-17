@@ -5,7 +5,7 @@ import type { ProjectRelatedCard } from '~/shared/types/project-detail'
 
 defineProps<{ projects: readonly ProjectRelatedCard[] }>()
 
-const { t } = useLanguage()
+const { t, localePath } = useLanguage()
 </script>
 
 <template>
@@ -24,7 +24,7 @@ const { t } = useLanguage()
       >
         <template #aside>
           <NuxtLink
-            to="/du-an"
+            :to="localePath('/du-an')"
             class="btn-outline hidden md:inline-flex"
           >
             {{ t(uiText.cta.allProjects) }}
@@ -37,7 +37,7 @@ const { t } = useLanguage()
           v-for="{ item, cover } in projects"
           :key="item.slug"
           v-reveal.item.image
-          :to="`/du-an/${item.slug}`"
+          :to="localePath(`/du-an/${item.slug}`)"
           class="group reveal block overflow-hidden card-link"
         >
           <div

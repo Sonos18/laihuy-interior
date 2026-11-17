@@ -160,8 +160,8 @@ usePageSeo({
   keywords: seoKeywords,
   ogType: 'article',
   imagePath: () => heroImage.value.path,
-  jsonLd: ({ base, canonical }) => [
-    buildBreadcrumbLd(base, t, [
+  jsonLd: ({ base, canonical, url }) => [
+    buildBreadcrumbLd(url, t, [
       { name: { vi: 'Trang chủ', en: 'Home' }, path: '/' },
       { name: { vi: 'Dự án', en: 'Projects' }, path: '/du-an' },
       { name: project.name, path: `/du-an/${project.slug}` }

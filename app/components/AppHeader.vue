@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{ openMenu: [] }>()
 
-const { locale, t } = useLanguage()
+const { locale, t, localePath } = useLanguage()
 const { isActive } = useActiveLink()
 const { register, setSolid, chromeState, drawerOpen, floating } = useHeaderState()
 
@@ -60,7 +60,7 @@ watch(() => props.solid, value => setSolid(value))
       :aria-label="t({ vi: 'Điều hướng chính', en: 'Main navigation' })"
     >
       <NuxtLink
-        to="/"
+        :to="localePath('/')"
         class="chrome-logo"
         aria-label="Lai Huy Interior"
       >
@@ -96,7 +96,7 @@ watch(() => props.solid, value => setSolid(value))
         <NuxtLink
           v-for="link in navLinks"
           :key="link.to"
-          :to="link.to"
+          :to="localePath(link.to)"
           class="nav-link chrome-nav-color"
           :aria-current="isActive(link.to) ? 'page' : undefined"
         >
@@ -124,7 +124,7 @@ watch(() => props.solid, value => setSolid(value))
           :aria-hidden="chromeState === 'cover' && !floating"
         >
           <NuxtLink
-            to="/lien-he"
+            :to="localePath('/lien-he')"
             class="btn-bronze"
           >
             {{ t(uiText.cta.quote) }}
