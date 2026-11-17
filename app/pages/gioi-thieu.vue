@@ -16,10 +16,10 @@ import { projectCover, withAlt } from '~/media/project-media'
 const { t, localePath } = useLanguage()
 const { resolve: mediaUrl } = useMediaUrl()
 
-const heroImage = withAlt(requireWorkshopAsset('3.webp'), aboutMediaAlt.hero)
+const heroImage = withAlt(requireWorkshopAsset('3-v2.webp'), aboutMediaAlt.hero)
 const factoryImages = {
-  main: withAlt(requireWorkshopAsset('4.webp'), aboutMediaAlt.factory),
-  machinery: withAlt(requireWorkshopAsset('8.webp'), aboutMediaAlt.machinery),
+  main: withAlt(requireWorkshopAsset('4-v2.webp'), aboutMediaAlt.factory),
+  machinery: withAlt(requireWorkshopAsset('8-v2.webp'), aboutMediaAlt.machinery),
   craft: withAlt(companyMedia.companyStory, aboutMediaAlt.craft)
 }
 
