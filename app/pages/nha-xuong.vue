@@ -277,5 +277,6 @@ usePageSeo({
       :address="factoryAddress"
       :working-hours="company.workingHours"
     />
+    <PageDoor from="factory" />
   </div>
 </template>

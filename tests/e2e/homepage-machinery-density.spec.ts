@@ -109,7 +109,7 @@ for (const locale of ['vi', 'en'] as const) {
     const image = section.getByRole('img', { name: copy.imageAlt, exact: true })
     await expect(image).toHaveAttribute(
       'src',
-      /(?:company\/workshop\/3(?:-w\d+)?\.webp|\/images\/hinh-xuong-lai-huy\/3\.jpg)/
+      /(?:company\/workshop\/3(?:-v2)?(?:-w\d+)?\.webp|\/images\/hinh-xuong-lai-huy\/3\.jpg)/
     )
     await expect(section.getByTestId('homepage-machinery-caption')).toHaveCount(0)
 

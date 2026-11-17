@@ -189,5 +189,6 @@ const applyMailto = computed(() => {
         </a>
       </div>
     </section>
+    <PageDoor from="careers" />
   </div>
 </template>
