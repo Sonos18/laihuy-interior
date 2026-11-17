@@ -37,8 +37,8 @@ const requireCodiAsset = (suffix: string) => {
 const heroAsset = requireCodiAsset('/sanh-don/2.webp')
 const heroImage = withAlt(heroAsset, servicesMediaAlt.hero)
 
-const workshopFactoryAsset = requireWorkshopAsset('4.webp')
-const workshopQualityAsset = requireWorkshopAsset('8.webp')
+const workshopFactoryAsset = requireWorkshopAsset('4-v2.webp')
+const workshopQualityAsset = requireWorkshopAsset('8-v2.webp')
 
 const coreStageImages = [
   withAlt(requireCodiAsset('/phong-dien-hinh-1/p3-04.webp'), servicesMediaAlt.design),
