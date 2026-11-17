@@ -171,7 +171,7 @@ const { t, ta } = useLanguage()
               :aria-label="t(uiText.labels.chatZalo)"
             >
               <Icon
-                name="i-lucide-message-circle"
+                name="lh:zalo"
                 class="footer-social-icon"
                 aria-hidden="true"
               />

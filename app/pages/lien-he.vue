@@ -310,7 +310,7 @@ usePageSeo({
               <div>
                 <dt class="flex items-center gap-3 text-sm font-bold text-ink-800">
                   <Icon
-                    name="i-lucide-message-circle"
+                    name="lh:zalo"
                     class="h-5 w-5 shrink-0 text-wood-600"
                     aria-hidden="true"
                   />

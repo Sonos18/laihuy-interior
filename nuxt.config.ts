@@ -108,7 +108,11 @@ export default defineNuxtConfig({
   // from claiming `components`; layers.css pins `icons` to lowest priority,
   // which is the precedence @nuxt/icon prepends to achieve anyway.
   icon: {
-    cssLayer: 'icons'
+    cssLayer: 'icons',
+    // Brand marks no installed set draws correctly. `lh:zalo` is the Zalo
+    // speech bubble with the wordmark knocked out; the wordmark path is
+    // Simple Icons' `zalo` (CC0-1.0), drawn in currentColor (One Accent Rule).
+    customCollections: [{ prefix: 'lh', dir: './app/assets/icons' }]
   },
 
   image: {
