@@ -19,6 +19,7 @@
     "media:upload": "tsx scripts/media/upload.ts",
     "media:verify": "tsx scripts/media/verify.ts",
     "media:placeholders": "tsx scripts/media/placeholders.ts",
+    "media:prune": "tsx scripts/media/prune.ts",
     "test": "vitest run",
     "typecheck": "nuxt typecheck",
     "test:vr": "playwright test --project=vr",

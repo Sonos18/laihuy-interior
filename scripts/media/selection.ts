@@ -60,3 +60,44 @@ export function selectAssetsByPrefix(
 ): MediaManifestAsset[] {
   return pathPrefix ? assets.filter(asset => asset.path.startsWith(pathPrefix)) : [...assets]
 }
+
+export type PrunePlan = {
+  prune: MediaManifestAsset[]
+  errors: string[]
+}
+
+/**
+ * Plans removal of manifest entries that were never uploaded (`status: 'planned'`).
+ * An entry is a candidate when its path is named explicitly or its source file is gone
+ * (so it can never be uploaded). Uploaded assets are never pruned (no-overwrite rule A1),
+ * and a candidate still referenced by app code blocks the whole plan.
+ */
+export function planPrunePlanned(options: {
+  assets: readonly MediaManifestAsset[]
+  explicitPaths: readonly string[]
+  sourceExists: (sourceFile: string) => boolean
+  isReferenced: (asset: MediaManifestAsset) => boolean
+}): PrunePlan {
+  const errors: string[] = []
+  const byPath = new Map(options.assets.map(asset => [asset.path, asset]))
+  for (const path of options.explicitPaths) {
+    const asset = byPath.get(path)
+    if (!asset) {
+      errors.push(`not in manifest: ${path}`)
+    } else if (asset.status !== 'planned') {
+      errors.push(`refusing to prune ${asset.status} asset (only never-uploaded 'planned' entries): ${path}`)
+    }
+  }
+
+  const explicit = new Set(options.explicitPaths)
+  const prune = options.assets.filter(asset =>
+    asset.status === 'planned'
+    && (explicit.has(asset.path) || !asset.sourceFile || !options.sourceExists(asset.sourceFile))
+  )
+  for (const asset of prune) {
+    if (options.isReferenced(asset)) {
+      errors.push(`still referenced in app code: ${asset.path}`)
+    }
+  }
+  return { prune: errors.length > 0 ? [] : prune, errors }
+}
