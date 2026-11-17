@@ -12,13 +12,13 @@ const props = defineProps<{
   emphasis: 'primary' | 'secondary'
 }>()
 
-const { t, ta, locale } = useLanguage()
+const { t, ta, locale, localePath } = useLanguage()
 const scope = computed(() => props.project.scope ? ta(props.project.scope).join(' · ') : '')
 </script>
 
 <template>
   <NuxtLink
-    :to="`/du-an/${project.slug}`"
+    :to="localePath(`/du-an/${project.slug}`)"
     data-testid="about-project-feature"
     :data-project-slug="project.slug"
     class="group block overflow-hidden card-link text-ink-950"

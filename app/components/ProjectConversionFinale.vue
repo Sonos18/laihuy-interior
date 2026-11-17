@@ -7,7 +7,7 @@ const props = defineProps<{
   phone: string
 }>()
 
-const { t } = useLanguage()
+const { t, localePath } = useLanguage()
 const phoneHref = computed(() => `tel:${props.phone.replaceAll(' ', '')}`)
 </script>
 
@@ -39,7 +39,7 @@ const phoneHref = computed(() => `tel:${props.phone.replaceAll(' ', '')}`)
         </div>
         <div class="flex flex-col gap-3 sm:flex-row md:flex-col">
           <NuxtLink
-            to="/lien-he"
+            :to="localePath('/lien-he')"
             class="btn-bronze"
           >{{ t(uiText.cta.quote) }}</NuxtLink>
           <a

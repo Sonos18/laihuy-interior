@@ -24,7 +24,7 @@ import type { NuxtError } from '#app'
  */
 const props = defineProps<{ error: NuxtError }>()
 
-const { locale, t } = useLanguage()
+const { locale, t, localePath } = useLanguage()
 
 const isNotFound = computed(() => props.error?.statusCode === 404)
 const copy = computed(() => isNotFound.value ? uiText.errorPage.notFound : uiText.errorPage.serverError)
@@ -59,7 +59,7 @@ watch(isMobileMenuOpen, setDrawerOpen)
 
 // `clearError` restores the app for a client-side recovery; a hard reload is the honest action
 // for a 500, where the failure may be in the payload this page was rendered from.
-const goHome = () => clearError({ redirect: '/' })
+const goHome = () => clearError({ redirect: localePath('/') })
 const reload = () => {
   if (import.meta.client) window.location.reload()
 }
@@ -175,7 +175,7 @@ const recoveryLinks = [
             <NuxtLink
               v-for="link in recoveryLinks"
               :key="link.to"
-              :to="link.to"
+              :to="localePath(link.to)"
               class="group card-link p-6 lg:p-7"
             >
               <Icon

@@ -12,7 +12,7 @@
 import { company } from '~/data/company'
 import { uiText } from '~/data/ui'
 
-const { t } = useLanguage()
+const { t, localePath } = useLanguage()
 const route = useRoute()
 const { drawerOpen } = useHeaderState()
 
@@ -27,7 +27,7 @@ const visible = computed(() =>
   && !footerInView.value
   && !fieldFocused.value
   && !drawerOpen.value
-  && route.path !== '/lien-he'
+  && stripLocalePrefix(route.path) !== '/lien-he'
 )
 
 /** Share of the first screen to scroll past before the bar arrives. */
@@ -121,14 +121,14 @@ onBeforeUnmount(() => {
       :aria-label="t(uiText.labels.chatZalo)"
     >
       <Icon
-        name="i-lucide-message-circle"
+        name="lh:zalo"
         class="action-bar__icon"
         aria-hidden="true"
       />
       <span>Zalo</span>
     </a>
     <NuxtLink
-      to="/lien-he#cach-gui-ho-so"
+      :to="localePath('/lien-he#cach-gui-ho-so')"
       class="action-bar__primary"
     >
       <Icon

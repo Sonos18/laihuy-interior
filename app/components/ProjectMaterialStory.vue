@@ -13,7 +13,7 @@ const props = defineProps<{
   images: readonly MediaImage[]
 }>()
 
-const { t } = useLanguage()
+const { t, localePath } = useLanguage()
 // Two photographs the rest of the page does not show (each image has one home). A short set has
 // none to spare, so the chapter is text only.
 const experienceImage = computed(() => props.images[0])
@@ -151,7 +151,7 @@ const materialImage = computed(() => props.images[1])
           </p>
           <NuxtLink
             v-if="showFactoryLink"
-            to="/nha-xuong"
+            :to="localePath('/nha-xuong')"
             class="btn-outline mt-7"
           >
             {{ t({ vi: 'Xem năng lực nhà xưởng', en: 'View factory capability' }) }}

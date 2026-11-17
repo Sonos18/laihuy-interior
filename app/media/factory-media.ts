@@ -15,9 +15,9 @@ export const requireWorkshopAsset = (
 }
 
 export const factoryMedia = {
-  hero: withAlt(requireWorkshopAsset('4.webp'), factoryMediaAlt.hero),
+  hero: withAlt(requireWorkshopAsset('4-v2.webp'), factoryMediaAlt.hero),
   facade: withAlt(requireWorkshopAsset('1.webp'), factoryMediaAlt.facade),
-  process: withAlt(requireWorkshopAsset('3.webp'), factoryMediaAlt.process),
+  process: withAlt(requireWorkshopAsset('3-v2.webp'), factoryMediaAlt.process),
   people: withAlt(companyMedia.companyStory, factoryMediaAlt.people),
-  visit: withAlt(requireWorkshopAsset('2.webp'), factoryMediaAlt.visit)
+  visit: withAlt(requireWorkshopAsset('2-v2.webp'), factoryMediaAlt.visit)
 } satisfies Record<FactoryMediaKey, MediaImage>

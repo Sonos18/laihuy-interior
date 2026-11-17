@@ -2,6 +2,7 @@ import type { Page } from '@playwright/test'
 import { expect, test } from './fixtures'
 import { MIN_SURFACE_LUMINANCE, SAWDUST_CEILING_LUMINANCE, nonEdgeRadii, surfaceLuminances } from './helpers/warm-surfaces'
 import { APP_ORIGIN } from './origin'
+import { localizePath } from '../../app/utils/locale-path'
 
 const TEST_ORIGIN = process.env.DENSITY_TEST_ORIGIN ?? APP_ORIGIN
 const TRANSPARENT_PNG = Buffer.from(
@@ -94,9 +95,6 @@ const copy = {
 } as const
 
 async function openFactory(page: Page, locale: keyof typeof copy, width = 1440) {
-  await page.context().addCookies([
-    { name: 'lai-huy-locale', value: locale, url: TEST_ORIGIN }
-  ])
   await page.route('**/*', async (route) => {
     if (route.request().resourceType() === 'image') {
       await route.fulfill({ status: 200, contentType: 'image/png', body: TRANSPARENT_PNG })
@@ -105,7 +103,7 @@ async function openFactory(page: Page, locale: keyof typeof copy, width = 1440) 
     await route.continue()
   })
   await page.setViewportSize({ width, height: 900 })
-  await page.goto('/nha-xuong', { waitUntil: 'load' })
+  await page.goto(new URL(localizePath('/nha-xuong', locale), TEST_ORIGIN).toString(), { waitUntil: 'load' })
   await page.evaluate(() => document.fonts.ready)
 }
 

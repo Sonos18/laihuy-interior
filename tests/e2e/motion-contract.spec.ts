@@ -767,7 +767,6 @@ test.describe('motion contract', () => {
     page.evaluate(() => (window as unknown as { __chrome: string[] }).__chrome)
 
   test('MOTION-15c header chrome takes a client navigation with no transition, and settles after the swap', async ({ page }) => {
-    await page.context().addCookies([{ name: 'lai-huy-locale', value: 'vi', url: TEST_ORIGIN }])
     await page.goto(url('/privacy-policy'), { waitUntil: 'load' })
     await waitForHydration(page)
     const header = page.locator('header.app-header')
@@ -788,7 +787,6 @@ test.describe('motion contract', () => {
   })
 
   test('MOTION-15d a slow page chunk cannot settle the header early', async ({ page }) => {
-    await page.context().addCookies([{ name: 'lai-huy-locale', value: 'vi', url: TEST_ORIGIN }])
     await page.goto(url('/'), { waitUntil: 'load' })
     await waitForHydration(page)
     const header = page.locator('header.app-header')
@@ -818,7 +816,6 @@ test.describe('motion contract', () => {
   })
 
   test('MOTION-15g a hash push that supersedes a pending page change releases the header', async ({ page }) => {
-    await page.context().addCookies([{ name: 'lai-huy-locale', value: 'vi', url: TEST_ORIGIN }])
     await page.goto(url('/'), { waitUntil: 'load' })
     await waitForHydration(page)
     const header = page.locator('header.app-header')
@@ -873,7 +870,6 @@ test.describe('motion contract', () => {
   })
 
   test('MOTION-15e a second navigation during the out phase settles once, on the last page', async ({ page }) => {
-    await page.context().addCookies([{ name: 'lai-huy-locale', value: 'vi', url: TEST_ORIGIN }])
     await page.goto(url('/'), { waitUntil: 'load' })
     await waitForHydration(page)
     const header = page.locator('header.app-header')
@@ -893,7 +889,6 @@ test.describe('motion contract', () => {
   })
 
   test('MOTION-15f the cover-state language toggle keeps its colours while the old page fades out', async ({ page }) => {
-    await page.context().addCookies([{ name: 'lai-huy-locale', value: 'vi', url: TEST_ORIGIN }])
     await page.goto(url('/'), { waitUntil: 'load' })
     await waitForHydration(page)
 

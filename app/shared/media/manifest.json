@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "bucket": "media",
-  "generatedAt": "2026-11-17T07:34:26.234Z",
+  "generatedAt": "2026-11-17T08:23:20.948Z",
   "assets": [
     {
       "path": "brand/banner-home.webp",
@@ -284,6 +284,41 @@
       "alt": null
     },
     {
+      "path": "company/workshop/10-v2.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/10-v2.png",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/10-v2.png",
+      "sourceChecksum": "sha256:facbd2cfa66eded9116bf36bf80c94130367f7877d625bc29fb6a06f76d1c386",
+      "checksum": "sha256:a9e3d3a621caa3c8b53924bf7efcc3a777bf76c526194631de4247defd946008",
+      "width": 2352,
+      "height": 1572,
+      "bytes": 170678,
+      "variants": [
+        {
+          "path": "company/workshop/10-v2-w400.webp",
+          "width": 400,
+          "bytes": 13720
+        },
+        {
+          "path": "company/workshop/10-v2-w800.webp",
+          "width": 800,
+          "bytes": 37154
+        },
+        {
+          "path": "company/workshop/10-v2-w1600.webp",
+          "width": 1600,
+          "bytes": 92478
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-11-17T06:20:03.153Z",
+      "alt": null
+    },
+    {
       "path": "company/workshop/10.webp",
       "kind": "raster",
       "category": "company",
@@ -316,6 +351,41 @@
       "supersedes": null,
       "status": "active",
       "uploadedAt": "2026-07-05T09:39:31.090Z",
+      "alt": null
+    },
+    {
+      "path": "company/workshop/11-v2.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/11-v2.png",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/11-v2.png",
+      "sourceChecksum": "sha256:8a702ff97b6ba41daa45e8a2f8eee2a24a2d1707345ba109ac04e147c6fcd2bf",
+      "checksum": "sha256:33292de1113664eee1f32e6c1e6f9114f9a82aba6873c5428e7b7db95a7204a6",
+      "width": 2352,
+      "height": 1572,
+      "bytes": 150108,
+      "variants": [
+        {
+          "path": "company/workshop/11-v2-w400.webp",
+          "width": 400,
+          "bytes": 13296
+        },
+        {
+          "path": "company/workshop/11-v2-w800.webp",
+          "width": 800,
+          "bytes": 33228
+        },
+        {
+          "path": "company/workshop/11-v2-w1600.webp",
+          "width": 1600,
+          "bytes": 81858
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-11-17T06:20:43.663Z",
       "alt": null
     },
     {
@@ -354,6 +424,41 @@
       "alt": null
     },
     {
+      "path": "company/workshop/2-v2.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/2-v2.png",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/2-v2.png",
+      "sourceChecksum": "sha256:291198ce85bcc4bd9f8aa5238619005eed843b78cd7ec4f616432f0a5066d130",
+      "checksum": "sha256:df3f81e361a4523584bfe71650a339db7180bc8d5c337378bc7bf1246e3fc198",
+      "width": 2352,
+      "height": 1572,
+      "bytes": 1026258,
+      "variants": [
+        {
+          "path": "company/workshop/2-v2-w400.webp",
+          "width": 400,
+          "bytes": 35102
+        },
+        {
+          "path": "company/workshop/2-v2-w800.webp",
+          "width": 800,
+          "bytes": 138468
+        },
+        {
+          "path": "company/workshop/2-v2-w1600.webp",
+          "width": 1600,
+          "bytes": 478116
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-11-17T06:21:03.277Z",
+      "alt": null
+    },
+    {
       "path": "company/workshop/2.webp",
       "kind": "raster",
       "category": "company",
@@ -386,6 +491,41 @@
       "supersedes": null,
       "status": "active",
       "uploadedAt": "2026-07-05T09:39:38.702Z",
+      "alt": null
+    },
+    {
+      "path": "company/workshop/3-v2.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/3-v2.png",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/3-v2.png",
+      "sourceChecksum": "sha256:ed294d18df85b9655aa62cd03d313d1dfe4c0f9a46cb6068518fc099ad207adf",
+      "checksum": "sha256:591335023d988b9926c7beb406e41259308728a76dfab2d3ba9cc3146b58ce64",
+      "width": 2448,
+      "height": 1511,
+      "bytes": 600408,
+      "variants": [
+        {
+          "path": "company/workshop/3-v2-w400.webp",
+          "width": 400,
+          "bytes": 19802
+        },
+        {
+          "path": "company/workshop/3-v2-w800.webp",
+          "width": 800,
+          "bytes": 65006
+        },
+        {
+          "path": "company/workshop/3-v2-w1600.webp",
+          "width": 1600,
+          "bytes": 216498
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-11-17T06:21:21.460Z",
       "alt": null
     },
     {
@@ -424,6 +564,41 @@
       "alt": null
     },
     {
+      "path": "company/workshop/4-v2.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/4-v2.png",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/4-v2.png",
+      "sourceChecksum": "sha256:ef87036383d5612a25fba0cc3f4a224e8af1dfa359074b3128ded6fb78d2a1be",
+      "checksum": "sha256:76c09eaf19a42134a45d5b2e804fcfd23a46ed448fd3355740a2203025bd97db",
+      "width": 2482,
+      "height": 1494,
+      "bytes": 428602,
+      "variants": [
+        {
+          "path": "company/workshop/4-v2-w400.webp",
+          "width": 400,
+          "bytes": 19814
+        },
+        {
+          "path": "company/workshop/4-v2-w800.webp",
+          "width": 800,
+          "bytes": 63794
+        },
+        {
+          "path": "company/workshop/4-v2-w1600.webp",
+          "width": 1600,
+          "bytes": 187426
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-11-17T06:21:36.647Z",
+      "alt": null
+    },
+    {
       "path": "company/workshop/4.webp",
       "kind": "raster",
       "category": "company",
@@ -456,6 +631,41 @@
       "supersedes": null,
       "status": "active",
       "uploadedAt": "2026-07-05T09:39:46.897Z",
+      "alt": null
+    },
+    {
+      "path": "company/workshop/5-v2.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/5-v2.png",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/5-v2.png",
+      "sourceChecksum": "sha256:1b6f3330cc5b88255041ee808ec2197d289e41ae0095868d9d9bc559449e7474",
+      "checksum": "sha256:4e46dbc3a9adc776e002da3dffe0716400dcceedb2ac0c46e91a26fc983b1a2f",
+      "width": 2486,
+      "height": 1464,
+      "bytes": 228458,
+      "variants": [
+        {
+          "path": "company/workshop/5-v2-w400.webp",
+          "width": 400,
+          "bytes": 17226
+        },
+        {
+          "path": "company/workshop/5-v2-w800.webp",
+          "width": 800,
+          "bytes": 48126
+        },
+        {
+          "path": "company/workshop/5-v2-w1600.webp",
+          "width": 1600,
+          "bytes": 120038
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-11-17T06:21:48.748Z",
       "alt": null
     },
     {
@@ -494,6 +704,41 @@
       "alt": null
     },
     {
+      "path": "company/workshop/6-v2.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/6-v2.png",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/6-v2.png",
+      "sourceChecksum": "sha256:8df7b257001147b36950227b08c95df07e20ff0171bfbf49f6ae2c54e0b4ced8",
+      "checksum": "sha256:3b629c984d0ad9424bb8945de802d51d21879d53d09846d5b62143200a592136",
+      "width": 2352,
+      "height": 1570,
+      "bytes": 309598,
+      "variants": [
+        {
+          "path": "company/workshop/6-v2-w400.webp",
+          "width": 400,
+          "bytes": 18116
+        },
+        {
+          "path": "company/workshop/6-v2-w800.webp",
+          "width": 800,
+          "bytes": 54276
+        },
+        {
+          "path": "company/workshop/6-v2-w1600.webp",
+          "width": 1600,
+          "bytes": 149560
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-11-17T06:21:59.990Z",
+      "alt": null
+    },
+    {
       "path": "company/workshop/6.webp",
       "kind": "raster",
       "category": "company",
@@ -526,6 +771,41 @@
       "supersedes": null,
       "status": "active",
       "uploadedAt": "2026-07-05T09:39:54.754Z",
+      "alt": null
+    },
+    {
+      "path": "company/workshop/7-v2.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/7-v2.png",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/7-v2.png",
+      "sourceChecksum": "sha256:b131e626c3ef3324f6a680d22eadf4d72d3cc560d27e233eb30e1472ba5c15c3",
+      "checksum": "sha256:9f7c7c43ce745b9e321f90a1bc1b50699483421d461c05aece34af89237426b3",
+      "width": 2330,
+      "height": 1577,
+      "bytes": 370808,
+      "variants": [
+        {
+          "path": "company/workshop/7-v2-w400.webp",
+          "width": 400,
+          "bytes": 17474
+        },
+        {
+          "path": "company/workshop/7-v2-w800.webp",
+          "width": 800,
+          "bytes": 55732
+        },
+        {
+          "path": "company/workshop/7-v2-w1600.webp",
+          "width": 1600,
+          "bytes": 169636
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-11-17T06:22:11.074Z",
       "alt": null
     },
     {
@@ -564,6 +844,41 @@
       "alt": null
     },
     {
+      "path": "company/workshop/8-v2.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/8-v2.png",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/8-v2.png",
+      "sourceChecksum": "sha256:46531f1932fe8cdee1a0e32f3bd7d659a62d0ad896f25ccf4b524169253dbcc1",
+      "checksum": "sha256:e96195d6d046e8df17da95ca0c60b5320d3b617e744274b549c39126049de7ee",
+      "width": 2352,
+      "height": 1572,
+      "bytes": 200716,
+      "variants": [
+        {
+          "path": "company/workshop/8-v2-w400.webp",
+          "width": 400,
+          "bytes": 14840
+        },
+        {
+          "path": "company/workshop/8-v2-w800.webp",
+          "width": 800,
+          "bytes": 40300
+        },
+        {
+          "path": "company/workshop/8-v2-w1600.webp",
+          "width": 1600,
+          "bytes": 102658
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-11-17T06:22:23.296Z",
+      "alt": null
+    },
+    {
       "path": "company/workshop/8.webp",
       "kind": "raster",
       "category": "company",
@@ -596,6 +911,41 @@
       "supersedes": null,
       "status": "active",
       "uploadedAt": "2026-07-05T09:40:01.777Z",
+      "alt": null
+    },
+    {
+      "path": "company/workshop/9-v2.webp",
+      "kind": "raster",
+      "category": "company",
+      "group": "workshop",
+      "oldPublicPath": "/images/hinh-xuong-lai-huy/9-v2.png",
+      "sourceFile": "public/images/hinh-xuong-lai-huy/9-v2.png",
+      "sourceChecksum": "sha256:4cb15f40815433075b767c199fa70cd674e8d456e669c454526b0b0f0e792a9f",
+      "checksum": "sha256:8104df606edaf110fd05a37aa60ca70b5518165ebd18b3677723c5d088fcb10f",
+      "width": 2242,
+      "height": 1602,
+      "bytes": 169844,
+      "variants": [
+        {
+          "path": "company/workshop/9-v2-w400.webp",
+          "width": 400,
+          "bytes": 13560
+        },
+        {
+          "path": "company/workshop/9-v2-w800.webp",
+          "width": 800,
+          "bytes": 35880
+        },
+        {
+          "path": "company/workshop/9-v2-w1600.webp",
+          "width": 1600,
+          "bytes": 90706
+        }
+      ],
+      "version": 1,
+      "supersedes": null,
+      "status": "active",
+      "uploadedAt": "2026-11-17T06:22:30.704Z",
       "alt": null
     },
     {

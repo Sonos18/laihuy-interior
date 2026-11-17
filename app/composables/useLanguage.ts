@@ -1,37 +1,25 @@
 import type { Locale, LocalizedArray, LocalizedText } from '~/shared/types/localization'
 
-const isLocale = (value: unknown): value is Locale =>
-  value === 'vi' || value === 'en'
-
 export const useLanguage = () => {
-  const localeCookie = useCookie<Locale>('lai-huy-locale', {
-    default: () => 'vi',
-    sameSite: 'lax'
-  })
-
-  if (!isLocale(localeCookie.value)) {
-    localeCookie.value = 'vi'
-  }
+  const route = useRoute()
 
   /**
-   * Prerendered pages are authored in Vietnamese because there is no request cookie at build
-   * time. `useState` carries that exact server value in the Nuxt payload, so the client's first
-   * render must use it too. Reading an English cookie directly during hydration made Vue compare
-   * an English VDOM with Vietnamese HTML: text happened to update, but translated attributes
-   * such as aria-label stayed stale and Vue reported a hydration mismatch.
-   *
-   * Once hydration has completed, sync the persisted preference. That normal reactive update
-   * patches both text and attributes without asking Vue to reconcile two different first renders.
+   * The locale is the URL's (app/utils/locale-path.ts): `/en/...` is English, everything else
+   * Vietnamese. It was a cookie on one shared URL, which meant a crawler (no cookie) only ever
+   * saw Vietnamese, and prerendered HTML had to be patched to English after hydration. Reading
+   * the path gives the server and the client the same first render in either language.
    */
-  const locale = useState<Locale>('lai-huy-locale-state', () => localeCookie.value)
+  const locale = computed<Locale>(() => localeFromPath(route.path))
 
-  onMounted(() => {
-    locale.value = isLocale(localeCookie.value) ? localeCookie.value : 'vi'
-  })
+  /** A site path in the current locale: `localePath('/du-an')` is `/en/du-an` on English pages. */
+  const localePath = (path: string) => localizePath(path, locale.value)
+
+  /** The page being viewed, in `target`, keeping its query and hash. */
+  const switchLocalePath = (target: Locale) => localizePath(route.fullPath, target)
 
   const setLocale = (value: Locale) => {
-    locale.value = value
-    localeCookie.value = value
+    if (value === locale.value) return
+    return navigateTo(switchLocalePath(value))
   }
 
   // `| ''` admits the media layer's decorative-image contract (MediaImage.alt: LocalizedText
@@ -63,6 +51,8 @@ export const useLanguage = () => {
 
   return {
     locale,
+    localePath,
+    switchLocalePath,
     setLocale,
     t,
     ta

@@ -15,7 +15,7 @@ import { navLinks, uiText } from '~/data/ui'
 const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{ close: [] }>()
 
-const { locale, t } = useLanguage()
+const { locale, t, localePath } = useLanguage()
 const { isActive } = useActiveLink()
 
 const panelEl = ref<HTMLElement | null>(null)
@@ -217,7 +217,7 @@ onScopeDispose(() => {
         <NuxtLink
           v-for="link in navLinks"
           :key="link.to"
-          :to="link.to"
+          :to="localePath(link.to)"
           class="drawer-link"
           :aria-current="isActive(link.to) ? 'page' : undefined"
         >
@@ -244,7 +244,7 @@ onScopeDispose(() => {
           {{ t(company.phoneDisplay) }}
         </a>
         <NuxtLink
-          to="/lien-he"
+          :to="localePath('/lien-he')"
           class="btn-bronze w-full"
         >
           {{ t(uiText.cta.quote) }}

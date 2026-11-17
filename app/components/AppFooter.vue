@@ -18,7 +18,7 @@
 import { company } from '~/data/company'
 import { legalLinks, navLinks, uiText } from '~/data/ui'
 
-const { t, ta } = useLanguage()
+const { t, ta, localePath } = useLanguage()
 </script>
 
 <template>
@@ -56,7 +56,7 @@ const { t, ta } = useLanguage()
               :key="link.to"
             >
               <NuxtLink
-                :to="link.to"
+                :to="localePath(link.to)"
                 class="footer-link"
               >
                 {{ t(link.label) }}
@@ -171,7 +171,7 @@ const { t, ta } = useLanguage()
               :aria-label="t(uiText.labels.chatZalo)"
             >
               <Icon
-                name="i-lucide-message-circle"
+                name="lh:zalo"
                 class="footer-social-icon"
                 aria-hidden="true"
               />
@@ -182,7 +182,7 @@ const { t, ta } = useLanguage()
             v-for="link in legalLinks"
             :key="link.to"
           >
-            <NuxtLink :to="link.to">
+            <NuxtLink :to="localePath(link.to)">
               {{ t(link.label) }}
             </NuxtLink>
           </li>

@@ -62,7 +62,7 @@ export const homePageContent = {
   },
   /* The contractor file (owner, 2026-11-15): what owners and main contractors check before they
      pick a subcontractor. Every line is owner-supplied (founding date, legal entity, tax code,
-     warranty wording) or a claim the site already makes (one team to sign-off, four QC checks).
+     warranty terms, 2026-11-17) or a claim the site already makes (one team to sign-off, four QC checks).
      `{legalName}`, `{taxId}` are filled from `company` by HomeTrust. */
   trust: {
     eyebrow: { vi: 'Hồ sơ nhà thầu', en: 'Contractor file' },
@@ -101,13 +101,66 @@ export const homePageContent = {
       },
       {
         id: 'warranty',
-        title: { vi: 'Bảo hành theo quy định', en: 'Warranty as regulated' },
+        title: { vi: 'Bảo hành 24 tháng', en: '24-month warranty' },
         body: {
-          vi: 'Điều khoản và thời hạn bảo hành ghi trong hợp đồng của từng dự án.',
-          en: 'Warranty terms and period are set out in each project’s contract.'
+          vi: 'Kết cấu và thùng tủ do xưởng sản xuất được bảo hành 24 tháng; tiếp nhận yêu cầu trong 24 giờ. Chi tiết ở bảng cam kết bên dưới.',
+          en: 'Cabinet carcasses and joinery made in our factory carry a 24-month warranty; claims are acknowledged within 24 hours. See the commitment below.'
         }
       }
-    ] satisfies Array<{ id: string, title: LocalizedText, body: LocalizedText }>
+    ] satisfies Array<{ id: string, title: LocalizedText, body: LocalizedText }>,
+    /* Warranty commitment (owner, 2026-11-17): replaces "warranty as regulated, terms in each
+       contract", which read as evasive next to other bidders. Every figure here was approved by
+       the owner; accessories stay generic because no hardware brand is named anywhere on the
+       site. The contract note is a footnote, not the answer. */
+    warranty: {
+      title: { vi: 'Cam kết bảo hành', en: 'Warranty commitment' },
+      terms: [
+        {
+          id: 'carcass',
+          label: { vi: 'Kết cấu, thùng tủ', en: 'Carcasses and joinery' },
+          value: {
+            vi: '24 tháng cho sản phẩm gỗ do xưởng Lai Huy sản xuất: cong vênh, bong dán, nứt mối ghép.',
+            en: '24 months on wood products made in the Lai Huy factory: warping, delamination, cracked joints.'
+          }
+        },
+        {
+          id: 'hardware',
+          label: { vi: 'Phụ kiện', en: 'Hardware' },
+          value: {
+            vi: 'Bản lề, ray, tay nâng: theo bảo hành của hãng sản xuất.',
+            en: 'Hinges, runners, lift mechanisms: covered by the manufacturer’s warranty.'
+          }
+        },
+        {
+          id: 'response',
+          label: { vi: 'Thời gian phản hồi', en: 'Response time' },
+          value: {
+            vi: 'Tiếp nhận yêu cầu trong 24 giờ; kỹ thuật đến kiểm tra trong 72 giờ ở khu vực nội thành, khu vực khác hẹn lịch khi tiếp nhận.',
+            en: 'Claims acknowledged within 24 hours; a technician inspects on site within 72 hours in the city area, elsewhere on a date set when the claim is logged.'
+          }
+        },
+        {
+          id: 'maintenance',
+          label: { vi: 'Bảo trì', en: 'Maintenance' },
+          value: {
+            vi: 'Miễn phí một lần kiểm tra, cân chỉnh trong 12 tháng đầu.',
+            en: 'One free inspection and adjustment within the first 12 months.'
+          }
+        },
+        {
+          id: 'exclusions',
+          label: { vi: 'Không bảo hành', en: 'Not covered' },
+          value: {
+            vi: 'Hư hỏng do ngập nước, va đập, hoặc tự ý tháo, sửa.',
+            en: 'Damage from flooding, impact, or unauthorised removal or repair.'
+          }
+        }
+      ] satisfies Array<{ id: string, label: LocalizedText, value: LocalizedText }>,
+      note: {
+        vi: 'Chi tiết theo hợp đồng từng dự án.',
+        en: 'Full terms are set out in each project’s contract.'
+      }
+    }
   },
   factory: {
     title: { vi: 'Kiểm soát tại nguồn', en: 'Control at the source' },

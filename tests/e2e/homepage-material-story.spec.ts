@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test'
 import { APP_ORIGIN } from './origin'
+import { localizePath } from '../../app/utils/locale-path'
 
 const TEST_ORIGIN = process.env.DENSITY_TEST_ORIGIN ?? APP_ORIGIN
 const TRANSPARENT_PNG = Buffer.from(
@@ -36,9 +37,6 @@ async function prepareHome(page: Page, locale: HomeLocale, width: number, reduce
   page.on('pageerror', error => pageErrors.push(error.message))
 
   await page.emulateMedia({ reducedMotion })
-  await page.context().addCookies([
-    { name: 'lai-huy-locale', value: locale, url: TEST_ORIGIN }
-  ])
   await page.route('**/*', async (route) => {
     if (route.request().resourceType() === 'image') {
       await route.fulfill({ status: 200, contentType: 'image/png', body: TRANSPARENT_PNG })
@@ -48,7 +46,7 @@ async function prepareHome(page: Page, locale: HomeLocale, width: number, reduce
   })
 
   await page.setViewportSize({ width, height: 900 })
-  await page.goto(new URL('/', TEST_ORIGIN).toString(), { waitUntil: 'load' })
+  await page.goto(new URL(localizePath('/', locale), TEST_ORIGIN).toString(), { waitUntil: 'load' })
   await page.evaluate(() => document.fonts.ready)
 
   return { consoleErrors, pageErrors }
@@ -85,7 +83,7 @@ for (const locale of ['vi', 'en'] as const) {
 
     const ctaLinks = page.getByTestId('home-project-cta').getByRole('link', { name: copy.cta, exact: true })
     await expect(ctaLinks).toHaveCount(1)
-    await expect(ctaLinks).toHaveAttribute('href', '/lien-he#cach-gui-ho-so')
+    await expect(ctaLinks).toHaveAttribute('href', localizePath('/lien-he#cach-gui-ho-so', locale))
 
     expect(errors.consoleErrors).toEqual([])
     expect(errors.pageErrors).toEqual([])

@@ -1,10 +1,10 @@
 import { brandMedia, companyMedia, workshopMedia } from '~/media/catalog.generated'
 import type { MediaImage } from '~/shared/media/types'
 
-const machineryOverviewAsset = workshopMedia.find(asset => asset.path.endsWith('/3.webp'))
+const machineryOverviewAsset = workshopMedia.find(asset => asset.path.endsWith('/3-v2.webp'))
 
 if (!machineryOverviewAsset) {
-  throw new Error('Missing workshop media asset: company/workshop/3.webp')
+  throw new Error('Missing workshop media asset: company/workshop/3-v2.webp')
 }
 
 // Business layer: pairs catalog media (company/brand domains) with alt copy.

@@ -7,7 +7,7 @@ defineProps<{
   projects: readonly { project: Project, cover: MediaAsset }[]
 }>()
 
-const { t } = useLanguage()
+const { t, localePath } = useLanguage()
 </script>
 
 <template>
@@ -39,7 +39,7 @@ const { t } = useLanguage()
         </div>
         <NuxtLink
           v-reveal
-          to="/du-an"
+          :to="localePath('/du-an')"
           class="btn-outline reveal group shrink-0 border-ink-300 text-ink-900 hover:border-ink-950 hover:bg-ink-950 hover:text-white"
         >
           <span>{{ t(homePageContent.projects.allCta) }}</span>

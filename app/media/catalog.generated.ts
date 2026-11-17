@@ -337,15 +337,25 @@ export const projectMedia = {
 /** Company's own workshop gallery - powers the Nha xuong (factory) page. */
 export const workshopMedia: readonly MediaAsset[] = [
   { path: 'company/workshop/1.webp', width: 1771, height: 2552 },
+  { path: 'company/workshop/2-v2.webp', width: 2352, height: 1572 },
   { path: 'company/workshop/2.webp', width: 2560, height: 1711 },
+  { path: 'company/workshop/3-v2.webp', width: 2448, height: 1511 },
   { path: 'company/workshop/3.webp', width: 2560, height: 1581 },
+  { path: 'company/workshop/4-v2.webp', width: 2482, height: 1494 },
   { path: 'company/workshop/4.webp', width: 2560, height: 1541 },
+  { path: 'company/workshop/5-v2.webp', width: 2486, height: 1464 },
   { path: 'company/workshop/5.webp', width: 2560, height: 1508 },
+  { path: 'company/workshop/6-v2.webp', width: 2352, height: 1570 },
   { path: 'company/workshop/6.webp', width: 2560, height: 1710 },
+  { path: 'company/workshop/7-v2.webp', width: 2330, height: 1577 },
   { path: 'company/workshop/7.webp', width: 2560, height: 1733 },
+  { path: 'company/workshop/8-v2.webp', width: 2352, height: 1572 },
   { path: 'company/workshop/8.webp', width: 2560, height: 1711 },
+  { path: 'company/workshop/9-v2.webp', width: 2242, height: 1602 },
   { path: 'company/workshop/9.webp', width: 2560, height: 1830 },
+  { path: 'company/workshop/10-v2.webp', width: 2352, height: 1572 },
   { path: 'company/workshop/10.webp', width: 2560, height: 1711 },
+  { path: 'company/workshop/11-v2.webp', width: 2352, height: 1572 },
   { path: 'company/workshop/11.webp', width: 2560, height: 1711 }
 ]
 
