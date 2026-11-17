@@ -121,7 +121,7 @@ onBeforeUnmount(() => {
       :aria-label="t(uiText.labels.chatZalo)"
     >
       <Icon
-        name="i-lucide-message-circle"
+        name="lh:zalo"
         class="action-bar__icon"
         aria-hidden="true"
       />
