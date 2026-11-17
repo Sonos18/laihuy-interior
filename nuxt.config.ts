@@ -95,9 +95,8 @@ export default defineNuxtConfig({
   // still records every real weight used by the design. `normal` only — no italics are used.
   fonts: {
     families: [
-      { name: 'Inter', provider: 'none', weights: [400, 500, 600, 700, 900], styles: ['normal'] },
-      { name: 'Outfit', provider: 'none', weights: [300, 400, 500, 600, 700], styles: ['normal'] },
-      { name: 'Syne', provider: 'none', weights: [400, 500, 600, 700, 800], styles: ['normal'] }
+      { name: 'Inter', provider: 'none', weights: [400, 500, 600, 700], styles: ['normal'] },
+      { name: 'Outfit', provider: 'none', weights: [500], styles: ['normal'] }
     ]
   },
 

@@ -86,26 +86,20 @@ describe('production deployment config', () => {
     expect(config.routeRules['/du-an/khong-gian-van-phong-lai-huy']).toBeUndefined()
   })
 
-  it('bundles every Inter, Outfit, and Syne weight from local package CSS and disables provider lookup', async () => {
+  it('bundles only the rendered Inter and Outfit weights from local package CSS and disables provider lookup', async () => {
     const config = await loadNuxtConfig()
 
     expect(config.fonts.families).toEqual([
       {
         name: 'Inter',
         provider: 'none',
-        weights: [400, 500, 600, 700, 900],
+        weights: [400, 500, 600, 700],
         styles: ['normal']
       },
       {
         name: 'Outfit',
         provider: 'none',
-        weights: [300, 400, 500, 600, 700],
-        styles: ['normal']
-      },
-      {
-        name: 'Syne',
-        provider: 'none',
-        weights: [400, 500, 600, 700, 800],
+        weights: [500],
         styles: ['normal']
       }
     ])
@@ -117,10 +111,17 @@ describe('production deployment config', () => {
       '~/assets/css/main.css'
     ])
 
+    // Outfit comes from fontsource's own weight file; Inter is declared by hand (latin,
+    // vietnamese and a trimmed latin-ext per weight, see fonts.css). Both must list exactly the
+    // weights in nuxt.config, all from the installed packages.
     const fontsCss = readFileSync(new URL('../app/assets/css/fonts.css', import.meta.url), 'utf8')
     const imports = [...fontsCss.matchAll(/@import "([^"]+)";/g)].map(match => match[1])
-    expect(imports).toEqual(config.fonts.families.flatMap(family =>
-      family.weights.map(weight => `@fontsource/${family.name.toLowerCase()}/${weight}.css`)))
+    expect(imports).toEqual(['@fontsource/outfit/500.css'])
+    const interWeights = [...new Set([...fontsCss.matchAll(/font-weight: (\d+);/g)].map(match => Number(match[1])))]
+    expect(interWeights).toEqual(config.fonts.families.find(family => family.name === 'Inter')?.weights)
+    const sources = [...fontsCss.matchAll(/url\('([^']+)'\)/g)].map(match => match[1])
+    expect(sources.every(src => src.startsWith('@fontsource/inter/files/inter-'))).toBe(true)
+    expect(sources.some(src => /cyrillic|greek/.test(src))).toBe(false)
   })
 
   it('does not load external runtime font stylesheets from Google Fonts', async () => {

@@ -1,4 +1,4 @@
-import { buildMediaUrl, type MediaUrlOptions } from '~/media/url'
+import { buildMediaUrl, buildVariantSrcset, type MediaUrlOptions } from '~/media/url'
 import { fallbackPaths } from '~/media/fallback'
 import type { MediaPath } from '~/shared/media/types'
 
@@ -20,5 +20,9 @@ export const useMediaUrl = () => {
     return buildMediaUrl(path, options, context)
   }
 
-  return { resolve }
+  /** Honest `srcset` (true file widths) to pass to NuxtImg, overriding its requested-width labels. */
+  const srcset = (path: MediaPath, masterWidth: number): string | undefined =>
+    buildVariantSrcset(path, masterWidth, context)
+
+  return { resolve, srcset }
 }
