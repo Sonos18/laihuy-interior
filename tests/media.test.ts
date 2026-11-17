@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   buildMediaUrl,
+  buildVariantSrcset,
   snapToVariantWidth,
   storageObjectUrl,
   variantPath,
@@ -220,5 +221,29 @@ describe('media catalog (generated) ↔ manifest separation', () => {
     for (const asset of workshopMedia) {
       expect(asset.path.startsWith('company/workshop/'), asset.path).toBe(true)
     }
+  })
+})
+
+describe('buildVariantSrcset', () => {
+  const base = 'https://example.supabase.co/storage/v1/object/public/media/projects/x'
+
+  it('labels every candidate with its true file width, master last', () => {
+    expect(buildVariantSrcset('projects/x/1.webp', 2560, supabaseContext)).toBe(
+      `${base}/1-w400.webp 400w, ${base}/1-w800.webp 800w, ${base}/1-w1600.webp 1600w, ${base}/1.webp 2560w`
+    )
+  })
+
+  it('drops variants at or above a narrow master (they are the master size again)', () => {
+    expect(buildVariantSrcset('/projects/x/1.webp', 900, supabaseContext)).toBe(
+      `${base}/1-w400.webp 400w, ${base}/1-w800.webp 800w, ${base}/1.webp 900w`
+    )
+  })
+
+  it('collapses to one candidate when every width resolves to the same fallback file', () => {
+    expect(buildVariantSrcset('brand/banner-home.webp', 2560, fallbackContext)).toBe('/images/banner_home.jpg 2560w')
+  })
+
+  it('returns undefined for vectors', () => {
+    expect(buildVariantSrcset('brand/logo-partner.svg', 400, supabaseContext)).toBeUndefined()
   })
 })

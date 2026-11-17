@@ -7,6 +7,8 @@ defineProps<{
 }>()
 
 const { t } = useLanguage()
+
+const { srcset: mediaSrcset } = useMediaUrl()
 </script>
 
 <template>
@@ -18,6 +20,7 @@ const { t } = useLanguage()
       :src="image.path"
       :alt="t({ vi: 'Khách sạn Eo Gió, Vĩnh Long: nội thất do Lai Huy thiết kế, sản xuất và thi công', en: 'Eo Gio Hotel, Vinh Long: interiors designed, produced and fitted out by Lai Huy' })"
       :width="image.width"
+      :srcset="mediaSrcset(image.path, image.width)"
       :height="image.height"
       sizes="1536px xl:100vw"
       loading="eager"

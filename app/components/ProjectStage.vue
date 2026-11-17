@@ -23,6 +23,8 @@ const { t, ta } = useLanguage()
 
 const heroProject = computed(() => props.projects[0])
 const secondaryProjects = computed(() => props.projects.slice(1, 3))
+
+const { srcset: mediaSrcset } = useMediaUrl()
 </script>
 
 <template>
@@ -40,6 +42,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
           :src="heroProject.cover.path"
           :alt="t(heroProject.project.name)"
           :width="heroProject.cover.width"
+          :srcset="mediaSrcset(heroProject.cover.path, heroProject.cover.width)"
           :height="heroProject.cover.height"
           sizes="sm:100vw md:60vw lg:65vw"
           loading="lazy"
@@ -155,6 +158,7 @@ const secondaryProjects = computed(() => props.projects.slice(1, 3))
           :src="cover.path"
           :alt="t(project.name)"
           :width="cover.width"
+          :srcset="mediaSrcset(cover.path, cover.width)"
           :height="cover.height"
           sizes="sm:100vw md:40vw lg:35vw"
           loading="lazy"

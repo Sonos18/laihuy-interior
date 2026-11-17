@@ -183,6 +183,8 @@ onUnmounted(() => {
     document.removeEventListener('fullscreenchange', onFullscreenChange)
   }
 })
+
+const { srcset: mediaSrcset } = useMediaUrl()
 </script>
 
 <template>
@@ -260,6 +262,7 @@ onUnmounted(() => {
           :src="current.path"
           :alt="altText"
           :width="current.width"
+          :srcset="mediaSrcset(current.path, current.width)"
           :height="current.height"
           sizes="sm:100vw md:90vw lg:80vw"
           loading="eager"
@@ -307,6 +310,7 @@ onUnmounted(() => {
               :src="image.path"
               alt=""
               :width="image.width"
+              :srcset="mediaSrcset(image.path, image.width)"
               :height="image.height"
               sizes="sm:80px md:96px"
               loading="lazy"

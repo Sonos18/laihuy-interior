@@ -128,6 +128,8 @@ const bottomWashClass = computed(() => {
     ? 'bg-linear-to-t from-wood-950/90 via-wood-950/60 via-50% to-transparent to-80%'
     : 'bg-linear-to-t from-ink-950/90 via-ink-950/60 via-50% to-transparent to-80%'
 })
+
+const { srcset: mediaSrcset } = useMediaUrl()
 </script>
 
 <template>
@@ -173,6 +175,7 @@ const bottomWashClass = computed(() => {
       :src="image.path"
       :alt="altText"
       :width="image.width"
+      :srcset="mediaSrcset(image.path, image.width)"
       :height="image.height"
       sizes="1536px xl:100vw"
       :loading="eager ? 'eager' : 'lazy'"
