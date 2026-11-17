@@ -1,4 +1,5 @@
 import type { Locale, LocalizedText } from '~/shared/types/localization'
+import { COMPANY_EMAIL } from './contact-email'
 
 export type LocalizedNavLink = {
   label: LocalizedText
@@ -71,6 +72,8 @@ export const uiText = {
     exploreMore: { vi: 'Khám phá thêm', en: 'Explore more' },
     /** Footer copyright, minus the year and company name the component supplies. */
     rightsReserved: { vi: 'Bảo lưu mọi quyền.', en: 'All rights reserved.' },
+    taxId: { vi: 'MST', en: 'Tax ID' },
+    chatZalo: { vi: 'Nhắn Zalo 0903 102 012', en: 'Chat on Zalo: +84 903 102 012' },
     // --- Legal documents (/privacy-policy, /terms-of-use) ---------------------
     lastUpdated: { vi: 'Cập nhật lần cuối', en: 'Last updated' },
     company: { vi: 'Công ty', en: 'Company' },
@@ -87,6 +90,12 @@ export const uiText = {
     allProjects: { vi: 'Xem tất cả dự án', en: 'View all projects' },
     sendCv: { vi: 'Gửi CV qua email', en: 'Send your CV by email' }
   },
+  /** The contact action bar at the foot of the viewport below 1024px (AppActionBar). */
+  actionBar: {
+    label: { vi: 'Liên hệ nhanh', en: 'Quick contact' },
+    call: { vi: 'Gọi', en: 'Call' },
+    sendDrawings: { vi: 'Gửi bản vẽ', en: 'Send drawings' }
+  },
   galleryTile: {
     enlarge: { vi: 'Phóng to ảnh', en: 'Enlarge image' },
     image: { vi: 'Ảnh', en: 'Image' }
@@ -98,8 +107,8 @@ export const uiText = {
    */
   contactPage: {
     lead: {
-      vi: 'Gọi 0903 102 012 hoặc gửi email noithatlaihuy@gmail.com. Báo giá trong 24 giờ làm việc kể từ khi nhận đủ bản vẽ hoặc thông tin dự án.',
-      en: 'Call +84 903 102 012 or email noithatlaihuy@gmail.com. We quote within 24 working hours of receiving complete drawings or project details.'
+      vi: `Gọi 0903 102 012 hoặc gửi email ${COMPANY_EMAIL}. Báo giá trong 24 giờ làm việc kể từ khi nhận đủ bản vẽ hoặc thông tin dự án.`,
+      en: `Call +84 903 102 012 or email ${COMPANY_EMAIL}. We quote within 24 working hours of receiving complete drawings or project details.`
     },
     heroImageAlt: {
       vi: 'Nhà vườn Chi Ly, Vĩnh Long: phòng khách',
@@ -111,13 +120,17 @@ export const uiText = {
       note: {
         vi: 'Ngoài giờ làm việc, hãy gửi email.',
         en: 'Outside these hours, please email us.'
+      },
+      zaloNote: {
+        vi: 'Gửi bản vẽ PDF/DWG thẳng trong khung chat.',
+        en: 'Send PDF/DWG drawings straight into the chat.'
       }
     },
     sendDocs: {
       heading: { vi: 'Cách gửi hồ sơ', en: 'How to send your documents' },
       lead: {
-        vi: 'Gửi hồ sơ qua email noithatlaihuy@gmail.com. Lai Huy bóc tách khối lượng, lập BOQ sơ bộ (bảng khối lượng) và gửi báo giá.',
-        en: 'Email your documents to noithatlaihuy@gmail.com. Lai Huy does the take-off, prepares a preliminary BOQ (bill of quantities) and sends a quote.'
+        vi: `Gửi hồ sơ qua email ${COMPANY_EMAIL}. Lai Huy bóc tách khối lượng, lập BOQ sơ bộ (bảng khối lượng) và gửi báo giá.`,
+        en: `Email your documents to ${COMPANY_EMAIL}. Lai Huy does the take-off, prepares a preliminary BOQ (bill of quantities) and sends a quote.`
       },
       items: [
         {
@@ -137,8 +150,12 @@ export const uiText = {
           en: 'Project details: location, room count or floor area, required handover date.'
         },
         {
-          vi: 'File quá lớn để đính kèm: gửi link Google Drive (hoặc dịch vụ tương tự) và mở quyền xem cho noithatlaihuy@gmail.com.',
-          en: 'Files too large to attach: share a Google Drive link (or similar) with view access for noithatlaihuy@gmail.com.'
+          vi: 'Gửi nhanh qua Zalo 0903 102 012: bản vẽ PDF/DWG gửi thẳng trong khung chat.',
+          en: 'Quickest: send PDF/DWG drawings on Zalo to +84 903 102 012, straight into the chat.'
+        },
+        {
+          vi: `File quá lớn để đính kèm: gửi link Google Drive (hoặc dịch vụ tương tự) và mở quyền xem cho ${COMPANY_EMAIL}.`,
+          en: `Files too large to attach: share a Google Drive link (or similar) with view access for ${COMPANY_EMAIL}.`
         }
       ] satisfies LocalizedText[],
       subjectLabel: { vi: 'Tiêu đề email mẫu', en: 'Subject template' },
@@ -183,8 +200,8 @@ export const uiText = {
     eyebrow: { vi: 'Soạn yêu cầu báo giá', en: 'Draft a quote request' },
     heading: { vi: 'Điền thông tin, mở email soạn sẵn', en: 'Fill in the details, open a ready-made email' },
     note: {
-      vi: 'Điền các mục bên dưới rồi bấm nút: ứng dụng email trên máy bạn sẽ mở với nội dung soạn sẵn, gửi tới noithatlaihuy@gmail.com. Bạn kiểm tra, đính kèm bản vẽ nếu có, rồi bấm Gửi. Trang này không tự gửi hay lưu thông tin của bạn.',
-      en: 'Fill in the fields and press the button: your email app will open with a ready-made message to noithatlaihuy@gmail.com. Check it, attach any drawings, then press Send. This page does not send or store your details.'
+      vi: `Điền các mục bên dưới rồi bấm nút: ứng dụng email trên máy bạn sẽ mở với nội dung soạn sẵn, gửi tới ${COMPANY_EMAIL}. Bạn kiểm tra, đính kèm bản vẽ nếu có, rồi bấm Gửi. Trang này không tự gửi hay lưu thông tin của bạn.`,
+      en: `Fill in the fields and press the button: your email app will open with a ready-made message to ${COMPANY_EMAIL}. Check it, attach any drawings, then press Send. This page does not send or store your details.`
     },
     requiredNote: {
       vi: 'Mục có dấu * là bắt buộc.',
@@ -228,8 +245,8 @@ export const uiText = {
     scopeUnspecified: { vi: 'Chưa xác định', en: 'Not sure yet' },
     submit: { vi: 'Soạn email với thông tin này', en: 'Compose an email with these details' },
     submitHint: {
-      vi: 'Nút này mở ứng dụng email trên máy bạn. Không thấy gì mở ra? Gửi email tới noithatlaihuy@gmail.com hoặc gọi 0903 102 012.',
-      en: 'This opens the email app on your device. Nothing happened? Email noithatlaihuy@gmail.com or call +84 903 102 012.'
+      vi: `Nút này mở ứng dụng email trên máy bạn. Không thấy gì mở ra? Gửi email tới ${COMPANY_EMAIL} hoặc gọi 0903 102 012.`,
+      en: `This opens the email app on your device. Nothing happened? Email ${COMPANY_EMAIL} or call +84 903 102 012.`
     },
     /** Shown after a valid submit. Must never say "sent" or "received": nothing leaves the page. */
     opened: {
@@ -291,8 +308,8 @@ export const uiText = {
         en: 'Tell us a little more (at least 10 characters).'
       },
       messageTooLong: {
-        vi: 'Không soạn được email tự động với nội dung này. Hãy rút gọn, hoặc gửi email trực tiếp tới noithatlaihuy@gmail.com.',
-        en: 'We couldn’t pre-fill an email with this. Shorten it, or email noithatlaihuy@gmail.com directly.'
+        vi: `Không soạn được email tự động với nội dung này. Hãy rút gọn, hoặc gửi email trực tiếp tới ${COMPANY_EMAIL}.`,
+        en: `We couldn’t pre-fill an email with this. Shorten it, or email ${COMPANY_EMAIL} directly.`
       }
     }
   },

@@ -70,7 +70,7 @@ for (const locale of ['vi', 'en'] as const) {
 
       await expect(hero.getByRole('heading', { level: 1 })).toBeVisible()
       await expect(phone).toHaveAttribute('href', /^tel:\+\d{8,15}$/)
-      await expect(emailLink).toHaveAttribute('href', /^mailto:noithatlaihuy@gmail\.com\?subject=/)
+      await expect(emailLink).toHaveAttribute('href', /^mailto:lienhe@noithatlaihuy\.vn\?subject=/)
 
       const [heroBox, phoneBox, emailBox] = await Promise.all([
         hero.boundingBox(),

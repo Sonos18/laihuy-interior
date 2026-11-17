@@ -1,3 +1,4 @@
+import { COMPANY_EMAIL } from './contact-email'
 import { brandMedia, companyMedia, projectMedia } from '~/media/catalog.generated'
 import type { LocalizedArray, LocalizedText } from '~/shared/types/localization'
 import type { MediaAsset } from '~/shared/media/types'
@@ -83,15 +84,27 @@ export const company = {
   phone: '+84 903 102 012',
   /** What visitors read: Vietnamese local format, English international format. */
   phoneDisplay: { vi: '0903 102 012', en: '+84 903 102 012' } satisfies LocalizedText,
-  email: 'noithatlaihuy@gmail.com',
+  email: COMPANY_EMAIL,
   facebook: 'https://www.facebook.com/noithatlaihuy',
+  /**
+   * Zalo chat on the company phone (owner, 2026-11-15). A personal account for now; moving to a
+   * Zalo Official Account later is this one line (`https://zalo.me/<OA id>`).
+   */
+  zalo: 'https://zalo.me/0903102012',
+  /**
+   * The registered entity (owner, 2026-11-15, matching the national business register). A legal
+   * name is a proper noun, so it is the same string in both locales.
+   */
+  legalName: 'Công ty TNHH Nội thất Lai Huy',
+  taxId: '1301094204',
   positioning: {
     vi: 'Thiết kế, sản xuất và thi công nội thất cho khách sạn, villa, căn hộ và văn phòng, từ xưởng riêng tại Vĩnh Long.',
     en: 'Interior design, production and fit-out for hotels, villas, apartments and offices, from our own factory in Vinh Long.'
   },
   // --- Optional About-page content (renders only when authored) --------------
-  /** Founding year — enables "Since …" cues once set. */
-  foundingYear: undefined as string | undefined,
+  /** Incorporated 10 July 2020 (owner, 2026-11-15). Drives "Since 2020" copy and JSON-LD. */
+  foundingYear: '2020' as string | undefined,
+  foundingDate: '2020-07-10',
   mission: undefined as LocalizedText | undefined,
   vision: undefined as LocalizedText | undefined,
   milestones: [] as CompanyMilestone[],
@@ -129,9 +142,9 @@ export const company = {
 
      The line that governs this field is the one at the top of this file: fields stay empty until
      authored with authentic content, never fabricated. A fifth signal — a construction warranty —
-     was requested and deliberately NOT added: nothing in this repository states that such a
-     warranty exists, and a footer is the last place a business should discover it is promising
-     something nobody authored. Add it here only when someone can point at the policy.
+     was requested and NOT added here: the owner's warranty terms (2026-11-17) live in the home
+     contractor file (`homePageContent.trust.warranty`); a footer badge for them is a separate,
+     unrequested change.
 
      The glyphs are REUSED, not chosen: three of the four labels have an exact title match in
      `differentiators` on /gioi-thieu and take that page's icon verbatim — factory, shield-check,

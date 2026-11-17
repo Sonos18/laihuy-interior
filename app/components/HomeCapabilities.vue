@@ -43,6 +43,7 @@ onBeforeUnmount(() => {
         eyebrow-class="eyebrow home-eyebrow-text text-wood-600"
         :eyebrow="t(homePageContent.capabilities.eyebrow)"
         :title="t(homePageContent.capabilities.title)"
+        :lead="t(homePageContent.capabilities.lead)"
       />
 
       <ol

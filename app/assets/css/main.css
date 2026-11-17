@@ -95,6 +95,16 @@
        < 360px   909.9px  (320, en)   -> 59rem = 944px
        360-767   805.1px  (414, en)   -> 52rem = 832px
        >= 768    709.4px  (1280, en)  -> 46rem = 736px
+
+     RE-MEASURED 2026-11-15 (owner): the home sub-lead is one sentence now, so home's hero copy
+     is no longer the tallest. Tallest copy across home AND every AppHero page (the 9 hero
+     routes, both locales, floor neutralised):
+       < 768     667px  (/nha-xuong, 360, en)  -> 43.5rem = 696px  (both phone tiers)
+       >= 768    529px  (/nha-xuong, 1440, vi) -> 35rem   = 560px  (short screens only, below)
+     Phones: the old 832px floor pushed the home CTAs below the fold on every phone shorter than
+     832px (375x667, 414x736). At 43.5rem the floor only binds below 696px. Desktop keeps 46rem
+     at heights over 704px (1440x900, 1280x720 and the visual baselines are unchanged); a
+     separate short-screen tier below drops it to 35rem so a 1366x625 laptop sees the CTAs.
      The old single token took the worst case across ALL widths (narrow-and-EN, 320px), so every
      desktop inherited a floor derived from a phone; tiering lets desktop drop 224px without
      weakening the guarantee. The svh term drops to 78svh at md+ (from 100svh) so the next section
@@ -110,7 +120,7 @@
      if hero copy, --text-hero, or the hero padding changes; the homepage metrics band (HomeMetricsBand)
      must stay OUTSIDE the hero (index.vue) or these numbers are void. tests/e2e/hero.spec.ts G1/G2 enforce
      both halves. */
-  --hero-min-h-home: max(100svh, 59rem);
+  --hero-min-h-home: max(100svh, 43.5rem);
 
   /* Hero readability contract — the shared-family invariant.
      The two <AppHero> modes are members of ONE family: they must reach the SAME measured
@@ -180,6 +190,7 @@
   --z-base: 0;
   --z-hero-content: 10;
   --z-subnav: 30;
+  --z-action-bar: 40; /* the contact action bar < 1024px (owner, 2026-11-15) */
   --z-header: 50;
   --z-drawer-overlay: 60; /* was z-50 — raised (§36)                   */
   --z-drawer: 61; /* was z-50 — raised (§36)                   */
@@ -388,7 +399,7 @@
    single wrap is the whole reason tier 1 exists. See --hero-min-h-home for the table. */
 @media (min-width: 22.5rem) {
   :root {
-    --hero-min-h-home: max(100svh, 52rem);
+    --hero-min-h-home: max(100svh, 43.5rem);
   }
 }
 
@@ -405,6 +416,15 @@
     /* Tier 3. The svh term drops to 78 here so the fold stops landing exactly on the hero's
        bottom edge — that is the change that makes the next section visible on a laptop. */
     --hero-min-h-home: max(78svh, 46rem);
+  }
+}
+
+/* Short screens from 768px (a laptop with browser chrome: 1366x625, 1024x600). At 46rem the
+   bottom-anchored hero actions sat under the fold; 35rem still clears the tallest AppHero copy
+   (529px) with headroom. See the re-measure note at --hero-min-h-home. */
+@media (min-width: 48rem) and (max-height: 44rem) {
+  :root {
+    --hero-min-h-home: max(78svh, 35rem);
   }
 }
 
@@ -1619,6 +1639,12 @@
     font-size: var(--type-meta-sm-size);
     line-height: var(--type-meta-sm-leading);
     color: var(--fg-dark-subtle);
+  }
+
+  /* The line now carries the Vietnamese legal name (owner, 2026-11-15), so it takes the
+     Vietnamese body floor (1.65): stacked marks close lines from both directions. */
+  .footer-copyright {
+    line-height: 1.65;
   }
 
   .footer-legal {

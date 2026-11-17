@@ -52,7 +52,10 @@ export default defineNuxtConfig({
       useSupabaseMedia: false,
       // One normalized origin for canonical, Open Graph, JSON-LD, robots and sitemap URLs.
       // NUXT_PUBLIC_SITE_URL can override it per environment.
-      siteUrl
+      siteUrl,
+      // GA4 measurement ID (NUXT_PUBLIC_GA_ID). Empty by default: app/plugins/analytics.client.ts
+      // then loads nothing and every track() call is a no-op.
+      gaId: ''
     }
   },
 
@@ -114,7 +117,11 @@ export default defineNuxtConfig({
   // from claiming `components`; layers.css pins `icons` to lowest priority,
   // which is the precedence @nuxt/icon prepends to achieve anyway.
   icon: {
-    cssLayer: 'icons'
+    cssLayer: 'icons',
+    // Brand marks no installed set draws correctly. `lh:zalo` is the Zalo
+    // speech bubble with the wordmark knocked out; the wordmark path is
+    // Simple Icons' `zalo` (CC0-1.0), drawn in currentColor (One Accent Rule).
+    customCollections: [{ prefix: 'lh', dir: './app/assets/icons' }]
   },
 
   image: {

@@ -68,6 +68,7 @@ usePageSeo({
     <HomeFactoryProof
       :image="siteImages.machineryOverview"
     />
+    <HomeTrust />
     <QuoteCta data-testid="home-project-cta" />
     <PageDoor from="home" />
   </div>

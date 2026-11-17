@@ -140,7 +140,7 @@ const { t, ta } = useLanguage()
       <!-- ── TIER 3 — COPYRIGHT · FACEBOOK · LEGAL ───────────────────────────── -->
       <div class="footer-meta">
         <p class="footer-copyright">
-          &copy; {{ new Date().getFullYear() }} {{ company.name }}. {{ t(uiText.labels.rightsReserved) }}
+          &copy; {{ new Date().getFullYear() }} {{ company.legalName }} · {{ t(uiText.labels.taxId) }}&nbsp;{{ company.taxId }}. {{ t(uiText.labels.rightsReserved) }}
         </p>
 
         <!-- Facebook leads the legal list: one cluster of quiet links on the right of the line,
@@ -160,6 +160,22 @@ const { t, ta } = useLanguage()
                 aria-hidden="true"
               />
               <span>Facebook</span>
+            </a>
+          </li>
+          <li>
+            <a
+              :href="company.zalo"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer-social"
+              :aria-label="t(uiText.labels.chatZalo)"
+            >
+              <Icon
+                name="lh:zalo"
+                class="footer-social-icon"
+                aria-hidden="true"
+              />
+              <span>Zalo</span>
             </a>
           </li>
           <li
