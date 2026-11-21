@@ -63,6 +63,8 @@ export type CompanyTestimonial = {
   quote: LocalizedText
   author: LocalizedText
   role?: LocalizedText
+  /** The project the quote is about, shown under the author. */
+  project?: LocalizedText
 }
 
 const buildMapUrl = (address: string) =>
