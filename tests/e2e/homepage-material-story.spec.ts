@@ -27,7 +27,7 @@ const COPY = {
 
 type HomeLocale = keyof typeof COPY
 
-async function prepareHome(page: Page, locale: HomeLocale, width: number, reducedMotion: 'reduce' | 'no-preference') {
+async function prepareHome(page: Page, locale: HomeLocale, width: number, reducedMotion: 'reduce' | 'no-preference', height = 900) {
   const consoleErrors: string[] = []
   const pageErrors: string[] = []
 
@@ -45,7 +45,7 @@ async function prepareHome(page: Page, locale: HomeLocale, width: number, reduce
     await route.continue()
   })
 
-  await page.setViewportSize({ width, height: 900 })
+  await page.setViewportSize({ width, height })
   await page.goto(new URL(localizePath('/', locale), TEST_ORIGIN).toString(), { waitUntil: 'load' })
   await page.evaluate(() => document.fonts.ready)
 
@@ -321,8 +321,9 @@ test('HMS-linen sits on Linen, not white', async ({ page }) => {
   expect(background).toBe('rgb(250, 246, 240)')
 })
 
-test('HMS-mobile-wipe scrubs each stage photograph over the previous one below 768px', async ({ page }) => {
-  const errors = await prepareHome(page, 'vi', 390, 'no-preference')
+// A phone shorter than 620px has no room for the pinned scene, so it gets the stacked wipe.
+test('HMS-mobile-wipe scrubs each stage photograph over the previous one on a short phone', async ({ page }) => {
+  const errors = await prepareHome(page, 'vi', 390, 'no-preference', 560)
   const story = page.getByTestId('home-material-story')
   await expect(story).toHaveAttribute('data-mobile-wipe-enabled', 'true')
 
@@ -365,10 +366,11 @@ test('HMS-mobile-wipe scrubs each stage photograph over the previous one below 7
   expect(errors.pageErrors).toEqual([])
 })
 
-for (const [width, reducedMotion] of [[390, 'reduce'], [768, 'no-preference']] as const) {
-  test(`HMS-mobile-wipe stays off at ${width}px with ${reducedMotion} motion`, async ({ page }) => {
-    await prepareHome(page, 'vi', width, reducedMotion)
+for (const [width, height, reducedMotion] of [[390, 560, 'reduce'], [390, 844, 'reduce'], [390, 844, 'no-preference'], [768, 900, 'no-preference']] as const) {
+  test(`HMS-mobile-wipe stays off at ${width}x${height} with ${reducedMotion} motion`, async ({ page }) => {
+    await prepareHome(page, 'vi', width, reducedMotion, height)
     const story = page.getByTestId('home-material-story')
+    await expect(story).toHaveAttribute('data-mobile-pin', reducedMotion === 'no-preference' && width < 768 ? 'true' : 'false')
     await expect(story).toHaveAttribute('data-mobile-wipe-enabled', 'false')
     await expect(story.locator('.home-material-story__mobile-under')).toHaveCount(0)
     const wipes = await story.locator('[data-mobile-wipe]').evaluateAll(frames =>
@@ -379,10 +381,10 @@ for (const [width, reducedMotion] of [[390, 'reduce'], [768, 'no-preference']] a
 }
 
 test('HMS-mobile-wipe follows the scroll after a resize below 768px while the story is on screen', async ({ page }) => {
-  const errors = await prepareHome(page, 'vi', 1024, 'no-preference')
+  const errors = await prepareHome(page, 'vi', 1024, 'no-preference', 560)
   const story = page.getByTestId('home-material-story')
   await story.scrollIntoViewIfNeeded()
-  await page.setViewportSize({ width: 390, height: 900 })
+  await page.setViewportSize({ width: 390, height: 560 })
   await expect(story).toHaveAttribute('data-mobile-wipe-enabled', 'true')
 
   const frame = story.locator('[data-mobile-wipe]').nth(1)
@@ -400,3 +402,49 @@ test('HMS-mobile-wipe follows the scroll after a resize below 768px while the st
   expect(errors.consoleErrors).toEqual([])
   expect(errors.pageErrors).toEqual([])
 })
+
+for (const locale of ['vi', 'en'] as const) {
+  test(`HMS-mobile-pin holds one frame under the header and plays the scene with the scroll (${locale})`, async ({ page }) => {
+    const errors = await prepareHome(page, locale, 375, 'no-preference', 667)
+    const story = page.getByTestId('home-material-story')
+    await expect(story).toHaveAttribute('data-mobile-pin', 'true')
+    const pin = story.locator('[data-pin-block]')
+    await expect(story.locator('.home-material-story__media')).toBeVisible()
+    await expect(story.locator('.home-material-story__mobile-media').first()).toBeHidden()
+
+    const range = await story.locator('.home-material-story__stage').evaluate((el) => {
+      const rect = el.getBoundingClientRect()
+      return { top: window.scrollY + rect.top, height: rect.height }
+    })
+    const read = async (fraction: number) => {
+      const pinHeight = await pin.evaluate(el => (el as HTMLElement).offsetHeight)
+      await page.evaluate(y => window.scrollTo(0, y), range.top - 100 + (range.height - pinHeight) * fraction)
+      // Let the header's hide (and the block's matching rise) finish before measuring.
+      await page.waitForTimeout(500)
+      return story.evaluate((el) => {
+        const block = el.querySelector<HTMLElement>('[data-pin-block]')!.getBoundingClientRect()
+        const active = [...el.querySelectorAll('.home-material-story__copy-item')].findIndex(item => item.classList.contains('is-active'))
+        const layers = [...el.querySelectorAll<HTMLElement>('.home-material-story__layer')].map(layer => Number.parseFloat(layer.style.getPropertyValue('--wipe')))
+        return { top: block.top, bottom: block.bottom, active, layers, vh: window.innerHeight }
+      })
+    }
+
+    const start = await read(0.1)
+    const middle = await read(0.5)
+    const end = await read(1)
+    // Pinned: the block holds the same place while the scene changes under the finger.
+    expect(Math.abs(middle.top - start.top)).toBeLessThan(1)
+    // The frame and the longest copy clear the action bar (3.5rem + 0.5rem inset).
+    expect(middle.bottom).toBeLessThanOrEqual(middle.vh - 64)
+    expect(start.active).toBe(0)
+    expect(middle.active).toBeGreaterThan(0)
+    expect(end.active).toBe(3)
+    expect(start.layers[1]).toBeLessThan(1)
+    expect(end.layers).toEqual([1, 1, 1, 1])
+
+    // The lead is read once: its pin-mode twin shows, the rail copy is hidden.
+    await expect(story.locator('.home-material-story__intro-desc:visible')).toHaveCount(1)
+    expect(errors.consoleErrors).toEqual([])
+    expect(errors.pageErrors).toEqual([])
+  })
+}
