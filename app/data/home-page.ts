@@ -55,6 +55,20 @@ export const homePageContent = {
       }
     ]
   },
+  /* Handover record (owner, 2026-11-21): stands in for testimonials until owner-approved client
+     quotes exist. Every row comes from app/data/projects.ts (name, category, location, rooms,
+     year, cover), so it states nothing the portfolio does not already state. `{count}` is filled
+     by HomeHandover. */
+  handover: {
+    eyebrow: { vi: 'Đã bàn giao', en: 'Handed over' },
+    title: { vi: '{count} công trình, từ khách sạn đến văn phòng', en: '{count} projects, from hotels to offices' },
+    lead: {
+      vi: 'Mỗi công trình do cùng một đội thiết kế, sản xuất tại xưởng Vĩnh Long và lắp đặt đến nghiệm thu.',
+      en: 'Each one designed, made in our Vinh Long factory and installed through sign-off by the same team.'
+    },
+    listLabel: { vi: 'Danh sách công trình đã bàn giao', en: 'Projects handed over' },
+    allCta: { vi: 'Xem tất cả dự án', en: 'View all projects' }
+  },
   /* Client testimonials: HomeTestimonials renders only when company.testimonials holds real,
      owner-supplied quotes. Never fill it with placeholder or invented reviews. */
   testimonials: {

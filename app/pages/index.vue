@@ -69,7 +69,8 @@ usePageSeo({
       :image="siteImages.machineryOverview"
     />
     <HomeTrust />
-    <HomeTestimonials />
+    <HomeTestimonials v-if="company.testimonials.length" />
+    <HomeHandover v-else />
     <HomeProjectCta />
   </div>
 </template>
