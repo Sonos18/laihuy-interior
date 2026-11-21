@@ -86,6 +86,8 @@ usePageSeo({
       :facts="facts"
       testid="factory-stats"
       cell-testid="factory-stat"
+      contained
+      class="pb-8 md:pb-12"
       anchor="factory-capability"
     />
 

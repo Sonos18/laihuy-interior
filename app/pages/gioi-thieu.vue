@@ -112,6 +112,8 @@ usePageSeo({
         testid="about-proof"
         grid-testid="about-proof-grid"
         cell-testid="about-proof-stat"
+        contained
+        class="pb-8 md:pb-12"
       />
     </div>
 

@@ -10,7 +10,7 @@ import { localizePath } from '../../app/utils/locale-path'
  * RH-01  at most one Monument per page, set in the Monument role, AA against its surface.
  * RH-02  at most one Statement heading per page.
  * RH-03  the Facts Band renders with identical type on all four routes that use it, and one
- *        surface per variant (full-bleed band, or the contained frame on home).
+ *        surface (the contained frame, on every route).
  * RH-04  no two consecutive section heads share a layout, and each head's geometry matches the
  *        layout it declares (split: something beside the heading; rail: the eyebrow in a column
  *        of its own; stacked: one column).
@@ -181,23 +181,15 @@ test('RH-03 the Facts Band has one treatment on all four routes', async ({ page 
   for (const sample of samples) {
     expect(sample.styles.icons, `${sample.path} band carries no icons`).toBe(0)
     expect(sample.styles.count, `${sample.path} band shows three or four facts`).toBeGreaterThanOrEqual(3)
-    // Home is the contained variant: the Linen frame sits on the rail. Elsewhere the band itself
-    // is Linen, full-bleed, with a Plaster hairline under it.
-    expect(sample.styles.contained, `${sample.path} band variant`).toBe(sample.path === '/')
-    if (sample.styles.contained) {
-      expect(sample.styles.grid!['background-color']).toBe('rgb(250, 246, 240)')
-      expect(sample.styles.grid!['border-top-width']).toBe('1px')
-    } else {
-      expect(sample.styles.band!['background-color']).toBe('rgb(250, 246, 240)')
-      expect(sample.styles.band!['border-bottom-width']).toBe('1px')
-    }
+    // Every route uses the contained variant (owner, 2026-11-21): the Linen frame sits on the
+    // rail with a Plaster border, as first set on home.
+    expect(sample.styles.contained, `${sample.path} band variant`).toBe(true)
+    expect(sample.styles.grid!['background-color']).toBe('rgb(250, 246, 240)')
+    expect(sample.styles.grid!['border-top-width']).toBe('1px')
   }
   for (const sample of others) {
     expect(sample.styles.type, `${sample.path} band type matches the home band`).toEqual(reference!.styles.type)
-  }
-  const fullBleed = samples.filter(sample => !sample.styles.contained)
-  for (const sample of fullBleed.slice(1)) {
-    expect(sample.styles.band, `${sample.path} band surface matches ${fullBleed[0]!.path}`).toEqual(fullBleed[0]!.styles.band)
+    expect(sample.styles.grid, `${sample.path} band frame matches the home band`).toEqual(reference!.styles.grid)
   }
 })
 

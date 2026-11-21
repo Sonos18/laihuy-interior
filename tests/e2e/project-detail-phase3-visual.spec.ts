@@ -1277,8 +1277,8 @@ for (const locale of ['vi', 'en'] as const) {
       const finale = page.locator('section[data-project-chapter="finale"]')
       await expect(finale).toBeVisible()
 
-      // The finale opens on the shared Facts Band (DESIGN.md "Facts Band"): Linen with a
-      // Plaster hairline under it, no icons, values in Charcoal Ink, labels in Walnut Grey.
+      // The finale opens on the shared Facts Band (DESIGN.md "Facts Band"), contained like home:
+      // a Linen frame with a Plaster border, no icons, values in Charcoal Ink, labels in Walnut Grey.
       const band = finale.locator('[data-facts-band]')
       await expect(band).toHaveCount(1)
       const bandStyles = await band.evaluate((el) => {
@@ -1302,8 +1302,8 @@ for (const locale of ['vi', 'en'] as const) {
         return {
           ...result,
           expectedWalnut,
-          borderBottomColor: getComputedStyle(el).borderBottomColor,
-          background: getComputedStyle(el).backgroundColor,
+          borderBottomColor: getComputedStyle(el.querySelector('dl')!).borderBottomColor,
+          background: getComputedStyle(el.querySelector('dl')!).backgroundColor,
           icons: el.querySelectorAll('svg:not(.facts-band__beam), .iconify, [class*="i-lucide"]').length,
           valueColor: getComputedStyle(el.querySelector('dd')!).color,
           labelColor: getComputedStyle(el.querySelector('dt')!).color
