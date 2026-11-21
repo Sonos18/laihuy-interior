@@ -1,7 +1,8 @@
 <script setup lang="ts">
-// The one treatment of the site's proof facts (DESIGN.md "Facts Band"): a full-width Linen band
-// with a Plaster hairline under it, used below the home, /gioi-thieu and /nha-xuong heroes and at
-// the head of the case-study finale. A page chooses WHICH facts it shows, never how they look.
+// The one treatment of the site's proof facts (DESIGN.md "Facts Band"), used below the home,
+// /gioi-thieu and /nha-xuong heroes and at the head of the case-study finale. Every one of them
+// uses the contained variant (a Linen frame on the shell rail, owner 2026-11-21); the full-bleed
+// default stays for a future band. A page chooses WHICH facts it shows, never how they look.
 //
 // Type: labels are the Label role, values the Stat role when they are figures ("3.000 m²") and the
 // Title role when they are phrases ("Trọn gói"), so a phrase fits on two lines without reading as
