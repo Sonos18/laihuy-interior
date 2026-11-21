@@ -19,7 +19,7 @@ const testimonials = company.testimonials
   >
     <div class="shell">
       <SectionHead
-        layout="rail"
+        layout="stacked"
         eyebrow-class="eyebrow home-eyebrow-text text-wood-600"
         :eyebrow="t(homePageContent.testimonials.eyebrow)"
         :title="t(homePageContent.testimonials.title)"
