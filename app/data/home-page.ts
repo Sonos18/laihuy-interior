@@ -22,15 +22,44 @@ export type HomeFactoryDetail = {
 }
 
 export const homePageContent = {
+  /* Hero (owner-approved Stitch mockup, 2026-11-21): the headline names the trade and the
+     audience inside the first five seconds, the second action is Zalo (the channel visitors
+     already use), and three facts the site already states elsewhere sit under the actions:
+     founding year (company.foundingYear), the project count (projects.length) and the 24-month
+     warranty from the contractor file. Capacity is left to the facts band directly below. `{year}` and `{count}` are filled by HomeHero. */
   hero: {
     eyebrow: { vi: 'Thiết kế · Sản xuất · Thi công', en: 'Design · Production · Fit-out' },
-    title: { vi: 'Biến hồ sơ kỹ thuật thành không gian hoàn thiện', en: 'Turning technical documents into completed spaces' },
+    title: { vi: 'Nội thất khách sạn & dự án, sản xuất tại xưởng riêng', en: 'Hotel and project interiors, made in our own factory' },
     description: {
-      vi: 'Một đội, một xưởng riêng: từ bản vẽ đến lắp đặt trên toàn quốc.',
-      en: 'One team and our own factory, from drawings to installation nationwide.'
+      vi: 'Cho chủ đầu tư, đơn vị thiết kế và tổng thầu: từ bản vẽ đến lắp đặt trên toàn quốc.',
+      en: 'For owners, designers and main contractors: from drawings to installation nationwide.'
     },
-    primaryCta: { vi: 'Nhận báo giá', en: 'Request a quote' },
-    secondaryCta: { vi: 'Gửi bản vẽ, nhận BOQ sơ bộ', en: 'Send drawings for a preliminary BOQ' }
+    primaryCta: { vi: 'Gửi bản vẽ, nhận báo giá', en: 'Send drawings, get a quote' },
+    zaloCta: { vi: 'Nhắn Zalo', en: 'Chat on Zalo' },
+    factsLabel: { vi: 'Lai Huy qua ba con số', en: 'Lai Huy in three figures' },
+    facts: [
+      {
+        id: 'since',
+        value: { vi: 'Từ {year}', en: 'Since {year}' },
+        label: { vi: 'Xưởng riêng tại Vĩnh Long', en: 'Own factory in Vinh Long' }
+      },
+      {
+        id: 'projects',
+        value: { vi: '{count} dự án', en: '{count} projects' },
+        label: { vi: 'Trong hồ sơ dự án', en: 'In our portfolio' }
+      },
+      {
+        id: 'warranty',
+        value: { vi: '24 tháng', en: '24 months' },
+        label: { vi: 'Bảo hành kết cấu, thùng tủ', en: 'Warranty on carcass and structure' }
+      }
+    ]
+  },
+  /* Client testimonials: HomeTestimonials renders only when company.testimonials holds real,
+     owner-supplied quotes. Never fill it with placeholder or invented reviews. */
+  testimonials: {
+    eyebrow: { vi: 'Khách hàng nói gì', en: 'What clients say' },
+    title: { vi: 'Chủ đầu tư đánh giá sau nghiệm thu', en: 'Owners on Lai Huy after sign-off' }
   },
   story: {
     eyebrow: { vi: 'Cách Lai Huy làm', en: 'How we work' },

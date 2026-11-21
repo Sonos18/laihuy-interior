@@ -10,14 +10,14 @@ const TRANSPARENT_PNG = Buffer.from(
 
 const COPY = {
   vi: {
-    hero: 'Biến hồ sơ kỹ thuật thành không gian hoàn thiện',
+    hero: 'Nội thất khách sạn & dự án, sản xuất tại xưởng riêng',
     story: 'Không gian qua thiết kế của Lai Huy',
     stages: ['Tiếp nhận hồ sơ', 'Bóc tách kỹ thuật', 'Mẫu, sản xuất, QC', 'Lắp đặt & bàn giao'],
     capabilities: ['Thiết kế & triển khai kỹ thuật', 'Sản xuất tại xưởng', 'Thi công & lắp đặt'],
     cta: 'Gửi bản vẽ, nhận BOQ sơ bộ'
   },
   en: {
-    hero: 'Turning technical documents into completed spaces',
+    hero: 'Hotel and project interiors, made in our own factory',
     story: 'Spaces shaped by Lai Huy’s design',
     stages: ['Intake', 'Take-off', 'Samples, production, QC', 'Installation & handover'],
     capabilities: ['Design & technical development', 'In-house production', 'Fit-out & installation'],
