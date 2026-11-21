@@ -11,21 +11,28 @@ const { t } = useLanguage()
 const storyRoot = ref<HTMLElement | null>(null)
 const { progress, isEnhanced } = useScrollProgress(storyRoot)
 
+// On a phone tall enough for it (see `mobilePin` below) the same scene is pinned under the
+// header and driven by its own progress; everywhere else the desktop composable drives it.
+const mobilePin = ref(false)
+const mobilePinProgress = ref(0)
+const sceneActive = computed(() => isEnhanced.value || mobilePin.value)
+const storyProgress = computed(() => (mobilePin.value && !isEnhanced.value ? mobilePinProgress.value : progress.value))
+
 const activeIndex = computed(() => {
-  if (progress.value < 0.2) return 0
-  if (progress.value < 0.47) return 1
-  if (progress.value < 0.74) return 2
+  if (storyProgress.value < 0.2) return 0
+  if (storyProgress.value < 0.47) return 1
+  if (storyProgress.value < 0.74) return 2
   return 3
 })
 
 const phaseProgress = (start: number, end: number) =>
-  Math.min(1, Math.max(0, (progress.value - start) / (end - start)))
+  Math.min(1, Math.max(0, (storyProgress.value - start) / (end - start)))
 
 // `--wipe` is how much of the layer is revealed (0..1); the bronze seam reads it to sit exactly
 // on the leading edge. The seam only exists while the wipe is moving: before it starts the layer
 // is invisible and after it finishes the edge is the frame's own edge.
 const layerStyle = (index: number) => {
-  if (!isEnhanced.value) {
+  if (!sceneActive.value) {
     return {
       'opacity': index === props.stages.length - 1 ? 1 : 0,
       'clipPath': 'inset(0 0 0 0)',
@@ -45,6 +52,129 @@ const layerStyle = (index: number) => {
     '--seam': amount > 0 && amount < 1 ? 1 : 0
   }
 }
+
+// Below 768px (DESIGN.md "Motion", material story on a phone) there are two modes.
+//
+// Pin: on a phone at least MOBILE_PIN_MIN_HEIGHT tall, the scene is pinned like the desktop one:
+// one 16:10 frame with the four stage photographs layered in it sits under the header, the
+// active stage's copy sits under the frame, and the scroll through the (tall) stage wipes the
+// layers and swaps the copy with the desktop timings. Progress is how far the pinned block has
+// been held inside the stage, so it starts when the block sticks and ends when it lets go.
+//
+// Wipe: on a shorter phone the frame plus the longest copy would not fit between the header and
+// the action bar, so the stages stack instead, each with its own photograph: from the second on, a frame holds the previous stage's photograph underneath and
+// the finger's scroll wipes this stage's photograph over it, left to right, with the same bronze
+// seam. It is tied to scroll position like the step trace (it starts when the frame's top passes
+// 85% of the viewport and is complete when its bottom reaches 60%), so it never loops and
+// scrolling back undoes it. The first stage is the "before" and stays as it is. Scroll is read
+// only while the story is on screen, once per frame; reduced motion and 768px+ leave it alone.
+const MOBILE_WIPE_START = 0.85
+const MOBILE_WIPE_END = 0.6
+const MOBILE_PIN_MIN_HEIGHT = 620
+const mobileWipeEnabled = ref(false)
+const mobileWipes = ref<number[]>(props.stages.map(() => 1))
+let mobileFrame = 0
+let mobileObserver: IntersectionObserver | null = null
+let mobileQuery: MediaQueryList | null = null
+let mobileMotionQuery: MediaQueryList | null = null
+let mobilePinQuery: MediaQueryList | null = null
+let mobileListening = false
+let storyInView = false
+
+const paintMobileWipes = () => {
+  mobileFrame = 0
+  const root = storyRoot.value
+  if (!root) return
+  if (mobilePin.value) {
+    const stage = root.querySelector<HTMLElement>('.home-material-story__stage')
+    const pin = root.querySelector<HTMLElement>('[data-pin-block]')
+    if (!stage || !pin) return
+    const stageRect = stage.getBoundingClientRect()
+    const range = stageRect.height - pin.offsetHeight
+    const held = pin.getBoundingClientRect().top - stageRect.top
+    mobilePinProgress.value = range > 0 ? Math.min(1, Math.max(0, held / range)) : 1
+    return
+  }
+  if (!mobileWipeEnabled.value) return
+  const vh = window.innerHeight
+  const frames = root.querySelectorAll<HTMLElement>('[data-mobile-wipe]')
+  mobileWipes.value = Array.from(frames, (frame, index) => {
+    if (index === 0) return 1
+    const rect = frame.getBoundingClientRect()
+    const raw = (vh * MOBILE_WIPE_START - rect.top) / (rect.height + vh * (MOBILE_WIPE_START - MOBILE_WIPE_END))
+    return Math.min(1, Math.max(0, raw))
+  })
+}
+
+const scheduleMobileWipes = () => {
+  if (mobileFrame) return
+  mobileFrame = window.requestAnimationFrame(paintMobileWipes)
+}
+
+const listenMobile = (on: boolean) => {
+  if (on === mobileListening) return
+  mobileListening = on
+  if (on) {
+    window.addEventListener('scroll', scheduleMobileWipes, { passive: true })
+    window.addEventListener('resize', scheduleMobileWipes, { passive: true })
+    scheduleMobileWipes()
+  } else {
+    window.removeEventListener('scroll', scheduleMobileWipes)
+    window.removeEventListener('resize', scheduleMobileWipes)
+  }
+}
+
+const syncMobileMode = () => {
+  const motion = Boolean(mobileQuery?.matches && !mobileMotionQuery?.matches)
+  const pin = motion && Boolean(mobilePinQuery?.matches)
+  const enabled = motion && !pin
+  mobilePin.value = pin
+  mobileWipeEnabled.value = enabled
+  if (!pin) mobilePinProgress.value = 0
+  if (motion) {
+    // The observer may have reported the story on screen while the mode was off (a rotation or
+    // resize from 768px+, or reduced motion turned off): attach the listener now, not on re-entry.
+    listenMobile(storyInView)
+    scheduleMobileWipes()
+  } else {
+    listenMobile(false)
+    mobileWipes.value = props.stages.map(() => 1)
+  }
+}
+
+onMounted(() => {
+  mobileQuery = window.matchMedia('(max-width: 767.98px)')
+  mobileMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+  mobilePinQuery = window.matchMedia(`(min-height: ${MOBILE_PIN_MIN_HEIGHT}px)`)
+  mobileQuery.addEventListener('change', syncMobileMode)
+  mobileMotionQuery.addEventListener('change', syncMobileMode)
+  mobilePinQuery.addEventListener('change', syncMobileMode)
+  mobileObserver = new IntersectionObserver(([entry]) => {
+    storyInView = Boolean(entry?.isIntersecting)
+    listenMobile(storyInView && (mobileWipeEnabled.value || mobilePin.value))
+  })
+  syncMobileMode()
+  if (storyRoot.value) mobileObserver.observe(storyRoot.value)
+})
+
+onBeforeUnmount(() => {
+  mobileQuery?.removeEventListener('change', syncMobileMode)
+  mobileMotionQuery?.removeEventListener('change', syncMobileMode)
+  mobilePinQuery?.removeEventListener('change', syncMobileMode)
+  mobileObserver?.disconnect()
+  listenMobile(false)
+  if (mobileFrame) window.cancelAnimationFrame(mobileFrame)
+})
+
+const mobileWipeStyle = (index: number) => {
+  const amount = mobileWipes.value[index] ?? 1
+  return {
+    '--wipe': amount.toFixed(4),
+    '--seam': amount > 0 && amount < 1 ? 1 : 0
+  }
+}
+
+const mobileImgClass = (id: HomeStoryStageId) => (id === 'drawing' ? 'grayscale contrast-125' : '')
 </script>
 
 <template>
@@ -52,6 +182,8 @@ const layerStyle = (index: number) => {
     ref="storyRoot"
     data-testid="home-material-story"
     :data-enhanced="isEnhanced ? 'true' : 'false'"
+    :data-mobile-wipe-enabled="mobileWipeEnabled ? 'true' : 'false'"
+    :data-mobile-pin="mobilePin ? 'true' : 'false'"
     :style="{ '--story-progress': progress.toFixed(4) }"
     class="home-material-story bg-wood-50 text-ink-950"
   >
@@ -72,82 +204,112 @@ const layerStyle = (index: number) => {
           </h2>
         </div>
 
+        <p
+          class="home-material-story__intro-desc home-material-story__intro-desc--pin home-lead-text text-ink-600"
+        >
+          {{ t(homePageContent.story.description) }}
+        </p>
+
         <div class="home-material-story__stage">
           <div
-            class="home-material-story__media"
-            aria-hidden="true"
+            data-pin-block
+            class="home-material-story__pin"
           >
             <div
-              v-for="(stage, index) in stages"
-              :key="stage.id"
-              class="home-material-story__layer"
-              :class="`home-material-story__layer--${stage.id}`"
-              :style="layerStyle(index)"
+              class="home-material-story__media"
+              aria-hidden="true"
             >
-              <MediaImage
-                :image="images[stage.id]"
-                sizes="sm:100vw md:70vw xl:72vw"
-                class="absolute inset-0 h-full w-full"
-                img-class="object-center"
-              />
               <div
-                v-if="stage.id === 'drawing'"
-                class="home-material-story__drawing-grid"
-              >
-                <span
-                  v-for="line in 8"
-                  :key="line"
-                />
-              </div>
-              <div class="home-material-story__media-shade" />
-              <div class="home-material-story__seam" />
-            </div>
-          </div>
-
-          <div class="home-material-story__aside">
-            <p class="home-material-story__intro-desc home-lead-text mt-5 text-ink-600">
-              {{ t(homePageContent.story.description) }}
-            </p>
-
-            <ol
-              class="home-material-story__copy"
-              role="list"
-            >
-              <li
                 v-for="(stage, index) in stages"
                 :key="stage.id"
-                data-testid="home-story-stage"
-                data-mobile-frame
-                :data-stage-id="stage.id"
-                :class="{ 'is-active': activeIndex === index }"
-                class="home-material-story__copy-item"
+                class="home-material-story__layer"
+                :class="`home-material-story__layer--${stage.id}`"
+                :style="layerStyle(index)"
               >
                 <MediaImage
                   :image="images[stage.id]"
-                  sizes="100vw"
-                  class="home-material-story__mobile-media"
-                  :img-class="stage.id === 'drawing' ? 'grayscale contrast-125' : ''"
+                  sizes="sm:100vw md:70vw xl:72vw"
+                  class="absolute inset-0 h-full w-full"
+                  img-class="object-center"
                 />
-                <div class="home-material-story__copy-body">
-                  <div class="flex items-center gap-4">
-                    <span
-                      aria-hidden="true"
-                      class="home-material-story__number home-meta-text"
-                    >{{ String(index + 1).padStart(2, '0') }}</span>
-                    <span
-                      data-stage-label
-                      class="home-material-story__label home-meta-text"
-                    >{{ t(stage.label) }}</span>
-                  </div>
-                  <h3 class="home-material-story__stage-title home-card-heading mt-5 text-ink-950">
-                    {{ t(stage.title) }}
-                  </h3>
-                  <p class="home-material-story__stage-desc mt-4 text-base leading-[1.7] text-ink-600">
-                    {{ t(stage.description) }}
-                  </p>
+                <div
+                  v-if="stage.id === 'drawing'"
+                  class="home-material-story__drawing-grid"
+                >
+                  <span
+                    v-for="line in 8"
+                    :key="line"
+                  />
                 </div>
-              </li>
-            </ol>
+                <div class="home-material-story__media-shade" />
+                <div class="home-material-story__seam" />
+              </div>
+            </div>
+
+            <div class="home-material-story__aside">
+              <p class="home-material-story__intro-desc home-lead-text mt-5 text-ink-600">
+                {{ t(homePageContent.story.description) }}
+              </p>
+
+              <ol
+                class="home-material-story__copy"
+                role="list"
+              >
+                <li
+                  v-for="(stage, index) in stages"
+                  :key="stage.id"
+                  data-testid="home-story-stage"
+                  data-mobile-frame
+                  :data-stage-id="stage.id"
+                  :class="{ 'is-active': activeIndex === index }"
+                  class="home-material-story__copy-item"
+                >
+                  <div
+                    data-mobile-wipe
+                    class="home-material-story__mobile-media"
+                    :style="mobileWipeStyle(index)"
+                  >
+                    <MediaImage
+                      v-if="index > 0 && mobileWipeEnabled"
+                      :image="images[stages[index - 1]!.id]"
+                      sizes="100vw"
+                      class="home-material-story__mobile-under"
+                      aria-hidden="true"
+                      :img-class="mobileImgClass(stages[index - 1]!.id)"
+                    />
+                    <MediaImage
+                      :image="images[stage.id]"
+                      sizes="100vw"
+                      class="home-material-story__mobile-top"
+                      :img-class="mobileImgClass(stage.id)"
+                    />
+                    <div
+                      aria-hidden="true"
+                      class="home-material-story__mobile-seam"
+                    />
+                  </div>
+                  <div class="home-material-story__copy-body">
+                    <div class="flex items-center gap-4">
+                      <span
+                        aria-hidden="true"
+                        class="home-material-story__number home-meta-text"
+                        :class="{ 'is-arrived': mobileWipeEnabled && (mobileWipes[index] ?? 1) >= 1 }"
+                      >{{ String(index + 1).padStart(2, '0') }}</span>
+                      <span
+                        data-stage-label
+                        class="home-material-story__label home-meta-text"
+                      >{{ t(stage.label) }}</span>
+                    </div>
+                    <h3 class="home-material-story__stage-title home-card-heading mt-5 text-ink-950">
+                      {{ t(stage.title) }}
+                    </h3>
+                    <p class="home-material-story__stage-desc mt-4 text-base leading-[1.7] text-ink-600">
+                      {{ t(stage.description) }}
+                    </p>
+                  </div>
+                </li>
+              </ol>
+            </div>
           </div>
         </div>
       </div>
@@ -184,6 +346,76 @@ const layerStyle = (index: number) => {
   max-width: 28rem;
 }
 
+/* The pinned block exists only on a phone in pin mode; everywhere else it is not a box at all,
+   so the media frame and the rail stay the stage's own grid items. */
+.home-material-story__pin {
+  display: contents;
+}
+
+/* In pin mode the lead sits between the head and the pinned scene (the pinned block holds only
+   the frame and the stage copy); its twin in the rail is hidden then, so it is read once. */
+.home-material-story__intro-desc--pin {
+  display: none;
+}
+
+/* The layered frame (desktop scene, and the pinned phone scene). */
+.home-material-story__layer {
+  position: absolute;
+  inset: 0;
+}
+
+.home-material-story__layer--drawing :deep(img) {
+  filter: grayscale(1) contrast(1.35) brightness(1.12);
+  opacity: 0.58;
+}
+
+.home-material-story__drawing-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgb(197 155 117 / 0.22) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(197 155 117 / 0.22) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+}
+
+.home-material-story__drawing-grid span {
+  position: absolute;
+  left: calc(7% + var(--line, 0) * 9%);
+  top: 8%;
+  width: 1px;
+  height: 84%;
+  background: rgb(221 196 170 / 0.26);
+  transform: rotate(18deg);
+}
+
+.home-material-story__drawing-grid span:nth-child(1) { left: 10%; }
+.home-material-story__drawing-grid span:nth-child(2) { left: 21%; }
+.home-material-story__drawing-grid span:nth-child(3) { left: 34%; }
+.home-material-story__drawing-grid span:nth-child(4) { left: 47%; }
+.home-material-story__drawing-grid span:nth-child(5) { left: 61%; }
+.home-material-story__drawing-grid span:nth-child(6) { left: 72%; }
+.home-material-story__drawing-grid span:nth-child(7) { left: 83%; }
+.home-material-story__drawing-grid span:nth-child(8) { left: 92%; }
+
+.home-material-story__media-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 65%, rgb(11 10 9 / 0.12));
+}
+
+/* The leading edge of the wipe: a 1px Workshop Bronze column at x = --wipe of the frame. A
+   full-size bronze fill clipped to that one column, so it moves with clip-path alone (no
+   layout, no transform, no will-change) and rides inside its layer's own clip. Absent
+   (opacity 0) before the wipe starts and once it has finished. */
+.home-material-story__seam {
+  position: absolute;
+  inset: 0;
+  background: var(--bronze);
+  clip-path: inset(0 calc((1 - var(--wipe, 1)) * 100%) 0 calc(var(--wipe, 1) * 100% - 1px));
+  opacity: var(--seam, 0);
+  pointer-events: none;
+}
+
 .home-material-story__copy {
   display: grid;
   gap: 3rem;
@@ -196,8 +428,43 @@ const layerStyle = (index: number) => {
 }
 
 .home-material-story__mobile-media {
+  position: relative;
+  overflow: hidden;
   aspect-ratio: 4 / 3;
   margin-bottom: 1.25rem;
+  background: var(--color-ink-100);
+}
+
+.home-material-story__mobile-under,
+.home-material-story__mobile-top {
+  position: absolute;
+  inset: 0;
+}
+
+/* The incoming photograph is clipped to the revealed share of the frame; the picture itself never
+   moves. At rest (SSR, 768px+, reduced motion) --wipe is 1 and the clip is the whole frame. */
+.home-material-story__mobile-top {
+  clip-path: inset(0 calc((1 - var(--wipe, 1)) * 100%) 0 0);
+}
+
+/* The same 1px Workshop Bronze leading edge as the desktop seam, present only mid-wipe. */
+.home-material-story__mobile-seam {
+  position: absolute;
+  inset: 0;
+  background: var(--bronze);
+  clip-path: inset(0 calc((1 - var(--wipe, 1)) * 100%) 0 calc(var(--wipe, 1) * 100% - 1px));
+  opacity: var(--seam, 0);
+  pointer-events: none;
+}
+
+/* The stage number warms from Mid Timber to Bronze Dark once its photograph has fully arrived,
+   the same cue the step trace gives a finished step. */
+.home-material-story[data-mobile-wipe-enabled="true"] .home-material-story__number {
+  transition: color var(--dur-hover) var(--ease-editorial);
+}
+
+.home-material-story[data-mobile-wipe-enabled="true"] .home-material-story__number.is-arrived {
+  color: var(--bronze-dark);
 }
 
 .home-material-story__number,
@@ -214,6 +481,85 @@ const layerStyle = (index: number) => {
 
 .home-material-story__label {
   color: var(--color-ink-600);
+}
+
+/* Phone pin mode (data-mobile-pin, set only below 768px, at least 620px tall, motion allowed). */
+@media (max-width: 767.98px) {
+  .home-material-story[data-mobile-pin="true"] {
+    --pin-top: calc(var(--header-float-inset) + var(--header-float-h) + 0.75rem);
+  }
+
+  .home-material-story[data-mobile-pin="true"] .home-material-story__intro-desc--pin {
+    display: block;
+  }
+
+  .home-material-story[data-mobile-pin="true"] .home-material-story__aside > .home-material-story__intro-desc {
+    display: none;
+  }
+
+  /* The scroll runway: about 55% of a viewport of scroll per stage once the block has stuck. */
+  .home-material-story[data-mobile-pin="true"] .home-material-story__stage {
+    height: 300svh;
+    margin-top: 2.5rem;
+  }
+
+  /* Pinned under the floating header bar; when the header hides, the block rises with it, over
+     the header's duration and curve, the way the project chapter ruler does. */
+  .home-material-story[data-mobile-pin="true"] .home-material-story__pin {
+    position: sticky;
+    top: var(--pin-top);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    transition: transform var(--dur-state) var(--ease-editorial);
+  }
+
+  :root[data-header-hidden] .home-material-story[data-mobile-pin="true"] .home-material-story__pin {
+    transform: translateY(calc(0.75rem - var(--pin-top)));
+  }
+
+  .home-material-story[data-mobile-pin="true"] .home-material-story__media {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--color-ink-100);
+    box-shadow: inset 0 0 0 1px var(--color-ink-200);
+  }
+
+  .home-material-story[data-mobile-pin="true"] .home-material-story__copy {
+    display: grid;
+    gap: 0;
+    margin-top: 0;
+  }
+
+  /* All four copies share one cell, so the block keeps the height of the longest and never
+     jumps; only the active one shows, with the desktop's sequenced swap. */
+  .home-material-story[data-mobile-pin="true"] .home-material-story__copy-item {
+    grid-area: 1 / 1;
+    padding-top: 1rem;
+    opacity: 0;
+    transform: translateY(-0.25rem);
+    transition: opacity 120ms var(--ease-exit), transform 120ms var(--ease-exit);
+  }
+
+  .home-material-story[data-mobile-pin="true"] .home-material-story__copy-item.is-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 240ms var(--ease-editorial) 120ms, transform 240ms var(--ease-editorial) 120ms;
+  }
+
+  .home-material-story[data-mobile-pin="true"] .home-material-story__mobile-media {
+    display: none;
+  }
+
+  .home-material-story[data-mobile-pin="true"] .home-material-story__stage-title {
+    margin-top: 0.75rem;
+  }
+
+  .home-material-story[data-mobile-pin="true"] .home-material-story__stage-desc {
+    margin-top: 0.5rem;
+  }
 }
 
 @media (min-width: 768px) {
@@ -269,63 +615,6 @@ const layerStyle = (index: number) => {
     overflow: hidden;
     background: var(--color-ink-100);
     box-shadow: inset 0 0 0 1px var(--color-ink-200);
-  }
-
-  .home-material-story__layer {
-    position: absolute;
-    inset: 0;
-  }
-
-  .home-material-story__layer--drawing :deep(img) {
-    filter: grayscale(1) contrast(1.35) brightness(1.12);
-    opacity: 0.58;
-  }
-
-  .home-material-story__drawing-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgb(197 155 117 / 0.22) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(197 155 117 / 0.22) 1px, transparent 1px);
-    background-size: 4rem 4rem;
-  }
-
-  .home-material-story__drawing-grid span {
-    position: absolute;
-    left: calc(7% + var(--line, 0) * 9%);
-    top: 8%;
-    width: 1px;
-    height: 84%;
-    background: rgb(221 196 170 / 0.26);
-    transform: rotate(18deg);
-  }
-
-  .home-material-story__drawing-grid span:nth-child(1) { left: 10%; }
-  .home-material-story__drawing-grid span:nth-child(2) { left: 21%; }
-  .home-material-story__drawing-grid span:nth-child(3) { left: 34%; }
-  .home-material-story__drawing-grid span:nth-child(4) { left: 47%; }
-  .home-material-story__drawing-grid span:nth-child(5) { left: 61%; }
-  .home-material-story__drawing-grid span:nth-child(6) { left: 72%; }
-  .home-material-story__drawing-grid span:nth-child(7) { left: 83%; }
-  .home-material-story__drawing-grid span:nth-child(8) { left: 92%; }
-
-  .home-material-story__media-shade {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent 65%, rgb(11 10 9 / 0.12));
-  }
-
-  /* The leading edge of the wipe: a 1px Workshop Bronze column at x = --wipe of the frame. A
-     full-size bronze fill clipped to that one column, so it moves with clip-path alone (no
-     layout, no transform, no will-change) and rides inside its layer's own clip. Absent
-     (opacity 0) before the wipe starts and once it has finished. */
-  .home-material-story__seam {
-    position: absolute;
-    inset: 0;
-    background: var(--bronze);
-    clip-path: inset(0 calc((1 - var(--wipe, 1)) * 100%) 0 calc(var(--wipe, 1) * 100% - 1px));
-    opacity: var(--seam, 0);
-    pointer-events: none;
   }
 
   .home-material-story__copy {
