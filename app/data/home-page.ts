@@ -75,7 +75,7 @@ export const homePageContent = {
      owner-supplied quotes. Never fill it with placeholder or invented reviews. */
   testimonials: {
     eyebrow: { vi: 'Khách hàng nói gì', en: 'What clients say' },
-    title: { vi: 'Chủ đầu tư đánh giá sau nghiệm thu', en: 'Owners on Lai Huy after sign-off' }
+    title: { vi: 'Chủ đầu tư nói về Lai Huy', en: 'Owners on working with Lai Huy' }
   },
   story: {
     eyebrow: { vi: 'Cách Lai Huy làm', en: 'How we work' },
