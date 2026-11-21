@@ -63,6 +63,7 @@ let mobileObserver: IntersectionObserver | null = null
 let mobileQuery: MediaQueryList | null = null
 let mobileMotionQuery: MediaQueryList | null = null
 let mobileListening = false
+let storyInView = false
 
 const paintMobileWipes = () => {
   mobileFrame = 0
@@ -100,6 +101,9 @@ const syncMobileMode = () => {
   const enabled = Boolean(mobileQuery?.matches && !mobileMotionQuery?.matches)
   mobileWipeEnabled.value = enabled
   if (enabled) {
+    // The observer may have reported the story on screen while the mode was off (a rotation or
+    // resize from 768px+, or reduced motion turned off): attach the listener now, not on re-entry.
+    listenMobile(storyInView)
     scheduleMobileWipes()
   } else {
     listenMobile(false)
@@ -113,7 +117,8 @@ onMounted(() => {
   mobileQuery.addEventListener('change', syncMobileMode)
   mobileMotionQuery.addEventListener('change', syncMobileMode)
   mobileObserver = new IntersectionObserver(([entry]) => {
-    listenMobile(Boolean(entry?.isIntersecting && mobileWipeEnabled.value))
+    storyInView = Boolean(entry?.isIntersecting)
+    listenMobile(storyInView && mobileWipeEnabled.value)
   })
   syncMobileMode()
   if (storyRoot.value) mobileObserver.observe(storyRoot.value)

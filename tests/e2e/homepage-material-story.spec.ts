@@ -377,3 +377,26 @@ for (const [width, reducedMotion] of [[390, 'reduce'], [768, 'no-preference']] a
     expect(wipes).toEqual(['1.0000', '1.0000', '1.0000', '1.0000'])
   })
 }
+
+test('HMS-mobile-wipe follows the scroll after a resize below 768px while the story is on screen', async ({ page }) => {
+  const errors = await prepareHome(page, 'vi', 1024, 'no-preference')
+  const story = page.getByTestId('home-material-story')
+  await story.scrollIntoViewIfNeeded()
+  await page.setViewportSize({ width: 390, height: 900 })
+  await expect(story).toHaveAttribute('data-mobile-wipe-enabled', 'true')
+
+  const frame = story.locator('[data-mobile-wipe]').nth(1)
+  const wipeAt = async (ratio: number) => {
+    await frame.evaluate((el, r) => {
+      window.scrollTo(0, window.scrollY + el.getBoundingClientRect().top - window.innerHeight * r)
+    }, ratio)
+    await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))))
+    return frame.evaluate(el => Number.parseFloat((el as HTMLElement).style.getPropertyValue('--wipe')))
+  }
+
+  expect(await wipeAt(0.95)).toBe(0)
+  expect(await wipeAt(0)).toBe(1)
+
+  expect(errors.consoleErrors).toEqual([])
+  expect(errors.pageErrors).toEqual([])
+})
