@@ -57,14 +57,16 @@ export const homePageContent = {
   },
   /* Handover record (owner, 2026-11-21): stands in for testimonials until owner-approved client
      quotes exist. Every row comes from app/data/projects.ts (name, category, location, rooms,
-     year, cover), so it states nothing the portfolio does not already state. `{count}` is filled
-     by HomeHandover. */
+     year, cover, scope), so it states nothing the portfolio does not already state. `{count}` and
+     `{made}` are filled by HomeHandover. */
   handover: {
     eyebrow: { vi: 'Đã bàn giao', en: 'Handed over' },
     title: { vi: '{count} công trình, từ khách sạn đến văn phòng', en: '{count} projects, from hotels to offices' },
+    /* `{made}` counts the projects whose scope includes production (scope 'Sản xuất'); two
+       records are design and fit-out only, so the factory claim is counted, not blanket. */
     lead: {
-      vi: 'Mỗi công trình do cùng một đội thiết kế, sản xuất tại xưởng Vĩnh Long và lắp đặt đến nghiệm thu.',
-      en: 'Each one designed, made in our Vinh Long factory and installed through sign-off by the same team.'
+      vi: 'Cùng một đội thiết kế và lắp đặt đến nghiệm thu; {made} trong {count} công trình sản xuất tại xưởng Vĩnh Long.',
+      en: 'One team designs and installs through sign-off; {made} of the {count} were made in our Vinh Long factory.'
     },
     listLabel: { vi: 'Danh sách công trình đã bàn giao', en: 'Projects handed over' },
     allCta: { vi: 'Xem tất cả dự án', en: 'View all projects' }

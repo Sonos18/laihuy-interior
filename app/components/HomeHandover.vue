@@ -17,7 +17,12 @@ const rows = computed(() =>
     .sort((a, b) => Number(b.project.year?.vi ?? 0) - Number(a.project.year?.vi ?? 0) || a.index - b.index)
 )
 
-const title = computed(() => t(homePageContent.handover.title).replace('{count}', String(projects.length)))
+const count = String(projects.length)
+const made = String(projects.filter(project => project.scope?.vi.includes('Sản xuất')).length)
+const fill = (text: string) => text.replaceAll('{count}', count).replaceAll('{made}', made)
+
+const title = computed(() => fill(t(homePageContent.handover.title)))
+const lead = computed(() => fill(t(homePageContent.handover.lead)))
 </script>
 
 <template>
@@ -31,7 +36,7 @@ const title = computed(() => t(homePageContent.handover.title).replace('{count}'
         eyebrow-class="eyebrow home-eyebrow-text text-wood-600"
         :eyebrow="t(homePageContent.handover.eyebrow)"
         :title="title"
-        :lead="t(homePageContent.handover.lead)"
+        :lead="lead"
       />
 
       <ul
