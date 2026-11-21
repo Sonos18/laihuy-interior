@@ -320,3 +320,60 @@ test('HMS-linen sits on Linen, not white', async ({ page }) => {
   const background = await page.getByTestId('home-material-story').evaluate(element => getComputedStyle(element).backgroundColor)
   expect(background).toBe('rgb(250, 246, 240)')
 })
+
+test('HMS-mobile-wipe scrubs each stage photograph over the previous one below 768px', async ({ page }) => {
+  const errors = await prepareHome(page, 'vi', 390, 'no-preference')
+  const story = page.getByTestId('home-material-story')
+  await expect(story).toHaveAttribute('data-mobile-wipe-enabled', 'true')
+
+  const frames = story.locator('[data-mobile-wipe]')
+  await expect(frames).toHaveCount(4)
+  // Stage 01 is the "before": no photograph underneath. Every later stage holds the previous one.
+  await expect(frames.nth(0).locator('.home-material-story__mobile-under')).toHaveCount(0)
+  for (const index of [1, 2, 3]) await expect(frames.nth(index).locator('.home-material-story__mobile-under')).toHaveCount(1)
+
+  const frame = frames.nth(1)
+  const scrollFrameTopTo = async (ratio: number) => {
+    await frame.evaluate((el, r) => {
+      const rect = el.getBoundingClientRect()
+      window.scrollTo(0, window.scrollY + rect.top - window.innerHeight * r)
+    }, ratio)
+    await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))))
+    return frame.evaluate((el) => {
+      const seam = el.querySelector<HTMLElement>('.home-material-story__mobile-seam')!
+      return {
+        wipe: Number.parseFloat((el as HTMLElement).style.getPropertyValue('--wipe')),
+        seamOpacity: getComputedStyle(seam).opacity
+      }
+    })
+  }
+
+  const before = await scrollFrameTopTo(0.95)
+  expect(before.wipe).toBe(0)
+  expect(before.seamOpacity).toBe('0')
+
+  const middle = await scrollFrameTopTo(0.6)
+  expect(middle.wipe).toBeGreaterThan(0)
+  expect(middle.wipe).toBeLessThan(1)
+  expect(middle.seamOpacity).toBe('1')
+
+  // Scrolling on past completes it; scrolling back undoes it (tied to scroll, not to time).
+  expect((await scrollFrameTopTo(0)).wipe).toBe(1)
+  expect((await scrollFrameTopTo(0.95)).wipe).toBe(0)
+
+  expect(errors.consoleErrors).toEqual([])
+  expect(errors.pageErrors).toEqual([])
+})
+
+for (const [width, reducedMotion] of [[390, 'reduce'], [768, 'no-preference']] as const) {
+  test(`HMS-mobile-wipe stays off at ${width}px with ${reducedMotion} motion`, async ({ page }) => {
+    await prepareHome(page, 'vi', width, reducedMotion)
+    const story = page.getByTestId('home-material-story')
+    await expect(story).toHaveAttribute('data-mobile-wipe-enabled', 'false')
+    await expect(story.locator('.home-material-story__mobile-under')).toHaveCount(0)
+    const wipes = await story.locator('[data-mobile-wipe]').evaluateAll(frames =>
+      frames.map(frame => (frame as HTMLElement).style.getPropertyValue('--wipe'))
+    )
+    expect(wipes).toEqual(['1.0000', '1.0000', '1.0000', '1.0000'])
+  })
+}

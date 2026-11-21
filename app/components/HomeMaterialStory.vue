@@ -45,6 +45,97 @@ const layerStyle = (index: number) => {
     '--seam': amount > 0 && amount < 1 ? 1 : 0
   }
 }
+
+// Below 768px there is no sticky scene: the four stages stack, each with its own photograph.
+// The desktop wipe is carried into that list instead (DESIGN.md "Motion", material story on a
+// phone): from the second stage on, a frame holds the previous stage's photograph underneath and
+// the finger's scroll wipes this stage's photograph over it, left to right, with the same bronze
+// seam. It is tied to scroll position like the step trace (it starts when the frame's top passes
+// 85% of the viewport and is complete when its bottom reaches 60%), so it never loops and
+// scrolling back undoes it. The first stage is the "before" and stays as it is. Scroll is read
+// only while the story is on screen, once per frame; reduced motion and 768px+ leave it alone.
+const MOBILE_WIPE_START = 0.85
+const MOBILE_WIPE_END = 0.6
+const mobileWipeEnabled = ref(false)
+const mobileWipes = ref<number[]>(props.stages.map(() => 1))
+let mobileFrame = 0
+let mobileObserver: IntersectionObserver | null = null
+let mobileQuery: MediaQueryList | null = null
+let mobileMotionQuery: MediaQueryList | null = null
+let mobileListening = false
+
+const paintMobileWipes = () => {
+  mobileFrame = 0
+  const root = storyRoot.value
+  if (!root || !mobileWipeEnabled.value) return
+  const vh = window.innerHeight
+  const frames = root.querySelectorAll<HTMLElement>('[data-mobile-wipe]')
+  mobileWipes.value = Array.from(frames, (frame, index) => {
+    if (index === 0) return 1
+    const rect = frame.getBoundingClientRect()
+    const raw = (vh * MOBILE_WIPE_START - rect.top) / (rect.height + vh * (MOBILE_WIPE_START - MOBILE_WIPE_END))
+    return Math.min(1, Math.max(0, raw))
+  })
+}
+
+const scheduleMobileWipes = () => {
+  if (mobileFrame) return
+  mobileFrame = window.requestAnimationFrame(paintMobileWipes)
+}
+
+const listenMobile = (on: boolean) => {
+  if (on === mobileListening) return
+  mobileListening = on
+  if (on) {
+    window.addEventListener('scroll', scheduleMobileWipes, { passive: true })
+    window.addEventListener('resize', scheduleMobileWipes, { passive: true })
+    scheduleMobileWipes()
+  } else {
+    window.removeEventListener('scroll', scheduleMobileWipes)
+    window.removeEventListener('resize', scheduleMobileWipes)
+  }
+}
+
+const syncMobileMode = () => {
+  const enabled = Boolean(mobileQuery?.matches && !mobileMotionQuery?.matches)
+  mobileWipeEnabled.value = enabled
+  if (enabled) {
+    scheduleMobileWipes()
+  } else {
+    listenMobile(false)
+    mobileWipes.value = props.stages.map(() => 1)
+  }
+}
+
+onMounted(() => {
+  mobileQuery = window.matchMedia('(max-width: 767.98px)')
+  mobileMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+  mobileQuery.addEventListener('change', syncMobileMode)
+  mobileMotionQuery.addEventListener('change', syncMobileMode)
+  mobileObserver = new IntersectionObserver(([entry]) => {
+    listenMobile(Boolean(entry?.isIntersecting && mobileWipeEnabled.value))
+  })
+  syncMobileMode()
+  if (storyRoot.value) mobileObserver.observe(storyRoot.value)
+})
+
+onBeforeUnmount(() => {
+  mobileQuery?.removeEventListener('change', syncMobileMode)
+  mobileMotionQuery?.removeEventListener('change', syncMobileMode)
+  mobileObserver?.disconnect()
+  listenMobile(false)
+  if (mobileFrame) window.cancelAnimationFrame(mobileFrame)
+})
+
+const mobileWipeStyle = (index: number) => {
+  const amount = mobileWipes.value[index] ?? 1
+  return {
+    '--wipe': amount.toFixed(4),
+    '--seam': amount > 0 && amount < 1 ? 1 : 0
+  }
+}
+
+const mobileImgClass = (id: HomeStoryStageId) => (id === 'drawing' ? 'grayscale contrast-125' : '')
 </script>
 
 <template>
@@ -52,6 +143,7 @@ const layerStyle = (index: number) => {
     ref="storyRoot"
     data-testid="home-material-story"
     :data-enhanced="isEnhanced ? 'true' : 'false'"
+    :data-mobile-wipe-enabled="mobileWipeEnabled ? 'true' : 'false'"
     :style="{ '--story-progress': progress.toFixed(4) }"
     class="home-material-story bg-wood-50 text-ink-950"
   >
@@ -122,17 +214,36 @@ const layerStyle = (index: number) => {
                 :class="{ 'is-active': activeIndex === index }"
                 class="home-material-story__copy-item"
               >
-                <MediaImage
-                  :image="images[stage.id]"
-                  sizes="100vw"
+                <div
+                  data-mobile-wipe
                   class="home-material-story__mobile-media"
-                  :img-class="stage.id === 'drawing' ? 'grayscale contrast-125' : ''"
-                />
+                  :style="mobileWipeStyle(index)"
+                >
+                  <MediaImage
+                    v-if="index > 0 && mobileWipeEnabled"
+                    :image="images[stages[index - 1]!.id]"
+                    sizes="100vw"
+                    class="home-material-story__mobile-under"
+                    aria-hidden="true"
+                    :img-class="mobileImgClass(stages[index - 1]!.id)"
+                  />
+                  <MediaImage
+                    :image="images[stage.id]"
+                    sizes="100vw"
+                    class="home-material-story__mobile-top"
+                    :img-class="mobileImgClass(stage.id)"
+                  />
+                  <div
+                    aria-hidden="true"
+                    class="home-material-story__mobile-seam"
+                  />
+                </div>
                 <div class="home-material-story__copy-body">
                   <div class="flex items-center gap-4">
                     <span
                       aria-hidden="true"
                       class="home-material-story__number home-meta-text"
+                      :class="{ 'is-arrived': mobileWipeEnabled && (mobileWipes[index] ?? 1) >= 1 }"
                     >{{ String(index + 1).padStart(2, '0') }}</span>
                     <span
                       data-stage-label
@@ -196,8 +307,43 @@ const layerStyle = (index: number) => {
 }
 
 .home-material-story__mobile-media {
+  position: relative;
+  overflow: hidden;
   aspect-ratio: 4 / 3;
   margin-bottom: 1.25rem;
+  background: var(--color-ink-100);
+}
+
+.home-material-story__mobile-under,
+.home-material-story__mobile-top {
+  position: absolute;
+  inset: 0;
+}
+
+/* The incoming photograph is clipped to the revealed share of the frame; the picture itself never
+   moves. At rest (SSR, 768px+, reduced motion) --wipe is 1 and the clip is the whole frame. */
+.home-material-story__mobile-top {
+  clip-path: inset(0 calc((1 - var(--wipe, 1)) * 100%) 0 0);
+}
+
+/* The same 1px Workshop Bronze leading edge as the desktop seam, present only mid-wipe. */
+.home-material-story__mobile-seam {
+  position: absolute;
+  inset: 0;
+  background: var(--bronze);
+  clip-path: inset(0 calc((1 - var(--wipe, 1)) * 100%) 0 calc(var(--wipe, 1) * 100% - 1px));
+  opacity: var(--seam, 0);
+  pointer-events: none;
+}
+
+/* The stage number warms from Mid Timber to Bronze Dark once its photograph has fully arrived,
+   the same cue the step trace gives a finished step. */
+.home-material-story[data-mobile-wipe-enabled="true"] .home-material-story__number {
+  transition: color var(--dur-hover) var(--ease-editorial);
+}
+
+.home-material-story[data-mobile-wipe-enabled="true"] .home-material-story__number.is-arrived {
+  color: var(--bronze-dark);
 }
 
 .home-material-story__number,
