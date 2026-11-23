@@ -72,6 +72,7 @@ pnpm media:catalog    # regenerate app/media/catalog.generated.ts from the manif
 pnpm media:optimize   # generate resized WebP variants
 pnpm media:upload     # upload to Supabase Storage (needs SUPABASE_SERVICE_ROLE_KEY; refuses to run in CI)
 pnpm media:verify     # verify uploaded assets against the manifest
+pnpm media:prune      # drop never-uploaded ('planned') entries whose source is gone or named via --path= (dry run; --write applies, then media:catalog)
 pnpm lint:media       # guard against hardcoded media paths in source
 ```
 

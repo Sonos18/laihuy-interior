@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { homePageContent } from '~/data/home-page'
 
-const { t } = useLanguage()
+const { t, localePath } = useLanguage()
 </script>
 
 <template>
@@ -39,11 +39,11 @@ const { t } = useLanguage()
         class="home-project-cta__actions reveal"
       >
         <NuxtLink
-          to="/lien-he#cach-gui-ho-so"
+          :to="localePath('/lien-he#cach-gui-ho-so')"
           class="btn-bronze"
         >{{ t(homePageContent.cta.primaryCta) }}</NuxtLink>
         <NuxtLink
-          to="/nha-xuong"
+          :to="localePath('/nha-xuong')"
           class="btn-outline"
         >{{ t(homePageContent.cta.secondaryCta) }}</NuxtLink>
       </div>

@@ -12,7 +12,7 @@ import { breathMedia } from '~/media/breath-media'
 import { requireWorkshopAsset } from '~/media/factory-media'
 import { withAlt } from '~/media/project-media'
 
-const { t } = useLanguage()
+const { t, localePath } = useLanguage()
 
 const selectServices = (ids: readonly ServiceId[]): Service[] => ids.flatMap((id) => {
   const service = services.find(item => item.id === id)
@@ -37,8 +37,8 @@ const requireCodiAsset = (suffix: string) => {
 const heroAsset = requireCodiAsset('/sanh-don/2.webp')
 const heroImage = withAlt(heroAsset, servicesMediaAlt.hero)
 
-const workshopFactoryAsset = requireWorkshopAsset('4.webp')
-const workshopQualityAsset = requireWorkshopAsset('8.webp')
+const workshopFactoryAsset = requireWorkshopAsset('4-v2.webp')
+const workshopQualityAsset = requireWorkshopAsset('8-v2.webp')
 
 const coreStageImages = [
   withAlt(requireCodiAsset('/phong-dien-hinh-1/p3-04.webp'), servicesMediaAlt.design),
@@ -63,8 +63,8 @@ usePageSeo({
   title: seoTitle,
   description: seoDescription,
   imagePath: company.seo.services.ogImage.path,
-  jsonLd: ({ base, canonical }) => [
-    buildBreadcrumbLd(base, t, [
+  jsonLd: ({ base, canonical, url }) => [
+    buildBreadcrumbLd(url, t, [
       { name: { vi: 'Trang chủ', en: 'Home' }, path: '/' },
       { name: { vi: 'Dịch vụ', en: 'Services' }, path: '/dich-vu' }
     ]),
@@ -114,7 +114,7 @@ usePageSeo({
       >
         <template #actions>
           <NuxtLink
-            to="/lien-he"
+            :to="localePath('/lien-he')"
             class="btn-bronze btn-bronze--on-dark"
           >
             {{ t(servicesPageContent.hero.primaryCta) }}
@@ -151,7 +151,7 @@ usePageSeo({
             class="reveal mt-9 flex flex-col items-start gap-3 sm:flex-row md:flex-col xl:flex-row"
           >
             <NuxtLink
-              to="/lien-he#cach-gui-ho-so"
+              :to="localePath('/lien-he#cach-gui-ho-so')"
               class="btn-bronze"
             >
               {{ t(servicesPageContent.documents.primaryCta) }}
@@ -242,7 +242,7 @@ usePageSeo({
 
           <NuxtLink
             v-reveal
-            to="/nha-xuong"
+            :to="localePath('/nha-xuong')"
             class="btn-outline reveal mt-9"
           >
             {{ t(servicesPageContent.proof.cta) }}
@@ -309,7 +309,7 @@ usePageSeo({
           class="reveal flex flex-col gap-3 sm:flex-row sm:flex-wrap xl:justify-end"
         >
           <NuxtLink
-            to="/lien-he#cach-gui-ho-so"
+            :to="localePath('/lien-he#cach-gui-ho-so')"
             class="btn-bronze"
           >
             {{ t(servicesPageContent.contact.primaryCta) }}

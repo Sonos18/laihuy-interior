@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test'
 import { APP_ORIGIN } from './origin'
+import { localizePath } from '../../app/utils/locale-path'
 
 const TEST_ORIGIN = process.env.DENSITY_TEST_ORIGIN ?? APP_ORIGIN
 const TRANSPARENT_PNG = Buffer.from(
@@ -9,14 +10,14 @@ const TRANSPARENT_PNG = Buffer.from(
 
 const COPY = {
   vi: {
-    hero: 'Biến hồ sơ kỹ thuật thành không gian hoàn thiện',
+    hero: 'Nội thất khách sạn & dự án, sản xuất tại xưởng riêng',
     story: 'Không gian qua thiết kế của Lai Huy',
     stages: ['Tiếp nhận hồ sơ', 'Bóc tách kỹ thuật', 'Mẫu, sản xuất, QC', 'Lắp đặt & bàn giao'],
     capabilities: ['Thiết kế & triển khai kỹ thuật', 'Sản xuất tại xưởng', 'Thi công & lắp đặt'],
     cta: 'Gửi bản vẽ, nhận BOQ sơ bộ'
   },
   en: {
-    hero: 'Turning technical documents into completed spaces',
+    hero: 'Hotel and project interiors, made in our own factory',
     story: 'Spaces shaped by Lai Huy’s design',
     stages: ['Intake', 'Take-off', 'Samples, production, QC', 'Installation & handover'],
     capabilities: ['Design & technical development', 'In-house production', 'Fit-out & installation'],
@@ -26,7 +27,7 @@ const COPY = {
 
 type HomeLocale = keyof typeof COPY
 
-async function prepareHome(page: Page, locale: HomeLocale, width: number, reducedMotion: 'reduce' | 'no-preference') {
+async function prepareHome(page: Page, locale: HomeLocale, width: number, reducedMotion: 'reduce' | 'no-preference', height = 900) {
   const consoleErrors: string[] = []
   const pageErrors: string[] = []
 
@@ -36,9 +37,6 @@ async function prepareHome(page: Page, locale: HomeLocale, width: number, reduce
   page.on('pageerror', error => pageErrors.push(error.message))
 
   await page.emulateMedia({ reducedMotion })
-  await page.context().addCookies([
-    { name: 'lai-huy-locale', value: locale, url: TEST_ORIGIN }
-  ])
   await page.route('**/*', async (route) => {
     if (route.request().resourceType() === 'image') {
       await route.fulfill({ status: 200, contentType: 'image/png', body: TRANSPARENT_PNG })
@@ -47,8 +45,8 @@ async function prepareHome(page: Page, locale: HomeLocale, width: number, reduce
     await route.continue()
   })
 
-  await page.setViewportSize({ width, height: 900 })
-  await page.goto(new URL('/', TEST_ORIGIN).toString(), { waitUntil: 'load' })
+  await page.setViewportSize({ width, height })
+  await page.goto(new URL(localizePath('/', locale), TEST_ORIGIN).toString(), { waitUntil: 'load' })
   await page.evaluate(() => document.fonts.ready)
 
   return { consoleErrors, pageErrors }
@@ -85,7 +83,7 @@ for (const locale of ['vi', 'en'] as const) {
 
     const ctaLinks = page.getByTestId('home-project-cta').getByRole('link', { name: copy.cta, exact: true })
     await expect(ctaLinks).toHaveCount(1)
-    await expect(ctaLinks).toHaveAttribute('href', '/lien-he#cach-gui-ho-so')
+    await expect(ctaLinks).toHaveAttribute('href', localizePath('/lien-he#cach-gui-ho-so', locale))
 
     expect(errors.consoleErrors).toEqual([])
     expect(errors.pageErrors).toEqual([])
@@ -322,3 +320,131 @@ test('HMS-linen sits on Linen, not white', async ({ page }) => {
   const background = await page.getByTestId('home-material-story').evaluate(element => getComputedStyle(element).backgroundColor)
   expect(background).toBe('rgb(250, 246, 240)')
 })
+
+// A phone shorter than 620px has no room for the pinned scene, so it gets the stacked wipe.
+test('HMS-mobile-wipe scrubs each stage photograph over the previous one on a short phone', async ({ page }) => {
+  const errors = await prepareHome(page, 'vi', 390, 'no-preference', 560)
+  const story = page.getByTestId('home-material-story')
+  await expect(story).toHaveAttribute('data-mobile-wipe-enabled', 'true')
+
+  const frames = story.locator('[data-mobile-wipe]')
+  await expect(frames).toHaveCount(4)
+  // Stage 01 is the "before": no photograph underneath. Every later stage holds the previous one.
+  await expect(frames.nth(0).locator('.home-material-story__mobile-under')).toHaveCount(0)
+  for (const index of [1, 2, 3]) await expect(frames.nth(index).locator('.home-material-story__mobile-under')).toHaveCount(1)
+
+  const frame = frames.nth(1)
+  const scrollFrameTopTo = async (ratio: number) => {
+    await frame.evaluate((el, r) => {
+      const rect = el.getBoundingClientRect()
+      window.scrollTo(0, window.scrollY + rect.top - window.innerHeight * r)
+    }, ratio)
+    await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))))
+    return frame.evaluate((el) => {
+      const seam = el.querySelector<HTMLElement>('.home-material-story__mobile-seam')!
+      return {
+        wipe: Number.parseFloat((el as HTMLElement).style.getPropertyValue('--wipe')),
+        seamOpacity: getComputedStyle(seam).opacity
+      }
+    })
+  }
+
+  const before = await scrollFrameTopTo(0.95)
+  expect(before.wipe).toBe(0)
+  expect(before.seamOpacity).toBe('0')
+
+  const middle = await scrollFrameTopTo(0.6)
+  expect(middle.wipe).toBeGreaterThan(0)
+  expect(middle.wipe).toBeLessThan(1)
+  expect(middle.seamOpacity).toBe('1')
+
+  // Scrolling on past completes it; scrolling back undoes it (tied to scroll, not to time).
+  expect((await scrollFrameTopTo(0)).wipe).toBe(1)
+  expect((await scrollFrameTopTo(0.95)).wipe).toBe(0)
+
+  expect(errors.consoleErrors).toEqual([])
+  expect(errors.pageErrors).toEqual([])
+})
+
+for (const [width, height, reducedMotion] of [[390, 560, 'reduce'], [390, 844, 'reduce'], [390, 844, 'no-preference'], [768, 900, 'no-preference']] as const) {
+  test(`HMS-mobile-wipe stays off at ${width}x${height} with ${reducedMotion} motion`, async ({ page }) => {
+    await prepareHome(page, 'vi', width, reducedMotion, height)
+    const story = page.getByTestId('home-material-story')
+    await expect(story).toHaveAttribute('data-mobile-pin', reducedMotion === 'no-preference' && width < 768 ? 'true' : 'false')
+    await expect(story).toHaveAttribute('data-mobile-wipe-enabled', 'false')
+    await expect(story.locator('.home-material-story__mobile-under')).toHaveCount(0)
+    const wipes = await story.locator('[data-mobile-wipe]').evaluateAll(frames =>
+      frames.map(frame => (frame as HTMLElement).style.getPropertyValue('--wipe'))
+    )
+    expect(wipes).toEqual(['1.0000', '1.0000', '1.0000', '1.0000'])
+  })
+}
+
+test('HMS-mobile-wipe follows the scroll after a resize below 768px while the story is on screen', async ({ page }) => {
+  const errors = await prepareHome(page, 'vi', 1024, 'no-preference', 560)
+  const story = page.getByTestId('home-material-story')
+  await story.scrollIntoViewIfNeeded()
+  await page.setViewportSize({ width: 390, height: 560 })
+  await expect(story).toHaveAttribute('data-mobile-wipe-enabled', 'true')
+
+  const frame = story.locator('[data-mobile-wipe]').nth(1)
+  const wipeAt = async (ratio: number) => {
+    await frame.evaluate((el, r) => {
+      window.scrollTo(0, window.scrollY + el.getBoundingClientRect().top - window.innerHeight * r)
+    }, ratio)
+    await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))))
+    return frame.evaluate(el => Number.parseFloat((el as HTMLElement).style.getPropertyValue('--wipe')))
+  }
+
+  expect(await wipeAt(0.95)).toBe(0)
+  expect(await wipeAt(0)).toBe(1)
+
+  expect(errors.consoleErrors).toEqual([])
+  expect(errors.pageErrors).toEqual([])
+})
+
+for (const locale of ['vi', 'en'] as const) {
+  test(`HMS-mobile-pin holds one frame under the header and plays the scene with the scroll (${locale})`, async ({ page }) => {
+    const errors = await prepareHome(page, locale, 375, 'no-preference', 667)
+    const story = page.getByTestId('home-material-story')
+    await expect(story).toHaveAttribute('data-mobile-pin', 'true')
+    const pin = story.locator('[data-pin-block]')
+    await expect(story.locator('.home-material-story__media')).toBeVisible()
+    await expect(story.locator('.home-material-story__mobile-media').first()).toBeHidden()
+
+    const range = await story.locator('.home-material-story__stage').evaluate((el) => {
+      const rect = el.getBoundingClientRect()
+      return { top: window.scrollY + rect.top, height: rect.height }
+    })
+    const read = async (fraction: number) => {
+      const pinHeight = await pin.evaluate(el => (el as HTMLElement).offsetHeight)
+      await page.evaluate(y => window.scrollTo(0, y), range.top - 100 + (range.height - pinHeight) * fraction)
+      // Let the header's hide (and the block's matching rise) finish before measuring.
+      await page.waitForTimeout(500)
+      return story.evaluate((el) => {
+        const block = el.querySelector<HTMLElement>('[data-pin-block]')!.getBoundingClientRect()
+        const active = [...el.querySelectorAll('.home-material-story__copy-item')].findIndex(item => item.classList.contains('is-active'))
+        const layers = [...el.querySelectorAll<HTMLElement>('.home-material-story__layer')].map(layer => Number.parseFloat(layer.style.getPropertyValue('--wipe')))
+        return { top: block.top, bottom: block.bottom, active, layers, vh: window.innerHeight }
+      })
+    }
+
+    const start = await read(0.1)
+    const middle = await read(0.5)
+    const end = await read(1)
+    // Pinned: the block holds the same place while the scene changes under the finger.
+    expect(Math.abs(middle.top - start.top)).toBeLessThan(1)
+    // The frame and the longest copy clear the action bar (3.5rem + 0.5rem inset).
+    expect(middle.bottom).toBeLessThanOrEqual(middle.vh - 64)
+    expect(start.active).toBe(0)
+    expect(middle.active).toBeGreaterThan(0)
+    expect(end.active).toBe(3)
+    expect(start.layers[1]).toBeLessThan(1)
+    expect(end.layers).toEqual([1, 1, 1, 1])
+
+    // The lead is read once: its pin-mode twin shows, the rail copy is hidden.
+    await expect(story.locator('.home-material-story__intro-desc:visible')).toHaveCount(1)
+    expect(errors.consoleErrors).toEqual([])
+    expect(errors.pageErrors).toEqual([])
+  })
+}

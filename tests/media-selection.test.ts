@@ -14,6 +14,7 @@ import {
   assertFullRegenerationCanWrite,
   mergeDiscoveredAssets,
   parsePathPrefix,
+  planPrunePlanned,
   selectAssetsByPrefix
 } from '../scripts/media/selection'
 
@@ -246,5 +247,41 @@ describe('media scan write safety', () => {
     } finally {
       rmSync(sandbox.root, { recursive: true, force: true })
     }
+  })
+})
+
+describe('planPrunePlanned', () => {
+  const planned = (path: string, sourceFile: string): MediaManifestAsset =>
+    ({ ...existing, path, sourceFile, status: 'planned' })
+  const gone = planned('company/homepage-material-story/a-v1.webp', 'public/images/homepage-material-story/a-v1.png')
+  const kept = planned('company/homepage-material-story/b-v2.webp', 'public/images/homepage-material-story/b-v2.png')
+  const uploaded: MediaManifestAsset = { ...kept, path: 'company/workshop/2.webp', status: 'active' }
+  const assets = [gone, kept, uploaded]
+  const sourceExists = (file: string) => file !== gone.sourceFile
+
+  it('prunes planned entries whose source is gone, and explicitly named planned entries', () => {
+    expect(planPrunePlanned({ assets, explicitPaths: [], sourceExists, isReferenced: () => false }))
+      .toEqual({ prune: [gone], errors: [] })
+    expect(planPrunePlanned({ assets, explicitPaths: [kept.path], sourceExists, isReferenced: () => false }).prune)
+      .toEqual([gone, kept])
+  })
+
+  it('never prunes uploaded or unknown assets', () => {
+    const plan = planPrunePlanned({
+      assets,
+      explicitPaths: [uploaded.path, 'company/missing.webp'],
+      sourceExists,
+      isReferenced: () => false
+    })
+    expect(plan.prune).toEqual([])
+    expect(plan.errors).toEqual([
+      'refusing to prune active asset (only never-uploaded \'planned\' entries): company/workshop/2.webp',
+      'not in manifest: company/missing.webp'
+    ])
+  })
+
+  it('refuses the whole plan when a candidate is still referenced', () => {
+    const plan = planPrunePlanned({ assets, explicitPaths: [], sourceExists, isReferenced: asset => asset === gone })
+    expect(plan).toEqual({ prune: [], errors: [`still referenced in app code: ${gone.path}`] })
   })
 })

@@ -7,13 +7,13 @@ const props = defineProps<{
   phone: string
 }>()
 
-const { t } = useLanguage()
+const { t, localePath } = useLanguage()
 const phoneHref = computed(() => `tel:${props.phone.replaceAll(' ', '')}`)
 </script>
 
 <template>
-  <!-- The finale opens on the site's one Facts Band (Linen, hairline under it), so the band is
-       also the seam to the Raw Silk closing CTA; the section's top padding moves below it. -->
+  <!-- The finale opens on the site's one Facts Band, contained as on home (a Linen frame on the
+       rail); the section's top padding moves below it. -->
   <section
     data-project-chapter="finale"
     class="section-cta bg-[var(--color-ivory)] pt-0 text-ink-950"
@@ -22,6 +22,7 @@ const phoneHref = computed(() => `tel:${props.phone.replaceAll(' ', '')}`)
       :facts="facts"
       testid="project-facts-band"
       cell-testid="project-fact"
+      contained
     />
 
     <div class="shell pt-[var(--section-py)]">
@@ -39,7 +40,7 @@ const phoneHref = computed(() => `tel:${props.phone.replaceAll(' ', '')}`)
         </div>
         <div class="flex flex-col gap-3 sm:flex-row md:flex-col">
           <NuxtLink
-            to="/lien-he"
+            :to="localePath('/lien-he')"
             class="btn-bronze"
           >{{ t(uiText.cta.quote) }}</NuxtLink>
           <a

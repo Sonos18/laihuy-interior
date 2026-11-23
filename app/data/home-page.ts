@@ -22,15 +22,60 @@ export type HomeFactoryDetail = {
 }
 
 export const homePageContent = {
+  /* Hero (owner-approved Stitch mockup, 2026-11-21): the headline names the trade and the
+     audience inside the first five seconds, the second action is Zalo (the channel visitors
+     already use), and three facts the site already states elsewhere sit under the actions:
+     founding year (company.foundingYear), the project count (projects.length) and the 24-month
+     warranty from the contractor file. Capacity is left to the facts band directly below. `{year}` and `{count}` are filled by HomeHero. */
   hero: {
     eyebrow: { vi: 'Thiết kế · Sản xuất · Thi công', en: 'Design · Production · Fit-out' },
-    title: { vi: 'Biến hồ sơ kỹ thuật thành không gian hoàn thiện', en: 'Turning technical documents into completed spaces' },
+    title: { vi: 'Nội thất khách sạn & dự án, sản xuất tại xưởng riêng', en: 'Hotel and project interiors, made in our own factory' },
     description: {
-      vi: 'Một đội, một xưởng riêng: từ bản vẽ đến lắp đặt trên toàn quốc.',
-      en: 'One team and our own factory, from drawings to installation nationwide.'
+      vi: 'Cho chủ đầu tư, đơn vị thiết kế và tổng thầu: từ bản vẽ đến lắp đặt trên toàn quốc.',
+      en: 'For owners, designers and main contractors: from drawings to installation nationwide.'
     },
-    primaryCta: { vi: 'Nhận báo giá', en: 'Request a quote' },
-    secondaryCta: { vi: 'Gửi bản vẽ, nhận BOQ sơ bộ', en: 'Send drawings for a preliminary BOQ' }
+    primaryCta: { vi: 'Gửi bản vẽ, nhận báo giá', en: 'Send drawings, get a quote' },
+    zaloCta: { vi: 'Nhắn Zalo', en: 'Chat on Zalo' },
+    factsLabel: { vi: 'Lai Huy qua ba con số', en: 'Lai Huy in three figures' },
+    facts: [
+      {
+        id: 'since',
+        value: { vi: 'Từ {year}', en: 'Since {year}' },
+        label: { vi: 'Xưởng riêng tại Vĩnh Long', en: 'Own factory in Vinh Long' }
+      },
+      {
+        id: 'projects',
+        value: { vi: '{count} dự án', en: '{count} projects' },
+        label: { vi: 'Trong hồ sơ dự án', en: 'In our portfolio' }
+      },
+      {
+        id: 'warranty',
+        value: { vi: '24 tháng', en: '24 months' },
+        label: { vi: 'Bảo hành kết cấu, thùng tủ', en: 'Warranty on carcass and structure' }
+      }
+    ]
+  },
+  /* Handover record (owner, 2026-11-21): stands in for testimonials until owner-approved client
+     quotes exist. Every row comes from app/data/projects.ts (name, category, location, rooms,
+     year, cover, scope), so it states nothing the portfolio does not already state. `{count}` and
+     `{made}` are filled by HomeHandover. */
+  handover: {
+    eyebrow: { vi: 'Đã bàn giao', en: 'Handed over' },
+    title: { vi: '{count} công trình, từ khách sạn đến văn phòng', en: '{count} projects, from hotels to offices' },
+    /* `{made}` counts the projects whose scope includes production (scope 'Sản xuất'); two
+       records are design and fit-out only, so the factory claim is counted, not blanket. */
+    lead: {
+      vi: 'Cùng một đội thiết kế và lắp đặt đến nghiệm thu; {made} trong {count} công trình sản xuất tại xưởng Vĩnh Long.',
+      en: 'One team designs and installs through sign-off; {made} of the {count} were made in our Vinh Long factory.'
+    },
+    listLabel: { vi: 'Danh sách công trình đã bàn giao', en: 'Projects handed over' },
+    allCta: { vi: 'Xem tất cả dự án', en: 'View all projects' }
+  },
+  /* Client testimonials: HomeTestimonials renders only when company.testimonials holds real,
+     owner-supplied quotes. Never fill it with placeholder or invented reviews. */
+  testimonials: {
+    eyebrow: { vi: 'Khách hàng nói gì', en: 'What clients say' },
+    title: { vi: 'Chủ đầu tư nói về Lai Huy', en: 'Owners on working with Lai Huy' }
   },
   story: {
     eyebrow: { vi: 'Cách Lai Huy làm', en: 'How we work' },
@@ -62,7 +107,7 @@ export const homePageContent = {
   },
   /* The contractor file (owner, 2026-11-15): what owners and main contractors check before they
      pick a subcontractor. Every line is owner-supplied (founding date, legal entity, tax code,
-     warranty wording) or a claim the site already makes (one team to sign-off, four QC checks).
+     warranty terms, 2026-11-17) or a claim the site already makes (one team to sign-off, four QC checks).
      `{legalName}`, `{taxId}` are filled from `company` by HomeTrust. */
   trust: {
     eyebrow: { vi: 'Hồ sơ nhà thầu', en: 'Contractor file' },
@@ -101,13 +146,66 @@ export const homePageContent = {
       },
       {
         id: 'warranty',
-        title: { vi: 'Bảo hành theo quy định', en: 'Warranty as regulated' },
+        title: { vi: 'Bảo hành 24 tháng', en: '24-month warranty' },
         body: {
-          vi: 'Điều khoản và thời hạn bảo hành ghi trong hợp đồng của từng dự án.',
-          en: 'Warranty terms and period are set out in each project’s contract.'
+          vi: 'Kết cấu và thùng tủ do xưởng sản xuất được bảo hành 24 tháng; tiếp nhận yêu cầu trong 24 giờ. Chi tiết ở bảng cam kết bên dưới.',
+          en: 'Cabinet carcasses and joinery made in our factory carry a 24-month warranty; claims are acknowledged within 24 hours. See the commitment below.'
         }
       }
-    ] satisfies Array<{ id: string, title: LocalizedText, body: LocalizedText }>
+    ] satisfies Array<{ id: string, title: LocalizedText, body: LocalizedText }>,
+    /* Warranty commitment (owner, 2026-11-17): replaces "warranty as regulated, terms in each
+       contract", which read as evasive next to other bidders. Every figure here was approved by
+       the owner; accessories stay generic because no hardware brand is named anywhere on the
+       site. The contract note is a footnote, not the answer. */
+    warranty: {
+      title: { vi: 'Cam kết bảo hành', en: 'Warranty commitment' },
+      terms: [
+        {
+          id: 'carcass',
+          label: { vi: 'Kết cấu, thùng tủ', en: 'Carcasses and joinery' },
+          value: {
+            vi: '24 tháng cho sản phẩm gỗ do xưởng Lai Huy sản xuất: cong vênh, bong dán, nứt mối ghép.',
+            en: '24 months on wood products made in the Lai Huy factory: warping, delamination, cracked joints.'
+          }
+        },
+        {
+          id: 'hardware',
+          label: { vi: 'Phụ kiện', en: 'Hardware' },
+          value: {
+            vi: 'Bản lề, ray, tay nâng: theo bảo hành của hãng sản xuất.',
+            en: 'Hinges, runners, lift mechanisms: covered by the manufacturer’s warranty.'
+          }
+        },
+        {
+          id: 'response',
+          label: { vi: 'Thời gian phản hồi', en: 'Response time' },
+          value: {
+            vi: 'Tiếp nhận yêu cầu trong 24 giờ; kỹ thuật đến kiểm tra trong 72 giờ ở khu vực nội thành, khu vực khác hẹn lịch khi tiếp nhận.',
+            en: 'Claims acknowledged within 24 hours; a technician inspects on site within 72 hours in the city area, elsewhere on a date set when the claim is logged.'
+          }
+        },
+        {
+          id: 'maintenance',
+          label: { vi: 'Bảo trì', en: 'Maintenance' },
+          value: {
+            vi: 'Miễn phí một lần kiểm tra, cân chỉnh trong 12 tháng đầu.',
+            en: 'One free inspection and adjustment within the first 12 months.'
+          }
+        },
+        {
+          id: 'exclusions',
+          label: { vi: 'Không bảo hành', en: 'Not covered' },
+          value: {
+            vi: 'Hư hỏng do ngập nước, va đập, hoặc tự ý tháo, sửa.',
+            en: 'Damage from flooding, impact, or unauthorised removal or repair.'
+          }
+        }
+      ] satisfies Array<{ id: string, label: LocalizedText, value: LocalizedText }>,
+      note: {
+        vi: 'Chi tiết theo hợp đồng từng dự án.',
+        en: 'Full terms are set out in each project’s contract.'
+      }
+    }
   },
   factory: {
     title: { vi: 'Kiểm soát tại nguồn', en: 'Control at the source' },

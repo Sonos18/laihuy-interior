@@ -1,4 +1,5 @@
 import process from 'node:process'
+import type { NuxtPage } from 'nuxt/schema'
 
 const useSupabaseMedia = process.env.NUXT_PUBLIC_USE_SUPABASE_MEDIA === 'true'
 const supabaseUrl = process.env.NUXT_PUBLIC_SUPABASE_URL ?? ''
@@ -10,6 +11,20 @@ if (useSupabaseMedia && !supabaseUrl) {
     '[media] NUXT_PUBLIC_USE_SUPABASE_MEDIA=true requires NUXT_PUBLIC_SUPABASE_URL to be set'
   )
 }
+
+// Marketing routes prerendered in both locales. `/en` is also a crawl seed, so every English
+// project page is found through the English links the way the Vietnamese ones already are.
+const PRERENDERED_ROUTES = [
+  '/',
+  '/gioi-thieu',
+  '/du-an',
+  '/nha-xuong',
+  '/dich-vu',
+  '/tuyen-dung',
+  '/lien-he',
+  '/privacy-policy',
+  '/terms-of-use'
+]
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -50,18 +65,18 @@ export default defineNuxtConfig({
     }
   },
 
+  // Every prerendered page exists twice: Vietnamese unprefixed, English under `/en`
+  // (app/utils/locale-path.ts). The legacy-slug redirect is mirrored for the same reason.
   routeRules: {
-    '/': { prerender: true },
-    '/gioi-thieu': { prerender: true },
-    '/du-an': { prerender: true },
-    '/nha-xuong': { prerender: true },
-    '/dich-vu': { prerender: true },
-    '/tuyen-dung': { prerender: true },
-    '/lien-he': { prerender: true },
-    '/privacy-policy': { prerender: true },
-    '/terms-of-use': { prerender: true },
+    ...Object.fromEntries(PRERENDERED_ROUTES.flatMap(route => [
+      [route, { prerender: true }],
+      [route === '/' ? '/en' : `/en${route}`, { prerender: true }]
+    ])),
     '/du-an/codi-villa-hien-dai': {
       redirect: { to: '/du-an/codi-villa-phan-thiet', statusCode: 301 }
+    },
+    '/en/du-an/codi-villa-hien-dai': {
+      redirect: { to: '/en/du-an/codi-villa-phan-thiet', statusCode: 301 }
     }
   },
 
@@ -77,7 +92,22 @@ export default defineNuxtConfig({
     prerender: {
       crawlLinks: true,
       failOnError: true,
-      routes: ['/robots.txt', '/sitemap.xml']
+      routes: ['/robots.txt', '/sitemap.xml', '/en']
+    }
+  },
+
+  hooks: {
+    // English routes: a copy of every page under `/en`, named `<name>___en` (the suffix
+    // @nuxtjs/i18n uses). The page component is shared; useLanguage reads the locale from the
+    // path, so `/en/du-an` renders English on the server and the client alike.
+    'pages:extend'(pages) {
+      const toEnglish = (page: NuxtPage, isChild = false): NuxtPage => ({
+        ...page,
+        name: page.name ? `${page.name}___en` : undefined,
+        path: isChild ? page.path : (page.path === '/' ? '/en' : `/en${page.path}`),
+        children: page.children?.map(child => toEnglish(child, true))
+      })
+      pages.push(...pages.map(page => toEnglish(page)))
     }
   },
 
@@ -107,7 +137,11 @@ export default defineNuxtConfig({
   // from claiming `components`; layers.css pins `icons` to lowest priority,
   // which is the precedence @nuxt/icon prepends to achieve anyway.
   icon: {
-    cssLayer: 'icons'
+    cssLayer: 'icons',
+    // Brand marks no installed set draws correctly. `lh:zalo` is the Zalo
+    // speech bubble with the wordmark knocked out; the wordmark path is
+    // Simple Icons' `zalo` (CC0-1.0), drawn in currentColor (One Accent Rule).
+    customCollections: [{ prefix: 'lh', dir: './app/assets/icons' }]
   },
 
   image: {

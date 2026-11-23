@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<{
   numbered: true
 })
 
-const { t, ta } = useLanguage()
+const { t, ta, localePath } = useLanguage()
 
 const heroProject = computed(() => props.projects[0])
 const secondaryProjects = computed(() => props.projects.slice(1, 3))
@@ -34,7 +34,7 @@ const { srcset: mediaSrcset } = useMediaUrl()
       v-if="heroProject"
       v-reveal.item.image
       data-project-card
-      :to="`/du-an/${heroProject.project.slug}`"
+      :to="localePath(`/du-an/${heroProject.project.slug}`)"
       class="home-projects__card home-projects__card--hero card-hover reveal group"
     >
       <div class="home-projects__media home-projects__media--hero">
@@ -150,7 +150,7 @@ const { srcset: mediaSrcset } = useMediaUrl()
       :key="project.slug"
       v-reveal.item.image
       data-project-card
-      :to="`/du-an/${project.slug}`"
+      :to="localePath(`/du-an/${project.slug}`)"
       class="home-projects__card home-projects__card--satellite card-hover reveal group"
     >
       <div class="home-projects__media home-projects__media--satellite">

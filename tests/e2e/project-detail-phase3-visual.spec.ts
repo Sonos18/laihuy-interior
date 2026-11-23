@@ -1,6 +1,7 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from './fixtures'
 import { APP_ORIGIN } from './origin'
+import { localizePath } from '../../app/utils/locale-path'
 
 const TEST_ORIGIN = process.env.PROJECT_DETAIL_TEST_ORIGIN ?? APP_ORIGIN
 
@@ -16,10 +17,6 @@ async function openProject(
   width: number,
   height = 900
 ) {
-  await page.context().addCookies([
-    { name: 'lai-huy-locale', value: locale, url: TEST_ORIGIN }
-  ])
-
   await page.route('**/*', async (route) => {
     if (route.request().resourceType() === 'image') {
       await route.fulfill({
@@ -36,7 +33,7 @@ async function openProject(
   await page.setViewportSize({ width, height })
 
   await page.goto(
-    new URL(path, TEST_ORIGIN).toString(),
+    new URL(localizePath(path, locale), TEST_ORIGIN).toString(),
     { waitUntil: 'load' }
   )
 
@@ -1068,7 +1065,7 @@ for (const locale of ['vi', 'en'] as const) {
       await expect(related).toBeVisible()
 
       // Card count > 0 and <= 3
-      const cards = related.locator('a[href^="/du-an/"]')
+      const cards = related.locator(`a[href^="${localizePath('/du-an/', locale)}"]`)
       const count = await cards.count()
       expect(count).toBeGreaterThan(0)
       expect(count).toBeLessThanOrEqual(3)
@@ -1076,13 +1073,13 @@ for (const locale of ['vi', 'en'] as const) {
       // All links point to /du-an/<slug> and no self-links
       for (let i = 0; i < count; i++) {
         const href = await cards.nth(i).getAttribute('href')
-        expect(href).toMatch(/^\/du-an\/[a-z0-9-]+$/)
-        expect(href).not.toBe('/du-an/khach-san-eo-gio')
+        expect(href).toMatch(locale === 'en' ? /^\/en\/du-an\/[a-z0-9-]+$/ : /^\/du-an\/[a-z0-9-]+$/)
+        expect(href).not.toBe(localizePath('/du-an/khach-san-eo-gio', locale))
       }
 
       // Card is a 4px Paper White frame with a Plaster Line border
       const card = await related.evaluate((el) => {
-        const link = el.querySelector('a[href^="/du-an/"]')
+        const link = el.querySelector('a[href*="/du-an/"]')
         const style = link ? getComputedStyle(link) : null
         return {
           border: style?.borderBottomColor ?? '',
@@ -1223,7 +1220,7 @@ for (const locale of ['vi', 'en'] as const) {
       expect(pColor).toBe(expectedWalnut)
 
       // /lien-he CTA exists with primary bronze styling
-      const contactCta = finale.locator('a[href="/lien-he"]')
+      const contactCta = finale.locator(`a[href="${localizePath('/lien-he', locale)}"]`)
       await expect(contactCta).toBeVisible()
       const ctaStyles = await contactCta.evaluate((el) => {
         const probeBronze = document.createElement('div')
@@ -1280,8 +1277,8 @@ for (const locale of ['vi', 'en'] as const) {
       const finale = page.locator('section[data-project-chapter="finale"]')
       await expect(finale).toBeVisible()
 
-      // The finale opens on the shared Facts Band (DESIGN.md "Facts Band"): Linen with a
-      // Plaster hairline under it, no icons, values in Charcoal Ink, labels in Walnut Grey.
+      // The finale opens on the shared Facts Band (DESIGN.md "Facts Band"), contained like home:
+      // a Linen frame with a Plaster border, no icons, values in Charcoal Ink, labels in Walnut Grey.
       const band = finale.locator('[data-facts-band]')
       await expect(band).toHaveCount(1)
       const bandStyles = await band.evaluate((el) => {
@@ -1305,8 +1302,8 @@ for (const locale of ['vi', 'en'] as const) {
         return {
           ...result,
           expectedWalnut,
-          borderBottomColor: getComputedStyle(el).borderBottomColor,
-          background: getComputedStyle(el).backgroundColor,
+          borderBottomColor: getComputedStyle(el.querySelector('dl')!).borderBottomColor,
+          background: getComputedStyle(el.querySelector('dl')!).backgroundColor,
           icons: el.querySelectorAll('svg:not(.facts-band__beam), .iconify, [class*="i-lucide"]').length,
           valueColor: getComputedStyle(el.querySelector('dd')!).color,
           labelColor: getComputedStyle(el.querySelector('dt')!).color

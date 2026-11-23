@@ -12,7 +12,7 @@ defineProps<{
   facts: readonly ProjectDetailFact[]
 }>()
 
-const { t } = useLanguage()
+const { t, localePath } = useLanguage()
 
 const COUNTED_FACTS = new Set(['area', 'rooms'])
 </script>
@@ -33,7 +33,7 @@ const COUNTED_FACTS = new Set(['area', 'rooms'])
           :aria-label="t({ vi: 'Đường dẫn', en: 'Breadcrumb' })"
         >
           <NuxtLink
-            to="/du-an"
+            :to="localePath('/du-an')"
             class="inline-flex items-center gap-2 transition-colors hover:text-white"
           >
             <Icon
@@ -53,7 +53,7 @@ const COUNTED_FACTS = new Set(['area', 'rooms'])
 
       <template #actions>
         <NuxtLink
-          to="/lien-he"
+          :to="localePath('/lien-he')"
           class="btn-bronze btn-bronze--on-dark"
         >
           {{ t(uiText.cta.quote) }}
@@ -63,7 +63,7 @@ const COUNTED_FACTS = new Set(['area', 'rooms'])
           />
         </NuxtLink>
         <NuxtLink
-          to="/du-an"
+          :to="localePath('/du-an')"
           class="btn-luxury-outline"
         >
           {{ t(uiText.cta.allProjects) }}

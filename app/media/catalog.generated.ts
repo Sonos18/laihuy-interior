@@ -337,29 +337,34 @@ export const projectMedia = {
 /** Company's own workshop gallery - powers the Nha xuong (factory) page. */
 export const workshopMedia: readonly MediaAsset[] = [
   { path: 'company/workshop/1.webp', width: 1771, height: 2552 },
+  { path: 'company/workshop/2-v2.webp', width: 2352, height: 1572 },
   { path: 'company/workshop/2.webp', width: 2560, height: 1711 },
+  { path: 'company/workshop/3-v2.webp', width: 2448, height: 1511 },
   { path: 'company/workshop/3.webp', width: 2560, height: 1581 },
+  { path: 'company/workshop/4-v2.webp', width: 2482, height: 1494 },
   { path: 'company/workshop/4.webp', width: 2560, height: 1541 },
+  { path: 'company/workshop/5-v2.webp', width: 2486, height: 1464 },
   { path: 'company/workshop/5.webp', width: 2560, height: 1508 },
+  { path: 'company/workshop/6-v2.webp', width: 2352, height: 1570 },
   { path: 'company/workshop/6.webp', width: 2560, height: 1710 },
+  { path: 'company/workshop/7-v2.webp', width: 2330, height: 1577 },
   { path: 'company/workshop/7.webp', width: 2560, height: 1733 },
+  { path: 'company/workshop/8-v2.webp', width: 2352, height: 1572 },
   { path: 'company/workshop/8.webp', width: 2560, height: 1711 },
+  { path: 'company/workshop/9-v2.webp', width: 2242, height: 1602 },
   { path: 'company/workshop/9.webp', width: 2560, height: 1830 },
+  { path: 'company/workshop/10-v2.webp', width: 2352, height: 1572 },
   { path: 'company/workshop/10.webp', width: 2560, height: 1711 },
+  { path: 'company/workshop/11-v2.webp', width: 2352, height: 1572 },
   { path: 'company/workshop/11.webp', width: 2560, height: 1711 }
 ]
 
 export const companyMedia = {
   aboutWorkspace: { path: 'company/about-workspace.webp', width: 2048, height: 2560 },
   companyStory: { path: 'company/company-story.webp', width: 900, height: 603 },
-  homeMaterial01DrawingV1: { path: 'company/homepage-material-story/home-material-01-drawing-v1.webp', width: 1586, height: 992 },
-  homeMaterial02MaterialV1: { path: 'company/homepage-material-story/home-material-02-material-v1.webp', width: 1586, height: 992 },
-  homeMaterial03FactoryV1: { path: 'company/homepage-material-story/home-material-03-factory-v1.webp', width: 1586, height: 992 },
-  homeMaterial04SpaceV1: { path: 'company/homepage-material-story/home-material-04-space-v1.webp', width: 1586, height: 992 },
   homeMaterialEoGio00ExistingV1: { path: 'company/homepage-material-story/home-material-eo-gio-00-existing-v1.webp', width: 1586, height: 992 },
   homeMaterialEoGio01DrawingV2: { path: 'company/homepage-material-story/home-material-eo-gio-01-drawing-v2.webp', width: 1586, height: 992 },
   homeMaterialEoGio02MaterialV2: { path: 'company/homepage-material-story/home-material-eo-gio-02-material-v2.webp', width: 1586, height: 992 },
-  homeMaterialEoGio03FactoryV2: { path: 'company/homepage-material-story/home-material-eo-gio-03-factory-v2.webp', width: 1586, height: 992 },
   mapAddress: { path: 'company/map-address.webp', width: 1105, height: 637 }
 } satisfies Record<string, MediaAsset>
 

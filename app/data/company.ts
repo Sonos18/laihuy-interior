@@ -63,6 +63,8 @@ export type CompanyTestimonial = {
   quote: LocalizedText
   author: LocalizedText
   role?: LocalizedText
+  /** The project the quote is about, shown under the author. */
+  project?: LocalizedText
 }
 
 const buildMapUrl = (address: string) =>
@@ -112,7 +114,38 @@ export const company = {
   team: [] as CompanyTeamMember[],
   certifications: undefined as LocalizedArray | undefined,
   awards: undefined as LocalizedArray | undefined,
-  testimonials: [] as CompanyTestimonial[],
+  /* Client quotes approved by the owner of all three projects (anh Huy) via Zalo, 2026-11-21,
+     including the attribution "Anh Huy, chủ đầu tư". The Vietnamese is the approved wording;
+     the English is a translation. Change a quote only with the client's approval. */
+  testimonials: [
+    {
+      quote: {
+        vi: 'Eo Gió có nhiều loại phòng, từ phòng đơn đến căn hộ ba phòng ngủ, mà vẫn giữ được một ngôn ngữ thiết kế. Lai Huy lo trọn từ thiết kế, sản xuất ở xưởng đến lắp đặt, tôi chỉ cần làm việc với một đầu mối.',
+        en: 'Eo Gio has many room types, from singles to three-bedroom apartments, yet keeps one design language. Lai Huy handled everything from design and factory production to installation; I only had to deal with one point of contact.'
+      },
+      author: { vi: 'Anh Huy', en: 'Mr. Huy' },
+      role: { vi: 'Chủ đầu tư', en: 'Owner' },
+      project: { vi: 'Khách sạn Eo Gió, Vĩnh Long', en: 'Eo Gio Hotel, Vinh Long' }
+    },
+    {
+      quote: {
+        vi: 'Ba loại phòng của Codi Boutique cần mỗi phòng một tính cách nhưng vẫn chung một bảng màu. Lai Huy làm được điều đó, và đồ nội thất sản xuất tại xưởng khớp với bản vẽ khi lắp đặt.',
+        en: 'Codi Boutique’s three room types each needed their own character within one palette. Lai Huy delivered that, and the furniture made in their factory matched the drawings on installation.'
+      },
+      author: { vi: 'Anh Huy', en: 'Mr. Huy' },
+      role: { vi: 'Chủ đầu tư', en: 'Owner' },
+      project: { vi: 'Khách sạn Codi Boutique, Vĩnh Long', en: 'Codi Boutique Hotel, Vinh Long' }
+    },
+    {
+      quote: {
+        vi: 'Bốn căn villa ở Phan Thiết theo phong cách công nghiệp, khác hẳn kiểu villa nghỉ dưỡng thường thấy. Lai Huy sản xuất ở Vĩnh Long rồi đưa ra lắp đặt, phối hợp tốt dù công trình ở xa xưởng.',
+        en: 'Four industrial-style villas in Phan Thiet, quite unlike the usual resort villa. Lai Huy made everything in Vinh Long and brought it out to install, coordinating well despite the distance from the factory.'
+      },
+      author: { vi: 'Anh Huy', en: 'Mr. Huy' },
+      role: { vi: 'Chủ đầu tư', en: 'Owner' },
+      project: { vi: 'Codi Villa, NovaWorld Phan Thiết', en: 'Codi Villa, NovaWorld Phan Thiet' }
+    }
+  ] as CompanyTestimonial[],
   /* One line per locale. Still an array so consumers can join or stack lines without a type change. */
   workingHours: {
     vi: ['8:00–17:00, thứ 2 – thứ 7'],
@@ -142,9 +175,9 @@ export const company = {
 
      The line that governs this field is the one at the top of this file: fields stay empty until
      authored with authentic content, never fabricated. A fifth signal — a construction warranty —
-     was requested and deliberately NOT added: nothing in this repository states that such a
-     warranty exists, and a footer is the last place a business should discover it is promising
-     something nobody authored. Add it here only when someone can point at the policy.
+     was requested and NOT added here: the owner's warranty terms (2026-11-17) live in the home
+     contractor file (`homePageContent.trust.warranty`); a footer badge for them is a separate,
+     unrequested change.
 
      The glyphs are REUSED, not chosen: three of the four labels have an exact title match in
      `differentiators` on /gioi-thieu and take that page's icon verbatim — factory, shield-check,
