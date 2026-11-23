@@ -112,6 +112,8 @@ usePageSeo({
     }
   ]
 })
+
+const { srcset: mediaSrcset } = useMediaUrl()
 </script>
 
 <template>
@@ -222,6 +224,7 @@ usePageSeo({
                 :src="cover.path"
                 alt=""
                 :width="cover.width"
+                :srcset="mediaSrcset(cover.path, cover.width)"
                 :height="cover.height"
                 sizes="sm:100vw md:50vw lg:33vw xl:25vw"
                 loading="lazy"

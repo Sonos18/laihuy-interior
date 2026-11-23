@@ -6,6 +6,8 @@ import type { ProjectRelatedCard } from '~/shared/types/project-detail'
 defineProps<{ projects: readonly ProjectRelatedCard[] }>()
 
 const { t, localePath } = useLanguage()
+
+const { srcset: mediaSrcset } = useMediaUrl()
 </script>
 
 <template>
@@ -48,6 +50,7 @@ const { t, localePath } = useLanguage()
               :src="cover.path"
               :alt="t(item.name)"
               :width="cover.width"
+              :srcset="mediaSrcset(cover.path, cover.width)"
               :height="cover.height"
               sizes="sm:100vw md:33vw"
               loading="lazy"

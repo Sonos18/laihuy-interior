@@ -23,6 +23,8 @@ const fill = (text: string) => text.replaceAll('{count}', count).replaceAll('{ma
 
 const title = computed(() => fill(t(homePageContent.handover.title)))
 const lead = computed(() => fill(t(homePageContent.handover.lead)))
+
+const { srcset: mediaSrcset } = useMediaUrl()
 </script>
 
 <template>
@@ -60,6 +62,7 @@ const lead = computed(() => fill(t(homePageContent.handover.lead)))
                 :src="cover.path"
                 alt=""
                 :width="cover.width"
+                :srcset="mediaSrcset(cover.path, cover.width)"
                 :height="cover.height"
                 sizes="160px"
                 loading="lazy"

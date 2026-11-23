@@ -64,6 +64,8 @@ onMounted(() => {
 function onError() {
   phase.value = 'idle'
 }
+
+const { srcset: mediaSrcset } = useMediaUrl()
 </script>
 
 <template>
@@ -83,6 +85,7 @@ function onError() {
       :src="image.path"
       :alt="altText"
       :width="image.width"
+      :srcset="mediaSrcset(image.path, image.width)"
       :height="image.height"
       :sizes="sizes ?? presetConfig.sizes"
       :loading="presetConfig.loading"

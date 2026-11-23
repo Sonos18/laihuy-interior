@@ -4,7 +4,6 @@
 :root {
   --font-sans: "Inter", "Segoe UI", sans-serif;
   --font-display: "Outfit", "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-  --font-artistic: "Syne", system-ui, -apple-system, sans-serif;
   --color-wood: #6f4f37;
   --color-warm: #b8875a;
 
@@ -513,7 +512,6 @@
   --color-ivory: #f5f2eb;
 
   --font-display: "Outfit", "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
-  --font-artistic: "Syne", system-ui, -apple-system, sans-serif;
 }
 
 @keyframes hero-zoom {
@@ -2208,10 +2206,6 @@
 
   .font-display {
     font-family: var(--font-display);
-  }
-
-  .font-artistic {
-    font-family: var(--font-artistic);
   }
 
   .hairline-border {

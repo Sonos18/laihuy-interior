@@ -16,6 +16,8 @@ const fill = (text: string) => text
 
 // The founding-year fact only makes sense while a founding year is authored.
 const facts = homePageContent.hero.facts.filter(fact => fact.id !== 'since' || company.foundingYear)
+
+const { srcset: mediaSrcset } = useMediaUrl()
 </script>
 
 <template>
@@ -28,6 +30,7 @@ const facts = homePageContent.hero.facts.filter(fact => fact.id !== 'since' || c
       :src="image.path"
       :alt="t({ vi: 'Khách sạn Eo Gió, Vĩnh Long: nội thất do Lai Huy thiết kế, sản xuất và thi công', en: 'Eo Gio Hotel, Vinh Long: interiors designed, produced and fitted out by Lai Huy' })"
       :width="image.width"
+      :srcset="mediaSrcset(image.path, image.width)"
       :height="image.height"
       sizes="1536px xl:100vw"
       loading="eager"
